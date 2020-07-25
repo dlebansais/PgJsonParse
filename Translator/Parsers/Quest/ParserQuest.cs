@@ -88,7 +88,7 @@
                         Result = SetStringProperty((string valueString) => item.MidwayText = Tools.CleanedUpString(valueString), Value);
                         break;
                     case "PrerequisiteFavorLevel":
-                        Result = Inserter<Favor>.SetEnum((Favor valueEnum) => item.PrerequisiteFavorLevel = valueEnum, Value);
+                        Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => item.PrerequisiteFavorLevel = valueEnum, Value);
                         break;
                     case "Rewards_Favor":
                         Result = ParseRewardFavor(item, Value, parsedFile, parsedKey);
@@ -136,7 +136,7 @@
                         Result = SetBoolProperty((bool valueBool) => item.RawIsAutoWrapUp = valueBool, Value);
                         break;
                     case "GroupingName":
-                        Result = Inserter<QuestGroupingName>.SetEnum((QuestGroupingName valueEnum) => item.GroupingName = valueEnum, Value);
+                        Result = StringToEnumConversion<QuestGroupingName>.SetEnum((QuestGroupingName valueEnum) => item.GroupingName = valueEnum, Value);
                         break;
                     case "IsGuildQuest":
                         Result = SetBoolProperty((bool valueBool) => item.RawIsGuildQuest = valueBool, Value);
@@ -151,7 +151,7 @@
                         Result = ParserSkill.Parse((PgSkill valueSkill) => item.WorkOrderSkill = valueSkill, Value, parsedFile, parsedKey);
                         break;
                     case "DisplayedLocation":
-                        Result = Inserter<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.DisplayedLocation = valueEnum, Value);
+                        Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.DisplayedLocation = valueEnum, Value);
                         break;
                     case "FollowUpQuests":
                         Result = ParseFollowUpQuests(item, Value, parsedFile, parsedKey);
@@ -247,7 +247,7 @@
                 return Program.ReportFailure($"Value {value} was expected to be a string");
 
             NamedLootProfile ParsedNamedLootProfile = NamedLootProfile.Internal_None;
-            if (!Inserter<NamedLootProfile>.SetEnum((NamedLootProfile valueEnum) => ParsedNamedLootProfile = valueEnum, ValueString))
+            if (!StringToEnumConversion<NamedLootProfile>.SetEnum((NamedLootProfile valueEnum) => ParsedNamedLootProfile = valueEnum, ValueString))
                 return false;
 
             PgQuestRewardNamedLootProfile NewReward = new PgQuestRewardNamedLootProfile() { NamedLootProfile = ParsedNamedLootProfile };
@@ -366,7 +366,7 @@
         private bool ParseRewardEffectSetInteractionFlag(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
         {
             InteractionFlag ParsedFlag = InteractionFlag.Internal_None;
-            if (!Inserter<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => ParsedFlag = valueEnum, effectParameter))
+            if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => ParsedFlag = valueEnum, effectParameter))
                 return false;
 
             PgQuestRewardInteractionFlag NewReward = new PgQuestRewardInteractionFlag() { InteractionFlag = ParsedFlag };

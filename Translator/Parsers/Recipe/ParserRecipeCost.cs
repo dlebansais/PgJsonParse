@@ -31,7 +31,7 @@
                 switch (Key)
                 {
                     case "Currency":
-                        Result = Inserter<RecipeCurrency>.SetEnum((RecipeCurrency valueEnum) => item.Currency = valueEnum, Value);
+                        Result = StringToEnumConversion<RecipeCurrency>.SetEnum((RecipeCurrency valueEnum) => item.Currency = valueEnum, Value);
                         break;
                     case "Price":
                         Result = SetFloatProperty((float valueFloat) => item.RawPrice = valueFloat, Value);

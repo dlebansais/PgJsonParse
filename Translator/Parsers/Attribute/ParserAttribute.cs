@@ -41,13 +41,13 @@
                         Result = SetStringProperty((string valueString) => item.Tooltip = valueString, Value);
                         break;
                     case "DisplayType":
-                        Result = Inserter<DisplayType>.SetEnum((DisplayType valueEnum) => item.DisplayType = valueEnum, Value);
+                        Result = StringToEnumConversion<DisplayType>.SetEnum((DisplayType valueEnum) => item.DisplayType = valueEnum, Value);
                         break;
                     case "IsHidden":
                         Result = SetBoolProperty((bool valueBool) => item.RawIsHidden = valueBool, Value);
                         break;
                     case "DisplayRule":
-                        Result = Inserter<DisplayRule>.SetEnum((DisplayRule valueEnum) => item.DisplayRule = valueEnum, Value);
+                        Result = StringToEnumConversion<DisplayRule>.SetEnum((DisplayRule valueEnum) => item.DisplayRule = valueEnum, Value);
                         break;
                     case "DefaultValue":
                         Result = SetFloatProperty((float valueFloat) => item.RawDefaultValue = valueFloat, Value);

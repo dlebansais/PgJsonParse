@@ -31,7 +31,7 @@
                 switch (Key)
                 {
                     case "ItemKeyword":
-                        Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.ItemKeyword = valueEnum, Value);
+                        Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.ItemKeyword = valueEnum, Value);
                         break;
                     case "Count":
                         Result = SetIntProperty((int valueInt) => item.RawCount = valueInt, Value);

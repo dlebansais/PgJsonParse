@@ -65,7 +65,7 @@
                         Result = StringToEnumConversion<RecipeKeyword>.TryParseList(Value, item.KeywordList);
                         break;
                     case "ActionLabel":
-                        Result = Inserter<RecipeAction>.SetEnum((RecipeAction valueEnum) => item.ActionLabel= valueEnum, Value);
+                        Result = StringToEnumConversion<RecipeAction>.SetEnum((RecipeAction valueEnum) => item.ActionLabel= valueEnum, Value);
                         break;
                     case "UsageDelay":
                         Result = SetFloatProperty((float valueFloat) => item.RawUsageDelay = valueFloat, Value);
@@ -74,7 +74,7 @@
                         Result = SetStringProperty((string valueString) => item.UsageDelayMessage = valueString, Value);
                         break;
                     case "UsageAnimation":
-                        Result = Inserter<RecipeUsageAnimation>.SetEnum((RecipeUsageAnimation valueEnum) => item.UsageAnimation = valueEnum, Value);
+                        Result = StringToEnumConversion<RecipeUsageAnimation>.SetEnum((RecipeUsageAnimation valueEnum) => item.UsageAnimation = valueEnum, Value);
                         break;
                     case "OtherRequirements":
                         Result = Inserter<PgAbilityRequirement>.AddKeylessArray(item.OtherRequirementList, Value);
@@ -119,7 +119,7 @@
                         Result = SetStringProperty((string valueString) => item.ItemMenuLabel = valueString, Value);
                         break;
                     case "ItemMenuKeywordReq":
-                        Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.RecipeItemKeyword = valueEnum, Value);
+                        Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.RecipeItemKeyword = valueEnum, Value);
                         break;
                     case "IsItemMenuKeywordReqSufficient":
                         Result = SetBoolProperty((bool valueBool) => item.RawIsItemMenuKeywordReqSufficient = valueBool, Value);

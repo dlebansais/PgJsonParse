@@ -54,7 +54,7 @@
                 return Program.ReportFailure($"Value '{value}' was expected to be a string");
 
             item.InternalName = ValueString;
-            Inserter<XpTableEnum>.SetEnum((XpTableEnum valueEnum) => item.AsEnum = valueEnum, value);
+            StringToEnumConversion<XpTableEnum>.SetEnum((XpTableEnum valueEnum) => item.AsEnum = valueEnum, value);
 
             return true;
         }

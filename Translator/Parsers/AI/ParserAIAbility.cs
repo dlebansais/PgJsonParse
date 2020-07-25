@@ -46,7 +46,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawMaxRange = valueInt, Value);
                         break;
                     case "cue":
-                        Result = Inserter<AbilityCue>.SetEnum((AbilityCue valueEnum) => item.Cue = valueEnum, Value);
+                        Result = StringToEnumConversion<AbilityCue>.SetEnum((AbilityCue valueEnum) => item.Cue = valueEnum, Value);
                         break;
                     case "cueVal":
                         Result = SetIntProperty((int valueInt) => item.RawCueValue = valueInt, Value);

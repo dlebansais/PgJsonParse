@@ -72,7 +72,7 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Invalid area name '{ValueKey}'");
 
             string ValueAreaName = ValueKey.Substring(4);
-            return Inserter<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.AreaName = valueEnum, ValueAreaName);
+            return StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.AreaName = valueEnum, ValueAreaName);
         }
     }
 }

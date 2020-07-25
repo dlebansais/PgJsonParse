@@ -41,16 +41,16 @@
                         Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
                         break;
                     case "DisplayMode":
-                        Result = Inserter<EffectDisplayMode>.SetEnum((EffectDisplayMode valueEnum) => item.DisplayMode = valueEnum, Value);
+                        Result = StringToEnumConversion<EffectDisplayMode>.SetEnum((EffectDisplayMode valueEnum) => item.DisplayMode = valueEnum, Value);
                         break;
                     case "SpewText":
                         Result = SetStringProperty((string valueString) => item.SpewText = valueString, Value);
                         break;
                     case "Particle":
-                        Result = Inserter<EffectParticle>.SetEnum((EffectParticle valueEnum) => item.Particle = valueEnum, Value);
+                        Result = StringToEnumConversion<EffectParticle>.SetEnum((EffectParticle valueEnum) => item.Particle = valueEnum, Value);
                         break;
                     case "StackingType":
-                        Result = Inserter<EffectStackingType>.SetEnum((EffectStackingType valueEnum) => item.StackingType = valueEnum, Value);
+                        Result = StringToEnumConversion<EffectStackingType>.SetEnum((EffectStackingType valueEnum) => item.StackingType = valueEnum, Value);
                         break;
                     case "StackingPriority":
                         Result = SetIntProperty((int valueInt) => item.RawStackingPriority = valueInt, Value);

@@ -37,7 +37,7 @@
                         Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.AbilityGroup = valueAbility, Value);
                         break;
                     case "Animation":
-                        Result = Inserter<AbilityAnimation>.SetEnum((AbilityAnimation valueEnum) => item.Animation = valueEnum, Value);
+                        Result = StringToEnumConversion<AbilityAnimation>.SetEnum((AbilityAnimation valueEnum) => item.Animation = valueEnum, Value);
                         break;
                     case "AttributesThatModAmmoConsumeChance":
                         Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModAmmoConsumeChanceList, Value);
@@ -73,7 +73,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawCombatRefreshBaseAmount = valueInt, Value);
                         break;
                     case "DamageType":
-                        Result = Inserter<DamageType>.SetEnum((DamageType valueEnum) => item.DamageType = valueEnum, DamageType.Internal_None, DamageType.Internal_Empty, Value);
+                        Result = StringToEnumConversion<DamageType>.SetEnum((DamageType valueEnum) => item.DamageType = valueEnum, DamageType.Internal_None, DamageType.Internal_Empty, Value);
                         break;
                     case "DelayLoopIsAbortedIfAttacked":
                         Result = SetBoolProperty((bool valueBool) => item.RawDelayLoopIsAbortedIfAttacked = valueBool, Value);
@@ -88,10 +88,10 @@
                         Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                         break;
                     case "EffectKeywordsIndicatingEnabled":
-                        Result = Inserter<AbilityIndicatingEnabled>.SetEnum((AbilityIndicatingEnabled valueEnum) => item.EffectKeywordsIndicatingEnabled = valueEnum, Value);
+                        Result = StringToEnumConversion<AbilityIndicatingEnabled>.SetEnum((AbilityIndicatingEnabled valueEnum) => item.EffectKeywordsIndicatingEnabled = valueEnum, Value);
                         break;
                     case "ExtraKeywordsForTooltips":
-                        Result = Inserter<TooltipsExtraKeywords>.SetEnum((TooltipsExtraKeywords valueEnum) => item.ExtraKeywordsForTooltips = valueEnum, Value);
+                        Result = StringToEnumConversion<TooltipsExtraKeywords>.SetEnum((TooltipsExtraKeywords valueEnum) => item.ExtraKeywordsForTooltips = valueEnum, Value);
                         break;
                     case "IconID":
                         Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
@@ -124,7 +124,7 @@
                         Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
                         break;
                     case "PetTypeTagReq":
-                        Result = Inserter<AbilityPetType>.SetEnum((AbilityPetType valueEnum) => item.PetTypeTagReq = valueEnum, Value);
+                        Result = StringToEnumConversion<AbilityPetType>.SetEnum((AbilityPetType valueEnum) => item.PetTypeTagReq = valueEnum, Value);
                         break;
                     case "PetTypeTagReqMax":
                         Result = SetIntProperty((int valueInt) => item.RawPetTypeTagReqMax = valueInt, Value);
@@ -133,7 +133,7 @@
                         Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Prerequisite = valueAbility, Value);
                         break;
                     case "Projectile":
-                        Result = Inserter<AbilityProjectile>.SetEnum((AbilityProjectile valueEnum) => item.Projectile = valueEnum, Value);
+                        Result = StringToEnumConversion<AbilityProjectile>.SetEnum((AbilityProjectile valueEnum) => item.Projectile = valueEnum, Value);
                         break;
                     case "PvE":
                         Result = Inserter<PgAbilityPvX>.SetItemProperty((PgAbilityPvX valueAbilityPvX) => item.PvE = valueAbilityPvX, Value);
@@ -145,7 +145,7 @@
                         Result = SetFloatProperty((float valueFloat) => item.RawResetTime = valueFloat, Value);
                         break;
                     case "SelfParticle":
-                        Result = Inserter<SelfParticle>.SetEnum((SelfParticle valueEnum) => item.SelfParticle = valueEnum, Value);
+                        Result = StringToEnumConversion<SelfParticle>.SetEnum((SelfParticle valueEnum) => item.SelfParticle = valueEnum, Value);
                         break;
                     case "AmmoDescription":
                         Result = SetStringProperty((string valueString) => item.AmmoDescription = valueString, Value);
@@ -169,13 +169,13 @@
                         Result = SetIntProperty((int valueInt) => item.RawSpecialTargetingTypeReq = valueInt, Value);
                         break;
                     case "Target":
-                        Result = Inserter<AbilityTarget>.SetEnum((AbilityTarget valueEnum) => item.Target = valueEnum, Value);
+                        Result = StringToEnumConversion<AbilityTarget>.SetEnum((AbilityTarget valueEnum) => item.Target = valueEnum, Value);
                         break;
                     case "TargetEffectKeywordReq":
-                        Result = Inserter<TargetEffectKeyword>.SetEnum((TargetEffectKeyword valueEnum) => item.TargetEffectKeywordReq = valueEnum, Value);
+                        Result = StringToEnumConversion<TargetEffectKeyword>.SetEnum((TargetEffectKeyword valueEnum) => item.TargetEffectKeywordReq = valueEnum, Value);
                         break;
                     case "TargetParticle":
-                        Result = Inserter<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, Value);
+                        Result = StringToEnumConversion<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, Value);
                         break;
                     case "UpgradeOf":
                         Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.UpgradeOf = valueAbility, Value);

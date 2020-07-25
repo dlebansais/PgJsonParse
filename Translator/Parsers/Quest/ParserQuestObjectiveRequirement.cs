@@ -143,7 +143,7 @@
                         case "T":
                             break;
                         case "Keyword":
-                            Result = Inserter<EffectKeyword>.SetEnum((EffectKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<EffectKeyword>.SetEnum((EffectKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -186,7 +186,7 @@
                         case "T":
                             break;
                         case "Appearance":
-                            Result = Inserter<Appearance>.SetEnum((Appearance valueEnum) => NewItem.Appearance = valueEnum, Value);
+                            Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => NewItem.Appearance = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

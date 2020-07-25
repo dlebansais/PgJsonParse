@@ -119,7 +119,7 @@
                             Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => NewItem.FavorNpc = npcLocation, Value, parsedFile, parsedKey);
                             break;
                         case "Level":
-                            Result = Inserter<Favor>.SetEnum((Favor valueEnum) => NewItem.FavorLevel = valueEnum, Value);
+                            Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => NewItem.FavorLevel = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -162,10 +162,10 @@
                         case "T":
                             break;
                         case "AllowedRace":
-                            Result = Inserter<Race>.SetEnum((Race valueEnum) => AllowedRace = valueEnum, Value);
+                            Result = StringToEnumConversion<Race>.SetEnum((Race valueEnum) => AllowedRace = valueEnum, Value);
                             break;
                         case "DisallowedRace":
-                            Result = Inserter<Race>.SetEnum((Race valueEnum) => DisallowedRace = valueEnum, Value);
+                            Result = StringToEnumConversion<Race>.SetEnum((Race valueEnum) => DisallowedRace = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -350,7 +350,7 @@
                     else if (AreaName == "Kur")
                         AreaName = "KurMountains";
 
-                    return Inserter<MapAreaName>.SetEnum((MapAreaName valueEnum) => NewItem.AreaName = valueEnum, AreaName);
+                    return StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => NewItem.AreaName = valueEnum, AreaName);
                 }
             }
 
@@ -425,7 +425,7 @@
                         case "T":
                             break;
                         case "MoonPhase":
-                            Result = Inserter<MoonPhases>.SetEnum((MoonPhases valueEnum) => NewItem.MoonPhase = valueEnum, Value);
+                            Result = StringToEnumConversion<MoonPhases>.SetEnum((MoonPhases valueEnum) => NewItem.MoonPhase = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -511,7 +511,7 @@
                         case "T":
                             break;
                         case "InteractionFlag":
-                            Result = Inserter<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
+                            Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -640,7 +640,7 @@
                         case "T":
                             break;
                         case "Keyword":
-                            Result = Inserter<EffectKeyword>.SetEnum((EffectKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<EffectKeyword>.SetEnum((EffectKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

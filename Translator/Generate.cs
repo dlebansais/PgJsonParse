@@ -660,6 +660,11 @@
                         foreach (object EnumValue in ObjectCollection)
                             content += GetEnumIndexContent(ItemType, EnumValue);
                     }
+                    else if (ItemType == typeof(string))
+                    {
+                        foreach (string StringValue in ObjectCollection)
+                            content += GeStringIndexContent(StringValue);
+                    }
                     else if (ItemType.Name.StartsWith("Pg"))
                     {
                         foreach (object ItemValue in ObjectCollection)
@@ -684,7 +689,7 @@
             return content.Length > 0;
         }
 
-        private static bool IsTypeIgnoredForIndex(Type type)
+        public static bool IsTypeIgnoredForIndex(Type type)
         {
             return (type == typeof(int) | type == typeof(int?) ||
                     type == typeof(uint) | type == typeof(uint?) ||

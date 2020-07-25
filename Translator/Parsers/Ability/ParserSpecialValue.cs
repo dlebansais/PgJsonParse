@@ -49,7 +49,7 @@
                         Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModBaseList, Value);
                         break;
                     case "DisplayType":
-                        Result = Inserter<DisplayType>.SetEnum((DisplayType valueEnum) => item.DisplayType = valueEnum, Value);
+                        Result = StringToEnumConversion<DisplayType>.SetEnum((DisplayType valueEnum) => item.DisplayType = valueEnum, Value);
                         break;
                     case "SkipIfZero":
                         Result = SetBoolProperty((bool valueBool) => item.RawSkipIfZero = valueBool, Value);

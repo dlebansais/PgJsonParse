@@ -8,6 +8,8 @@
     using System.IO;
     using System.Runtime.CompilerServices;
     using System.Reflection;
+    using System.Collections;
+    using System.ComponentModel;
 
     public class Program
     {
@@ -108,6 +110,10 @@
 
             ParserSkill.FillAssociationTables();
 
+            List<object> ObjectList = ParsingContext.GetParsedObjectList();
+
+            FindLinks(ObjectList);
+
             CombatParser CombatParser = new CombatParser();
             List<ItemSlot> ValidSlotList = new List<ItemSlot>()
             {
@@ -123,7 +129,6 @@
                 ItemSlot.Racial,
                 ItemSlot.Waist,
             };
-            List<object> ObjectList = ParsingContext.GetParsedObjectList();
 
             Dictionary<string, PgModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, PgModEffect>();
             Dictionary<string, PgModEffect> EffectKeyToCompleteEffectTable = new Dictionary<string, PgModEffect>();
@@ -546,6 +551,200 @@
             Debug.Assert(Property.PropertyType == typeof(string));
 
             Property.SetValue(item, key);
+        }
+
+        private static void FindLinks(List<object> objectList)
+        {
+            foreach (object Item in objectList)
+                if (Item is PgObject AsLinkable)
+                    FindLinks(AsLinkable, AsLinkable);
+        }
+
+        private static void FindLinks(PgObject item, object baseItem)
+        {
+            PropertyInfo[] Properties = baseItem.GetType().GetProperties();
+
+            foreach (PropertyInfo Property in Properties)
+            {
+                if (!Property.CanWrite)
+                    continue;
+
+                if (Property.Name == "AssociationListAbility" || Property.Name == "AssociationTablePower")
+                    continue;
+
+                Type PropertyType = Property.PropertyType;
+
+                if (PropertyType == typeof(string) || PropertyType.IsEnum || Generate.IsTypeIgnoredForIndex(PropertyType))
+                    continue;
+
+                if (PropertyType.BaseType == typeof(PgObject))
+                {
+                    PgObject Reference = (PgObject)Property.GetValue(baseItem);
+                    AddLinkKey(item, Reference);
+                }
+                else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
+                {
+                    IDictionary ObjectDictionary = Property.GetValue(baseItem) as IDictionary;
+                    Type DictionaryType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
+
+                    Debug.Assert(DictionaryType.IsGenericType);
+                    Type[] GenericArguments = DictionaryType.GetGenericArguments();
+                    Debug.Assert(GenericArguments.Length == 2);
+                    Type ItemType = GenericArguments[0];
+                    Debug.Assert(ItemType != null);
+
+                    if (ItemType == typeof(string) || ItemType == typeof(List<float>) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
+                    {
+                    }
+                    else if (ItemType.BaseType == typeof(PgObject))
+                    {
+                        foreach (PgObject Key in ObjectDictionary.Keys)
+                        {
+                            Debug.Assert(Key != null);
+                            AddLinkKey(item, Key);
+                        }
+                    }
+                    else if (ItemType.Name.StartsWith("Pg"))
+                    {
+                        foreach (object Key in ObjectDictionary.Keys)
+                        {
+                            object Reference = ObjectDictionary[Key];
+
+                            Debug.Assert(Reference != null);
+
+                            if (Reference is PgObject AsLinkable)
+                                AddLinkKey(item, AsLinkable);
+                            else
+                                FindLinks(item, Reference);
+                        }
+                    }
+                    else
+                    {
+                    }
+                }
+                else if (PropertyType.GetInterface(typeof(ICollection).Name) != null)
+                {
+                    ICollection ObjectCollection = Property.GetValue(baseItem) as ICollection;
+                    Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
+
+                    Debug.Assert(CollectionType.IsGenericType);
+                    Type[] GenericArguments = CollectionType.GetGenericArguments();
+                    Debug.Assert(GenericArguments.Length == 1);
+                    Type ItemType = GenericArguments[0];
+                    Debug.Assert(ItemType != null);
+
+                    if (ItemType == typeof(string) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
+                    {
+                    }
+                    else if (ItemType.BaseType == typeof(PgObject))
+                    {
+                        foreach (PgObject Reference in ObjectCollection)
+                        {
+                            Debug.Assert(Reference != null);
+                            AddLinkKey(item, Reference);
+                        }
+                    }
+                    else if (ItemType.Name.StartsWith("Pg"))
+                    {
+                        foreach (object Reference in ObjectCollection)
+                        {
+                            Debug.Assert(Reference != null);
+
+                            if (Reference is PgObject AsLinkable)
+                                AddLinkKey(item, AsLinkable);
+                            else
+                                FindLinks(item, Reference);
+                        }
+                    }
+                    else
+                    {
+                    }
+                }
+                else if (PropertyType.Name.StartsWith("Pg"))
+                {
+                    object Reference = Property.GetValue(baseItem);
+                    if (Reference != null)
+                        FindLinks(item, Reference);
+                }
+                else
+                {
+                }
+            }
+        }
+
+        private static void AddLinkKey(PgObject item, PgObject reference)
+        {
+            if (reference == null || reference == PgSkill.Unknown || reference == PgSkill.AnySkill)
+                return;
+
+            PropertyInfo KeyProperty = reference.GetType().GetProperty("Key");
+            string ReferenceKey = (string)KeyProperty.GetValue(reference);
+
+            Debug.Assert(ReferenceKey.Length > 0);
+
+            string Prefix = null;
+
+            switch (reference)
+            {
+                case PgAbility AsAbility:
+                    Prefix = "A";
+                    break;
+
+                case PgAttribute AsAttribute:
+                    Prefix = "T";
+                    break;
+
+                case PgDirectedGoal AsDirectedGoal:
+                    Prefix = "D";
+                    break;
+
+                case PgEffect AsEffect:
+                    Prefix = "E";
+                    break;
+
+                case PgItem AsItem:
+                    Prefix = "I";
+                    break;
+
+                case PgLoreBook AsLoreBook:
+                    Prefix = "L";
+                    break;
+
+                case PgNpc AsNpc:
+                    Prefix = "N";
+                    break;
+
+                case PgPlayerTitle AsPlayerTitle:
+                    Prefix = "P";
+                    break;
+
+                case PgPower AsPower:
+                    Prefix = "W";
+                    break;
+
+                case PgQuest AsQuest:
+                    Prefix = "Q";
+                    break;
+
+                case PgRecipe AsRecipe:
+                    Prefix = "R";
+                    break;
+
+                case PgSkill AsSkill:
+                    Prefix = "S";
+                    break;
+
+                case PgStorageVault AsStorageVault:
+                    Prefix = "V";
+                    break;
+            }
+
+            Debug.Assert(Prefix != null);
+
+            ReferenceKey = Prefix + ReferenceKey;
+
+            if (!item.LinkList.Contains(ReferenceKey))
+                item.LinkList.Add(ReferenceKey);
         }
     }
 }

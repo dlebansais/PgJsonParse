@@ -113,7 +113,7 @@
 
         private bool ParseKeywordAsEquipmentSlot(PgNpcPreference item, string value, string parsedFile, string parsedKey)
         {
-            return Inserter<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.SlotRequirement = valueEnum, value);
+            return StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.SlotRequirement = valueEnum, value);
         }
 
         private bool ParseKeywordAsMinRarity(PgNpcPreference item, string value, string parsedFile, string parsedKey)

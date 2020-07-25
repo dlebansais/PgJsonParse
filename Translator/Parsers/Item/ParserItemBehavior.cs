@@ -31,16 +31,16 @@
                 switch (Key)
                 {
                     case "UseVerb":
-                        Result = Inserter<ItemUseVerb>.SetEnum((ItemUseVerb valueEnum) => item.UseVerb = valueEnum, Value);
+                        Result = StringToEnumConversion<ItemUseVerb>.SetEnum((ItemUseVerb valueEnum) => item.UseVerb = valueEnum, Value);
                         break;
                     case "UseRequirements":
                         Result = StringToEnumConversion<ItemUseRequirement>.TryParseList(Value, item.UseRequirementList);
                         break;
                     case "UseAnimation":
-                        Result = Inserter<ItemUseAnimation>.SetEnum((ItemUseAnimation valueEnum) => item.UseAnimation = valueEnum, Value);
+                        Result = StringToEnumConversion<ItemUseAnimation>.SetEnum((ItemUseAnimation valueEnum) => item.UseAnimation = valueEnum, Value);
                         break;
                     case "UseDelayAnimation":
-                        Result = Inserter<ItemUseAnimation>.SetEnum((ItemUseAnimation valueEnum) => item.UseDelayAnimation = valueEnum, Value);
+                        Result = StringToEnumConversion<ItemUseAnimation>.SetEnum((ItemUseAnimation valueEnum) => item.UseDelayAnimation = valueEnum, Value);
                         break;
                     case "MetabolismCost":
                         Result = SetIntProperty((int valueInt) => item.RawMetabolismCost = valueInt, Value);

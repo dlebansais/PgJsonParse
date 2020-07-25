@@ -46,7 +46,7 @@
                         Result = SetBoolProperty((bool valueBool) => item.RawIsClientLocal = valueBool, Value);
                         break;
                     case "Visibility":
-                        Result = Inserter<LoreBookVisibility>.SetEnum((LoreBookVisibility valueEnum) => item.Visibility = valueEnum, Value);
+                        Result = StringToEnumConversion<LoreBookVisibility>.SetEnum((LoreBookVisibility valueEnum) => item.Visibility = valueEnum, Value);
                         break;
                     case "InternalName":
                         Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);

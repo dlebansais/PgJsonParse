@@ -71,7 +71,7 @@
                         Result = SetStringProperty((string valueString) => item.EquipAppearance = valueString, Value); //TODO: parse
                         break;
                     case "EquipSlot":
-                        Result = Inserter<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.EquipSlot = valueEnum, Value);
+                        Result = StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.EquipSlot = valueEnum, Value);
                         break;
                     case "IconId":
                         Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
@@ -104,7 +104,7 @@
                         Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
                         break;
                     case "RequiredAppearance":
-                        Result = Inserter<Appearance>.SetEnum((Appearance valueEnum) => item.RequiredAppearance = valueEnum, Value);
+                        Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => item.RequiredAppearance = valueEnum, Value);
                         break;
                     case "SkillReqs":
                         Result = ParseSkillRequirements(item, Value, SkillRequirementTable, parsedFile, parsedKey);
@@ -137,7 +137,7 @@
                         Result = Inserter<PgLoreBook>.SetItemByKey((PgLoreBook valueLoreBook) => item.BestowLoreBook = valueLoreBook, $"Book_{Value}");
                         break;
                     case "Lint_VendorNpc":
-                        Result = Inserter<WorkOrderSign>.SetEnum((WorkOrderSign valueEnum) => item.LintVendorNpc = valueEnum, Value);
+                        Result = StringToEnumConversion<WorkOrderSign>.SetEnum((WorkOrderSign valueEnum) => item.LintVendorNpc = valueEnum, Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -201,7 +201,7 @@
             else
                 AppearanceString = ValueString;
 
-            return Inserter<ItemDroppedAppearance>.SetEnum((ItemDroppedAppearance valueEnum) => item.DroppedAppearance = valueEnum, AppearanceString);
+            return StringToEnumConversion<ItemDroppedAppearance>.SetEnum((ItemDroppedAppearance valueEnum) => item.DroppedAppearance = valueEnum, AppearanceString);
         }
 
         private bool ParseDroppedAppearanceDetails(PgItem item, string[] details, string parsedFile, string parsedKey)
@@ -224,21 +224,21 @@
                 {
                     case "Skin":
                         if (DetailValue.StartsWith("^"))
-                            Result = Inserter<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceSkin = valueEnum, DetailValue.Substring(1));
+                            Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceSkin = valueEnum, DetailValue.Substring(1));
                         else
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown key in dropped appaearance detail '{Detail}'");
                         break;
                     case "^Skin":
-                        Result = Inserter<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceSkin = valueEnum, DetailValue);
+                        Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceSkin = valueEnum, DetailValue);
                         break;
                     case "^Cork":
-                        Result = Inserter<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceCork = valueEnum, DetailValue);
+                        Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceCork = valueEnum, DetailValue);
                         break;
                     case "^Food":
-                        Result = Inserter<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceFood = valueEnum, DetailValue);
+                        Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceFood = valueEnum, DetailValue);
                         break;
                     case "^Plate":
-                        Result = Inserter<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearancePlate = valueEnum, DetailValue);
+                        Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearancePlate = valueEnum, DetailValue);
                         break;
                     case "Skin_Color":
                         Result = ParseDroppedAppearanceSkinColor(item, DetailValue, parsedFile, parsedKey);

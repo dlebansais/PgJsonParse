@@ -40,7 +40,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawDuration = valueInt, Value);
                         break;
                     case "DamageType":
-                        Result = Inserter<DamageType>.SetEnum((DamageType valueEnum) => item.DamageType = valueEnum, Value);
+                        Result = StringToEnumConversion<DamageType>.SetEnum((DamageType valueEnum) => item.DamageType = valueEnum, Value);
                         break;
                     case "SpecialRules":
                         Result = StringToEnumConversion<DoTSpecialRule>.TryParseList(Value, item.SpecialRuleList);

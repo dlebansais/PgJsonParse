@@ -149,42 +149,6 @@
             return true;
         }
 
-        public static bool SetEnum(Action<T> setter, object value)
-        {
-            string EnumString;
-
-            if (value is string ValueString)
-                EnumString = ValueString;
-            else if (value is List<object> ValueList && ValueList.Count == 1 && ValueList[0] is string ItemString)
-                EnumString = ItemString;
-            else
-                return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-            if (!StringToEnumConversion<T>.TryParse(EnumString, out T Parsed))
-                return false;
-
-            setter(Parsed);
-            return true;
-        }
-
-        public static bool SetEnum(Action<T> setter, T defaultValue, T emptyValue, object value)
-        {
-            string EnumString;
-
-            if (value is string ValueString)
-                EnumString = ValueString;
-            else if (value is List<object> ValueList && ValueList.Count == 1 && ValueList[0] is string ItemString)
-                EnumString = ItemString;
-            else
-                return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-            if (!StringToEnumConversion<T>.TryParse(EnumString, defaultValue, emptyValue, out T Parsed))
-                return false;
-
-            setter(Parsed);
-            return true;
-        }
-
         public static bool SetItemProperty(Action<T> setter, object value)
         {
             if (!(value is ParsingContext Context))

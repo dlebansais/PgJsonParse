@@ -1,4 +1,6 @@
-﻿namespace PgObjects
+﻿using System.Collections.Generic;
+
+namespace PgObjects
 {
     public abstract class PgObject
     {
@@ -13,6 +15,8 @@
         public static int StorageVaultIconId { get; } = 5116;
         public static int SkillIconId { get; } = 103;
         public static int KillIconId { get; } = 3402;
+
+        public List<string> LinkList { get; set; } = new List<string>();
 
         public abstract int ObjectIconId { get; }
         public abstract string ObjectName { get; }

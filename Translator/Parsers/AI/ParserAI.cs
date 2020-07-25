@@ -55,7 +55,7 @@
                         Result = SetBoolProperty((bool valueBool) => item.RawIsSwimming = valueBool, Value);
                         break;
                     case "MobilityType":
-                        Result = Inserter<MobilityType>.SetEnum((MobilityType valueEnum) => item.MobilityType = valueEnum, Value);
+                        Result = StringToEnumConversion<MobilityType>.SetEnum((MobilityType valueEnum) => item.MobilityType = valueEnum, Value);
                         break;
                     case "Flying":
                         Result = SetBoolProperty((bool valueBool) => item.RawIsFlying = valueBool, Value);

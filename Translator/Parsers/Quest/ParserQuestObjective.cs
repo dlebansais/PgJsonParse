@@ -173,10 +173,10 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = StringToEnumConversion<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "AbilityKeyword":
-                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => RequirementKeyword = valueEnum, Value);
+                            Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => RequirementKeyword = valueEnum, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => Requirement = valueQuestRequirement, Value);
@@ -411,7 +411,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -469,7 +469,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                             break;
                         case "InteractionFlag":
-                            Result = Inserter<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
+                            Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -654,7 +654,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -777,7 +777,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
@@ -1100,7 +1100,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
@@ -1157,13 +1157,13 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = StringToEnumConversion<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "Skill":
                             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value);
                             break;
                         case "ResultItemKeyword":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ResultItemKeyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ResultItemKeyword = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -1217,7 +1217,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = StringToEnumConversion<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "Description":
                         case "Number":
@@ -1431,7 +1431,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Description":
                         case "Number":
@@ -1610,7 +1610,7 @@
                             Result = Inserter<PgQuestObjectiveDeliver>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                             break;
                         case "ItemKeyword":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -1843,7 +1843,7 @@
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
                             break;
                         case "MonsterTypeTag":
-                            Result = Inserter<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
+                            Result = StringToEnumConversion<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -1897,10 +1897,10 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "MonsterTypeTag":
-                            Result = Inserter<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
+                            Result = StringToEnumConversion<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -2013,7 +2013,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                             break;
                         case "AbilityKeyword":
-                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         case "Description":
                         case "Number":

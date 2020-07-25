@@ -164,7 +164,7 @@
                         case "T":
                             break;
                         case "Keyword":
-                            Result = Inserter<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -287,7 +287,7 @@
                         case "T":
                             break;
                         case "DisallowedStates":
-                            Result = Inserter<DisallowedState>.SetEnum((DisallowedState valueEnum) => NewItem.DisallowedState = valueEnum, Value);
+                            Result = StringToEnumConversion<DisallowedState>.SetEnum((DisallowedState valueEnum) => NewItem.DisallowedState = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -333,7 +333,7 @@
                             Result = ParsePetCountMaxCount(Value, parsedFile, parsedKey);
                             break;
                         case "PetTypeTag":
-                            Result = Inserter<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.PetTypeTag = valueEnum, Value);
+                            Result = StringToEnumConversion<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.PetTypeTag = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -703,7 +703,7 @@
                             Result = SetIntProperty((int valueInt) => item.RawMinCount = valueInt, Value);
                             break;
                         case "Keyword":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.Keyword = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -742,7 +742,7 @@
                             Result = ParseEquippedItemKeywordMaxCount(Value, parsedFile, parsedKey);
                             break;
                         case "Keyword":
-                            Result = Inserter<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.Keyword = valueEnum, Value);
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.Keyword = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -791,7 +791,7 @@
                         case "T":
                             break;
                         case "InteractionFlag":
-                            Result = Inserter<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
+                            Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
