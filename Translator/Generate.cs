@@ -106,64 +106,119 @@
             foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
             {
                 StreamWriter Writer = Entry.Value;
-
                 string TypeName = Entry.Key.Name;
+
                 Writer.WriteLine("");
                 Writer.WriteLine($"        private static Dictionary<string, {TypeName}> Table = new Dictionary<string, {TypeName}>();");
                 Writer.WriteLine("");
                 Writer.WriteLine($"        public static {TypeName} Get(string key)");
                 Writer.WriteLine($"        {{");
-                Writer.WriteLine($"            if (!Table.ContainsKey(key))");
-                Writer.WriteLine($"            {{");
-                Writer.WriteLine($"                switch (key)");
-                Writer.WriteLine($"                {{");
-            }
-
-            int LastDisplay = 10;
-
-            for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
-            {
-                WriteItemToDictionary(objectList, ObjectIndex);
-
-                int Percent = (int)((((float)ObjectIndex) / objectList.Count) * 100);
-
-                if (Percent >= LastDisplay)
-                {
-                    Debug.WriteLine($"{Percent}%");
-                    LastDisplay += 10;
-                }
-            }
-
-            Debug.WriteLine($"100%");
-
-            LastDisplay = 10;
-
-            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
-            {
-                StreamWriter Writer = Entry.Value;
-                Writer.WriteLine($"                    default:");
-                Writer.WriteLine($"                        return null;");
-                Writer.WriteLine($"                }}");
-                Writer.WriteLine($"            }}");
-                Writer.WriteLine("");
-                Writer.WriteLine($"            return Table[key];");
+                Writer.WriteLine($"            if (Table.ContainsKey(key))");
+                Writer.WriteLine($"                return Table[key];");
+                Writer.WriteLine($"            else");
+                Writer.WriteLine($"                return Get_(Table, key);");
                 Writer.WriteLine($"        }}");
             }
 
+            Dictionary<Type, Dictionary<char, IDictionary>> RecursiveTable = new Dictionary<Type, Dictionary<char, IDictionary>>();
+
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+                RecursiveTable.Add(Entry.Key, new Dictionary<char, IDictionary>());
+
             for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
+                FillRecursiveTable(objectList, ObjectIndex, RecursiveTable);
+
+            foreach (KeyValuePair<Type, StreamWriter> Entry in WriterTable)
+                WriteRecursiveTable(Entry.Value, Entry.Key.Name, "_", 0, RecursiveTable[Entry.Key]);
+        }
+
+        private static void FillRecursiveTable(List<object> objectList, int objectIndex, Dictionary<Type, Dictionary<char, IDictionary>> recursiveTable)
+        {
+            object Item = objectList[objectIndex];
+            Type Type = Item.GetType();
+
+            PropertyInfo Property = Type.GetProperty("Key");
+            if (Property == null || Property.PropertyType != typeof(string))
+                return;
+
+            string Key = Property.GetValue(Item) as string;
+            Debug.Assert(Key != null);
+
+            FillRecursiveTable(Key, objectIndex, recursiveTable[Type], 0);
+        }
+
+        private static void FillRecursiveTable(string key, int objectIndex, Dictionary<char, IDictionary> table, int rank)
+        {
+            char c = key[rank];
+
+            if (!table.ContainsKey(c))
+                table.Add(c, new Dictionary<char, IDictionary>());
+
+            if (rank + 1 >= key.Length)
+                table[c].Add('\0', new Dictionary<int, int>() { { 0, objectIndex } });
+            else
+                FillRecursiveTable(key, objectIndex, (Dictionary<char, IDictionary>)table[c], rank + 1);
+        }
+
+        private static void WriteRecursiveTable(StreamWriter writer, string typeName, string prefix, int rank, Dictionary<char, IDictionary> table)
+        {
+            writer.WriteLine("");
+            writer.WriteLine($"        private static {typeName} Get{prefix}(Dictionary<string, {typeName}> table, string key)");
+            writer.WriteLine($"        {{");
+
+            if (table.ContainsKey('\0'))
             {
-                WriteItemAdder(objectList, ObjectIndex);
+                int ObjectIndex = ((Dictionary<int, int>)table['\0'])[0];
+                string LinkValue = ToObjectName(ObjectIndex);
 
-                int Percent = (int)((((float)ObjectIndex) / objectList.Count) * 100);
+                writer.WriteLine($"            if (key.Length == {rank})");
+                writer.WriteLine($"            {{");
+                writer.WriteLine($"                table.Add(key, {LinkValue});");
+                writer.WriteLine($"                return {LinkValue};");
+                writer.WriteLine($"            }}");
+                writer.WriteLine("");
+            }
 
-                if (Percent >= LastDisplay)
+            writer.WriteLine($"            if (key.Length <= {rank})");
+            writer.WriteLine($"                return null;");
+            writer.WriteLine("");
+            writer.WriteLine($"            switch (key[{rank}])");
+            writer.WriteLine($"            {{");
+
+            foreach (KeyValuePair<char, IDictionary> Entry in table)
+            {
+                char c = Entry.Key;
+
+                if (c != '\0')
                 {
-                    Debug.WriteLine($"{Percent}%");
-                    LastDisplay += 10;
+                    writer.WriteLine($"                case '{c}':");
+                    writer.WriteLine($"                    return Get{prefix}{ToValidChar(c)}(table, key);");
                 }
             }
 
-            Debug.WriteLine($"100%");
+            writer.WriteLine($"                default:");
+            writer.WriteLine($"                    return null;");
+            writer.WriteLine($"            }}");
+            writer.WriteLine($"        }}");
+
+            foreach (KeyValuePair<char, IDictionary> Entry in table)
+            {
+                char c = Entry.Key;
+
+                if (c != '\0')
+                {
+                    Dictionary<char, IDictionary> NextTable = (Dictionary<char, IDictionary>)Entry.Value;
+                    WriteRecursiveTable(writer, typeName, $"{prefix}{ToValidChar(c)}", rank + 1, NextTable);
+                }
+            }
+        }
+
+        private static char ToValidChar(char c)
+        {
+            if (c == '*')
+                return '_';
+            else
+                return c;
         }
 
         private static void WriteIndexes(List<object> objectList)

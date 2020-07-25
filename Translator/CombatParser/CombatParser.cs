@@ -289,7 +289,7 @@
             string Key = power.Key;
             Debug.Assert(Key.Length >= 9);
 
-            if (Key == "power_28161")
+            if (Key == "power_12317")
             {
             }
 
@@ -383,7 +383,7 @@
 
         private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
         {
-            if (power.Key == "power_28161")
+            if (power.Key == "power_12317")
             {
             }
 
@@ -1437,7 +1437,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_28161")
+                if (Entry.Key.Key == "power_12317")
                 {
                 }
 
@@ -3046,7 +3046,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_28161")
+                if (ItemPower.Key == "power_12317")
                 {
                 }
 
