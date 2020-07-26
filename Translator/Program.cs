@@ -112,6 +112,7 @@
 
             List<object> ObjectList = ParsingContext.GetParsedObjectList();
 
+            FindNpcSales(ObjectList);
             FindLinks(ObjectList);
 
             CombatParser CombatParser = new CombatParser();
@@ -751,6 +752,120 @@
 
             if (!reference.LinkList.Contains(itemKey))
                 reference.LinkList.Add(itemKey);
+        }
+
+        private static void FindNpcSales(List<object> objectList)
+        {
+            List<PgItem> ItemList = new List<PgItem>();
+            foreach (object Item in objectList)
+                if (Item is PgItem AsItem)
+                    ItemList.Add(AsItem);
+
+            foreach (object Item in objectList)
+                if (Item is PgNpc AsNpc)
+                    FindNpcSales(AsNpc, ItemList);
+        }
+
+        private static void FindNpcSales(PgNpc npc, List<PgItem> itemList)
+        {
+            string Address = $"http://wiki.projectgorgon.com/wiki/{npc.ObjectName}/Items_sold";
+            WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindSales(isFound, Address, content, false, npc, itemList), out bool IsFound);
+
+            if (!IsFound)
+            {
+                Address = $"http://wiki.projectgorgon.com/wiki/{npc.ObjectName}";
+                WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindSales(isFound, Address, content, true, npc, itemList), out IsFound);
+            }
+        }
+
+        private static void FindSales(bool isFound, string address, string content, bool saleSectionOnly, PgNpc npc, List<PgItem> itemList)
+        {
+            if (content == null || !isFound)
+                return;
+
+            if (!FindSaleSection(content, saleSectionOnly, out string SaleSection))
+                return;
+
+            int StartIndex = 0;
+
+            for (;;)
+            {
+                string Pattern = "<div style=\"display:table-cell; vertical-align:middle\">";
+                StartIndex = SaleSection.IndexOf(Pattern, StartIndex);
+                if (StartIndex < 0)
+                    break;
+
+                int EndIndex = SaleSection.IndexOf("</div>", StartIndex);
+                if (EndIndex <= StartIndex)
+                    break;
+
+                StartIndex += Pattern.Length;
+                string Line = SaleSection.Substring(StartIndex, EndIndex - StartIndex);
+
+                string ItemName = string.Empty;
+
+                if (Line.StartsWith("<a "))
+                {
+                    int StartNameIndex = Line.IndexOf(">");
+                    if (StartNameIndex > 0)
+                    {
+                        int EndNameIndex = Line.IndexOf("<", StartNameIndex);
+                        ItemName = Line.Substring(StartNameIndex + 1, EndNameIndex - StartNameIndex - 1);
+                    }
+                }
+
+                if (ItemName.Length > 0)
+                {
+                    PgItem ItemMatch = null;
+
+                    foreach (PgItem Item in itemList)
+                        if (Item.ObjectName == ItemName)
+                        {
+                            ItemMatch = Item;
+                            break;
+                        }
+
+                    if (ItemMatch != null)
+                        npc.SaleList.Add(ItemMatch);
+                    else if (!ItemName.StartsWith("Title:"))
+                        Debug.WriteLine($"{ItemName} NOT FOUND, parsed from: {Line}");
+                }
+                else
+                    Debug.WriteLine($"'{Line}' not parsed");
+
+                StartIndex = EndIndex;
+            }
+
+            if (npc.SaleList.Count > 0)
+            {
+                npc.WikiAddress = address;
+                Debug.WriteLine($"{npc.ObjectName}: {npc.SaleList.Count} item(s) sold");
+            }
+        }
+
+        private static bool FindSaleSection(string content, bool saleSectionOnly, out string saleSection)
+        {
+            if (saleSectionOnly)
+            {
+                saleSection = null;
+                string Pattern = "id=\"Sells\">Sells";
+
+                int StartIndex = content.IndexOf(Pattern);
+                if (StartIndex < 0)
+                    return false;
+
+                int EndIndex = content.IndexOf("<h2>", StartIndex);
+                if (EndIndex <= StartIndex)
+                    return false;
+
+                StartIndex += Pattern.Length;
+
+                saleSection = content.Substring(StartIndex, EndIndex - StartIndex);
+            }
+            else
+                saleSection = content;
+
+            return true;
         }
     }
 }

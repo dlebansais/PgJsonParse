@@ -7,6 +7,8 @@
         public MapAreaName AreaName { get; set; }
         public string AreaFriendlyName { get; set; } = string.Empty;
         public PgNpcPreferenceCollection PreferenceList { get; set; } = new PgNpcPreferenceCollection();
+        public string WikiAddress { get; set; } = string.Empty;
+        public PgItemCollection SaleList { get; set; } = new PgItemCollection();
 
         public int IconId { get; set; }
 

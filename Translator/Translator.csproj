@@ -126,6 +126,7 @@
     <Compile Include="FileType.cs" />
     <Compile Include="FieldTables\FixedFieldTable.cs" />
     <Compile Include="FieldTables\FieldTable.cs" />
+    <Compile Include="NetTools.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDisallowedItemKeyword.cs" />
     <Compile Include="Objects\Ability\PgSelfPreEffectCollection.cs" />
     <Compile Include="Objects\Ability\PgSelfPreEffect.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Objects\Item\PgItemDye.cs" />
     <Compile Include="Objects\Item\PgItemDyeCollection.cs" />
     <Compile Include="Objects\Npc\PgNpcLocation.cs" />
+    <Compile Include="Objects\Npc\PgNpcLocationCollection.cs" />
     <Compile Include="Objects\PgObject.cs" />
     <Compile Include="Objects\Quest\PgQuestPreGiveEffect.cs" />
     <Compile Include="Objects\Quest\PgQuestObjectiveRequirementCollection.cs" />
@@ -420,6 +422,7 @@
     <Compile Include="StringOrInteger.cs" />
     <Compile Include="FieldTables\VariadicFieldTable.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="WebClientTool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
