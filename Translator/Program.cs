@@ -557,12 +557,15 @@
         {
             foreach (object Item in objectList)
                 if (Item is PgObject AsLinkable)
-                    FindLinks(AsLinkable, AsLinkable);
+                {
+                    string ItemKey = GetItemKey(AsLinkable);
+                    FindLinks(ItemKey, AsLinkable);
+                }
         }
 
-        private static void FindLinks(PgObject item, object baseItem)
+        private static void FindLinks(string itemKey, object nestedItem)
         {
-            PropertyInfo[] Properties = baseItem.GetType().GetProperties();
+            PropertyInfo[] Properties = nestedItem.GetType().GetProperties();
 
             foreach (PropertyInfo Property in Properties)
             {
@@ -579,12 +582,12 @@
 
                 if (PropertyType.BaseType == typeof(PgObject))
                 {
-                    PgObject Reference = (PgObject)Property.GetValue(baseItem);
-                    AddLinkKey(item, Reference);
+                    PgObject Reference = (PgObject)Property.GetValue(nestedItem);
+                    AddLinkKey(itemKey, Reference);
                 }
                 else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
                 {
-                    IDictionary ObjectDictionary = Property.GetValue(baseItem) as IDictionary;
+                    IDictionary ObjectDictionary = Property.GetValue(nestedItem) as IDictionary;
                     Type DictionaryType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
 
                     Debug.Assert(DictionaryType.IsGenericType);
@@ -598,10 +601,10 @@
                     }
                     else if (ItemType.BaseType == typeof(PgObject))
                     {
-                        foreach (PgObject Key in ObjectDictionary.Keys)
+                        foreach (PgObject Reference in ObjectDictionary.Keys)
                         {
-                            Debug.Assert(Key != null);
-                            AddLinkKey(item, Key);
+                            Debug.Assert(Reference != null);
+                            AddLinkKey(itemKey, Reference);
                         }
                     }
                     else if (ItemType.Name.StartsWith("Pg"))
@@ -613,9 +616,9 @@
                             Debug.Assert(Reference != null);
 
                             if (Reference is PgObject AsLinkable)
-                                AddLinkKey(item, AsLinkable);
+                                AddLinkKey(itemKey, AsLinkable);
                             else
-                                FindLinks(item, Reference);
+                                FindLinks(itemKey, Reference);
                         }
                     }
                     else
@@ -624,7 +627,7 @@
                 }
                 else if (PropertyType.GetInterface(typeof(ICollection).Name) != null)
                 {
-                    ICollection ObjectCollection = Property.GetValue(baseItem) as ICollection;
+                    ICollection ObjectCollection = Property.GetValue(nestedItem) as ICollection;
                     Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
 
                     Debug.Assert(CollectionType.IsGenericType);
@@ -641,7 +644,7 @@
                         foreach (PgObject Reference in ObjectCollection)
                         {
                             Debug.Assert(Reference != null);
-                            AddLinkKey(item, Reference);
+                            AddLinkKey(itemKey, Reference);
                         }
                     }
                     else if (ItemType.Name.StartsWith("Pg"))
@@ -651,9 +654,9 @@
                             Debug.Assert(Reference != null);
 
                             if (Reference is PgObject AsLinkable)
-                                AddLinkKey(item, AsLinkable);
+                                AddLinkKey(itemKey, AsLinkable);
                             else
-                                FindLinks(item, Reference);
+                                FindLinks(itemKey, Reference);
                         }
                     }
                     else
@@ -662,9 +665,9 @@
                 }
                 else if (PropertyType.Name.StartsWith("Pg"))
                 {
-                    object Reference = Property.GetValue(baseItem);
+                    object Reference = Property.GetValue(nestedItem);
                     if (Reference != null)
-                        FindLinks(item, Reference);
+                        FindLinks(itemKey, Reference);
                 }
                 else
                 {
@@ -672,19 +675,11 @@
             }
         }
 
-        private static void AddLinkKey(PgObject item, PgObject reference)
+        private static string GetItemKey(PgObject item)
         {
-            if (reference == null || reference == PgSkill.Unknown || reference == PgSkill.AnySkill)
-                return;
-
-            PropertyInfo KeyProperty = reference.GetType().GetProperty("Key");
-            string ReferenceKey = (string)KeyProperty.GetValue(reference);
-
-            Debug.Assert(ReferenceKey.Length > 0);
-
             string Prefix = null;
 
-            switch (reference)
+            switch (item)
             {
                 case PgAbility AsAbility:
                     Prefix = "A";
@@ -741,10 +736,21 @@
 
             Debug.Assert(Prefix != null);
 
-            ReferenceKey = Prefix + ReferenceKey;
+            PropertyInfo KeyProperty = item.GetType().GetProperty("Key");
+            string Key = (string)KeyProperty.GetValue(item);
 
-            if (!item.LinkList.Contains(ReferenceKey))
-                item.LinkList.Add(ReferenceKey);
+            Debug.Assert(Key.Length > 0);
+
+            return $"{Prefix}{Key}";
+        }
+
+        private static void AddLinkKey(string itemKey, PgObject reference)
+        {
+            if (reference == null || reference == PgSkill.Unknown || reference == PgSkill.AnySkill)
+                return;
+
+            if (!reference.LinkList.Contains(itemKey))
+                reference.LinkList.Add(itemKey);
         }
     }
 }
