@@ -16,10 +16,31 @@
 
         public static void DownloadText(string address, Stopwatch watch, DownloadTextResultHandler callback, out bool isFound)
         {
-            Task<Tuple<bool, string>> DownloadTask = new Task<Tuple<bool, string>>(() => { return ExecuteDownloadText(address, watch); });
-            DownloadTask.Start();
+            string FileName = LocalFileName(address);
+            string FilePath = Path.GetDirectoryName(FileName);
 
-            OnCheckDownload(DownloadTask, callback, out isFound);
+            if (File.Exists(FileName))
+            {
+                using (FileStream Stream = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+                {
+                    using (StreamReader Reader = new StreamReader(Stream))
+                    {
+                        string Content = Reader.ReadToEnd();
+                        isFound = !string.IsNullOrEmpty(Content);
+                        callback(isFound, Content);
+                    }
+                }
+            }
+            else
+            {
+                if (!Directory.Exists(FilePath))
+                    Directory.CreateDirectory(FilePath);
+
+                Task<Tuple<bool, string>> DownloadTask = new Task<Tuple<bool, string>>(() => { return ExecuteDownloadText(address, watch); });
+                DownloadTask.Start();
+
+                OnCheckDownload(DownloadTask, address, callback, out isFound);
+            }
         }
 
         private static Tuple<bool, string> ExecuteDownloadText(string address, Stopwatch watch)
@@ -80,7 +101,23 @@
             }
         }
 
-        private static void OnCheckDownload(Task<Tuple<bool, string>> DownloadTask, DownloadTextResultHandler callback, out bool isFound)
+        private static string LocalFileName(string address)
+        {
+            address = address.Replace("*", "_");
+            Uri AddressUri = new Uri(address, UriKind.Absolute);
+            
+            string Name = AddressUri.LocalPath;
+            if (Name.StartsWith("/"))
+                Name = Name.Substring(1);
+
+            Name += ".html";
+
+            string FileName = Path.Combine(Environment.CurrentDirectory, Name);
+
+            return FileName;
+        }
+
+        private static void OnCheckDownload(Task<Tuple<bool, string>> DownloadTask, string address, DownloadTextResultHandler callback, out bool isFound)
         {
             isFound = false;
 
@@ -91,6 +128,24 @@
                     Tuple<bool, string> Result = DownloadTask.Result;
                     callback(Result.Item1, Result.Item2);
                     isFound = Result.Item1;
+
+                    string FileName = LocalFileName(address);
+                    string FilePath = Path.GetDirectoryName(FileName);
+
+                    if (!File.Exists(FileName))
+                    {
+                        if (!Directory.Exists(FilePath))
+                            Directory.CreateDirectory(FilePath);
+
+                        using (FileStream Stream = new FileStream(FileName, FileMode.Create, FileAccess.Write))
+                        {
+                            using (StreamWriter Writer = new StreamWriter(Stream))
+                            {
+                                Writer.Write(Result.Item2);
+                            }
+                        }
+                    }
+
                     break;
                 }
 
