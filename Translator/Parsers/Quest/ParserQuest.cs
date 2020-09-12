@@ -349,6 +349,9 @@
                 case "RaiseSkillToLevel":
                     Result = ParseRewardEffectRaiseSkillToLevel(item, EffectParameter, parsedFile, parsedKey);
                     break;
+                case "DispelFaeBombSporeBuff":
+                    Result = ParseRewardEffectDispelFaeBombSporeBuff(item, EffectParameter, parsedFile, parsedKey);
+                    break;
                 default:
                     Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, effectString);
                     if (Result)
@@ -471,6 +474,15 @@
             PgQuestRewardSkillLevel NewReward = new PgQuestRewardSkillLevel();
             NewReward.Skill = ParsedSkill;
             NewReward.RawLevel = LevelValue;
+
+            ParsingContext.AddSuplementaryObject(NewReward);
+            item.QuestRewardList.Add(NewReward);
+            return true;
+        }
+
+        private bool ParseRewardEffectDispelFaeBombSporeBuff(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+        {
+            PgQuestRewardDispelFaeBombSporeBuff NewReward = new PgQuestRewardDispelFaeBombSporeBuff();
 
             ParsingContext.AddSuplementaryObject(NewReward);
             item.QuestRewardList.Add(NewReward);

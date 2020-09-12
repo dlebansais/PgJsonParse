@@ -134,8 +134,8 @@
         HuntersStrideArmorRegen1,
         FireShieldColdMit,
         FireShieldFireMit,
-        ReverberatingStrikeReduceArmorRegen,
-        ReverberatingStrikeReduceHealthRegen,
+        //ReverberatingStrikeReduceArmorRegen,
+        //ReverberatingStrikeReduceHealthRegen,
         UnnaturalWrathDelayHurt,
         ArrowsMitigation,
         Uncrackable,
@@ -315,5 +315,9 @@
         DimensionalSnareDarknessVuln,
         DimensionalSnarePoisonVuln,
         DimensionalSnareCrushingVuln,
+        SPAWN_VIEW_FEY,
+        ColdEnvironment,
+        KingOfTheForestMitigation,
+        CandleAppreciation,
     }
 }

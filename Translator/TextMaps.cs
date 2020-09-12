@@ -234,6 +234,7 @@
             { AbilityItemKeyword.FairyChime, "Fairy Chime" },
             { AbilityItemKeyword.EnergyBow, "Energy Bow" },
             { AbilityItemKeyword.form_Fox, "Fox only" },
+            { AbilityItemKeyword.Darkcaster, "Darkcaster" },
         };
 
         public static Dictionary<AbilityKeyword, string> AbilityKeywordTextMap {get; } = new Dictionary<AbilityKeyword, string>()
@@ -744,6 +745,7 @@
             { AbilityKeyword.SpiritBolt, "Spirit Bolt" },
             { AbilityKeyword.TrickFox, "Trick Fox" },
             { AbilityKeyword.FoxIllusionForm, "FoxIllusion Form" },
+            { AbilityKeyword.ActualSlice, "Actual Slice" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap {get; } = new Dictionary<AbilityPetType, string>()
@@ -764,6 +766,8 @@
             { AbilityPetType.StunTrap, "Stun Trap" },
             { AbilityPetType.PowerGlyph, "Power Glyph" },
             { AbilityPetType.SummonedFox, "Summoned Fox" },
+            { AbilityPetType.SummonedTornado, "Summoned Tornado" },
+            
         };
 
         public static Dictionary<AbilityProjectile, string> AbilityProjectileTextMap {get; } = new Dictionary<AbilityProjectile, string>()
@@ -950,6 +954,7 @@
             { CraftedBoost.CraftedColdRing, "Crafted Cold Ring" },
             { CraftedBoost.BatWitchHat, "Bat Witch Hat" },
             { CraftedBoost.CraftedBardConch, "Crafted Bard Conch" },
+            { CraftedBoost.CraftedFaeNavyRing, "Crafted Fae Navy Ring" },
         };
 
         public static Dictionary<Currency, string> CurrencyTextMap {get; } = new Dictionary<Currency, string>()
@@ -1436,6 +1441,20 @@
             { EffectKeyword.BirdieButter, "Birdie Butter" },
             { EffectKeyword.BatButter, "Bat Butter" },
             { EffectKeyword.BlurStep, "Blur Step" },
+            { EffectKeyword.SpawnPremonition_Fae_10sec, "Spawn Premonition (Fae, 10 sec)" },
+            { EffectKeyword.HeadCandle, "Head Candle" },
+            { EffectKeyword.FaeBombSporeBuff, "Fae Bomb Spore Buff" },
+            { EffectKeyword.SpiritVirusCurse, "Spirit Virus Curse" },
+            { EffectKeyword.HippogriffFrostBossCurse, "Hippogriff Frost Boss Curse" },
+            { EffectKeyword.GolfAbility1, "Golf Ability #1" },
+            { EffectKeyword.GolfAbility2, "Golf Ability #2" },
+            { EffectKeyword.GolfAbility3, "Golf Ability #3" },
+            { EffectKeyword.GolfAbility4, "Golf Ability #4" },
+            { EffectKeyword.GolfAbility5, "Golf Ability #5" },
+            { EffectKeyword.GolfAbility6, "Golf Ability #6" },
+            { EffectKeyword.CandleBuff, "Candle Buff" },
+            { EffectKeyword.Bacon, "Bacon" },
+            { EffectKeyword.LiveEvent_WorldBosses, "Live Event (World Bosses)" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap {get; } = new Dictionary<EffectParticle, string>()
@@ -1554,6 +1573,9 @@
             { EffectParticle.OnFireGreen, "On Fire (Green)"},
             { EffectParticle.BlindingFlash, "Blinding Flash"},
             { EffectParticle.EnergyTrap, "Energy Trap" },
+            { EffectParticle.FloatingGem2, "Floating Gem #2" },
+            { EffectParticle.AcidfallAura, "Acidfall Aura" },
+            { EffectParticle.ShieldOfGoo, "Shield Of Goo" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap {get; } = new Dictionary<EffectStackingType, string>()
@@ -1690,8 +1712,8 @@
             { EffectStackingType.HuntersStrideArmorRegen1, "Hunter's Stride Power Regen (1)" },
             { EffectStackingType.FireShieldColdMit, "Fire Shield Cold Mitigation" },
             { EffectStackingType.FireShieldFireMit, "Fire Shield Fire Mitigation" },
-            { EffectStackingType.ReverberatingStrikeReduceArmorRegen, "Reverberating Strike Reduced Armor Regen" },
-            { EffectStackingType.ReverberatingStrikeReduceHealthRegen, "Reverberating Strike Reduced Health Regen" },
+            //{ EffectStackingType.ReverberatingStrikeReduceArmorRegen, "Reverberating Strike Reduced Armor Regen" },
+            //{ EffectStackingType.ReverberatingStrikeReduceHealthRegen, "Reverberating Strike Reduced Health Regen" },
             { EffectStackingType.UnnaturalWrathDelayHurt, "Unnatural Wrath Delay Hurt" },
             { EffectStackingType.ArrowsMitigation, "Arrows Mitigation" },
             { EffectStackingType.Uncrackable, "Uncrackable" },
@@ -1871,6 +1893,10 @@
             { EffectStackingType.DimensionalSnareDarknessVuln, "Dimensional Snare Darkness Vulnerability" },
             { EffectStackingType.DimensionalSnarePoisonVuln, "Dimensional Snare Poison Vulnerability" },
             { EffectStackingType.DimensionalSnareCrushingVuln, "Dimensional Snare Crushing Vulnerability" },
+            { EffectStackingType.SPAWN_VIEW_FEY, "Spawn View Fey" },
+            { EffectStackingType.ColdEnvironment, "Cold Environment"},
+            { EffectStackingType.KingOfTheForestMitigation, "King Of The Forest Mitigation"},
+            { EffectStackingType.CandleAppreciation, "Candle Appreciation"},
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap {get; } = new Dictionary<EnhancementEffect, string>()
@@ -2134,7 +2160,7 @@
             { ItemDroppedAppearance.Starfish, "Starfish" },
         };
 
-        public static Dictionary<ItemKeyword, string> ItemKeywordTextMap {get; } = new Dictionary<ItemKeyword, string>()
+        public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
         {
             { ItemKeyword.Internal_None, "" },
             { ItemKeyword.BottledItem, "Bottled Item" },
@@ -3119,6 +3145,19 @@
             { ItemKeyword.GeneticsRelated, "Genetics Related" },
             { ItemKeyword.RawLapisLazuli, "Raw Lapis Lazuli" },
             { ItemKeyword.SpiritFoxLapisLazuli, "Spirit Fox Lapis Lazuli" },
+            { ItemKeyword.FaeNavy, "Fae Navy" },
+            { ItemKeyword.Alien, "Alien" },
+            { ItemKeyword.Aventurine, "Aventurine" },
+            { ItemKeyword.CandleRelated, "Candle Related" },
+            { ItemKeyword.Tallow, "Tallow" },
+            { ItemKeyword.Wick, "Wick" },
+            { ItemKeyword.Tealight, "Tealight" },
+            { ItemKeyword.WindstepShoes, "Windstep Shoes" },
+            { ItemKeyword.AmuletOfTheRuggedTraveler, "Amulet Of The Rugged Traveler" },
+            { ItemKeyword.Darkcaster, "Darkcaster" },
+            { ItemKeyword.DwarfMeat, "Dwarf Meat" },
+            { ItemKeyword.ElfMeat, "Elf Meat" },
+            { ItemKeyword.HumanMeat, "Human Meat" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap {get; } = new Dictionary<ItemSlot, string>()
@@ -3217,6 +3256,8 @@
             { ItemUseVerb.OpenBagWithDyingBreath, "Open Bag With Dying Breath" },
             { ItemUseVerb.Salvage, "Salvage" },
             { ItemUseVerb.OpenCrate, "Open Crate" },
+            { ItemUseVerb.OpenPouch, "Open Pouch" },
+            { ItemUseVerb.AffixToHead, "Affix To Head" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap {get; } = new Dictionary<LoreBookKeyword, string>()
@@ -3277,6 +3318,15 @@
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
             { MapAreaName.AreaFaeRealm1, "Fae Realm" },
             { MapAreaName.ANewLife, "A New Life" },
+            { MapAreaName.FaeRealm1Caves, "Fae Realm1 Caves" },
+            { MapAreaName.Labyrinth1, "Labyrinth #1" },
+            { MapAreaName.Labyrinth2, "Labyrinth #2" },
+            { MapAreaName.GazlukKeep1, "Gazluk Keep #1" },
+            { MapAreaName.GazlukKeep2, "Gazluk Keep #2" },
+            { MapAreaName.RahuSewer1, "Rahu Sewer #1" },
+            { MapAreaName.Wintertide1, "Wintertide #1" },
+            { MapAreaName.Wintertide2, "Wintertide #2" },
+            { MapAreaName.WNSWintertide, "WNS Wintertide" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap {get; } = new Dictionary<MonsterTypeTag, string>()
@@ -3371,6 +3421,7 @@
             { QuestGroupingName.Druid_Rotflowers, "(Druid) Rot flowers" },
             { QuestGroupingName.CasinoExcursion, "Casino Excursion" },
             { QuestGroupingName.GeneticsTraining, "Genetics Training" },
+            { QuestGroupingName.AurestMission, "Aurest Mission" },
         };
 
         public static Dictionary<QuestKeyword, string> QuestKeywordTextMap {get; } = new Dictionary<QuestKeyword, string>()
@@ -3560,6 +3611,33 @@
             { QuestObjectiveKillTarget.RabidDeer, "Rabid Deer" },
             { QuestObjectiveKillTarget.FaeRealmFrostHippogriff, "Fae Realm Frost Hippogriff" },
             { QuestObjectiveKillTarget.FaeDeinonychus, "Fae Deinonychus" },
+            { QuestObjectiveKillTarget.GazlukWarWizard, "Gazluk War Wizard" },
+            { QuestObjectiveKillTarget.Beakhorse, "Beakhorse" },
+            { QuestObjectiveKillTarget.DeathPriest, "Death Priest" },
+            { QuestObjectiveKillTarget.StolenWarGolem, "Stolen War Golem" },
+            { QuestObjectiveKillTarget.StrigaSteward, "Striga Steward" },
+            { QuestObjectiveKillTarget.Asterion, "Asterion" },
+            { QuestObjectiveKillTarget.Claudia, "Claudia" },
+            { QuestObjectiveKillTarget.Umaive, "Umaive" },
+            { QuestObjectiveKillTarget.ProductivityExpert, "Productivity Expert" },
+            { QuestObjectiveKillTarget.GazlukClutchmaster, "Gazluk Clutchmaster" },
+            { QuestObjectiveKillTarget.Zukelmux, "Zukelmux" },
+            { QuestObjectiveKillTarget.Tolmar, "Tolmar" },
+            { QuestObjectiveKillTarget.Frothimir, "Frothimir" },
+            { QuestObjectiveKillTarget.RatkinKing, "RatkinKing" },
+            { QuestObjectiveKillTarget.FaeEnsign, "FaeEnsign" },
+            { QuestObjectiveKillTarget.CaptainEvergloam, "Captain Evergloam" },
+            { QuestObjectiveKillTarget.AbominableSoldier, "Abominable Soldier" },
+            { QuestObjectiveKillTarget.DalvossAstralProjection, "Dalvoss Astral Projection" },
+            { QuestObjectiveKillTarget.Hotfeather, "Hotfeather" },
+            { QuestObjectiveKillTarget.Coldfeather, "Coldfeather" },
+            { QuestObjectiveKillTarget.TrollTrooper, "Troll Trooper" },
+            { QuestObjectiveKillTarget.SecurityCock, "Security Cock" },
+            { QuestObjectiveKillTarget.ArctaHippogriff, "Arcta Hippogriff" },
+            { QuestObjectiveKillTarget.EngineDroach, "Engine Droach" },
+            { QuestObjectiveKillTarget.PhoenixFirestarter, "Phoenix Firestarter" },
+            { QuestObjectiveKillTarget.MinotaurCaptive, "Minotaur Captive" },
+            { QuestObjectiveKillTarget.BearSpecimen, "Bear Specimen" },
         };
 
         public static Dictionary<Race, string> RaceTextMap {get; } = new Dictionary<Race, string>()
@@ -4160,6 +4238,10 @@
             { RecipeKeyword.CraftedNecklace7, "Crafted Necklace #7" },
             { RecipeKeyword.ParasolMushroomFlakes, "Parasol Mushroom Flakes" },
             { RecipeKeyword.LargeConfettiBomb, "Large Confetti Bomb" },
+            { RecipeKeyword.Arrow2, "Arrow #2" },
+            { RecipeKeyword.Arrow4, "Arrow #4" },
+            { RecipeKeyword.Arrow6, "Arrow #6" },
+            { RecipeKeyword.Arrow7, "Arrow #7" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
@@ -4271,7 +4353,6 @@
             { SpecialNpc.Flopsy, "Flopsy" },
             { SpecialNpc.Lopsy, "Lopsy" },
             { SpecialNpc.Boop, "Boop" },
-            { SpecialNpc.LiveNpc_Raim, "Raim" },
             { SpecialNpc.LiveNpc_Tantai, "Tantai" },
             { SpecialNpc.LiveNpc_Kimoc, "Kimoc" },
             { SpecialNpc.LiveNpc_Serrold, "Serrold" },
@@ -4282,7 +4363,6 @@
             { SpecialNpc.LiveNpc_Aceri, "Aceri" },
             { SpecialNpc.LiveNpc_Loche, "Loche" },
             { SpecialNpc.LiveNpc_Delia, "Delia" },
-            { SpecialNpc.LiveNpc_Moxie, "Moxie" },
             { SpecialNpc.BeeHiveA, "Bee Hive (A)" },
             { SpecialNpc.BeeHiveB, "Bee Hive (B)" },
             { SpecialNpc.BeeHiveH, "Bee Hive (H)" },
@@ -4299,6 +4379,14 @@
             { SpecialNpc.BeeHiveI, "Bee Hive (I)" },
             { SpecialNpc.BeeHiveJ, "Bee Hive (J)" },
             { SpecialNpc.BeeHiveK, "Bee Hive (K)" },
+            { SpecialNpc.LiveNpc_Jopol, "Jopol" },
+            { SpecialNpc.TrainingStation1, "Training Station #1" },
+            { SpecialNpc.TrainingStation2, "Training Station #2" },
+            { SpecialNpc.CandleMakingBook_Bacon, "Candle Making Book (Bacon)" },
+            { SpecialNpc.CandleMakingBook_Ocean, "Candle Making Book (Ocean)" },
+            { SpecialNpc.CandleMakingBook_Sprint, "Candle Making Book (Sprint)" },
+            { SpecialNpc.CandleMakingBook_Cold, "Candle Making Book (Cold)" },
+            { SpecialNpc.CandleMakingBook_Precog, "Candle Making Book (Precog)" },
         };
 
         public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap {get; } = new Dictionary<TargetEffectKeyword, string>()

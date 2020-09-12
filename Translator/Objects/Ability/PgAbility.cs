@@ -82,6 +82,8 @@
         public float AmmoStickChance { get { return RawAmmoStickChance.HasValue ? RawAmmoStickChance.Value : 0; } }
         public float? RawAmmoStickChance { get; set; }
         public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
+        public string DigitStrippedName { get; set; } = string.Empty;
+        public PgEffectCollection AssociatedEffectList { get; set; } = new PgEffectCollection();
 
         public int FriendlyIconId { get; set; }
 

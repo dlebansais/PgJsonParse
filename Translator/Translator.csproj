@@ -171,6 +171,7 @@
     <Compile Include="Objects\Npc\PgNpcLocation.cs" />
     <Compile Include="Objects\Npc\PgNpcBarterCollection.cs" />
     <Compile Include="Objects\Npc\PgNpcLocationCollection.cs" />
+    <Compile Include="Objects\PgNullObject.cs" />
     <Compile Include="Objects\PgObject.cs" />
     <Compile Include="Objects\Quest\PgQuestPreGiveEffect.cs" />
     <Compile Include="Objects\Quest\PgQuestObjectiveRequirementCollection.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveSayInChat.cs" />
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveKillElite.cs" />
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveUniqueSpecial.cs" />
+    <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveMeetRequirements.cs" />
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveUseItemKeyword.cs" />
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveUseItem.cs" />
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveHarvestItemKeyword.cs" />
@@ -202,6 +204,7 @@
     <Compile Include="Objects\Quest\QuestPreGiveEffect\PgQuestPreGiveEffectSimple.cs" />
     <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementAllowedRace.cs" />
     <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementMoonPhase.cs" />
+    <Compile Include="Objects\Quest\QuestReward\PgQuestRewardDispelFaeBombSporeBuff.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardNamedLootProfile.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardInteractionFlag.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardGuildXp.cs" />

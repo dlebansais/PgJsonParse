@@ -266,7 +266,6 @@
         ElementalWard,
         Reinforce,
         VigorousDefense,
-        //DeflectArrows,
         TakeTheLead,
         FireShield,
         FightMeYouFools,
@@ -509,5 +508,6 @@
         SpiritBolt,
         TrickFox,
         FoxIllusionForm,
+        ActualSlice,
     }
 }

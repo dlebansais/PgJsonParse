@@ -37,6 +37,7 @@
             InitValidAbilityList();
             FilterValidPowers(validSlotList, SkillList, out _, out List<PgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<PgEffect>>> AllEffectTable);
+            FindAbilitiesWithMatchingEffect();
             FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> PowerToEffectTable, out List<PgPower> UnmatchedPowerList, out List<PgEffect> UnmatchedEffectList, out Dictionary<PgPower, List<PgEffect>> CandidateEffectTable);
             GetAbilityNames(SkillList, out List<string> AbilityNameList, out Dictionary<string, List<AbilityKeyword>> NameToKeyword);
 
@@ -239,6 +240,69 @@
                     SameKeyTable.Add(Subkey, new List<PgEffect>());
                 SameKeyTable[Subkey].Add(Item);
             }
+        }
+
+        private void FindAbilitiesWithMatchingEffect()
+        {
+            List<PgEffect> EffectList = new List<PgEffect>();
+            foreach (KeyValuePair<string, ParsingContext> Entry in ParsingContext.ObjectKeyTable[typeof(PgEffect)])
+                if (Entry.Value.Item is PgEffect AsEffect && AsEffect.Name.Length > 0)
+                    EffectList.Add(AsEffect);
+
+            foreach (PgAbility Ability in ValidAbilityList)
+                if (FindAbilityWithMatchingEffect(Ability, EffectList, out PgEffect MatchingEffect))
+                    Ability.AssociatedEffectList.Add(MatchingEffect);
+        }
+
+        private bool FindAbilityWithMatchingEffect(PgAbility ability, List<PgEffect> effectList, out PgEffect matchingEffect)
+        {
+            matchingEffect = null;
+
+            int IconId = ability.ObjectIconId;
+            string AbilityName = ability.DigitStrippedName;
+
+            int FirstMatchingIndex = -1;
+            for (int i = 0; i < effectList.Count; i++)
+            {
+                PgEffect Effect = effectList[i];
+                if (Effect.Name == AbilityName && Effect.IconId == IconId)
+                {
+                    FirstMatchingIndex = i;
+                    break; ;
+                }
+            }
+
+            if (FirstMatchingIndex < 0)
+                return false;
+
+            int LastMatchingIndex = FirstMatchingIndex;
+
+            for (int i = FirstMatchingIndex + 1; i < effectList.Count; i++)
+            {
+                PgEffect Effect = effectList[i];
+                if (Effect.Name == effectList[FirstMatchingIndex].Name && Effect.IconId == effectList[FirstMatchingIndex].IconId)
+                    LastMatchingIndex++;
+                else
+                    break;
+            }
+
+            int SameNameCount = 0;
+            int ThisAbilityIndex = 0;
+            foreach (PgAbility Item in ValidAbilityList)
+                if (Item.DigitStrippedName == ability.DigitStrippedName)
+                {
+                    if (Item == ability)
+                        ThisAbilityIndex = SameNameCount;
+
+                    SameNameCount++;
+                }
+
+            if (LastMatchingIndex <= FirstMatchingIndex + SameNameCount)
+                matchingEffect = effectList[FirstMatchingIndex];
+            else
+                matchingEffect = effectList[FirstMatchingIndex + ThisAbilityIndex];
+
+            return true;
         }
 
         private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, List<PgPower> powerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> powerToEffectTable, out List<PgPower> unmatchedPowerList, out List<PgEffect> unmatchedEffectList, out Dictionary<PgPower, List<PgEffect>> candidateEffectTable)

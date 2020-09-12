@@ -30,5 +30,6 @@
         ScriptedReceiveItem,
         UseAbilityOnTargets,
         CompleteQuest,
+        MeetRequirements,
     }
 }

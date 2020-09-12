@@ -4,6 +4,8 @@ namespace PgObjects
 {
     public abstract class PgObject
     {
+        public static PgNullObject Null { get; } = new PgNullObject();
+
         public static int AbilityIconId { get; } = 108;
         public static int AttributeIconId { get; } = 103;
         public static int DirectedGoalIconId { get; } = 2118;

@@ -986,5 +986,18 @@
         GeneticsRelated,
         RawLapisLazuli,
         SpiritFoxLapisLazuli,
+        FaeNavy,
+        Alien,
+        Aventurine,
+        CandleRelated,
+        Tallow,
+        Wick,
+        Tealight,
+        WindstepShoes,
+        AmuletOfTheRuggedTraveler,
+        Darkcaster,
+        DwarfMeat,
+        ElfMeat,
+        HumanMeat,
     }
 }

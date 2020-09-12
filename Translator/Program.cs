@@ -15,7 +15,7 @@
     {
         static int Main(string[] args)
         {
-            int Version = 336;
+            int Version = 337;
             VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
 
             if (!ParseFile("abilities", typeof(PgAbility), FileType.EmbeddedObjects))

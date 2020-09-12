@@ -69,5 +69,6 @@
         CraftedColdRing,
         BatWitchHat,
         CraftedBardConch,
+        CraftedFaeNavyRing,
     }
 }

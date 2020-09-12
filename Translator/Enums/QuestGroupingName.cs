@@ -18,5 +18,6 @@
         Druid_Rotflowers,
         CasinoExcursion,
         GeneticsTraining,
+        AurestMission,
     }
 }

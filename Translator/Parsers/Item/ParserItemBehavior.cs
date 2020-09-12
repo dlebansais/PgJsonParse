@@ -57,7 +57,7 @@
                     break;
             }
 
-            if (item.UseVerb == ItemUseVerb.Internal_None)
+            if (!contentTable.ContainsKey("UseVerb"))
                 Result = Program.ReportFailure(parsedFile, parsedKey, "Behavior has no verb");
 
             return Result;

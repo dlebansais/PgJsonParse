@@ -18,5 +18,6 @@
         StunTrap,
         PowerGlyph,
         SummonedFox,
+        SummonedTornado,
     }
 }

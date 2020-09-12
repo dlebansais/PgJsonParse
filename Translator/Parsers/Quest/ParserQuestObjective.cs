@@ -41,6 +41,7 @@
             { QuestObjectiveType.ScriptedReceiveItem, FinishItemScriptedReceiveItem },
             { QuestObjectiveType.UseAbilityOnTargets, FinishItemUseAbilityOnTargets },
             { QuestObjectiveType.CompleteQuest, FinishItemCompleteQuest },
+            { QuestObjectiveType.MeetRequirements, FinishItemMeetRequirements },
         };
 
         private static Dictionary<QuestObjectiveType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveType, List<string>>()
@@ -72,6 +73,7 @@
             { QuestObjectiveType.ScriptedReceiveItem, new List<string>() { "Type", "Target", "Description", "Item", "Number" } },
             { QuestObjectiveType.UseAbilityOnTargets, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Number" } },
             { QuestObjectiveType.CompleteQuest, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
+            { QuestObjectiveType.MeetRequirements, new List<string>() { "Type", "Description", "Number", "Requirements" } },
         };
 
         private static Dictionary<QuestObjectiveType, List<string>> HandledTable = new Dictionary<QuestObjectiveType, List<string>>();
@@ -2093,6 +2095,56 @@
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing quest");
                 if (NewItem.RawNumber.HasValue && NewItem.RawNumber.Value > 1)
                     return Program.ReportFailure(parsedFile, parsedKey, "Too many quests");
+
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemMeetRequirements(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveMeetRequirements NewItem = new PgQuestObjectiveMeetRequirements();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "Type":
+                            break;
+                        case "Description":
+                        case "Number":
+                            Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        case "Requirements":
+                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestObjectiveRequirement) => NewItem.QuestRequirement = valueQuestObjectiveRequirement, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
 
                 item = NewItem;
                 return true;

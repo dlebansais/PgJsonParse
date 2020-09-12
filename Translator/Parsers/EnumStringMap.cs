@@ -92,6 +92,8 @@
             { ItemUseVerb.OpenBagWithDyingBreath, "Open Bag With Dying Breath" },
             { ItemUseVerb.Salvage, "Salvage" },
             { ItemUseVerb.OpenCrate, "Open Crate" },
+            { ItemUseVerb.OpenPouch, "Open Pouch" },
+            { ItemUseVerb.AffixToHead, "Affix To Head" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()
@@ -132,6 +134,7 @@
             { MapAreaName.FaeRealm, "Fae Realm" },
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
             { MapAreaName.ANewLife, "A New Life" },
+            { MapAreaName.WNSWintertide, "WNS Wintertide" },
         };
 
         public static readonly Dictionary<QuestObjectiveKillTarget, string> QuestObjectiveKillTargetTable = new Dictionary<QuestObjectiveKillTarget, string>()

@@ -56,5 +56,7 @@
         OpenBagWithDyingBreath,
         Salvage,
         OpenCrate,
+        OpenPouch,
+        AffixToHead,
     }
 }

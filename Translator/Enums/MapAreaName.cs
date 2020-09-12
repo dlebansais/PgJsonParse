@@ -34,5 +34,14 @@
         SacredGrotto,
         AreaFaeRealm1,
         ANewLife,
+        FaeRealm1Caves,
+        Labyrinth1,
+        Labyrinth2,
+        GazlukKeep1,
+        GazlukKeep2,
+        RahuSewer1,
+        Wintertide1,
+        Wintertide2,
+        WNSWintertide,
     }
 }

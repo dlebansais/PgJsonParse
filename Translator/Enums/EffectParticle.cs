@@ -116,5 +116,8 @@
         OnFireGreen,
         BlindingFlash,
         EnergyTrap,
+        FloatingGem2,
+        AcidfallAura,
+        ShieldOfGoo,
     }
 }

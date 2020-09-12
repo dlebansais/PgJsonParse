@@ -44,5 +44,6 @@
         FairyChime,
         EnergyBow,
         form_Fox,
+        Darkcaster,
     }
 }

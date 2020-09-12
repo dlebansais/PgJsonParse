@@ -110,5 +110,9 @@
         CraftedNecklace7,
         ParasolMushroomFlakes,
         LargeConfettiBomb,
+        Arrow2,
+        Arrow4,
+        Arrow6,
+        Arrow7,
     }
 }
