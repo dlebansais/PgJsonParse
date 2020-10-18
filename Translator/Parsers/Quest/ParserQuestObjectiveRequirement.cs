@@ -17,6 +17,10 @@
             { QuestObjectiveRequirementType.TimeOfDay, FinishItemTimeOfDay },
             { QuestObjectiveRequirementType.HasEffectKeyword, FinishItemHasEffectKeyword },
             { QuestObjectiveRequirementType.Appearance, FinishItemAppearance },
+            { QuestObjectiveRequirementType.AreaEventOff, FinishItemAreaEventOff },
+            { QuestObjectiveRequirementType.ActiveCombatSkill, FinishItemActiveCombatSkill },
+            { QuestObjectiveRequirementType.PetCount, FinishItemPetCount },
+            { QuestObjectiveRequirementType.EntityPhysicalState, FinishEntityPhysicalState },
         };
 
         private static Dictionary<QuestObjectiveRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveRequirementType, List<string>>()
@@ -24,6 +28,10 @@
             { QuestObjectiveRequirementType.TimeOfDay, new List<string>() { "T", "MinHour", "MaxHour" } },
             { QuestObjectiveRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword" } },
             { QuestObjectiveRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
+            { QuestObjectiveRequirementType.AreaEventOff, new List<string>() { "T", "AreaEvent" } },
+            { QuestObjectiveRequirementType.ActiveCombatSkill, new List<string>() { "T", "Skill" } },
+            { QuestObjectiveRequirementType.PetCount, new List<string>() { "T", "MinCount", "MaxCount", "PetTypeTag" } },
+            { QuestObjectiveRequirementType.EntityPhysicalState, new List<string>() { "T", "AllowedStates" } },
         };
 
         private static Dictionary<QuestObjectiveRequirementType, List<string>> HandledTable = new Dictionary<QuestObjectiveRequirementType, List<string>>();
@@ -187,6 +195,193 @@
                             break;
                         case "Appearance":
                             Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => NewItem.Appearance = valueEnum, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemAreaEventOff(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveRequirementAreaEventOff NewItem = new PgQuestObjectiveRequirementAreaEventOff();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "AreaEvent":
+                            Result = ParseAreaEvent(NewItem, Value, parsedFile, parsedKey);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool ParseAreaEvent(PgQuestObjectiveRequirementAreaEventOff newItem, object value, string parsedFile, string parsedKey)
+        {
+            if (!ParserQuestRequirement.ParseAreaEvent(value, parsedFile, parsedKey, out MapAreaName AreaName))
+                return false;
+
+            newItem.AreaName = AreaName;
+            return true;
+        }
+
+        private static bool FinishItemActiveCombatSkill(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveRequirementActiveCombatSkill NewItem = new PgQuestObjectiveRequirementActiveCombatSkill();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Skill":
+                            Result = ParserSkill.Parse((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value, parsedFile, parsedKey);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemPetCount(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveRequirementPetCount NewItem = new PgQuestObjectiveRequirementPetCount();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "MinCount":
+                            Result = SetIntProperty((int valueInt) => NewItem.MinCount = valueInt, Value);
+                            break;
+                        case "MaxCount":
+                            Result = SetIntProperty((int valueInt) => NewItem.MaxCount = valueInt, Value);
+                            break;
+                        case "PetTypeTag":
+                            Result = StringToEnumConversion<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.PetTypeTag = valueEnum, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishEntityPhysicalState(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveRequirementEntityPhysicalState NewItem = new PgQuestObjectiveRequirementEntityPhysicalState();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "AllowedStates":
+                            Result = StringToEnumConversion<AllowedState>.SetEnum((AllowedState valueEnum) => NewItem.AllowedState = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

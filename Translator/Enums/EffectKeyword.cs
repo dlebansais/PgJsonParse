@@ -267,5 +267,9 @@
         CandleBuff,
         Bacon,
         LiveEvent_WorldBosses,
+        BoxedFox,
+        SpacedOut,
+        IllusionForm,
+        SkeletonIllusionForm,
     }
 }

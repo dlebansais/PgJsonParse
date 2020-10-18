@@ -746,6 +746,7 @@
             { AbilityKeyword.TrickFox, "Trick Fox" },
             { AbilityKeyword.FoxIllusionForm, "FoxIllusion Form" },
             { AbilityKeyword.ActualSlice, "Actual Slice" },
+            { AbilityKeyword.Fear, "Fear" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap {get; } = new Dictionary<AbilityPetType, string>()
@@ -841,6 +842,12 @@
             { AbilityTargetParticle.EnergyPillar, "Energy Pillar" },
             { AbilityTargetParticle.HealingParticle_Silent, "Healing Particle (Silent)" },
             { AbilityTargetParticle.LightSlash, "Light Slash" },
+        };
+
+        public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
+        {
+            { AllowedState.Internal_None, "" },
+            { AllowedState.Underwater, "Underwater" },
         };
 
         public static Dictionary<Appearance, string> AppearanceTextMap {get; } = new Dictionary<Appearance, string>()
@@ -1455,6 +1462,10 @@
             { EffectKeyword.CandleBuff, "Candle Buff" },
             { EffectKeyword.Bacon, "Bacon" },
             { EffectKeyword.LiveEvent_WorldBosses, "Live Event (World Bosses)" },
+            { EffectKeyword.BoxedFox, "Boxed Fox" },
+            { EffectKeyword.SpacedOut, "Spaced Out" },
+            { EffectKeyword.IllusionForm, "Illusion Form" },
+            { EffectKeyword.SkeletonIllusionForm, "Skeleton Illusion Form" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap {get; } = new Dictionary<EffectParticle, string>()
@@ -1576,6 +1587,7 @@
             { EffectParticle.FloatingGem2, "Floating Gem #2" },
             { EffectParticle.AcidfallAura, "Acidfall Aura" },
             { EffectParticle.ShieldOfGoo, "Shield Of Goo" },
+            { EffectParticle.FloatingGem3, "Floating Gem #3" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap {get; } = new Dictionary<EffectStackingType, string>()
@@ -1897,6 +1909,7 @@
             { EffectStackingType.ColdEnvironment, "Cold Environment"},
             { EffectStackingType.KingOfTheForestMitigation, "King Of The Forest Mitigation"},
             { EffectStackingType.CandleAppreciation, "Candle Appreciation"},
+            { EffectStackingType.PowerSyrup, "Power Syrup"},
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap {get; } = new Dictionary<EnhancementEffect, string>()
@@ -2158,6 +2171,7 @@
             { ItemDroppedAppearance.Mushroom14, "Mushroom #14" },
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
             { ItemDroppedAppearance.Starfish, "Starfish" },
+            { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -3258,6 +3272,8 @@
             { ItemUseVerb.OpenCrate, "Open Crate" },
             { ItemUseVerb.OpenPouch, "Open Pouch" },
             { ItemUseVerb.AffixToHead, "Affix To Head" },
+            { ItemUseVerb.SummonFox, "Summon Fox" },
+            { ItemUseVerb.OpenPortal, "OpenPortal" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap {get; } = new Dictionary<LoreBookKeyword, string>()
@@ -3358,6 +3374,7 @@
             { NamedLootProfile.Custom_Chirrra_1, "Custom Loot: Chirrra Tier 1" },
             { NamedLootProfile.Custom_Chirrra_2, "Custom Loot: Chirrra Tier 2" },
             { NamedLootProfile.Custom_Chirrra_3, "Custom Loot: Chirrra Tier 3" },
+            { NamedLootProfile.HalloweenLoot, "Halloween Loot" },
         };
 
         public static Dictionary<PowerWaxType, string> PowerWaxTypeTextMap {get; } = new Dictionary<PowerWaxType, string>()
@@ -3638,6 +3655,16 @@
             { QuestObjectiveKillTarget.PhoenixFirestarter, "Phoenix Firestarter" },
             { QuestObjectiveKillTarget.MinotaurCaptive, "Minotaur Captive" },
             { QuestObjectiveKillTarget.BearSpecimen, "Bear Specimen" },
+            { QuestObjectiveKillTarget.Barghest, "Barghest" },
+            { QuestObjectiveKillTarget.Undead, "Undead" },
+            { QuestObjectiveKillTarget.EvilHeart1, "Evil Heart #1" },
+            { QuestObjectiveKillTarget.EvilHeart2, "Evil Heart #2" },
+            { QuestObjectiveKillTarget.EvilHeart3, "Evil Heart #3" },
+            { QuestObjectiveKillTarget.EvilHeart4, "Evil Heart #4" },
+            { QuestObjectiveKillTarget.EvilHeart5, "Evil Heart #5" },
+            { QuestObjectiveKillTarget.PolarBear, "Polar Bear" },
+            { QuestObjectiveKillTarget.GhostOfMargieSalas, "Ghost Of Margie Salas" },
+            { QuestObjectiveKillTarget.Striga, "Striga" },
         };
 
         public static Dictionary<Race, string> RaceTextMap {get; } = new Dictionary<Race, string>()
@@ -4242,6 +4269,9 @@
             { RecipeKeyword.Arrow4, "Arrow #4" },
             { RecipeKeyword.Arrow6, "Arrow #6" },
             { RecipeKeyword.Arrow7, "Arrow #7" },
+            { RecipeKeyword.RatkinNecroRat, "Ratkin Necro Rat" },
+            { RecipeKeyword.Tealight, "Tealight" },
+            { RecipeKeyword.DyeGoblinOrange, "Dye Goblin Orange" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
@@ -4387,6 +4417,7 @@
             { SpecialNpc.CandleMakingBook_Sprint, "Candle Making Book (Sprint)" },
             { SpecialNpc.CandleMakingBook_Cold, "Candle Making Book (Cold)" },
             { SpecialNpc.CandleMakingBook_Precog, "Candle Making Book (Precog)" },
+            { SpecialNpc.CandleMakingBook_Halloween, "Candle Making Book (Halloween)" },
         };
 
         public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap {get; } = new Dictionary<TargetEffectKeyword, string>()

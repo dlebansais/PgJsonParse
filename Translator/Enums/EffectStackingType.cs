@@ -319,5 +319,6 @@
         ColdEnvironment,
         KingOfTheForestMitigation,
         CandleAppreciation,
+        PowerSyrup,
     }
 }

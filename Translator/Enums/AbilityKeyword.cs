@@ -509,5 +509,6 @@
         TrickFox,
         FoxIllusionForm,
         ActualSlice,
+        Fear,
     }
 }

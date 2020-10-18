@@ -114,5 +114,8 @@
         Arrow4,
         Arrow6,
         Arrow7,
+        RatkinNecroRat,
+        Tealight,
+        DyeGoblinOrange,
     }
 }

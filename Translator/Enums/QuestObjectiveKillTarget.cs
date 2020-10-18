@@ -193,5 +193,15 @@
         PhoenixFirestarter,
         MinotaurCaptive,
         BearSpecimen,
+        Barghest,
+        Undead,
+        EvilHeart1,
+        EvilHeart2,
+        EvilHeart3,
+        EvilHeart4,
+        EvilHeart5,
+        PolarBear,
+        GhostOfMargieSalas,
+        Striga,
     }
 }

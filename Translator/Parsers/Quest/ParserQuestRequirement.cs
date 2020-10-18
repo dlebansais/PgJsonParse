@@ -330,10 +330,27 @@
                 return false;
         }
 
-        private static bool ParseAreaEvent(PgQuestRequirementAreaEventOn NewItem, object value, string parsedFile, string parsedKey)
+        private static bool ParseAreaEvent(PgQuestRequirementAreaEventOn newItem, object value, string parsedFile, string parsedKey)
         {
+            if (!ParseAreaEvent(value, parsedFile, parsedKey, out MapAreaName AreaName))
+                return false;
+
+            newItem.AreaName = AreaName;
+            return true;
+        }
+
+        public static bool ParseAreaEvent(object value, string parsedFile, string parsedKey, out MapAreaName areaName)
+        {
+            areaName = MapAreaName.Internal_None;
+
             if (!(value is string AreaString))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
+
+            if (AreaString == "Daytime")
+            {
+                areaName = MapAreaName.Several;
+                return true;
+            }
 
             int AreaIndex = AreaString.LastIndexOf('_');
             if (AreaIndex > 0)
@@ -350,7 +367,10 @@
                     else if (AreaName == "Kur")
                         AreaName = "KurMountains";
 
-                    return StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => NewItem.AreaName = valueEnum, AreaName);
+                    MapAreaName ParsedAreaName = MapAreaName.Internal_None;
+                    bool Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => ParsedAreaName = valueEnum, AreaName);
+                    areaName = ParsedAreaName;
+                    return Result;
                 }
             }
 

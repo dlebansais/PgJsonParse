@@ -67,5 +67,6 @@
         CandleMakingBook_Sprint,
         CandleMakingBook_Cold,
         CandleMakingBook_Precog,
+        CandleMakingBook_Halloween,
     }
 }

@@ -77,5 +77,6 @@
         Mushroom14,
         Mushroom15,
         Starfish,
+        JackOLantern3,
     }
 }

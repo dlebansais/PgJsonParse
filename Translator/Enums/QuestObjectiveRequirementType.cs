@@ -6,5 +6,9 @@
         TimeOfDay,
         HasEffectKeyword,
         Appearance,
+        AreaEventOff,
+        ActiveCombatSkill,
+        PetCount,
+        EntityPhysicalState,
     }
 }

@@ -15,7 +15,7 @@
     {
         static int Main(string[] args)
         {
-            int Version = 337;
+            int Version = 339;
             VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
 
             if (!ParseFile("abilities", typeof(PgAbility), FileType.EmbeddedObjects))
@@ -850,10 +850,15 @@
             {
                 npc.WikiAddress = address;
 
-                Debug.WriteLine($"\n{npc.ObjectName}: {npc.SaleList.Count} item(s) sold");
+                WriteSaleLine($"\n{npc.ObjectName}: {npc.SaleList.Count} item(s) sold");
                 foreach (PgItem Item in npc.SaleList)
-                    Debug.WriteLine($"  {Item.ObjectName}");
+                    WriteSaleLine($"  {Item.ObjectName}");
             }
+        }
+
+        private static void WriteSaleLine(string text)
+        {
+            //Debug.WriteLine(text);
         }
 
         private static bool FindSaleSection(string content, bool saleSectionOnly, out string saleSection)
@@ -1211,7 +1216,7 @@
             if (npc.BarterList.Count > 0)
             {
                 npc.WikiAddress = address;
-                Debug.WriteLine($"\n{npc.ObjectName}: {npc.BarterList.Count} item(s) bartered");
+                WriteBarterLine($"\n{npc.ObjectName}: {npc.BarterList.Count} item(s) bartered");
 
                 foreach (PgNpcBarter Barter in npc.BarterList)
                 {
@@ -1255,9 +1260,14 @@
                         }
                     }
 
-                    Debug.WriteLine($"  {GiveList} --> {ReceiveList}");
+                    WriteBarterLine($"  {GiveList} --> {ReceiveList}");
                 }
             }
+        }
+
+        private static void WriteBarterLine(string text)
+        {
+            //Debug.WriteLine(text);
         }
 
         private static bool GetItem(TagSection sectionTag, List<PgItem> itemList, out PgItem item)

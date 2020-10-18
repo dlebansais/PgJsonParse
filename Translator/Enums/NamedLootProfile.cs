@@ -10,5 +10,6 @@
         Custom_Chirrra_1,
         Custom_Chirrra_2,
         Custom_Chirrra_3,
+        HalloweenLoot,
     }
 }

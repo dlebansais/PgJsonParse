@@ -38,6 +38,14 @@
 
             RootFolder = FilePath;
 
+            if (!Directory.Exists(RootFolder))
+            {
+                Directory.CreateDirectory(RootFolder);
+                Directory.CreateDirectory(Path.Combine(RootFolder, "Objects"));
+                Directory.CreateDirectory(Path.Combine(RootFolder, "Properties"));
+                Directory.CreateDirectory(Path.Combine(RootFolder, "Tables"));
+            }
+
             IndexTable.Clear();
             for (int ObjectIndex = 0; ObjectIndex < objectList.Count; ObjectIndex++)
                 IndexTable.Add(objectList[ObjectIndex], ObjectIndex);
@@ -326,7 +334,11 @@
 
         private static void WriteSearchIndexResources(Dictionary<Type, List<string>> typeIndexTable)
         {
-            string FilePath = Path.Combine(RootFolder, "Properties", "Indexes.resx");
+            string PropertiesRootFolder = Path.Combine(RootFolder, "Properties");
+            if (!Directory.Exists(PropertiesRootFolder))
+                Directory.CreateDirectory(PropertiesRootFolder);
+
+            string FilePath = Path.Combine(PropertiesRootFolder, "Indexes.resx");
 
             using FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
             using StreamWriter Writer = new StreamWriter(Stream);
@@ -427,9 +439,6 @@
             string ClassName = ToClassName(type);
             string FileFolderPath = Path.Combine(RootFolder, "Tables");
             string FilePath = Path.Combine(FileFolderPath, $"{ClassName}.cs");
-
-            if (!Directory.Exists(FileFolderPath))
-                Directory.CreateDirectory(FileFolderPath);
 
             FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
             writer = new StreamWriter(Stream);
@@ -744,6 +753,9 @@
 
         private static void WriteGroupings(int version, List<object> objectList)
         {
+            if (!Directory.Exists(RootFolder))
+                Directory.CreateDirectory(RootFolder);
+
             string FilePath = Path.Combine(RootFolder, "Grouping.cs");
 
             using FileStream Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);

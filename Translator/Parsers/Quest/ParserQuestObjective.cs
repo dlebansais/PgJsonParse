@@ -57,9 +57,9 @@
             { QuestObjectiveType.TipPlayer, new List<string>() { "Type", "Description", "MinAmount", "Number" } },
             { QuestObjectiveType.Special, new List<string>() { "Type", "Target", "Description", "MinAmount", "StringParam", "MaxAmount", "Requirements", "GroupId", "Number" } },
             { QuestObjectiveType.GiveGift, new List<string>() { "Type", "Description", "MinFavorReceived", "MaxFavorReceived", "Number" } },
-            { QuestObjectiveType.UseItem, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "Number" } },
+            { QuestObjectiveType.UseItem, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "Number", "InternalName" } },
             { QuestObjectiveType.UseRecipe, new List<string>() { "Type", "Target", "Description", "Skill", "ResultItemKeyword", "GroupId", "Number" } },
-            { QuestObjectiveType.KillElite, new List<string>() { "Type", "Target", "Description", "Number" } },
+            { QuestObjectiveType.KillElite, new List<string>() { "Type", "Target", "Description", "Number", "Requirements" } },
             { QuestObjectiveType.SayInChat, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
             { QuestObjectiveType.BeAttacked, new List<string>() { "Type", "Target", "Description", "AnatomyType", "GroupId", "Number" } },
             { QuestObjectiveType.Bury, new List<string>() { "Type", "Target", "Description", "AnatomyType", "Number" } },
@@ -1053,6 +1053,7 @@
                         case "Description":
                         case "GroupId":
                         case "Number":
+                        case "InternalName":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
                         default:
@@ -1224,6 +1225,9 @@
                         case "Description":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        case "Requirements":
+                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestObjectiveRequirement) => NewItem.QuestRequirement = valueQuestObjectiveRequirement, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

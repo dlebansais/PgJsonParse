@@ -63,6 +63,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XamlConverterLibrary, Version=1.0.2.1, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\XamlConverterLibrary.1.0.2\lib\net48\XamlConverterLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

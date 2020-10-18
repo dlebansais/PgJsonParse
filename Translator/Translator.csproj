@@ -49,6 +49,7 @@
     <Compile Include="CombatParser\SignInterpretation.cs" />
     <Compile Include="EffectVerification.cs" />
     <Compile Include="Enums\CombatKeyword.cs" />
+    <Compile Include="Enums\AllowedState.cs" />
     <Compile Include="Enums\GameCombatSkill.cs" />
     <Compile Include="Enums\GameDamageType.cs" />
     <Compile Include="Enums\InteractionFlag.cs" />
@@ -176,6 +177,10 @@
     <Compile Include="Objects\Quest\PgQuestPreGiveEffect.cs" />
     <Compile Include="Objects\Quest\PgQuestObjectiveRequirementCollection.cs" />
     <Compile Include="Objects\Quest\PgQuestPreGiveEffectCollection.cs" />
+    <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementEntityPhysicalState.cs" />
+    <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementPetCount.cs" />
+    <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementActiveCombatSkill.cs" />
+    <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementAreaEventOff.cs" />
     <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementUseAbility.cs" />
     <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementAppearance.cs" />
     <Compile Include="Objects\Quest\QuestObjectiveRequirement\PgQuestObjectiveRequirementHasEffectKeyword.cs" />

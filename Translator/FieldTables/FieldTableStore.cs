@@ -536,6 +536,12 @@
             { "MaxHour", typeof(int) },
             { "Keyword", typeof(string) },
             { "Appearance", typeof(string) },
+            { "AreaEvent", typeof(string) },
+            { "Skill", typeof(string) },
+            { "MinCount", typeof(int) },
+            { "MaxCount", typeof(int) },
+            { "PetTypeTag", typeof(string) },
+            { "AllowedStates", typeof(string[]) },
         };
 
         public static Dictionary<string, Type> TableQuestRewardItem = new Dictionary<string, Type>()

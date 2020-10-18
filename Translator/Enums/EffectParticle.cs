@@ -119,5 +119,6 @@
         FloatingGem2,
         AcidfallAura,
         ShieldOfGoo,
+        FloatingGem3,
     }
 }

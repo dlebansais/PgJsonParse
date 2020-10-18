@@ -1005,9 +1005,22 @@
         public static string AbilityBaseName(PgAbility ability)
         {
             string Result = ability.Name;
+            bool HasDigit = false;
 
-            while (Result.Length > 0 && (char.IsDigit(Result[Result.Length - 1]) || Result[Result.Length - 1] == '#'))
+            while (Result.Length > 0)
+            {
+                char c = Result[Result.Length - 1];
+                if (char.IsDigit(c))
+                    HasDigit = true;
+                else if (c == '#')
+                    { }
+                else if (c == '-' && HasDigit)
+                    { }
+                else
+                    break;
+
                 Result = Result.Substring(0, Result.Length - 1);
+            }
 
             Result = Result.Trim();
 
