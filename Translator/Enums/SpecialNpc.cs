@@ -68,5 +68,8 @@
         CandleMakingBook_Cold,
         CandleMakingBook_Precog,
         CandleMakingBook_Halloween,
+        LiveNpc_Lopsy,
+        LiveNpc_Flopsy,
+        LiveNpc_Boop,
     }
 }

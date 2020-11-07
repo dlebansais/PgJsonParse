@@ -31,6 +31,9 @@
                 PgAttribute ParsedAttribute = null;
                 float ParsedValue = 0;
 
+                if (Key == "MENTAL_DEFENSE_RATING")
+                    continue;
+
                 Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, Key);
 
                 if (Result)

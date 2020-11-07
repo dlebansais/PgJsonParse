@@ -6,7 +6,7 @@
 
     public static class MainParser
     {
-        private static Dictionary<Type, Parser> Parsers = new Dictionary<Type, Parser>()
+        public static Dictionary<Type, Parser> Parsers = new Dictionary<Type, Parser>()
         {
             { typeof(bool), new ParserNative() },
             { typeof(int), new ParserNative() },

@@ -120,5 +120,7 @@
         AcidfallAura,
         ShieldOfGoo,
         FloatingGem3,
+        HolyDefense2,
+        BulwarkMode,
     }
 }

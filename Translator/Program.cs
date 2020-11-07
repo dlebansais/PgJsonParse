@@ -15,7 +15,7 @@
     {
         static int Main(string[] args)
         {
-            int Version = 339;
+            int Version = 340;
             VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
 
             if (!ParseFile("abilities", typeof(PgAbility), FileType.EmbeddedObjects))
@@ -33,6 +33,16 @@
             if (!ParseFile("attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
                 return -1;
 
+            AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
+            AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
+            AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
+            AddHardCodedAttribute(PgAttribute.ARMOR_MITIGATION_RATIO);
+            AddHardCodedAttribute(PgAttribute.SHOW_CLEANLINESS_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.SHOW_COMMUNITY_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.SHOW_PEACEABLENESS_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
+            
             if (!ParseFile("directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
                 return -1;
 
@@ -146,6 +156,14 @@
             Generate.Write(Version, ObjectList);
 
             return 0;
+        }
+
+        private static void AddHardCodedAttribute(PgAttribute staticAttribute)
+        {
+            Dictionary<string, ParsingContext> AttributeContextTable = ParsingContext.ObjectKeyTable[typeof(PgAttribute)];
+            ParsingContext Context = new ParsingContext(MainParser.Parsers[typeof(PgAttribute)], typeof(PgAttribute), staticAttribute, FieldTableStore.Tables[typeof(PgAttribute)], staticAttribute.Key);
+
+            AttributeContextTable.Add(staticAttribute.Key, Context);
         }
 
         public static string VersionPath { get; set; }

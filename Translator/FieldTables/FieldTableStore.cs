@@ -700,7 +700,7 @@
             { "XpAmounts", typeof(int[]) },
         };
 
-        private static Dictionary<Type, FieldTable> Tables = new Dictionary<Type, FieldTable>()
+        public static Dictionary<Type, FieldTable> Tables = new Dictionary<Type, FieldTable>()
         {
             { typeof(PgAbility), new FixedFieldTable(TableAbility) },
             { typeof(PgAbilityAmmo), new FixedFieldTable(TableAbilityAmmo) },

@@ -188,6 +188,7 @@
             { AbilityIndicatingEnabled.PlayingSongOfBravery, "When playing (Song of Bravery)" },
             { AbilityIndicatingEnabled.PlayingSongOfDiscord, "When playing (Song of Discord)" },
             { AbilityIndicatingEnabled.ShadowFeint, "Shadow Feint ready" },
+            { AbilityIndicatingEnabled.BulwarkMode, "Bulwark Mode active" },
         };
 
         public static Dictionary<AbilityItemKeyword, string> AbilityItemKeywordTextMap {get; } = new Dictionary<AbilityItemKeyword, string>()
@@ -502,7 +503,7 @@
             { AbilityKeyword.StrategicPreparation, "Strategic Preparation" },
             { AbilityKeyword.ElementalWard, "Elemental Ward" },
             { AbilityKeyword.Reinforce, "Reinforce" },
-            { AbilityKeyword.VigorousDefense, "Vigorous Defense" },
+            //{ AbilityKeyword.VigorousDefense, "Vigorous Defense" },
             { AbilityKeyword.TakeTheLead, "Take The Lead" },
             { AbilityKeyword.FireShield, "Fire Shield" },
             { AbilityKeyword.FightMeYouFools, "Fight Me You Fools" },
@@ -660,7 +661,7 @@
             { AbilityKeyword.SnowHareMode, "Snow Hare Mode" },
             { AbilityKeyword.MushroomTurret, "Mushroom Turret" },
             { AbilityKeyword.MeleeKnife, "Melee Knife" },
-            { AbilityKeyword.BunFuBlitz, "Bun-Fu Blitz" },
+            //{ AbilityKeyword.BunFuBlitz, "Bun-Fu Blitz" },
             { AbilityKeyword.BunFuStrike, "Bun-Fu Strike" },
             { AbilityKeyword.Echolocation, "Echolocation" },
             { AbilityKeyword.EnthusiasmCriticals, "Enthusiasm Criticals" },
@@ -747,6 +748,8 @@
             { AbilityKeyword.FoxIllusionForm, "FoxIllusion Form" },
             { AbilityKeyword.ActualSlice, "Actual Slice" },
             { AbilityKeyword.Fear, "Fear" },
+            { AbilityKeyword.BulwarkMode, "Bulwark Mode" },
+            { AbilityKeyword.BunFuKick, "Bun-Fu Kick" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap {get; } = new Dictionary<AbilityPetType, string>()
@@ -1466,6 +1469,8 @@
             { EffectKeyword.SpacedOut, "Spaced Out" },
             { EffectKeyword.IllusionForm, "Illusion Form" },
             { EffectKeyword.SkeletonIllusionForm, "Skeleton Illusion Form" },
+            { EffectKeyword.BulwarkMode, "Bulwar kMode" },
+            { EffectKeyword.LiveEvent_Gobblejack, "Live Event (Gobblejack)" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap {get; } = new Dictionary<EffectParticle, string>()
@@ -1588,6 +1593,8 @@
             { EffectParticle.AcidfallAura, "Acidfall Aura" },
             { EffectParticle.ShieldOfGoo, "Shield Of Goo" },
             { EffectParticle.FloatingGem3, "Floating Gem #3" },
+            { EffectParticle.HolyDefense2, "Holy Defense #2" },
+            { EffectParticle.BulwarkMode, "Bulwark Mode" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap {get; } = new Dictionary<EffectStackingType, string>()
@@ -1910,6 +1917,11 @@
             { EffectStackingType.KingOfTheForestMitigation, "King Of The Forest Mitigation"},
             { EffectStackingType.CandleAppreciation, "Candle Appreciation"},
             { EffectStackingType.PowerSyrup, "Power Syrup"},
+            { EffectStackingType.SanguineFangsSlashingVuln15, "Sanguine Fangs Slashing Vulnerability (15s)"},
+            { EffectStackingType.BlockingStanceMitigation, "Blocking Stance Mitigation"},
+            { EffectStackingType.BlockingStanceA, "Blocking Stance #A"},
+            { EffectStackingType.DeadlyEmissionDebuff, "Deadly Emission Debuff"},
+            { EffectStackingType.ClobberingHoofDebuffElite, "Clobbering Hoof Debuff Elite"},
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap {get; } = new Dictionary<EnhancementEffect, string>()
@@ -4418,6 +4430,9 @@
             { SpecialNpc.CandleMakingBook_Cold, "Candle Making Book (Cold)" },
             { SpecialNpc.CandleMakingBook_Precog, "Candle Making Book (Precog)" },
             { SpecialNpc.CandleMakingBook_Halloween, "Candle Making Book (Halloween)" },
+            { SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
+            { SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
+            { SpecialNpc.LiveNpc_Boop, "Boop" },
         };
 
         public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap {get; } = new Dictionary<TargetEffectKeyword, string>()

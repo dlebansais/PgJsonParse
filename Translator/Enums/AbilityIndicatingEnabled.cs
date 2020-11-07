@@ -13,5 +13,6 @@
         PlayingSongOfBravery,
         PlayingSongOfDiscord,
         ShadowFeint,
+        BulwarkMode,
     }
 }

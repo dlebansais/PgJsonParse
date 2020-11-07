@@ -23,6 +23,20 @@
             Debug.Assert(ParsedKey.Length > 0);
         }
 
+        public ParsingContext(Parser parser, Type objectType, object staticItem, FieldTable fieldTable, string objectKey)
+        {
+            Parser = parser;
+            ObjectType = objectType;
+            FieldTable = fieldTable;
+            ObjectKey = objectKey;
+            Item = staticItem;
+
+            ParsedFile = Program.LastParsedFile;
+            Debug.Assert(ParsedFile.Length > 0);
+            ParsedKey = Program.LastParsedKey;
+            Debug.Assert(ParsedKey.Length > 0);
+        }
+
         public Parser Parser { get; }
         public Type ObjectType { get; }
         public FieldTable FieldTable { get; }

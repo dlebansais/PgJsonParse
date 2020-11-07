@@ -83,6 +83,7 @@
             { "GuideEvent_AntiSaviorOfTheGoats", "Title_5216" },
             { "Event_Halloween_HeartBeater", "Title_5015" },
             { "Event_Halloween_Riiiiiiiiiii", "Title_5017" },
+            { "GuideEvent_TurkeyWrangler", "Title_5212" },
         };
     }
 }

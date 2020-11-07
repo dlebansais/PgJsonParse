@@ -46,7 +46,7 @@
                         Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaDelayLoopTimeList, Value);
                         break;
                     case "AttributesThatDeltaPowerCost":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaPowerCostList, Value);
+                        Result = ParseCostDeltaAttribute(item, Value, parsedFile, parsedKey);
                         break;
                     case "AttributesThatDeltaResetTime":
                         Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaResetTimeList, Value);
@@ -218,6 +218,27 @@
                 item.DigitStrippedName = CuteDigitStrippedName(item);
             }
 
+            return Result;
+        }
+
+        private bool ParseCostDeltaAttribute(PgAbility item, object value, string parsedFile, string parsedKey)
+        {
+            if (!(value is List<object> ArrayKey))
+                return Program.ReportFailure($"Value '{value}' was expected to be a list");
+
+            List<object> ValueCopy = new List<object>();
+            foreach (object Item in ArrayKey)
+            {
+                if (!(Item is string ValueKey))
+                    return Program.ReportFailure($"Value '{Item}' was expected to be a string");
+
+                if (ValueKey != "COCKATRICEDEBUFF_COST_DELTA" && ValueKey != "LAMIADEBUFF_COST_DELTA")
+                    ValueCopy.Add(ValueKey);
+                else
+                    ValueCopy.Add(ValueKey);
+            }
+
+            bool Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaPowerCostList, ValueCopy);
             return Result;
         }
 

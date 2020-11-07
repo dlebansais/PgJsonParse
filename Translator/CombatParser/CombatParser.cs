@@ -1127,7 +1127,7 @@
                 case CombatKeyword.DrainAsArmor:
                 //case CombatKeyword.MaxOccurence:
                 case CombatKeyword.ChanceToConsume:
-                case CombatKeyword.AddHealthRegen:
+                //case CombatKeyword.AddHealthRegen:
                 case CombatKeyword.Combo1:
                 case CombatKeyword.ComboFinalStepBurst:
                 case CombatKeyword.Combo2:
@@ -1150,11 +1150,9 @@
                 case CombatKeyword.AddCombatRefreshTimer:
                 case CombatKeyword.WithinDistance:
                 case CombatKeyword.Knockback:
+                case CombatKeyword.DamageBoostToHealthAndArmor:
                     VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
                     break;
-
-                //VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true, true);
-                //break;
 
                 // Ignored
                 case CombatKeyword.But:
@@ -2140,6 +2138,7 @@
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels Ice Armor", "Fire damage no longer dispels");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
             BasicTextReplace(ref modText, ref effectText, "Trick Foxes", "Trick Fox");
+            BasicTextReplace(ref modText, ref effectText, "Bun-Fu Blitz", "Bun-Fu Kick");
 
             if (!modText.Contains("But I Love You"))
                 ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -3636,6 +3635,7 @@
             new Sentence("Target is %f more vulnerable to #D damage", CombatKeyword.AddVulnerability),
             new Sentence("Target %f more vulnerable to #D damage", CombatKeyword.AddVulnerability),
             new Sentence("Make the target %f more vulnerable to #D", CombatKeyword.AddVulnerability),
+            new Sentence("Make the target %f more vulnerable to direct #D", CombatKeyword.AddVulnerability),
             new Sentence("Cause the target to become %f more vulnerable to #D attack", CombatKeyword.AddVulnerability),
             new Sentence("Increase the damage target take from #D by %f", CombatKeyword.AddVulnerability),
             new Sentence("Target take %f more damage from #D", CombatKeyword.AddVulnerability),
@@ -3693,7 +3693,7 @@
             new Sentence("(If #S skill is active)", CombatKeyword.ActiveSkill),
             new Sentence("Gain %f #S Skill Base Damage", CombatKeyword.BaseDamageBoost),
             new Sentence("You have not been attacked in the past %f second", CombatKeyword.NotAttackedRecently),
-            new Sentence("If you have less than half of your Health remaining", CombatKeyword.LessThanHalfMaxHealth),
+            //new Sentence("If you have less than half of your Health remaining", CombatKeyword.LessThanHalfMaxHealth),
             new Sentence("Combat Refresh restore %f health", CombatKeyword.CombatRefreshRestoreHeatlth),
             new Sentence("Healing from Combat Refreshes %f", CombatKeyword.CombatRefreshRestoreHeatlth),
             new Sentence("Boost the target's #D damage-over-time by %f per tick", CombatKeyword.DealIndirectDamage),
@@ -3716,7 +3716,7 @@
             new Sentence("#S Skill Base Damage %f", CombatKeyword.BaseDamageBoost),
             new Sentence("#S Base Damage by %f", CombatKeyword.BaseDamageBoost),
             new Sentence("#S Base Damage %f", CombatKeyword.BaseDamageBoost),
-            new Sentence("Your #S Base Damage is %f", CombatKeyword.BaseDamageBoost),
+            //new Sentence("Your #S Base Damage is %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Your #S Base Damage increase %f", CombatKeyword.BaseDamageBoost),
             new Sentence("#S Base Attack Damage %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Direct #D Damage %f", CombatKeyword.DamageBoost),
@@ -3726,6 +3726,7 @@
             new Sentence("Indirect #D Damage %f", CombatKeyword.DealIndirectDamage),
             new Sentence("Indirect #D %f per tick", CombatKeyword.DealIndirectDamage),
             new Sentence("%f indirect damage per tick", CombatKeyword.DealIndirectDamage),
+            new Sentence("Direct and Indirect #D Damage %f", CombatKeyword.DamageBoost),
             new Sentence("Damage over Time %f per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
             new Sentence("Damage over Time deal %f damage per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
             new Sentence("The #D Damage is boosted %f", CombatKeyword.DamageBoost),
@@ -3768,7 +3769,7 @@
             new Sentence("Reduce target's Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
             new Sentence("reduce targets' Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
             new Sentence("Generate %f Rage", CombatKeyword.AddRage),
-            new Sentence("Lower Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
+            //new Sentence("Lower Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Remove %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Deplete %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Generate no Rage", CombatKeyword.ZeroRage),
@@ -3830,10 +3831,10 @@
             new Sentence("You regain %f Health", new List<CombatKeyword>() { CombatKeyword.RestoreHealth, CombatKeyword.TargetSelf }),
             new Sentence("Restore %f Health/Armor to your pet", CombatKeyword.RestoreHealthArmorToPet),
             new Sentence("Restore %f Health/Armor", CombatKeyword.RestoreHealthArmor),
-            new Sentence("Restore %f of your Max Health", CombatKeyword.RestoreMaxHealth),
+            //new Sentence("Restore %f of your Max Health", CombatKeyword.RestoreMaxHealth),
             new Sentence("Restore %f health", CombatKeyword.RestoreHealth),
             new Sentence("Boost the healing of your @ %f", CombatKeyword.RestoreHealth),
-            new Sentence("Heal you for %f of your Max Health", CombatKeyword.RestoreMaxHealth),
+            //new Sentence("Heal you for %f of your Max Health", CombatKeyword.RestoreMaxHealth),
             new Sentence("Heal all targets for %f health", CombatKeyword.RestoreHealth),
             new Sentence("Heal %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Restore %f armor", CombatKeyword.RestoreArmor),
@@ -3890,6 +3891,8 @@
             new Sentence("Deal %f total damage against Demons", CombatKeyword.DamageBoostAgainstSpecie),
             new Sentence("Boost targets' mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("#D mitigation %f", CombatKeyword.AddMitigation),
+            new Sentence("Vulnerability to Elite #D damage %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite}, SignInterpretation.Opposite),
+            new Sentence("Mitigate %f of physical damage from Elite", new List<CombatKeyword>() { CombatKeyword.AddMitigationPhysical, CombatKeyword.TargetElite}),
             //new Sentence("%f #D Damage Reduction", CombatKeyword.AddMitigation),
             new Sentence("Mitigate %f #D Damage", CombatKeyword.AddMitigation),
             //new Sentence("%f Direct Damage Reduction", CombatKeyword.AddMitigationDirect),
@@ -3905,7 +3908,7 @@
             new Sentence("Mitigate %f of all #D damage", CombatKeyword.AddMitigation),
             new Sentence("Up to %f direct damage mitigation", new List<CombatKeyword>() { CombatKeyword.VariableMitigation, CombatKeyword.ApplyToPet }),
             new Sentence("#D Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
-            new Sentence("Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
+            //new Sentence("Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             new Sentence("Mitigation vs all attack by Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             new Sentence("Mitigation vs physical damage %f", CombatKeyword.AddMitigationPhysical),
             new Sentence("Physical Damage Mitigation %f", CombatKeyword.AddMitigationPhysical),
@@ -3945,7 +3948,7 @@
             new Sentence("%f direct damage mitigation", CombatKeyword.AddMitigationDirect),
             new Sentence("Boost your direct damage mitigation %f", CombatKeyword.AddMitigationDirect),
             new Sentence("Cause all targets to suffer %f damage from direct #D attack", CombatKeyword.AddMitigation, SignInterpretation.Opposite),
-            new Sentence("You take %f damage from #D attack", CombatKeyword.AddMitigation),
+            new Sentence("You take %f damage from #D attack", CombatKeyword.AddMitigation, SignInterpretation.Opposite),
             new Sentence("%f #D mitigation", CombatKeyword.AddMitigation),
             new Sentence("Increase your #D Mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("%f Damage Mitigation", CombatKeyword.AddMitigation),
@@ -3976,7 +3979,7 @@
             new Sentence("Deal its damage when you are hit by burst attack", CombatKeyword.ReflectOnBurst),
             new Sentence("Deal its damage when you are hit by ranged attack", CombatKeyword.ReflectOnRanged),
             new Sentence("Chance to consume grass is %f", CombatKeyword.ChanceToConsume),
-            new Sentence("You regenerate %f Health per tick", CombatKeyword.AddHealthRegen),
+            //new Sentence("You regenerate %f Health per tick", CombatKeyword.AddHealthRegen),
             new Sentence("Have %f health", CombatKeyword.AddMaxHealth),
             new Sentence("Per second", CombatKeyword.EffectRecurrence),
             new Sentence("Steal %f health", CombatKeyword.DrainHealth),
@@ -4028,7 +4031,7 @@
             new Sentence("#D damage %f", CombatKeyword.DamageBoost),
             new Sentence("%f health damage", CombatKeyword.DealDirectHealthDamage),
             new Sentence("%f #D health damage", CombatKeyword.DealDirectHealthDamage),
-            new Sentence("%f Health and Armor damage", CombatKeyword.DamageBoostToHealthAndArmor),
+            //new Sentence("%f Health and Armor damage", CombatKeyword.DamageBoostToHealthAndArmor),
             new Sentence("%f damage", CombatKeyword.DamageBoost),
             new Sentence("Damage %f", CombatKeyword.DamageBoost),
             new Sentence("%f armor damage", CombatKeyword.DealArmorDamage),

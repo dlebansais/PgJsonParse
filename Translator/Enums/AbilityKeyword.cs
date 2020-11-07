@@ -265,7 +265,7 @@
         StrategicPreparation,
         ElementalWard,
         Reinforce,
-        VigorousDefense,
+        //VigorousDefense,
         TakeTheLead,
         FireShield,
         FightMeYouFools,
@@ -423,7 +423,7 @@
         SnowHareMode,
         MushroomTurret,
         MeleeKnife,
-        BunFuBlitz,
+        //BunFuBlitz,
         BunFuStrike,
         Echolocation,
         EnthusiasmCriticals,
@@ -510,5 +510,7 @@
         FoxIllusionForm,
         ActualSlice,
         Fear,
+        BulwarkMode,
+        BunFuKick,
     }
 }

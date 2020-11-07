@@ -271,5 +271,7 @@
         SpacedOut,
         IllusionForm,
         SkeletonIllusionForm,
+        BulwarkMode,
+        LiveEvent_Gobblejack,
     }
 }

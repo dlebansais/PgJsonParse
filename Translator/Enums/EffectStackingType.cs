@@ -320,5 +320,10 @@
         KingOfTheForestMitigation,
         CandleAppreciation,
         PowerSyrup,
+        SanguineFangsSlashingVuln15,
+        BlockingStanceMitigation,
+        BlockingStanceA,
+        DeadlyEmissionDebuff,
+        ClobberingHoofDebuffElite,
     }
 }
