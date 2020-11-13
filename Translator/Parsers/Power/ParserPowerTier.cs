@@ -45,6 +45,12 @@
                     break;
             }
 
+            if (Result)
+            {
+                if (!item.RawSkillLevelPrereq.HasValue)
+                    Result = Program.ReportFailure(parsedFile, parsedKey, $"Power has no skill level requirement");
+            }
+
             return Result;
         }
 

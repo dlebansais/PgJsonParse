@@ -250,14 +250,11 @@
                     EffectList.Add(AsEffect);
 
             foreach (PgAbility Ability in ValidAbilityList)
-                if (FindAbilityWithMatchingEffect(Ability, EffectList, out PgEffect MatchingEffect))
-                    Ability.AssociatedEffectList.Add(MatchingEffect);
+                FindAbilityWithMatchingEffect(Ability, EffectList);
         }
 
-        private bool FindAbilityWithMatchingEffect(PgAbility ability, List<PgEffect> effectList, out PgEffect matchingEffect)
+        private void FindAbilityWithMatchingEffect(PgAbility ability, List<PgEffect> effectList)
         {
-            matchingEffect = null;
-
             int IconId = ability.ObjectIconId;
             string AbilityName = ability.DigitStrippedName;
 
@@ -265,44 +262,141 @@
             for (int i = 0; i < effectList.Count; i++)
             {
                 PgEffect Effect = effectList[i];
-                if (Effect.Name == AbilityName && Effect.IconId == IconId)
+                string EffectName = HackedEffectName(AbilityName, Effect.Name);
+
+                if (EffectName == AbilityName && Effect.IconId == IconId)
                 {
                     FirstMatchingIndex = i;
                     break; ;
                 }
             }
 
-            if (FirstMatchingIndex < 0)
-                return false;
-
-            int LastMatchingIndex = FirstMatchingIndex;
-
-            for (int i = FirstMatchingIndex + 1; i < effectList.Count; i++)
+            if (FirstMatchingIndex >= 0)
             {
-                PgEffect Effect = effectList[i];
-                if (Effect.Name == effectList[FirstMatchingIndex].Name && Effect.IconId == effectList[FirstMatchingIndex].IconId)
-                    LastMatchingIndex++;
-                else
-                    break;
-            }
+                int LastMatchingIndex = FirstMatchingIndex;
 
-            int SameNameCount = 0;
-            int ThisAbilityIndex = 0;
-            foreach (PgAbility Item in ValidAbilityList)
-                if (Item.DigitStrippedName == ability.DigitStrippedName)
+                for (int i = FirstMatchingIndex + 1; i < effectList.Count; i++)
                 {
-                    if (Item == ability)
-                        ThisAbilityIndex = SameNameCount;
+                    PgEffect Effect = effectList[i];
+                    string EffectName = HackedEffectName(AbilityName, Effect.Name);
 
-                    SameNameCount++;
+                    if (EffectName == effectList[FirstMatchingIndex].Name && Effect.IconId == effectList[FirstMatchingIndex].IconId)
+                        LastMatchingIndex++;
+                    else
+                        break;
                 }
 
-            if (LastMatchingIndex <= FirstMatchingIndex + SameNameCount)
-                matchingEffect = effectList[FirstMatchingIndex];
-            else
-                matchingEffect = effectList[FirstMatchingIndex + ThisAbilityIndex];
+                int SameNameCount = 0;
+                int ThisAbilityIndex = 0;
+                foreach (PgAbility Item in ValidAbilityList)
+                    if (Item.DigitStrippedName == ability.DigitStrippedName)
+                    {
+                        if (Item == ability)
+                            ThisAbilityIndex = SameNameCount;
 
-            return true;
+                        SameNameCount++;
+                    }
+
+                PgEffect MatchingEffect;
+
+                if (LastMatchingIndex <= FirstMatchingIndex + SameNameCount)
+                    MatchingEffect = effectList[FirstMatchingIndex];
+                else
+                    MatchingEffect = effectList[FirstMatchingIndex + ThisAbilityIndex];
+
+                AddAssociatedEffect(ability, CombatKeyword.Internal_None, MatchingEffect);
+            }
+
+            for (int i = 0; i < effectList.Count; i++)
+            {
+                PgEffect Effect = effectList[i];
+                string EffectName = HackedEffectName(AbilityName, Effect.Name);
+
+                if (EffectName.Length + 1 > AbilityName.Length && EffectName.StartsWith(AbilityName + " "))
+                {
+                    string Suffix = EffectName.Substring(AbilityName.Length).Trim();
+
+                    switch (Suffix)
+                    {
+                        case "Speed":
+                        case "Sprint":
+                            AddAssociatedEffect(ability, CombatKeyword.AddSprintSpeed, Effect);
+                            break;
+
+                        case "Damage":
+                        case "Up":
+                        case "Buff":
+                            AddAssociatedEffect(ability, CombatKeyword.DamageBoost, Effect);
+                            break;
+
+                        case "Heal":
+                        case "Health":
+                        case "Boost":
+                            AddAssociatedEffect(ability, CombatKeyword.RestoreHealth, Effect);
+                            break;
+
+                        case "Armor":
+                            AddAssociatedEffect(ability, CombatKeyword.RestoreArmor, Effect);
+                            break;
+
+                        case "Power":
+                            AddAssociatedEffect(ability, CombatKeyword.RestorePower, Effect);
+                            break;
+
+                        case "Regeneration":
+                        case "Medicine":
+                            AddAssociatedEffect(ability, CombatKeyword.EffectDuration, Effect);
+                            break;
+
+                        case "Aggro":
+                        case "Bonus Aggro":
+                        case "NOW":
+                            AddAssociatedEffect(ability, CombatKeyword.AddTaunt, Effect);
+                            break;
+
+                        case "Fire":
+                            AddAssociatedEffect(ability, CombatKeyword.ChangeDamageType, Effect);
+                            break;
+
+                        case "Accuracy":
+                            AddAssociatedEffect(ability, CombatKeyword.AddAccuracy, Effect);
+                            break;
+
+                        case "Mitigation":
+                            AddAssociatedEffect(ability, CombatKeyword.AddMitigation, Effect);
+                            break;
+
+                        case "Knockback":
+                            AddAssociatedEffect(ability, CombatKeyword.ReflectKnockbackOnFirstMelee, Effect);
+                            break;
+
+                        case "Tagged":
+                            break;
+
+                        default:
+                            Debug.WriteLine($"Additional Effect '{Effect.Name}' for ability '{ability.Name}'");
+                            break;
+                    }
+                }
+            }
+        }
+
+        private static string HackedEffectName(string abilityName, string effectName)
+        {
+            if (abilityName == "Reconstruct" && effectName.StartsWith("Reconstruction"))
+                return effectName.Replace("Reconstruct", "Reconstruction");
+            else if (effectName == "Suppress PvP")
+                return "** Suppress PvP";
+            else if (effectName == "Delerium Tremens")
+                return "** Delerium Tremens";
+            else
+                return effectName;
+        }
+
+        private void AddAssociatedEffect(PgAbility ability, CombatKeyword keyword, PgEffect effect)
+        {
+            if (!ability.AssociatedEffectTable.ContainsKey(keyword))
+                ability.AssociatedEffectTable.Add(keyword, effect);
         }
 
         private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, List<PgPower> powerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> powerToEffectTable, out List<PgPower> unmatchedPowerList, out List<PgEffect> unmatchedEffectList, out Dictionary<PgPower, List<PgEffect>> candidateEffectTable)
