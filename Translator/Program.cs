@@ -15,7 +15,7 @@
     {
         static int Main(string[] args)
         {
-            int Version = 340;
+            int Version = 341;
             VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
 
             if (!ParseFile("abilities", typeof(PgAbility), FileType.EmbeddedObjects))
@@ -33,15 +33,15 @@
             if (!ParseFile("attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
                 return -1;
 
-            AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
-            AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
-            AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
-            AddHardCodedAttribute(PgAttribute.ARMOR_MITIGATION_RATIO);
-            AddHardCodedAttribute(PgAttribute.SHOW_CLEANLINESS_INDICATORS);
-            AddHardCodedAttribute(PgAttribute.SHOW_COMMUNITY_INDICATORS);
-            AddHardCodedAttribute(PgAttribute.SHOW_PEACEABLENESS_INDICATORS);
-            AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
-            AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
+            //AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
+            //AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
+            //AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
+            //AddHardCodedAttribute(PgAttribute.ARMOR_MITIGATION_RATIO);
+            //AddHardCodedAttribute(PgAttribute.SHOW_CLEANLINESS_INDICATORS);
+            //AddHardCodedAttribute(PgAttribute.SHOW_COMMUNITY_INDICATORS);
+            //AddHardCodedAttribute(PgAttribute.SHOW_PEACEABLENESS_INDICATORS);
+            //AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
+            //AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
             
             if (!ParseFile("directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
                 return -1;
@@ -536,8 +536,18 @@
         {
             while (reader.CurrentToken != Json.Token.ArrayEnd)
             {
-                if (!ParseFieldContent(reader, elementType, string.Empty, context))
-                    return false;
+                if (reader.CurrentToken == Json.Token.ArrayStart)
+                {
+                    reader.Read();
+
+                    if (!ParseArray(reader, elementType, context))
+                        return false;
+
+                    if (reader.CurrentToken != Json.Token.ArrayEnd)
+                        return false;
+                }
+                else if (!ParseFieldContent(reader, elementType, string.Empty, context))
+                        return false;
 
                 if (!context.FinishArrayItem())
                     return false;
@@ -1191,16 +1201,20 @@
 
                         PgItem Item;
                         GetItem(ReceiveSectionItem, itemList, out Item);
-                        Debug.Assert(Item != null);
 
-                        int MinCount = 1;
-                        int MaxCount = 0;
-                        if (ReceiveCellContent.Length > TagIndex)
-                            ContentToCount(ReceiveCellContent[TagIndex], out MinCount, out MaxCount);
-                        if (MinCount == 0)
-                            MinCount = 1;
+                        if (Item != null)
+                        {
+                            int MinCount = 1;
+                            int MaxCount = 0;
+                            if (ReceiveCellContent.Length > TagIndex)
+                                ContentToCount(ReceiveCellContent[TagIndex], out MinCount, out MaxCount);
+                            if (MinCount == 0)
+                                MinCount = 1;
 
-                        NewBarter.ReceiveTable.Add(Item, MinCount + MaxCount * 100000);
+                            NewBarter.ReceiveTable.Add(Item, MinCount + MaxCount * 100000);
+                        }
+                        else
+                            Debug.WriteLine($"Item NOT FOUND in wiki");
                     }
                 }
             }

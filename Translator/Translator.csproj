@@ -154,6 +154,8 @@
     <Compile Include="FieldTables\FixedFieldTable.cs" />
     <Compile Include="FieldTables\FieldTable.cs" />
     <Compile Include="NetTools.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementInventoryItemKeyword.cs" />
+    <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementEffectKeywordUnset.cs" />
     <Compile Include="Objects\Ability\AbilityRequirement\PgAbilityRequirementDisallowedItemKeyword.cs" />
     <Compile Include="Objects\Ability\PgSelfPreEffectCollection.cs" />
     <Compile Include="Objects\Ability\PgSelfPreEffect.cs" />
@@ -205,9 +207,11 @@
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveHaveItemKeyword.cs" />
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveCollectItemKeyword.cs" />
     <Compile Include="Objects\Quest\QuestObjective\PgQuestObjectiveScripted.cs" />
+    <Compile Include="Objects\Quest\QuestPreGiveEffect\PgQuestPreGiveEffectInteractionFlag.cs" />
     <Compile Include="Objects\Quest\QuestPreGiveEffect\PgQuestPreGiveEffectItem.cs" />
     <Compile Include="Objects\Quest\QuestPreGiveEffect\PgQuestPreGiveEffectSimple.cs" />
     <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementAllowedRace.cs" />
+    <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementInteractionFlagUnset.cs" />
     <Compile Include="Objects\Quest\QuestRequirement\PgQuestRequirementMoonPhase.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardDispelFaeBombSporeBuff.cs" />
     <Compile Include="Objects\Quest\QuestReward\PgQuestRewardNamedLootProfile.cs" />

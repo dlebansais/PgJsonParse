@@ -1250,6 +1250,8 @@
 
                 // Ignored
                 case CombatKeyword.But:
+                case CombatKeyword.TargetElite:
+                case CombatKeyword.AnimalPetRageAttackBoost:
                     break;
 
                 default:
@@ -2233,6 +2235,7 @@
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
             BasicTextReplace(ref modText, ref effectText, "Trick Foxes", "Trick Fox");
             BasicTextReplace(ref modText, ref effectText, "Bun-Fu Blitz", "Bun-Fu Kick");
+            BasicTextReplace(ref modText, ref effectText, "after using Doe Eyes", "");
 
             if (!modText.Contains("But I Love You"))
                 ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -2709,12 +2712,32 @@
             if (extractedAbilityList.Count == 1 && extractedAbilityList[0] == AbilityKeyword.AimedShot && extractedCombatEffectList.Count > 0 && extractedCombatEffectList[0].Keyword == CombatKeyword.DealDirectHealthDamage)
                 extractedCombatEffectList[0] = new PgCombatEffect() { Keyword = CombatKeyword.DamageBoost, Data = extractedCombatEffectList[0].Data, DamageType = GameDamageType.Trauma, CombatSkill = GameCombatSkill.Internal_None };
 
+            CombatKeyword MitigationKeyword = CombatKeyword.Internal_None;
+            GameDamageType MitigationDamageType = GameDamageType.Internal_None;
+
             for (int i = 0; i < extractedCombatEffectList.Count; i++)
             {
                 PgCombatEffect CombatEffect = extractedCombatEffectList[i];
                 if (CombatEffect.Keyword == CombatKeyword.AddMitigationPhysical && CombatEffect.DamageType == GameDamageType.Internal_None)
-                {
                     extractedCombatEffectList[i] = new PgCombatEffect() { Keyword = CombatKeyword.AddMitigation, Data = CombatEffect.Data, DamageType = GameDamageType.Crushing | GameDamageType.Slashing | GameDamageType.Piercing, CombatSkill = CombatEffect.CombatSkill };
+
+                bool IsMitigationKeyword = (extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigation ||
+                    extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigationPhysical ||
+                    extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigationIndirect ||
+                    extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigationDirect);
+
+                if (IsMitigationKeyword)
+                {
+                    if (MitigationKeyword == CombatKeyword.Internal_None)
+                    {
+                        MitigationKeyword = extractedCombatEffectList[i].Keyword;
+                        MitigationDamageType = extractedCombatEffectList[i].DamageType;
+                    }
+                    else
+                    {
+                        extractedCombatEffectList[i].Keyword = MitigationKeyword;
+                        extractedCombatEffectList[i].DamageType = MitigationDamageType;
+                    }
                 }
             }
         }
@@ -3792,6 +3815,7 @@
             new Sentence("Healing from Combat Refreshes %f", CombatKeyword.CombatRefreshRestoreHeatlth),
             new Sentence("Boost the target's #D damage-over-time by %f per tick", CombatKeyword.DealIndirectDamage),
             new Sentence("Take %f damage from #D", CombatKeyword.AddVulnerability),
+            new Sentence("Grant you %f #D Vulnerability", CombatKeyword.AddVulnerability),
             //new Sentence("%f Direct Damage Vulnerability", CombatKeyword.AddDirectVulnerability),
             new Sentence("Boost your #S damage %f", CombatKeyword.DamageBoost),
             new Sentence("Boost your @ damage %f", CombatKeyword.DamageBoost),
@@ -3887,7 +3911,7 @@
             new Sentence("Regain %f Power", CombatKeyword.AddPowerRegen),
             new Sentence("The maximum Power restored by @ increase %f", CombatKeyword.AddPowerCostMax),
             new Sentence("Max Armor %f", CombatKeyword.AddMaxArmor),
-            new Sentence("Gain %f Armor", CombatKeyword.AddMaxArmor),
+            //new Sentence("Gain %f Armor", CombatKeyword.AddMaxArmor),
             new Sentence("Increase your Max Health by %f", CombatKeyword.AddMaxHealth),
             new Sentence("Increase your Max Armor by %f", CombatKeyword.AddMaxArmor),
             new Sentence("Reuse Time %f second", CombatKeyword.AddResetTimer),
@@ -3949,6 +3973,7 @@
             new Sentence("Sprint Speed increase by %f", CombatKeyword.AddSprintSpeed),
             new Sentence("%f Sprint Speed", CombatKeyword.AddSprintSpeed),
             new Sentence("Max Health %f", CombatKeyword.AddMaxHealth),
+            new Sentence("Max Health is %f", CombatKeyword.AddMaxHealth),
             new Sentence("Max Health by %f", CombatKeyword.AddMaxHealth),
             new Sentence("%f Max Health", CombatKeyword.AddMaxHealth),
             new Sentence("%f Max Armor", CombatKeyword.AddMaxArmor),
@@ -4004,7 +4029,9 @@
             new Sentence("#D Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             //new Sentence("Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             new Sentence("Mitigation vs all attack by Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
+            new Sentence("Against Elite enemies, mitigate %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             new Sentence("Mitigation vs physical damage %f", CombatKeyword.AddMitigationPhysical),
+            new Sentence("Elite Physical Damage Mitigation %f", new List<CombatKeyword>() { CombatKeyword.AddMitigationPhysical, CombatKeyword.TargetElite }),
             new Sentence("Physical Damage Mitigation %f", CombatKeyword.AddMitigationPhysical),
             new Sentence("%f absorption of any physical damage", CombatKeyword.AddMitigationPhysical),
             new Sentence("Any internal (#D) attack that hit you are reduced by %f", CombatKeyword.AddMitigationInternal),
@@ -4048,6 +4075,7 @@
             new Sentence("%f Damage Mitigation", CombatKeyword.AddMitigation),
             new Sentence("%f Direct Mitigation", CombatKeyword.AddMitigationDirect),
             new Sentence("Mitigate %f of all physical damage", CombatKeyword.AddMitigationPhysical),
+            new Sentence("Mitigate %f physical damage", CombatKeyword.AddMitigationPhysical),
             new Sentence("Debuff their mitigation %f", CombatKeyword.DebuffMitigation, SignInterpretation.AlwaysNegative),
             new Sentence("%f Cold Protection (Direct and Indirect)", CombatKeyword.AddProtectionCold),
             new Sentence("%f Direct and Indirect Cold Protection", CombatKeyword.AddProtectionCold),

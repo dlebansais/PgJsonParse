@@ -16,5 +16,7 @@
         RuntimeBehaviorRuleSet,
         IsLongtimeAnimal,
         MoonPhase,
+        InteractionFlagUnset,
+        MinFavor,
     }
 }

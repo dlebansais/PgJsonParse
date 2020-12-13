@@ -7,5 +7,6 @@
         SummonDeer,
         Minigolem,
         SummonedSpider,
+        SummonFox,
     }
 }

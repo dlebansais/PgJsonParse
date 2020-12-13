@@ -48,6 +48,8 @@
         public Appearance RequiredAppearance { get; set; }
         public Dictionary<PgSkill, int> SkillRequirementTable { get; set; } = new Dictionary<PgSkill, int>();
         public PgItemDyeCollection StockDyeList { get; set; } = new PgItemDyeCollection();
+        public bool HasGlow { get { return RawHasGlow.HasValue && RawHasGlow.Value; } }
+        public bool? RawHasGlow { get; set; }
         public float Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public float? RawValue { get; set; }
         public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }

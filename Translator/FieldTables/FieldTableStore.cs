@@ -98,6 +98,7 @@
             { "AttributesThatDeltaRange", typeof(string[])},
             { "AttributesThatDeltaAccuracy", typeof(string[])},
             { "AttributesThatModCritDamage", typeof(string[])},
+            { "AttributesThatDeltaTempTaunt", typeof(string[])},
             { "SpecialValues", typeof(PgSpecialValue[])},
             { "TauntDelta", typeof(int)},
             { "TempTauntDelta", typeof(int)},
@@ -499,6 +500,7 @@
             { "DisallowedRace", typeof(string) },
             { "AllowedRace", typeof(string) },
             { "MoonPhase", typeof(string) },
+            { "MinFavor", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableQuestObjective = new Dictionary<string, Type>()

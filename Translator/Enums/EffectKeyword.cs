@@ -273,5 +273,8 @@
         SkeletonIllusionForm,
         BulwarkMode,
         LiveEvent_Gobblejack,
+        VanityPet,
+        SpawnPremonition_Plants_10sec,
+        CryogenicFreeze,
     }
 }

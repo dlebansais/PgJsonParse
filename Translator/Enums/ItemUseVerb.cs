@@ -58,7 +58,7 @@
         OpenCrate,
         OpenPouch,
         AffixToHead,
-        SummonFox,
+        //SummonFox,
         OpenPortal,
     }
 }

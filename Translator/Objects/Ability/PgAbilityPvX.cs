@@ -39,6 +39,7 @@
         public PgAttributeCollection AttributesThatDeltaRangeList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaAccuracyList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatModCritDamageList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaTempTauntList { get; set; } = new PgAttributeCollection();
         public PgSpecialValueCollection SpecialValueList { get; set; } = new PgSpecialValueCollection();
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
         public int? RawTauntDelta { get; set; }

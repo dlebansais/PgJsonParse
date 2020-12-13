@@ -135,7 +135,7 @@
         LoreItem8,
         LoreItem9,
         LoreItem21,
-        Druid_IsIgnoredByTreants,
+        //Druid_IsIgnoredByTreants,
         RahuSewer_Opened_SecondDoor,
         CompletedQuest_Chirrra_Tier3,
         Halloween_ReadyForEasyMask,
@@ -152,5 +152,7 @@
         Ivyn_Gave_Passcode,
         Serbule2_TapestryInnChest,
         Tomb1_StoryPuzzleComplete_Looted,
+        Druid_IsIgnoredBySewerTreants,
+        Event_Christmas_RiShinShrineQuest,
     }
 }

@@ -14,5 +14,6 @@
         PlayingSongOfDiscord,
         ShadowFeint,
         BulwarkMode,
+        CryogenicFreeze,
     }
 }

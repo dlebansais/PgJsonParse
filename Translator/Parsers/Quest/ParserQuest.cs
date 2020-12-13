@@ -537,6 +537,19 @@
                 preGiveEffect = new PgQuestPreGiveEffectSimple() { Description = "Delete War Cache Map Fog" };
             else if (value == "DeleteWarCacheMapPins")
                 preGiveEffect = new PgQuestPreGiveEffectSimple() { Description = "Delete War Cache Map Pins" };
+            else if (value.StartsWith("SetInteractionFlag("))
+            {
+                int ParameterStartIndex = value.IndexOf('(');
+                int ParameterEndIndex = value.LastIndexOf(')');
+                string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? value : value.Substring(0, ParameterStartIndex);
+                string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+
+                PgQuestPreGiveEffectInteractionFlag NewEffect = new PgQuestPreGiveEffectInteractionFlag();
+                if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewEffect.InteractionFlag = valueEnum, EffectParameter))
+                    return false;
+
+                preGiveEffect = NewEffect;
+            }
             else
             {
                 int StartIndex = value.IndexOf('(');

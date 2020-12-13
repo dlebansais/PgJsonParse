@@ -999,5 +999,10 @@
         DwarfMeat,
         ElfMeat,
         HumanMeat,
+        SummonBox,
+        RiShinPriestGarment,
+        Lemon,
+        Sugarcane,
+        Corn,
     }
 }

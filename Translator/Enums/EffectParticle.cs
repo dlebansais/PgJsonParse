@@ -68,7 +68,7 @@
         HealingParticle_Silent,
         PersonalRain,
         DarknessDebuff,
-        GiantIceBlock,
+        //GiantIceBlock,
         WaterBall,
         ShadowScythe,
         CycloneLight,
@@ -122,5 +122,7 @@
         FloatingGem3,
         HolyDefense2,
         BulwarkMode,
+        Agitate,
+        CryogenicFreeze,
     }
 }

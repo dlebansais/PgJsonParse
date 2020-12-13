@@ -174,7 +174,7 @@
         LamiasGaze,
         BearWarmth,
         FillWithBile,
-        IceArmor,
+        //IceArmor,
         ColdProtection,
         MinotaurCurse,
         SharpenBuff,
@@ -317,7 +317,7 @@
         DimensionalSnareCrushingVuln,
         SPAWN_VIEW_FEY,
         ColdEnvironment,
-        KingOfTheForestMitigation,
+        //KingOfTheForestMitigation,
         CandleAppreciation,
         PowerSyrup,
         SanguineFangsSlashingVuln15,
@@ -325,5 +325,9 @@
         BlockingStanceA,
         DeadlyEmissionDebuff,
         ClobberingHoofDebuffElite,
+        SPAWN_VIEW_PLANTS,
+        RiShinShrine_Health,
+        RiShinShrine_Power,
+        RiShinShrine_Armor,
     }
 }

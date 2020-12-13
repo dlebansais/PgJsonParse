@@ -189,6 +189,7 @@
             { AbilityIndicatingEnabled.PlayingSongOfDiscord, "When playing (Song of Discord)" },
             { AbilityIndicatingEnabled.ShadowFeint, "Shadow Feint ready" },
             { AbilityIndicatingEnabled.BulwarkMode, "Bulwark Mode active" },
+            { AbilityIndicatingEnabled.CryogenicFreeze, "Cryogenic Freeze active" },
         };
 
         public static Dictionary<AbilityItemKeyword, string> AbilityItemKeywordTextMap {get; } = new Dictionary<AbilityItemKeyword, string>()
@@ -750,6 +751,9 @@
             { AbilityKeyword.Fear, "Fear" },
             { AbilityKeyword.BulwarkMode, "Bulwark Mode" },
             { AbilityKeyword.BunFuKick, "Bun-Fu Kick" },
+            { AbilityKeyword.FeignInjuryEnabled, "Feign Injury Enabled" },
+            { AbilityKeyword.FeignInjury, "Feign Injury" },
+            { AbilityKeyword.HymnOfResurrection2Enabled, "Hymn Of Resurrection #2 Enabled" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap {get; } = new Dictionary<AbilityPetType, string>()
@@ -1471,6 +1475,9 @@
             { EffectKeyword.SkeletonIllusionForm, "Skeleton Illusion Form" },
             { EffectKeyword.BulwarkMode, "Bulwar kMode" },
             { EffectKeyword.LiveEvent_Gobblejack, "Live Event (Gobblejack)" },
+            { EffectKeyword.VanityPet, "Vanity Pet" },
+            { EffectKeyword.SpawnPremonition_Plants_10sec, "Spawn Premonition (Plants, 10 sec)" },
+            { EffectKeyword.CryogenicFreeze, "Cryogenic Freeze" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap {get; } = new Dictionary<EffectParticle, string>()
@@ -1541,7 +1548,7 @@
             { EffectParticle.HealingParticle_Silent, "Healing Particle (Silent)" },
             { EffectParticle.PersonalRain, "Personal Rain" },
             { EffectParticle.DarknessDebuff, "Darkness Debuff" },
-            { EffectParticle.GiantIceBlock, "Giant Ice Block" },
+            //{ EffectParticle.GiantIceBlock, "Giant Ice Block" },
             { EffectParticle.WaterBall, "Water Ball" },
             { EffectParticle.ShadowScythe, "Shadow Scythe" },
             { EffectParticle.CycloneLight, "Cyclone Light" },
@@ -1595,6 +1602,8 @@
             { EffectParticle.FloatingGem3, "Floating Gem #3" },
             { EffectParticle.HolyDefense2, "Holy Defense #2" },
             { EffectParticle.BulwarkMode, "Bulwark Mode" },
+            { EffectParticle.Agitate, "Agitate" },
+            { EffectParticle.CryogenicFreeze, "Cryogenic Freeze" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap {get; } = new Dictionary<EffectStackingType, string>()
@@ -1771,7 +1780,7 @@
             { EffectStackingType.LamiasGaze, "Lamia's Gaze" },
             { EffectStackingType.BearWarmth, "Bear Warmth" },
             { EffectStackingType.FillWithBile, "Fill With Bile" },
-            { EffectStackingType.IceArmor, "Ice Armor" },
+            //{ EffectStackingType.IceArmor, "Ice Armor" },
             { EffectStackingType.ColdProtection, "Cold Protection" },
             { EffectStackingType.MinotaurCurse, "Minotaur Curse" },
             { EffectStackingType.SharpenBuff, "Sharpen Buff" },
@@ -1914,7 +1923,7 @@
             { EffectStackingType.DimensionalSnareCrushingVuln, "Dimensional Snare Crushing Vulnerability" },
             { EffectStackingType.SPAWN_VIEW_FEY, "Spawn View Fey" },
             { EffectStackingType.ColdEnvironment, "Cold Environment"},
-            { EffectStackingType.KingOfTheForestMitigation, "King Of The Forest Mitigation"},
+            //{ EffectStackingType.KingOfTheForestMitigation, "King Of The Forest Mitigation"},
             { EffectStackingType.CandleAppreciation, "Candle Appreciation"},
             { EffectStackingType.PowerSyrup, "Power Syrup"},
             { EffectStackingType.SanguineFangsSlashingVuln15, "Sanguine Fangs Slashing Vulnerability (15s)"},
@@ -1922,6 +1931,10 @@
             { EffectStackingType.BlockingStanceA, "Blocking Stance #A"},
             { EffectStackingType.DeadlyEmissionDebuff, "Deadly Emission Debuff"},
             { EffectStackingType.ClobberingHoofDebuffElite, "Clobbering Hoof Debuff Elite"},
+            { EffectStackingType.SPAWN_VIEW_PLANTS, "Spawn View Plants" },
+            { EffectStackingType.RiShinShrine_Health, "Ri-Shin Shrine (Health)" },
+            { EffectStackingType.RiShinShrine_Power, "Ri-Shin Shrine (Power)" },
+            { EffectStackingType.RiShinShrine_Armor, "Ri-Shin Shrine (Armor)" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap {get; } = new Dictionary<EnhancementEffect, string>()
@@ -2087,7 +2100,7 @@
             { InteractionFlag.LoreItem8, "Lore Item (#8)" },
             { InteractionFlag.LoreItem9, "Lore Item (#9)" },
             { InteractionFlag.LoreItem21, "Lore Item (#21)" },
-            { InteractionFlag.Druid_IsIgnoredByTreants, "Is Ignored By Treants" },
+            //{ InteractionFlag.Druid_IsIgnoredByTreants, "Is Ignored By Treants" },
             { InteractionFlag.RahuSewer_Opened_SecondDoor, "Opened Second Door in Rahu Sewer" },
             { InteractionFlag.CompletedQuest_Chirrra_Tier3, "Chirrra Quest Completed (Tier 3)" },
             { InteractionFlag.Halloween_ReadyForEasyMask, "Halloween: Ready For Easy Mask" },
@@ -2104,6 +2117,8 @@
             { InteractionFlag.Ivyn_Gave_Passcode, "Ivyn Gave Passcode" },
             { InteractionFlag.Serbule2_TapestryInnChest, "Serbule Hills Tapestry Inn Chest" },
             { InteractionFlag.Tomb1_StoryPuzzleComplete_Looted, "Khyrulek's Crypt Story Puzzle Complete Looted" },
+            { InteractionFlag.Druid_IsIgnoredBySewerTreants, "Druid (Is Ignored By Sewer Treants)" },
+            { InteractionFlag.Event_Christmas_RiShinShrineQuest, "Event (Christmas Ri-Shin Shrine Quest)" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap {get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -3184,6 +3199,11 @@
             { ItemKeyword.DwarfMeat, "Dwarf Meat" },
             { ItemKeyword.ElfMeat, "Elf Meat" },
             { ItemKeyword.HumanMeat, "Human Meat" },
+            { ItemKeyword.SummonBox, "Summon Box" },
+            { ItemKeyword.RiShinPriestGarment, "Ri-Shin Priest Garment" },
+            { ItemKeyword.Lemon, "Lemon" },
+            { ItemKeyword.Sugarcane, "Sugarcane" },
+            { ItemKeyword.Corn, "Corn" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap {get; } = new Dictionary<ItemSlot, string>()
@@ -3284,7 +3304,7 @@
             { ItemUseVerb.OpenCrate, "Open Crate" },
             { ItemUseVerb.OpenPouch, "Open Pouch" },
             { ItemUseVerb.AffixToHead, "Affix To Head" },
-            { ItemUseVerb.SummonFox, "Summon Fox" },
+            //{ ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "OpenPortal" },
         };
 
@@ -4458,6 +4478,7 @@
             { TooltipsExtraKeywords.SummonDeer, "Summon Deer" },
             { TooltipsExtraKeywords.Minigolem, "Mini-golem" },
             { TooltipsExtraKeywords.SummonedSpider, "Summoned Spider" },
+            { TooltipsExtraKeywords.SummonFox, "Summon Fox" },
         };
 
         public static Dictionary<WorkOrderSign, string> WorkOrderSignTextMap {get; } = new Dictionary<WorkOrderSign, string>()

@@ -99,6 +99,9 @@
                     case "AttributesThatModCritDamage":
                         Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModCritDamageList, Value);
                         break;
+                    case "AttributesThatDeltaTempTaunt":
+                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaTempTauntList, Value);
+                        break;
                     case "SpecialValues":
                         Result = Inserter<PgSpecialValue>.AddKeylessArray(item.SpecialValueList, Value);
                         break;

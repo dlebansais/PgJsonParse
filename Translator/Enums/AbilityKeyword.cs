@@ -512,5 +512,8 @@
         Fear,
         BulwarkMode,
         BunFuKick,
+        FeignInjuryEnabled,
+        FeignInjury,
+        HymnOfResurrection2Enabled,
     }
 }

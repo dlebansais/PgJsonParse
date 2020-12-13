@@ -32,6 +32,8 @@
             { OtherRequirementType.IsVolunteerGuide, FinishItemIsVolunteerGuide },
             { OtherRequirementType.IsNotGuest, FinishItemIsNotGuest },
             { OtherRequirementType.IsNotInHotspot, FinishItemNotInHotspot },
+            { OtherRequirementType.EffectKeywordUnset, FinishEffectKeywordUnset },
+            { OtherRequirementType.InventoryItemKeyword, FinishInventoryItemKeyword },
         };
 
         private static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
@@ -54,6 +56,8 @@
             { OtherRequirementType.IsVolunteerGuide, new List<string>() { "T" } },
             { OtherRequirementType.IsNotGuest, new List<string>() { "T" } },
             { OtherRequirementType.IsNotInHotspot, new List<string>() { "T", "Name" } },
+            { OtherRequirementType.EffectKeywordUnset, new List<string>() { "T", "Keyword" } },
+            { OtherRequirementType.InventoryItemKeyword, new List<string>() { "T", "Keyword" } },
         };
 
         private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
@@ -915,6 +919,92 @@
                             break;
                         case "Name":
                             Result = SetStringProperty((string valueString) => NewItem.Name = valueString, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishEffectKeywordUnset(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgAbilityRequirementEffectKeywordUnset NewItem = new PgAbilityRequirementEffectKeywordUnset();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Keyword":
+                            Result = StringToEnumConversion<EffectKeyword>.SetEnum((EffectKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishInventoryItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgAbilityRequirementInventoryItemKeyword NewItem = new PgAbilityRequirementInventoryItemKeyword();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Keyword":
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
