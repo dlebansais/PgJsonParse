@@ -447,7 +447,7 @@
             string Key = power.Key;
             Debug.Assert(Key.Length >= 9);
 
-            if (Key == "power_12317")
+            if (Key == "power_23505")
             {
             }
 
@@ -541,7 +541,7 @@
 
         private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
         {
-            if (power.Key == "power_12317")
+            if (power.Key == "power_23505")
             {
             }
 
@@ -975,6 +975,8 @@
                                     KeywordList = new List<AbilityKeyword>() { MatchingKeyword };
                             }
 
+                            AbilityKeyword FinalMatchingKeyword = KeywordList[0];
+
                             if (KeywordList.Count > 1)
                             {
                                 string KeywordListString = string.Empty;
@@ -987,17 +989,13 @@
                                     KeywordListString += Keyword.ToString();
                                 }
 
-                                Debug.WriteLine($"{Name} has more than one keyword: {KeywordListString}.");
+                                Debug.WriteLine($"{Name} has more than one keyword: {KeywordListString}. Selected: {FinalMatchingKeyword}");
                             }
-                            else
-                            {
-                                AbilityKeyword MatchingKeyword = KeywordList[0];
 
-                                if (KeywordToName.ContainsKey(MatchingKeyword))
-                                    Debug.WriteLine($"Keyword {MatchingKeyword} for {Name} is already used by {KeywordToName[MatchingKeyword]}.");
-                                else
-                                    KeywordToName.Add(MatchingKeyword, Name);
-                            }
+                            if (KeywordToName.ContainsKey(FinalMatchingKeyword))
+                                Debug.WriteLine($"Keyword {FinalMatchingKeyword} for {Name} is already used by {KeywordToName[FinalMatchingKeyword]}.");
+                            else
+                                KeywordToName.Add(FinalMatchingKeyword, Name);
                         }
                     }
 
@@ -1608,7 +1606,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_12317")
+                if (Entry.Key.Key == "power_23505")
                 {
                 }
 
@@ -3239,7 +3237,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_12317")
+                if (ItemPower.Key == "power_23505")
                 {
                 }
 
