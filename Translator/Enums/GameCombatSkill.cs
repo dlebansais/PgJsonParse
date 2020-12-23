@@ -31,6 +31,6 @@
         Warden,
         //FairyMagic,
         Lycanthropy,
-        //SpiritFox,
+        SpiritFox,
     }
 }

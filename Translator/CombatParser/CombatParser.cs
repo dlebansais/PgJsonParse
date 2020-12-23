@@ -47,6 +47,7 @@
             AnalyzeRemainingPowers(AbilityNameList, NameToKeyword, UnmatchedPowerList, UnmatchedEffectList, CandidateEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
             AnalyzeRemainingEffects(AbilityNameList, NameToKeyword, UnmatchedEffectList, AnalyzedPowerKeyToCompleteEffectTable, out List<string> EffectKeyList);
 
+            StringToEnumConversion<GameCombatSkill>.SetCustomParsedEnum(GameCombatSkill.SpiritFox);
             CheckAllSentencesUsed();
 
             if (WriteFile)
@@ -3668,7 +3669,7 @@
             { (int)GameCombatSkill.Warden, "Warden" },
             //{ (int)GameCombatSkill.FairyMagic, "Fairy Magic" },
             { (int)GameCombatSkill.Lycanthropy, "Lycanthropy" },
-            //{ (int)GameCombatSkill.SpiritFox, "Spirit Fox" },
+            { (int)GameCombatSkill.SpiritFox, "Spirit Fox" },
         };
 
         private static List<Sentence> SentenceList = new List<Sentence>()
