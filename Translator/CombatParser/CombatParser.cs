@@ -448,7 +448,7 @@
             string Key = power.Key;
             Debug.Assert(Key.Length >= 9);
 
-            if (Key == "power_23505")
+            if (Key == "power_27155")
             {
             }
 
@@ -542,7 +542,7 @@
 
         private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
         {
-            if (power.Key == "power_23505")
+            if (power.Key == "power_27155")
             {
             }
 
@@ -1607,7 +1607,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_23505")
+                if (Entry.Key.Key == "power_27155")
                 {
                 }
 
@@ -2090,12 +2090,15 @@
 
                 if (ContainValue)
                 {
-                    if (candidateIndex < 0)
+                    if (candidateIndex < 0 && UnionValue.Count > 0)
                         candidateIndex = i;
-                    else if (UnionCount > UnionCountList[candidateIndex])
-                        candidateIndex = i;
-                    else if (UnionCount == UnionCountList[candidateIndex])
-                        Debug.WriteLine("Multiple candidates found for a single matching effect");
+                    else if (candidateIndex >= 0)
+                    {
+                        if (UnionCount > UnionCountList[candidateIndex])
+                            candidateIndex = i;
+                        else if (UnionCount == UnionCountList[candidateIndex])
+                            Debug.WriteLine("Multiple candidates found for a single matching effect");
+                    }
                 }
             }
 
@@ -3238,7 +3241,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_23505")
+                if (ItemPower.Key == "power_27155")
                 {
                 }
 
