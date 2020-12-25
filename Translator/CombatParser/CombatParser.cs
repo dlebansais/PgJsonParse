@@ -2713,6 +2713,18 @@
             if (extractedAbilityList.Count == 1 && extractedAbilityList[0] == AbilityKeyword.AimedShot && extractedCombatEffectList.Count > 0 && extractedCombatEffectList[0].Keyword == CombatKeyword.DealDirectHealthDamage)
                 extractedCombatEffectList[0] = new PgCombatEffect() { Keyword = CombatKeyword.DamageBoost, Data = extractedCombatEffectList[0].Data, DamageType = GameDamageType.Trauma, CombatSkill = GameCombatSkill.Internal_None };
 
+            // Hack for Privacy Field
+            if (extractedAbilityList.Count == 1 && extractedAbilityList[0] == AbilityKeyword.PrivacyField)
+            {
+                bool HasReflect = false;
+                foreach (PgCombatEffect Item in extractedCombatEffectList)
+                    if (Item.Keyword == CombatKeyword.ReflectOnMelee)
+                        HasReflect = true;
+
+                if (!HasReflect)
+                    extractedCombatEffectList.Add(new PgCombatEffect() { Keyword = CombatKeyword.ReflectOnMelee, Data = new PgNumericValue() { RawIsPercent = false } });
+            }
+
             CombatKeyword MitigationKeyword = CombatKeyword.Internal_None;
             GameDamageType MitigationDamageType = GameDamageType.Internal_None;
 
