@@ -448,7 +448,7 @@
             string Key = power.Key;
             Debug.Assert(Key.Length >= 9);
 
-            if (Key == "power_27155")
+            if (Key == "power_27152")
             {
             }
 
@@ -542,7 +542,7 @@
 
         private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
         {
-            if (power.Key == "power_27155")
+            if (power.Key == "power_27152")
             {
             }
 
@@ -1607,7 +1607,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_27155")
+                if (Entry.Key.Key == "power_27152")
                 {
                 }
 
@@ -2059,10 +2059,10 @@
                     return false;
             }
 
-            if (effect1.Data.RawValue.HasValue != effect2.Data.RawValue.HasValue)
+            if (effect1.Data.RawValue.HasValue != effect2.Data.RawValue.HasValue && effect2.Data.RawValue.HasValue)
                 return false;
 
-            if (effect1.Data.RawValue.HasValue && effect1.Data.Value != effect2.Data.Value)
+            if (effect2.Data.RawValue.HasValue && effect1.Data.Value != effect2.Data.Value)
                 return false;
 
             return true;
@@ -2483,9 +2483,8 @@
             ReplaceCaseInsensitive(ref text, "steals ", "steal ");
             ReplaceCaseInsensitive(ref text, "hits ", "hit ");
             ReplaceCaseInsensitive(ref text, "stuns ", "stun ");
-            ReplaceCaseInsensitive(ref text, "knocks back", "knock back");
-            ReplaceCaseInsensitive(ref text, "knocked back", "knock back");
             ReplaceCaseInsensitive(ref text, "knocks ", "knock ");
+            ReplaceCaseInsensitive(ref text, "knocked ", "knock ");
             ReplaceCaseInsensitive(ref text, " backwards", " backward");
             ReplaceCaseInsensitive(ref text, "causes ", "cause ");
             ReplaceCaseInsensitive(ref text, "lowers ", "lower ");
@@ -3241,7 +3240,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_27155")
+                if (ItemPower.Key == "power_27152")
                 {
                 }
 
@@ -3732,7 +3731,7 @@
             new Sentence("To YOU", CombatKeyword.TargetSelf),
             new Sentence("If target is covered", CombatKeyword.TargetUnderEffect),
             new Sentence("To targets that are covered", CombatKeyword.TargetUnderEffect),
-            new Sentence("To targets that are Knocked Down", CombatKeyword.TargetKnockedDown),
+            new Sentence("To targets that are Knock Down", CombatKeyword.TargetKnockedDown),
             new Sentence("Deal #D damage", CombatKeyword.ChangeDamageType),
             new Sentence("Instead of #D", CombatKeyword.Ignore),
             new Sentence("Next attack", CombatKeyword.NextAttack),
@@ -3959,6 +3958,7 @@
             new Sentence("Heal %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Restore %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Restore %f Power", CombatKeyword.RestorePower),
+            new Sentence("Recover Power when", CombatKeyword.RestorePower),
             new Sentence("Recover %f health", CombatKeyword.RestoreHealth),
             new Sentence("Recover %f power", CombatKeyword.RestorePower),
             new Sentence("Restoration %f", CombatKeyword.RestoreHealth),
@@ -3999,7 +3999,6 @@
             new Sentence("Stun incorporeal enemies", CombatKeyword.StunIncorporeal),
             new Sentence("Stun", CombatKeyword.Stun),
             new Sentence("Targets are Knock back", CombatKeyword.Knockback),
-            new Sentence("Target is Knock back", CombatKeyword.Knockback),
             new Sentence("Knock back targets", CombatKeyword.Knockback),
             new Sentence("Knock all targets back", CombatKeyword.Knockback),
             new Sentence("Knock the target backward", CombatKeyword.Knockback),
@@ -4097,8 +4096,10 @@
             new Sentence("If the target is not focused on you", CombatKeyword.RequireNoAggro),
             new Sentence("If they are not focused on you", CombatKeyword.RequireNoAggro),
             new Sentence("If target is not focused on you", CombatKeyword.RequireNoAggro),
-            new Sentence("The first melee attacker is knocked away", CombatKeyword.ReflectKnockbackOnFirstMelee),
+            new Sentence("The first melee attacker is knock away", CombatKeyword.ReflectKnockbackOnFirstMelee),
+            new Sentence("First attacker is knock back", CombatKeyword.ReflectKnockbackOnFirstMelee),
             new Sentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
+            new Sentence("Melee attackers deal damage to you", CombatKeyword.ReflectOnMelee),
             //new Sentence("Melee damagers take", CombatKeyword.ReflectOnMelee),
             new Sentence("Deal its damage when you are hit by burst attack", CombatKeyword.ReflectOnBurst),
             new Sentence("Deal its damage when you are hit by ranged attack", CombatKeyword.ReflectOnRanged),
