@@ -644,6 +644,19 @@
                 }
                 else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
                 {
+                    IDictionary ObjectDictionary = Property.GetValue(item) as IDictionary;
+                    Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
+
+                    Debug.Assert(CollectionType.IsGenericType);
+                    Type[] GenericArguments = CollectionType.GetGenericArguments();
+                    Debug.Assert(GenericArguments.Length == 2);
+                    Type ItemKeyType = GenericArguments[0];
+                    Debug.Assert(ItemKeyType != null);
+                    Type ItemValueType = GenericArguments[1];
+                    Debug.Assert(ItemValueType != null);
+
+                    GetObjectItemContent(recursion, ItemKeyType, ObjectDictionary.Keys, ref content);
+                    GetObjectItemContent(recursion, ItemValueType, ObjectDictionary.Values, ref content);
                 }
                 else if (PropertyType.GetInterface(typeof(ICollection).Name) != null)
                 {
@@ -656,35 +669,7 @@
                     Type ItemType = GenericArguments[0];
                     Debug.Assert(ItemType != null);
 
-                    if (ItemType.BaseType == typeof(PgObject))
-                    {
-                        foreach (PgObject ObjectValue in ObjectCollection)
-                        {
-                            Debug.Assert(ObjectValue != null);
-                            content += GetPgObjectIndexContent(ObjectValue);
-                        }
-                    }
-                    else if (ItemType.IsEnum)
-                    {
-                        foreach (object EnumValue in ObjectCollection)
-                            content += GetEnumIndexContent(ItemType, EnumValue);
-                    }
-                    else if (ItemType == typeof(string))
-                    {
-                        foreach (string StringValue in ObjectCollection)
-                            content += GeStringIndexContent(StringValue);
-                    }
-                    else if (ItemType.Name.StartsWith("Pg"))
-                    {
-                        foreach (object ItemValue in ObjectCollection)
-                            content += GetReferenceIndexContent(ItemValue.GetType(), ItemValue, recursion);
-                    }
-                    else if (IsTypeIgnoredForIndex(ItemType))
-                    {
-                    }
-                    else
-                    {
-                    }
+                    GetObjectItemContent(recursion, ItemType, ObjectCollection, ref content);
                 }
                 else if (PropertyType.Name.StartsWith("Pg"))
                 {
@@ -696,6 +681,39 @@
             }
 
             return content.Length > 0;
+        }
+
+        private static void GetObjectItemContent(int recursion, Type itemType, ICollection objectCollection, ref string content)
+        {
+            if (itemType.BaseType == typeof(PgObject))
+            {
+                foreach (PgObject ObjectValue in objectCollection)
+                {
+                    Debug.Assert(ObjectValue != null);
+                    content += GetPgObjectIndexContent(ObjectValue);
+                }
+            }
+            else if (itemType.IsEnum)
+            {
+                foreach (object EnumValue in objectCollection)
+                    content += GetEnumIndexContent(itemType, EnumValue);
+            }
+            else if (itemType == typeof(string))
+            {
+                foreach (string StringValue in objectCollection)
+                    content += GeStringIndexContent(StringValue);
+            }
+            else if (itemType.Name.StartsWith("Pg"))
+            {
+                foreach (object ItemValue in objectCollection)
+                    content += GetReferenceIndexContent(ItemValue.GetType(), ItemValue, recursion);
+            }
+            else if (IsTypeIgnoredForIndex(itemType))
+            {
+            }
+            else
+            {
+            }
         }
 
         public static bool IsTypeIgnoredForIndex(Type type)
