@@ -448,7 +448,7 @@
             string Key = power.Key;
             Debug.Assert(Key.Length >= 9);
 
-            if (Key == "power_27152")
+            if (Key == "power_23205")
             {
             }
 
@@ -542,7 +542,7 @@
 
         private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
         {
-            if (power.Key == "power_27152")
+            if (power.Key == "power_23205")
             {
             }
 
@@ -601,8 +601,14 @@
                     PgPowerEffectSimple SimpleEffect = (PgPowerEffectSimple)PowerEffectItem;
 
                     foreach (int Id in SimpleEffect.IconIdList)
-                        if (!PowerIconList.Contains(Id))
-                            PowerIconList.Add(Id);
+                    {
+                        int IconId = Id;
+                        if (power.Key == "power_23205" && Id == 3402)
+                            IconId = 3042;
+
+                        if (!PowerIconList.Contains(IconId))
+                            PowerIconList.Add(IconId);
+                    }
                 }
             }
 
@@ -1607,7 +1613,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_27152")
+                if (Entry.Key.Key == "power_23205")
                 {
                 }
 
@@ -3252,7 +3258,7 @@
                     continue;
                 }
 
-                if (ItemPower.Key == "power_27152")
+                if (ItemPower.Key == "power_23205")
                 {
                 }
 
@@ -3289,6 +3295,11 @@
             AnalyzeRemainingPowers(abilityNameList, nameToKeyword, LastTier, unmatchedEffectList, CandidateEffectList, out List<CombatKeyword> ExtractedPowerTierKeywordList, out PgModEffect ExtractedModEffect, true);
             PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
             ModEffectArray[LastTierIndex] = ExtractedModEffect;
+
+            if (ExtractedModEffect.AbilityList.Count > 0 && ExtractedModEffect.TargetAbilityList.Count > 0)
+            {
+                //Debug.WriteLine($"{ExtractedModEffect}");
+            }
 
             for (int i = 0; i + 1 < TierList.Count; i++)
             {
@@ -3365,7 +3376,7 @@
             modEffect = new PgModEffect() 
             { 
                 EffectKey = EffectKey, 
-                AbilityList = ModAbilityList, 
+                AbilityList = ModAbilityList,
                 StaticCombatEffectList = ModCombatList, 
                 TargetAbilityList = ModTargetAbilityList 
             };
@@ -3383,6 +3394,47 @@
                 };
 
                 modEffect.SecondaryModEffect = SecondaryModEffect;
+            }
+            else
+            {
+                if (ModAbilityList.Count > 0 && ModTargetAbilityList.Count > 0)
+                {
+                    AbilityKeyword Ability = ModAbilityList[0];
+                    AbilityKeyword TargetAbility = ModTargetAbilityList[0];
+
+                    if (Ability != TargetAbility)
+                    {
+                        if (ModCombatList.Count >= 2)
+                        {
+                            PgCombatEffect FirstCombatEffect = ModCombatList[0];
+                            PgCombatEffect SecondCombatEffect = ModCombatList[1];
+
+                            if (FirstCombatEffect.Keyword != CombatKeyword.ReflectOnAnyAttack && FirstCombatEffect.Keyword != CombatKeyword.ApplyWithChance && SecondCombatEffect.Keyword != CombatKeyword.ResetOtherAbilityTimer && SecondCombatEffect.Keyword != CombatKeyword.EffectDuration)
+                            {
+                                if (SecondCombatEffect.Keyword == CombatKeyword.AddResetTimer)
+                                {
+                                    modEffect.StaticCombatEffectList.Remove(SecondCombatEffect);
+                                    modEffect.DynamicCombatEffectList.Add(SecondCombatEffect);
+                                }
+                                else
+                                {
+                                    PgModEffect SecondaryModEffect = new PgModEffect()
+                                    {
+                                        EffectKey = "",
+                                        AbilityList = new List<AbilityKeyword>() { TargetAbility },
+                                        StaticCombatEffectList = new PgCombatEffectCollection() { SecondCombatEffect },
+                                        DynamicCombatEffectList = new PgCombatEffectCollection(),
+                                        TargetAbilityList = new List<AbilityKeyword>(),
+                                    };
+
+                                    modEffect.StaticCombatEffectList.Remove(SecondCombatEffect);
+                                    modEffect.SecondaryModEffect = SecondaryModEffect;
+                                    modEffect.TargetAbilityList.Clear();
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             VerifyStaticEffects(ModAbilityList, ModCombatList);

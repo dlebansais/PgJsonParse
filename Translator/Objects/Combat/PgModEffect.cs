@@ -28,7 +28,7 @@
             if (StaticResult.Length > 0)
                 StaticResult = $"Static: {StaticResult}";
 
-            foreach (PgCombatEffect Item in StaticCombatEffectList)
+            foreach (PgCombatEffect Item in DynamicCombatEffectList)
             {
                 if (DynamicResult.Length > 0)
                     DynamicResult += "; ";
@@ -39,15 +39,15 @@
             if (DynamicResult.Length > 0)
             {
                 if (StaticResult.Length > 0)
-                    DynamicResult = $", Dynamic: {StaticResult}";
+                    DynamicResult = $", Dynamic: {DynamicResult}";
                 else
-                    DynamicResult = $"Dynamic: {StaticResult}";
+                    DynamicResult = $"Dynamic: {DynamicResult}";
             }
 
             string CombatResult = StaticResult + DynamicResult;
 
             string AffectedString = AbilityKeywordListToShortString(AbilityList);
-            string TargetString = AbilityKeywordListToShortString(AbilityList);
+            string TargetString = AbilityKeywordListToShortString(TargetAbilityList);
 
             return $"{CombatResult}, Affected: {AffectedString}, Target: {TargetString}";
         }

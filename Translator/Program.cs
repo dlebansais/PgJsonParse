@@ -10,13 +10,30 @@
     using System.Reflection;
     using System.Collections;
     using System.ComponentModel;
+    using System.Text;
 
     public class Program
     {
         static int Main(string[] args)
         {
-            int Version = 341;
+            const string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
+            Stopwatch Watch = new Stopwatch();
+            string VersionContent = string.Empty;
+            WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string content) => VersionContent = content, out bool IsFound);
+
+            if (!int.TryParse(VersionContent, out int Version))
+            {
+                Debug.WriteLine($"Unable to parse {VersionContent} as a version number");
+                return -1;
+            }
+
             VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
+
+            if (!Directory.Exists(VersionPath))
+            {
+                Debug.WriteLine($"{Version} is a new version");
+                Directory.CreateDirectory(VersionPath);
+            }
 
             if (!ParseFile("abilities", typeof(PgAbility), FileType.EmbeddedObjects))
                 return -1;
@@ -212,6 +229,23 @@
             LastParsedFile = fileName;
 
             string FullPath = $"{VersionPath}\\{fileName}.json";
+
+            if (!File.Exists(FullPath))
+            {
+                string RequestUri = $"http://client.projectgorgon.com/{fileName}.json";
+                Stopwatch Watch = new Stopwatch();
+                string FileContent = string.Empty;
+                WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string content) => FileContent = content, out bool IsFound);
+
+                if (IsFound)
+                {
+                    using FileStream WriteStream = new FileStream(FullPath, FileMode.Create, FileAccess.Write);
+                    using StreamWriter Writer = new StreamWriter(WriteStream, Encoding.UTF8);
+                    Writer.Write(FileContent);
+                }
+            }
+
+
             using FileStream Stream = new FileStream(FullPath, FileMode.Open, FileAccess.Read);
             JsonTextReader Reader = new JsonTextReader(Stream);
 
