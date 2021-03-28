@@ -117,5 +117,9 @@
         RatkinNecroRat,
         Tealight,
         DyeGoblinOrange,
+        CandleNature2,
+        CandleFloral4,
+        CandleBacon5,
+        CandleCrushing8,
     }
 }

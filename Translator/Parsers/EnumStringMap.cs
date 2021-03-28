@@ -96,6 +96,7 @@
             { ItemUseVerb.AffixToHead, "Affix To Head" },
             //{ ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "Open Portal" },
+            { ItemUseVerb.DrinkUp, "Drink up" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()

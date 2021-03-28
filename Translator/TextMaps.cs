@@ -163,6 +163,18 @@
             { AbilityAnimation.Attack_Priest_GroupHeal, "Group Heal" },
             { AbilityAnimation.Attack_Priest_Blast, "Blast" },
             { AbilityAnimation.Attack_Priest_Flamestrike, "Flamestrike" },
+            { AbilityAnimation.Dance1B, "Dance1B" },
+            { AbilityAnimation.Dance2B, "Dance2B" },
+            { AbilityAnimation.Dance3B, "Dance3B" },
+            { AbilityAnimation.Dance4B, "Dance4B" },
+            { AbilityAnimation.Dance5B, "Dance5B" },
+            { AbilityAnimation.Dance6B, "Dance6B" },
+            { AbilityAnimation.Dance1C, "Dance1C" },
+            { AbilityAnimation.Dance2C, "Dance2C" },
+            { AbilityAnimation.Dance3C, "Dance3C" },
+            { AbilityAnimation.Dance4C, "Dance4C" },
+            { AbilityAnimation.Dance5C, "Dance5C" },
+            { AbilityAnimation.Dance6C, "Dance6C" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap {get; } = new Dictionary<AbilityCue, string>()
@@ -1478,6 +1490,9 @@
             { EffectKeyword.VanityPet, "Vanity Pet" },
             { EffectKeyword.SpawnPremonition_Plants_10sec, "Spawn Premonition (Plants, 10 sec)" },
             { EffectKeyword.CryogenicFreeze, "Cryogenic Freeze" },
+            { EffectKeyword.FaeDPImmunity, "Fae Death Penalty Immunity" },
+            { EffectKeyword.LiveEventEffect, "Live Event Effect" },
+            { EffectKeyword.LiveEvent_Lemons, "Live Event (Lemons)" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap {get; } = new Dictionary<EffectParticle, string>()
@@ -1935,6 +1950,7 @@
             { EffectStackingType.RiShinShrine_Health, "Ri-Shin Shrine (Health)" },
             { EffectStackingType.RiShinShrine_Power, "Ri-Shin Shrine (Power)" },
             { EffectStackingType.RiShinShrine_Armor, "Ri-Shin Shrine (Armor)" },
+            { EffectStackingType.GolfSprint, "GolfSprint" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap {get; } = new Dictionary<EnhancementEffect, string>()
@@ -3204,6 +3220,12 @@
             { ItemKeyword.Lemon, "Lemon" },
             { ItemKeyword.Sugarcane, "Sugarcane" },
             { ItemKeyword.Corn, "Corn" },
+            { ItemKeyword.TrueSkinningKnife, "True Skinning Knife" },
+            { ItemKeyword.FaeDPImmunity, "Fae Death Penalty Immunity" },
+            { ItemKeyword.EWindstepShoes, "Enhanced Windstep Shoes" },
+            { ItemKeyword.EAmuletOfTheRuggedTraveler, "Enhanced AmuletOf The Rugged Traveler" },
+            { ItemKeyword.GolfSprint, "Golf Sprint" },
+            { ItemKeyword.PennocsPendant, "Pennoc's Pendant" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap {get; } = new Dictionary<ItemSlot, string>()
@@ -3306,6 +3328,7 @@
             { ItemUseVerb.AffixToHead, "Affix To Head" },
             //{ ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "OpenPortal" },
+            { ItemUseVerb.DrinkUp, "Drink up" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap {get; } = new Dictionary<LoreBookKeyword, string>()
@@ -4304,6 +4327,10 @@
             { RecipeKeyword.RatkinNecroRat, "Ratkin Necro Rat" },
             { RecipeKeyword.Tealight, "Tealight" },
             { RecipeKeyword.DyeGoblinOrange, "Dye Goblin Orange" },
+            { RecipeKeyword.CandleNature2, "Candle Nature #2" },
+            { RecipeKeyword.CandleFloral4, "Candle Floral #4" },
+            { RecipeKeyword.CandleBacon5, "Candle Bacon #5" },
+            { RecipeKeyword.CandleCrushing8, "Candle Crushing #8" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
@@ -4453,6 +4480,9 @@
             { SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
             { SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
             { SpecialNpc.LiveNpc_Boop, "Boop" },
+            { SpecialNpc.LiveNpc_Raim, "Raim" },
+            { SpecialNpc.LiveNpc_Moxie, "Moxie" },
+            { SpecialNpc.LiveNpc_Torana, "Torana" },
         };
 
         public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap {get; } = new Dictionary<TargetEffectKeyword, string>()
@@ -4536,6 +4566,7 @@
             { XpTableEnum.TypicalNoncombatSkill_CappedAt50, "Typical Non-combat Skill, Capped At 50" },
             { XpTableEnum.TypicalNoncombatSkill_FastTo50, "Typical Non-combat Skill, Fast To 50" },
             { XpTableEnum.AuxCombatSkill_FastTo50, "Aux Combat Skill, Fast To 50" },
+            { XpTableEnum.PerformanceDance, "Performance Dance" },
         };
     }
 }

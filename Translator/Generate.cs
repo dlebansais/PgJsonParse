@@ -1432,14 +1432,14 @@
             }
             else if (type == typeof(PgAttribute))
             {
-                Debug.Assert(//value == PgAttribute.COCKATRICEDEBUFF_COST_DELTA ||
-                             //value == PgAttribute.LAMIADEBUFF_COST_DELTA ||
-                             //value == PgAttribute.MONSTER_MATCH_OWNER_SPEED ||
-                             //value == PgAttribute.ARMOR_MITIGATION_RATIO ||
-                             //value == PgAttribute.SHOW_CLEANLINESS_INDICATORS ||
-                             //value == PgAttribute.SHOW_COMMUNITY_INDICATORS ||
-                             //value == PgAttribute.SHOW_PEACEABLENESS_INDICATORS ||
-                             //value == PgAttribute.SHOW_FAIRYENERGY_INDICATORS ||
+                Debug.Assert(value == PgAttribute.COCKATRICEDEBUFF_COST_DELTA ||
+                             value == PgAttribute.LAMIADEBUFF_COST_DELTA ||
+                             value == PgAttribute.MONSTER_MATCH_OWNER_SPEED ||
+                             value == PgAttribute.ARMOR_MITIGATION_RATIO ||
+                             value == PgAttribute.SHOW_CLEANLINESS_INDICATORS ||
+                             value == PgAttribute.SHOW_COMMUNITY_INDICATORS ||
+                             value == PgAttribute.SHOW_PEACEABLENESS_INDICATORS ||
+                             value == PgAttribute.SHOW_FAIRYENERGY_INDICATORS ||
                              value == PgAttribute.MONSTER_COMBAT_XP_VALUE);
 
                 return $"PgAttribute.{((PgAttribute)value).Key}";

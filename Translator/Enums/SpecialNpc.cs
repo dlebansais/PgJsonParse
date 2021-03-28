@@ -71,5 +71,8 @@
         LiveNpc_Lopsy,
         LiveNpc_Flopsy,
         LiveNpc_Boop,
+        LiveNpc_Raim,
+        LiveNpc_Moxie,
+        LiveNpc_Torana,
     }
 }

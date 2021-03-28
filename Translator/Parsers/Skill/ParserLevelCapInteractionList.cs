@@ -62,6 +62,9 @@
                 MergedSkill += Split[i];
             }
 
+            if (MergedSkill == "Dance")
+                MergedSkill = "Performance_Dance";
+
             PgSkill ParsedSkill = null;
             if (!ParserSkill.Parse((PgSkill valueSkill) => ParsedSkill = valueSkill, MergedSkill, parsedFile, parsedKey))
                 return false;
@@ -70,7 +73,7 @@
             if (!int.TryParse(Split[i], out OtherLevel) || OtherLevel <= 0)
                 return Program.ReportFailure($"Invalid level cap interaction '{interaction}'");
 
-            if (OtherLevel != level + 10)
+            if (OtherLevel != level + 10 && OtherLevel != level + 5)
                 return Program.ReportFailure("Inconsistent interaction level cap");
 
             PgLevelCapInteraction NewInteraction = new PgLevelCapInteraction();

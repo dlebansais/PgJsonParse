@@ -1004,5 +1004,11 @@
         Lemon,
         Sugarcane,
         Corn,
+        TrueSkinningKnife,
+        FaeDPImmunity,
+        EWindstepShoes,
+        EAmuletOfTheRuggedTraveler,
+        GolfSprint,
+        PennocsPendant,
     }
 }

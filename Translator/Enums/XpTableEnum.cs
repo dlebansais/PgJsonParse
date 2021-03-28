@@ -42,5 +42,6 @@
         TypicalNoncombatSkill_CappedAt50,
         TypicalNoncombatSkill_FastTo50,
         AuxCombatSkill_FastTo50,
+        PerformanceDance,
     }
 }

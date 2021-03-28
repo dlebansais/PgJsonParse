@@ -3,16 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PgJsonParse", "PgJsonParse\PgJsonParse.csproj", "{29094E98-4503-49A7-BD14-56A40866333F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818} = {BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PgJsonObjects", "PgJsonObjects\PgJsonObjects.csproj", "{2D9E943B-7D22-469B-8DBE-500D23877B55}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PgJsonReader", "PgJsonReader\PgJsonReader.csproj", "{001249F7-BF13-4C71-8592-BA1F32D53A69}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translator", "Translator\Translator.csproj", "{46DB8213-CD46-4940-ACCD-3D7756BB95C1}"
 EndProject
@@ -22,22 +13,10 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{29094E98-4503-49A7-BD14-56A40866333F}.Debug|x64.ActiveCfg = Debug|x64
-		{29094E98-4503-49A7-BD14-56A40866333F}.Debug|x64.Build.0 = Debug|x64
-		{29094E98-4503-49A7-BD14-56A40866333F}.Release|x64.ActiveCfg = Release|x64
-		{29094E98-4503-49A7-BD14-56A40866333F}.Release|x64.Build.0 = Release|x64
-		{2D9E943B-7D22-469B-8DBE-500D23877B55}.Debug|x64.ActiveCfg = Debug|x64
-		{2D9E943B-7D22-469B-8DBE-500D23877B55}.Debug|x64.Build.0 = Debug|x64
-		{2D9E943B-7D22-469B-8DBE-500D23877B55}.Release|x64.ActiveCfg = Release|x64
-		{2D9E943B-7D22-469B-8DBE-500D23877B55}.Release|x64.Build.0 = Release|x64
 		{001249F7-BF13-4C71-8592-BA1F32D53A69}.Debug|x64.ActiveCfg = Debug|x64
 		{001249F7-BF13-4C71-8592-BA1F32D53A69}.Debug|x64.Build.0 = Debug|x64
 		{001249F7-BF13-4C71-8592-BA1F32D53A69}.Release|x64.ActiveCfg = Release|x64
 		{001249F7-BF13-4C71-8592-BA1F32D53A69}.Release|x64.Build.0 = Release|x64
-		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Debug|x64.ActiveCfg = Debug|x64
-		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Debug|x64.Build.0 = Debug|x64
-		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Release|x64.ActiveCfg = Release|x64
-		{BF57B40A-0E23-4CD8-AF46-A9FE6BFB3818}.Release|x64.Build.0 = Release|x64
 		{46DB8213-CD46-4940-ACCD-3D7756BB95C1}.Debug|x64.ActiveCfg = Debug|x64
 		{46DB8213-CD46-4940-ACCD-3D7756BB95C1}.Debug|x64.Build.0 = Debug|x64
 		{46DB8213-CD46-4940-ACCD-3D7756BB95C1}.Release|x64.ActiveCfg = Release|x64

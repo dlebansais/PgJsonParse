@@ -19,7 +19,7 @@
             const string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
             Stopwatch Watch = new Stopwatch();
             string VersionContent = string.Empty;
-            WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string content) => VersionContent = content, out bool IsFound);
+            WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string content) => VersionContent = content, ignoreCache: true, out bool IsFound);
 
             if (!int.TryParse(VersionContent, out int Version))
             {
@@ -35,77 +35,77 @@
                 Directory.CreateDirectory(VersionPath);
             }
 
-            if (!ParseFile("abilities", typeof(PgAbility), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "abilities", typeof(PgAbility), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("advancementtables", typeof(PgAdvancementTable), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "advancementtables", typeof(PgAdvancementTable), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("ai", typeof(PgAI), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "ai", typeof(PgAI), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("areas", typeof(PgArea), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "areas", typeof(PgArea), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
                 return -1;
 
-            //AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
-            //AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
-            //AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
-            //AddHardCodedAttribute(PgAttribute.ARMOR_MITIGATION_RATIO);
-            //AddHardCodedAttribute(PgAttribute.SHOW_CLEANLINESS_INDICATORS);
-            //AddHardCodedAttribute(PgAttribute.SHOW_COMMUNITY_INDICATORS);
-            //AddHardCodedAttribute(PgAttribute.SHOW_PEACEABLENESS_INDICATORS);
-            //AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
-            //AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
+            AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
+            AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
+            AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
+            AddHardCodedAttribute(PgAttribute.ARMOR_MITIGATION_RATIO);
+            AddHardCodedAttribute(PgAttribute.SHOW_CLEANLINESS_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.SHOW_COMMUNITY_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.SHOW_PEACEABLENESS_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
             
-            if (!ParseFile("directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
+            if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
                 return -1;
 
-            if (!ParseFile("effects", typeof(PgEffect), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "effects", typeof(PgEffect), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("items", typeof(PgItem), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "items", typeof(PgItem), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("itemuses", typeof(PgItemUse), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "itemuses", typeof(PgItemUse), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("lorebookinfo", typeof(PgLoreBookInfo), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "lorebookinfo", typeof(PgLoreBookInfo), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("lorebooks", typeof(PgLoreBook), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "lorebooks", typeof(PgLoreBook), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("npcs", typeof(PgNpc), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "npcs", typeof(PgNpc), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("playertitles", typeof(PgPlayerTitle), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "playertitles", typeof(PgPlayerTitle), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("tsysclientinfo", typeof(PgPower), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "tsysclientinfo", typeof(PgPower), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("quests", typeof(PgQuest), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "quests", typeof(PgQuest), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("recipes", typeof(PgRecipe), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "recipes", typeof(PgRecipe), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("skills", typeof(PgSkill), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "skills", typeof(PgSkill), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("sources_abilities", typeof(PgSource), FileType.KeyedArray))
+            if (!ParseFile(Version, "sources_abilities", typeof(PgSource), FileType.KeyedArray))
                 return -1;
 
-            if (!ParseFile("sources_recipes", typeof(PgSource), FileType.KeyedArray))
+            if (!ParseFile(Version, "sources_recipes", typeof(PgSource), FileType.KeyedArray))
                 return -1;
 
-            if (!ParseFile("storagevaults", typeof(PgStorageVault), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "storagevaults", typeof(PgStorageVault), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile("xptables", typeof(PgXpTable), FileType.EmbeddedObjects))
+            if (!ParseFile(Version, "xptables", typeof(PgXpTable), FileType.EmbeddedObjects))
                 return -1;
 
             LastParsedFile = string.Empty;
@@ -216,6 +216,11 @@
             if (errorControl != ErrorControl.Normal)
                 return;
 
+            WriteFailureLine(parsedFile, parsedKey, text, callingFileLineNumber);
+        }
+
+        public static void WriteFailureLine(string parsedFile, string parsedKey, string text, int callingFileLineNumber)
+        {
             if (parsedFile.Length > 0 && parsedKey.Length > 0)
                 Debug.WriteLine($"Error in '{parsedKey}' of {parsedFile}.json");
             else
@@ -224,7 +229,7 @@
             Debug.WriteLine($"{text} (Line: {callingFileLineNumber})");
         }
 
-        private static bool ParseFile(string fileName, Type itemType, FileType fileType)
+        private static bool ParseFile(int version, string fileName, Type itemType, FileType fileType)
         {
             LastParsedFile = fileName;
 
@@ -232,10 +237,10 @@
 
             if (!File.Exists(FullPath))
             {
-                string RequestUri = $"http://client.projectgorgon.com/{fileName}.json";
+                string RequestUri = $"http://client.projectgorgon.com/v{version}/data/{fileName}.json";
                 Stopwatch Watch = new Stopwatch();
                 string FileContent = string.Empty;
-                WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string content) => FileContent = content, out bool IsFound);
+                WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string content) => FileContent = content, ignoreCache: false, out bool IsFound);
 
                 if (IsFound)
                 {
@@ -838,12 +843,12 @@
             string NpcName = ToWikiNpcName(npc.ObjectName);
 
             string Address = $"http://wiki.projectgorgon.com/wiki/{NpcName}/Items_sold";
-            WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindSales(isFound, Address, content, false, npc, itemList), out bool IsFound);
+            WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindSales(isFound, Address, content, false, npc, itemList), ignoreCache: false, out bool IsFound);
 
             if (!IsFound)
             {
                 Address = $"http://wiki.projectgorgon.com/wiki/{NpcName}";
-                WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindSales(isFound, Address, content, true, npc, itemList), out IsFound);
+                WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindSales(isFound, Address, content, true, npc, itemList), ignoreCache: false, out IsFound);
             }
 
             if (!IsFound)
@@ -1045,7 +1050,7 @@
             string NpcName = ToWikiNpcName(npc.ObjectName);
 
             string Address = $"http://wiki.projectgorgon.com/wiki/{NpcName}";
-            WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindBarters(isFound, Address, content, npc, itemList), out bool IsFound);
+            WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindBarters(isFound, Address, content, npc, itemList), ignoreCache: false, out bool IsFound);
 
             if (!IsFound)
                 Debug.WriteLine($"{npc} NOT FOUND in wiki");

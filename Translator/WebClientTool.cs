@@ -14,12 +14,12 @@
         #region Download Text
         public delegate void DownloadTextResultHandler(bool isFound, string content);
 
-        public static void DownloadText(string address, Stopwatch watch, DownloadTextResultHandler callback, out bool isFound)
+        public static void DownloadText(string address, Stopwatch watch, DownloadTextResultHandler callback, bool ignoreCache, out bool isFound)
         {
             string FileName = LocalFileName(address);
             string FilePath = Path.GetDirectoryName(FileName);
 
-            if (File.Exists(FileName))
+            if (!ignoreCache && File.Exists(FileName))
             {
                 using (FileStream Stream = new FileStream(FileName, FileMode.Open, FileAccess.Read))
                 {

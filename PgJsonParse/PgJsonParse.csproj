@@ -171,10 +171,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PgJsonObjects\PgJsonObjects.csproj">
-      <Project>{2d9e943b-7d22-469b-8dbe-500d23877b55}</Project>
-      <Name>PgJsonObjects</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Presentation\Presentation.csproj">
       <Project>{bf57b40a-0e23-4cd8-af46-a9fe6bfb3818}</Project>
       <Name>Presentation</Name>

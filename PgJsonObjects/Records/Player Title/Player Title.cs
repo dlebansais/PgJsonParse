@@ -16,6 +16,7 @@ namespace PgJsonObjects
             { "Title_5211", "GuideEvent_IKnowBunFu" },
             { "Title_5208", "GuideEvent_SaviorOfTheGoats" },
             { "Title_5216", "GuideEvent_AntiSaviorOfTheGoats" },
+            { "Title_5219", "GuideEvent_ALittleFruity" },
         };
 
         public static readonly Dictionary<string, int> TitleToKeyMap = new Dictionary<string, int>()
@@ -27,6 +28,7 @@ namespace PgJsonObjects
             { "GuideEvent_IKnowBunFu", 5211 },
             { "GuideEvent_SaviorOfTheGoats", 5208 },
             { "GuideEvent_AntiSaviorOfTheGoats", 5216 },
+            { "GuideEvent_ALittleFruity", 5219 },
         };
 
         #region Direct Properties

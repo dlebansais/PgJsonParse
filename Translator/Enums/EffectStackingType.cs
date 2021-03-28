@@ -329,5 +329,6 @@
         RiShinShrine_Health,
         RiShinShrine_Power,
         RiShinShrine_Armor,
+        GolfSprint,
     }
 }

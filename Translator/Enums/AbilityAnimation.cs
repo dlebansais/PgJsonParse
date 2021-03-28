@@ -154,5 +154,17 @@
         Attack_Priest_GroupHeal,
         Attack_Priest_Blast,
         Attack_Priest_Flamestrike,
+        Dance1B,
+        Dance2B,
+        Dance3B,
+        Dance4B,
+        Dance5B,
+        Dance6B,
+        Dance1C,
+        Dance2C,
+        Dance3C,
+        Dance4C,
+        Dance5C,
+        Dance6C,
     }
 }

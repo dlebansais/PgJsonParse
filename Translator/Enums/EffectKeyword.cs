@@ -276,5 +276,8 @@
         VanityPet,
         SpawnPremonition_Plants_10sec,
         CryogenicFreeze,
+        FaeDPImmunity,
+        LiveEventEffect,
+        LiveEvent_Lemons,
     }
 }

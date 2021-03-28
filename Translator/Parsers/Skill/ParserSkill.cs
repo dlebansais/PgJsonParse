@@ -241,6 +241,11 @@
         {
             npcList = new PgNpcLocationCollection();
 
+            if (hint.EndsWith("learn a new dance move."))
+            {
+                return true;
+            }
+
             hint = hint.Replace(" during a Full Moon,", "");
 
             string Pattern;
