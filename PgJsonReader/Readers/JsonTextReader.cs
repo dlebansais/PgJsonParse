@@ -75,7 +75,7 @@
                     Value = null;
                     return Token = Json.Token.ArrayEnd;
                 }
-                else if (CharacterRead != ',' && CharacterRead != ':' && !Char.IsWhiteSpace(CharacterRead))
+                else if (CharacterRead != ',' && CharacterRead != ':' && !char.IsWhiteSpace(CharacterRead))
                 {
                     LastIsKey = false;
                     Builder.Clear();
@@ -92,7 +92,7 @@
                         else
                             break;
                     }
-                    
+
                     var StringRead = Builder.ToString();
 
                     if (int.TryParse(StringRead, out int AsInteger))
@@ -163,10 +163,6 @@
         #endregion
 
         #region Implementation of IDisposable
-        /// <summary>
-        /// Called when an object should release its resources.
-        /// </summary>
-        /// <param name="isDisposing">Indicates if resources must be disposed now.</param>
         protected virtual void Dispose(bool isDisposing)
         {
             if (!IsDisposed)

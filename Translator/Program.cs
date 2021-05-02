@@ -1,25 +1,24 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
-    using System.Runtime.CompilerServices;
     using System.Reflection;
-    using System.Collections;
-    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
     using System.Text;
+    using PgJsonReader;
+    using PgObjects;
 
     public class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             const string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
             Stopwatch Watch = new Stopwatch();
             string VersionContent = string.Empty;
-            WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string content) => VersionContent = content, ignoreCache: true, out bool IsFound);
+            WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string? content) => VersionContent = content!, ignoreCache: true, out bool IsFound);
 
             if (!int.TryParse(VersionContent, out int Version))
             {
@@ -59,7 +58,7 @@
             AddHardCodedAttribute(PgAttribute.SHOW_PEACEABLENESS_INDICATORS);
             AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
             AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
-            
+
             if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
                 return -1;
 
@@ -183,9 +182,9 @@
             AttributeContextTable.Add(staticAttribute.Key, Context);
         }
 
-        public static string VersionPath { get; set; }
-        public static string LastParsedFile { get; set; }
-        public static string LastParsedKey { get; set; }
+        public static string VersionPath { get; set; } = string.Empty;
+        public static string LastParsedFile { get; set; } = string.Empty;
+        public static string LastParsedKey { get; set; } = string.Empty;
 
         public static bool ReportFailure(string text, [CallerLineNumber] int callingFileLineNumber = 0)
         {
@@ -240,7 +239,7 @@
                 string RequestUri = $"http://client.projectgorgon.com/v{version}/data/{fileName}.json";
                 Stopwatch Watch = new Stopwatch();
                 string FileContent = string.Empty;
-                WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string content) => FileContent = content, ignoreCache: false, out bool IsFound);
+                WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string? content) => FileContent = content!, ignoreCache: false, out bool IsFound);
 
                 if (IsFound)
                 {
@@ -249,7 +248,6 @@
                     Writer.Write(FileContent);
                 }
             }
-
 
             using FileStream Stream = new FileStream(FullPath, FileMode.Open, FileAccess.Read);
             JsonTextReader Reader = new JsonTextReader(Stream);
@@ -501,7 +499,7 @@
                 case Json.Token.String:
                     if (fieldType != typeof(string) && fieldType != typeof(StringOrInteger))
                     {
-                        string StringValue = (string)reader.CurrentValue;
+                        string StringValue = (string)reader.CurrentValue!;
                         if (fieldType != typeof(int) || !int.TryParse(StringValue, out _))
                             return ReportFailure($"{fieldType} expected for {fieldName} but file contains a string");
                     }
@@ -521,7 +519,7 @@
                     FieldTable ArrayItemTable;
 
                     if (ElementType == typeof(bool) || ElementType == typeof(int) || ElementType == typeof(float) || ElementType == typeof(string))
-                        ArrayItemTable = null;
+                        ArrayItemTable = null!;
                     else if (!FieldTableStore.GetTable(ElementType, out ArrayItemTable))
                         return ReportFailure($"Table doesn't contain type {fieldType} expected for {fieldName}");
 
@@ -616,11 +614,11 @@
         {
             Debug.Assert(item != null);
 
-            PropertyInfo Property = item.GetType().GetProperty("Key");
-            Debug.Assert(Property != null);
-            Debug.Assert(Property.PropertyType == typeof(string));
+            Type ItemType = item?.GetType()!;
+            PropertyInfo Property = ItemType.GetProperty("Key")!;
+            Debug.Assert(Property != null && Property.PropertyType == typeof(string));
 
-            Property.SetValue(item, key);
+            Property?.SetValue(item, key);
         }
 
         private static void FindLinks(List<object> objectList)
@@ -657,80 +655,82 @@
                 }
                 else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
                 {
-                    IDictionary ObjectDictionary = Property.GetValue(nestedItem) as IDictionary;
+                    IDictionary ObjectDictionary = (IDictionary)Property.GetValue(nestedItem);
                     Type DictionaryType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
 
                     Debug.Assert(DictionaryType.IsGenericType);
                     Type[] GenericArguments = DictionaryType.GetGenericArguments();
                     Debug.Assert(GenericArguments.Length == 2);
-                    Type ItemType = GenericArguments[0];
-                    Debug.Assert(ItemType != null);
-
-                    if (ItemType == typeof(string) || ItemType == typeof(List<float>) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
+                    Type ItemType = GenericArguments[0]!;
+                    if (ItemType != null)
                     {
-                    }
-                    else if (ItemType.BaseType == typeof(PgObject))
-                    {
-                        foreach (PgObject Reference in ObjectDictionary.Keys)
+                        if (ItemType == typeof(string) || ItemType == typeof(List<float>) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
                         {
-                            Debug.Assert(Reference != null);
-                            AddLinkKey(itemKey, Reference);
                         }
-                    }
-                    else if (ItemType.Name.StartsWith("Pg"))
-                    {
-                        foreach (object Key in ObjectDictionary.Keys)
+                        else if (ItemType.BaseType == typeof(PgObject))
                         {
-                            object Reference = ObjectDictionary[Key];
-
-                            Debug.Assert(Reference != null);
-
-                            if (Reference is PgObject AsLinkable)
-                                AddLinkKey(itemKey, AsLinkable);
-                            else
-                                FindLinks(itemKey, Reference);
+                            foreach (PgObject Reference in ObjectDictionary.Keys)
+                            {
+                                Debug.Assert(Reference != null);
+                                AddLinkKey(itemKey, Reference!);
+                            }
                         }
-                    }
-                    else
-                    {
+                        else if (ItemType.Name.StartsWith("Pg"))
+                        {
+                            foreach (object Key in ObjectDictionary.Keys)
+                            {
+                                object Reference = ObjectDictionary[Key];
+
+                                Debug.Assert(Reference != null);
+
+                                if (Reference is PgObject AsLinkable)
+                                    AddLinkKey(itemKey, AsLinkable);
+                                else
+                                    FindLinks(itemKey, Reference!);
+                            }
+                        }
+                        else
+                        {
+                        }
                     }
                 }
                 else if (PropertyType.GetInterface(typeof(ICollection).Name) != null)
                 {
-                    ICollection ObjectCollection = Property.GetValue(nestedItem) as ICollection;
+                    ICollection ObjectCollection = (ICollection)Property.GetValue(nestedItem);
                     Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
 
                     Debug.Assert(CollectionType.IsGenericType);
                     Type[] GenericArguments = CollectionType.GetGenericArguments();
                     Debug.Assert(GenericArguments.Length == 1);
-                    Type ItemType = GenericArguments[0];
-                    Debug.Assert(ItemType != null);
-
-                    if (ItemType == typeof(string) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
+                    Type ItemType = GenericArguments[0]!;
+                    if (ItemType != null)
                     {
-                    }
-                    else if (ItemType.BaseType == typeof(PgObject))
-                    {
-                        foreach (PgObject Reference in ObjectCollection)
+                        if (ItemType == typeof(string) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
                         {
-                            Debug.Assert(Reference != null);
-                            AddLinkKey(itemKey, Reference);
                         }
-                    }
-                    else if (ItemType.Name.StartsWith("Pg"))
-                    {
-                        foreach (object Reference in ObjectCollection)
+                        else if (ItemType.BaseType == typeof(PgObject))
                         {
-                            Debug.Assert(Reference != null);
-
-                            if (Reference is PgObject AsLinkable)
-                                AddLinkKey(itemKey, AsLinkable);
-                            else
-                                FindLinks(itemKey, Reference);
+                            foreach (PgObject Reference in ObjectCollection)
+                            {
+                                Debug.Assert(Reference != null);
+                                AddLinkKey(itemKey, Reference!);
+                            }
                         }
-                    }
-                    else
-                    {
+                        else if (ItemType.Name.StartsWith("Pg"))
+                        {
+                            foreach (object Reference in ObjectCollection)
+                            {
+                                Debug.Assert(Reference != null);
+
+                                if (Reference is PgObject AsLinkable)
+                                    AddLinkKey(itemKey, AsLinkable);
+                                else
+                                    FindLinks(itemKey, Reference!);
+                            }
+                        }
+                        else
+                        {
+                        }
                     }
                 }
                 else if (PropertyType.Name.StartsWith("Pg"))
@@ -747,7 +747,7 @@
 
         private static string GetItemKey(PgObject item)
         {
-            string Prefix = null;
+            string Prefix = null!;
 
             switch (item)
             {
@@ -843,19 +843,19 @@
             string NpcName = ToWikiNpcName(npc.ObjectName);
 
             string Address = $"http://wiki.projectgorgon.com/wiki/{NpcName}/Items_sold";
-            WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindSales(isFound, Address, content, false, npc, itemList), ignoreCache: false, out bool IsFound);
+            WebClientTool.DownloadText(Address, null, (bool isFound, string? content) => FindSales(isFound, Address, content, false, npc, itemList), ignoreCache: false, out bool IsFound);
 
             if (!IsFound)
             {
                 Address = $"http://wiki.projectgorgon.com/wiki/{NpcName}";
-                WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindSales(isFound, Address, content, true, npc, itemList), ignoreCache: false, out IsFound);
+                WebClientTool.DownloadText(Address, null, (bool isFound, string? content) => FindSales(isFound, Address, content, true, npc, itemList), ignoreCache: false, out IsFound);
             }
 
             if (!IsFound)
                 Debug.WriteLine($"{npc} NOT FOUND in wiki");
         }
 
-        private static void FindSales(bool isFound, string address, string content, bool saleSectionOnly, PgNpc npc, List<PgItem> itemList)
+        private static void FindSales(bool isFound, string address, string? content, bool saleSectionOnly, PgNpc npc, List<PgItem> itemList)
         {
             if (content == null || !isFound)
                 return;
@@ -865,7 +865,7 @@
 
             int StartIndex = 0;
 
-            for (;;)
+            for (; ;)
             {
                 string Pattern = "<div style=\"display:table-cell; vertical-align:middle\">";
                 StartIndex = SaleSection.IndexOf(Pattern, StartIndex);
@@ -893,7 +893,7 @@
 
                 if (ItemName.Length > 0)
                 {
-                    PgItem ItemMatch = null;
+                    PgItem? ItemMatch = null;
 
                     foreach (PgItem Item in itemList)
                         if (Item.ObjectName == ItemName)
@@ -925,14 +925,14 @@
 
         private static void WriteSaleLine(string text)
         {
-            //Debug.WriteLine(text);
+            // Debug.WriteLine(text);
         }
 
         private static bool FindSaleSection(string content, bool saleSectionOnly, out string saleSection)
         {
             if (saleSectionOnly)
             {
-                saleSection = null;
+                saleSection = null!;
                 string Pattern = "id=\"Sells\">Sells";
 
                 int StartIndex = content.IndexOf(Pattern);
@@ -1050,13 +1050,13 @@
             string NpcName = ToWikiNpcName(npc.ObjectName);
 
             string Address = $"http://wiki.projectgorgon.com/wiki/{NpcName}";
-            WebClientTool.DownloadText(Address, null, (bool isFound, string content) => FindBarters(isFound, Address, content, npc, itemList), ignoreCache: false, out bool IsFound);
+            WebClientTool.DownloadText(Address, null, (bool isFound, string? content) => FindBarters(isFound, Address, content, npc, itemList), ignoreCache: false, out bool IsFound);
 
             if (!IsFound)
                 Debug.WriteLine($"{npc} NOT FOUND in wiki");
         }
 
-        private static void FindBarters(bool isFound, string address, string content, PgNpc npc, List<PgItem> itemList)
+        private static void FindBarters(bool isFound, string address, string? content, PgNpc npc, List<PgItem> itemList)
         {
             if (content == null || !isFound)
                 return;
@@ -1067,15 +1067,14 @@
             List<TagTableRow> RowList = new List<TagTableRow>();
             for (int i = 1; i < BarterSection.NestedTagList.Count; i++)
             {
-                TagTableRow AsRow = BarterSection.NestedTagList[i] as TagTableRow;
-                Debug.Assert(AsRow != null);
+                TagTableRow AsRow = (TagTableRow)BarterSection.NestedTagList[i];
 
                 RowList.Add(AsRow);
             }
 
-            TagTableCell GiveCell = null;
-            TagTableCell ReceiveCell = null;
-            PgNpcBarter NewBarter = null;
+            TagTableCell? GiveCell = null;
+            TagTableCell? ReceiveCell = null;
+            PgNpcBarter NewBarter = null!;
             int GiveRowSpan = 1;
             int ReceiveRowSpan = 1;
             bool IsMultiBarter = IsNpcMultiBarter(npc.Name);
@@ -1101,15 +1100,15 @@
                     if (GiveRowSpan > 1)
                     {
                         GiveCell = null;
-                        ReceiveCell = Row.NestedTagList[0] as TagTableCell;
+                        ReceiveCell = (TagTableCell)Row.NestedTagList[0];
                     }
                     else
                     {
-                        GiveCell = Row.NestedTagList[0] as TagTableCell;
+                        GiveCell = (TagTableCell)Row.NestedTagList[0];
                         ReceiveCell = null;
                     }
 
-                    if (IsMultiBarter)
+                    if (IsMultiBarter && NewBarter != null)
                     {
                         Dictionary<PgItem, int> GiveTable = NewBarter.GiveTable;
                         Dictionary<PgItem, int> ReceiveTable = NewBarter.ReceiveTable;
@@ -1151,12 +1150,10 @@
                 }
                 else
                 {
-                    GiveCell = Row.NestedTagList[0] as TagTableCell;
-                    Debug.Assert(GiveCell != null);
+                    GiveCell = (TagTableCell)Row.NestedTagList[0];
                     Debug.Assert(GiveCell.NestedTagList.Count > 0);
 
-                    ReceiveCell = Row.NestedTagList[1] as TagTableCell;
-                    Debug.Assert(ReceiveCell != null);
+                    ReceiveCell = (TagTableCell)Row.NestedTagList[1];
                     Debug.Assert(ReceiveCell.NestedTagList.Count > 0);
 
                     GiveRowSpan = 1;
@@ -1206,11 +1203,11 @@
                             continue;
                         }
 
-                        TagSection GiveSectionItem = GiveCell.NestedTagList[TagIndex] as TagSection;
+                        TagSection GiveSectionItem = (TagSection)GiveCell.NestedTagList[TagIndex];
                         Debug.Assert(GiveSectionItem != null);
 
                         PgItem Item;
-                        GetItem(GiveSectionItem, itemList, out Item);
+                        GetItem(GiveSectionItem!, itemList, out Item);
                         Debug.Assert(Item != null);
 
                         int MinCount = 1;
@@ -1220,7 +1217,7 @@
                         if (MinCount == 0)
                             MinCount = 1;
 
-                        NewBarter.GiveTable.Add(Item, MinCount + MaxCount * 100000);
+                        NewBarter?.GiveTable.Add(Item!, MinCount + (MaxCount * 100000));
                     }
                 }
 
@@ -1235,11 +1232,11 @@
                         if (ReceiveCell.NestedTagList[TagIndex] is TagSuperscript)
                             continue;
 
-                        TagSection ReceiveSectionItem = ReceiveCell.NestedTagList[TagIndex] as TagSection;
+                        TagSection ReceiveSectionItem = (TagSection)ReceiveCell.NestedTagList[TagIndex];
                         Debug.Assert(ReceiveSectionItem != null);
 
                         PgItem Item;
-                        GetItem(ReceiveSectionItem, itemList, out Item);
+                        GetItem(ReceiveSectionItem!, itemList, out Item);
 
                         if (Item != null)
                         {
@@ -1250,7 +1247,7 @@
                             if (MinCount == 0)
                                 MinCount = 1;
 
-                            NewBarter.ReceiveTable.Add(Item, MinCount + MaxCount * 100000);
+                            NewBarter?.ReceiveTable.Add(Item, MinCount + (MaxCount * 100000));
                         }
                         else
                             Debug.WriteLine($"Item NOT FOUND in wiki");
@@ -1338,12 +1335,12 @@
 
         private static void WriteBarterLine(string text)
         {
-            //Debug.WriteLine(text);
+            // Debug.WriteLine(text);
         }
 
         private static bool GetItem(TagSection sectionTag, List<PgItem> itemList, out PgItem item)
         {
-            item = null;
+            item = null!;
 
             foreach (Tag NestedTag in sectionTag.NestedTagList)
             {
@@ -1368,7 +1365,7 @@
             return false;
         }
 
-        private static void ParseRowSpan(TagTableCell cell, ref int value)
+        private static void ParseRowSpan(TagTableCell? cell, ref int value)
         {
             if (cell == null)
                 return;
@@ -1390,14 +1387,14 @@
 
         private static bool FindBarterSection(string content, out HtmlSection barterSection)
         {
-            barterSection = null;
+            barterSection = null!;
             string Pattern = "id=\"Bartering\">Bartering";
 
             int StartIndex = content.IndexOf(Pattern);
             if (StartIndex < 0)
                 return false;
 
-            barterSection = HtmlSection.FromPage(content, "Give", "Receive");
+            barterSection = HtmlSection.FromPage(content, "Give", "Receive")!;
 
             if (barterSection == null)
             {
@@ -1410,7 +1407,7 @@
         {
             Dictionary<string, string> WikiNpcNameTable = new Dictionary<string, string>()
             {
-                //{ "*Flia", "Flia" },
+                // { "*Flia", "Flia" },
                 { "Hulon the Hoarder", "Hulon" },
             };
 

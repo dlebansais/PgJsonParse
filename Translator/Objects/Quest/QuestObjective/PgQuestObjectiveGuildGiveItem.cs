@@ -2,7 +2,7 @@
 {
     public class PgQuestObjectiveGuildGiveItem : PgQuestObjective
     {
-        public PgNpcLocation DeliverNpc { get; set; }
-        public PgItem Item { get; set; }
+        public PgNpcLocation DeliverNpc { get; set; } = null!;
+        public PgItem Item { get; set; } = null!;
     }
 }

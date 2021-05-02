@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserStorageFavorLevel : Parser
     {
@@ -11,15 +11,15 @@
             return new PgStorageFavorLevel();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgStorageFavorLevel AsPgStorageFavorLevel))
+            if (item is not PgStorageFavorLevel AsPgStorageFavorLevel)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgStorageFavorLevel, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgStorageFavorLevel, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgStorageFavorLevel item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgStorageFavorLevel item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             foreach (KeyValuePair<string, object> Entry in contentTable)
             {

@@ -1,11 +1,11 @@
 ﻿namespace Translator
 {
-    using PgJsonReader;
-    using PgObjects;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParsingContext
     {
@@ -49,14 +49,14 @@
         public List<object> ItemCollection { get; } = new List<object>();
         public Json.Token LastItemType { get; private set; } = Json.Token.Null;
 
-        public bool SetContent(string key, object value, Json.Token jsonType)
+        public bool SetContent(string key, object? value, Json.Token jsonType)
         {
             if (ContentTable.ContainsKey(key))
                 return Program.ReportFailure($"Key '{key}' already parsed for object");
 
             Debug.Assert(!ContentTypeTable.ContainsKey(key));
 
-            ContentTable.Add(key, value);
+            ContentTable.Add(key, value!);
             ContentTypeTable.Add(key, jsonType);
 
             return true;
@@ -95,9 +95,9 @@
             return true;
         }
 
-        public bool RecordContextInStringTable(Dictionary<Type, Dictionary<string, ParsingContext>> objectTable, object key, ErrorControl errorControl)
+        public bool RecordContextInStringTable(Dictionary<Type, Dictionary<string, ParsingContext>> objectTable, object? key, ErrorControl errorControl)
         {
-            if (!(key is string KeyString))
+            if (key is not string KeyString)
                 return Program.ReportFailure($"Key '{key}' was expected to be a string");
 
             if (!objectTable.ContainsKey(ObjectType))
@@ -117,9 +117,9 @@
             return true;
         }
 
-        public bool RecordContextInIntTable(Dictionary<Type, Dictionary<int, ParsingContext>> objectTable, object key)
+        public bool RecordContextInIntTable(Dictionary<Type, Dictionary<int, ParsingContext>> objectTable, object? key)
         {
-            if (!(key is int KeyInt))
+            if (key is not int KeyInt)
                 return Program.ReportFailure($"Key '{key}' was expected to be an int");
 
             if (!objectTable.ContainsKey(ObjectType))
@@ -136,12 +136,12 @@
 
         public bool FinishItem()
         {
-            object UpdatedItem = Item;
+            object UpdatedItem = Item!;
 
-            if (!Parser.FinishItem(ref UpdatedItem, ObjectKey, ContentTable, ContentTypeTable, ItemCollection, LastItemType, ParsedFile, ParsedKey))
+            if (!Parser.FinishItem(ref UpdatedItem!, ObjectKey, ContentTable, ContentTypeTable, ItemCollection, LastItemType, ParsedFile, ParsedKey))
                 return false;
 
-            Item = UpdatedItem;
+            Item = UpdatedItem!;
             return true;
         }
 

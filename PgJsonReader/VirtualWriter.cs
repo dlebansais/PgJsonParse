@@ -9,7 +9,7 @@
         #region Init
         public VirtualWriter()
         {
-            Content = "";
+            Content = string.Empty;
         }
         #endregion
 
@@ -60,10 +60,6 @@
         #endregion
 
         #region Implementation of IDisposable
-        /// <summary>
-        /// Called when an object should release its resources.
-        /// </summary>
-        /// <param name="isDisposing">Indicates if resources must be disposed now.</param>
         protected virtual void Dispose(bool isDisposing)
         {
             if (!IsDisposed)

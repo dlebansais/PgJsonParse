@@ -1,15 +1,15 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserQuestRequirement : Parser
     {
         public override object CreateItem()
         {
-            return null;
+            return null!;
         }
 
         private static Dictionary<QuestRequirementType, VariadicObjectHandler> HandlerTable = new Dictionary<QuestRequirementType, VariadicObjectHandler>()
@@ -54,7 +54,7 @@
 
         private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (item != null)
                 return Program.ReportFailure("Unexpected failure");
@@ -79,7 +79,7 @@
             List<string> KnownFieldList = KnownFieldTable[requirementType];
             List<string> UsedFieldList = new List<string>();
 
-            if (!Handler(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
+            if (!Handler(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
                 return false;
 
             if (!HandledTable.ContainsKey(requirementType))
@@ -98,7 +98,7 @@
             return Finalizer<QuestRequirementType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
         }
 
-        private static bool FinishItemMinFavorLevel(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemMinFavorLevel(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementMinFavorLevel NewItem = new PgQuestRequirementMinFavorLevel();
 
@@ -144,7 +144,7 @@
                 return false;
         }
 
-        private static bool FinishItemRace(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemRace(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             bool Result = true;
             Race AllowedRace = Race.Internal_None;
@@ -208,7 +208,7 @@
                 return false;
         }
 
-        private static bool FinishItemQuestCompleted(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemQuestCompleted(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementQuestCompleted NewItem = new PgQuestRequirementQuestCompleted();
 
@@ -251,7 +251,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsWarden(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsWarden(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementIsWarden NewItem = new PgQuestRequirementIsWarden();
 
@@ -291,7 +291,7 @@
                 return false;
         }
 
-        private static bool FinishItemAreaEventOn(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemAreaEventOn(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementAreaEventOn NewItem = new PgQuestRequirementAreaEventOn();
 
@@ -381,7 +381,7 @@
             return Program.ReportFailure(parsedFile, parsedKey, $"Unknown area '{AreaString}'");
         }
 
-        private static bool FinishItemMinSkillLevel(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemMinSkillLevel(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementMinSkillLevel NewItem = new PgQuestRequirementMinSkillLevel();
 
@@ -427,7 +427,7 @@
                 return false;
         }
 
-        private static bool FinishItemMoonPhase(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemMoonPhase(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementMoonPhase NewItem = new PgQuestRequirementMoonPhase();
 
@@ -470,7 +470,7 @@
                 return false;
         }
 
-        private static bool FinishItemHangOutCompleted(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHangOutCompleted(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementHangOutCompleted NewItem = new PgQuestRequirementHangOutCompleted();
 
@@ -513,7 +513,7 @@
                 return false;
         }
 
-        private static bool FinishItemInteractionFlagSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemInteractionFlagSet(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementInteractionFlagSet NewItem = new PgQuestRequirementInteractionFlagSet();
 
@@ -556,7 +556,7 @@
                 return false;
         }
 
-        private static bool FinishItemOr(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemOr(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementOr NewItem = new PgQuestRequirementOr();
 
@@ -599,7 +599,7 @@
                 return false;
         }
 
-        private static bool FinishItemGuildQuestCompleted(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemGuildQuestCompleted(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementGuildQuestCompleted NewItem = new PgQuestRequirementGuildQuestCompleted();
 
@@ -642,7 +642,7 @@
                 return false;
         }
 
-        private static bool FinishItemHasEffectKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHasEffectKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementHasEffectKeyword NewItem = new PgQuestRequirementHasEffectKeyword();
 
@@ -685,7 +685,7 @@
                 return false;
         }
 
-        private static bool FinishItemRuntimeBehaviorRuleSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemRuntimeBehaviorRuleSet(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementRuntimeBehaviorRuleSet NewItem = new PgQuestRequirementRuntimeBehaviorRuleSet();
 
@@ -744,7 +744,7 @@
             return true;
         }
 
-        private static bool FinishItemIsLongtimeAnimal(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsLongtimeAnimal(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementIsLongtimeAnimal NewItem = new PgQuestRequirementIsLongtimeAnimal();
 
@@ -784,7 +784,7 @@
                 return false;
         }
 
-        private static bool FinishItemInteractionFlagUnset(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemInteractionFlagUnset(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementInteractionFlagUnset NewItem = new PgQuestRequirementInteractionFlagUnset();
 
@@ -827,7 +827,7 @@
                 return false;
         }
 
-        private static bool FinishItemMinFavor(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemMinFavor(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRequirementMinFavorLevel NewItem = new PgQuestRequirementMinFavorLevel();
 

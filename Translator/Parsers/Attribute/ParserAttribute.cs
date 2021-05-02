@@ -1,9 +1,9 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserAttribute : Parser
     {
@@ -12,15 +12,15 @@
             return new PgAttribute();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgAttribute AsPgAttribute))
+            if (item is not PgAttribute AsPgAttribute)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgAttribute, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgAttribute, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgAttribute item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgAttribute item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 

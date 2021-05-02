@@ -2,6 +2,6 @@
 {
     public class PgSourceTraining : PgSource
     {
-        public PgNpcLocation Npc { get; set; }
+        public PgNpcLocation Npc { get; set; } = null!;
     }
 }

@@ -2,6 +2,6 @@
 {
     public class PgQuestRewardAbility : PgQuestReward
     {
-        public PgAbility Ability { get; set; }
+        public PgAbility Ability { get; set; } = null!;
     }
 }

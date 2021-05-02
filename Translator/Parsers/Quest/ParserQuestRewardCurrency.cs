@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserQuestRewardCurrency : Parser
     {
@@ -11,15 +11,15 @@
             return new PgQuestRewardCurrency();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgQuestRewardCurrency AsPgQuestRewardCurrency))
+            if (item is not PgQuestRewardCurrency AsPgQuestRewardCurrency)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgQuestRewardCurrency, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgQuestRewardCurrency, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgQuestRewardCurrency item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgQuestRewardCurrency item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (contentTable.Count != 1)
                 return Program.ReportFailure(parsedFile, parsedKey, "Invalid currency reward object");

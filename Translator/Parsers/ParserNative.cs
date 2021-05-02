@@ -4,7 +4,7 @@
     {
         public override object CreateItem()
         {
-            return null;
+            return null!;
         }
     }
 }

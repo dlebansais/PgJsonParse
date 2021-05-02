@@ -1,15 +1,15 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserStorageRequirement : Parser
     {
         public override object CreateItem()
         {
-            return null;
+            return null!;
         }
 
         private static Dictionary<StorageRequirementType, VariadicObjectHandler> HandlerTable = new Dictionary<StorageRequirementType, VariadicObjectHandler>()
@@ -28,7 +28,7 @@
 
         private static Dictionary<StorageRequirementType, List<string>> HandledTable = new Dictionary<StorageRequirementType, List<string>>();
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (item != null)
                 return Program.ReportFailure("Unexpected failure");
@@ -53,7 +53,7 @@
             List<string> KnownFieldList = KnownFieldTable[requirementType];
             List<string> UsedFieldList = new List<string>();
 
-            if (!Handler(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
+            if (!Handler(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
                 return false;
 
             if (!HandledTable.ContainsKey(requirementType))
@@ -72,7 +72,7 @@
             return Finalizer<StorageRequirementType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
         }
 
-        private static bool FinishItemInteractionFlagSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemInteractionFlagSet(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgStorageRequirementInteractionFlagSet NewItem = new PgStorageRequirementInteractionFlagSet();
 
@@ -115,7 +115,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsLongtimeAnimal(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsLongtimeAnimal(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgStorageRequirementIsLongtimeAnimal NewItem = new PgStorageRequirementIsLongtimeAnimal();
 
@@ -155,7 +155,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsWarden(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsWarden(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgStorageRequirementIsWarden NewItem = new PgStorageRequirementIsWarden();
 

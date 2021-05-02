@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserPowerTier : Parser
     {
@@ -11,15 +11,15 @@
             return new PgPowerTier();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgPowerTier AsPgPowerTier))
+            if (item is not PgPowerTier AsPgPowerTier)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgPowerTier, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgPowerTier, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgPowerTier item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgPowerTier item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -86,7 +86,6 @@
             {
                 if (!ParseItemEffectSimple(effectDescription, parsedFile, parsedKey, out PowerEffect))
                     return Program.ReportFailure(parsedFile, parsedKey, $"Invalid attribute format '{effectDescription}'");
-
             }
 
             ParsingContext.AddSuplementaryObject(PowerEffect);
@@ -96,7 +95,7 @@
 
         private static bool ParseItemEffectAttribute(string effectString, string parsedFile, string parsedKey, out PgPowerEffect powerEffect)
         {
-            powerEffect = null;
+            powerEffect = null!;
 
             string[] Split = effectString.Split('{');
             if (Split.Length != 2 && Split.Length != 3)
@@ -115,7 +114,7 @@
             if (AttributeName.Length == 0 || AttributeEffect.Length == 0)
                 return false;
 
-            PgAttribute ParsedAttribute = null;
+            PgAttribute ParsedAttribute = null!;
             if (!Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, AttributeName))
                 return false;
 
@@ -137,7 +136,7 @@
             {
                 string AttributeSkill = Split[2];
 
-                PgSkill ParsedSkill = null;
+                PgSkill ParsedSkill = null!;
 
                 if (AttributeSkill == "AnySkill")
                     ParsedSkill = PgSkill.AnySkill;
@@ -159,7 +158,7 @@
             List<int> IconIdList = new List<int>();
             string IconIdPattern = "<icon=";
 
-            for (; ; )
+            for (; ;)
             {
                 if (IconIdList.Count > 0 && Description.Contains(IconIdPattern))
                     Description = Description.Trim();
@@ -206,9 +205,9 @@
         {
             int StartIndex = description.IndexOf(startPattern);
             int EndIndex = description.LastIndexOf(endPattern);
-            PgAttribute ParsedAttribute = null;
+            PgAttribute ParsedAttribute = null!;
 
-            if (StartIndex == 0 && 
+            if (StartIndex == 0 &&
                 EndIndex > startPattern.Length &&
                 Tools.TryParseFloat(description.Substring(startPattern.Length, EndIndex - startPattern.Length), out float ParsedEffect, out FloatFormat ParsedEffectFormat) &&
                 Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, attributeKey))
@@ -218,7 +217,7 @@
             }
             else
             {
-                fixedEffect = null;
+                fixedEffect = null!;
                 return false;
             }
         }

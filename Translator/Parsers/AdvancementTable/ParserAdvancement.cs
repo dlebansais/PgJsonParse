@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserAdvancement : Parser
     {
@@ -11,15 +11,15 @@
             return new PgAdvancement();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgAdvancement AsPgAdvancement))
+            if (item is not PgAdvancement AsPgAdvancement)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgAdvancement, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgAdvancement, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgAdvancement item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgAdvancement item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -28,7 +28,7 @@
                 string Key = Entry.Key;
                 object Value = Entry.Value;
 
-                PgAttribute ParsedAttribute = null;
+                PgAttribute ParsedAttribute = null!;
                 float ParsedValue = 0;
 
                 if (Key == "MENTAL_DEFENSE_RATING")

@@ -3,7 +3,7 @@
     public class PgAI
     {
         public string Key { get; set; } = string.Empty;
-        public PgAIAbilitySet Abilities { get; set; }
+        public PgAIAbilitySet Abilities { get; set; } = null!;
         public bool IsMelee { get { return RawIsMelee.HasValue && RawIsMelee.Value; } }
         public bool? RawIsMelee { get; set; }
         public string Comment { get; set; } = string.Empty;

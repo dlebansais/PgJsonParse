@@ -21,7 +21,7 @@
         public List<AbilityKeyword> AbilityKeywordList { get; set; } = new List<AbilityKeyword>();
 
         public int FriendlyIconId { get; set; }
-        public string FriendlyName { get; set; }
+        public string FriendlyName { get; set; } = string.Empty;
 
         public override int ObjectIconId { get { return FriendlyIconId; } }
         public override string ObjectName { get { return FriendlyName; } }

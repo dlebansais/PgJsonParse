@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserItemSkillLink : Parser
     {
@@ -11,15 +11,15 @@
             return new PgItemSkillLink();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgItemSkillLink AsPgItemSkillLink))
+            if (item is not PgItemSkillLink AsPgItemSkillLink)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgItemSkillLink, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgItemSkillLink, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgItemSkillLink item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgItemSkillLink item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (contentTable.Count == 0)
                 return Program.ReportFailure(parsedFile, parsedKey, $"At least one skill expected in a skill link");
@@ -29,7 +29,7 @@
                 string Key = Entry.Key;
                 object Value = Entry.Value;
 
-                PgSkill ParsedSkill = null;
+                PgSkill ParsedSkill = null!;
                 if (!ParserSkill.Parse((PgSkill valueSkill) => ParsedSkill = valueSkill, Key, parsedFile, parsedKey))
                     return false;
 

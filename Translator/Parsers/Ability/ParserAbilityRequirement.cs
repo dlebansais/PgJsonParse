@@ -1,15 +1,15 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserAbilityRequirement : Parser
     {
         public override object CreateItem()
         {
-            return null;
+            return null!;
         }
 
         private static Dictionary<OtherRequirementType, VariadicObjectHandler> HandlerTable = new Dictionary<OtherRequirementType, VariadicObjectHandler>()
@@ -62,7 +62,7 @@
 
         private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (item != null)
                 return Program.ReportFailure("Unexpected failure");
@@ -87,7 +87,7 @@
             List<string> KnownFieldList = KnownFieldTable[requirementType];
             List<string> UsedFieldList = new List<string>();
 
-            if (!Handler(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
+            if (!Handler(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
                 return false;
 
             if (!HandledTable.ContainsKey(requirementType))
@@ -106,7 +106,7 @@
             return Finalizer<OtherRequirementType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
         }
 
-        private static bool FinishItemIsLycanthrope(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsLycanthrope(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsLycanthrope NewItem = new PgAbilityRequirementIsLycanthrope();
 
@@ -146,7 +146,7 @@
                 return false;
         }
 
-        private static bool FinishItemHasEffectKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHasEffectKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementHasEffectKeyword NewItem = new PgAbilityRequirementHasEffectKeyword();
 
@@ -189,7 +189,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsFullMoon(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsFullMoon(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsFullMoon NewItem = new PgAbilityRequirementIsFullMoon();
 
@@ -229,7 +229,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsHardcore(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsHardcore(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsHardcore NewItem = new PgAbilityRequirementIsHardcore();
 
@@ -269,7 +269,7 @@
                 return false;
         }
 
-        private static bool FinishItemDruidEventState(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemDruidEventState(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementDruidEventState NewItem = new PgAbilityRequirementDruidEventState();
 
@@ -312,7 +312,7 @@
                 return false;
         }
 
-        private static bool FinishItemPetCount(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemPetCount(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementPetCount NewItem = new PgAbilityRequirementPetCount();
 
@@ -370,7 +370,7 @@
             return true;
         }
 
-        private static bool FinishItemRecipeKnown(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemRecipeKnown(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementRecipeKnown NewItem = new PgAbilityRequirementRecipeKnown();
 
@@ -413,7 +413,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsNotInCombat(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsNotInCombat(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsNotInCombat NewItem = new PgAbilityRequirementIsNotInCombat();
 
@@ -453,7 +453,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsLongtimeAnimal(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsLongtimeAnimal(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsLongtimeAnimal NewItem = new PgAbilityRequirementIsLongtimeAnimal();
 
@@ -493,7 +493,7 @@
                 return false;
         }
 
-        private static bool FinishItemInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemInHotspot(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementInHotspot NewItem = new PgAbilityRequirementInHotspot();
 
@@ -536,7 +536,7 @@
                 return false;
         }
 
-        private static bool FinishItemHasInventorySpaceFor(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHasInventorySpaceFor(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementHasInventorySpaceFor NewItem = new PgAbilityRequirementHasInventorySpaceFor();
 
@@ -579,7 +579,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsVegetarian(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsVegetarian(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsVegetarian NewItem = new PgAbilityRequirementIsVegetarian();
 
@@ -619,7 +619,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsInGraveyard(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsInGraveyard(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsInGraveyard NewItem = new PgAbilityRequirementIsInGraveyard();
 
@@ -659,7 +659,7 @@
                 return false;
         }
 
-        private static bool FinishItemEquippedItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemEquippedItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             bool Result;
             PgAbilityRequirement NewItem;
@@ -667,12 +667,12 @@
             if (contentTable.ContainsKey("MaxCount"))
             {
                 NewItem = new PgAbilityRequirementDisallowedItemKeyword();
-                Result = FinishItemDisallowedItemKeyword((PgAbilityRequirementDisallowedItemKeyword)NewItem, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                Result = FinishItemDisallowedItemKeyword((PgAbilityRequirementDisallowedItemKeyword)NewItem, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
             }
             else
             {
                 NewItem = new PgAbilityRequirementEquippedItemKeyword();
-                Result = FinishItemEquippedItemKeyword((PgAbilityRequirementEquippedItemKeyword)NewItem, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                Result = FinishItemEquippedItemKeyword((PgAbilityRequirementEquippedItemKeyword)NewItem, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
             }
 
             if (Result)
@@ -684,7 +684,7 @@
                 return false;
         }
 
-        private static bool FinishItemEquippedItemKeyword(PgAbilityRequirementEquippedItemKeyword item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemEquippedItemKeyword(PgAbilityRequirementEquippedItemKeyword item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -722,9 +722,8 @@
             return Result;
         }
 
-        private static bool FinishItemDisallowedItemKeyword(PgAbilityRequirementDisallowedItemKeyword item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemDisallowedItemKeyword(PgAbilityRequirementDisallowedItemKeyword item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
-
             bool Result = true;
 
             foreach (KeyValuePair<string, object> Entry in contentTable)
@@ -773,7 +772,7 @@
             return true;
         }
 
-        private static bool FinishItemInteractionFlagSet(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemInteractionFlagSet(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementInteractionFlagSet NewItem = new PgAbilityRequirementInteractionFlagSet();
 
@@ -816,7 +815,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsVolunteerGuide(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsVolunteerGuide(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsVolunteerGuide NewItem = new PgAbilityRequirementIsVolunteerGuide();
 
@@ -856,7 +855,7 @@
                 return false;
         }
 
-        private static bool FinishItemIsNotGuest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemIsNotGuest(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementIsNotGuest NewItem = new PgAbilityRequirementIsNotGuest();
 
@@ -896,7 +895,7 @@
                 return false;
         }
 
-        private static bool FinishItemNotInHotspot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemNotInHotspot(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementNotInHotspot NewItem = new PgAbilityRequirementNotInHotspot();
 
@@ -939,7 +938,7 @@
                 return false;
         }
 
-        private static bool FinishEffectKeywordUnset(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishEffectKeywordUnset(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementEffectKeywordUnset NewItem = new PgAbilityRequirementEffectKeywordUnset();
 
@@ -982,7 +981,7 @@
                 return false;
         }
 
-        private static bool FinishInventoryItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishInventoryItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgAbilityRequirementInventoryItemKeyword NewItem = new PgAbilityRequirementInventoryItemKeyword();
 

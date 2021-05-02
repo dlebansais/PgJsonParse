@@ -8,7 +8,7 @@
         AcidSpit,
         FloatyHearts,
         GooBurst,
-        AcidBite, 
+        AcidBite,
         FloatyHeartsToDark,
     }
 }

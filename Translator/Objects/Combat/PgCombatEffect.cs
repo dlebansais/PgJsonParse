@@ -3,7 +3,7 @@
     public class PgCombatEffect
     {
         public CombatKeyword Keyword { get; set; }
-        public PgNumericValue Data { get; set; }
+        public PgNumericValue Data { get; set; } = null!;
         public GameDamageType DamageType { get; set; }
         public GameCombatSkill CombatSkill { get; set; }
 

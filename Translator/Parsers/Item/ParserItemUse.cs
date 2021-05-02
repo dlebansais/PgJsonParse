@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserItemUse : Parser
     {
@@ -11,15 +11,15 @@
             return new PgItemUse();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgItemUse AsPgItemUse))
+            if (item is not PgItemUse AsPgItemUse)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgItemUse, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgItemUse, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgItemUse item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgItemUse item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -56,7 +56,7 @@
                     return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be an int");
 
                 string Key = $"recipe_{ObjectId}";
-                PgRecipe ParsedRecipe = null;
+                PgRecipe ParsedRecipe = null!;
                 if (!Inserter<PgRecipe>.SetItemByKey((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, Key))
                     return false;
 

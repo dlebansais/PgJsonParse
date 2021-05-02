@@ -24,12 +24,14 @@
         Druid,
         IceMagic,
         GiantBat,
-        //Axe,
+
+        // Axe,
         Bard,
         Rabbit,
         Priest,
         Warden,
-        //FairyMagic,
+
+        // FairyMagic,
         Lycanthropy,
         SpiritFox,
     }

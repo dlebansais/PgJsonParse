@@ -1,9 +1,9 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserItem : Parser
     {
@@ -12,15 +12,15 @@
             return new PgItem();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgItem AsPgItem))
+            if (item is not PgItem AsPgItem)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgItem, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgItem, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgItem item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgItem item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
             Dictionary<ItemKeyword, List<float>> KeywordTable = new Dictionary<ItemKeyword, List<float>>();
@@ -68,7 +68,7 @@
                         Result = ParseDyeColor(item, Value, parsedFile, parsedKey);
                         break;
                     case "EquipAppearance":
-                        Result = SetStringProperty((string valueString) => item.EquipAppearance = valueString, Value); //TODO: parse
+                        Result = SetStringProperty((string valueString) => item.EquipAppearance = valueString, Value); // TODO: parse
                         break;
                     case "EquipSlot":
                         Result = StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.EquipSlot = valueEnum, Value);
@@ -169,7 +169,7 @@
                 if (!(Item is string RecipeInternalName))
                     return Program.ReportFailure($"Value '{Item}' was expected to be a string");
 
-                PgRecipe ParsedRecipe = null;
+                PgRecipe ParsedRecipe = null!;
                 if (!Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, RecipeInternalName))
                     return false;
 
@@ -304,7 +304,7 @@
 
         private static bool ParseItemEffectAttribute(string effectString, string parsedFile, string parsedKey, out PgItemEffect itemEffect)
         {
-            itemEffect = null;
+            itemEffect = null!;
 
             string[] Split = effectString.Split('{');
             if (Split.Length != 2)
@@ -323,7 +323,7 @@
             if (AttributeName.Length == 0 || AttributeEffect.Length == 0)
                 return false;
 
-            PgAttribute ParsedAttribute = null;
+            PgAttribute ParsedAttribute = null!;
             if (!Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, AttributeName))
                 return false;
 

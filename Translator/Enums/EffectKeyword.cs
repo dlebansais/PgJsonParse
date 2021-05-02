@@ -1,6 +1,6 @@
 ﻿namespace PgObjects
 {
-    public enum EffectKeyword 
+    public enum EffectKeyword
     {
         Internal_None,
         Hyphen,
@@ -28,7 +28,8 @@
         ConcussionDamageCurse,
         Frostbite,
         Attack,
-        PerformanceAppreciation,Lint_HardCodedUsage,
+        PerformanceAppreciation,
+        Lint_HardCodedUsage,
         DanceAppreciation,
         Werewolf,
         WerewolfHowlMode,

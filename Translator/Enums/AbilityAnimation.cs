@@ -1,6 +1,6 @@
 ﻿namespace PgObjects
 {
-    public enum AbilityAnimation 
+    public enum AbilityAnimation
     {
         Internal_None,
         Attack_Unarmed_Punch,

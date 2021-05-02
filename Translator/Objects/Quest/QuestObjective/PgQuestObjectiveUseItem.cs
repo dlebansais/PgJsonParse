@@ -2,7 +2,7 @@
 {
     public class PgQuestObjectiveUseItem : PgQuestObjective
     {
-        public PgItem Item { get; set; }
-        public PgQuestObjectiveRequirement QuestObjectiveRequirement { get; set; }
+        public PgItem Item { get; set; } = null!;
+        public PgQuestObjectiveRequirement QuestObjectiveRequirement { get; set; } = null!;
     }
 }

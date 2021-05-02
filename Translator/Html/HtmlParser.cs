@@ -6,7 +6,7 @@
 
     public static class HtmlParser
     {
-        public static Dictionary<Type, string> OpeningTagTable = new Dictionary<Type, string>()
+        public static Dictionary<Type, string> OpeningTagTable { get; } = new Dictionary<Type, string>()
         {
             { typeof(TagHyperlink), "<a" },
             { typeof(TagBlockQuote), "<blockquote" },
@@ -33,7 +33,7 @@
             { typeof(TagListUnordered), "<ul" },
         };
 
-        public static Dictionary<Type, string> ClosingTagTable = new Dictionary<Type, string>()
+        public static Dictionary<Type, string> ClosingTagTable { get; } = new Dictionary<Type, string>()
         {
             { typeof(TagHyperlink), "</a>" },
             { typeof(TagBlockQuote), "</blockquote>" },
@@ -70,7 +70,7 @@
 
         public static bool Parse(string htmltext, int startIndex, out Tag tag, out int endIndex)
         {
-            tag = null;
+            tag = null!;
             endIndex = -1;
             string TagDebug;
 
@@ -81,9 +81,9 @@
             int OpeningTagIndex = Index;
             TagDebug = GetDebugString(htmltext, Index);
 
-            Type SelectedType = null;
+            Type SelectedType = null!;
             int SelectedLevel = 0;
-            string OpeningTag = null;
+            string OpeningTag = null!;
 
             foreach (KeyValuePair<Type, string> Entry in OpeningTagTable)
             {
@@ -151,7 +151,7 @@
 
                 string NonTagContent = string.Empty;
 
-                for (; ; )
+                for (; ;)
                 {
                     while (Index < htmltext.Length && htmltext[Index] != '<')
                     {
@@ -201,7 +201,7 @@
         public static bool FindNextTag<T>(string htmltext, ref int startIndex, out T tag)
             where T : Tag, new()
         {
-            tag = null;
+            tag = null!;
 
             int TagIndex;
 
@@ -231,7 +231,7 @@
                 if (Parse(htmltext, TagIndex, out Tag NewTag, out int EndIndex))
                 {
                     startIndex = EndIndex;
-                    tag = NewTag as T;
+                    tag = (T)NewTag;
                     return true;
                 }
             }

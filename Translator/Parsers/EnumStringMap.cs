@@ -1,9 +1,9 @@
 ﻿namespace Translator
 {
-    using PgObjects;
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using PgObjects;
 
     public class EnumStringMap
     {
@@ -31,7 +31,7 @@
 
         public static readonly Dictionary<EffectParticle, string> EffectParticleTable = new Dictionary<EffectParticle, string>()
         {
-            { EffectParticle.OnFireGreen, "OnFire-Green"},
+            { EffectParticle.OnFireGreen, "OnFire-Green" },
         };
 
         public static readonly Dictionary<ItemKeyword, string> ItemKeywordTable = new Dictionary<ItemKeyword, string>()
@@ -41,44 +41,44 @@
 
         public static readonly Dictionary<ItemUseVerb, string> ItemUseVerbTable = new Dictionary<ItemUseVerb, string>()
         {
-            { ItemUseVerb.Place, "Place"},
-            { ItemUseVerb.Fill, "Fill"},
-            { ItemUseVerb.Drink, "Drink"},
-            { ItemUseVerb.Learn, "Learn"},
-            { ItemUseVerb.LearnWord, "Learn Word"},
-            { ItemUseVerb.BlowWhistle, "Blow Whistle"},
-            { ItemUseVerb.Read, "Read"},
-            { ItemUseVerb.Eat, "Eat"},
-            { ItemUseVerb.Delouse, "Delouse"},
-            { ItemUseVerb.RubGem, "Rub Gem"},
-            { ItemUseVerb.PlayGame, "Play Game"},
-            { ItemUseVerb.EmptyPurse, "Empty Purse"},
-            { ItemUseVerb.ActivateRune, "Activate Rune"},
-            { ItemUseVerb.EmptySack, "Empty Sack"},
-            { ItemUseVerb.ReadBook, "Read Book"},
-            { ItemUseVerb.Plant, "Plant"},
-            { ItemUseVerb.Appreciate, "Appreciate"},
-            { ItemUseVerb.Deploy, "Deploy"},
-            { ItemUseVerb.Appraise, "Appraise"},
-            { ItemUseVerb.StudyPoetry, "Study Poetry"},
-            { ItemUseVerb.LaunchFirework, "Launch Firework"},
-            { ItemUseVerb.PopConfetti, "Pop Confetti"},
-            { ItemUseVerb.BreakDown, "Break Down"},
-            { ItemUseVerb.Apply, "Apply"},
-            { ItemUseVerb.Swallow, "Swallow"},
-            { ItemUseVerb.Inhale, "Inhale"},
-            { ItemUseVerb.Inject, "Inject"},
-            { ItemUseVerb.Fish, "Fish"},
-            { ItemUseVerb.AgeCheese, "Age Cheese"},
-            { ItemUseVerb.AgeCream, "Age Cream"},
-            { ItemUseVerb.CheckSurvey, "Check Survey"},
-            { ItemUseVerb.CheckNotes, "Check Notes"},
-            { ItemUseVerb.CheckMap, "Check Map"},
-            { ItemUseVerb.Translate, "Translate"},
-            { ItemUseVerb.MemorizeWorkOrder, "Memorize Work Order"},
-            { ItemUseVerb.Equip, "Equip"},
-            { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth"},
-            { ItemUseVerb.AgeLiquor, "Age Liquor"},
+            { ItemUseVerb.Place, "Place" },
+            { ItemUseVerb.Fill, "Fill" },
+            { ItemUseVerb.Drink, "Drink" },
+            { ItemUseVerb.Learn, "Learn" },
+            { ItemUseVerb.LearnWord, "Learn Word" },
+            { ItemUseVerb.BlowWhistle, "Blow Whistle" },
+            { ItemUseVerb.Read, "Read" },
+            { ItemUseVerb.Eat, "Eat" },
+            { ItemUseVerb.Delouse, "Delouse" },
+            { ItemUseVerb.RubGem, "Rub Gem" },
+            { ItemUseVerb.PlayGame, "Play Game" },
+            { ItemUseVerb.EmptyPurse, "Empty Purse" },
+            { ItemUseVerb.ActivateRune, "Activate Rune" },
+            { ItemUseVerb.EmptySack, "Empty Sack" },
+            { ItemUseVerb.ReadBook, "Read Book" },
+            { ItemUseVerb.Plant, "Plant" },
+            { ItemUseVerb.Appreciate, "Appreciate" },
+            { ItemUseVerb.Deploy, "Deploy" },
+            { ItemUseVerb.Appraise, "Appraise" },
+            { ItemUseVerb.StudyPoetry, "Study Poetry" },
+            { ItemUseVerb.LaunchFirework, "Launch Firework" },
+            { ItemUseVerb.PopConfetti, "Pop Confetti" },
+            { ItemUseVerb.BreakDown, "Break Down" },
+            { ItemUseVerb.Apply, "Apply" },
+            { ItemUseVerb.Swallow, "Swallow" },
+            { ItemUseVerb.Inhale, "Inhale" },
+            { ItemUseVerb.Inject, "Inject" },
+            { ItemUseVerb.Fish, "Fish" },
+            { ItemUseVerb.AgeCheese, "Age Cheese" },
+            { ItemUseVerb.AgeCream, "Age Cream" },
+            { ItemUseVerb.CheckSurvey, "Check Survey" },
+            { ItemUseVerb.CheckNotes, "Check Notes" },
+            { ItemUseVerb.CheckMap, "Check Map" },
+            { ItemUseVerb.Translate, "Translate" },
+            { ItemUseVerb.MemorizeWorkOrder, "Memorize Work Order" },
+            { ItemUseVerb.Equip, "Equip" },
+            { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth" },
+            { ItemUseVerb.AgeLiquor, "Age Liquor" },
             { ItemUseVerb.CleanOffDust, "Clean Off Dust" },
             { ItemUseVerb.TakeSoilSample, "Take Soil Sample" },
             { ItemUseVerb.EmptyBottle, "Empty Bottle" },
@@ -94,7 +94,8 @@
             { ItemUseVerb.OpenCrate, "Open Crate" },
             { ItemUseVerb.OpenPouch, "Open Pouch" },
             { ItemUseVerb.AffixToHead, "Affix To Head" },
-            //{ ItemUseVerb.SummonFox, "Summon Fox" },
+
+            // { ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "Open Portal" },
             { ItemUseVerb.DrinkUp, "Drink up" },
         };
@@ -167,12 +168,12 @@
             { RecipeAction.PerformTheRitual, "Perform the Ritual" },
             { RecipeAction.WaxShield, "Wax Shield" },
             { RecipeAction.AttuneMind, "Attune Mind" },
-            { RecipeAction.CraftEnchantedKit,"Craft Enchanted Kit" },
-            { RecipeAction.CraftIceShield,"Craft Ice Shield" },
-            { RecipeAction.CraftIceSkinningKnife,"Craft Ice Skinning Knife" },
-            { RecipeAction.CraftIceButcherKnife,"Craft Ice Butcher Knife" },
-            { RecipeAction.CraftIceHandsaw,"Craft Ice Handsaw" },
-            { RecipeAction.OpenPortal,"Open Portal" },
+            { RecipeAction.CraftEnchantedKit, "Craft Enchanted Kit" },
+            { RecipeAction.CraftIceShield, "Craft Ice Shield" },
+            { RecipeAction.CraftIceSkinningKnife, "Craft Ice Skinning Knife" },
+            { RecipeAction.CraftIceButcherKnife, "Craft Ice Butcher Knife" },
+            { RecipeAction.CraftIceHandsaw, "Craft Ice Handsaw" },
+            { RecipeAction.OpenPortal, "Open Portal" },
         };
 
         public static readonly Dictionary<RecipeEffect, string> RecipeEffectTable = new Dictionary<RecipeEffect, string>()
@@ -234,20 +235,20 @@
             { RecipeItemKey.MaxTSysPrereq_90, "MaxTSysPrereq:90" },
         };
 
-        public static Dictionary<Type, IDictionary> Tables = new Dictionary<Type, IDictionary>()
+        public static Dictionary<Type, IDictionary> Tables { get; } = new Dictionary<Type, IDictionary>()
         {
-            {  typeof(AbilityItemKeyword), AbilityItemKeywordTable },
-            {  typeof(EffectStackingType), StackingTypeTable },
-            {  typeof(EffectKeyword), EffectKeywordTable },
-            {  typeof(EffectParticle), EffectParticleTable },
-            {  typeof(ItemKeyword), ItemKeywordTable },
-            {  typeof(ItemUseVerb), ItemUseVerbTable },
-            {  typeof(AppearanceSkin), AppearanceSkinTable },
-            {  typeof(MapAreaName), MapAreaNameTable },
-            {  typeof(QuestObjectiveKillTarget), QuestObjectiveKillTargetTable },
-            {  typeof(RecipeAction), RecipeActionTable },
-            {  typeof(RecipeEffect), RecipeEffectTable },
-            {  typeof(RecipeItemKey), RecipeItemKeyTable },
+            { typeof(AbilityItemKeyword), AbilityItemKeywordTable },
+            { typeof(EffectStackingType), StackingTypeTable },
+            { typeof(EffectKeyword), EffectKeywordTable },
+            { typeof(EffectParticle), EffectParticleTable },
+            { typeof(ItemKeyword), ItemKeywordTable },
+            { typeof(ItemUseVerb), ItemUseVerbTable },
+            { typeof(AppearanceSkin), AppearanceSkinTable },
+            { typeof(MapAreaName), MapAreaNameTable },
+            { typeof(QuestObjectiveKillTarget), QuestObjectiveKillTargetTable },
+            { typeof(RecipeAction), RecipeActionTable },
+            { typeof(RecipeEffect), RecipeEffectTable },
+            { typeof(RecipeItemKey), RecipeItemKeyTable },
         };
     }
 }

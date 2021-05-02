@@ -24,12 +24,12 @@
             return v.ToString(format, CultureInfo.InvariantCulture);
         }
 
-        public static bool TryParseFloat(string s, out float Value, out FloatFormat Format)
+        public static bool TryParseFloat(string s, out float value, out FloatFormat format)
         {
-            Debug.Assert(TryParseSingle(s, out Value));
-            Debug.Assert(s == SingleToString(Value));
-            Format = FloatFormat.Standard;
-            StringToEnumConversion<FloatFormat>.SetCustomParsedEnum(Format);
+            Debug.Assert(TryParseSingle(s, out value));
+            Debug.Assert(s == SingleToString(value));
+            format = FloatFormat.Standard;
+            StringToEnumConversion<FloatFormat>.SetCustomParsedEnum(format);
             return true;
             /*
             if (TryParseSingle(s, out Value))
@@ -64,24 +64,24 @@
         #endregion
 
         #region Color
-        public static bool TryParseColor(string s, out uint Value)
+        public static bool TryParseColor(string s, out uint value)
         {
             if (s == null)
             {
-                Value = 0;
+                value = 0;
                 return false;
             }
 
             Color TryNamed = Color.FromName(s);
             if (TryNamed.ToArgb() != 0)
             {
-                Value = (uint)TryNamed.ToArgb();
+                value = (uint)TryNamed.ToArgb();
                 return true;
             }
 
             if (s.Length != 6 && s.Length != 8)
             {
-                Value = 0;
+                value = 0;
                 return false;
             }
 
@@ -93,7 +93,7 @@
                     !TryParseByteHex(s.Substring(2, 2), out G) ||
                     !TryParseByteHex(s.Substring(4, 2), out B))
                 {
-                    Value = 0;
+                    value = 0;
                     return false;
                 }
 
@@ -106,13 +106,13 @@
                     !TryParseByteHex(s.Substring(4, 2), out G) ||
                     !TryParseByteHex(s.Substring(6, 2), out B))
                 {
-                    Value = 0;
+                    value = 0;
                     return false;
                 }
             }
 
             Color c = Color.FromArgb(A, R, G, B);
-            Value = (0x0000000 + ((uint)A << 24) + ((uint)R << 16) + ((uint)G << 8) + ((uint)B << 0));
+            value = 0x0000000 + ((uint)A << 24) + ((uint)R << 16) + ((uint)G << 8) + ((uint)B << 0);
             return true;
         }
 
@@ -128,11 +128,11 @@
             return false;
         }
 
-        public static string ColorToString(uint Value)
+        public static string ColorToString(uint value)
         {
-            byte R = (byte)((Value >> 16) & 0xFF);
-            byte G = (byte)((Value >> 8) & 0xFF);
-            byte B = (byte)((Value >> 0) & 0xFF);
+            byte R = (byte)((value >> 16) & 0xFF);
+            byte G = (byte)((value >> 8) & 0xFF);
+            byte B = (byte)((value >> 0) & 0xFF);
             Color c = Color.FromArgb(0xFF, R, G, B);
             return c.R.ToString("X02", CultureInfo.InvariantCulture) + c.G.ToString("X02", CultureInfo.InvariantCulture) + c.B.ToString("X02", CultureInfo.InvariantCulture);
         }

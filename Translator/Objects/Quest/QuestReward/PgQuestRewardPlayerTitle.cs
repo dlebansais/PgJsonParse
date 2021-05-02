@@ -2,6 +2,6 @@
 {
     public class PgQuestRewardPlayerTitle : PgQuestReward
     {
-        public PgPlayerTitle PlayerTitle { get; set; }
+        public PgPlayerTitle PlayerTitle { get; set; } = null!;
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace PgObjects
+﻿namespace PgObjects
 {
+    using System.Collections.Generic;
+
     public abstract class PgObject
     {
         public static PgNullObject Null { get; } = new PgNullObject();

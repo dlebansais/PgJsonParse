@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserDoT : Parser
     {
@@ -11,15 +11,15 @@
             return new PgDoT();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgDoT AsPgDoT))
+            if (item is not PgDoT AsPgDoT)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgDoT, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgDoT, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgDoT item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgDoT item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -66,7 +66,7 @@
             if (!Result)
                 return false;
 
-            if (item.RawDamagePerTick == null )
+            if (item.RawDamagePerTick == null)
                 return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected empty damage per tick");
 
             if (item.DamageType == DamageType.Internal_None || item.DamageType == DamageType.Internal_Empty)

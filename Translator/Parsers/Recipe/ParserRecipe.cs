@@ -1,9 +1,9 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserRecipe : Parser
     {
@@ -12,15 +12,15 @@
             return new PgRecipe();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgRecipe AsPgRecipe))
+            if (item is not PgRecipe AsPgRecipe)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgRecipe, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgRecipe, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgRecipe item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgRecipe item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -65,7 +65,7 @@
                         Result = StringToEnumConversion<RecipeKeyword>.TryParseList(Value, item.KeywordList);
                         break;
                     case "ActionLabel":
-                        Result = StringToEnumConversion<RecipeAction>.SetEnum((RecipeAction valueEnum) => item.ActionLabel= valueEnum, Value);
+                        Result = StringToEnumConversion<RecipeAction>.SetEnum((RecipeAction valueEnum) => item.ActionLabel = valueEnum, Value);
                         break;
                     case "UsageDelay":
                         Result = SetFloatProperty((float valueFloat) => item.RawUsageDelay = valueFloat, Value);
@@ -184,6 +184,7 @@
 
                             BrewPartList.Remove(IngredientKey);
                         }
+
                         break;
                     }
 
@@ -228,7 +229,7 @@
             string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < effectString.Length - 1) ? string.Empty : effectString.Substring(ParameterStartIndex + 1, effectString.Length - 2 - ParameterStartIndex);
 
             bool Result;
-            recipeResult = null;
+            recipeResult = null!;
 
             switch (EffectName)
             {
@@ -299,7 +300,7 @@
 
         private bool ParseExtractTSysPower(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -314,7 +315,7 @@
             if (!StringToEnumConversion<Augment>.TryParse(AugmentString, out Augment Augment))
                 return false;
 
-            PgSkill ParsedSkill = null;
+            PgSkill ParsedSkill = null!;
             if (!ParserSkill.Parse((PgSkill valueSkill) => ParsedSkill = valueSkill, DecomposeSkillString, parsedFile, parsedKey))
                 return false;
 
@@ -336,7 +337,7 @@
 
         private bool ParseRepairItemDurability(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -377,7 +378,7 @@
 
         private bool ParseTSysCraftedEquipment(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -452,7 +453,7 @@
 
         private bool ParseCraftingEnhanceItem(EnhancementEffect enhancement, string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -481,7 +482,7 @@
 
         private bool ParseAddItemTSysPower(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -507,7 +508,7 @@
 
         private bool ParseBrewItem(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -565,7 +566,7 @@
 
         private bool ParseAddItemTSysPowerWax(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -596,7 +597,7 @@
 
         private bool ParseAdjustRecipeReuseTime(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -625,9 +626,9 @@
 
         private bool ParseGiveTSysItem(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
-            PgItem ParsedItem = null;
+            PgItem ParsedItem = null!;
             if (!Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => ParsedItem = valueItem, effectParameter))
                 return false;
 
@@ -640,7 +641,7 @@
 
         private bool ParseConsumeItemUses(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 
@@ -666,7 +667,7 @@
 
         private bool ParseDeltaCurFairyEnergy(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             if (!int.TryParse(effectParameter, out int Delta))
                 return Program.ReportFailure($"Value '{effectParameter}' was expected to be an int");
@@ -683,7 +684,7 @@
 
         private bool ParseTeleport(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
-            recipeResult = null;
+            recipeResult = null!;
 
             string[] Splitted = effectParameter.Split(',');
 

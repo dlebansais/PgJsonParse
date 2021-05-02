@@ -2,6 +2,6 @@
 {
     public class PgSkillAdvancementRewardAbility : PgSkillAdvancement
     {
-        public PgAbility Ability { get; set; }
+        public PgAbility Ability { get; set; } = null!;
     }
 }

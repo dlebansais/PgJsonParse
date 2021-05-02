@@ -9,9 +9,9 @@
             Tools.VerifyTables(typeof(TextMaps));
         }
 
-        public static Dictionary<AbilityAnimation, string> AbilityAnimationTextMap {get; } = new Dictionary<AbilityAnimation, string>()
+        public static Dictionary<AbilityAnimation, string> AbilityAnimationTextMap { get; } = new Dictionary<AbilityAnimation, string>()
         {
-            { AbilityAnimation.Internal_None, "" },
+            { AbilityAnimation.Internal_None, string.Empty },
             { AbilityAnimation.Attack_Unarmed_Punch, "Unarmed Punch" },
             { AbilityAnimation.Attack_Kick, "Kick" },
             { AbilityAnimation.Attack_Unarmed_Barrage, "Unarmed Barrage" },
@@ -177,9 +177,9 @@
             { AbilityAnimation.Dance6C, "Dance6C" },
         };
 
-        public static Dictionary<AbilityCue, string> AbilityCueTextMap {get; } = new Dictionary<AbilityCue, string>()
+        public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
         {
-            { AbilityCue.Internal_None, "" },
+            { AbilityCue.Internal_None, string.Empty },
             { AbilityCue.Heal, "Heal" },
             { AbilityCue.DontClose, "Don't Close" },
             { AbilityCue.Perching, "Perching" },
@@ -187,7 +187,7 @@
             { AbilityCue.ServerRequested, "Server Requested" },
         };
 
-        public static Dictionary<AbilityIndicatingEnabled, string> AbilityIndicatingEnabledTextMap {get; } = new Dictionary<AbilityIndicatingEnabled, string>()
+        public static Dictionary<AbilityIndicatingEnabled, string> AbilityIndicatingEnabledTextMap { get; } = new Dictionary<AbilityIndicatingEnabled, string>()
         {
             { AbilityIndicatingEnabled.Internal_None, "Never" },
             { AbilityIndicatingEnabled.WerewolfForm, "When in wolf form" },
@@ -204,9 +204,9 @@
             { AbilityIndicatingEnabled.CryogenicFreeze, "Cryogenic Freeze active" },
         };
 
-        public static Dictionary<AbilityItemKeyword, string> AbilityItemKeywordTextMap {get; } = new Dictionary<AbilityItemKeyword, string>()
+        public static Dictionary<AbilityItemKeyword, string> AbilityItemKeywordTextMap { get; } = new Dictionary<AbilityItemKeyword, string>()
         {
-            { AbilityItemKeyword.Internal_None, "" },
+            { AbilityItemKeyword.Internal_None, string.Empty },
             { AbilityItemKeyword.Sword, "Wield a sword" },
             { AbilityItemKeyword.EmptyHand, "At least one open hand" },
             { AbilityItemKeyword.Unarmed, "Hands must be empty" },
@@ -251,9 +251,9 @@
             { AbilityItemKeyword.Darkcaster, "Darkcaster" },
         };
 
-        public static Dictionary<AbilityKeyword, string> AbilityKeywordTextMap {get; } = new Dictionary<AbilityKeyword, string>()
+        public static Dictionary<AbilityKeyword, string> AbilityKeywordTextMap { get; } = new Dictionary<AbilityKeyword, string>()
         {
-            { AbilityKeyword.Internal_None, "" },
+            { AbilityKeyword.Internal_None, string.Empty },
             { AbilityKeyword.Attack, "Attack" },
             { AbilityKeyword.Unarmed, "Unarmed" },
             { AbilityKeyword.Punch, "Punch" },
@@ -516,7 +516,8 @@
             { AbilityKeyword.StrategicPreparation, "Strategic Preparation" },
             { AbilityKeyword.ElementalWard, "Elemental Ward" },
             { AbilityKeyword.Reinforce, "Reinforce" },
-            //{ AbilityKeyword.VigorousDefense, "Vigorous Defense" },
+
+            // { AbilityKeyword.VigorousDefense, "Vigorous Defense" },
             { AbilityKeyword.TakeTheLead, "Take The Lead" },
             { AbilityKeyword.FireShield, "Fire Shield" },
             { AbilityKeyword.FightMeYouFools, "Fight Me You Fools" },
@@ -674,7 +675,8 @@
             { AbilityKeyword.SnowHareMode, "Snow Hare Mode" },
             { AbilityKeyword.MushroomTurret, "Mushroom Turret" },
             { AbilityKeyword.MeleeKnife, "Melee Knife" },
-            //{ AbilityKeyword.BunFuBlitz, "Bun-Fu Blitz" },
+
+            // { AbilityKeyword.BunFuBlitz, "Bun-Fu Blitz" },
             { AbilityKeyword.BunFuStrike, "Bun-Fu Strike" },
             { AbilityKeyword.Echolocation, "Echolocation" },
             { AbilityKeyword.EnthusiasmCriticals, "Enthusiasm Criticals" },
@@ -768,9 +770,9 @@
             { AbilityKeyword.HymnOfResurrection2Enabled, "Hymn Of Resurrection #2 Enabled" },
         };
 
-        public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap {get; } = new Dictionary<AbilityPetType, string>()
+        public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
         {
-            { AbilityPetType.Internal_None, "" },
+            { AbilityPetType.Internal_None, string.Empty },
             { AbilityPetType.SummonedFireWall, "Summoned Fire Wall" },
             { AbilityPetType.SummonedDeer, "Summoned Deer" },
             { AbilityPetType.Mushroom, "Mushroom" },
@@ -787,12 +789,11 @@
             { AbilityPetType.PowerGlyph, "Power Glyph" },
             { AbilityPetType.SummonedFox, "Summoned Fox" },
             { AbilityPetType.SummonedTornado, "Summoned Tornado" },
-            
         };
 
-        public static Dictionary<AbilityProjectile, string> AbilityProjectileTextMap {get; } = new Dictionary<AbilityProjectile, string>()
+        public static Dictionary<AbilityProjectile, string> AbilityProjectileTextMap { get; } = new Dictionary<AbilityProjectile, string>()
         {
-            { AbilityProjectile.Internal_None, "" },
+            { AbilityProjectile.Internal_None, string.Empty },
             { AbilityProjectile.Projectile_Warmthball, "Warmthball" },
             { AbilityProjectile.Projectile_Fireball, "Fireball" },
             { AbilityProjectile.Projectile_HotFireball, "Hot Fireball" },
@@ -819,9 +820,9 @@
             { AbilityProjectile.Attack_Taunt1, "Attack Taunt" },
         };
 
-        public static Dictionary<AbilityTarget, string> AbilityTargetTextMap {get; } = new Dictionary<AbilityTarget, string>()
+        public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
         {
-            { AbilityTarget.Internal_None, "" },
+            { AbilityTarget.Internal_None, string.Empty },
             { AbilityTarget.Enemy, "Enemy" },
             { AbilityTarget.EnemiesAroundSelf, "Enemies around self" },
             { AbilityTarget.Self, "Self" },
@@ -832,9 +833,9 @@
             { AbilityTarget.Ally, "Ally" },
         };
 
-        public static Dictionary<AbilityTargetParticle, string> AbilityTargetParticleTextMap {get; } = new Dictionary<AbilityTargetParticle, string>()
+        public static Dictionary<AbilityTargetParticle, string> AbilityTargetParticleTextMap { get; } = new Dictionary<AbilityTargetParticle, string>()
         {
-            { AbilityTargetParticle.Internal_None, "" },
+            { AbilityTargetParticle.Internal_None, string.Empty },
             { AbilityTargetParticle.WeaponHit, "Weapon Hit" },
             { AbilityTargetParticle.ComboHit, "Combo Hit" },
             { AbilityTargetParticle.BigHit, "Big Hit" },
@@ -865,13 +866,13 @@
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
         {
-            { AllowedState.Internal_None, "" },
+            { AllowedState.Internal_None, string.Empty },
             { AllowedState.Underwater, "Underwater" },
         };
 
-        public static Dictionary<Appearance, string> AppearanceTextMap {get; } = new Dictionary<Appearance, string>()
+        public static Dictionary<Appearance, string> AppearanceTextMap { get; } = new Dictionary<Appearance, string>()
         {
-            { Appearance.Internal_None, "" },
+            { Appearance.Internal_None, string.Empty },
             { Appearance.Spider, "Spider" },
             { Appearance.Cow, "Cow" },
             { Appearance.PotbellyPig, "Pig" },
@@ -882,9 +883,9 @@
             { Appearance.Fox, "Fox" },
         };
 
-        public static Dictionary<AppearanceSkin, string> AppearanceSkinTextMap {get; } = new Dictionary<AppearanceSkin, string>()
+        public static Dictionary<AppearanceSkin, string> AppearanceSkinTextMap { get; } = new Dictionary<AppearanceSkin, string>()
         {
-            { AppearanceSkin.Internal_None, "" },
+            { AppearanceSkin.Internal_None, string.Empty },
             { AppearanceSkin.Halloween_CofferItems, "Halloween Coffer Items" },
             { AppearanceSkin.AlchemyBulbs, "Alchemy Bulbs" },
             { AppearanceSkin.Medieval_Fruits, "Medieval Fruits" },
@@ -897,9 +898,9 @@
             { AppearanceSkin.GF_Dishes, "GF-Dishes" },
         };
 
-        public static Dictionary<Augment, string> AugmentTextMap {get; } = new Dictionary<Augment, string>()
+        public static Dictionary<Augment, string> AugmentTextMap { get; } = new Dictionary<Augment, string>()
         {
-            { Augment.Internal_None, "" },
+            { Augment.Internal_None, string.Empty },
             { Augment.MainHandAugment, "Main Hand Augment" },
             { Augment.OffHandAugment, "Off Hand Augment" },
             { Augment.GloveAugment, "Glove Augment" },
@@ -911,9 +912,9 @@
             { Augment.NecklaceAugment, "Necklace Augment" },
         };
 
-        public static Dictionary<CraftedBoost, string> CraftedBoostTextMap {get; } = new Dictionary<CraftedBoost, string>()
+        public static Dictionary<CraftedBoost, string> CraftedBoostTextMap { get; } = new Dictionary<CraftedBoost, string>()
         {
-            { CraftedBoost.Internal_None, "" },
+            { CraftedBoost.Internal_None, string.Empty },
             { CraftedBoost.CraftedLeatherBoots, "Leather Boots" },
             { CraftedBoost.CraftedEvasionBoots, "Evasion Boots" },
             { CraftedBoost.CraftedSnailBoots, "Snail Boots" },
@@ -983,17 +984,17 @@
             { CraftedBoost.CraftedFaeNavyRing, "Crafted Fae Navy Ring" },
         };
 
-        public static Dictionary<Currency, string> CurrencyTextMap {get; } = new Dictionary<Currency, string>()
+        public static Dictionary<Currency, string> CurrencyTextMap { get; } = new Dictionary<Currency, string>()
         {
-            { Currency.Internal_None, "" },
+            { Currency.Internal_None, string.Empty },
             { Currency.Gold, "Gold" },
             { Currency.WardenPoints, "Warden Points" },
         };
 
-        public static Dictionary<DamageType, string> DamageTypeTextMap {get; } = new Dictionary<DamageType, string>()
+        public static Dictionary<DamageType, string> DamageTypeTextMap { get; } = new Dictionary<DamageType, string>()
         {
-            { DamageType.Internal_None, "" },
-            { DamageType.Internal_Empty, "" },
+            { DamageType.Internal_None, string.Empty },
+            { DamageType.Internal_Empty, string.Empty },
             { DamageType.Crushing, "Crushing" },
             { DamageType.Slashing, "Slashing" },
             { DamageType.Nature, "Nature" },
@@ -1014,7 +1015,7 @@
 
         public static Dictionary<Deaths, string> DeathsTextMap { get; } = new Dictionary<Deaths, string>()
         {
-            { Deaths.Internal_None, "" },
+            { Deaths.Internal_None, string.Empty },
             { Deaths.PunchingDamage, "Punching Damage" },
             { Deaths.KickingDamage, "Kicking Damage" },
             { Deaths.ThrowingDamage, "Throwing Damage" },
@@ -1163,17 +1164,17 @@
             { Deaths.ImaginaryFoxBite, "Imaginary Fox Bite" },
             { Deaths.FoxBite, "Fox Bite" },
             { Deaths.SoulDamage, "Soul Damage" },
-            };
+        };
 
-        public static Dictionary<DisallowedState, string> DisallowedStateTextMap {get; } = new Dictionary<DisallowedState, string>()
+        public static Dictionary<DisallowedState, string> DisallowedStateTextMap { get; } = new Dictionary<DisallowedState, string>()
         {
-            { DisallowedState.Internal_None, "" },
+            { DisallowedState.Internal_None, string.Empty },
             { DisallowedState.Calm, "Calm" },
         };
 
         public static Dictionary<DisplayType, string> DisplayTypeTextMap { get; } = new Dictionary<DisplayType, string>()
         {
-            { DisplayType.Internal_None, "" },
+            { DisplayType.Internal_None, string.Empty },
             { DisplayType.AsPercent, "As Percent" },
             { DisplayType.AsDoubleTimes100, "As Double x100" },
             { DisplayType.AsInt, "As Int" },
@@ -1185,9 +1186,9 @@
             { DisplayType.AsBool, "As Boolean" },
         };
 
-        public static Dictionary<DisplayRule, string> DisplayRuleTextMap {get; } = new Dictionary<DisplayRule, string>()
+        public static Dictionary<DisplayRule, string> DisplayRuleTextMap { get; } = new Dictionary<DisplayRule, string>()
         {
-            { DisplayRule.Internal_None, "" },
+            { DisplayRule.Internal_None, string.Empty },
             { DisplayRule.IfNotDefault, "If Not Default" },
             { DisplayRule.IfNotZero, "If Not Zero" },
             { DisplayRule.Always, "Always" },
@@ -1195,27 +1196,27 @@
             { DisplayRule.IfNotOne, "If Not One" },
         };
 
-        public static Dictionary<DoTSpecialRule, string> DoTSpecialRuleTextMap {get; } = new Dictionary<DoTSpecialRule, string>()
+        public static Dictionary<DoTSpecialRule, string> DoTSpecialRuleTextMap { get; } = new Dictionary<DoTSpecialRule, string>()
         {
-            { DoTSpecialRule.Internal_None, "" },
+            { DoTSpecialRule.Internal_None, string.Empty },
             { DoTSpecialRule.BuffActivated, "Buff Activated" },
             { DoTSpecialRule.IfTargetNotLooking, "If Target Not Looking" },
             { DoTSpecialRule.DelayedDamage, "Delayed Damage" },
             { DoTSpecialRule.ArmorDamage, "Armor Damage" },
         };
 
-        public static Dictionary<EffectDisplayMode, string> EffectDisplayModeTextMap {get; } = new Dictionary<EffectDisplayMode, string>()
+        public static Dictionary<EffectDisplayMode, string> EffectDisplayModeTextMap { get; } = new Dictionary<EffectDisplayMode, string>()
         {
-            { EffectDisplayMode.Internal_None, "" },
+            { EffectDisplayMode.Internal_None, string.Empty },
             { EffectDisplayMode.Instant, "Instant" },
             { EffectDisplayMode.Effect, "Effect" },
             { EffectDisplayMode.Vulnerability, "Vulnerability" },
             { EffectDisplayMode.AbilityModifier, "Ability Modifier" },
         };
 
-        public static Dictionary<EffectKeyword, string> EffectKeywordTextMap {get; } = new Dictionary<EffectKeyword, string>()
+        public static Dictionary<EffectKeyword, string> EffectKeywordTextMap { get; } = new Dictionary<EffectKeyword, string>()
         {
-            { EffectKeyword.Internal_None, "" },
+            { EffectKeyword.Internal_None, string.Empty },
             { EffectKeyword.Hyphen, "Hyphen" },
             { EffectKeyword.Debuff, "Debuff" },
             { EffectKeyword.MusicPerformance, "Music Performance" },
@@ -1384,7 +1385,7 @@
             { EffectKeyword.BloodOfThePack, "Blood Of The Pack" },
             { EffectKeyword.Cold, "Cold" },
             { EffectKeyword.FireDoT, "Fire DoT" },
-            { EffectKeyword.TSys, "" },
+            { EffectKeyword.TSys, string.Empty },
             { EffectKeyword.RahuVisitorsPermit, "Rahu Visitors Permit" },
             { EffectKeyword.BrainFog, "Brain Fog" },
             { EffectKeyword.ColdDebuff, "Cold Debuff" },
@@ -1406,7 +1407,7 @@
             { EffectKeyword.AlcoholPoisoning, "Alcohol Poisoning" },
             { EffectKeyword.AlcoholInBody, "Alcohol In Body" },
             { EffectKeyword.Event_SummerExperience, "Summer Experience Event" },
-            { EffectKeyword.Event_RabbitInvasion,"Rabbit Invasion Event" },
+            { EffectKeyword.Event_RabbitInvasion, "Rabbit Invasion Event" },
             { EffectKeyword.LongEar, "Long Ear" },
             { EffectKeyword.MummyDisease, "Mummy Disease" },
             { EffectKeyword.BarutisCurse, "Baruti's Curse" },
@@ -1495,9 +1496,9 @@
             { EffectKeyword.LiveEvent_Lemons, "Live Event (Lemons)" },
         };
 
-        public static Dictionary<EffectParticle, string> EffectParticleTextMap {get; } = new Dictionary<EffectParticle, string>()
+        public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
         {
-            { EffectParticle.Internal_None, "" },
+            { EffectParticle.Internal_None, string.Empty },
             { EffectParticle.ActionParticle, "Action Particle" },
             { EffectParticle.SFX_Coins, "Coins" },
             { EffectParticle.SmallBuff, "Small Buff" },
@@ -1563,7 +1564,8 @@
             { EffectParticle.HealingParticle_Silent, "Healing Particle (Silent)" },
             { EffectParticle.PersonalRain, "Personal Rain" },
             { EffectParticle.DarknessDebuff, "Darkness Debuff" },
-            //{ EffectParticle.GiantIceBlock, "Giant Ice Block" },
+
+            // { EffectParticle.GiantIceBlock, "Giant Ice Block" },
             { EffectParticle.WaterBall, "Water Ball" },
             { EffectParticle.ShadowScythe, "Shadow Scythe" },
             { EffectParticle.CycloneLight, "Cyclone Light" },
@@ -1608,8 +1610,8 @@
             { EffectParticle.ElectricityHit2, "Electricity Hit #,2" },
             { EffectParticle.PsionicDebuff, "Psionic Debuff" },
             { EffectParticle.RageShield, "Rage Shield" },
-            { EffectParticle.OnFireGreen, "On Fire (Green)"},
-            { EffectParticle.BlindingFlash, "Blinding Flash"},
+            { EffectParticle.OnFireGreen, "On Fire (Green)" },
+            { EffectParticle.BlindingFlash, "Blinding Flash" },
             { EffectParticle.EnergyTrap, "Energy Trap" },
             { EffectParticle.FloatingGem2, "Floating Gem #2" },
             { EffectParticle.AcidfallAura, "Acidfall Aura" },
@@ -1621,9 +1623,9 @@
             { EffectParticle.CryogenicFreeze, "Cryogenic Freeze" },
         };
 
-        public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap {get; } = new Dictionary<EffectStackingType, string>()
+        public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
         {
-            { EffectStackingType.Internal_None, "" },
+            { EffectStackingType.Internal_None, string.Empty },
             { EffectStackingType.SuperSpeed, "Super Speed" },
             { EffectStackingType.EvasionBuff, "Evasion Buff" },
             { EffectStackingType.JumpBoost, "Jump Boost" },
@@ -1755,8 +1757,9 @@
             { EffectStackingType.HuntersStrideArmorRegen1, "Hunter's Stride Power Regen (1)" },
             { EffectStackingType.FireShieldColdMit, "Fire Shield Cold Mitigation" },
             { EffectStackingType.FireShieldFireMit, "Fire Shield Fire Mitigation" },
-            //{ EffectStackingType.ReverberatingStrikeReduceArmorRegen, "Reverberating Strike Reduced Armor Regen" },
-            //{ EffectStackingType.ReverberatingStrikeReduceHealthRegen, "Reverberating Strike Reduced Health Regen" },
+
+            // { EffectStackingType.ReverberatingStrikeReduceArmorRegen, "Reverberating Strike Reduced Armor Regen" },
+            // { EffectStackingType.ReverberatingStrikeReduceHealthRegen, "Reverberating Strike Reduced Health Regen" },
             { EffectStackingType.UnnaturalWrathDelayHurt, "Unnatural Wrath Delay Hurt" },
             { EffectStackingType.ArrowsMitigation, "Arrows Mitigation" },
             { EffectStackingType.Uncrackable, "Uncrackable" },
@@ -1795,7 +1798,8 @@
             { EffectStackingType.LamiasGaze, "Lamia's Gaze" },
             { EffectStackingType.BearWarmth, "Bear Warmth" },
             { EffectStackingType.FillWithBile, "Fill With Bile" },
-            //{ EffectStackingType.IceArmor, "Ice Armor" },
+
+            // { EffectStackingType.IceArmor, "Ice Armor" },
             { EffectStackingType.ColdProtection, "Cold Protection" },
             { EffectStackingType.MinotaurCurse, "Minotaur Curse" },
             { EffectStackingType.SharpenBuff, "Sharpen Buff" },
@@ -1937,15 +1941,16 @@
             { EffectStackingType.DimensionalSnarePoisonVuln, "Dimensional Snare Poison Vulnerability" },
             { EffectStackingType.DimensionalSnareCrushingVuln, "Dimensional Snare Crushing Vulnerability" },
             { EffectStackingType.SPAWN_VIEW_FEY, "Spawn View Fey" },
-            { EffectStackingType.ColdEnvironment, "Cold Environment"},
-            //{ EffectStackingType.KingOfTheForestMitigation, "King Of The Forest Mitigation"},
-            { EffectStackingType.CandleAppreciation, "Candle Appreciation"},
-            { EffectStackingType.PowerSyrup, "Power Syrup"},
-            { EffectStackingType.SanguineFangsSlashingVuln15, "Sanguine Fangs Slashing Vulnerability (15s)"},
-            { EffectStackingType.BlockingStanceMitigation, "Blocking Stance Mitigation"},
-            { EffectStackingType.BlockingStanceA, "Blocking Stance #A"},
-            { EffectStackingType.DeadlyEmissionDebuff, "Deadly Emission Debuff"},
-            { EffectStackingType.ClobberingHoofDebuffElite, "Clobbering Hoof Debuff Elite"},
+            { EffectStackingType.ColdEnvironment, "Cold Environment" },
+
+            // { EffectStackingType.KingOfTheForestMitigation, "King Of The Forest Mitigation"},
+            { EffectStackingType.CandleAppreciation, "Candle Appreciation" },
+            { EffectStackingType.PowerSyrup, "Power Syrup" },
+            { EffectStackingType.SanguineFangsSlashingVuln15, "Sanguine Fangs Slashing Vulnerability (15s)" },
+            { EffectStackingType.BlockingStanceMitigation, "Blocking Stance Mitigation" },
+            { EffectStackingType.BlockingStanceA, "Blocking Stance #A" },
+            { EffectStackingType.DeadlyEmissionDebuff, "Deadly Emission Debuff" },
+            { EffectStackingType.ClobberingHoofDebuffElite, "Clobbering Hoof Debuff Elite" },
             { EffectStackingType.SPAWN_VIEW_PLANTS, "Spawn View Plants" },
             { EffectStackingType.RiShinShrine_Health, "Ri-Shin Shrine (Health)" },
             { EffectStackingType.RiShinShrine_Power, "Ri-Shin Shrine (Power)" },
@@ -1953,9 +1958,9 @@
             { EffectStackingType.GolfSprint, "GolfSprint" },
         };
 
-        public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap {get; } = new Dictionary<EnhancementEffect, string>()
+        public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
         {
-            { EnhancementEffect.Internal_None, "" },
+            { EnhancementEffect.Internal_None, string.Empty },
             { EnhancementEffect.Pockets, "Pockets" },
             { EnhancementEffect.DarknessMod, "Darkness Mod" },
             { EnhancementEffect.FireMod, "Fire Mod" },
@@ -1966,9 +1971,9 @@
             { EnhancementEffect.Armor, "Armor" },
         };
 
-        public static Dictionary<Favor, string> FavorTextMap {get; } = new Dictionary<Favor, string>()
+        public static Dictionary<Favor, string> FavorTextMap { get; } = new Dictionary<Favor, string>()
         {
-            { Favor.Internal_None, "" },
+            { Favor.Internal_None, string.Empty },
             { Favor.Hated, "Hated" },
             { Favor.Despised, "Despised" },
             { Favor.Tolerated, "Tolerated" },
@@ -1983,7 +1988,7 @@
 
         public static Dictionary<InteractionFlag, string> InteractionFlagTextMap { get; } = new Dictionary<InteractionFlag, string>()
         {
-            { InteractionFlag.Internal_None, "" },
+            { InteractionFlag.Internal_None, string.Empty },
             { InteractionFlag.IsABondedFamiliar_Cinnamon, "Bonded Familiar (Cinnamon)" },
             { InteractionFlag.SaidPasscodeToLadyWindsong, "Said Passcode To Lady Windsong" },
             { InteractionFlag.Serbule2_DurstinsBookProblemExplained, "Durstin's Book Problem Explained" },
@@ -2116,7 +2121,8 @@
             { InteractionFlag.LoreItem8, "Lore Item (#8)" },
             { InteractionFlag.LoreItem9, "Lore Item (#9)" },
             { InteractionFlag.LoreItem21, "Lore Item (#21)" },
-            //{ InteractionFlag.Druid_IsIgnoredByTreants, "Is Ignored By Treants" },
+
+            // { InteractionFlag.Druid_IsIgnoredByTreants, "Is Ignored By Treants" },
             { InteractionFlag.RahuSewer_Opened_SecondDoor, "Opened Second Door in Rahu Sewer" },
             { InteractionFlag.CompletedQuest_Chirrra_Tier3, "Chirrra Quest Completed (Tier 3)" },
             { InteractionFlag.Halloween_ReadyForEasyMask, "Halloween: Ready For Easy Mask" },
@@ -2137,9 +2143,9 @@
             { InteractionFlag.Event_Christmas_RiShinShrineQuest, "Event (Christmas Ri-Shin Shrine Quest)" },
         };
 
-        public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap {get; } = new Dictionary<ItemDroppedAppearance, string>()
+        public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
         {
-            { ItemDroppedAppearance.Internal_None, "" },
+            { ItemDroppedAppearance.Internal_None, string.Empty },
             { ItemDroppedAppearance.LootBottle1, "Loot Bottle" },
             { ItemDroppedAppearance.LootScroll1, "Loot Scroll" },
             { ItemDroppedAppearance.Book1, "Book (1)" },
@@ -2219,7 +2225,7 @@
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
         {
-            { ItemKeyword.Internal_None, "" },
+            { ItemKeyword.Internal_None, string.Empty },
             { ItemKeyword.BottledItem, "Bottled Item" },
             { ItemKeyword.EmptyBottle, "Empty Bottle" },
             { ItemKeyword.Ingredient, "Ingredient" },
@@ -3096,7 +3102,7 @@
             { ItemKeyword.WritingRelated, "Writing Related" },
             { ItemKeyword.WoodGlue, "Wood Glue" },
             { ItemKeyword.FlowerArrangement, "Flower Arrangement" },
-            { ItemKeyword.RatkinNecroTalisman, "" },
+            { ItemKeyword.RatkinNecroTalisman, "Ratkin Necro Talisman" },
             { ItemKeyword.SnakeScales, "Snake Scales" },
             { ItemKeyword.ViperFangs, "Viper Fangs" },
             { ItemKeyword.Treantwood, "Treant Wood" },
@@ -3228,9 +3234,9 @@
             { ItemKeyword.PennocsPendant, "Pennoc's Pendant" },
         };
 
-        public static Dictionary<ItemSlot, string> ItemSlotTextMap {get; } = new Dictionary<ItemSlot, string>()
+        public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
         {
-            { ItemSlot.Internal_None, "" },
+            { ItemSlot.Internal_None, string.Empty },
             { ItemSlot.Feet, "Feet" },
             { ItemSlot.Head, "Head" },
             { ItemSlot.Chest, "Chest" },
@@ -3246,9 +3252,9 @@
             { ItemSlot.Racial, "Racial" },
         };
 
-        public static Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap {get; } = new Dictionary<ItemUseAnimation, string>()
+        public static Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap { get; } = new Dictionary<ItemUseAnimation, string>()
         {
-            { ItemUseAnimation.Internal_None, "" },
+            { ItemUseAnimation.Internal_None, string.Empty },
             { ItemUseAnimation.Drink, "Drink" },
             { ItemUseAnimation.Read, "Read" },
             { ItemUseAnimation.Eat, "Eat" },
@@ -3257,9 +3263,9 @@
             { ItemUseAnimation.Cry, "Cry" },
         };
 
-        public static Dictionary<ItemUseRequirement, string> ItemUseRequirementTextMap {get; } = new Dictionary<ItemUseRequirement, string>()
+        public static Dictionary<ItemUseRequirement, string> ItemUseRequirementTextMap { get; } = new Dictionary<ItemUseRequirement, string>()
         {
-            { ItemUseRequirement.Internal_None, "" },
+            { ItemUseRequirement.Internal_None, string.Empty },
             { ItemUseRequirement.InWater, "In Water" },
             { ItemUseRequirement.Dead, "Dead" },
             { ItemUseRequirement.Beast, "Beast" },
@@ -3268,49 +3274,49 @@
             { ItemUseRequirement.NotInWater, "Not In Water" },
         };
 
-        public static Dictionary<ItemUseVerb, string> ItemUseVerbTextMap {get; } = new Dictionary<ItemUseVerb, string>()
+        public static Dictionary<ItemUseVerb, string> ItemUseVerbTextMap { get; } = new Dictionary<ItemUseVerb, string>()
         {
-            { ItemUseVerb.Internal_None, ""},
-            { ItemUseVerb.Place, "Place"},
-            { ItemUseVerb.Fill, "Fill"},
-            { ItemUseVerb.Drink, "Drink"},
-            { ItemUseVerb.Learn, "Learn"},
-            { ItemUseVerb.LearnWord, "Learn Word"},
-            { ItemUseVerb.BlowWhistle, "Blow Whistle"},
-            { ItemUseVerb.Read, "Read"},
-            { ItemUseVerb.Eat, "Eat"},
-            { ItemUseVerb.Delouse, "Delouse"},
-            { ItemUseVerb.RubGem, "Rub Gem"},
-            { ItemUseVerb.PlayGame, "Play Game"},
-            { ItemUseVerb.EmptyPurse, "Empty Purse"},
-            { ItemUseVerb.ActivateRune, "Activate Rune"},
-            { ItemUseVerb.EmptySack, "Empty Sack"},
-            { ItemUseVerb.ReadBook, "Read Book"},
-            { ItemUseVerb.Plant, "Plant"},
-            { ItemUseVerb.Appreciate, "Appreciate"},
-            { ItemUseVerb.Deploy, "Deploy"},
-            { ItemUseVerb.Appraise, "Appraise"},
-            { ItemUseVerb.StudyPoetry, "Study Poetry"},
-            { ItemUseVerb.LaunchFirework, "Launch Firework"},
-            { ItemUseVerb.PopConfetti, "Pop Confetti"},
-            { ItemUseVerb.BreakDown, "Break Down"},
-            { ItemUseVerb.Apply, "Apply"},
-            { ItemUseVerb.Swallow, "Swallow"},
-            { ItemUseVerb.Inhale, "Inhale"},
-            { ItemUseVerb.Inject, "Inject"},
-            { ItemUseVerb.Fish, "Fish"},
-            { ItemUseVerb.AgeCheese, "Age Cheese"},
-            { ItemUseVerb.AgeCream, "Age Cream"},
-            { ItemUseVerb.CheckSurvey, "Check Survey"},
-            { ItemUseVerb.CheckNotes, "Check Notes"},
-            { ItemUseVerb.CheckMap, "Check Map"},
-            { ItemUseVerb.Translate, "Translate"},
-            { ItemUseVerb.MemorizeWorkOrder, "Memorize Work Order"},
-            { ItemUseVerb.Equip, "Equip"},
-            { ItemUseVerb.Activate, "Activate"},
-            { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth"},
-            { ItemUseVerb.AgeLiquor, "Age Liquor"},
-            { ItemUseVerb.CleanOffDust, "Clean Off Dust"},
+            { ItemUseVerb.Internal_None, string.Empty },
+            { ItemUseVerb.Place, "Place" },
+            { ItemUseVerb.Fill, "Fill" },
+            { ItemUseVerb.Drink, "Drink" },
+            { ItemUseVerb.Learn, "Learn" },
+            { ItemUseVerb.LearnWord, "Learn Word" },
+            { ItemUseVerb.BlowWhistle, "Blow Whistle" },
+            { ItemUseVerb.Read, "Read" },
+            { ItemUseVerb.Eat, "Eat" },
+            { ItemUseVerb.Delouse, "Delouse" },
+            { ItemUseVerb.RubGem, "Rub Gem" },
+            { ItemUseVerb.PlayGame, "Play Game" },
+            { ItemUseVerb.EmptyPurse, "Empty Purse" },
+            { ItemUseVerb.ActivateRune, "Activate Rune" },
+            { ItemUseVerb.EmptySack, "Empty Sack" },
+            { ItemUseVerb.ReadBook, "Read Book" },
+            { ItemUseVerb.Plant, "Plant" },
+            { ItemUseVerb.Appreciate, "Appreciate" },
+            { ItemUseVerb.Deploy, "Deploy" },
+            { ItemUseVerb.Appraise, "Appraise" },
+            { ItemUseVerb.StudyPoetry, "Study Poetry" },
+            { ItemUseVerb.LaunchFirework, "Launch Firework" },
+            { ItemUseVerb.PopConfetti, "Pop Confetti" },
+            { ItemUseVerb.BreakDown, "Break Down" },
+            { ItemUseVerb.Apply, "Apply" },
+            { ItemUseVerb.Swallow, "Swallow" },
+            { ItemUseVerb.Inhale, "Inhale" },
+            { ItemUseVerb.Inject, "Inject" },
+            { ItemUseVerb.Fish, "Fish" },
+            { ItemUseVerb.AgeCheese, "Age Cheese" },
+            { ItemUseVerb.AgeCream, "Age Cream" },
+            { ItemUseVerb.CheckSurvey, "Check Survey" },
+            { ItemUseVerb.CheckNotes, "Check Notes" },
+            { ItemUseVerb.CheckMap, "Check Map" },
+            { ItemUseVerb.Translate, "Translate" },
+            { ItemUseVerb.MemorizeWorkOrder, "Memorize Work Order" },
+            { ItemUseVerb.Equip, "Equip" },
+            { ItemUseVerb.Activate, "Activate" },
+            { ItemUseVerb.HuddleForWarmth, "Huddle For Warmth" },
+            { ItemUseVerb.AgeLiquor, "Age Liquor" },
+            { ItemUseVerb.CleanOffDust, "Clean Off Dust" },
             { ItemUseVerb.TakeSoilSample, "Take Soil Sample" },
             { ItemUseVerb.EmptyBottle, "Empty Bottle" },
             { ItemUseVerb.ObtainTitle, "Obtain Title" },
@@ -3326,14 +3332,15 @@
             { ItemUseVerb.OpenCrate, "Open Crate" },
             { ItemUseVerb.OpenPouch, "Open Pouch" },
             { ItemUseVerb.AffixToHead, "Affix To Head" },
-            //{ ItemUseVerb.SummonFox, "Summon Fox" },
+
+            // { ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "OpenPortal" },
             { ItemUseVerb.DrinkUp, "Drink up" },
         };
 
-        public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap {get; } = new Dictionary<LoreBookKeyword, string>()
+        public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap { get; } = new Dictionary<LoreBookKeyword, string>()
         {
-            { LoreBookKeyword.Internal_None, "" },
+            { LoreBookKeyword.Internal_None, string.Empty },
             { LoreBookKeyword.AreaSerbule, "Serbule" },
             { LoreBookKeyword.AreaEltibule, "Eltibule" },
             { LoreBookKeyword.AreaTomb1, "Khyrulek's Crypt" },
@@ -3348,16 +3355,16 @@
             { LoreBookKeyword.AreaSunVale, "Sun Vale" },
         };
 
-        public static Dictionary<LoreBookVisibility, string> LoreBookVisibilityTextMap {get; } = new Dictionary<LoreBookVisibility, string>()
+        public static Dictionary<LoreBookVisibility, string> LoreBookVisibilityTextMap { get; } = new Dictionary<LoreBookVisibility, string>()
         {
-            { LoreBookVisibility.Internal_None, "" },
+            { LoreBookVisibility.Internal_None, string.Empty },
             { LoreBookVisibility.HiddenUntilFound, "Hidden Until Found" },
             { LoreBookVisibility.GhostedUntilFound, "Ghosted Until Found" },
         };
 
-        public static Dictionary<MapAreaName, string> MapAreaNameTextMap {get; } = new Dictionary<MapAreaName, string>()
+        public static Dictionary<MapAreaName, string> MapAreaNameTextMap { get; } = new Dictionary<MapAreaName, string>()
         {
-            { MapAreaName.Internal_None, "" },
+            { MapAreaName.Internal_None, string.Empty },
             { MapAreaName.Several, "Several" },
             { MapAreaName.Dungeons, "Dungeons" },
             { MapAreaName.Planes, "Existential Planes" },
@@ -3400,15 +3407,15 @@
             { MapAreaName.WNSWintertide, "WNS Wintertide" },
         };
 
-        public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap {get; } = new Dictionary<MonsterTypeTag, string>()
+        public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
         {
-            { MonsterTypeTag.Internal_None, "" },
+            { MonsterTypeTag.Internal_None, string.Empty },
             { MonsterTypeTag.Skeleton, "Skeleton" },
         };
 
-        public static Dictionary<MoonPhases, string> MoonPhasesTextMap {get; } = new Dictionary<MoonPhases, string>()
+        public static Dictionary<MoonPhases, string> MoonPhasesTextMap { get; } = new Dictionary<MoonPhases, string>()
         {
-            { MoonPhases.Internal_None, "" },
+            { MoonPhases.Internal_None, string.Empty },
             { MoonPhases.NewMoon, "New Moon" },
             { MoonPhases.WaningCrescentMoon, "Waning Crescent Moon" },
             { MoonPhases.QuarterMoon, "Quarter Moon" },
@@ -3421,7 +3428,7 @@
 
         public static Dictionary<NamedLootProfile, string> NamedLootProfileTextMap { get; } = new Dictionary<NamedLootProfile, string>()
         {
-            { NamedLootProfile.Internal_None, "" },
+            { NamedLootProfile.Internal_None, string.Empty },
             { NamedLootProfile.Custom_HelpTheHiveQuest, "Custom Loot: Help The Hive Quest" },
             { NamedLootProfile.Custom_EntertainMeQuest, "Custom Loot: Entertain Me Quest" },
             { NamedLootProfile.Custom_HolisticWellnessQuest, "Custom Loot: Holistic Wellness Quest" },
@@ -3432,17 +3439,17 @@
             { NamedLootProfile.HalloweenLoot, "Halloween Loot" },
         };
 
-        public static Dictionary<PowerWaxType, string> PowerWaxTypeTextMap {get; } = new Dictionary<PowerWaxType, string>()
+        public static Dictionary<PowerWaxType, string> PowerWaxTypeTextMap { get; } = new Dictionary<PowerWaxType, string>()
         {
-            { PowerWaxType.Internal_None, "" },
+            { PowerWaxType.Internal_None, string.Empty },
             { PowerWaxType.WaxArmor, "Wax Armor" },
             { PowerWaxType.WaxArmorNoShieldReq, "Wax Armor, No Shield Requirement" },
             { PowerWaxType.WaxAcid, "Wax Acid" },
         };
 
-        public static Dictionary<PreEffect, string> PreEffectTextMap {get; } = new Dictionary<PreEffect, string>()
+        public static Dictionary<PreEffect, string> PreEffectTextMap { get; } = new Dictionary<PreEffect, string>()
         {
-            { PreEffect.Internal_None, "" },
+            { PreEffect.Internal_None, string.Empty },
             { PreEffect.CastigateUndeadDmgMod20, "Castigate Undead Damage Modifier 20%" },
             { PreEffect.CastigateUndeadDmgMod40, "Castigate Undead Damage Modifier 40%" },
             { PreEffect.CastigateUndeadDmgMod60, "Castigate Undead Damage Modifier 60%" },
@@ -3467,7 +3474,7 @@
 
         public static Dictionary<QuestGroup, string> QuestGroupTextMap { get; } = new Dictionary<QuestGroup, string>()
         {
-            { QuestGroup.Internal_None, "" },
+            { QuestGroup.Internal_None, string.Empty },
             { QuestGroup.WarCache_Scorp, "WarCache (Scorpion)" },
             { QuestGroup.WarCache_Flood, "WarCache (Flood)" },
             { QuestGroup.WarCache_Drug, "WarCache (Drug)" },
@@ -3475,9 +3482,9 @@
             { QuestGroup.WarCache_Mummy, "WarCache (Mummy)" },
         };
 
-        public static Dictionary<QuestGroupingName, string> QuestGroupingNameTextMap {get; } = new Dictionary<QuestGroupingName, string>()
+        public static Dictionary<QuestGroupingName, string> QuestGroupingNameTextMap { get; } = new Dictionary<QuestGroupingName, string>()
         {
-            { QuestGroupingName.Internal_None, "" },
+            { QuestGroupingName.Internal_None, string.Empty },
             { QuestGroupingName.PercysGamble, "Percy's Gamble" },
             { QuestGroupingName.StormingTheNexus, "Storming The Nexus" },
             { QuestGroupingName.ResupplyAnimalTown, "Resupply Animal Town" },
@@ -3496,9 +3503,9 @@
             { QuestGroupingName.AurestMission, "Aurest Mission" },
         };
 
-        public static Dictionary<QuestKeyword, string> QuestKeywordTextMap {get; } = new Dictionary<QuestKeyword, string>()
+        public static Dictionary<QuestKeyword, string> QuestKeywordTextMap { get; } = new Dictionary<QuestKeyword, string>()
         {
-            { QuestKeyword.Internal_None, "" },
+            { QuestKeyword.Internal_None, string.Empty },
             { QuestKeyword.NoralaGift, "Norala Gift" },
             { QuestKeyword.GuildGroup, "Guild Group" },
             { QuestKeyword.BroadcastCompletion, "Broadcast Completion" },
@@ -3517,9 +3524,9 @@
             { QuestKeyword.GeneticsTraining_Ruminants, "Genetics Training (Ruminants)" },
         };
 
-        public static Dictionary<QuestObjectiveKillTarget, string> QuestObjectiveKillTargetTextMap {get; } = new Dictionary<QuestObjectiveKillTarget, string>()
+        public static Dictionary<QuestObjectiveKillTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveKillTarget, string>()
         {
-            { QuestObjectiveKillTarget.Internal_None, "" },
+            { QuestObjectiveKillTarget.Internal_None, string.Empty },
             { QuestObjectiveKillTarget.Any, "Any" },
             { QuestObjectiveKillTarget.Skeleton, "Skeleton" },
             { QuestObjectiveKillTarget.TrialWolf, "Trial Wolf" },
@@ -3722,9 +3729,9 @@
             { QuestObjectiveKillTarget.Striga, "Striga" },
         };
 
-        public static Dictionary<Race, string> RaceTextMap {get; } = new Dictionary<Race, string>()
+        public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
         {
-            { Race.Internal_None, "" },
+            { Race.Internal_None, string.Empty },
             { Race.Rakshasa, "Rakshasa" },
             { Race.Human, "Human" },
             { Race.Elf, "Elf" },
@@ -3733,9 +3740,9 @@
             { Race.Dwarf, "Dwarf" },
         };
 
-        public static Dictionary<RecipeAction, string> RecipeActionTextMap {get; } = new Dictionary<RecipeAction, string>()
+        public static Dictionary<RecipeAction, string> RecipeActionTextMap { get; } = new Dictionary<RecipeAction, string>()
         {
-            { RecipeAction.Internal_None, "" },
+            { RecipeAction.Internal_None, string.Empty },
             { RecipeAction.Research, "Research" },
             { RecipeAction.Meditate, "Meditate" },
             { RecipeAction.Bind, "Bind" },
@@ -3783,16 +3790,16 @@
             { RecipeAction.OpenPortal, "Open Portal" },
         };
 
-        public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap {get; } = new Dictionary<RecipeCurrency, string>()
+        public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
         {
-            { RecipeCurrency.Internal_None, "" },
+            { RecipeCurrency.Internal_None, string.Empty },
             { RecipeCurrency.GuildCredits, "Guild Credit(s)" },
             { RecipeCurrency.FaeEnergy, "Fae Energy" },
         };
 
-        public static Dictionary<RecipeEffect, string> RecipeEffectTextMap {get; } = new Dictionary<RecipeEffect, string>()
+        public static Dictionary<RecipeEffect, string> RecipeEffectTextMap { get; } = new Dictionary<RecipeEffect, string>()
         {
-            { RecipeEffect.Internal_None, "" },
+            { RecipeEffect.Internal_None, string.Empty },
             { RecipeEffect.CheckForBonusFishScales, "Check For Fish Scales Bonus" },
             { RecipeEffect.ResearchFireMagic0, "Fire Magic Research, Level 0" },
             { RecipeEffect.ResearchFireMagic5, "Fire Magic Research, Level 5" },
@@ -4084,9 +4091,9 @@
             { RecipeEffect.SummonFairyLight, "Summon Fairy Light" },
         };
 
-        public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap {get; } = new Dictionary<RecipeItemKey, string>()
+        public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()
         {
-            { RecipeItemKey.Internal_None, "" },
+            { RecipeItemKey.Internal_None, string.Empty },
             { RecipeItemKey.CheapMeat, "Cheap Meat" },
             { RecipeItemKey.HumanoidSkull, "Humanoid Skull" },
             { RecipeItemKey.GreenCrystal, "Green Crystal" },
@@ -4210,9 +4217,9 @@
             { RecipeItemKey.VendorTrash, "Vendor Trash" },
         };
 
-        public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap {get; } = new Dictionary<RecipeKeyword, string>()
+        public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
         {
-            { RecipeKeyword.Internal_None, "" },
+            { RecipeKeyword.Internal_None, string.Empty },
             { RecipeKeyword.Lint_NotLearnable, "Not Learnable" },
             { RecipeKeyword.NoValueGeneration, "No Value Generation" },
             { RecipeKeyword.HighValueGeneration, "High Value Generation" },
@@ -4235,9 +4242,9 @@
             { RecipeKeyword.SnackRecipe, "Snack Recipe" },
             { RecipeKeyword.Lint_MealCategory, "Meal Category" },
             { RecipeKeyword.Lint_IconId, "Icon Id" },
-            { RecipeKeyword.PixiePocket,"Pixie Pocket" },
-            { RecipeKeyword.Lint_LevelTooHigh,"Level Too High" },
-            { RecipeKeyword.ShieldWax,"Shield Wax" },
+            { RecipeKeyword.PixiePocket, "Pixie Pocket" },
+            { RecipeKeyword.Lint_LevelTooHigh, "Level Too High" },
+            { RecipeKeyword.ShieldWax, "Shield Wax" },
             { RecipeKeyword.PumpkinSoup, "Pumpkin Soup" },
             { RecipeKeyword.PumpkinSalad, "Pumpkin Salad" },
             { RecipeKeyword.CraftedClothShirt2E, "Crafted Cloth Shirt #2E" },
@@ -4335,7 +4342,7 @@
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
         {
-            { RecipeResultKey.Internal_None, "" },
+            { RecipeResultKey.Internal_None, string.Empty },
             { RecipeResultKey.Partying4, "Partying" },
             { RecipeResultKey.SkillSpecificPowerCosts12, "Skill Specific Power Costs" },
             { RecipeResultKey.Gathering4, "Gathering" },
@@ -4348,25 +4355,25 @@
             { RecipeResultKey.Endurance2, "Endurance (2 possible)" },
         };
 
-        public static Dictionary<RecipeUsageAnimation, string> RecipeUsageAnimationTextMap {get; } = new Dictionary<RecipeUsageAnimation, string>()
+        public static Dictionary<RecipeUsageAnimation, string> RecipeUsageAnimationTextMap { get; } = new Dictionary<RecipeUsageAnimation, string>()
         {
-            { RecipeUsageAnimation.Internal_None, "" },
+            { RecipeUsageAnimation.Internal_None, string.Empty },
             { RecipeUsageAnimation.UseMeditationPillar, "Use Meditation Pillar" },
             { RecipeUsageAnimation.UseTeleportationCircle, "Use Teleportation Circle" },
             { RecipeUsageAnimation.BlacksmithHammering, "Blacksmith Hammering" },
             { RecipeUsageAnimation.UseItem, "Use Item" },
         };
 
-        public static Dictionary<SelfEffect, string> SelfEffectTextMap {get; } = new Dictionary<SelfEffect, string>()
+        public static Dictionary<SelfEffect, string> SelfEffectTextMap { get; } = new Dictionary<SelfEffect, string>()
         {
-            { SelfEffect.Internal_None, "" },
+            { SelfEffect.Internal_None, string.Empty },
             { SelfEffect.MonsterCritHeal, "Monster Crit Heal" },
             { SelfEffect.EliteMonsterCrit, "Elite Monster Crit" },
         };
 
-        public static Dictionary<SelfParticle, string> SelfParticleTextMap {get; } = new Dictionary<SelfParticle, string>()
+        public static Dictionary<SelfParticle, string> SelfParticleTextMap { get; } = new Dictionary<SelfParticle, string>()
         {
-            { SelfParticle.Internal_None, "" },
+            { SelfParticle.Internal_None, string.Empty },
             { SelfParticle.ElectricityBurst, "Electricity Burst" },
             { SelfParticle.IcicleField5Sec, "Icicle Field (5 seconds)" },
             { SelfParticle.AcidSpit, "Acid Spit" },
@@ -4376,9 +4383,9 @@
             { SelfParticle.FloatyHeartsToDark, "Floaty Hearts To Dark" },
         };
 
-        public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap {get; } = new Dictionary<ShamanicSlotPower, string>()
+        public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()
         {
-            { ShamanicSlotPower.Internal_None, "" },
+            { ShamanicSlotPower.Internal_None, string.Empty },
             { ShamanicSlotPower.ShamanicHeadArmor, "Head with Armor" },
             { ShamanicSlotPower.ShamanicHeadBoostSignatureDebuff, "Head with Signature Debuff Boost" },
             { ShamanicSlotPower.ShamanicChestArmor, "Chest with Armor" },
@@ -4409,9 +4416,9 @@
             { ShamanicSlotPower.ShamanicNecklaceDruidBaseDmg, "Shamanic Necklace Druid Base Dmg" },
         };
 
-        public static Dictionary<SpecialNpc, string> SpecialNpcTextMap {get; } = new Dictionary<SpecialNpc, string>()
+        public static Dictionary<SpecialNpc, string> SpecialNpcTextMap { get; } = new Dictionary<SpecialNpc, string>()
         {
-            { SpecialNpc.Internal_None, "" },
+            { SpecialNpc.Internal_None, string.Empty },
             { SpecialNpc.CatCharmPedestal, "Cat Charm Pedestal" },
             { SpecialNpc.BearCharmPedestal, "Bear Charm Pedestal" },
             { SpecialNpc.GoblinFireResearchDesk1, "Goblin Fire Research Desk" },
@@ -4485,25 +4492,25 @@
             { SpecialNpc.LiveNpc_Torana, "Torana" },
         };
 
-        public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap {get; } = new Dictionary<TargetEffectKeyword, string>()
+        public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap { get; } = new Dictionary<TargetEffectKeyword, string>()
         {
-            { TargetEffectKeyword.Internal_None, "" },
+            { TargetEffectKeyword.Internal_None, string.Empty },
             { TargetEffectKeyword.MindRevealed, "Must have been recent victims of Psychoanalyze or Tell Me About Your Mother." },
             { TargetEffectKeyword.HasRecentlyHeardBardSong, "Must have heard your Song of Resurgence or Song of Bravery during the last 90 seconds." },
         };
 
-        public static Dictionary<TitleKeyword, string> TitleKeywordTextMap {get; } = new Dictionary<TitleKeyword, string>()
+        public static Dictionary<TitleKeyword, string> TitleKeywordTextMap { get; } = new Dictionary<TitleKeyword, string>()
         {
-            { TitleKeyword.Internal_None, "" },
+            { TitleKeyword.Internal_None, string.Empty },
             { TitleKeyword.PlayerBestowedTitle, "Player Bestowed Title" },
             { TitleKeyword.BehaviorBadge, "Behavior Badge" },
             { TitleKeyword.Lint_NotObtainable, "Not Obtainable" },
             { TitleKeyword.EventTitle, "Event Title" },
         };
 
-        public static Dictionary<TooltipsExtraKeywords, string> TooltipsExtraKeywordsTextMap {get; } = new Dictionary<TooltipsExtraKeywords, string>()
+        public static Dictionary<TooltipsExtraKeywords, string> TooltipsExtraKeywordsTextMap { get; } = new Dictionary<TooltipsExtraKeywords, string>()
         {
-            { TooltipsExtraKeywords.Internal_None, "" },
+            { TooltipsExtraKeywords.Internal_None, string.Empty },
             { TooltipsExtraKeywords.SongOfDiscordActivation, "Song of Discord Activation" },
             { TooltipsExtraKeywords.SummonDeer, "Summon Deer" },
             { TooltipsExtraKeywords.Minigolem, "Mini-golem" },
@@ -4511,9 +4518,9 @@
             { TooltipsExtraKeywords.SummonFox, "Summon Fox" },
         };
 
-        public static Dictionary<WorkOrderSign, string> WorkOrderSignTextMap {get; } = new Dictionary<WorkOrderSign, string>()
+        public static Dictionary<WorkOrderSign, string> WorkOrderSignTextMap { get; } = new Dictionary<WorkOrderSign, string>()
         {
-            { WorkOrderSign.Internal_None, "" },
+            { WorkOrderSign.Internal_None, string.Empty },
             { WorkOrderSign.SerbuleWorkOrderSign, "Serbule Work Order Sign" },
             { WorkOrderSign.EltibuleWorkOrderSign, "Eltibule Work Order Sign" },
             { WorkOrderSign.CasinoWorkOrderSign, "Casino Work Order Sign" },
@@ -4526,7 +4533,7 @@
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
         {
-            { XpTableEnum.Internal_None, "" },
+            { XpTableEnum.Internal_None, string.Empty },
             { XpTableEnum.TypicalCombatSkill, "Typical Combat Skill" },
             { XpTableEnum.PetAdvancement, "Pet Advancement" },
             { XpTableEnum.PetLoyalty, "Pet Loyalty" },

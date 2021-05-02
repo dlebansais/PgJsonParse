@@ -14,7 +14,7 @@
             Table = table;
         }
 
-        public Dictionary<string, Type> Table { get; }
+        public Dictionary<string, Type> Table { get; } = new();
 
         public abstract bool ContainsKey(string key, out Type type);
         public abstract bool VerifyTableCompletion(Type baseType);

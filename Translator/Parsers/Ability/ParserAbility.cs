@@ -1,9 +1,9 @@
 ﻿namespace Translator
 {
-    using PgJsonReader;
-    using PgObjects;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserAbility : Parser
     {
@@ -12,17 +12,17 @@
             return new PgAbility();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgAbility AsPgAbility))
+            if (item is not PgAbility AsPgAbility)
                 return Program.ReportFailure("Unexpected failure");
 
             AsPgAbility.Key = objectKey;
 
-            return FinishItem(AsPgAbility, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgAbility, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgAbility item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgAbility item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -329,7 +329,7 @@
         private static string GetDigitStrippedName(PgAbility ability)
         {
             string DigitStrippedName = ability.InternalName;
-            string LineIndexString = "";
+            string LineIndexString = string.Empty;
 
             while (DigitStrippedName.Length > 0 && char.IsDigit(DigitStrippedName[DigitStrippedName.Length - 1]))
             {

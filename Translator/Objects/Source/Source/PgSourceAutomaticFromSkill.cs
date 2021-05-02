@@ -2,6 +2,6 @@
 {
     public class PgSourceAutomaticFromSkill : PgSource
     {
-        public PgSkill Skill { get; set; }
+        public PgSkill Skill { get; set; } = null!;
     }
 }

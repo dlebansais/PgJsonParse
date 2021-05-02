@@ -1,5 +1,6 @@
 ﻿namespace PgObjects
 {
+#pragma warning disable SA1025 // Code should not contain multiple whitespace in a row
     public enum GameDamageType
     {
         Internal_None,
@@ -16,4 +17,5 @@
         Acid        = 0x0400,
         Darkness    = 0x0800,
     }
+#pragma warning restore SA1025 // Code should not contain multiple whitespace in a row
 }

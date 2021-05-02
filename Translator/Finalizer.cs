@@ -37,7 +37,8 @@
                 Debug.WriteLine($"The following keys for type {typeof(T)} were not handled:");
 
                 foreach (T Item in NeverHandledKeyList)
-                    Debug.WriteLine(Item.ToString());
+                    if (Item != null)
+                        Debug.WriteLine(Item.ToString());
 
                 return false;
             }

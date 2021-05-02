@@ -1,9 +1,9 @@
 ﻿namespace Translator
 {
-    using PgObjects;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgObjects;
 
     public static class Inserter<T>
     {
@@ -141,7 +141,6 @@
                     linkList.AddRange(ValueCollection);
                 else
                     return Program.ReportFailure($"Item was found but for the wrong object type");
-
             }
             else
                 return Program.ReportFailure($"Value '{value}' was expected to be a list");
@@ -200,7 +199,7 @@
 
         public static bool SetNpcNoZone(Action<PgNpcLocation> setter, MapAreaName areaName, string npcId, string parsedFile, string parsedKey, ErrorControl errorControl)
         {
-            PgNpc ParsedNpc = null;
+            PgNpc ParsedNpc = null!;
             SpecialNpc NpcEnum = SpecialNpc.Internal_None;
             string NpcName = string.Empty;
 

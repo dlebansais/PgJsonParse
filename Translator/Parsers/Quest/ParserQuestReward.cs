@@ -1,15 +1,15 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserQuestReward : Parser
     {
         public override object CreateItem()
         {
-            return null;
+            return null!;
         }
 
         private static Dictionary<QuestRewardType, VariadicObjectHandler> HandlerTable = new Dictionary<QuestRewardType, VariadicObjectHandler>()
@@ -32,7 +32,7 @@
 
         private static Dictionary<QuestRewardType, List<string>> HandledTable = new Dictionary<QuestRewardType, List<string>>();
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (item != null)
                 return Program.ReportFailure("Unexpected failure");
@@ -57,7 +57,7 @@
             List<string> KnownFieldList = KnownFieldTable[rewardType];
             List<string> UsedFieldList = new List<string>();
 
-            if (!Handler(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
+            if (!Handler(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
                 return false;
 
             if (!HandledTable.ContainsKey(rewardType))
@@ -76,7 +76,7 @@
             return Finalizer<QuestRewardType>.FinalizeParsing(HandlerTable, HandledTable, KnownFieldTable);
         }
 
-        private static bool FinishItemSkillXp(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemSkillXp(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRewardSkillXp NewItem = new PgQuestRewardSkillXp();
 
@@ -125,7 +125,7 @@
                 return false;
         }
 
-        private static bool FinishItemRecipe(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemRecipe(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRewardRecipe NewItem = new PgQuestRewardRecipe();
 
@@ -168,7 +168,7 @@
                 return false;
         }
 
-        private static bool FinishItemGuildCredits(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemGuildCredits(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRewardGuildCredits NewItem = new PgQuestRewardGuildCredits();
 
@@ -211,7 +211,7 @@
                 return false;
         }
 
-        private static bool FinishItemCombatXp(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemCombatXp(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRewardCombatXp NewItem = new PgQuestRewardCombatXp();
 
@@ -254,7 +254,7 @@
                 return false;
         }
 
-        private static bool FinishItemGuildXp(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemGuildXp(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestRewardGuildXp NewItem = new PgQuestRewardGuildXp();
 

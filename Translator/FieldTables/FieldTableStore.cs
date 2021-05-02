@@ -1,13 +1,13 @@
 ﻿namespace Translator
 {
-    using PgObjects;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgObjects;
 
     public class FieldTableStore
     {
-        public static Dictionary<string, Type> TableAbility = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableAbility { get; } = new Dictionary<string, Type>()
         {
             { "AbilityGroup", typeof(string) },
             { "Animation", typeof(string) },
@@ -67,49 +67,49 @@
             { "AmmoStickChance", typeof(float) },
         };
 
-        public static Dictionary<string, Type> TableAbilityAmmo = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableAbilityAmmo { get; } = new Dictionary<string, Type>()
         {
             { "ItemKeyword", typeof(string) },
-            { "Count", typeof(int)},
+            { "Count", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableAbilityPvX = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableAbilityPvX { get; } = new Dictionary<string, Type>()
         {
             { "Damage", typeof(int) },
-            { "HealthSpecificDamage", typeof(int)},
-            { "ExtraDamageIfTargetVulnerable", typeof(int)},
-            { "ArmorSpecificDamage", typeof(int)},
-            { "Range", typeof(int)},
-            { "PowerCost", typeof(int)},
-            { "MetabolismCost", typeof(int)},
-            { "ArmorMitigationRatio", typeof(int)},
-            { "AoE", typeof(int)},
-            { "SelfPreEffects", typeof(string[])},
-            { "RageBoost", typeof(int)},
-            { "RageMultiplier", typeof(float)},
-            { "Accuracy", typeof(float)},
-            { "AttributesThatDeltaDamage", typeof(string[])},
-            { "AttributesThatModDamage", typeof(string[])},
-            { "AttributesThatModBaseDamage", typeof(string[])},
-            { "AttributesThatDeltaTaunt", typeof(string[])},
-            { "AttributesThatModTaunt", typeof(string[])},
-            { "AttributesThatDeltaRage", typeof(string[])},
-            { "AttributesThatModRage", typeof(string[])},
-            { "AttributesThatDeltaRange", typeof(string[])},
-            { "AttributesThatDeltaAccuracy", typeof(string[])},
-            { "AttributesThatModCritDamage", typeof(string[])},
-            { "AttributesThatDeltaTempTaunt", typeof(string[])},
-            { "SpecialValues", typeof(PgSpecialValue[])},
-            { "TauntDelta", typeof(int)},
-            { "TempTauntDelta", typeof(int)},
-            { "RageCost", typeof(int)},
-            { "RageCostMod", typeof(float)},
-            { "DoTs", typeof(PgDoT[])},
-            { "CritDamageMod", typeof(float)},
-            { "SelfEffectsOnCrit", typeof(string[])},
+            { "HealthSpecificDamage", typeof(int) },
+            { "ExtraDamageIfTargetVulnerable", typeof(int) },
+            { "ArmorSpecificDamage", typeof(int) },
+            { "Range", typeof(int) },
+            { "PowerCost", typeof(int) },
+            { "MetabolismCost", typeof(int) },
+            { "ArmorMitigationRatio", typeof(int) },
+            { "AoE", typeof(int) },
+            { "SelfPreEffects", typeof(string[]) },
+            { "RageBoost", typeof(int) },
+            { "RageMultiplier", typeof(float) },
+            { "Accuracy", typeof(float) },
+            { "AttributesThatDeltaDamage", typeof(string[]) },
+            { "AttributesThatModDamage", typeof(string[]) },
+            { "AttributesThatModBaseDamage", typeof(string[]) },
+            { "AttributesThatDeltaTaunt", typeof(string[]) },
+            { "AttributesThatModTaunt", typeof(string[]) },
+            { "AttributesThatDeltaRage", typeof(string[]) },
+            { "AttributesThatModRage", typeof(string[]) },
+            { "AttributesThatDeltaRange", typeof(string[]) },
+            { "AttributesThatDeltaAccuracy", typeof(string[]) },
+            { "AttributesThatModCritDamage", typeof(string[]) },
+            { "AttributesThatDeltaTempTaunt", typeof(string[]) },
+            { "SpecialValues", typeof(PgSpecialValue[]) },
+            { "TauntDelta", typeof(int) },
+            { "TempTauntDelta", typeof(int) },
+            { "RageCost", typeof(int) },
+            { "RageCostMod", typeof(float) },
+            { "DoTs", typeof(PgDoT[]) },
+            { "CritDamageMod", typeof(float) },
+            { "SelfEffectsOnCrit", typeof(string[]) },
         };
 
-        public static Dictionary<string, Type> TableAbilityRequirement = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableAbilityRequirement { get; } = new Dictionary<string, Type>()
         {
             { "T", typeof(string) },
             { "Keyword", typeof(string) },
@@ -123,7 +123,7 @@
             { "InteractionFlag", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableDoT = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableDoT { get; } = new Dictionary<string, Type>()
         {
             { "DamagePerTick", typeof(int) },
             { "NumTicks", typeof(int) },
@@ -135,7 +135,7 @@
             { "Preface", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableSpecialValue = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableSpecialValue { get; } = new Dictionary<string, Type>()
         {
             { "Label", typeof(string) },
             { "Suffix", typeof(string) },
@@ -147,7 +147,7 @@
             { "SkipIfZero", typeof(bool) },
         };
 
-        public static Dictionary<string, Type> TableAdvancement = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableAdvancement { get; } = new Dictionary<string, Type>()
         {
             { "VULN_CRUSHING", typeof(float) },
             { "VULN_SLASHING", typeof(float) },
@@ -257,7 +257,7 @@
             { "BOOST_TRAUMA_INDIRECT", typeof(float) },
         };
 
-        public static Dictionary<string, Type> TableAI = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
         {
             { "Abilities", typeof(PgAIAbilitySet) },
             { "Melee", typeof(bool) },
@@ -272,7 +272,7 @@
             { "Description", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableAIAbility = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableAIAbility { get; } = new Dictionary<string, Type>()
         {
             { "minLevel", typeof(int) },
             { "maxLevel", typeof(int) },
@@ -283,13 +283,13 @@
             { "cueVal", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableArea = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableArea { get; } = new Dictionary<string, Type>()
         {
             { "FriendlyName", typeof(string) },
             { "ShortFriendlyName", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableAttribute = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableAttribute { get; } = new Dictionary<string, Type>()
         {
             { "Label", typeof(string) },
             { "IconIds", typeof(int[]) },
@@ -300,7 +300,7 @@
             { "DefaultValue", typeof(float) },
         };
 
-        public static Dictionary<string, Type> TableDirectedGoal = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableDirectedGoal { get; } = new Dictionary<string, Type>()
         {
             { "Id", typeof(int) },
             { "Label", typeof(string) },
@@ -312,7 +312,7 @@
             { "ForRaces", typeof(string[]) },
         };
 
-        public static Dictionary<string, Type> TableEffect = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableEffect { get; } = new Dictionary<string, Type>()
         {
             { "Name", typeof(string) },
             { "Desc", typeof(string) },
@@ -327,7 +327,7 @@
             { "AbilityKeywords", typeof(string[]) },
         };
 
-        public static Dictionary<string, Type> TableItem = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableItem { get; } = new Dictionary<string, Type>()
         {
             { "BestowRecipes", typeof(string[]) },
             { "BestowAbility", typeof(string) },
@@ -366,7 +366,7 @@
             { "Lint_VendorNpc", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableItemBehavior = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableItemBehavior { get; } = new Dictionary<string, Type>()
         {
             { "UseVerb", typeof(string) },
             { "UseRequirements", typeof(string[]) },
@@ -376,19 +376,19 @@
             { "UseDelay", typeof(float) },
         };
 
-        public static Dictionary<string, Type> TableItemUse = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableItemUse { get; } = new Dictionary<string, Type>()
         {
             { "RecipesThatUseItem", typeof(int[]) },
         };
 
-        public static Dictionary<string, Type> TableLoreBookInfoCategory = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableLoreBookInfoCategory { get; } = new Dictionary<string, Type>()
         {
             { "Title", typeof(string) },
             { "SubTitle", typeof(string) },
             { "SortTitle", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableLoreBook = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableLoreBook { get; } = new Dictionary<string, Type>()
         {
             { "Title", typeof(string) },
             { "LocationHint", typeof(string) },
@@ -400,7 +400,7 @@
             { "Text", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableNpc = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableNpc { get; } = new Dictionary<string, Type>()
         {
             { "Name", typeof(string) },
             { "AreaName", typeof(string) },
@@ -408,20 +408,20 @@
             { "Preferences", typeof(PgNpcPreference[]) },
         };
 
-        public static Dictionary<string, Type> TableNpcPreference = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableNpcPreference { get; } = new Dictionary<string, Type>()
         {
             { "Keywords", typeof(string[]) },
             { "Pref", typeof(float) },
         };
 
-        public static Dictionary<string, Type> TablePlayerTitle = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TablePlayerTitle { get; } = new Dictionary<string, Type>()
         {
             { "Title", typeof(string) },
             { "Tooltip", typeof(string) },
             { "Keywords", typeof(string[]) },
         };
 
-        public static Dictionary<string, Type> TablePower = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TablePower { get; } = new Dictionary<string, Type>()
         {
             { "Prefix", typeof(string) },
             { "Suffix", typeof(string) },
@@ -431,13 +431,13 @@
             { "IsUnavailable", typeof(bool) },
         };
 
-        public static Dictionary<string, Type> TablePowerTier = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TablePowerTier { get; } = new Dictionary<string, Type>()
         {
             { "EffectDescs", typeof(string[]) },
             { "SkillLevelPrereq", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableQuest = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableQuest { get; } = new Dictionary<string, Type>()
         {
             { "InternalName", typeof(string) },
             { "Name", typeof(string) },
@@ -484,7 +484,7 @@
             { "MidwayGiveItems", typeof(PgQuestRewardItem[]) },
         };
 
-        public static Dictionary<string, Type> TableQuestRequirement = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableQuestRequirement { get; } = new Dictionary<string, Type>()
         {
             { "T", typeof(string) },
             { "Quest", typeof(string) },
@@ -503,7 +503,7 @@
             { "MinFavor", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableQuestObjective = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()
         {
             { "Type", typeof(string) },
             { "Target", typeof(string) },
@@ -531,7 +531,7 @@
             { "GroupId", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableQuestObjectiveRequirement = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableQuestObjectiveRequirement { get; } = new Dictionary<string, Type>()
         {
             { "T", typeof(string) },
             { "MinHour", typeof(int) },
@@ -546,13 +546,13 @@
             { "AllowedStates", typeof(string[]) },
         };
 
-        public static Dictionary<string, Type> TableQuestRewardItem = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableQuestRewardItem { get; } = new Dictionary<string, Type>()
         {
             { "Item", typeof(string) },
             { "StackSize", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableQuestReward = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableQuestReward { get; } = new Dictionary<string, Type>()
         {
             { "T", typeof(string) },
             { "Skill", typeof(string) },
@@ -561,7 +561,7 @@
             { "Credits", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableRecipe = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableRecipe { get; } = new Dictionary<string, Type>()
         {
             { "Description", typeof(string) },
             { "IconId", typeof(int) },
@@ -602,7 +602,7 @@
             { "RewardAllowBonusXp", typeof(bool) },
         };
 
-        public static Dictionary<string, Type> TableRecipeItem = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableRecipeItem { get; } = new Dictionary<string, Type>()
         {
             { "ItemCode", typeof(int) },
             { "StackSize", typeof(int) },
@@ -614,13 +614,13 @@
             { "AttuneToCrafter", typeof(bool) },
         };
 
-        public static Dictionary<string, Type> TableRecipeCost = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableRecipeCost { get; } = new Dictionary<string, Type>()
         {
             { "Currency", typeof(string) },
             { "Price", typeof(float) },
         };
 
-        public static Dictionary<string, Type> TableSkill = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableSkill { get; } = new Dictionary<string, Type>()
         {
             { "Id", typeof(int) },
             { "Description", typeof(string) },
@@ -644,7 +644,7 @@
             { "IsFakeCombatSkill", typeof(bool) },
         };
 
-        public static Dictionary<string, Type> TableReward = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableReward { get; } = new Dictionary<string, Type>()
         {
             { "Ability", typeof(string) },
             { "BonusToSkill", typeof(string) },
@@ -652,7 +652,7 @@
             { "Notes", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableSource = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableSource { get; } = new Dictionary<string, Type>()
         {
             { "SkillTypeId", typeof(string) },
             { "Type", typeof(string) },
@@ -663,7 +663,7 @@
             { "QuestId", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableStorageVault = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableStorageVault { get; } = new Dictionary<string, Type>()
         {
             { "ID", typeof(int) },
             { "NpcFriendlyName", typeof(string) },
@@ -678,7 +678,7 @@
             { "SlotAttribute", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableStorageFavorLevel = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableStorageFavorLevel { get; } = new Dictionary<string, Type>()
         {
             { "Despised", typeof(int) },
             { "Neutral", typeof(int) },
@@ -690,19 +690,19 @@
             { "SoulMates", typeof(int) },
         };
 
-        public static Dictionary<string, Type> TableStorageRequirement = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableStorageRequirement { get; } = new Dictionary<string, Type>()
         {
             { "T", typeof(string) },
             { "InteractionFlag", typeof(string) },
         };
 
-        public static Dictionary<string, Type> TableXpTable = new Dictionary<string, Type>()
+        public static Dictionary<string, Type> TableXpTable { get; } = new Dictionary<string, Type>()
         {
             { "InternalName", typeof(string) },
             { "XpAmounts", typeof(int[]) },
         };
 
-        public static Dictionary<Type, FieldTable> Tables = new Dictionary<Type, FieldTable>()
+        public static Dictionary<Type, FieldTable> Tables { get; } = new Dictionary<Type, FieldTable>()
         {
             { typeof(PgAbility), new FixedFieldTable(TableAbility) },
             { typeof(PgAbilityAmmo), new FixedFieldTable(TableAbilityAmmo) },

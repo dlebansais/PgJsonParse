@@ -14,21 +14,19 @@
         public string Content { get; }
         public List<Tag> NestedTagList { get; }
 
-        public static HtmlSection FromPage(string pageContent, string headerText1, string headerText2)
+        public static HtmlSection? FromPage(string pageContent, string headerText1, string headerText2)
         {
             int Index = 0;
             TagTable Table;
-            List<Tag> NestedTagList = null;
+            List<Tag> NestedTagList = null!;
 
-            while (HtmlParser.FindNextTag(pageContent, ref Index, out Table))
+            while (HtmlParser.FindNextTag(pageContent, ref Index, out Table) && Table != null)
             {
-                Debug.Assert(Table != null);
-
                 NestedTagList = Table.NestedTagList;
                 if (NestedTagList.Count == 0)
                     continue;
 
-                TagTableRow FirstRow = NestedTagList[0] as TagTableRow;
+                TagTableRow? FirstRow = NestedTagList[0] as TagTableRow;
                 if (FirstRow == null)
                     continue;
 
@@ -36,8 +34,8 @@
                 if (RowNestedTagList.Count < 2)
                     continue;
 
-                TagTableCellHeader Header1 = RowNestedTagList[0] as TagTableCellHeader;
-                TagTableCellHeader Header2 = RowNestedTagList[1] as TagTableCellHeader;
+                TagTableCellHeader? Header1 = RowNestedTagList[0] as TagTableCellHeader;
+                TagTableCellHeader? Header2 = RowNestedTagList[1] as TagTableCellHeader;
                 if (Header1 == null || Header2 == null)
                     continue;
 

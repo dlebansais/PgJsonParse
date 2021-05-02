@@ -13,7 +13,7 @@
         public string Description { get; set; } = string.Empty;
         public bool HideWhenZero { get { return RawHideWhenZero.HasValue && RawHideWhenZero.Value; } }
         public bool? RawHideWhenZero { get; set; }
-        public PgXpTable XpTable { get; set; }
+        public PgXpTable XpTable { get; set; } = null!;
         public bool IsCombatSkill { get { return RawIsCombatSkill.HasValue && RawIsCombatSkill.Value; } }
         public bool? RawIsCombatSkill { get; set; }
         public PgSkillCollection CompatibleCombatSkillList { get; set; } = new PgSkillCollection();

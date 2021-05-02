@@ -8,6 +8,6 @@
         Elf,
         Fae,
         Orc,
-        Dwarf
+        Dwarf,
     }
 }

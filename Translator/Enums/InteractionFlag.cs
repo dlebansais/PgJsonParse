@@ -135,7 +135,8 @@
         LoreItem8,
         LoreItem9,
         LoreItem21,
-        //Druid_IsIgnoredByTreants,
+
+        // Druid_IsIgnoredByTreants,
         RahuSewer_Opened_SecondDoor,
         CompletedQuest_Chirrra_Tier3,
         Halloween_ReadyForEasyMask,

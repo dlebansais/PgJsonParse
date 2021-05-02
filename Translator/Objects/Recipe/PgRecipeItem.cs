@@ -4,7 +4,7 @@
 
     public class PgRecipeItem
     {
-        public PgItem Item { get; set; }
+        public PgItem Item { get; set; } = null!;
         public int StackSize { get { return RawStackSize.HasValue ? (RawStackSize.Value > 0 ? RawStackSize.Value : 1) : 0; } }
         public int? RawStackSize { get; set; }
         public float PercentChance { get { return RawPercentChance.HasValue ? RawPercentChance.Value : 1.0F; } }

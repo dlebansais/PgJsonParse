@@ -1,16 +1,16 @@
 ﻿namespace Translator
 {
-    using PgObjects;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using PgObjects;
 
     public class CombatParser
     {
         #region Data Analysis
-        bool WriteFile = true;
-        bool CompareTable = false;
+        private bool WriteFile = true;
+        private bool CompareTable = false;
 
         public void AnalyzeCachedData(List<ItemSlot> validSlotList, List<object> objectList, Dictionary<string, PgModEffect> existingPowerKeyToCompleteEffectTable, Dictionary<string, PgModEffect> existingEffectKeyToCompleteEffectTable)
         {
@@ -120,7 +120,7 @@
             Debug.WriteLine($"{powerSimpleEffectList.Count + powerAttributeList.Count} powers, {powerAttributeList.Count} with attribute, {powerSimpleEffectList.Count} with description, Total: {TotalTierCount} mods");
         }
 
-        private void FilterValidPowers(List<ItemSlot> validSlotList, List<PgSkill> skillList, List<PgPower> powerAttributeList, List<PgPower> powerSimpleEffectList, PgPower power, ref int TotalTierCount)
+        private void FilterValidPowers(List<ItemSlot> validSlotList, List<PgSkill> skillList, List<PgPower> powerAttributeList, List<PgPower> powerSimpleEffectList, PgPower power, ref int totalTierCount)
         {
             PgPowerTierCollection TierList = power.TierList;
 
@@ -169,7 +169,7 @@
                 powerSimpleEffectList.Add(power);
             }
 
-            TotalTierCount += TierList.Count;
+            totalTierCount += TierList.Count;
         }
 
         private static bool IsSkillInList(List<PgSkill> skillList, PgSkill skill)
@@ -268,7 +268,7 @@
                 if (EffectName == AbilityName && Effect.IconId == IconId)
                 {
                     FirstMatchingIndex = i;
-                    break; ;
+                    break;
                 }
             }
 
@@ -414,9 +414,9 @@
             }
 
             foreach (PgPower Item in powerSimpleEffectList)
-                if (FindPowersWithMatchingEffect(allEffectTable, Item, out List<PgEffect> MatchingEffectList, out List<PgEffect> CandidateSingleEffectList))
+                if (FindPowersWithMatchingEffect(allEffectTable, Item, out List<PgEffect>? MatchingEffectList, out List<PgEffect>? CandidateSingleEffectList))
                 {
-                    foreach (PgEffect Effect in MatchingEffectList)
+                    foreach (PgEffect Effect in MatchingEffectList!)
                         unmatchedEffectList.Remove(Effect);
 
                     powerToEffectTable.Add(Item, MatchingEffectList);
@@ -424,12 +424,12 @@
                 else
                 {
                     unmatchedPowerList.Add(Item);
-                    if (CandidateSingleEffectList.Count > 0)
+                    if (CandidateSingleEffectList != null && CandidateSingleEffectList.Count > 0)
                         candidateEffectTable.Add(Item, CandidateSingleEffectList);
                 }
         }
 
-        private bool FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, PgPower power, out List<PgEffect> matchingEffectList, out List<PgEffect> candidateSingleEffectList)
+        private bool FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, PgPower power, out List<PgEffect>? matchingEffectList, out List<PgEffect>? candidateSingleEffectList)
         {
             if (FindPowersWithMatchingEffectAllTiers(allEffectTable, power, out matchingEffectList))
             {
@@ -441,7 +441,7 @@
             return false;
         }
 
-        private bool FindPowersWithMatchingEffectAllTiers(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, PgPower power, out List<PgEffect> matchingEffectList)
+        private bool FindPowersWithMatchingEffectAllTiers(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, PgPower power, out List<PgEffect>? matchingEffectList)
         {
             matchingEffectList = null;
 
@@ -687,6 +687,7 @@
                     else
                         IsChangedToArmor = true;
                 }
+
             return Result;
         }
 
@@ -832,8 +833,8 @@
             { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },
             { "Survival Utility", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility } },
             { "Survival Utility and Major Heal", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility, AbilityKeyword.MajorHeal } },
-            { "Knee Spikes Mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_KneeSpikes} },
-            { "Extra Skin mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraSkin} },
+            { "Knee Spikes Mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_KneeSpikes } },
+            { "Extra Skin mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraSkin } },
             { "Extra Heart mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraHeart } },
             { "Extra Heart and Stretchy Spine mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraHeart, AbilityKeyword.Mutation_StretchySpine } },
             { "Stretchy Spine mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_StretchySpine } },
@@ -1112,9 +1113,11 @@
                 if (char.IsDigit(c))
                     HasDigit = true;
                 else if (c == '#')
-                    { }
+                {
+                }
                 else if (c == '-' && HasDigit)
-                    { }
+                {
+                }
                 else
                     break;
 
@@ -1148,7 +1151,7 @@
                     VerifyStaticEffects(Keyword, staticCombatEffectList, CombatEffect);
         }
 
-        List<CombatKeyword> TODO_KeywordList = new List<CombatKeyword>();
+        private List<CombatKeyword> TodoKeywordList = new List<CombatKeyword>();
 
         private void VerifyStaticEffects(AbilityKeyword keyword, List<PgCombatEffect> combatEffectList, PgCombatEffect combatEffect)
         {
@@ -1224,9 +1227,9 @@
                 case CombatKeyword.RequireNoAggro:
                 case CombatKeyword.BaseDamageBoost:
                 case CombatKeyword.DrainAsArmor:
-                //case CombatKeyword.MaxOccurence:
+                // case CombatKeyword.MaxOccurence:
                 case CombatKeyword.ChanceToConsume:
-                //case CombatKeyword.AddHealthRegen:
+                // case CombatKeyword.AddHealthRegen:
                 case CombatKeyword.Combo1:
                 case CombatKeyword.ComboFinalStepBurst:
                 case CombatKeyword.Combo2:
@@ -1285,7 +1288,7 @@
             if (HasNonSpecialValueEffect(combatEffectList, out _))
                 return;
 
-            List<KeyValuePair<string, string>> VerificationTable = null;
+            List<KeyValuePair<string, string>> VerificationTable = null!;
 
             if (expectTableWithEntries)
             {
@@ -1333,7 +1336,7 @@
 
             if (UnverifiedCount > 0)
             {
-                //Debug.WriteLine($"Combat Keyword {combatKeyword}: {UnverifiedCount} unverified abilities");
+                // Debug.WriteLine($"Combat Keyword {combatKeyword}: {UnverifiedCount} unverified abilities");
                 if (!UnverifiedTable.ContainsKey(combatKeyword))
                     UnverifiedTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
                 List<KeyValuePair<string, string>> SpecificUnverifiedTable = UnverifiedTable[combatKeyword];
@@ -1372,12 +1375,12 @@
             }
         }
 
-        public static Dictionary<CombatKeyword, List<KeyValuePair<string, string>>> UnverifiedTable = new Dictionary<CombatKeyword, List<KeyValuePair<string, string>>>()
+        public static Dictionary<CombatKeyword, List<KeyValuePair<string, string>>> UnverifiedTable { get; } = new Dictionary<CombatKeyword, List<KeyValuePair<string, string>>>()
         {
         };
 
-        public static AbilityKeyword Internal_NonBasic = (AbilityKeyword)(0xFFFF);
-        private List<PgAbility> ValidAbilityList;
+        public static AbilityKeyword Internal_NonBasic { get; } = (AbilityKeyword)0xFFFF;
+        private List<PgAbility> ValidAbilityList = null!;
         private List<string> AbilityObjectKeyList = new List<string>();
         private List<string> EffectObjectKeyList = new List<string>();
         private List<string> PowerObjectKeyList = new List<string>();
@@ -1396,7 +1399,7 @@
                     sw.WriteLine("{");
                     sw.WriteLine("    using System.Collections.Generic;");
                     sw.WriteLine("    using PgObjects;");
-                    sw.WriteLine("");
+                    sw.WriteLine(string.Empty);
                     sw.WriteLine("    public static class PowerKeyToCompleteEffect");
                     sw.WriteLine("    {");
                     sw.WriteLine("        public static Dictionary<string, string> EffectKey { get; } = new Dictionary<string, string>()");
@@ -1425,7 +1428,7 @@
                     }
 
                     sw.WriteLine("        };");
-                    sw.WriteLine("");
+                    sw.WriteLine(string.Empty);
                     sw.WriteLine("        public static Dictionary<string, List<AbilityKeyword>> AbilityList { get; } = new Dictionary<string, List<AbilityKeyword>>()");
                     sw.WriteLine("        {");
 
@@ -1452,7 +1455,7 @@
                     }
 
                     sw.WriteLine("        };");
-                    sw.WriteLine("");
+                    sw.WriteLine(string.Empty);
                     sw.WriteLine("        public static Dictionary<string, List<CombatEffect>> StaticCombatEffectList { get; } = new Dictionary<string, List<CombatEffect>>()");
                     sw.WriteLine("        {");
 
@@ -1479,7 +1482,7 @@
                     }
 
                     sw.WriteLine("        };");
-                    sw.WriteLine("");
+                    sw.WriteLine(string.Empty);
                     sw.WriteLine("        public static Dictionary<string, List<CombatEffect>> DynamicCombatEffectList { get; } = new Dictionary<string, List<CombatEffect>>()");
                     sw.WriteLine("        {");
 
@@ -1506,7 +1509,7 @@
                     }
 
                     sw.WriteLine("        };");
-                    sw.WriteLine("");
+                    sw.WriteLine(string.Empty);
                     sw.WriteLine("        public static Dictionary<string, List<AbilityKeyword>> TargetAbilityList { get; } = new Dictionary<string, List<AbilityKeyword>>()");
                     sw.WriteLine("        {");
 
@@ -1533,7 +1536,7 @@
                     }
 
                     sw.WriteLine("        };");
-                    sw.WriteLine("");
+                    sw.WriteLine(string.Empty);
                     sw.WriteLine("        public static List<string> EffectKeyList { get; } = new List<string>()");
                     sw.WriteLine("        {");
 
@@ -1617,9 +1620,8 @@
                 {
                 }
 
-                //Debug.WriteLine("");
-                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count} (Matching)");
-
+                // Debug.WriteLine("");
+                // Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerToEffectTable.Count} (Matching)");
                 PgPower ItemPower = Entry.Key;
                 List<PgEffect> ItemEffectList = Entry.Value;
 
@@ -1629,7 +1631,7 @@
                 powerKeyToCompleteEffectTable.Add(ModEffectArray);
             }
 
-            //DisplayParsingResult(powerToEffectTable);
+            // DisplayParsingResult(powerToEffectTable);
         }
 
         public static string CombatEffectListToString(List<PgCombatEffect> combatEffectList)
@@ -1842,7 +1844,7 @@
                         List<PgEffect> EffectList = Entry.Value;
                         PgEffect Effect = EffectList[EffectList.Count - 1];
 
-                        Debug.WriteLine("");
+                        Debug.WriteLine(string.Empty);
                         Debug.WriteLine(AsSimpleEffect.Description);
                         Debug.WriteLine(Effect.Description);
                         break;
@@ -1851,7 +1853,7 @@
             }
         }
 
-        private void AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> itemEffectList, out string[] stringKeyArray, out PgModEffect[] ModEffectArray)
+        private void AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> itemEffectList, out string[] stringKeyArray, out PgModEffect[] modEffectArray)
         {
             PgPowerTierCollection TierList = itemPower.TierList;
 
@@ -1867,7 +1869,7 @@
             List<CombatKeyword>[] PowerTierKeywordListArray = new List<CombatKeyword>[TierList.Count];
             List<CombatKeyword>[] EffectKeywordListArray = new List<CombatKeyword>[TierList.Count];
             stringKeyArray = new string[TierList.Count];
-            ModEffectArray = new PgModEffect[TierList.Count];
+            modEffectArray = new PgModEffect[TierList.Count];
 
             int LastTierIndex = TierList.Count - 1;
             PgPowerTier LastTier = TierList[LastTierIndex];
@@ -1875,7 +1877,7 @@
             AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, LastTier, itemEffectList[LastTierIndex], out List<CombatKeyword> ExtractedPowerTierKeywordList, out List<CombatKeyword> ExtractedEffectKeywordList, out PgModEffect ExtractedModEffect, true);
             PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
             EffectKeywordListArray[LastTierIndex] = ExtractedEffectKeywordList;
-            ModEffectArray[LastTierIndex] = ExtractedModEffect;
+            modEffectArray[LastTierIndex] = ExtractedModEffect;
 
             for (int i = 0; i + 1 < TierList.Count; i++)
             {
@@ -1897,7 +1899,7 @@
 
                 PowerTierKeywordListArray[i] = ComparedPowerTierKeywordList;
                 EffectKeywordListArray[i] = ComparedEffectKeywordList;
-                ModEffectArray[i] = ParsedModEffect;
+                modEffectArray[i] = ParsedModEffect;
             }
 
             for (int i = 0; i < TierList.Count; i++)
@@ -1933,7 +1935,7 @@
 
         private bool AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, PgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
         {
-            modEffect = null;
+            modEffect = null!;
 
             IList<PgPowerEffect> EffectList = powerTier.EffectList;
             Debug.Assert(EffectList.Count == 1);
@@ -1968,7 +1970,7 @@
             bool IsSameTarget = IsSameAbilityKeywordList(ModTargetAbilityList, EffectTargetAbilityList);
             if (!IsSameTarget)
             {
-                Debug.WriteLine("");
+                Debug.WriteLine(string.Empty);
                 Debug.WriteLine("BAD TARGET!");
                 Debug.WriteLine($"   Effect: {effect.Description}");
                 Debug.WriteLine($"Parsed as: {ParsedEffectString}, Target: {ParsedEffectTargetAbilityList}");
@@ -1980,7 +1982,7 @@
             bool IsContained = CombatEffectContains(ModCombatList, EffectCombatList, out PgCombatEffectCollection StaticCombatEffectList, out PgCombatEffectCollection DynamicCombatEffectList);
             if (!IsContained)
             {
-                Debug.WriteLine("");
+                Debug.WriteLine(string.Empty);
                 Debug.WriteLine("UNPARSED!");
                 Debug.WriteLine($"   Effect: {effect.Description}");
                 Debug.WriteLine($"Parsed as: {ParsedEffectString}, Target: {ParsedEffectTargetAbilityList}");
@@ -2042,7 +2044,7 @@
             {
                 PgModEffect SecondaryModEffect = new PgModEffect()
                 {
-                    EffectKey = "",
+                    EffectKey = string.Empty,
                     AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ParadoxTrot },
                     StaticCombatEffectList = new PgCombatEffectCollection() { new PgCombatEffect() { Keyword = CombatKeyword.AddSprintSpeed, Data = new PgNumericValue() { RawValue = 1 } } },
                     DynamicCombatEffectList = new PgCombatEffectCollection(),
@@ -2237,13 +2239,14 @@
             BasicTextReplace(ref modText, ref effectText, "physical (slashing, piercing, and crushing)", "Crushing, Slashing, or Piercing");
             BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Pet Healing");
             BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet attack");
-            //BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
+
+            // BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
             BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels Ice Armor", "Fire damage no longer dispels");
             BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
             BasicTextReplace(ref modText, ref effectText, "Trick Foxes", "Trick Fox");
             BasicTextReplace(ref modText, ref effectText, "Bun-Fu Blitz", "Bun-Fu Kick");
-            BasicTextReplace(ref modText, ref effectText, "after using Doe Eyes", "");
+            BasicTextReplace(ref modText, ref effectText, "after using Doe Eyes", string.Empty);
 
             if (!modText.Contains("But I Love You"))
                 ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -2740,10 +2743,10 @@
                 if (CombatEffect.Keyword == CombatKeyword.AddMitigationPhysical && CombatEffect.DamageType == GameDamageType.Internal_None)
                     extractedCombatEffectList[i] = new PgCombatEffect() { Keyword = CombatKeyword.AddMitigation, Data = CombatEffect.Data, DamageType = GameDamageType.Crushing | GameDamageType.Slashing | GameDamageType.Piercing, CombatSkill = CombatEffect.CombatSkill };
 
-                bool IsMitigationKeyword = (extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigation ||
+                bool IsMitigationKeyword = extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigation ||
                     extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigationPhysical ||
                     extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigationIndirect ||
-                    extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigationDirect);
+                    extractedCombatEffectList[i].Keyword == CombatKeyword.AddMitigationDirect;
 
                 if (IsMitigationKeyword)
                 {
@@ -2801,7 +2804,7 @@
             GameCombatSkill CombatSkill = GameCombatSkill.Internal_None;
             int ParsedIndex = -1;
             string ModifiedText = text;
-            Sentence SelectedSentence = null;
+            Sentence? SelectedSentence = null;
 
             if (text.Contains("up to a max of"))
             {
@@ -2840,7 +2843,7 @@
                 }
 
                 Debug.Assert(SelectedSentence != null);
-                SelectedSentence.SetUsed();
+                SelectedSentence?.SetUsed();
 
                 return true;
             }
@@ -2848,7 +2851,7 @@
                 return false;
         }
 
-        private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref PgNumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence selectedSentence)
+        private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref PgNumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence? selectedSentence)
         {
             if (sentence.Format == "Instead of #D")
             {
@@ -2966,7 +2969,7 @@
                 {
                     PatternIndex = NumericValueBackwardIndex(lowerText, AfterPatternIndex);
                     if (PatternIndex >= 0)
-                        startIndex -= (AfterPatternIndex - PatternIndex);
+                        startIndex -= AfterPatternIndex - PatternIndex;
                 }
                 else
                     PatternIndex = -1;
@@ -3011,10 +3014,11 @@
                 case SignInterpretation.Normal:
                     break;
                 case SignInterpretation.Opposite:
-                    data1.RawValue = -data1.RawValue.Value;
+                    if (data1.RawValue.HasValue)
+                        data1.RawValue = -data1.RawValue.Value;
                     break;
                 case SignInterpretation.AlwaysNegative:
-                    if (data1.Value > 0)
+                    if (data1.RawValue.HasValue && data1.Value > 0)
                         data1.RawValue = -data1.RawValue.Value;
                     break;
             }
@@ -3180,6 +3184,7 @@
                                             string KeySlash = $"{FoundTextMap[FoundTextKey[i]]}/{FoundTextMap[FoundTextKey[j]]}/{FoundTextMap[FoundTextKey[k]]}";
                                             PossibleTextMap.Add(KeySlash, Value);
                                         }
+
                         break;
                     case 2:
                         Value = 0;
@@ -3195,6 +3200,7 @@
                                     string KeyOr = $"{FoundTextMap[FoundTextKey[i]]} or {FoundTextMap[FoundTextKey[j]]}";
                                     PossibleTextMap.Add(KeyOr, Value);
                                 }
+
                         break;
 
                     case 0:
@@ -3262,9 +3268,8 @@
                 {
                 }
 
-                //Debug.WriteLine("");
-                //Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerSimpleEffectList.Count} (Remaining)");
-
+                // Debug.WriteLine("");
+                // Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerSimpleEffectList.Count} (Remaining)");
                 AnalyzeRemainingPowers(abilityNameList, nameToKeyword, ItemPower, unmatchedEffectList, candidateEffectTable, out string[] stringKeyArray, out PgModEffect[] ModEffectArray);
 
                 stringKeyTable.Add(stringKeyArray);
@@ -3272,7 +3277,7 @@
             }
         }
 
-        private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, List<PgEffect>> candidateEffectTable, out string[] stringKeyArray, out PgModEffect[] ModEffectArray)
+        private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, List<PgEffect>> candidateEffectTable, out string[] stringKeyArray, out PgModEffect[] modEffectArray)
         {
             PgPowerTierCollection TierList = itemPower.TierList;
 
@@ -3286,19 +3291,19 @@
 
             List<CombatKeyword>[] PowerTierKeywordListArray = new List<CombatKeyword>[TierList.Count];
             stringKeyArray = new string[TierList.Count];
-            ModEffectArray = new PgModEffect[TierList.Count];
+            modEffectArray = new PgModEffect[TierList.Count];
 
             int LastTierIndex = TierList.Count - 1;
             PgPowerTier LastTier = TierList[LastTierIndex];
 
-            List<PgEffect> CandidateEffectList = candidateEffectTable.ContainsKey(itemPower) ? candidateEffectTable[itemPower] : null;
+            List<PgEffect>? CandidateEffectList = candidateEffectTable.ContainsKey(itemPower) ? candidateEffectTable[itemPower] : null;
             AnalyzeRemainingPowers(abilityNameList, nameToKeyword, LastTier, unmatchedEffectList, CandidateEffectList, out List<CombatKeyword> ExtractedPowerTierKeywordList, out PgModEffect ExtractedModEffect, true);
             PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
-            ModEffectArray[LastTierIndex] = ExtractedModEffect;
+            modEffectArray[LastTierIndex] = ExtractedModEffect;
 
             if (ExtractedModEffect.AbilityList.Count > 0 && ExtractedModEffect.TargetAbilityList.Count > 0)
             {
-                //Debug.WriteLine($"{ExtractedModEffect}");
+                // Debug.WriteLine($"{ExtractedModEffect}");
             }
 
             for (int i = 0; i + 1 < TierList.Count; i++)
@@ -3314,7 +3319,7 @@
                 }
 
                 PowerTierKeywordListArray[i] = ComparedPowerTierKeywordList;
-                ModEffectArray[i] = ParsedModEffect;
+                modEffectArray[i] = ParsedModEffect;
             }
 
             for (int i = 0; i < TierList.Count; i++)
@@ -3324,7 +3329,7 @@
             }
         }
 
-        private bool AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, List<PgEffect> unmatchedEffectList, List<PgEffect> candidateEffectList, out List<CombatKeyword> extractedPowerTierKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
+        private bool AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, List<PgEffect>? unmatchedEffectList, List<PgEffect>? candidateEffectList, out List<CombatKeyword> extractedPowerTierKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
         {
             IList<PgPowerEffect> EffectList = powerTier.EffectList;
             Debug.Assert(EffectList.Count == 1);
@@ -3353,7 +3358,7 @@
 
             string EffectKey = string.Empty;
 
-            if (EffectCombatList.Count > 0 && CombatEffectContains(ModCombatList, EffectCombatList, out int CandidateIndex, out _, out _))
+            if (EffectCombatList.Count > 0 && CombatEffectContains(ModCombatList, EffectCombatList, out int CandidateIndex, out _, out _) && candidateEffectList != null)
             {
                 PgEffect CandidateEffect = candidateEffectList[CandidateIndex];
                 EffectKey = CandidateEffect.Key;
@@ -3373,12 +3378,12 @@
                 Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
             }
 
-            modEffect = new PgModEffect() 
-            { 
-                EffectKey = EffectKey, 
+            modEffect = new PgModEffect()
+            {
+                EffectKey = EffectKey,
                 AbilityList = ModAbilityList,
-                StaticCombatEffectList = ModCombatList, 
-                TargetAbilityList = ModTargetAbilityList 
+                StaticCombatEffectList = ModCombatList,
+                TargetAbilityList = ModTargetAbilityList,
             };
 
             // Such an ugly hack...
@@ -3386,7 +3391,7 @@
             {
                 PgModEffect SecondaryModEffect = new PgModEffect()
                 {
-                    EffectKey = "",
+                    EffectKey = string.Empty,
                     AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ParadoxTrot },
                     StaticCombatEffectList = new PgCombatEffectCollection() { new PgCombatEffect() { Keyword = CombatKeyword.AddSprintSpeed, Data = new PgNumericValue() { RawValue = 1 } } },
                     DynamicCombatEffectList = new PgCombatEffectCollection(),
@@ -3420,7 +3425,7 @@
                                 {
                                     PgModEffect SecondaryModEffect = new PgModEffect()
                                     {
-                                        EffectKey = "",
+                                        EffectKey = string.Empty,
                                         AbilityList = new List<AbilityKeyword>() { TargetAbility },
                                         StaticCombatEffectList = new PgCombatEffectCollection() { SecondCombatEffect },
                                         DynamicCombatEffectList = new PgCombatEffectCollection(),
@@ -3448,7 +3453,7 @@
             modText = modText.Replace("Indirect Nature and Indirect Electricity damage", "Indirect Nature and Electricity damage");
             modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
             modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
-            modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", "");
+            modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", string.Empty);
 
             if (!modText.Contains("But I Love You"))
                 ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -3689,7 +3694,7 @@
         #region Tables
         public static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
         {
-            { (int)GameDamageType.Internal_None, "" },
+            { (int)GameDamageType.Internal_None, string.Empty },
             { (int)GameDamageType.Crushing, "Crushing" },
             { (int)GameDamageType.Slashing, "Slashing" },
             { (int)GameDamageType.Nature, "Nature" },
@@ -3706,7 +3711,7 @@
 
         public static readonly Dictionary<int, string> SkillTextMap = new Dictionary<int, string>()
         {
-            { (int)GameCombatSkill.Internal_None, "" },
+            { (int)GameCombatSkill.Internal_None, string.Empty },
             { (int)GameCombatSkill.Sword, "Sword" },
             { (int)GameCombatSkill.FireMagic, "Fire Magic" },
             { (int)GameCombatSkill.Unarmed, "Unarmed" },
@@ -3728,12 +3733,14 @@
             { (int)GameCombatSkill.Druid, "Druid" },
             { (int)GameCombatSkill.IceMagic, "Ice Magic" },
             { (int)GameCombatSkill.GiantBat, "Giant Bat" },
-            //{ (int)GameCombatSkill.Axe, "Axe" },
+
+            // { (int)GameCombatSkill.Axe, "Axe" },
             { (int)GameCombatSkill.Bard, "Bard" },
             { (int)GameCombatSkill.Rabbit, "Rabbit" },
             { (int)GameCombatSkill.Priest, "Priest" },
             { (int)GameCombatSkill.Warden, "Warden" },
-            //{ (int)GameCombatSkill.FairyMagic, "Fairy Magic" },
+
+            // { (int)GameCombatSkill.FairyMagic, "Fairy Magic" },
             { (int)GameCombatSkill.Lycanthropy, "Lycanthropy" },
             { (int)GameCombatSkill.SpiritFox, "Spirit Fox" },
         };
@@ -3825,7 +3832,8 @@
             new Sentence("Take %f damage from #D attack", CombatKeyword.AddVulnerability),
             new Sentence("#D Vulnerability %f", CombatKeyword.AddVulnerability),
             new Sentence("%f more damage from any #D attack", CombatKeyword.AddVulnerability),
-            //new Sentence("Take %f damage from both #D", CombatKeyword.AddVulnerability),
+
+            // new Sentence("Take %f damage from both #D", CombatKeyword.AddVulnerability),
             new Sentence("Target take %f #D damage from future attack", CombatKeyword.AddVulnerability),
             new Sentence("B*u*t take %f damage from any #D attack", new List<CombatKeyword>() { CombatKeyword.But, CombatKeyword.AddVulnerability }),
             new Sentence("#D Vulnerability +infinity", CombatKeyword.DestroyedByDamageType),
@@ -3845,7 +3853,7 @@
             new Sentence("Deal %f Armor damage", CombatKeyword.DealArmorDamage),
             new Sentence("Deal %f immediate #D damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f #D damage", CombatKeyword.DamageBoost),
-            new Sentence("Critical hit deal %f damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits}),
+            new Sentence("Critical hit deal %f damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits }),
             new Sentence("Deal %f damage", CombatKeyword.DamageBoost),
             new Sentence("Plus %f more damage", CombatKeyword.DamageBoost),
             new Sentence("Pet take %f #D damage", CombatKeyword.PetImmolation),
@@ -3875,13 +3883,15 @@
             new Sentence("(If #S skill is active)", CombatKeyword.ActiveSkill),
             new Sentence("Gain %f #S Skill Base Damage", CombatKeyword.BaseDamageBoost),
             new Sentence("You have not been attacked in the past %f second", CombatKeyword.NotAttackedRecently),
-            //new Sentence("If you have less than half of your Health remaining", CombatKeyword.LessThanHalfMaxHealth),
+
+            // new Sentence("If you have less than half of your Health remaining", CombatKeyword.LessThanHalfMaxHealth),
             new Sentence("Combat Refresh restore %f health", CombatKeyword.CombatRefreshRestoreHeatlth),
             new Sentence("Healing from Combat Refreshes %f", CombatKeyword.CombatRefreshRestoreHeatlth),
             new Sentence("Boost the target's #D damage-over-time by %f per tick", CombatKeyword.DealIndirectDamage),
             new Sentence("Take %f damage from #D", CombatKeyword.AddVulnerability),
             new Sentence("Grant you %f #D Vulnerability", CombatKeyword.AddVulnerability),
-            //new Sentence("%f Direct Damage Vulnerability", CombatKeyword.AddDirectVulnerability),
+
+            // new Sentence("%f Direct Damage Vulnerability", CombatKeyword.AddDirectVulnerability),
             new Sentence("Boost your #S damage %f", CombatKeyword.DamageBoost),
             new Sentence("Boost your @ damage %f", CombatKeyword.DamageBoost),
             new Sentence("Boost your #D attack damage %f", CombatKeyword.DamageBoost),
@@ -3899,7 +3909,8 @@
             new Sentence("#S Skill Base Damage %f", CombatKeyword.BaseDamageBoost),
             new Sentence("#S Base Damage by %f", CombatKeyword.BaseDamageBoost),
             new Sentence("#S Base Damage %f", CombatKeyword.BaseDamageBoost),
-            //new Sentence("Your #S Base Damage is %f", CombatKeyword.BaseDamageBoost),
+
+            // new Sentence("Your #S Base Damage is %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Your #S Base Damage increase %f", CombatKeyword.BaseDamageBoost),
             new Sentence("#S Base Attack Damage %f", CombatKeyword.BaseDamageBoost),
             new Sentence("Direct #D Damage %f", CombatKeyword.DamageBoost),
@@ -3932,7 +3943,8 @@
             new Sentence("Cause %f damage", CombatKeyword.DamageBoost),
             new Sentence("Your #D attack deal %f direct damage", CombatKeyword.DamageBoost),
             new Sentence("Over %f second", CombatKeyword.EffectDuration),
-            //new Sentence("Within %f second", CombatKeyword.EffectDuration),
+
+            // new Sentence("Within %f second", CombatKeyword.EffectDuration),
             new Sentence("Lasts %f second", CombatKeyword.EffectDuration),
             new Sentence("For %f second after using ", CombatKeyword.EffectDuration),
             new Sentence("For %f second", CombatKeyword.EffectDuration),
@@ -3952,7 +3964,8 @@
             new Sentence("Reduce target's Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
             new Sentence("reduce targets' Rage by %f", CombatKeyword.AddRage, SignInterpretation.AlwaysNegative),
             new Sentence("Generate %f Rage", CombatKeyword.AddRage),
-            //new Sentence("Lower Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
+
+            // new Sentence("Lower Rage by %f", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Remove %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Deplete %f Rage", CombatKeyword.AddRage, SignInterpretation.Opposite),
             new Sentence("Generate no Rage", CombatKeyword.ZeroRage),
@@ -3976,7 +3989,8 @@
             new Sentence("Regain %f Power", CombatKeyword.AddPowerRegen),
             new Sentence("The maximum Power restored by @ increase %f", CombatKeyword.AddPowerCostMax),
             new Sentence("Max Armor %f", CombatKeyword.AddMaxArmor),
-            //new Sentence("Gain %f Armor", CombatKeyword.AddMaxArmor),
+
+            // new Sentence("Gain %f Armor", CombatKeyword.AddMaxArmor),
             new Sentence("Increase your Max Health by %f", CombatKeyword.AddMaxHealth),
             new Sentence("Increase your Max Armor by %f", CombatKeyword.AddMaxArmor),
             new Sentence("Reuse Time %f second", CombatKeyword.AddResetTimer),
@@ -4014,10 +4028,12 @@
             new Sentence("You regain %f Health", new List<CombatKeyword>() { CombatKeyword.RestoreHealth, CombatKeyword.TargetSelf }),
             new Sentence("Restore %f Health/Armor to your pet", CombatKeyword.RestoreHealthArmorToPet),
             new Sentence("Restore %f Health/Armor", CombatKeyword.RestoreHealthArmor),
-            //new Sentence("Restore %f of your Max Health", CombatKeyword.RestoreMaxHealth),
+
+            // new Sentence("Restore %f of your Max Health", CombatKeyword.RestoreMaxHealth),
             new Sentence("Restore %f health", CombatKeyword.RestoreHealth),
             new Sentence("Boost the healing of your @ %f", CombatKeyword.RestoreHealth),
-            //new Sentence("Heal you for %f of your Max Health", CombatKeyword.RestoreMaxHealth),
+
+            // new Sentence("Heal you for %f of your Max Health", CombatKeyword.RestoreMaxHealth),
             new Sentence("Heal all targets for %f health", CombatKeyword.RestoreHealth),
             new Sentence("Heal %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Restore %f armor", CombatKeyword.RestoreArmor),
@@ -4075,11 +4091,13 @@
             new Sentence("Deal %f total damage against Demons", CombatKeyword.DamageBoostAgainstSpecie),
             new Sentence("Boost targets' mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("#D mitigation %f", CombatKeyword.AddMitigation),
-            new Sentence("Vulnerability to Elite #D damage %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite}, SignInterpretation.Opposite),
-            new Sentence("Mitigate %f of physical damage from Elite", new List<CombatKeyword>() { CombatKeyword.AddMitigationPhysical, CombatKeyword.TargetElite}),
-            //new Sentence("%f #D Damage Reduction", CombatKeyword.AddMitigation),
+            new Sentence("Vulnerability to Elite #D damage %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }, SignInterpretation.Opposite),
+            new Sentence("Mitigate %f of physical damage from Elite", new List<CombatKeyword>() { CombatKeyword.AddMitigationPhysical, CombatKeyword.TargetElite }),
+
+            // new Sentence("%f #D Damage Reduction", CombatKeyword.AddMitigation),
             new Sentence("Mitigate %f #D Damage", CombatKeyword.AddMitigation),
-            //new Sentence("%f Direct Damage Reduction", CombatKeyword.AddMitigationDirect),
+
+            // new Sentence("%f Direct Damage Reduction", CombatKeyword.AddMitigationDirect),
             new Sentence("Grant %f Universal #D Mitigation", CombatKeyword.AddMitigation),
             new Sentence("Universal Damage Mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("Reduce the damage you take from #D attack by %f", CombatKeyword.AddMitigation),
@@ -4092,7 +4110,8 @@
             new Sentence("Mitigate %f of all #D damage", CombatKeyword.AddMitigation),
             new Sentence("Up to %f direct damage mitigation", new List<CombatKeyword>() { CombatKeyword.VariableMitigation, CombatKeyword.ApplyToPet }),
             new Sentence("#D Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
-            //new Sentence("Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
+
+            // new Sentence("Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             new Sentence("Mitigation vs all attack by Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             new Sentence("Against Elite enemies, mitigate %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
             new Sentence("Mitigation vs physical damage %f", CombatKeyword.AddMitigationPhysical),
@@ -4164,11 +4183,13 @@
             new Sentence("First attacker is knock back", CombatKeyword.ReflectKnockbackOnFirstMelee),
             new Sentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
             new Sentence("Melee attackers deal damage to you", CombatKeyword.ReflectOnMelee),
-            //new Sentence("Melee damagers take", CombatKeyword.ReflectOnMelee),
+
+            // new Sentence("Melee damagers take", CombatKeyword.ReflectOnMelee),
             new Sentence("Deal its damage when you are hit by burst attack", CombatKeyword.ReflectOnBurst),
             new Sentence("Deal its damage when you are hit by ranged attack", CombatKeyword.ReflectOnRanged),
             new Sentence("Chance to consume grass is %f", CombatKeyword.ChanceToConsume),
-            //new Sentence("You regenerate %f Health per tick", CombatKeyword.AddHealthRegen),
+
+            // new Sentence("You regenerate %f Health per tick", CombatKeyword.AddHealthRegen),
             new Sentence("Have %f health", CombatKeyword.AddMaxHealth),
             new Sentence("Per second", CombatKeyword.EffectRecurrence),
             new Sentence("Steal %f health", CombatKeyword.DrainHealth),
@@ -4220,7 +4241,8 @@
             new Sentence("#D damage %f", CombatKeyword.DamageBoost),
             new Sentence("%f health damage", CombatKeyword.DealDirectHealthDamage),
             new Sentence("%f #D health damage", CombatKeyword.DealDirectHealthDamage),
-            //new Sentence("%f Health and Armor damage", CombatKeyword.DamageBoostToHealthAndArmor),
+
+            // new Sentence("%f Health and Armor damage", CombatKeyword.DamageBoostToHealthAndArmor),
             new Sentence("%f damage", CombatKeyword.DamageBoost),
             new Sentence("Damage %f", CombatKeyword.DamageBoost),
             new Sentence("%f armor damage", CombatKeyword.DealArmorDamage),
@@ -4267,7 +4289,8 @@
             new Sentence("When you are hit by a monster's Rage Attack", CombatKeyword.ReflectOnBurst),
             new Sentence("When you are hit", CombatKeyword.ReflectOnAnyAttack),
             new Sentence("Any attackers that hit you", CombatKeyword.ReflectOnAnyAttack),
-            //new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
+
+            // new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
             new Sentence("Returning it to you as armor", CombatKeyword.DrainAsArmor),
             new Sentence("When you teleport", CombatKeyword.WhenTeleporting),
             new Sentence("b*u*t", CombatKeyword.But),

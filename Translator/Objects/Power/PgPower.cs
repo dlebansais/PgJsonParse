@@ -8,7 +8,7 @@
         public string Prefix { get; set; } = string.Empty;
         public string Suffix { get; set; } = string.Empty;
         public List<ItemSlot> SlotList { get; set; } = new List<ItemSlot>();
-        public PgSkill Skill { get; set; }
+        public PgSkill Skill { get; set; } = null!;
         public bool IsUnavailable { get { return RawIsUnavailable.HasValue && RawIsUnavailable.Value; } }
         public bool? RawIsUnavailable { get; set; }
         public PgPowerTierCollection TierList { get; set; } = new PgPowerTierCollection();

@@ -1,15 +1,15 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserQuestObjective : Parser
     {
         public override object CreateItem()
         {
-            return null;
+            return null!;
         }
 
         private static Dictionary<QuestObjectiveType, VariadicObjectHandler> HandlerTable = new Dictionary<QuestObjectiveType, VariadicObjectHandler>()
@@ -78,7 +78,7 @@
 
         private static Dictionary<QuestObjectiveType, List<string>> HandledTable = new Dictionary<QuestObjectiveType, List<string>>();
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (item != null)
                 return Program.ReportFailure("Unexpected failure");
@@ -103,7 +103,7 @@
             List<string> KnownFieldList = KnownFieldTable[objectiveType];
             List<string> UsedFieldList = new List<string>();
 
-            if (!Handler(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
+            if (!Handler(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, KnownFieldList, UsedFieldList, parsedFile, parsedKey))
                 return false;
 
             if (!HandledTable.ContainsKey(objectiveType))
@@ -151,13 +151,13 @@
             return Result;
         }
 
-        private static bool FinishItemKill(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemKill(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveKill NewItem = new PgQuestObjectiveKill();
 
             bool Result = true;
             AbilityKeyword RequirementKeyword = AbilityKeyword.Internal_None;
-            PgQuestObjectiveRequirement Requirement = null;
+            PgQuestObjectiveRequirement Requirement = null!;
 
             foreach (KeyValuePair<string, object> Entry in contentTable)
             {
@@ -222,7 +222,7 @@
                 return false;
         }
 
-        private static bool FinishItemScripted(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemScripted(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveScripted NewItem = new PgQuestObjectiveScripted();
 
@@ -274,7 +274,7 @@
                 return false;
         }
 
-        private static bool FinishItemMultipleInteractionFlags(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemMultipleInteractionFlags(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveMultipleInteractionFlags NewItem = new PgQuestObjectiveMultipleInteractionFlags();
 
@@ -324,19 +324,19 @@
                 return false;
         }
 
-        private static bool FinishItemCollect(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemCollect(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
             else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
             else if (contentTable.ContainsKey("ItemName"))
-                return FinishItemCollectItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemCollectItem(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
             else
-                return FinishItemCollectItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemCollectItemKeyword(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
         }
 
-        private static bool FinishItemCollectItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemCollectItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveCollectItem NewItem = new PgQuestObjectiveCollectItem();
 
@@ -391,7 +391,7 @@
                 return false;
         }
 
-        private static bool FinishItemCollectItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemCollectItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveCollectItemKeyword NewItem = new PgQuestObjectiveCollectItemKeyword();
 
@@ -446,7 +446,7 @@
                 return false;
         }
 
-        private static bool FinishItemInteractionFlag(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemInteractionFlag(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveInteractionFlag NewItem = new PgQuestObjectiveInteractionFlag();
 
@@ -503,7 +503,7 @@
                 return false;
         }
 
-        private static bool FinishItemDeliver(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemDeliver(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveDeliver NewItem = new PgQuestObjectiveDeliver();
 
@@ -568,19 +568,19 @@
                 return false;
         }
 
-        private static bool FinishItemHave(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHave(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
             else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
             else if (contentTable.ContainsKey("ItemName"))
-                return FinishItemHaveItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemHaveItem(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
             else
-                return FinishItemHaveItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemHaveItemKeyword(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
         }
 
-        private static bool FinishItemHaveItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHaveItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveHaveItem NewItem = new PgQuestObjectiveHaveItem();
 
@@ -634,7 +634,7 @@
                 return false;
         }
 
-        private static bool FinishItemHaveItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHaveItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveHaveItemKeyword NewItem = new PgQuestObjectiveHaveItemKeyword();
 
@@ -688,19 +688,19 @@
                 return false;
         }
 
-        private static bool FinishItemHarvest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHarvest(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
             else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
             else if (contentTable.ContainsKey("ItemName"))
-                return FinishItemHarvestItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemHarvestItem(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
             else
-                return FinishItemHarvestItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemHarvestItemKeyword(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
         }
 
-        private static bool FinishItemHarvestItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHarvestItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveHarvestItem NewItem = new PgQuestObjectiveHarvestItem();
 
@@ -757,7 +757,7 @@
                 return false;
         }
 
-        private static bool FinishItemHarvestItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemHarvestItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveHarvestItemKeyword NewItem = new PgQuestObjectiveHarvestItemKeyword();
 
@@ -814,7 +814,7 @@
                 return false;
         }
 
-        private static bool FinishItemTipPlayer(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemTipPlayer(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveTipPlayer NewItem = new PgQuestObjectiveTipPlayer();
 
@@ -867,7 +867,7 @@
                 return false;
         }
 
-        private static bool FinishItemSpecial(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemSpecial(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveSpecial NewItem = new PgQuestObjectiveSpecial();
 
@@ -953,7 +953,7 @@
             return true;
         }
 
-        private static bool FinishItemGiveGift(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemGiveGift(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveGiveGift NewItem = new PgQuestObjectiveGiveGift();
 
@@ -1011,19 +1011,19 @@
                 return false;
         }
 
-        private static bool FinishItemUseItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemUseItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
             else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
             else if (contentTable.ContainsKey("ItemName"))
-                return FinishItemUseItemLink(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemUseItemLink(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
             else
-                return FinishItemUseItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemUseItemKeyword(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
         }
 
-        private static bool FinishItemUseItemLink(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemUseItemLink(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveUseItem NewItem = new PgQuestObjectiveUseItem();
 
@@ -1081,7 +1081,7 @@
                 return false;
         }
 
-        private static bool FinishItemUseItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemUseItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveUseItemKeyword NewItem = new PgQuestObjectiveUseItemKeyword();
 
@@ -1138,7 +1138,7 @@
                 return false;
         }
 
-        private static bool FinishItemUseRecipe(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemUseRecipe(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveUseRecipe NewItem = new PgQuestObjectiveUseRecipe();
 
@@ -1198,7 +1198,7 @@
                 return false;
         }
 
-        private static bool FinishItemKillElite(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemKillElite(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveKillElite NewItem = new PgQuestObjectiveKillElite();
 
@@ -1251,7 +1251,7 @@
                 return false;
         }
 
-        private static bool FinishItemSayInChat(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemSayInChat(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveSayInChat NewItem = new PgQuestObjectiveSayInChat();
 
@@ -1302,7 +1302,7 @@
                 return false;
         }
 
-        private static bool FinishItemBeAttacked(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemBeAttacked(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveBeAttacked NewItem = new PgQuestObjectiveBeAttacked();
 
@@ -1359,7 +1359,7 @@
                 return false;
         }
 
-        private static bool FinishItemBury(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemBury(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveBury NewItem = new PgQuestObjectiveBury();
 
@@ -1415,7 +1415,7 @@
                 return false;
         }
 
-        private static bool FinishItemUseAbility(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemUseAbility(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveUseAbility NewItem = new PgQuestObjectiveUseAbility();
 
@@ -1468,7 +1468,7 @@
                 return false;
         }
 
-        private static bool FinishItemUniqueSpecial(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemUniqueSpecial(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveUniqueSpecial NewItem = new PgQuestObjectiveUniqueSpecial();
 
@@ -1519,19 +1519,19 @@
                 return false;
         }
 
-        private static bool FinishItemGuildGiveItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemGuildGiveItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("ItemKeyword"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
             else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("ItemKeyword"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
             else if (contentTable.ContainsKey("ItemName"))
-                return FinishItemGuildGiveItemLink(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemGuildGiveItemLink(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
             else
-                return FinishItemGuildGiveItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemGuildGiveItemKeyword(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
         }
 
-        private static bool FinishItemGuildGiveItemLink(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemGuildGiveItemLink(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveGuildGiveItem NewItem = new PgQuestObjectiveGuildGiveItem();
 
@@ -1591,7 +1591,7 @@
                 return false;
         }
 
-        private static bool FinishItemGuildGiveItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemGuildGiveItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveGuildGiveItemKeyword NewItem = new PgQuestObjectiveGuildGiveItemKeyword();
 
@@ -1651,7 +1651,7 @@
                 return false;
         }
 
-        private static bool FinishItemGuildKill(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemGuildKill(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveGuildKill NewItem = new PgQuestObjectiveGuildKill();
 
@@ -1705,7 +1705,7 @@
                 return false;
         }
 
-        private static bool FinishItemDruidKill(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemDruidKill(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveDruidKill NewItem = new PgQuestObjectiveDruidKill();
 
@@ -1759,7 +1759,7 @@
                 return false;
         }
 
-        private static bool FinishItemDruidScripted(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemDruidScripted(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveDruidScripted NewItem = new PgQuestObjectiveDruidScripted();
 
@@ -1812,19 +1812,19 @@
                 return false;
         }
 
-        private static bool FinishItemLoot(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemLoot(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             if (contentTable.ContainsKey("ItemName") && contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item info");
             else if (!contentTable.ContainsKey("ItemName") && !contentTable.ContainsKey("Target"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Missing item info");
             else if (contentTable.ContainsKey("ItemName"))
-                return FinishItemLootItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemLootItem(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
             else
-                return FinishItemLootItemKeyword(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+                return FinishItemLootItemKeyword(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
         }
 
-        private static bool FinishItemLootItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemLootItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveLootItem NewItem = new PgQuestObjectiveLootItem();
 
@@ -1881,7 +1881,7 @@
                 return false;
         }
 
-        private static bool FinishItemLootItemKeyword(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemLootItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveLootItemKeyword NewItem = new PgQuestObjectiveLootItemKeyword();
 
@@ -1938,7 +1938,7 @@
                 return false;
         }
 
-        private static bool FinishItemScriptedReceiveItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemScriptedReceiveItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveScriptedReceiveItem NewItem = new PgQuestObjectiveScriptedReceiveItem();
 
@@ -1994,7 +1994,7 @@
                 return false;
         }
 
-        private static bool FinishItemUseAbilityOnTargets(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemUseAbilityOnTargets(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveUseAbilityOnTargets NewItem = new PgQuestObjectiveUseAbilityOnTargets();
 
@@ -2050,7 +2050,7 @@
                 return false;
         }
 
-        private static bool FinishItemCompleteQuest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemCompleteQuest(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveCompleteQuest NewItem = new PgQuestObjectiveCompleteQuest();
 
@@ -2107,7 +2107,7 @@
                 return false;
         }
 
-        private static bool FinishItemMeetRequirements(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        private static bool FinishItemMeetRequirements(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
         {
             PgQuestObjectiveMeetRequirements NewItem = new PgQuestObjectiveMeetRequirements();
 

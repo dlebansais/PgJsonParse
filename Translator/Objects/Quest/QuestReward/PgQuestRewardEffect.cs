@@ -2,6 +2,6 @@
 {
     public class PgQuestRewardEffect : PgQuestReward
     {
-        public PgEffect Effect { get; set; }
+        public PgEffect Effect { get; set; } = null!;
     }
 }

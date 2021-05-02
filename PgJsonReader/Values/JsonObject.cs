@@ -28,13 +28,14 @@
             return null;
         }
 
-        public T Get<T>(string name) where T : IJsonValue
+        public T Get<T>(string name)
+            where T : IJsonValue
         {
-#pragma warning disable CS8601 // Possible null reference assignment
 #pragma warning disable CS8603 // Possible null reference return
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             return (T)Get(name);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning restore CS8603 // Possible null reference return
-#pragma warning restore CS8601 // Possible null reference assignment
         }
 
         public IJsonValue? this[string name]

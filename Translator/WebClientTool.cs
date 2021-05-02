@@ -12,9 +12,9 @@
     public static class WebClientTool
     {
         #region Download Text
-        public delegate void DownloadTextResultHandler(bool isFound, string content);
+        public delegate void DownloadTextResultHandler(bool isFound, string? content);
 
-        public static void DownloadText(string address, Stopwatch watch, DownloadTextResultHandler callback, bool ignoreCache, out bool isFound)
+        public static void DownloadText(string address, Stopwatch? watch, DownloadTextResultHandler callback, bool ignoreCache, out bool isFound)
         {
             string FileName = LocalFileName(address);
             string FilePath = Path.GetDirectoryName(FileName);
@@ -36,14 +36,14 @@
                 if (!Directory.Exists(FilePath))
                     Directory.CreateDirectory(FilePath);
 
-                Task<Tuple<bool, string>> DownloadTask = new Task<Tuple<bool, string>>(() => { return ExecuteDownloadText(address, watch); });
+                Task<Tuple<bool, string?>> DownloadTask = new Task<Tuple<bool, string?>>(() => { return ExecuteDownloadText(address, watch); });
                 DownloadTask.Start();
 
                 OnCheckDownload(DownloadTask, address, callback, out isFound);
             }
         }
 
-        private static Tuple<bool, string> ExecuteDownloadText(string address, Stopwatch watch)
+        private static Tuple<bool, string?> ExecuteDownloadText(string address, Stopwatch? watch)
         {
             try
             {
@@ -52,7 +52,7 @@
                 Message.Wait();
                 HttpResponseMessage Response = Message.Result;
                 if (Response.StatusCode != HttpStatusCode.OK)
-                    return new Tuple<bool, string>(false, null);
+                    return new Tuple<bool, string?>(false, null);
 
                 HttpContent ResponseContent = Response.Content;
 
@@ -60,26 +60,7 @@
                 ReadTask.Wait();
                 using Stream ResponseStream = ReadTask.Result;
 
-                //using Stream ResponseStream = Response.GetResponseStream();
                 Encoding Encoding = Encoding.ASCII;
-                /*
-                string[] ContentTypeSplit = Response.ContentType.ToUpperInvariant().Split(';');
-                foreach (string s in ContentTypeSplit)
-                {
-                    string Chunk = s.Trim();
-                    if (Chunk.StartsWith("CHARSET", StringComparison.InvariantCulture))
-                    {
-                        string[] ChunkSplit = Chunk.Split('=');
-                        if (ChunkSplit.Length == 2)
-                            if (ChunkSplit[0] == "CHARSET")
-                                if (ChunkSplit[1] == "UTF8" || ChunkSplit[1] == "UTF-8")
-                                {
-                                    Encoding = Encoding.UTF8;
-                                    break;
-                                }
-                    }
-                }
-                */
 
                 using StreamReader Reader = new StreamReader(ResponseStream, Encoding);
                 string Content = Reader.ReadToEnd();
@@ -90,14 +71,14 @@
                     if (watch != null)
                         MinimalSleep(watch);
 
-                    return new Tuple<bool, string>(true, Content);
+                    return new Tuple<bool, string?>(true, Content);
                 }
                 else
-                    return new Tuple<bool, string>(true, null);
+                    return new Tuple<bool, string?>(true, null);
             }
             catch (Exception)
             {
-                return new Tuple<bool, string>(false, null);
+                return new Tuple<bool, string?>(false, null);
             }
         }
 
@@ -105,7 +86,7 @@
         {
             address = address.Replace("*", "_");
             Uri AddressUri = new Uri(address, UriKind.Absolute);
-            
+
             string Name = AddressUri.LocalPath;
             if (Name.StartsWith("/"))
                 Name = Name.Substring(1);
@@ -117,15 +98,15 @@
             return FileName;
         }
 
-        private static void OnCheckDownload(Task<Tuple<bool, string>> DownloadTask, string address, DownloadTextResultHandler callback, out bool isFound)
+        private static void OnCheckDownload(Task<Tuple<bool, string?>> downloadTask, string address, DownloadTextResultHandler callback, out bool isFound)
         {
             isFound = false;
 
-            for (; ; )
+            for (; ;)
             {
-                if (DownloadTask.IsCompleted)
+                if (downloadTask.IsCompleted)
                 {
-                    Tuple<bool, string> Result = DownloadTask.Result;
+                    Tuple<bool, string?> Result = downloadTask.Result;
                     callback(Result.Item1, Result.Item2);
                     isFound = Result.Item1;
 
@@ -153,54 +134,54 @@
             }
         }
 
-        public static void MinimalSleep(Stopwatch Watch)
+        public static void MinimalSleep(Stopwatch watch)
         {
-            MinimalSleep(Watch, TimeSpan.FromSeconds(4));
+            MinimalSleep(watch, TimeSpan.FromSeconds(4));
         }
 
-        public static void MinimalSleep(Stopwatch Watch, TimeSpan MinimumTime)
+        public static void MinimalSleep(Stopwatch watch, TimeSpan minimumTime)
         {
-            TimeSpan Remaining = MinimumTime - Watch.Elapsed;
+            TimeSpan Remaining = minimumTime - watch.Elapsed;
             if (Remaining > TimeSpan.Zero)
                 Thread.Sleep(Remaining);
         }
         #endregion
 
         #region Download Binary
-        public delegate void DownloadDataResultHandler(byte[] data, Exception downloadException);
+        public delegate void DownloadDataResultHandler(byte[]? data, Exception downloadException);
 
         public static void DownloadDataToFile(string address, DownloadDataResultHandler callback)
         {
-            Task<Tuple<byte[], Exception>> DownloadTask = new Task<Tuple<byte[], Exception>>(() => { return ExecuteDownloadData(address); });
+            Task<Tuple<byte[]?, Exception>> DownloadTask = new Task<Tuple<byte[]?, Exception>>(() => { return ExecuteDownloadData(address); });
             DownloadTask.Start();
 
             OnCheckDownload(DownloadTask, callback);
         }
 
-        private static Tuple<byte[], Exception> ExecuteDownloadData(string address)
+        private static Tuple<byte[]?, Exception> ExecuteDownloadData(string address)
         {
             try
             {
-                HttpWebRequest Request = WebRequest.Create(new Uri(address)) as HttpWebRequest;
+                HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(new Uri(address));
                 using WebResponse Response = Request.GetResponse();
                 using Stream ResponseStream = Response.GetResponseStream();
                 using BinaryReader Reader = new BinaryReader(ResponseStream);
                 byte[] Content = Reader.ReadBytes((int)Response.ContentLength);
-                return new Tuple<byte[], Exception>(Content, null);
+                return new Tuple<byte[]?, Exception>(Content, null!);
             }
             catch (Exception e)
             {
-                return new Tuple<byte[], Exception>(null, e);
+                return new Tuple<byte[]?, Exception>(null, e);
             }
         }
 
-        private static void OnCheckDownload(Task<Tuple<byte[], Exception>> DownloadTask, DownloadDataResultHandler callback)
+        private static void OnCheckDownload(Task<Tuple<byte[]?, Exception>> downloadTask, DownloadDataResultHandler callback)
         {
-            for (; ; )
+            for (; ;)
             {
-                if (DownloadTask.IsCompleted)
+                if (downloadTask.IsCompleted)
                 {
-                    Tuple<byte[], Exception> Result = DownloadTask.Result;
+                    Tuple<byte[]?, Exception> Result = downloadTask.Result;
                     callback(Result.Item1, Result.Item2);
                     break;
                 }

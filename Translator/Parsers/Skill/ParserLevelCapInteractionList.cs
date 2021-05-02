@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserLevelCapInteractionList : Parser
     {
@@ -11,15 +11,15 @@
             return new PgLevelCapInteractionList();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgLevelCapInteractionList AsPgLevelCapInteractionList))
+            if (item is not PgLevelCapInteractionList AsPgLevelCapInteractionList)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgLevelCapInteractionList, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgLevelCapInteractionList, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgLevelCapInteractionList item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgLevelCapInteractionList item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             foreach (KeyValuePair<string, object> Entry in contentTable)
             {
@@ -53,7 +53,7 @@
             if (Split.Length < 3 || Split[0] != "LevelCap")
                 return Program.ReportFailure($"Invalid level cap interaction '{interaction}'");
 
-            string MergedSkill = "";
+            string MergedSkill = string.Empty;
             int i;
             for (i = 1; i + 1 < Split.Length; i++)
             {
@@ -65,7 +65,7 @@
             if (MergedSkill == "Dance")
                 MergedSkill = "Performance_Dance";
 
-            PgSkill ParsedSkill = null;
+            PgSkill ParsedSkill = null!;
             if (!ParserSkill.Parse((PgSkill valueSkill) => ParsedSkill = valueSkill, MergedSkill, parsedFile, parsedKey))
                 return false;
 

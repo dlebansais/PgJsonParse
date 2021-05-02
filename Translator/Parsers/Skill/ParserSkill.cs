@@ -1,10 +1,10 @@
 ﻿namespace Translator
 {
-    using PgJsonReader;
-    using PgObjects;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserSkill : Parser
     {
@@ -32,15 +32,15 @@
             return new PgSkill();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgSkill AsPgSkill))
+            if (item is not PgSkill AsPgSkill)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgSkill, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgSkill, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgSkill item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgSkill item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -194,7 +194,7 @@
 
         private bool ParseInteractionFlagLevelCaps(PgSkill item, object value, string parsedFile, string parsedKey)
         {
-            PgLevelCapInteractionList ParsedLevelCapInteractionList = null;
+            PgLevelCapInteractionList ParsedLevelCapInteractionList = null!;
             if (!Inserter<PgLevelCapInteractionList>.SetItemProperty((PgLevelCapInteractionList valueLevelCapInteractionList) => ParsedLevelCapInteractionList = valueLevelCapInteractionList, value))
                 return false;
 
@@ -246,7 +246,7 @@
                 return true;
             }
 
-            hint = hint.Replace(" during a Full Moon,", "");
+            hint = hint.Replace(" during a Full Moon,", string.Empty);
 
             string Pattern;
             int StartIndex;
@@ -284,13 +284,12 @@
             if (EndIndex <= StartIndex)
                 return Program.ReportFailure($"Bad advancement hint: {hint}");
 
-
             string NpcNameString = hint.Substring(StartIndex, EndIndex - StartIndex);
             string[] NpcNames = NpcNameString.Split(new string[] { " or " }, StringSplitOptions.None);
 
             foreach (string NpcName in NpcNames)
             {
-                PgNpcLocation ParsedNpc = null;
+                PgNpcLocation ParsedNpc = null!;
                 if (!Inserter<PgSkill>.SetNpc((PgNpcLocation npcLocation) => ParsedNpc = npcLocation, $"NPC_{NpcName}", parsedFile, parsedKey))
                     return false;
 
@@ -305,7 +304,7 @@
 
         private bool ParseRewards(PgSkill item, object value, string parsedFile, string parsedKey)
         {
-            PgRewardList ParsedRewardList = null;
+            PgRewardList ParsedRewardList = null!;
             if (!Inserter<PgRewardList>.SetItemProperty((PgRewardList valueRewardList) => ParsedRewardList = valueRewardList, value))
                 return false;
 
@@ -356,7 +355,7 @@
 
         private bool ParseReports(PgSkill item, object value, string parsedFile, string parsedKey)
         {
-            PgReportList ParsedPeportList = null;
+            PgReportList ParsedPeportList = null!;
             if (!Inserter<PgReportList>.SetItemProperty((PgReportList valueReportList) => ParsedPeportList = valueReportList, value))
                 return false;
 

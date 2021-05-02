@@ -15,7 +15,7 @@
             Float = 3,
             Array = 4,
             Object = 5,
-            Null = 6
+            Null = 6,
         }
 
         /// <summary>
@@ -33,7 +33,7 @@
             Float = 7,
             Boolean = 8,
             Null = 9,
-            EndOfFile = 10
+            EndOfFile = 10,
         }
 
         public static bool Validate(Token parent, Token next, out string error)
@@ -57,38 +57,5 @@
             error = string.Empty;
             return true;
         }
-    }
-
-    public interface IStringHandler
-    {
-        string ReadString(string input);
-        string WriteString(string input);
-    }
-
-    public class DefaultStringHandler : IStringHandler
-    {
-        public string ReadString(string input)
-        {
-            return input;
-        }
-
-        public string WriteString(string input)
-        {
-            return input;
-        }
-    }
-
-    [AttributeUsage(validOn:AttributeTargets.Field)]
-    public class JsonIgnoreAttribute : Attribute { }
-
-    [AttributeUsage(validOn: AttributeTargets.Field)]
-    public class JsonPathAttribute : Attribute
-    {
-        public JsonPathAttribute(string serializedName)
-        {
-            SerializedName = serializedName;
-        }
-
-        public string SerializedName { get; }
     }
 }

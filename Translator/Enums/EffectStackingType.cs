@@ -134,8 +134,9 @@
         HuntersStrideArmorRegen1,
         FireShieldColdMit,
         FireShieldFireMit,
-        //ReverberatingStrikeReduceArmorRegen,
-        //ReverberatingStrikeReduceHealthRegen,
+
+        // ReverberatingStrikeReduceArmorRegen,
+        // ReverberatingStrikeReduceHealthRegen,
         UnnaturalWrathDelayHurt,
         ArrowsMitigation,
         Uncrackable,
@@ -174,7 +175,8 @@
         LamiasGaze,
         BearWarmth,
         FillWithBile,
-        //IceArmor,
+
+        // IceArmor,
         ColdProtection,
         MinotaurCurse,
         SharpenBuff,
@@ -317,7 +319,8 @@
         DimensionalSnareCrushingVuln,
         SPAWN_VIEW_FEY,
         ColdEnvironment,
-        //KingOfTheForestMitigation,
+
+        // KingOfTheForestMitigation,
         CandleAppreciation,
         PowerSyrup,
         SanguineFangsSlashingVuln15,

@@ -1,6 +1,5 @@
 ﻿namespace Translator
 {
-    using PgObjects;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -8,6 +7,7 @@
     using System.Globalization;
     using System.IO;
     using System.Reflection;
+    using PgObjects;
 
     public class Generate
     {
@@ -21,7 +21,7 @@
         {
             string FilePath = Environment.CurrentDirectory;
 
-            for(;;)
+            for (; ;)
             {
                 string Folder = Path.GetFileName(FilePath);
 
@@ -95,7 +95,7 @@
             {
                 StreamWriter Writer = Entry.Value;
 
-                Writer.WriteLine("");
+                Writer.WriteLine(string.Empty);
                 Writer.WriteLine("        public static List<string> Keys { get { return new List<string>() {");
             }
 
@@ -116,9 +116,9 @@
                 StreamWriter Writer = Entry.Value;
                 string TypeName = Entry.Key.Name;
 
-                Writer.WriteLine("");
+                Writer.WriteLine(string.Empty);
                 Writer.WriteLine($"        private static Dictionary<string, {TypeName}> Table = new Dictionary<string, {TypeName}>();");
-                Writer.WriteLine("");
+                Writer.WriteLine(string.Empty);
                 Writer.WriteLine($"        public static {TypeName} Get(string key)");
                 Writer.WriteLine($"        {{");
                 Writer.WriteLine($"            if (Table.ContainsKey(key))");
@@ -149,8 +149,7 @@
             if (Property == null || Property.PropertyType != typeof(string))
                 return;
 
-            string Key = Property.GetValue(Item) as string;
-            Debug.Assert(Key != null);
+            string Key = (string)Property.GetValue(Item);
 
             FillRecursiveTable(Key, objectIndex, recursiveTable[Type], 0);
         }
@@ -170,7 +169,7 @@
 
         private static void WriteRecursiveTable(StreamWriter writer, string typeName, string prefix, int rank, Dictionary<char, IDictionary> table)
         {
-            writer.WriteLine("");
+            writer.WriteLine(string.Empty);
             writer.WriteLine($"        private static {typeName} Get{prefix}(Dictionary<string, {typeName}> table, string key)");
             writer.WriteLine($"        {{");
 
@@ -198,7 +197,7 @@
                 CaseCount--;
             }
 
-            writer.WriteLine("");
+            writer.WriteLine(string.Empty);
 
             if (CaseCount > 1)
             {
@@ -264,7 +263,7 @@
                 StreamWriter Writer = Entry.Value;
 
                 string TypeName = Entry.Key.Name;
-                Writer.WriteLine("");
+                Writer.WriteLine(string.Empty);
                 Writer.WriteLine($"        public static string Index = @\"");
             }
 
@@ -308,13 +307,13 @@
             Writer.WriteLine("    using System;");
             Writer.WriteLine("    using System.Collections.Generic;");
             Writer.WriteLine("    using PgObjects.Properties;");
-            Writer.WriteLine("");
+            Writer.WriteLine(string.Empty);
             Writer.WriteLine($"    public static class SearchIndex");
             Writer.WriteLine("    {");
             Writer.WriteLine($"        public const char FieldSeparator = '{FieldSeparator}';");
             Writer.WriteLine($"        public const char ObjectKeyStart = '{ObjectKeyStart}';");
             Writer.WriteLine($"        public const char ObjectKeyEnd = '{ObjectKeyEnd}';");
-            Writer.WriteLine("");
+            Writer.WriteLine(string.Empty);
             Writer.WriteLine("        public static Dictionary<Func<string, PgObject>, string> Table { get; } = new Dictionary<Func<string, PgObject>, string>()");
             Writer.WriteLine("        {");
 
@@ -425,14 +424,14 @@
 
         private static Dictionary<Type, FileStream> StreamTable = new Dictionary<Type, FileStream>();
         private static Dictionary<Type, StreamWriter> WriterTable = new Dictionary<Type, StreamWriter>();
-        private static string RootFolder;
+        private static string RootFolder = string.Empty;
 
         private static void AddTypeFile(Type type, out StreamWriter writer)
         {
             if (WriterTable.ContainsKey(type))
             {
                 writer = WriterTable[type];
-                writer.WriteLine("");
+                writer.WriteLine(string.Empty);
                 return;
             }
 
@@ -447,7 +446,7 @@
             writer.WriteLine("{");
             writer.WriteLine("    using System;");
             writer.WriteLine("    using System.Collections.Generic;");
-            writer.WriteLine("");
+            writer.WriteLine(string.Empty);
             writer.WriteLine($"    public static class {ClassName}");
             writer.WriteLine("    {");
 
@@ -464,13 +463,13 @@
             writer.WriteLine($"                if (_{objectName} == null)");
             writer.WriteLine($"                {{");
             writer.WriteLine($"                    _{objectName} = new {objectTypeName}();");
-            writer.WriteLine("");
+            writer.WriteLine(string.Empty);
         }
 
         private static void WriteItemEpilog(StreamWriter writer, string objectTypeName, string objectName)
         {
             writer.WriteLine($"                }}");
-            writer.WriteLine("");
+            writer.WriteLine(string.Empty);
             writer.WriteLine($"                return _{objectName};");
             writer.WriteLine($"            }}");
             writer.WriteLine($"        }}");
@@ -523,8 +522,7 @@
             if (Property == null || Property.PropertyType != typeof(string))
                 return;
 
-            string Key = Property.GetValue(Item) as string;
-            Debug.Assert(Key != null);
+            string Key = (string)Property.GetValue(Item);
 
             string KeyValue = GetStringValueString(Key);
             StreamWriter Writer = WriterTable[Type];
@@ -541,8 +539,7 @@
             if (Property == null || Property.PropertyType != typeof(string))
                 return;
 
-            string Key = Property.GetValue(Item) as string;
-            Debug.Assert(Key != null);
+            string Key = (string)Property.GetValue(Item);
 
             string KeyValue = GetStringValueString(Key);
             string LinkValue = ToObjectName(objectIndex);
@@ -564,7 +561,7 @@
             if (Property == null || Property.PropertyType != typeof(string))
                 return;
 
-            string Key = Property.GetValue(Item) as string;
+            string Key = (string)Property.GetValue(Item);
             Debug.Assert(Key != null);
 
             string LinkValue = ToObjectName(objectIndex);
@@ -573,7 +570,7 @@
             StreamWriter Writer = WriterTable[Type];
             string TypeName = Type.Name;
 
-            Writer.WriteLine("");
+            Writer.WriteLine(string.Empty);
             Writer.WriteLine($"        public static void Add_{LinkValue}(Dictionary<string, {TypeName}> table, string key)");
             Writer.WriteLine("        {");
             Writer.WriteLine($"            table.Add(key, {LinkValue});");
@@ -601,7 +598,7 @@
 
         private static bool GetObjectIndexContent(object item, Type type, int recursion, out string key, out string content)
         {
-            key = null;
+            key = null!;
             content = string.Empty;
 
             if (recursion == 0)
@@ -618,8 +615,7 @@
                 Type PropertyType = Property.PropertyType;
                 if (PropertyType == typeof(string))
                 {
-                    string StringValue = Property.GetValue(item) as string;
-                    Debug.Assert(StringValue != null);
+                    string StringValue = (string)Property.GetValue(item);
 
                     if (Property.Name == "Key")
                         key = StringValue;
@@ -631,7 +627,7 @@
                 }
                 else if (PropertyType.BaseType == typeof(PgObject))
                 {
-                    PgObject ObjectValue = Property.GetValue(item) as PgObject;
+                    PgObject? ObjectValue = Property.GetValue(item) as PgObject;
                     if (ObjectValue != null)
                         content += GetPgObjectIndexContent(ObjectValue);
                 }
@@ -644,32 +640,32 @@
                 }
                 else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
                 {
-                    IDictionary ObjectDictionary = Property.GetValue(item) as IDictionary;
+                    IDictionary ObjectDictionary = (IDictionary)Property.GetValue(item);
                     Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
 
                     Debug.Assert(CollectionType.IsGenericType);
                     Type[] GenericArguments = CollectionType.GetGenericArguments();
                     Debug.Assert(GenericArguments.Length == 2);
-                    Type ItemKeyType = GenericArguments[0];
+                    Type ItemKeyType = GenericArguments[0]!;
                     Debug.Assert(ItemKeyType != null);
-                    Type ItemValueType = GenericArguments[1];
+                    Type ItemValueType = GenericArguments[1]!;
                     Debug.Assert(ItemValueType != null);
 
-                    GetObjectItemContent(recursion, ItemKeyType, ObjectDictionary.Keys, ref content);
-                    GetObjectItemContent(recursion, ItemValueType, ObjectDictionary.Values, ref content);
+                    GetObjectItemContent(recursion, ItemKeyType!, ObjectDictionary.Keys, ref content);
+                    GetObjectItemContent(recursion, ItemValueType!, ObjectDictionary.Values, ref content);
                 }
                 else if (PropertyType.GetInterface(typeof(ICollection).Name) != null)
                 {
-                    ICollection ObjectCollection = Property.GetValue(item) as ICollection;
+                    ICollection ObjectCollection = (ICollection)Property.GetValue(item);
                     Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
 
                     Debug.Assert(CollectionType.IsGenericType);
                     Type[] GenericArguments = CollectionType.GetGenericArguments();
                     Debug.Assert(GenericArguments.Length == 1);
-                    Type ItemType = GenericArguments[0];
+                    Type ItemType = GenericArguments[0]!;
                     Debug.Assert(ItemType != null);
 
-                    GetObjectItemContent(recursion, ItemType, ObjectCollection, ref content);
+                    GetObjectItemContent(recursion, ItemType!, ObjectCollection, ref content);
                 }
                 else if (PropertyType.Name.StartsWith("Pg"))
                 {
@@ -690,7 +686,7 @@
                 foreach (PgObject ObjectValue in objectCollection)
                 {
                     Debug.Assert(ObjectValue != null);
-                    content += GetPgObjectIndexContent(ObjectValue);
+                    content += GetPgObjectIndexContent(ObjectValue!);
                 }
             }
             else if (itemType.IsEnum)
@@ -718,11 +714,11 @@
 
         public static bool IsTypeIgnoredForIndex(Type type)
         {
-            return (type == typeof(int) | type == typeof(int?) ||
-                    type == typeof(uint) | type == typeof(uint?) ||
-                    type == typeof(float) | type == typeof(float?) ||
-                    type == typeof(bool) | type == typeof(bool?) ||
-                    type == typeof(TimeSpan) | type == typeof(TimeSpan?));
+            return type == typeof(int) | type == typeof(int?) ||
+                   type == typeof(uint) | type == typeof(uint?) ||
+                   type == typeof(float) | type == typeof(float?) ||
+                   type == typeof(bool) | type == typeof(bool?) ||
+                   type == typeof(TimeSpan) | type == typeof(TimeSpan?);
         }
 
         private static string GeStringIndexContent(string value)
@@ -757,11 +753,15 @@
             PropertyInfo EnumTextMapProperty = typeof(TextMaps).GetProperty(EnumTextMapName);
             if (EnumTextMapProperty != null)
             {
-                IDictionary EnumTextMap = EnumTextMapProperty.GetValue(null) as IDictionary;
-                Debug.Assert(EnumTextMap != null);
-                string EnumText = EnumTextMap[value] as string;
-                if (EnumText != null)
-                    return GeStringIndexContent(EnumText);
+                IDictionary EnumTextMap = (IDictionary)EnumTextMapProperty.GetValue(null);
+                if (EnumTextMap != null)
+                {
+                    string? EnumText = EnumTextMap[value] as string;
+                    if (EnumText != null)
+                        return GeStringIndexContent(EnumText);
+                    else
+                        return string.Empty;
+                }
                 else
                     return string.Empty;
             }
@@ -783,11 +783,11 @@
             Writer.WriteLine("{");
             Writer.WriteLine("    using System;");
             Writer.WriteLine("    using System.Collections.Generic;");
-            Writer.WriteLine("");
+            Writer.WriteLine(string.Empty);
             Writer.WriteLine($"    public static class Groups");
             Writer.WriteLine("    {");
             Writer.WriteLine($"        public static string Version {{ get; }} = \"v{version}\";");
-            Writer.WriteLine("");
+            Writer.WriteLine(string.Empty);
 
             WriteGroupingList(objectList, Writer, "CombatSkill", GetCombatSkillList);
             WriteGroupingDictionary(objectList, Writer, typeof(string), "CombatSubskill", GetCombatSubskillTable);
@@ -1394,11 +1394,12 @@
 
         private static string GetStringValueString(object value)
         {
-            string StringValue = value as string;
-            Debug.Assert(StringValue != null);
-
-            StringValue = StringValue.Replace("\n", "\\n");
-            StringValue = StringValue.Replace("\"", "\\\"");
+            string StringValue = (string)value;
+            if (StringValue != null)
+            {
+                StringValue = StringValue.Replace("\n", "\\n");
+                StringValue = StringValue.Replace("\"", "\\\"");
+            }
 
             return $"\"{StringValue}\"";
         }
@@ -1447,7 +1448,7 @@
             else if (value is IDictionary AsDictionary)
                 return GetDictionaryValueString(type, AsDictionary, objectList);
             else if (type.Name.StartsWith("List"))
-                return GetListValueString(type, value as IList, objectList);
+                return GetListValueString(type, (IList)value, objectList);
             else if (value is ICollection AsCollection)
                 return GetCollectionValueString(type, AsCollection, objectList);
             else
@@ -1491,7 +1492,7 @@
                 DictionaryContentString += $"{{ {KeyString}, {ValueString} }}";
             }
 
-            Result += $" {{ {DictionaryContentString } }}";
+            Result += $" {{ {DictionaryContentString} }}";
 
             return Result;
         }
@@ -1543,7 +1544,7 @@
 
         private static string SimpleTypeName(Type type)
         {
-            if (type == typeof(Int32) || type == typeof(int))
+            if (type == typeof(int))
                 return "int";
             else if (type == typeof(string))
                 return "string";

@@ -26,7 +26,7 @@
         public float? RawDefaultValue { get; set; }
 
         public int IconId { get; set; }
-        public string ValidLabel { get; set; }
+        public string ValidLabel { get; set; } = string.Empty;
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return ValidLabel; } }

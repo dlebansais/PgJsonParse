@@ -1,10 +1,10 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserQuest : Parser
     {
@@ -13,15 +13,15 @@
             return new PgQuest();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgQuest AsPgQuest))
+            if (item is not PgQuest AsPgQuest)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsPgQuest, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsPgQuest, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgQuest item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgQuest item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
             int? RawTSysLevel = null;
@@ -284,7 +284,7 @@
 
         private bool ParseRewardAbility(PgQuest item, object value, string parsedFile, string parsedKey)
         {
-            PgAbility ParsedAbility = null;
+            PgAbility ParsedAbility = null!;
 
             if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, value))
                 return false;
@@ -321,7 +321,7 @@
             string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < effectString.Length - 1) ? string.Empty : effectString.Substring(ParameterStartIndex + 1, effectString.Length - 2 - ParameterStartIndex);
 
             bool Result;
-            PgEffect ParsedEffect = null;
+            PgEffect ParsedEffect = null!;
 
             switch (EffectName)
             {
@@ -360,6 +360,7 @@
                         ParsingContext.AddSuplementaryObject(NewReward);
                         item.QuestRewardList.Add(NewReward);
                     }
+
                     break;
             }
 
@@ -418,14 +419,14 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}' not parsed");
 
             string SkillName = Split[0];
-            PgSkill ParsedSkill = null;
+            PgSkill ParsedSkill = null!;
             if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, SkillName))
                 return false;
 
             if (!int.TryParse(Split[1], out int XpValue))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}': int expected");
 
-            PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill = ParsedSkill, RawXp = XpValue};
+            PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill = ParsedSkill, RawXp = XpValue };
 
             ParsingContext.AddSuplementaryObject(NewReward);
             item.QuestRewardList.Add(NewReward);
@@ -464,7 +465,7 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Raise to level reward '{effectParameter}' not parsed");
 
             string SkillName = Split[0].Trim();
-            PgSkill ParsedSkill = null;
+            PgSkill ParsedSkill = null!;
             if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, SkillName))
                 return false;
 
@@ -499,7 +500,7 @@
                 if (!(Item is string ValueString))
                     return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be a string");
 
-                PgQuest ParsedQuest = null;
+                PgQuest ParsedQuest = null!;
                 if (!Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => ParsedQuest = valueQuest, ValueString))
                     return false;
 
@@ -531,7 +532,7 @@
 
         private bool ParsePreGiveEffect(string value, string parsedFile, string parsedKey, out PgQuestPreGiveEffect preGiveEffect)
         {
-            preGiveEffect = null;
+            preGiveEffect = null!;
 
             if (value == "DeleteWarCacheMapFog")
                 preGiveEffect = new PgQuestPreGiveEffectSimple() { Description = "Delete War Cache Map Fog" };
@@ -564,7 +565,7 @@
                     {
                         if (EffectParameter.Length == 2)
                         {
-                            PgItem ParsedItem = null;
+                            PgItem ParsedItem = null!;
                             if (!Inserter<PgItem>.SetItemByInternalName((PgItem itemValue) => ParsedItem = itemValue, EffectParameter[0]))
                                 return false;
 

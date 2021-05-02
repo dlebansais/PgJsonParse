@@ -1,12 +1,12 @@
 ﻿namespace Translator
 {
-    using PgObjects;
     using System;
     using System.Collections.Generic;
+    using PgObjects;
 
     public static class MainParser
     {
-        public static Dictionary<Type, Parser> Parsers = new Dictionary<Type, Parser>()
+        public static Dictionary<Type, Parser> Parsers { get; } = new Dictionary<Type, Parser>()
         {
             { typeof(bool), new ParserNative() },
             { typeof(int), new ParserNative() },
@@ -73,7 +73,7 @@
         {
             if (!Parsers.ContainsKey(type))
             {
-                context = null;
+                context = null!;
                 return Program.ReportFailure($"Type {type} not found in parsers");
             }
 

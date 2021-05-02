@@ -2,6 +2,6 @@
 {
     public class PgQuestObjectiveCollectItem : PgQuestObjective
     {
-        public PgItem Item { get; set; }
+        public PgItem Item { get; set; } = null!;
     }
 }

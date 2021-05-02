@@ -2,6 +2,6 @@
 {
     public class PgAbilityRequirementHasInventorySpaceFor : PgAbilityRequirement
     {
-        public PgItem Item { get; set; }
+        public PgItem Item { get; set; } = null!;
     }
 }

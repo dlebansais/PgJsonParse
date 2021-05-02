@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace PgJsonReader
+﻿namespace PgJsonReader
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     public interface IJsonWriter : IDisposable
@@ -31,7 +30,7 @@ namespace PgJsonReader
                 writer.ObjectKey(Entry.Key);
                 writer.Value(Entry.Value);
             }
-            
+
             writer.ObjectEnd();
         }
 

@@ -50,6 +50,6 @@
             return Result;
         }
 
-        List<string> UsedKeyList = new List<string>();
+        private List<string> UsedKeyList = new List<string>();
     }
 }

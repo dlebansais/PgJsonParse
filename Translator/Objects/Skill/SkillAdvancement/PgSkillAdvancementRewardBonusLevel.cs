@@ -2,6 +2,6 @@
 {
     public class PgSkillAdvancementRewardBonusLevel : PgSkillAdvancement
     {
-        public PgSkill BonusLevelSkill { get; set; }
+        public PgSkill BonusLevelSkill { get; set; } = null!;
     }
 }

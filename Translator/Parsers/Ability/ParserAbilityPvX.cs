@@ -1,8 +1,8 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserAbilityPvX : Parser
     {
@@ -11,15 +11,15 @@
             return new PgAbilityPvX();
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
-            if (!(item is PgAbilityPvX AsAbilityPvX))
+            if (item is not PgAbilityPvX AsAbilityPvX)
                 return Program.ReportFailure("Unexpected failure");
 
-            return FinishItem(AsAbilityPvX, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+            return FinishItem(AsAbilityPvX, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }
 
-        private bool FinishItem(PgAbilityPvX item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool FinishItem(PgAbilityPvX item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
 
@@ -161,7 +161,7 @@
 
         private bool ParseSelfPreEffect(PgAbilityPvX item, string value, out PgSelfPreEffect selfPreEffect)
         {
-            selfPreEffect = null;
+            selfPreEffect = null!;
 
             int StartIndex = value.IndexOf('(');
             int EndIndex = value.IndexOf(')');

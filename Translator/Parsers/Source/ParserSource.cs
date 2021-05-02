@@ -1,18 +1,18 @@
 ﻿namespace Translator
 {
-    using PgObjects;
-    using PgJsonReader;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using PgJsonReader;
+    using PgObjects;
 
     public class ParserSource : Parser
     {
         public override object CreateItem()
         {
-            return null;
+            return null!;
         }
 
-        public override bool FinishItem(ref object item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (item != null)
                 return Program.ReportFailure("Unexpected failure");
@@ -28,25 +28,25 @@
             switch (TypeString)
             {
                 case "AutomaticFromSkill":
-                    Result = ParseSourceAutomaticFromSkill(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+                    Result = ParseSourceAutomaticFromSkill(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                     break;
                 case "Item":
-                    Result = ParseSourceItem(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+                    Result = ParseSourceItem(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                     break;
                 case "Training":
-                    Result = ParseSourceTraining(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+                    Result = ParseSourceTraining(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                     break;
                 case "Effect":
-                    Result = ParseSourceEffect(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+                    Result = ParseSourceEffect(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                     break;
                 case "Quest":
-                    Result = ParseSourceQuest(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+                    Result = ParseSourceQuest(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                     break;
                 case "Gift":
-                    Result = ParseSourceGift(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+                    Result = ParseSourceGift(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                     break;
                 case "HangOut":
-                    Result = ParseSourceHangOut(ref item, contentTable, ContentTypeTable, itemCollection, LastItemType, parsedFile, parsedKey);
+                    Result = ParseSourceHangOut(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Unnown source type '{TypeString}'");
@@ -61,7 +61,7 @@
             return Result;
         }
 
-        private bool ParseSourceAutomaticFromSkill(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool ParseSourceAutomaticFromSkill(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
             PgSourceAutomaticFromSkill NewSource = new PgSourceAutomaticFromSkill();
@@ -96,7 +96,7 @@
                 return false;
         }
 
-        private bool ParseSourceItem(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool ParseSourceItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
             PgSourceItem NewSource = new PgSourceItem();
@@ -131,7 +131,7 @@
                 return false;
         }
 
-        private bool ParseSourceTraining(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool ParseSourceTraining(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
             PgSourceTraining NewSource = new PgSourceTraining();
@@ -166,7 +166,7 @@
                 return false;
         }
 
-        private bool ParseSourceEffect(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool ParseSourceEffect(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             if (!contentTable.ContainsKey("EffectName"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Source has no effect name");
@@ -180,7 +180,7 @@
                 return true;
             }
 
-            PgRecipe ParsedRecipe = null;
+            PgRecipe ParsedRecipe = null!;
 
             if (Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, EffectNameString, ErrorControl.IgnoreIfNotFound))
             {
@@ -194,7 +194,7 @@
                 return true;
             }
 
-            PgEffect ParsedEffect = null;
+            PgEffect ParsedEffect = null!;
 
             if (Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, EffectNameString, ErrorControl.IgnoreIfNotFound))
             {
@@ -219,7 +219,7 @@
             return Program.ReportFailure($"Unknown effect name {EffectNameString}");
         }
 
-        private bool ParseSourceQuest(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool ParseSourceQuest(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
             PgSourceQuest NewSource = new PgSourceQuest();
@@ -254,7 +254,7 @@
                 return false;
         }
 
-        private bool ParseSourceGift(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool ParseSourceGift(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
             PgSourceGift NewSource = new PgSourceGift();
@@ -289,7 +289,7 @@
                 return false;
         }
 
-        private bool ParseSourceHangOut(ref object item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> ContentTypeTable, List<object> itemCollection, Json.Token LastItemType, string parsedFile, string parsedKey)
+        private bool ParseSourceHangOut(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
             bool Result = true;
             PgSourceHangOut NewSource = new PgSourceHangOut();

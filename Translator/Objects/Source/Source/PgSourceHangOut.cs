@@ -2,6 +2,6 @@
 {
     public class PgSourceHangOut : PgSource
     {
-        public PgNpcLocation Npc { get; set; }
+        public PgNpcLocation Npc { get; set; } = null!;
     }
 }

@@ -2,6 +2,6 @@
 {
     public class PgAbilityRequirementRecipeKnown : PgAbilityRequirement
     {
-        public PgRecipe Recipe { get; set; }
+        public PgRecipe Recipe { get; set; } = null!;
     }
 }

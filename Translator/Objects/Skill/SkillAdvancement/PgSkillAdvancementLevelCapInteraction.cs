@@ -2,6 +2,6 @@
 {
     public class PgSkillAdvancementLevelCapInteraction : PgSkillAdvancement
     {
-        public PgSkill Skill { get; set; }
+        public PgSkill Skill { get; set; } = null!;
     }
 }
