@@ -484,7 +484,7 @@
                 PgPowerTier LastTier = power.TierList[power.TierList.Count - 1];
                 PgPowerEffect FirstEffect = LastTier.EffectList[0];
 
-                if (FirstEffect is PgPowerEffectAttribute AsAttribute)
+                if (FirstEffect is PgPowerEffectAttribute AsAttribute && AsAttribute.Attribute != null)
                     Debug.WriteLine($"Possible mod bug: {AsAttribute.Attribute.Label}");
                 else if (FirstEffect is PgPowerEffectSimple AsSimple)
                     Debug.WriteLine($"Possible mod bug: {AsSimple.Description}");

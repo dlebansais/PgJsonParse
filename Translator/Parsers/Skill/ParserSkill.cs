@@ -312,9 +312,9 @@
             {
                 int Level = Reward.RewardLevel;
                 List<Race> RaceRestrictionList = Reward.RaceRestrictionList;
-                PgAbility Ability = Reward.Ability;
-                PgSkill BonusLevelSkill = Reward.BonusLevelSkill;
-                PgRecipe Recipe = Reward.Recipe;
+                PgAbility? Ability = Reward.Ability;
+                PgSkill? BonusLevelSkill = Reward.BonusLevelSkill;
+                PgRecipe? Recipe = Reward.Recipe;
                 string Notes = Reward.Notes;
 
                 if (Ability != null)

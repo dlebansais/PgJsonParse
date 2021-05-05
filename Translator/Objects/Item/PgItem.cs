@@ -6,8 +6,8 @@
     {
         public string Key { get; set; } = string.Empty;
         public PgRecipeCollection BestowRecipeList { get; set; } = new PgRecipeCollection();
-        public PgAbility BestowAbility { get; set; } = null!;
-        public PgQuest BestowQuest { get; set; } = null!;
+        public PgAbility? BestowAbility { get; set; }
+        public PgQuest? BestowQuest { get; set; }
         public bool AllowPrefix { get { return RawAllowPrefix.HasValue && RawAllowPrefix.Value; } }
         public bool? RawAllowPrefix { get; set; }
         public bool AllowSuffix { get { return RawAllowSuffix.HasValue && RawAllowSuffix.Value; } }
@@ -37,7 +37,7 @@
         public bool IsCrafted { get { return RawIsCrafted.HasValue && RawIsCrafted.Value; } }
         public bool? RawIsCrafted { get; set; }
         public List<RecipeItemKey> RecipeItemKeyList { get; set; } = new List<RecipeItemKey>();
-        public PgQuest MacGuffinQuest { get; set; } = null!;
+        public PgQuest? MacGuffinQuest { get; set; }
         public int MaxCarryable { get { return RawMaxCarryable.HasValue ? RawMaxCarryable.Value : 0; } }
         public int? RawMaxCarryable { get; set; }
         public int MaxOnVendor { get { return RawMaxOnVendor.HasValue ? RawMaxOnVendor.Value : 0; } }
@@ -60,8 +60,8 @@
         public string DynamicCraftingSummary { get; set; } = string.Empty;
         public bool IsSkillReqsDefaults { get { return RawIsSkillReqsDefaults.HasValue && RawIsSkillReqsDefaults.Value; } }
         public bool? RawIsSkillReqsDefaults { get; set; }
-        public PgPlayerTitle BestowTitle { get; set; } = null!;
-        public PgLoreBook BestowLoreBook { get; set; } = null!;
+        public PgPlayerTitle? BestowTitle { get; set; }
+        public PgLoreBook? BestowLoreBook { get; set; }
         public WorkOrderSign LintVendorNpc { get; set; }
         public Dictionary<ItemKeyword, List<float>> KeywordTable { get; set; } = new Dictionary<ItemKeyword, List<float>>();
 

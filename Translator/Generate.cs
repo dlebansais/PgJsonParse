@@ -25,7 +25,7 @@
             {
                 string Folder = Path.GetFileName(FilePath);
 
-                if (Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
+                if (Folder == "net48" || Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
                     FilePath = Path.GetDirectoryName(FilePath);
                 else
                     break;
@@ -216,7 +216,7 @@
                 }
 
                 writer.WriteLine($"                default:");
-                writer.WriteLine($"                    return null;");
+                writer.WriteLine($"                    return null!;");
                 writer.WriteLine($"            }}");
             }
             else if (CaseCount == 1)
@@ -232,7 +232,7 @@
                 }
             }
             else if (table.Count == 0)
-                writer.WriteLine($"            return null;");
+                writer.WriteLine($"            return null!;");
 
             writer.WriteLine($"        }}");
 
@@ -473,7 +473,7 @@
             writer.WriteLine($"                return _{objectName};");
             writer.WriteLine($"            }}");
             writer.WriteLine($"        }}");
-            writer.WriteLine($"        private static {objectTypeName} _{objectName};");
+            writer.WriteLine($"        private static {objectTypeName}? _{objectName};");
         }
 
         private static void WriteItem(List<object> objectList, int objectIndex)

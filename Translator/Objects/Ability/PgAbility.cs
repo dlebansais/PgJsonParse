@@ -5,7 +5,7 @@
     public class PgAbility : PgObject
     {
         public string Key { get; set; } = string.Empty;
-        public PgAbility AbilityGroup { get; set; } = null!;
+        public PgAbility? AbilityGroup { get; set; }
         public AbilityAnimation Animation { get; set; }
         public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; set; } = new PgAttributeCollection();
@@ -19,7 +19,7 @@
         public bool CanTargetUntargetableEnemies { get { return RawCanTargetUntargetableEnemies.HasValue && RawCanTargetUntargetableEnemies.Value; } }
         public bool? RawCanTargetUntargetableEnemies { get; set; }
         public List<Deaths> CausesOfDeathList { get; set; } = new List<Deaths>();
-        public PgRecipeCost Cost { get; set; } = null!;
+        public PgRecipeCost? Cost { get; set; }
         public int CombatRefreshBaseAmount { get { return RawCombatRefreshBaseAmount.HasValue ? RawCombatRefreshBaseAmount.Value : 0; } }
         public int? RawCombatRefreshBaseAmount { get; set; }
         public DamageType DamageType { get; set; }
@@ -49,15 +49,15 @@
         public AbilityPetType PetTypeTagReq { get; set; }
         public int PetTypeTagReqMax { get { return RawPetTypeTagReqMax.HasValue ? RawPetTypeTagReqMax.Value : 0; } }
         public int? RawPetTypeTagReqMax { get; set; }
-        public PgAbility Prerequisite { get; set; } = null!;
+        public PgAbility? Prerequisite { get; set; }
         public AbilityProjectile Projectile { get; set; }
         public PgAbilityPvX PvE { get; set; } = null!;
-        public PgAbilityPvX PvP { get; set; } = null!;
+        public PgAbilityPvX? PvP { get; set; }
         public float ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : 0; } }
         public float? RawResetTime { get; set; }
         public SelfParticle SelfParticle { get; set; }
         public string AmmoDescription { get; set; } = string.Empty;
-        public PgAbility SharesResetTimerWith { get; set; } = null!;
+        public PgAbility? SharesResetTimerWith { get; set; }
         public PgSkill Skill { get; set; } = null!;
         public PgAbilityRequirementCollection SpecialCasterRequirementList { get; set; } = new PgAbilityRequirementCollection();
         public string SpecialCasterRequirementsErrorMessage { get; set; } = string.Empty;
@@ -67,7 +67,7 @@
         public AbilityTarget Target { get; set; }
         public TargetEffectKeyword TargetEffectKeywordReq { get; set; }
         public AbilityTargetParticle TargetParticle { get; set; }
-        public PgAbility UpgradeOf { get; set; } = null!;
+        public PgAbility? UpgradeOf { get; set; }
         public bool WorksInCombat { get { return RawWorksInCombat.HasValue && RawWorksInCombat.Value; } }
         public bool? RawWorksInCombat { get; set; }
         public bool WorksUnderwater { get { return RawWorksUnderwater.HasValue && RawWorksUnderwater.Value; } }

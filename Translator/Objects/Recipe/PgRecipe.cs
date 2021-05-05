@@ -17,7 +17,7 @@
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; set; }
         public PgRecipeResultEffectCollection ResultEffectList { get; set; } = new PgRecipeResultEffectCollection();
-        public PgSkill SortSkill { get; set; } = null!;
+        public PgSkill? SortSkill { get; set; }
         public List<RecipeKeyword> KeywordList { get; set; } = new List<RecipeKeyword>();
         public RecipeAction ActionLabel { get; set; }
         public float UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
@@ -43,7 +43,7 @@
         public int? RawRewardSkillXpDropOffRate { get; set; }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; set; }
-        public PgRecipe SharesResetTimerWith { get; set; } = null!;
+        public PgRecipe? SharesResetTimerWith { get; set; }
         public string ItemMenuLabel { get; set; } = string.Empty;
         public ItemKeyword RecipeItemKeyword { get; set; }
         public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
@@ -51,7 +51,7 @@
         public string ItemMenuCategory { get; set; } = string.Empty;
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; set; }
-        public PgRecipe PrereqRecipe { get; set; } = null!;
+        public PgRecipe? PrereqRecipe { get; set; }
         public List<ItemKeyword> ValidationIngredientKeywordList { get; set; } = new List<ItemKeyword>();
         public PgRecipeItemCollection ProtoResultItemList { get; set; } = new PgRecipeItemCollection();
         public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }

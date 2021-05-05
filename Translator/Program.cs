@@ -1004,7 +1004,7 @@
 
         private static void AddNpcSource(PgSource source, PgNpcLocation location, List<PgAbility> abilityList, List<PgRecipe> recipeList)
         {
-            PgNpc Npc = location.Npc;
+            PgNpc? Npc = location.Npc;
             if (Npc == null)
                 return;
 
