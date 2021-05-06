@@ -84,6 +84,7 @@
                 Writer.Write(StringHandler.WriteString(value));
                 Writer.Write('"');
             }
+
             IsFirstItem = false;
             IsOpenKey = false;
         }

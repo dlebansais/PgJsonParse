@@ -1,21 +1,11 @@
 ﻿namespace PgJsonReader
 {
-    using System;
-
-    public interface IJsonReader : IDisposable
-    {
-        Json.Token Read();
-        Json.Token CurrentToken { get; }
-        object? CurrentValue { get; }
-    }
-
     public static class JsonReader
     {
         public static IJsonValue Parse(this IJsonReader reader)
         {
             if (reader.Read() == Json.Token.EndOfFile)
                 return new JsonObject();
-
             else if (reader.CurrentToken == Json.Token.ObjectKey)
             {
                 JsonObject Object = new JsonObject();
@@ -29,7 +19,6 @@
 
                 return Object;
             }
-
             else if (reader.CurrentToken == Json.Token.ArrayStart)
             {
                 JsonValueCollection Array = new JsonValueCollection();
@@ -54,7 +43,6 @@
 
                 return Array;
             }
-
             else
                 return reader.ParseObject();
         }
@@ -79,6 +67,7 @@
                 else if (reader.CurrentToken == Json.Token.ObjectEnd)
                     break;
             }
+
             return obj;
         }
 
@@ -127,13 +116,13 @@
                     if (Value != null)
                         ArrayValue.Add(Value);
                 }
+
                 return ArrayValue;
             }
             else if (reader.CurrentToken == Json.Token.ObjectStart)
             {
                 return reader.ParseObject();
             }
-
             else if (reader.CurrentToken == Json.Token.Null)
             {
                 return new JsonString(null);
