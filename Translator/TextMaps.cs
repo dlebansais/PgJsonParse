@@ -1978,6 +1978,13 @@
             { EnhancementEffect.Armor, "Armor" },
         };
 
+        public static Dictionary<EventLevel, string> EventLevelTextMap { get; } = new Dictionary<EventLevel, string>()
+        {
+            { EventLevel.Internal_None, string.Empty },
+            { EventLevel.RiShinShrine_Storage1On, "Ri-Shin Shrine Storage #1" },
+            { EventLevel.RiShinShrine_Storage2On, "Ri-Shin Shrine Storage #2" },
+        };
+
         public static Dictionary<Favor, string> FavorTextMap { get; } = new Dictionary<Favor, string>()
         {
             { Favor.Internal_None, string.Empty },
