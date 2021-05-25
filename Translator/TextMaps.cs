@@ -2148,6 +2148,7 @@
             { InteractionFlag.Tomb1_StoryPuzzleComplete_Looted, "Khyrulek's Crypt Story Puzzle Complete Looted" },
             { InteractionFlag.Druid_IsIgnoredBySewerTreants, "Druid (Is Ignored By Sewer Treants)" },
             { InteractionFlag.Event_Christmas_RiShinShrineQuest, "Event (Christmas Ri-Shin Shrine Quest)" },
+            { InteractionFlag.UI_StowItems1, "UI Stow Items #1" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
