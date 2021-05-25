@@ -8,5 +8,7 @@
         Minigolem,
         SummonedSpider,
         SummonFox,
+        ShadowFeintActivation,
+        TriageActivation,
     }
 }

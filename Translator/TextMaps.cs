@@ -989,6 +989,7 @@
             { Currency.Internal_None, string.Empty },
             { Currency.Gold, "Gold" },
             { Currency.WardenPoints, "Warden Points" },
+            { Currency.LiveEventCredits, "Live Event Credits" },
         };
 
         public static Dictionary<DamageType, string> DamageTypeTextMap { get; } = new Dictionary<DamageType, string>()
@@ -1494,6 +1495,7 @@
             { EffectKeyword.FaeDPImmunity, "Fae Death Penalty Immunity" },
             { EffectKeyword.LiveEventEffect, "Live Event Effect" },
             { EffectKeyword.LiveEvent_Lemons, "Live Event (Lemons)" },
+            { EffectKeyword.Tagged, "Tagged" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1621,6 +1623,11 @@
             { EffectParticle.BulwarkMode, "Bulwark Mode" },
             { EffectParticle.Agitate, "Agitate" },
             { EffectParticle.CryogenicFreeze, "Cryogenic Freeze" },
+            { EffectParticle.FloatingGem4, "Floating Gem #4" },
+            { EffectParticle.FloatingGem5, "Floating Gem #5" },
+            { EffectParticle.FloatingGem6, "Floating Gem #6" },
+            { EffectParticle.ColdExplosion, "Cold Explosion" },
+            { EffectParticle.BodyslamInvincibility, "Bodyslam Invincibility" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -3232,6 +3239,53 @@
             { ItemKeyword.EAmuletOfTheRuggedTraveler, "Enhanced AmuletOf The Rugged Traveler" },
             { ItemKeyword.GolfSprint, "Golf Sprint" },
             { ItemKeyword.PennocsPendant, "Pennoc's Pendant" },
+            { ItemKeyword.Textbook, "Textbook" },
+            { ItemKeyword.TextbookForCombatSkill, "Textbook For Combat Skill" },
+            { ItemKeyword.TextbookMaxLevel, "Textbook Max Level" },
+            { ItemKeyword.TextbookMinLevel, "Textbook Min Level" },
+            { ItemKeyword.TextbookSkill_Unarmed, "Textbook Skill (Unarmed)" },
+            { ItemKeyword.TextbookSkill_Sword, "Textbook Skill (Sword)" },
+            { ItemKeyword.TextbookSkill_FireMagic, "Textbook Skill (Fire Magic)" },
+            { ItemKeyword.TextbookSkill_Werewolf, "Textbook Skill (Werewolf)" },
+            { ItemKeyword.TextbookSkill_Psychology, "Textbook Skill (Psychology)" },
+            { ItemKeyword.TextbookSkill_Pig, "Textbook Skill (Pig)" },
+            { ItemKeyword.TextbookSkill_Deer, "Textbook Skill (Deer)" },
+            { ItemKeyword.TextbookSkill_Cow, "Textbook Skill (Cow)" },
+            { ItemKeyword.TextbookSkill_AnimalHandling, "Textbook Skill (Animal Handling)" },
+            { ItemKeyword.TextbookSkill_BattleChemistry, "Textbook Skill (Battle Chemistry)" },
+            { ItemKeyword.TextbookSkill_Staff, "Textbook Skill (Staff)" },
+            { ItemKeyword.TextbookSkill_Necromancy, "Textbook Skill (Necromancy)" },
+            { ItemKeyword.TextbookSkill_Mentalism, "Textbook Skill (Mentalism)" },
+            { ItemKeyword.TextbookSkill_Archery, "Textbook Skill (Archery)" },
+            { ItemKeyword.TextbookSkill_Spider, "Textbook Skill (Spider)" },
+            { ItemKeyword.TextbookSkill_Shield, "Textbook Skill (Shield)" },
+            { ItemKeyword.TextbookSkill_Hammer, "Textbook Skill (Hammer)" },
+            { ItemKeyword.TextbookSkill_Druid, "Textbook Skill (Druid)" },
+            { ItemKeyword.TextbookSkill_IceMagic, "Textbook Skill (Ice Magic)" },
+            { ItemKeyword.TextbookSkill_GiantBat, "Textbook Skill (Giant Bat)" },
+            { ItemKeyword.TextbookSkill_Knife, "Textbook Skill (Knife)" },
+            { ItemKeyword.TextbookSkill_Bard, "Textbook Skill (Bard)" },
+            { ItemKeyword.TextbookSkill_Rabbit, "Textbook Skill (Rabbit)" },
+            { ItemKeyword.TextbookSkill_Priest, "Textbook Skill (Priest)" },
+            { ItemKeyword.TextbookSkill_Warden, "Textbook Skill (Warden)" },
+            { ItemKeyword.TextbookSkill_SpiritFox, "Textbook Skill (Spirit Fox)" },
+            { ItemKeyword.TextbookForNoncombatSkill, "Textbook For Non-combat Skill" },
+            { ItemKeyword.TextbookSkill_MushroomFarming, "Textbook Skill (Mushroom Farming)" },
+            { ItemKeyword.TextbookSkill_Gardening, "Textbook Skill (Gardening)" },
+            { ItemKeyword.TextbookSkill_Cooking, "Textbook Skill (Cooking)" },
+            { ItemKeyword.TextbookSkill_FirstAid, "Textbook Skill (First Aid)" },
+            { ItemKeyword.TextbookSkill_ArmorPatching, "Textbook Skill (Armor Patching)" },
+            { ItemKeyword.TextbookSkill_Carpentry, "Textbook Skill (Carpentry)" },
+            { ItemKeyword.TextbookSkill_Fletching, "Textbook Skill (Fletching)" },
+            { ItemKeyword.TextbookSkill_Leatherworking, "Textbook Skill (Leatherworking)" },
+            { ItemKeyword.TextbookSkill_SigilScripting, "Textbook Skill (Sigil Scripting)" },
+            { ItemKeyword.TextbookSkill_Blacksmithing, "Textbook Skill (Blacksmithing)" },
+            { ItemKeyword.TextbookSkill_Tailoring, "Textbook Skill (Tailoring)" },
+            { ItemKeyword.TextbookSkill_Toolcrafting, "Textbook Skill (Toolcrafting)" },
+            { ItemKeyword.TextbookSkill_NatureAppreciation, "Textbook Skill (Nature Appreciation)" },
+            { ItemKeyword.TextbookSkill_SurvivalInstincts, "Textbook Skill (Survival Instincts)" },
+            { ItemKeyword.TextbookSkill_Crossbow, "Textbook Skill (Crossbow)" },
+            { ItemKeyword.CraftedYes, "Crafted: Yes" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3336,6 +3390,8 @@
             // { ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "OpenPortal" },
             { ItemUseVerb.DrinkUp, "Drink up" },
+            { ItemUseVerb.Convert_to_Live_Event_Credit, "Convert to Live-Event Credit" },
+            { ItemUseVerb.ClaimVIPTime, "Claim VIP Time" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap { get; } = new Dictionary<LoreBookKeyword, string>()
@@ -4516,6 +4572,8 @@
             { TooltipsExtraKeywords.Minigolem, "Mini-golem" },
             { TooltipsExtraKeywords.SummonedSpider, "Summoned Spider" },
             { TooltipsExtraKeywords.SummonFox, "Summon Fox" },
+            { TooltipsExtraKeywords.ShadowFeintActivation, "Shadow Feint Activation" },
+            { TooltipsExtraKeywords.TriageActivation, "Triage Activation" },
         };
 
         public static Dictionary<WorkOrderSign, string> WorkOrderSignTextMap { get; } = new Dictionary<WorkOrderSign, string>()
@@ -4545,7 +4603,7 @@
             { XpTableEnum.AugmentBrewingSkill, "Augment Brewing Skill" },
             { XpTableEnum.Gardening, "Gardening" },
             { XpTableEnum.TypicalNoncombatSkill, "Typical Noncombat Skill #A" },
-            { XpTableEnum.Cooking, "Cooking" },
+            //{ XpTableEnum.Cooking, "Cooking" },
             { XpTableEnum.CivicPride, "Civic Pride" },
             { XpTableEnum.Industry, "Industry" },
             { XpTableEnum.Transmutation, "Transmutation" },
@@ -4574,6 +4632,7 @@
             { XpTableEnum.TypicalNoncombatSkill_FastTo50, "Typical Non-combat Skill, Fast To 50" },
             { XpTableEnum.AuxCombatSkill_FastTo50, "Aux Combat Skill, Fast To 50" },
             { XpTableEnum.PerformanceDance, "Performance Dance" },
+            { XpTableEnum.CookingUnused, "Cooking (Unused)" },
         };
     }
 }

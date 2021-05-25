@@ -1,5 +1,6 @@
 ﻿namespace PgObjects
 {
+#pragma warning disable SA1300 // Element should begin with upper-case letter
     public enum AbilityItemKeyword
     {
         Internal_None,
@@ -46,4 +47,5 @@
         form_Fox,
         Darkcaster,
     }
+#pragma warning restore SA1300 // Element should begin with upper-case letter
 }

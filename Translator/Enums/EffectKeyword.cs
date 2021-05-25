@@ -280,5 +280,6 @@
         FaeDPImmunity,
         LiveEventEffect,
         LiveEvent_Lemons,
+        Tagged,
     }
 }

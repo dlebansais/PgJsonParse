@@ -374,6 +374,11 @@
                         case "Tagged":
                             break;
 
+                        case "Invincibility":
+                            AddAssociatedEffect(ability, CombatKeyword.ImmunityDirect, Effect);
+                            StringToEnumConversion<CombatKeyword>.SetCustomParsedEnum(CombatKeyword.ImmunityDirect);
+                            break;
+
                         default:
                             Debug.WriteLine($"Additional Effect '{Effect.Name}' for ability '{ability.Name}'");
                             break;
@@ -3901,7 +3906,7 @@
             new Sentence("Boost the damage of your @ %f", CombatKeyword.DamageBoost),
             new Sentence("Boost the damage from @ %f", CombatKeyword.DamageBoost),
             new Sentence("Boost the damage of all your attack %f", CombatKeyword.DamageBoost),
-            new Sentence("Boost damage from @ %f", CombatKeyword.DamageBoost),
+            // new Sentence("Boost damage from @ %f", CombatKeyword.DamageBoost),
             new Sentence("Boost #D damage %f", CombatKeyword.DamageBoost),
             new Sentence("Increase the damage of your next attack by %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }),
             new Sentence("Reduce the damage of the target's next attack by %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.NextAttack }, SignInterpretation.AlwaysNegative),

@@ -449,8 +449,8 @@
             { "ReuseTime_Days", typeof(int) },
             { "IsCancellable", typeof(bool) },
             { "Objectives", typeof(PgQuestObjective[]) },
-            { "Rewards_XP", typeof(PgQuestRewardSkillXp) },
-            { "Rewards_Currency", typeof(PgQuestRewardCurrency) },
+            //{ "Rewards_XP", typeof(PgQuestRewardSkillXp) },
+            //{ "Rewards_Currency", typeof(PgQuestRewardCurrency) },
             { "Rewards_Items", typeof(PgQuestRewardItem[]) },
             { "Reward_CombatXP", typeof(int) },
             { "FavorNpc", typeof(string) },
@@ -459,8 +459,8 @@
             { "MidwayText", typeof(string) },
             { "PrerequisiteFavorLevel", typeof(string) },
             { "Rewards_Favor", typeof(int) },
-            { "Rewards_Recipes", typeof(string[]) },
-            { "Rewards_Ability", typeof(string) },
+            //{ "Rewards_Recipes", typeof(string[]) },
+            //{ "Rewards_Ability", typeof(string) },
             { "Requirements", typeof(PgQuestRequirement[]) },
             { "Reward_Favor", typeof(int) },
             { "Rewards", typeof(PgQuestReward[]) },
@@ -559,6 +559,9 @@
             { "Xp", typeof(int) },
             { "Recipe", typeof(string) },
             { "Credits", typeof(int) },
+            { "Amount", typeof(int) },
+            { "Currency", typeof(string) },
+            { "Ability", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableRecipe { get; } = new Dictionary<string, Type>()
@@ -676,6 +679,13 @@
             { "Grouping", typeof(string) },
             { "RequiredItemKeywords", typeof(string[]) },
             { "SlotAttribute", typeof(string) },
+            { "EventLevels", typeof(PgStorageEventList) },
+        };
+
+        public static Dictionary<string, Type> TableStorageEventList { get; } = new Dictionary<string, Type>()
+        {
+            { "RiShinShrine_Storage1On", typeof(int) },
+            { "RiShinShrine_Storage2On", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableStorageFavorLevel { get; } = new Dictionary<string, Type>()
@@ -736,8 +746,8 @@
             { typeof(PgQuestRequirement), new FixedFieldTable(TableQuestRequirement) },
             { typeof(PgQuestObjective), new FixedFieldTable(TableQuestObjective) },
             { typeof(PgQuestObjectiveRequirement), new FixedFieldTable(TableQuestObjectiveRequirement) },
-            { typeof(PgQuestRewardSkillXp), new VariadicFieldTable(typeof(int)) },
-            { typeof(PgQuestRewardCurrency), new VariadicFieldTable(typeof(int)) },
+            //{ typeof(PgQuestRewardSkillXp), new VariadicFieldTable(typeof(int)) },
+            //{ typeof(PgQuestRewardCurrency), new VariadicFieldTable(typeof(int)) },
             { typeof(PgQuestRewardItem), new FixedFieldTable(TableQuestRewardItem) },
             { typeof(PgQuestReward), new FixedFieldTable(TableQuestReward) },
             { typeof(PgRecipe), new FixedFieldTable(TableRecipe) },
@@ -751,6 +761,7 @@
             { typeof(PgReportList), new VariadicFieldTable(typeof(string)) },
             { typeof(PgSource), new FixedFieldTable(TableSource) },
             { typeof(PgStorageVault), new FixedFieldTable(TableStorageVault) },
+            { typeof(PgStorageEventList), new FixedFieldTable(TableStorageEventList) },
             { typeof(PgStorageFavorLevel), new FixedFieldTable(TableStorageFavorLevel) },
             { typeof(PgStorageRequirement), new VariadicFieldTable(typeof(string)) },
             { typeof(PgXpTable), new FixedFieldTable(TableXpTable) },

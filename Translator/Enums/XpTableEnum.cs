@@ -14,7 +14,7 @@
         AugmentBrewingSkill,
         Gardening,
         TypicalNoncombatSkill,
-        Cooking,
+        //Cooking,
         CivicPride,
         Industry,
         Transmutation,
@@ -43,5 +43,6 @@
         TypicalNoncombatSkill_FastTo50,
         AuxCombatSkill_FastTo50,
         PerformanceDance,
+        CookingUnused,
     }
 }

@@ -125,5 +125,10 @@
         BulwarkMode,
         Agitate,
         CryogenicFreeze,
+        FloatingGem4,
+        FloatingGem5,
+        FloatingGem6,
+        ColdExplosion,
+        BodyslamInvincibility,
     }
 }

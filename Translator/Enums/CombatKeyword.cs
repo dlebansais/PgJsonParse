@@ -127,6 +127,7 @@
         AddMitigationInternal,
         AddMitigationDirect,
         AddMitigationIndirect,
+        ImmunityDirect,
         MitigationLimit,
         DebuffMitigation,
         AddProtectionCold,

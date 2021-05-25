@@ -155,5 +155,6 @@
         Tomb1_StoryPuzzleComplete_Looted,
         Druid_IsIgnoredBySewerTreants,
         Event_Christmas_RiShinShrineQuest,
+        UI_StowItems1,
     }
 }

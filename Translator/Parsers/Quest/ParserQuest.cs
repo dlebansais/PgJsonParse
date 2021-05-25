@@ -63,12 +63,12 @@
                     case "Objectives":
                         Result = Inserter<PgQuestObjective>.AddKeylessArray(item.QuestObjectiveList, Value);
                         break;
-                    case "Rewards_XP":
+/*                    case "Rewards_XP":
                         Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
-                        break;
-                    case "Rewards_Currency":
+                        break;*/
+/*                    case "Rewards_Currency":
                         Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
-                        break;
+                        break;*/
                     case "Rewards_Items":
                         Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
                         break;
@@ -93,12 +93,12 @@
                     case "Rewards_Favor":
                         Result = ParseRewardFavor(item, Value, parsedFile, parsedKey);
                         break;
-                    case "Rewards_Recipes":
+/*                    case "Rewards_Recipes":
                         Result = ParseRewardRecipes(item, Value, parsedFile, parsedKey);
-                        break;
-                    case "Rewards_Ability":
+                        break;*/
+/*                    case "Rewards_Ability":
                         Result = ParseRewardAbility(item, Value, parsedFile, parsedKey);
-                        break;
+                        break;*/
                     case "Requirements":
                         Result = Inserter<PgQuestRequirement>.AddKeylessArray(item.QuestRequirementList, Value);
                         break;
@@ -600,6 +600,7 @@
                 UpdateIconIdFromRewards(Quest, ref IconId);
                 UpdateIconIdFromObjectives(Quest, ref IconId);
                 UpdateIconIdFromGenericObjectives(Quest, ref IconId);
+                UpdateIconIdFromGenericRewards(Quest, ref IconId);
 
                 Quest.IconId = IconId;
 
@@ -640,6 +641,27 @@
                     case PgQuestRewardSkillXp AsRewardSkillXp:
                         if (iconId == 0)
                             iconId = ParserSkill.SkillToIcon(AsRewardSkillXp.Skill);
+                        break;
+                }
+            }
+        }
+
+        private static void UpdateIconIdFromGenericRewards(PgQuest quest, ref int iconId)
+        {
+            foreach (PgQuestReward QuestReward in quest.QuestRewardList)
+            {
+                if (iconId != 0)
+                    break;
+
+                switch (QuestReward)
+                {
+                    case PgQuestRewardCurrency AsRewardCurrency:
+                        if (iconId == 0)
+                            iconId = ParserReward.CurrencyToIcon(AsRewardCurrency.Currency);
+                        break;
+                    case PgQuestRewardWorkOrderCurrency AsRewardWorkOrderCurrency:
+                        if (iconId == 0)
+                            iconId = ParserReward.CurrencyToIcon(AsRewardWorkOrderCurrency.Currency);
                         break;
                 }
             }

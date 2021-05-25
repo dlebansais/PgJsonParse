@@ -64,6 +64,9 @@
                     case "SlotAttribute":
                         Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.SlotAttribute = valueAttribute, Value);
                         break;
+                    case "EventLevels":
+                        Result = Inserter<PgStorageEventList>.SetItemProperty((PgStorageEventList valueStorageEventLevel) => item.EventLevels = valueStorageEventLevel, Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;

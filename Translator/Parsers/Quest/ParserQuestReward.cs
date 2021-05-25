@@ -19,6 +19,9 @@
             { QuestRewardType.GuildCredits, FinishItemGuildCredits },
             { QuestRewardType.CombatXp, FinishItemCombatXp },
             { QuestRewardType.GuildXp, FinishItemGuildXp },
+            { QuestRewardType.Currency, FinishItemCurrency },
+            { QuestRewardType.Ability, FinishItemAbility },
+            { QuestRewardType.WorkOrderCurrency, FinishItemWorkOrderCurrency },
         };
 
         private static Dictionary<QuestRewardType, List<string>> KnownFieldTable = new Dictionary<QuestRewardType, List<string>>()
@@ -28,6 +31,9 @@
             { QuestRewardType.GuildCredits, new List<string>() { "T", "Credits" } },
             { QuestRewardType.CombatXp, new List<string>() { "T", "Xp" } },
             { QuestRewardType.GuildXp, new List<string>() { "T", "Xp" } },
+            { QuestRewardType.Currency, new List<string>() { "T", "Amount", "Currency" } },
+            { QuestRewardType.Ability, new List<string>() { "T", "Ability" } },
+            { QuestRewardType.WorkOrderCurrency, new List<string>() { "T", "Amount", "Currency" } },
         };
 
         private static Dictionary<QuestRewardType, List<string>> HandledTable = new Dictionary<QuestRewardType, List<string>>();
@@ -277,6 +283,141 @@
                             break;
                         case "Xp":
                             Result = SetIntProperty((int valueInt) => NewItem.RawXp = valueInt, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemCurrency(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRewardCurrency NewItem = new PgQuestRewardCurrency();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Currency":
+                            Result = StringToEnumConversion<Currency>.SetEnum((Currency valueEnum) => NewItem.Currency = valueEnum, Value);
+                            break;
+                        case "Amount":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawAmount = valueInt, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemAbility(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRewardAbility NewItem = new PgQuestRewardAbility();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Ability":
+                            Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => NewItem.Ability = valueAbility, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemWorkOrderCurrency(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRewardWorkOrderCurrency NewItem = new PgQuestRewardWorkOrderCurrency();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Currency":
+                            Result = StringToEnumConversion<Currency>.SetEnum((Currency valueEnum) => NewItem.Currency = valueEnum, Value);
+                            break;
+                        case "Amount":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawAmount = valueInt, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

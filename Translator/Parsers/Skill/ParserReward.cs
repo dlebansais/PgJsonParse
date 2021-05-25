@@ -59,5 +59,32 @@
 
             return Result;
         }
+
+        public static int CurrencyToIcon(Currency currency)
+        {
+            int IconId = 0;
+            string ItemName = string.Empty;
+
+            Dictionary<string, ParsingContext> ItemParsingTable = ParsingContext.ObjectKeyTable[typeof(PgItem)];
+
+            switch (currency)
+            {
+                case Currency.Gold:
+                    ItemName = "item_14109";
+                    break;
+                case Currency.LiveEventCredits:
+                    ItemName = "item_14076";
+                    break;
+            }
+
+            if (ItemName.Length > 0 && ItemParsingTable.ContainsKey(ItemName))
+            {
+                PgItem Item = (PgItem)ItemParsingTable[ItemName].Item;
+                if (Item.IconId > 0)
+                    IconId = Item.IconId;
+            }
+
+            return IconId;
+        }
     }
 }

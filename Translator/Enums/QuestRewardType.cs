@@ -8,5 +8,8 @@
         GuildCredits,
         CombatXp,
         GuildXp,
+        Currency,
+        Ability,
+        WorkOrderCurrency,
     }
 }

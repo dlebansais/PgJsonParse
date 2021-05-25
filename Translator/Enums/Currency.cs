@@ -5,5 +5,6 @@
         Internal_None,
         Gold,
         WardenPoints,
+        LiveEventCredits,
     }
 }

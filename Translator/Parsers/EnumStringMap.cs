@@ -37,6 +37,7 @@
         public static readonly Dictionary<ItemKeyword, string> ItemKeywordTable = new Dictionary<ItemKeyword, string>()
         {
             { ItemKeyword.MinRarity_Uncommon, "MinRarity:Uncommon" },
+            { ItemKeyword.CraftedYes, "Crafted:y" },
         };
 
         public static readonly Dictionary<ItemUseVerb, string> ItemUseVerbTable = new Dictionary<ItemUseVerb, string>()
@@ -98,6 +99,8 @@
             // { ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "Open Portal" },
             { ItemUseVerb.DrinkUp, "Drink up" },
+            { ItemUseVerb.Convert_to_Live_Event_Credit, "Convert to Live-Event Credit" },
+            { ItemUseVerb.ClaimVIPTime, "Claim VIP Time" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()
@@ -235,6 +238,11 @@
             { RecipeItemKey.MaxTSysPrereq_90, "MaxTSysPrereq:90" },
         };
 
+        public static readonly Dictionary<XpTableEnum, string> XpTableEnumTable = new Dictionary<XpTableEnum, string>()
+        {
+            { XpTableEnum.CookingUnused, "Cooking-unused" },
+        };
+
         public static Dictionary<Type, IDictionary> Tables { get; } = new Dictionary<Type, IDictionary>()
         {
             { typeof(AbilityItemKeyword), AbilityItemKeywordTable },
@@ -249,6 +257,7 @@
             { typeof(RecipeAction), RecipeActionTable },
             { typeof(RecipeEffect), RecipeEffectTable },
             { typeof(RecipeItemKey), RecipeItemKeyTable },
+            { typeof(XpTableEnum), XpTableEnumTable },
         };
     }
 }
