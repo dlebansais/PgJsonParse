@@ -124,7 +124,7 @@
                 Writer.WriteLine($"            if (Table.ContainsKey(key))");
                 Writer.WriteLine($"                return Table[key];");
                 Writer.WriteLine($"            else");
-                Writer.WriteLine($"                return Get_(Table, key);");
+                Writer.WriteLine($"                return Get_(key);");
                 Writer.WriteLine($"        }}");
             }
 
@@ -170,7 +170,7 @@
         private static void WriteRecursiveTable(StreamWriter writer, string typeName, string prefix, int rank, Dictionary<char, IDictionary> table)
         {
             writer.WriteLine(string.Empty);
-            writer.WriteLine($"        private static {typeName} Get{prefix}(Dictionary<string, {typeName}> table, string key)");
+            writer.WriteLine($"        private static {typeName} Get{prefix}(string key)");
             writer.WriteLine($"        {{");
 
             int CaseCount = table.Count;
@@ -183,16 +183,10 @@
                 if (CaseCount > 1)
                 {
                     writer.WriteLine($"            if (key.Length == {rank})");
-                    writer.WriteLine($"            {{");
-                    writer.WriteLine($"                table.Add(key, {LinkValue});");
                     writer.WriteLine($"                return {LinkValue};");
-                    writer.WriteLine($"            }}");
                 }
                 else
-                {
-                    writer.WriteLine($"            table.Add(key, {LinkValue});");
                     writer.WriteLine($"            return {LinkValue};");
-                }
 
                 CaseCount--;
             }
@@ -211,7 +205,7 @@
                     if (c != '\0')
                     {
                         writer.WriteLine($"                case '{c}':");
-                        writer.WriteLine($"                    return Get{prefix}{ToValidChar(c)}(table, key);");
+                        writer.WriteLine($"                    return Get{prefix}{ToValidChar(c)}(key);");
                     }
                 }
 
@@ -227,7 +221,7 @@
 
                     if (c != '\0')
                     {
-                        writer.WriteLine($"            return Get{prefix}{ToValidChar(c)}(table, key);");
+                        writer.WriteLine($"            return Get{prefix}{ToValidChar(c)}(key);");
                     }
                 }
             }
@@ -466,6 +460,36 @@
             writer.WriteLine(string.Empty);
         }
 
+        private static void WriteItemPrologWithKey(StreamWriter writer, string objectTypeName, string objectName, string objectKey)
+        {
+            writer.WriteLine($"        public static {objectTypeName} {objectName}");
+            writer.WriteLine($"        {{");
+            writer.WriteLine($"            get");
+            writer.WriteLine($"            {{");
+            writer.WriteLine($"                if (!Table.ContainsKey(\"{objectKey}\"))");
+            writer.WriteLine($"                {{");
+            writer.WriteLine($"                    {objectTypeName} _{objectName} = new();");
+            writer.WriteLine($"                    Table.Add(\"{objectKey}\", _{objectName});");
+            writer.WriteLine(string.Empty);
+        }
+
+        private static void WriteItemProperties(StreamWriter writer, object item, Type type, List<object> objectList, string objectName)
+        {
+            PropertyInfo[] Properties = type.GetProperties();
+            foreach (PropertyInfo Property in Properties)
+            {
+                if (!Property.CanWrite)
+                    continue;
+
+                string PropertyName = Property.Name;
+                Type PropertyType = Property.PropertyType;
+                object PropertyValue = Property.GetValue(item);
+                string ValueString = GetValueString(PropertyType, PropertyValue, objectList);
+
+                writer.WriteLine($"                    _{objectName}.{PropertyName} = {ValueString};");
+            }
+        }
+
         private static void WriteItemEpilog(StreamWriter writer, string objectTypeName, string objectName)
         {
             writer.WriteLine($"                }}");
@@ -474,6 +498,15 @@
             writer.WriteLine($"            }}");
             writer.WriteLine($"        }}");
             writer.WriteLine($"        private static {objectTypeName}? _{objectName};");
+        }
+
+        private static void WriteItemEpilogWithKey(StreamWriter writer, string objectTypeName, string objectName, string objectKey)
+        {
+            writer.WriteLine($"                }}");
+            writer.WriteLine(string.Empty);
+            writer.WriteLine($"                return Table[\"{objectKey}\"];");
+            writer.WriteLine($"            }}");
+            writer.WriteLine($"        }}");
         }
 
         private static void WriteItem(List<object> objectList, int objectIndex)
@@ -491,26 +524,24 @@
 
             AddTypeFile(Type, out StreamWriter Writer);
 
-            PropertyInfo[] Properties = Type.GetProperties();
             string ObjectTypeName = SimpleTypeName(Type);
             string ObjectName = ToObjectName(objectIndex);
 
-            WriteItemProlog(Writer, ObjectTypeName, ObjectName);
-
-            foreach (PropertyInfo Property in Properties)
+            PropertyInfo KeyProperty = Type.GetProperty("Key");
+            if (KeyProperty == null || KeyProperty.PropertyType != typeof(string))
             {
-                if (!Property.CanWrite)
-                    continue;
-
-                string PropertyName = Property.Name;
-                Type PropertyType = Property.PropertyType;
-                object PropertyValue = Property.GetValue(Item);
-                string ValueString = GetValueString(PropertyType, PropertyValue, objectList);
-
-                Writer.WriteLine($"                    _{ObjectName}.{PropertyName} = {ValueString};");
+                WriteItemProlog(Writer, ObjectTypeName, ObjectName);
+                WriteItemProperties(Writer, Item, Type, objectList, ObjectName);
+                WriteItemEpilog(Writer, ObjectTypeName, ObjectName);
             }
+            else
+            {
+                string ObjectKey = (string)KeyProperty.GetValue(Item);
 
-            WriteItemEpilog(Writer, ObjectTypeName, ObjectName);
+                WriteItemPrologWithKey(Writer, ObjectTypeName, ObjectName, ObjectKey);
+                WriteItemProperties(Writer, Item, Type, objectList, ObjectName);
+                WriteItemEpilogWithKey(Writer, ObjectTypeName, ObjectName, ObjectKey);
+            }
         }
 
         private static void WriteItemToKeys(List<object> objectList, int objectIndex)
@@ -550,31 +581,6 @@
             Writer.WriteLine($"                    case {KeyValue}:");
             Writer.WriteLine($"                        Add_{LinkValue}(Table, key);");
             Writer.WriteLine($"                        break;");
-        }
-
-        private static void WriteItemAdder(List<object> objectList, int objectIndex)
-        {
-            object Item = objectList[objectIndex];
-            Type Type = Item.GetType();
-
-            PropertyInfo Property = Type.GetProperty("Key");
-            if (Property == null || Property.PropertyType != typeof(string))
-                return;
-
-            string Key = (string)Property.GetValue(Item);
-            Debug.Assert(Key != null);
-
-            string LinkValue = ToObjectName(objectIndex);
-
-            Debug.Assert(WriterTable.ContainsKey(Type));
-            StreamWriter Writer = WriterTable[Type];
-            string TypeName = Type.Name;
-
-            Writer.WriteLine(string.Empty);
-            Writer.WriteLine($"        public static void Add_{LinkValue}(Dictionary<string, {TypeName}> table, string key)");
-            Writer.WriteLine("        {");
-            Writer.WriteLine($"            table.Add(key, {LinkValue});");
-            Writer.WriteLine("        }");
         }
 
         private static void GetItemIndexContent(List<object> objectList, int objectIndex, Dictionary<Type, List<string>> typeIndexTable)
