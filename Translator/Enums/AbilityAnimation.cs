@@ -19,7 +19,7 @@
         Attack_Sword_Parry,
         Attack_Sword_WindStrike,
         Attack_Sword_FinishingBlow,
-        Attack_Sword_Riposte,
+        //Attack_Sword_Riposte,
         Attack_Sword_PrecisionPierce,
         Attack_Psychology_PsychoAnalyze,
         Attack_Psychology_TellMeAboutYourMother,
@@ -166,5 +166,6 @@
         Dance4C,
         Dance5C,
         Dance6C,
+        Attack_Shield_Erupt,
     }
 }

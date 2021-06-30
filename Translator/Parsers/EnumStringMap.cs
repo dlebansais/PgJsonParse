@@ -95,12 +95,12 @@
             { ItemUseVerb.OpenCrate, "Open Crate" },
             { ItemUseVerb.OpenPouch, "Open Pouch" },
             { ItemUseVerb.AffixToHead, "Affix To Head" },
-
             // { ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "Open Portal" },
             { ItemUseVerb.DrinkUp, "Drink up" },
             { ItemUseVerb.Convert_to_Live_Event_Credit, "Convert to Live-Event Credit" },
             { ItemUseVerb.ClaimVIPTime, "Claim VIP Time" },
+            { ItemUseVerb.ApplyToSnoot, "Apply to Snoot" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()
@@ -142,11 +142,12 @@
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
             { MapAreaName.ANewLife, "A New Life" },
             { MapAreaName.WNSWintertide, "WNS Wintertide" },
+            { MapAreaName.Povus, "Povus" },
         };
 
-        public static readonly Dictionary<QuestObjectiveKillTarget, string> QuestObjectiveKillTargetTable = new Dictionary<QuestObjectiveKillTarget, string>()
+        public static readonly Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTable = new Dictionary<QuestObjectiveTarget, string>()
         {
-            { QuestObjectiveKillTarget.Any, "*" },
+            { QuestObjectiveTarget.Any, "*" },
         };
 
         public static readonly Dictionary<RecipeAction, string> RecipeActionTable = new Dictionary<RecipeAction, string>()
@@ -210,6 +211,8 @@
             { RecipeEffect.CreateMiningSurvey7X_MiningSurveyIlmari7X, "CreateMiningSurvey7X(MiningSurveyIlmari7X)" },
             { RecipeEffect.CreateMiningSurvey7X_MiningSurveyGazluk7X, "CreateMiningSurvey7X(MiningSurveyGazluk7X)" },
             { RecipeEffect.CreateMiningSurvey8X_MiningSurveyGazluk8X, "CreateMiningSurvey8X(MiningSurveyGazluk8X)" },
+            { RecipeEffect.CreateMiningSurvey7Y_MiningSurveyPovus7Y, "CreateMiningSurvey7Y(MiningSurveyPovus7Y)" },
+            { RecipeEffect.CreateMiningSurvey8Y_MiningSurveyPovus8Y, "CreateMiningSurvey8Y(MiningSurveyPovus8Y)" },
         };
 
         public static readonly Dictionary<RecipeItemKey, string> RecipeItemKeyTable = new Dictionary<RecipeItemKey, string>()
@@ -253,7 +256,7 @@
             { typeof(ItemUseVerb), ItemUseVerbTable },
             { typeof(AppearanceSkin), AppearanceSkinTable },
             { typeof(MapAreaName), MapAreaNameTable },
-            { typeof(QuestObjectiveKillTarget), QuestObjectiveKillTargetTable },
+            { typeof(QuestObjectiveTarget), QuestObjectiveKillTargetTable },
             { typeof(RecipeAction), RecipeActionTable },
             { typeof(RecipeEffect), RecipeEffectTable },
             { typeof(RecipeItemKey), RecipeItemKeyTable },

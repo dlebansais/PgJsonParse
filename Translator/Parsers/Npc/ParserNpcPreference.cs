@@ -36,6 +36,9 @@
                     case "Pref":
                         Result = SetFloatProperty((float valueFloat) => item.RawPreference = valueFloat, Value);
                         break;
+                    case "Favor":
+                        Result = ParseFavor(item, Value, parsedFile, parsedKey);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
@@ -139,6 +142,22 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Invalid rarity '{value}'");
 
             StringToEnumConversion<RecipeItemKey>.SetCustomParsedEnum(item.RarityRequirement);
+            return true;
+        }
+
+        private bool ParseFavor(PgNpcPreference item, object value, string parsedFile, string parsedKey)
+        {
+            if (!(value is string FavorString))
+                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
+
+            Favor ParsedFavor;
+
+            if (FavorString == "Error")
+                ParsedFavor = Favor.Internal_None;
+            else if (!StringToEnumConversion<Favor>.TryParse(FavorString, out ParsedFavor))
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unknown favor level '{FavorString}'");
+
+            item.PreferenceFavor = ParsedFavor;
             return true;
         }
     }

@@ -412,6 +412,7 @@
         {
             { "Keywords", typeof(string[]) },
             { "Pref", typeof(float) },
+            { "Favor", typeof(string) },
         };
 
         public static Dictionary<string, Type> TablePlayerTitle { get; } = new Dictionary<string, Type>()
@@ -501,6 +502,8 @@
             { "AllowedRace", typeof(string) },
             { "MoonPhase", typeof(string) },
             { "MinFavor", typeof(int) },
+            { "AtomicVar", typeof(string) },
+            { "Value", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()

@@ -13,6 +13,7 @@
         public RecipeItemKey RarityRequirement { get; set; }
         public float Preference { get { return RawPreference.HasValue ? RawPreference.Value : 0; } }
         public float? RawPreference { get; set; }
+        public Favor PreferenceFavor { get; set; }
 
         public Dictionary<PgItem, int> ItemValueTable { get; set; } = new Dictionary<PgItem, int>();
 

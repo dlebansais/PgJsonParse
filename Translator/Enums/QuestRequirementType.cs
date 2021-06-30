@@ -18,5 +18,6 @@
         MoonPhase,
         InteractionFlagUnset,
         MinFavor,
+        ScriptAtomicMatches,
     }
 }

@@ -31,5 +31,6 @@
         UseAbilityOnTargets,
         CompleteQuest,
         MeetRequirements,
+        ScriptAtomicInt,
     }
 }

@@ -43,5 +43,6 @@
         Wintertide1,
         Wintertide2,
         WNSWintertide,
+        Povus,
     }
 }

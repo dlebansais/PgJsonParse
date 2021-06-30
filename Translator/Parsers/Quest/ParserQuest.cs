@@ -604,6 +604,10 @@
 
                 Quest.IconId = IconId;
 
+                if (Quest.ObjectIconId == 0)
+                {
+                }
+
                 Debug.Assert(Quest.ObjectIconId != 0);
                 Debug.Assert(Quest.ObjectName.Length > 0);
             }
@@ -748,6 +752,9 @@
                         break;
                     case PgQuestObjectiveCompleteQuest _:
                         iconId = PgObject.KillIconId;
+                        break;
+                    case PgQuestObjectiveScriptAtomicInt _:
+                        iconId = PgObject.DirectedGoalIconId;
                         break;
                 }
             }

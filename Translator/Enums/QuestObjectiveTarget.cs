@@ -1,6 +1,6 @@
 ﻿namespace PgObjects
 {
-    public enum QuestObjectiveKillTarget
+    public enum QuestObjectiveTarget
     {
         Internal_None,
         Any,
@@ -203,5 +203,8 @@
         PolarBear,
         GhostOfMargieSalas,
         Striga,
+        PovusLamps_A,
+        PovusLamps_B,
+        PovusLamps_C,
     }
 }

@@ -42,6 +42,7 @@
             { QuestObjectiveType.UseAbilityOnTargets, FinishItemUseAbilityOnTargets },
             { QuestObjectiveType.CompleteQuest, FinishItemCompleteQuest },
             { QuestObjectiveType.MeetRequirements, FinishItemMeetRequirements },
+            { QuestObjectiveType.ScriptAtomicInt, FinishItemScriptAtomicInt },
         };
 
         private static Dictionary<QuestObjectiveType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveType, List<string>>()
@@ -74,6 +75,7 @@
             { QuestObjectiveType.UseAbilityOnTargets, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Number" } },
             { QuestObjectiveType.CompleteQuest, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
             { QuestObjectiveType.MeetRequirements, new List<string>() { "Type", "Description", "Number", "Requirements" } },
+            { QuestObjectiveType.ScriptAtomicInt, new List<string>() { "Type", "Description", "GroupId", "Number", "Target" } },
         };
 
         private static Dictionary<QuestObjectiveType, List<string>> HandledTable = new Dictionary<QuestObjectiveType, List<string>>();
@@ -175,7 +177,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = StringToEnumConversion<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = StringToEnumConversion<QuestObjectiveTarget>.SetEnum((QuestObjectiveTarget valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "AbilityKeyword":
                             Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => RequirementKeyword = valueEnum, Value);
@@ -1220,7 +1222,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = StringToEnumConversion<QuestObjectiveKillTarget>.SetEnum((QuestObjectiveKillTarget valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = StringToEnumConversion<QuestObjectiveTarget>.SetEnum((QuestObjectiveTarget valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "Description":
                         case "Number":
@@ -2134,6 +2136,57 @@
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestObjectiveRequirement) => NewItem.QuestRequirement = valueQuestObjectiveRequirement, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                if (NewItem.Description.Length == 0)
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
+
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemScriptAtomicInt(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveScriptAtomicInt NewItem = new PgQuestObjectiveScriptAtomicInt();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "Type":
+                            break;
+                        case "Description":
+                        case "GroupId":
+                        case "Number":
+                            Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        case "Target":
+                            Result = StringToEnumConversion<QuestObjectiveTarget>.SetEnum((QuestObjectiveTarget valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

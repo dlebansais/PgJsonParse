@@ -292,5 +292,7 @@
         StoragePortal2,
         StoragePortal3,
         SummonFairyLight,
+        CreateMiningSurvey7Y_MiningSurveyPovus7Y,
+        CreateMiningSurvey8Y_MiningSurveyPovus8Y,
     }
 }

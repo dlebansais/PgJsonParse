@@ -29,5 +29,13 @@
         EnergyPillar,
         HealingParticle_Silent,
         LightSlash,
+        SlashHitMulti,
+        SlashHitReverse,
+        MusicHitLullaby,
+        MusicHitFury,
+        MusicHitDefiance,
+        MusicHitSad,
+        MusicHitLoud,
+        MusicHit,
     }
 }

@@ -30,6 +30,7 @@
             { QuestRequirementType.IsLongtimeAnimal, FinishItemIsLongtimeAnimal },
             { QuestRequirementType.InteractionFlagUnset, FinishItemInteractionFlagUnset },
             { QuestRequirementType.MinFavor, FinishItemMinFavor },
+            { QuestRequirementType.ScriptAtomicMatches, FinishItemScriptAtomicMatches },
         };
 
         private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
@@ -50,6 +51,7 @@
             { QuestRequirementType.IsLongtimeAnimal, new List<string>() { "T" } },
             { QuestRequirementType.InteractionFlagUnset, new List<string>() { "T", "InteractionFlag" } },
             { QuestRequirementType.MinFavor, new List<string>() { "T", "Npc", "MinFavor" } },
+            { QuestRequirementType.ScriptAtomicMatches, new List<string>() { "T", "AtomicVar", "Value" } },
         };
 
         private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
@@ -853,6 +855,52 @@
                             break;
                         case "MinFavor":
                             Result = SetIntProperty((int valueInt) => NewItem.RawMinFavor = valueInt, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemScriptAtomicMatches(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRequirementScriptAtomicMatches NewItem = new PgQuestRequirementScriptAtomicMatches();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "AtomicVar":
+                            Result = SetStringProperty((string valueString) => NewItem.AtomicVar = valueString, Value);
+                            break;
+                        case "Value":
+                            Result = SetStringProperty((string valueString) => NewItem.Value = valueString, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
