@@ -177,7 +177,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = StringToEnumConversion<QuestObjectiveTarget>.SetEnum((QuestObjectiveTarget valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = ParseKillTarget(NewItem, Value, parsedFile, parsedKey);
                             break;
                         case "AbilityKeyword":
                             Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => RequirementKeyword = valueEnum, Value);
@@ -222,6 +222,58 @@
             }
             else
                 return false;
+        }
+
+        private static bool ParseKillTarget(PgQuestObjectiveKill item, object value, string parsedFile, string parsedKey)
+        {
+            bool Result;
+
+            if (value is List<object> AsList)
+            {
+                if (AsList.Count < 1)
+                    Result = Program.ReportFailure($"List {AsList} should not be empty");
+                else if (AsList.Count == 1)
+                {
+                    if (AsList[0] is string ValueString)
+                        Result = StringToEnumConversion<QuestObjectiveTarget>.SetEnum((QuestObjectiveTarget valueEnum) => item.Target = valueEnum, ValueString);
+                    else
+                        Result = Program.ReportFailure($"List {AsList} should contain strings");
+                }
+                else if (AsList.Count == 2)
+                {
+                    if (AsList[0] is string ValueString1 && AsList[1] is string ValueString2)
+                    {
+                        bool Result1 = StringToEnumConversion<QuestObjectiveTarget>.SetEnum((QuestObjectiveTarget valueEnum) => item.Target = valueEnum, ValueString1);
+
+                        bool Result2;
+                        if (ValueString2.StartsWith("Area:"))
+                        {
+                            string AreaName = ValueString2.Substring(5);
+                            Result2 = StringToEnumConversion<MapAreaName>.TryParse(AreaName, out MapAreaName ParsedAreaName);
+
+                            if (Result2)
+                            {
+                                PgQuestObjectiveRequirementAreaEventOff NewRequirement = new PgQuestObjectiveRequirementAreaEventOff() { AreaName = ParsedAreaName };
+
+                                ParsingContext.AddSuplementaryObject(NewRequirement);
+                                item.QuestObjectiveRequirementList.Add(NewRequirement);
+                            }
+                        }
+                        else
+                            Result2 = Program.ReportFailure($"{ValueString2} expected to be an area");
+
+                        Result = Result1 && Result2;
+                    }
+                    else
+                        Result = Program.ReportFailure($"List {AsList} should contain strings");
+                }
+                else
+                    Result = Program.ReportFailure($"List {AsList} too big");
+            }
+            else
+                Result = StringToEnumConversion<QuestObjectiveTarget>.SetEnum((QuestObjectiveTarget valueEnum) => item.Target = valueEnum, value);
+            
+            return Result;
         }
 
         private static bool FinishItemScripted(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)

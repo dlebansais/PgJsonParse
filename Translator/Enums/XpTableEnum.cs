@@ -44,5 +44,10 @@
         AuxCombatSkill_FastTo50,
         PerformanceDance,
         CookingUnused,
+        Paleontology,
+        AnimalHusbandry,
+        None,
+        PovusTown,
+        PovusStorage,
     }
 }

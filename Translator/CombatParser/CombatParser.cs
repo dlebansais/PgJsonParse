@@ -2068,7 +2068,7 @@
         {
             if (effect1.Keyword != effect2.Keyword && effect1.Keyword != CombatKeyword.Again && effect2.Keyword != CombatKeyword.Again)
             {
-                if ((effect1.Keyword != CombatKeyword.AddVulnerability || effect2.Keyword != CombatKeyword.AddDirectVulnerability) && (effect1.Keyword != CombatKeyword.AddDirectVulnerability || effect2.Keyword != CombatKeyword.AddVulnerability))
+                if (effect1.Keyword != CombatKeyword.AddVulnerability && effect2.Keyword != CombatKeyword.AddVulnerability)
                     return false;
             }
 
@@ -3833,18 +3833,20 @@
             new Sentence("Cause the target to become %f more vulnerable to #D attack", CombatKeyword.AddVulnerability),
             new Sentence("Increase the damage target take from #D by %f", CombatKeyword.AddVulnerability),
             new Sentence("Target take %f more damage from #D", CombatKeyword.AddVulnerability),
-            new Sentence("Take %f direct #D damage", CombatKeyword.AddDirectVulnerability),
+            new Sentence("Target take %f #D damage", CombatKeyword.AddVulnerability),
+            //new Sentence("Take %f direct #D damage", CombatKeyword.AddDirectVulnerability),
             new Sentence("Take %f damage from #D attack", CombatKeyword.AddVulnerability),
             new Sentence("#D Vulnerability %f", CombatKeyword.AddVulnerability),
             new Sentence("%f more damage from any #D attack", CombatKeyword.AddVulnerability),
 
             // new Sentence("Take %f damage from both #D", CombatKeyword.AddVulnerability),
-            new Sentence("Target take %f #D damage from future attack", CombatKeyword.AddVulnerability),
+            //new Sentence("Target take %f #D damage from future attack", CombatKeyword.AddVulnerability),
             new Sentence("B*u*t take %f damage from any #D attack", new List<CombatKeyword>() { CombatKeyword.But, CombatKeyword.AddVulnerability }),
             new Sentence("#D Vulnerability +infinity", CombatKeyword.DestroyedByDamageType),
             new Sentence("Instantly destroyed by ANY #D Damage", CombatKeyword.DestroyedByDamageType),
             new Sentence("Targets suffer %f damage from other #D attack", CombatKeyword.AddVulnerability),
             new Sentence("Cause the target to suffer %f #D damage", CombatKeyword.AddVulnerability),
+            new Sentence("Cause target to be %f more vulnerable to #D damage", CombatKeyword.AddVulnerability),
             new Sentence("Deal %f damage to Health and Armor", CombatKeyword.DamageBoostToHealthAndArmor),
             new Sentence("Increase the damage of all targets' attack %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }),
             new Sentence("%f damage from all attack", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }),
@@ -4096,8 +4098,8 @@
             new Sentence("Deal %f total damage against Demons", CombatKeyword.DamageBoostAgainstSpecie),
             new Sentence("Boost targets' mitigation %f", CombatKeyword.AddMitigation),
             new Sentence("#D mitigation %f", CombatKeyword.AddMitigation),
-            new Sentence("Vulnerability to Elite #D damage %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }, SignInterpretation.Opposite),
-            new Sentence("Mitigate %f of physical damage from Elite", new List<CombatKeyword>() { CombatKeyword.AddMitigationPhysical, CombatKeyword.TargetElite }),
+            //new Sentence("Vulnerability to Elite #D damage %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }, SignInterpretation.Opposite),
+            //new Sentence("Mitigate %f of physical damage from Elite", new List<CombatKeyword>() { CombatKeyword.AddMitigationPhysical, CombatKeyword.TargetElite }),
 
             // new Sentence("%f #D Damage Reduction", CombatKeyword.AddMitigation),
             new Sentence("Mitigate %f #D Damage", CombatKeyword.AddMitigation),
@@ -4267,7 +4269,7 @@
             new Sentence("And %f armor", CombatKeyword.RestoreArmor),
             new Sentence("And %f power", CombatKeyword.RestorePower),
             new Sentence("Restore %f", CombatKeyword.RestoreHealth),
-            new Sentence("%f Enthusiasm", CombatKeyword.AddEnthusiasm),
+            //new Sentence("%f Enthusiasm", CombatKeyword.AddEnthusiasm),
             new Sentence("%f Death Avoidance", CombatKeyword.AddDeathAvoidance),
             new Sentence("Target suffer a second blast of #D damage", CombatKeyword.SecondBlast),
             new Sentence("Target take a second full blast of delayed #D damage", CombatKeyword.SecondBlast),

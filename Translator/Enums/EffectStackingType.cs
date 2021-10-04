@@ -114,8 +114,8 @@
         TSysTraumaVuln,
         TSysSlashingVuln,
         TSysPoisonResist,
-        TSysPsychicResist,
-        TSysAccuracyBoost,
+        //TSysPsychicResist,
+        //TSysAccuracyBoost,
         PunchPsiVuln,
         DenseFireVuln,
         EquipmentXpBoost,
@@ -333,5 +333,9 @@
         RiShinShrine_Power,
         RiShinShrine_Armor,
         GolfSprint,
+        WhittlingKnifeBoost,
+        WhittlingKnifeSpecialBonus,
+        LickingMoss,
+        TentakillerShock,
     }
 }

@@ -61,8 +61,9 @@
         // SummonFox,
         OpenPortal,
         DrinkUp,
-        Convert_to_Live_Event_Credit,
+        //Convert_to_Live_Event_Credit,
         ClaimVIPTime,
         ApplyToSnoot,
+        KillAndHarvest,
     }
 }

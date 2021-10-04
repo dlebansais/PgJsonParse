@@ -167,5 +167,11 @@
         Dance5C,
         Dance6C,
         Attack_Shield_Erupt,
+        Attack_Unarmed_Jab,
+        Attack_Kneekick,
+        Attack_Unarmed_Bodyslam,
+        Attack_Unarmed_Headbutt,
+        Attack_Staff_Phoenix,
+        Attack_Druid_Swing,
     }
 }

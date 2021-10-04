@@ -37,5 +37,6 @@
         MusicHitSad,
         MusicHitLoud,
         MusicHit,
+        PoisonCloud,
     }
 }

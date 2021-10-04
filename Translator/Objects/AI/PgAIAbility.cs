@@ -9,8 +9,8 @@
         public int? RawMaxLevel { get; set; }
         public int MinDistance { get { return RawMinDistance.HasValue ? RawMinDistance.Value : 0; } }
         public int? RawMinDistance { get; set; }
-        public int MinRange { get { return RawMinRange.HasValue ? RawMinRange.Value : 0; } }
-        public int? RawMinRange { get; set; }
+        public float MinRange { get { return RawMinRange.HasValue ? RawMinRange.Value : 0; } }
+        public float? RawMinRange { get; set; }
         public int MaxRange { get { return RawMaxRange.HasValue ? RawMaxRange.Value : 0; } }
         public int? RawMaxRange { get; set; }
         public AbilityCue Cue { get; set; }

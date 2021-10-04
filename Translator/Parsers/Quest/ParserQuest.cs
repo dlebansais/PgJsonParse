@@ -551,6 +551,21 @@
 
                 preGiveEffect = NewEffect;
             }
+            else if (value.StartsWith("LearnAbility("))
+            {
+                int ParameterStartIndex = value.IndexOf('(');
+                int ParameterEndIndex = value.LastIndexOf(')');
+                string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+
+                PgAbility ParsedAbility = null!;
+
+                if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, EffectParameter))
+                    return false;
+
+                PgQuestPreGiveEffectLearnAbility NewEffect = new PgQuestPreGiveEffectLearnAbility() { Ability = ParsedAbility };
+
+                preGiveEffect = NewEffect;
+            }
             else
             {
                 int StartIndex = value.IndexOf('(');

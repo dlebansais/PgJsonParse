@@ -31,6 +31,7 @@
             { QuestRequirementType.InteractionFlagUnset, FinishItemInteractionFlagUnset },
             { QuestRequirementType.MinFavor, FinishItemMinFavor },
             { QuestRequirementType.ScriptAtomicMatches, FinishItemScriptAtomicMatches },
+            { QuestRequirementType.AreaEventOff, FinishItemAreaEventOff },
         };
 
         private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
@@ -52,6 +53,7 @@
             { QuestRequirementType.InteractionFlagUnset, new List<string>() { "T", "InteractionFlag" } },
             { QuestRequirementType.MinFavor, new List<string>() { "T", "Npc", "MinFavor" } },
             { QuestRequirementType.ScriptAtomicMatches, new List<string>() { "T", "AtomicVar", "Value" } },
+            { QuestRequirementType.AreaEventOff, new List<string>() { "T", "AreaEvent" } },
         };
 
         private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
@@ -345,6 +347,15 @@
             return true;
         }
 
+        private static bool ParseAreaEvent(PgQuestRequirementAreaEventOff newItem, object value, string parsedFile, string parsedKey)
+        {
+            if (!ParseAreaEvent(value, parsedFile, parsedKey, out MapAreaName AreaName))
+                return false;
+
+            newItem.AreaName = AreaName;
+            return true;
+        }
+
         public static bool ParseAreaEvent(object value, string parsedFile, string parsedKey, out MapAreaName areaName)
         {
             areaName = MapAreaName.Internal_None;
@@ -354,7 +365,15 @@
 
             if (AreaString == "Daytime")
             {
-                areaName = MapAreaName.Several;
+                areaName = MapAreaName.Daytime;
+                StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(areaName);
+                return true;
+            }
+
+            if (AreaString == "PovusNightlyQuest")
+            {
+                areaName = MapAreaName.PovusNightlyQuest;
+                StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(areaName);
                 return true;
             }
 
@@ -901,6 +920,49 @@
                             break;
                         case "Value":
                             Result = SetStringProperty((string valueString) => NewItem.Value = valueString, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemAreaEventOff(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRequirementAreaEventOff NewItem = new PgQuestRequirementAreaEventOff();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "AreaEvent":
+                            Result = ParseAreaEvent(NewItem, Value, parsedFile, parsedKey);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

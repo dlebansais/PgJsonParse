@@ -201,6 +201,9 @@
                     case "AmmoStickChance":
                         Result = SetFloatProperty((float valueFloat) => item.RawAmmoStickChance = valueFloat, Value);
                         break;
+                    case "TargetTypeTagReq":
+                        Result = ParseTargetTypeTagReq(item, Value, parsedFile, parsedKey);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
@@ -256,6 +259,20 @@
             return true;
         }
 
+        private bool ParseTargetTypeTagReq(PgAbility item, object value, string parsedFile, string parsedKey)
+        {
+            if (value is not string AsString || !AsString.StartsWith("AnatomyType_"))
+                return false;
+
+            string AnatomySkillName = AsString.Substring(12);
+            AnatomySkillName = $"Anatomy_{AnatomySkillName}";
+
+            if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.TargetTypeTagReq = valueSkill, AnatomySkillName))
+                return false;
+
+            return true;
+        }
+        
         public static void UpdateIconsAndNames()
         {
             Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];

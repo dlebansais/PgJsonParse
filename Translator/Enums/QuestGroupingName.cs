@@ -17,7 +17,7 @@
         Druid_DesertWatchers,
         Druid_Rotflowers,
         CasinoExcursion,
-        GeneticsTraining,
+        //GeneticsTraining,
         AurestMission,
     }
 }

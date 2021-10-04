@@ -94,7 +94,7 @@
 
             if (ValueString == "*")
             {
-                Area = MapAreaName.Several;
+                Area = MapAreaName.Any;
                 StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(Area);
             }
             else if (ValueString.StartsWith("Area"))

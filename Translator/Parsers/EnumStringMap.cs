@@ -98,9 +98,10 @@
             // { ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "Open Portal" },
             { ItemUseVerb.DrinkUp, "Drink up" },
-            { ItemUseVerb.Convert_to_Live_Event_Credit, "Convert to Live-Event Credit" },
+            //{ ItemUseVerb.Convert_to_Live_Event_Credit, "Convert to Live-Event Credit" },
             { ItemUseVerb.ClaimVIPTime, "Claim VIP Time" },
             { ItemUseVerb.ApplyToSnoot, "Apply to Snoot" },
+            { ItemUseVerb.KillAndHarvest, "Kill and Harvest" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()
@@ -115,7 +116,7 @@
         public static readonly Dictionary<MapAreaName, string> MapAreaNameTable = new Dictionary<MapAreaName, string>()
         {
             { MapAreaName.Internal_None, "None" },
-            { MapAreaName.Several, "*" },
+            { MapAreaName.Any, "*" },
             { MapAreaName.Serbule, "Serbule" },
             { MapAreaName.Eltibule, "Eltibule" },
             { MapAreaName.Tomb1, "Khyrulek's Crypt" },
@@ -142,7 +143,9 @@
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
             { MapAreaName.ANewLife, "A New Life" },
             { MapAreaName.WNSWintertide, "WNS Wintertide" },
-            { MapAreaName.Povus, "Povus" },
+            { MapAreaName.Daytime, "Daytime" },
+            { MapAreaName.PovusNightlyQuest, "PovusNightlyQuest" },
+            { MapAreaName.AreaPovus, "Povus" },
         };
 
         public static readonly Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTable = new Dictionary<QuestObjectiveTarget, string>()
@@ -178,6 +181,8 @@
             { RecipeAction.CraftIceButcherKnife, "Craft Ice Butcher Knife" },
             { RecipeAction.CraftIceHandsaw, "Craft Ice Handsaw" },
             { RecipeAction.OpenPortal, "Open Portal" },
+            { RecipeAction.DyeFur, "Dye Fur" },
+            { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
         };
 
         public static readonly Dictionary<RecipeEffect, string> RecipeEffectTable = new Dictionary<RecipeEffect, string>()

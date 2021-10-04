@@ -12,6 +12,7 @@
         public static PgAttribute SHOW_COMMUNITY_INDICATORS { get; } = new PgAttribute() { Key = "SHOW_COMMUNITY_INDICATORS" };
         public static PgAttribute SHOW_PEACEABLENESS_INDICATORS { get; } = new PgAttribute() { Key = "SHOW_PEACEABLENESS_INDICATORS" };
         public static PgAttribute SHOW_FAIRYENERGY_INDICATORS { get; } = new PgAttribute() { Key = "SHOW_FAIRYENERGY_INDICATORS" };
+        public static PgAttribute BOOST_ANIMALPETHEAL_SENDER { get; } = new PgAttribute() { Key = "BOOST_ANIMALPETHEAL_SENDER" };
         public static PgAttribute MONSTER_COMBAT_XP_VALUE { get; } = new PgAttribute() { Key = "MONSTER_COMBAT_XP_VALUE" };
 
         public string Key { get; set; } = string.Empty;

@@ -13,6 +13,9 @@
             if (!(value is string ValueKey))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
 
+            if (ValueKey == "ArmorSmithing")
+                ValueKey = "Armorsmithing";
+
             if (ValueKey == "Unknown")
             {
                 setter(PgSkill.Unknown);
@@ -24,7 +27,7 @@
                 return true;
             }
             else
-                return Inserter<PgSkill>.SetItemByKey(setter, value, errorControl);
+                return Inserter<PgSkill>.SetItemByKey(setter, ValueKey, errorControl);
         }
 
         public override object CreateItem()
@@ -110,6 +113,9 @@
                         break;
                     case "IsFakeCombatSkill":
                         Result = SetBoolProperty((bool valueBool) => item.RawIsFakeCombatSkill = valueBool, Value);
+                        break;
+                    case "IsUmbrellaSkill":
+                        Result = SetBoolProperty((bool valueBool) => item.RawIsUmbrellaSkill = valueBool, Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

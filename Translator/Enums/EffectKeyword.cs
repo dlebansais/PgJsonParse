@@ -137,7 +137,7 @@
         BrokenBone,
         Electricity,
         TriggeredAlchemyGolem,
-        AmnesiaSporesPermCurse,
+        //AmnesiaSporesPermCurse,
         PersonalRainstormCurse,
         GoredPocketsCurse,
         DarknessImbuedCurse,
@@ -281,5 +281,11 @@
         LiveEventEffect,
         LiveEvent_Lemons,
         Tagged,
+        WhittlingKnifeBuff,
+        Hexapox,
+        PovusSwampDisease,
+        NecromanticInvincibility,
+        TremorsCurse,
+        KuvouAcid,
     }
 }

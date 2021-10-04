@@ -205,17 +205,20 @@
                 if (!(Item is string effectString))
                     return Program.ReportFailure($"Value '{Item}' was expected to be a string");
 
-                if (!ParseResultEffect(effectString, parsedFile, parsedKey, out PgRecipeResultEffect RecipeResult))
+                if (!ParseResultEffect(item, effectString, parsedFile, parsedKey, out PgRecipeResultEffect RecipeResult))
                     return false;
 
-                ParsingContext.AddSuplementaryObject(RecipeResult);
-                item.ResultEffectList.Add(RecipeResult);
+                if (RecipeResult != null)
+                {
+                    ParsingContext.AddSuplementaryObject(RecipeResult);
+                    item.ResultEffectList.Add(RecipeResult);
+                }
             }
 
             return true;
         }
 
-        private bool ParseResultEffect(string effectString, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        private bool ParseResultEffect(PgRecipe item, string effectString, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
             if (StringToEnumConversion<RecipeEffect>.TryParse(effectString, out RecipeEffect ParsedRecipeEffect, ErrorControl.IgnoreIfNotFound))
             {
@@ -227,6 +230,14 @@
             int ParameterEndIndex = effectString.LastIndexOf(')');
             string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < effectString.Length - 1) ? effectString : effectString.Substring(0, ParameterStartIndex);
             string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < effectString.Length - 1) ? string.Empty : effectString.Substring(ParameterStartIndex + 1, effectString.Length - 2 - ParameterStartIndex);
+
+            if (ParameterStartIndex < 0)
+            {
+                if (EffectName.StartsWith("WhittlingKnifeBuff"))
+                    return ParseEffectWithTier(EffectName, EffectKeyword.WhittlingKnifeBuff, parsedFile, parsedKey, out recipeResult);
+                else if (EffectName.StartsWith("Whittling"))
+                    return ParseWhittling(item, EffectName, parsedFile, parsedKey, out recipeResult);
+            }
 
             bool Result;
             recipeResult = null!;
@@ -289,6 +300,15 @@
                     break;
                 case "Teleport":
                     Result = ParseTeleport(EffectParameter, parsedFile, parsedKey, out recipeResult);
+                    break;
+                case "CreateMiningSurvey8Y":
+                    Result = ParseCreateMiningSurvey(EffectParameter, parsedFile, parsedKey, out recipeResult);
+                    break;
+                case "PolymorphRabbitPermanentBlue":
+                    Result = ParsePolymorph(EffectName, parsedFile, parsedKey, out recipeResult);
+                    break;
+                case "SpawnPovusPaleomonster":
+                    Result = ParseSpawnMonster(EffectName, parsedFile, parsedKey, out recipeResult);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect '{effectString}'");
@@ -722,6 +742,82 @@
             else
                 return Program.ReportFailure($"Unknown menu item category '{ValueString}'");
 
+            return true;
+        }
+
+        private bool ParseCreateMiningSurvey(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            recipeResult = null!;
+
+            PgItem ParsedItem = null!;
+            if (!Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => ParsedItem = valueItem, effectParameter))
+                return false;
+
+            PgRecipeResultCreateMiningSurvey RecipeResultEffect = new PgRecipeResultCreateMiningSurvey();
+            RecipeResultEffect.Item = ParsedItem;
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseEffectWithTier(string buffName, EffectKeyword keyword, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            int LastDigitIndex = buffName.Length;
+            while (LastDigitIndex > 0 && char.IsDigit(buffName[LastDigitIndex - 1]))
+                LastDigitIndex--;
+
+            if (LastDigitIndex == buffName.Length)
+            {
+                recipeResult = null!;
+                return Program.ReportFailure($"Expected a tier in {buffName}");
+            }
+
+            int Tier = int.Parse(buffName.Substring(LastDigitIndex));
+
+            PgRecipeResultEffectWithTier RecipeResultEffect = new PgRecipeResultEffectWithTier();
+            RecipeResultEffect.RawTier = Tier;
+            RecipeResultEffect.Keyword = keyword;
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseWhittling(PgRecipe item, string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            recipeResult = null!;
+
+            int LastDigitIndex = buffName.Length;
+            while (LastDigitIndex > 0 && char.IsDigit(buffName[LastDigitIndex - 1]))
+                LastDigitIndex--;
+
+            if (LastDigitIndex == buffName.Length)
+            {
+                recipeResult = null!;
+                return Program.ReportFailure($"Expected a tier in {buffName}");
+            }
+
+            int Tier = int.Parse(buffName.Substring(LastDigitIndex));
+
+            foreach (PgRecipeResultEffect ResultEffect in item.ResultEffectList)
+                if (ResultEffect is PgRecipeResultEffectWithTier AsEffectWithTier && AsEffectWithTier.Keyword == EffectKeyword.WhittlingKnifeBuff && AsEffectWithTier.Tier == Tier)
+                    return true;
+
+            return Program.ReportFailure($"Unknown whittling '{buffName}'");
+        }
+
+        private bool ParsePolymorph(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            PgRecipeResultPolymorph RecipeResultEffect = new PgRecipeResultPolymorph();
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseSpawnMonster(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            PgRecipeResultSpawnMonster RecipeResultEffect = new PgRecipeResultSpawnMonster();
+
+            recipeResult = RecipeResultEffect;
             return true;
         }
 

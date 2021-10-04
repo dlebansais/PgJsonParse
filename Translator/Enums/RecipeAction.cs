@@ -48,5 +48,7 @@
         CraftIceHandsaw,
         Dustify,
         OpenPortal,
+        DyeFur,
+        AssembleAndAnimate,
     }
 }

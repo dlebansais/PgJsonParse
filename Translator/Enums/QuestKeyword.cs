@@ -16,8 +16,9 @@
         Agrashab_4,
         Agrashab_5,
         WarCache,
-        GeneticsTraining_Arthropods,
-        GeneticsTraining_Cats,
-        GeneticsTraining_Ruminants,
+        //GeneticsTraining_Arthropods,
+        //GeneticsTraining_Cats,
+        //GeneticsTraining_Ruminants,
+        PovusNightly,
     }
 }

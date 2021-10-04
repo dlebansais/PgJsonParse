@@ -130,5 +130,7 @@
         FloatingGem6,
         ColdExplosion,
         BodyslamInvincibility,
+        ArcaneDebuff,
+        UnholyDefensePerm,
     }
 }

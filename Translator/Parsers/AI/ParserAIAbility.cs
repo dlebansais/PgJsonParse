@@ -40,7 +40,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawMinDistance = valueInt, Value);
                         break;
                     case "minRange":
-                        Result = SetIntProperty((int valueInt) => item.RawMinRange = valueInt, Value);
+                        Result = SetFloatProperty((float valueFloat) => item.RawMinRange = valueFloat, Value);
                         break;
                     case "maxRange":
                         Result = SetIntProperty((int valueInt) => item.RawMaxRange = valueInt, Value);

@@ -428,7 +428,7 @@
         // BunFuBlitz,
         BunFuStrike,
         Echolocation,
-        EnthusiasmCriticals,
+        //EnthusiasmCriticals,
         DuelistsSlash,
         Priest,
         PriestAttack,
@@ -517,5 +517,7 @@
         FeignInjuryEnabled,
         FeignInjury,
         HymnOfResurrection2Enabled,
+        KuvouAcid,
+        AnalyzeGenes,
     }
 }

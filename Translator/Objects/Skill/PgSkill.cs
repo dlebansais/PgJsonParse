@@ -32,6 +32,8 @@
         public int? RawGuestLevelCap { get; set; }
         public bool IsFakeCombatSkill { get { return RawIsFakeCombatSkill.HasValue && RawIsFakeCombatSkill.Value; } }
         public bool? RawIsFakeCombatSkill { get; set; }
+        public bool IsUmbrellaSkill { get { return RawIsUmbrellaSkill.HasValue && RawIsUmbrellaSkill.Value; } }
+        public bool? RawIsUmbrellaSkill { get; set; }
 
         public Dictionary<ItemSlot, List<string>> AssociationTablePower { get; set; } = new Dictionary<ItemSlot, List<string>>();
         public List<string> AssociationListAbility { get; set; } = new List<string>();

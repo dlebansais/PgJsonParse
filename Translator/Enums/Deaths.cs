@@ -151,5 +151,6 @@
         ImaginaryFoxBite,
         FoxBite,
         SoulDamage,
+        TentakillerTouch,
     }
 }

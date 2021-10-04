@@ -65,6 +65,7 @@
             { "AmmoKeywords", typeof(PgAbilityAmmo[]) },
             { "AmmoConsumeChance", typeof(float) },
             { "AmmoStickChance", typeof(float) },
+            { "TargetTypeTagReq", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableAbilityAmmo { get; } = new Dictionary<string, Type>()
@@ -121,6 +122,7 @@
             { "MaxCount", typeof(float) },
             { "Recipe", typeof(string) },
             { "InteractionFlag", typeof(string) },
+            { "Appearance", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableDoT { get; } = new Dictionary<string, Type>()
@@ -186,8 +188,8 @@
             { "NONCOMBAT_REGEN_ARMOR_MOD", typeof(float) },
             { "NONCOMBAT_REGEN_ARMOR_DELTA", typeof(float) },
             { "COMBAT_REGEN_ARMOR_MOD", typeof(float) },
-            { "NONCOMBAT_REGEN_POWER_MOD", typeof(float) },
-            { "COMBAT_REGEN_POWER_MOD", typeof(float) },
+            //{ "NONCOMBAT_REGEN_POWER_MOD", typeof(float) },
+            //{ "COMBAT_REGEN_POWER_MOD", typeof(float) },
             { "SPRINT_BOOST", typeof(float) },
             { "TAUNT_MOD", typeof(float) },
             { "EVASION_CHANCE", typeof(float) },
@@ -255,6 +257,13 @@
             { "BOOST_AUTOHEAL_HEALTH_SENDER", typeof(float) },
             { "BOOST_AUTOHEAL_ARMOR_SENDER", typeof(float) },
             { "BOOST_TRAUMA_INDIRECT", typeof(float) },
+            { "COMBAT_XP_EARNED_MOD", typeof(float) },
+            { "BOND_XP_EARNED_MOD", typeof(float) },
+            { "EVASION_CHANCE_BURST", typeof(float) },
+            { "BONUS_STABLE_SLOTS", typeof(int) },
+            { "MAX_BREEDING_ATTEMPTS", typeof(int) },
+            { "BOOST_ANIMALPETHEAL_SENDER", typeof(int) },
+            { "BOOST_ACID_INDIRECT", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
@@ -277,7 +286,7 @@
             { "minLevel", typeof(int) },
             { "maxLevel", typeof(int) },
             { "minDistance", typeof(int) },
-            { "minRange", typeof(int) },
+            { "minRange", typeof(float) },
             { "maxRange", typeof(int) },
             { "cue", typeof(string) },
             { "cueVal", typeof(int) },
@@ -509,7 +518,7 @@
         public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()
         {
             { "Type", typeof(string) },
-            { "Target", typeof(string) },
+            { "Target", typeof(StringOrStringArray) },
             { "Description", typeof(string) },
             { "Number", typeof(int) },
             { "InteractionFlags", typeof(string[]) },
@@ -648,6 +657,7 @@
             { "_RecipeIngredientKeywords", typeof(string[]) },
             { "GuestLevelCap", typeof(int) },
             { "IsFakeCombatSkill", typeof(bool) },
+            { "IsUmbrellaSkill", typeof(bool) },
         };
 
         public static Dictionary<string, Type> TableReward { get; } = new Dictionary<string, Type>()

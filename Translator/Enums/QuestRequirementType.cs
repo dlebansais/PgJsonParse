@@ -19,5 +19,6 @@
         InteractionFlagUnset,
         MinFavor,
         ScriptAtomicMatches,
+        AreaEventOff,
     }
 }

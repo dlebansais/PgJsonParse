@@ -109,6 +109,12 @@
                 if (errorControl == ErrorControl.IgnoreIfFound)
                     return true;
 
+                if (KeyString == "CorpseActionSkillExt")
+                {
+                    KeyTable[KeyString] = this;
+                    return true;
+                }
+
                 return Program.ReportFailure($"Key '{KeyString}' already used for type '{ObjectType}'");
             }
 

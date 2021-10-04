@@ -57,6 +57,7 @@
             AddHardCodedAttribute(PgAttribute.SHOW_COMMUNITY_INDICATORS);
             AddHardCodedAttribute(PgAttribute.SHOW_PEACEABLENESS_INDICATORS);
             AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
+            AddHardCodedAttribute(PgAttribute.BOOST_ANIMALPETHEAL_SENDER);
             AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
 
             if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
@@ -497,7 +498,7 @@
                     break;
 
                 case Json.Token.String:
-                    if (fieldType != typeof(string) && fieldType != typeof(StringOrInteger))
+                    if (fieldType != typeof(string) && fieldType != typeof(StringOrInteger) && fieldType != typeof(StringOrStringArray))
                     {
                         string StringValue = (string)reader.CurrentValue!;
                         if (fieldType != typeof(int) || !int.TryParse(StringValue, out _))
@@ -511,10 +512,10 @@
                     break;
 
                 case Json.Token.ArrayStart:
-                    if (!fieldType.IsArray)
+                    if (!fieldType.IsArray && fieldType != typeof(StringOrStringArray))
                         return ReportFailure($"{fieldType} expected for {fieldName} but file contains an array");
 
-                    Type ElementType = fieldType.GetElementType();
+                    Type ElementType = fieldType == typeof(StringOrStringArray) ? typeof(string) : fieldType.GetElementType();
 
                     FieldTable ArrayItemTable;
 

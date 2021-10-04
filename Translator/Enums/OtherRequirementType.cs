@@ -23,5 +23,7 @@
         IsNotInHotspot,
         EffectKeywordUnset,
         InventoryItemKeyword,
+        Appearance,
+        HasHands,
     }
 }

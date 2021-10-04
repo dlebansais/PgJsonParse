@@ -3,7 +3,7 @@
     public enum MapAreaName
     {
         Internal_None,
-        Several,
+        Any,
         Dungeons,
         Planes,
         Serbule,
@@ -43,6 +43,8 @@
         Wintertide1,
         Wintertide2,
         WNSWintertide,
-        Povus,
+        Daytime,
+        PovusNightlyQuest,
+        AreaPovus,
     }
 }

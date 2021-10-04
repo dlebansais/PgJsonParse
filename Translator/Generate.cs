@@ -1447,6 +1447,7 @@
                              value == PgAttribute.SHOW_COMMUNITY_INDICATORS ||
                              value == PgAttribute.SHOW_PEACEABLENESS_INDICATORS ||
                              value == PgAttribute.SHOW_FAIRYENERGY_INDICATORS ||
+                             value == PgAttribute.BOOST_ANIMALPETHEAL_SENDER ||
                              value == PgAttribute.MONSTER_COMBAT_XP_VALUE);
 
                 return $"PgAttribute.{((PgAttribute)value).Key}";

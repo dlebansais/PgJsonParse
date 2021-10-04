@@ -176,6 +176,12 @@
             { AbilityAnimation.Dance5C, "Dance5C" },
             { AbilityAnimation.Dance6C, "Dance6C" },
             { AbilityAnimation.Attack_Shield_Erupt, "Attack Shield Erupt" },
+            { AbilityAnimation.Attack_Unarmed_Jab, "Attack Unarmed Jab" },
+            { AbilityAnimation.Attack_Kneekick, "Attack Kneekick" },
+            { AbilityAnimation.Attack_Unarmed_Bodyslam, "Attack Unarmed Bodyslam" },
+            { AbilityAnimation.Attack_Unarmed_Headbutt, "Attack Unarmed Headbutt" },
+            { AbilityAnimation.Attack_Staff_Phoenix, "Attack Staff Phoenix" },
+            { AbilityAnimation.Attack_Druid_Swing, "Attack Druid Swing" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -680,7 +686,7 @@
             // { AbilityKeyword.BunFuBlitz, "Bun-Fu Blitz" },
             { AbilityKeyword.BunFuStrike, "Bun-Fu Strike" },
             { AbilityKeyword.Echolocation, "Echolocation" },
-            { AbilityKeyword.EnthusiasmCriticals, "Enthusiasm Criticals" },
+            //{ AbilityKeyword.EnthusiasmCriticals, "Enthusiasm Criticals" },
             { AbilityKeyword.DuelistsSlash, "Duelist's Slash" },
             { AbilityKeyword.Priest, "Priest" },
             { AbilityKeyword.PriestAttack, "Priest Attack" },
@@ -769,6 +775,8 @@
             { AbilityKeyword.FeignInjuryEnabled, "Feign Injury Enabled" },
             { AbilityKeyword.FeignInjury, "Feign Injury" },
             { AbilityKeyword.HymnOfResurrection2Enabled, "Hymn Of Resurrection #2 Enabled" },
+            { AbilityKeyword.KuvouAcid, "Kuvou Acid" },
+            { AbilityKeyword.AnalyzeGenes, "Analyze Genes" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -871,6 +879,7 @@
             { AbilityTargetParticle.MusicHitSad, "Music Hit Sad" },
             { AbilityTargetParticle.MusicHitLoud, "Music Hit Loud" },
             { AbilityTargetParticle.MusicHit, "Music Hit" },
+            { AbilityTargetParticle.PoisonCloud, "Poison Cloud" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
@@ -991,6 +1000,21 @@
             { CraftedBoost.BatWitchHat, "Bat Witch Hat" },
             { CraftedBoost.CraftedBardConch, "Crafted Bard Conch" },
             { CraftedBoost.CraftedFaeNavyRing, "Crafted Fae Navy Ring" },
+            { CraftedBoost.CraftedChainShoes, "Crafted Chain Shoes" },
+            { CraftedBoost.CraftedDwarvenPlateShoes, "Crafted Dwarven Plate Shoes" },
+            { CraftedBoost.CraftedOrcishPlateShoes, "Crafted Orcish Plate Shoes" },
+            { CraftedBoost.CraftedChainPants, "Crafted Chain Pants" },
+            { CraftedBoost.CraftedDwarvenPlatePants, "Crafted Dwarven Plate Pants" },
+            { CraftedBoost.CraftedOrcishPlatePants, "Crafted Orcish Plate Pants" },
+            { CraftedBoost.CraftedChainCoat, "Crafted Chain Coat" },
+            { CraftedBoost.CraftedDwarvenPlateCoat, "Crafted Dwarven Plate Coat" },
+            { CraftedBoost.CraftedOrcishPlateCoat, "Crafted Orcish Plate Coat" },
+            { CraftedBoost.CraftedChainGloves, "Crafted Chain Gloves" },
+            { CraftedBoost.CraftedDwarvenPlateGloves, "Crafted Dwarven Plate Gloves" },
+            { CraftedBoost.CraftedOrcishPlateGloves, "Crafted Orcish Plate Gloves" },
+            { CraftedBoost.CraftedChainHelm, "Crafted Chain Helm" },
+            { CraftedBoost.CraftedDwarvenPlateHelm, "Crafted Dwarven Plate Helm" },
+            { CraftedBoost.CraftedOrcishPlateHelm, "Crafted Orcish Plate Helm" },
         };
 
         public static Dictionary<Currency, string> CurrencyTextMap { get; } = new Dictionary<Currency, string>()
@@ -1174,6 +1198,7 @@
             { Deaths.ImaginaryFoxBite, "Imaginary Fox Bite" },
             { Deaths.FoxBite, "Fox Bite" },
             { Deaths.SoulDamage, "Soul Damage" },
+            { Deaths.TentakillerTouch, "Tentakiller Touch" },
         };
 
         public static Dictionary<DisallowedState, string> DisallowedStateTextMap { get; } = new Dictionary<DisallowedState, string>()
@@ -1361,7 +1386,7 @@
             { EffectKeyword.BrokenBone, "Broken Bone" },
             { EffectKeyword.Electricity, "Electricity" },
             { EffectKeyword.TriggeredAlchemyGolem, "Triggered Alchemy Golem" },
-            { EffectKeyword.AmnesiaSporesPermCurse, "Amnesia Spores Permanent Curse" },
+            //{ EffectKeyword.AmnesiaSporesPermCurse, "Amnesia Spores Permanent Curse" },
             { EffectKeyword.PersonalRainstormCurse, "Personal Rainstorm Curse" },
             { EffectKeyword.GoredPocketsCurse, "Gored Pockets Curse" },
             { EffectKeyword.DarknessImbuedCurse, "Darkness Imbued Curse" },
@@ -1505,6 +1530,12 @@
             { EffectKeyword.LiveEventEffect, "Live Event Effect" },
             { EffectKeyword.LiveEvent_Lemons, "Live Event (Lemons)" },
             { EffectKeyword.Tagged, "Tagged" },
+            { EffectKeyword.WhittlingKnifeBuff, "Whittling Knife Buff" },
+            { EffectKeyword.Hexapox, "Hexapox" },
+            { EffectKeyword.PovusSwampDisease, "Povus Swamp Disease" },
+            { EffectKeyword.NecromanticInvincibility, "Necromantic Invincibility" },
+            { EffectKeyword.TremorsCurse, "Tremor's Curse" },
+            { EffectKeyword.KuvouAcid, "Kuvou Acid" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1637,6 +1668,8 @@
             { EffectParticle.FloatingGem6, "Floating Gem #6" },
             { EffectParticle.ColdExplosion, "Cold Explosion" },
             { EffectParticle.BodyslamInvincibility, "Bodyslam Invincibility" },
+            { EffectParticle.ArcaneDebuff, "Arcane Debuff" },
+            { EffectParticle.UnholyDefensePerm, "Unholy Defense Permanent" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -1753,8 +1786,8 @@
             { EffectStackingType.TSysTraumaVuln, "Trauma Vulnerability" },
             { EffectStackingType.TSysSlashingVuln, "Slashing Vulnerability" },
             { EffectStackingType.TSysPoisonResist, "Poison Resistance" },
-            { EffectStackingType.TSysPsychicResist, "Psychic Resistance" },
-            { EffectStackingType.TSysAccuracyBoost, "Accuracy Boost" },
+            //{ EffectStackingType.TSysPsychicResist, "Psychic Resistance" },
+            //{ EffectStackingType.TSysAccuracyBoost, "Accuracy Boost" },
             { EffectStackingType.PunchPsiVuln, "Punch Psi Vulnerability" },
             { EffectStackingType.DenseFireVuln, "Dense Fire Vulnerability" },
             { EffectStackingType.EquipmentXpBoost, "Equipment XP Boost" },
@@ -1972,6 +2005,10 @@
             { EffectStackingType.RiShinShrine_Power, "Ri-Shin Shrine (Power)" },
             { EffectStackingType.RiShinShrine_Armor, "Ri-Shin Shrine (Armor)" },
             { EffectStackingType.GolfSprint, "GolfSprint" },
+            { EffectStackingType.WhittlingKnifeBoost, "Whittling Knife Boost" },
+            { EffectStackingType.WhittlingKnifeSpecialBonus, "Whittling Knife Special Bonus" },
+            { EffectStackingType.LickingMoss, "Licking Moss" },
+            { EffectStackingType.TentakillerShock, "Tentakiller Shock" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2165,6 +2202,21 @@
             { InteractionFlag.Druid_IsIgnoredBySewerTreants, "Druid (Is Ignored By Sewer Treants)" },
             { InteractionFlag.Event_Christmas_RiShinShrineQuest, "Event (Christmas Ri-Shin Shrine Quest)" },
             { InteractionFlag.UI_StowItems1, "UI Stow Items #1" },
+            { InteractionFlag.Povus_LampLit, "Povus (Lamp Lit)" },
+            { InteractionFlag.Povus_RanalonFlooding, "Povus (Ranalon Flooding)" },
+            { InteractionFlag.Povus_RatkinFumigators, "Povus (Ratkin Fumigators)" },
+            { InteractionFlag.Povus_OrcInvaders, "Povus (Orc Invaders)" },
+            { InteractionFlag.Povus_RatkinSquatters, "Povus (Ratkin Squatters)" },
+            { InteractionFlag.Povus_PaleontologistSiege, "Povus (Paleontologist Siege)" },
+            { InteractionFlag.Povus_RanalonAssault, "Povus (Ranalon Assault)" },
+            { InteractionFlag.Povus_UndeadSurprise, "Povus (Undead Surprise)" },
+            { InteractionFlag.Povus_WinterCourtScouts, "Povus (Winter Court Scouts)" },
+            { InteractionFlag.Povus_WarmasterBrukal, "Povus (Warmaster Brukal)" },
+            { InteractionFlag.Povus_BoneWar, "Povus (Bone War)" },
+            { InteractionFlag.Povus_PagodaThieves, "Povus (Pagoda Thieves)" },
+            { InteractionFlag.Povus_Flapskulls, "Povus (Flapskulls)" },
+            { InteractionFlag.GaveGerruxKimetasGhostKey, "Gave Gerrux Kimeta's Ghost Key" },
+            { InteractionFlag.DogEar_KnowsYoureAWarden, "Dog Ear (Knows You're A Warden)" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -2245,6 +2297,14 @@
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
+            { ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
+            { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
+            { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
+            { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
+            { ItemDroppedAppearance.LootScroll6, "Loot Scroll #6" },
+            { ItemDroppedAppearance.LootScroll7, "Loot Scroll #7" },
+            { ItemDroppedAppearance.LootScroll8, "Loot Scroll #8" },
+            { ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -3227,8 +3287,8 @@
             { ItemKeyword.MinRarity_Uncommon, "Minimum Rarity: Uncommon" },
             { ItemKeyword.Molybdenum, "Molybdenum" },
             { ItemKeyword.GeneAnalyzer_Arthropods, "Gene Analyzer (Arthropods)" },
-            { ItemKeyword.GeneAnalyzer_Cats, "Gene Analyzer (Cats)" },
-            { ItemKeyword.GeneAnalyzer_Ruminants, "Gene Analyzer (Ruminants)" },
+            //{ ItemKeyword.GeneAnalyzer_Cats, "Gene Analyzer (Cats)" },
+            //{ ItemKeyword.GeneAnalyzer_Ruminants, "Gene Analyzer (Ruminants)" },
             { ItemKeyword.GeneticsRelated, "Genetics Related" },
             { ItemKeyword.RawLapisLazuli, "Raw Lapis Lazuli" },
             { ItemKeyword.SpiritFoxLapisLazuli, "Spirit Fox Lapis Lazuli" },
@@ -3303,6 +3363,46 @@
             { ItemKeyword.TextbookSkill_SurvivalInstincts, "Textbook Skill (Survival Instincts)" },
             { ItemKeyword.TextbookSkill_Crossbow, "Textbook Skill (Crossbow)" },
             { ItemKeyword.CraftedYes, "Crafted: Yes" },
+            { ItemKeyword.WerewolfArmor, "Werewolf Armor" },
+            { ItemKeyword.DwarvenPlateArmor, "Dwarven Plate Armor" },
+            { ItemKeyword.OrcishPlateArmor, "Orcish Plate Armor" },
+            { ItemKeyword.Poppy, "Poppy" },
+            { ItemKeyword.FalseAgaric, "False Agaric" },
+            { ItemKeyword.HusbandryRelated, "Husbandry Related" },
+            { ItemKeyword.RequireCaptiveBredPet, "Require Captive Bred Pet" },
+            { ItemKeyword.RequireNonBreedingPet, "Require Non Breeding Pet" },
+            { ItemKeyword.UseInStable_NonBreeding, "Use In Stable (NonB reeding)" },
+            { ItemKeyword.UseInStable_Unregistered, "Use In Stable (Unregistered)" },
+            { ItemKeyword.RequireBeeOrWasp, "Require Bee Or Wasp" },
+            { ItemKeyword.UseInStable_Gestating, "Use In Stable (Gestating)" },
+            { ItemKeyword.Art, "Art" },
+            { ItemKeyword.LiveFrog, "Live Frog" },
+            { ItemKeyword.PaleontologyBone, "Paleontology Bone" },
+            { ItemKeyword.PovusPaleontologyBone, "Povus Paleontology Bone" },
+            { ItemKeyword.CandleMaking, "Candle Making" },
+            { ItemKeyword.RequireBreedingPet, "Require Breeding Pet" },
+            { ItemKeyword.RequireMale, "Require Male" },
+            { ItemKeyword.UseInStable_Ready, "Use In Stable (Ready)" },
+            { ItemKeyword.Wax, "Wax" },
+            { ItemKeyword.KuvouHide, "Kuvou Hide" },
+            { ItemKeyword.TrophyKuvouHide, "Trophy Kuvou Hide" },
+            { ItemKeyword.MacGuffin, "Mac Guffin" },
+            { ItemKeyword.OrichalcumOre, "Orichalcum Ore" },
+            { ItemKeyword.GoblinOrangeDye, "Goblin Orange Dye" },
+            { ItemKeyword.ToolcraftingRecipe, "Toolcrafting Recipe" },
+            { ItemKeyword.MetalSlab9, "Metal Slab #9" },
+            { ItemKeyword.TrueWhittlingKnife, "True Whittling Knife" },
+            { ItemKeyword.Whittling, "Whittling" },
+            { ItemKeyword.WhittlingKnife, "Whittling Knife" },
+            { ItemKeyword.WhittlingKnife1, "Whittling Knife #1" },
+            { ItemKeyword.WhittlingKnife2, "Whittling Knife #2" },
+            { ItemKeyword.WhittlingKnife3, "Whittling Knife #3" },
+            { ItemKeyword.WhittlingKnife4, "Whittling Knife #4" },
+            { ItemKeyword.WhittlingKnife5, "Whittling Knife #5" },
+            { ItemKeyword.PaleontologyPick, "Paleontology Pick" },
+            { ItemKeyword.TruePaleontologyPick, "True Paleontology Pick" },
+            { ItemKeyword.Catfish, "Catfish" },
+            { ItemKeyword.YellowPerch, "Yellow Perch" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3406,9 +3506,10 @@
             // { ItemUseVerb.SummonFox, "Summon Fox" },
             { ItemUseVerb.OpenPortal, "OpenPortal" },
             { ItemUseVerb.DrinkUp, "Drink up" },
-            { ItemUseVerb.Convert_to_Live_Event_Credit, "Convert to Live-Event Credit" },
+            //{ ItemUseVerb.Convert_to_Live_Event_Credit, "Convert to Live-Event Credit" },
             { ItemUseVerb.ClaimVIPTime, "Claim VIP Time" },
             { ItemUseVerb.ApplyToSnoot, "Apply to Snoot" },
+            { ItemUseVerb.KillAndHarvest, "Kill and Harvest" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap { get; } = new Dictionary<LoreBookKeyword, string>()
@@ -3438,7 +3539,7 @@
         public static Dictionary<MapAreaName, string> MapAreaNameTextMap { get; } = new Dictionary<MapAreaName, string>()
         {
             { MapAreaName.Internal_None, string.Empty },
-            { MapAreaName.Several, "Several" },
+            { MapAreaName.Any, "Any" },
             { MapAreaName.Dungeons, "Dungeons" },
             { MapAreaName.Planes, "Existential Planes" },
             { MapAreaName.Serbule, "Serbule" },
@@ -3478,7 +3579,9 @@
             { MapAreaName.Wintertide1, "Wintertide #1" },
             { MapAreaName.Wintertide2, "Wintertide #2" },
             { MapAreaName.WNSWintertide, "WNS Wintertide" },
-            { MapAreaName.Povus, "Povus" },
+            { MapAreaName.Daytime, "Daytime" },
+            { MapAreaName.PovusNightlyQuest, "Povus (At Night)" },
+            { MapAreaName.AreaPovus, "Povus" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -3573,7 +3676,7 @@
             { QuestGroupingName.Druid_DesertWatchers, "(Druid) Desert Watchers" },
             { QuestGroupingName.Druid_Rotflowers, "(Druid) Rot flowers" },
             { QuestGroupingName.CasinoExcursion, "Casino Excursion" },
-            { QuestGroupingName.GeneticsTraining, "Genetics Training" },
+            //{ QuestGroupingName.GeneticsTraining, "Genetics Training" },
             { QuestGroupingName.AurestMission, "Aurest Mission" },
         };
 
@@ -3593,9 +3696,10 @@
             { QuestKeyword.Agrashab_4, "Agrashab #4" },
             { QuestKeyword.Agrashab_5, "Agrashab #5" },
             { QuestKeyword.WarCache, "WarCache" },
-            { QuestKeyword.GeneticsTraining_Arthropods, "Genetics Training (Arthropods)" },
-            { QuestKeyword.GeneticsTraining_Cats, "Genetics Training (Cats)" },
-            { QuestKeyword.GeneticsTraining_Ruminants, "Genetics Training (Ruminants)" },
+            //{ QuestKeyword.GeneticsTraining_Arthropods, "Genetics Training (Arthropods)" },
+            //{ QuestKeyword.GeneticsTraining_Cats, "Genetics Training (Cats)" },
+            //{ QuestKeyword.GeneticsTraining_Ruminants, "Genetics Training (Ruminants)" },
+            { QuestKeyword.PovusNightly, "Povus Nightly" },
         };
 
         public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
@@ -3804,6 +3908,43 @@
             { QuestObjectiveTarget.PovusLamps_A, "Povus Lamps (Old Town)" },
             { QuestObjectiveTarget.PovusLamps_B, "Povus Lamps (Sprawl)" },
             { QuestObjectiveTarget.PovusLamps_C, "Povus Lamps (Addendum)" },
+            { QuestObjectiveTarget.Hexapus, "Hexapus" },
+            { QuestObjectiveTarget.Tentakiller, "Tentakiller" },
+            { QuestObjectiveTarget.Kuvou, "Kuvou" },
+            { QuestObjectiveTarget.PovusLamps_D, "Povus Lamps (D)" },
+            { QuestObjectiveTarget.Povus_RanalonFlooding1, "Povus (Ranalon Flooding #1)" },
+            { QuestObjectiveTarget.Povus_RanalonFlooding2, "Povus (Ranalon Flooding #2)" },
+            { QuestObjectiveTarget.Povus_RatkinFumigators1, "Povus (Ratkin Fumigators #1)" },
+            { QuestObjectiveTarget.Povus_RatkinFumigators2, "Povus (Ratkin Fumigators #2)" },
+            { QuestObjectiveTarget.Povus_OrcInvaders, "Povus (Orc Invaders)" },
+            { QuestObjectiveTarget.Povus_RatkinSquatters, "Povus (Ratkin Squatters)" },
+            { QuestObjectiveTarget.Povus_PaleontologistSiege1, "Povus (Paleontologist Siege #1)" },
+            { QuestObjectiveTarget.Povus_PaleontologistSiege2, "Povus (Paleontologist Siege #2)" },
+            { QuestObjectiveTarget.Povus_RanalonAssault1, "Povus (Ranalon Assault #1)" },
+            { QuestObjectiveTarget.Povus_RanalonAssault2, "Povus (Ranalon Assault #2)" },
+            { QuestObjectiveTarget.Povus_UndeadSurprise1, "Povus (Undead Surprise #1)" },
+            { QuestObjectiveTarget.Povus_UndeadSurprise2, "Povus (Undead Surprise #2)" },
+            { QuestObjectiveTarget.Povus_UndeadSurprise3, "Povus (Undead Surprise #3)" },
+            { QuestObjectiveTarget.Povus_WinterCourtScouts1, "Povus (Winter Court Scouts #1)" },
+            { QuestObjectiveTarget.Povus_WinterCourtScouts2, "Povus (Winter Court Scouts #2)" },
+            { QuestObjectiveTarget.Povus_WinterCourtScouts3, "Povus (Winter Court Scouts #3)" },
+            { QuestObjectiveTarget.Povus_WarmasterBrukal1, "Povus (Warmaster Brukal #1)" },
+            { QuestObjectiveTarget.Povus_WarmasterBrukal2, "Povus (Warmaster Brukal #2)" },
+            { QuestObjectiveTarget.Povus_WarmasterBrukal3, "Povus (Warmaster Brukal #3)" },
+            { QuestObjectiveTarget.Povus_BoneWar1, "Povus (Bone War #1)" },
+            { QuestObjectiveTarget.Povus_BoneWar2, "Povus (Bone War #2)" },
+            { QuestObjectiveTarget.Povus_BoneWar3, "Povus (Bone War #3)" },
+            { QuestObjectiveTarget.Povus_PagodaThieves1, "Povus (Pagoda Thieves #1)" },
+            { QuestObjectiveTarget.Povus_PagodaThieves2, "Povus (Pagoda Thieves #2)" },
+            { QuestObjectiveTarget.Povus_Flapskulls1, "Povus (Flapskulls #1)" },
+            { QuestObjectiveTarget.Povus_Flapskulls2, "Povus (Flapskulls #2)" },
+            { QuestObjectiveTarget.GallimimusSkeleton, "Gallimimus Skeleton" },
+            { QuestObjectiveTarget.TriceratopsSkeleton, "Triceratops Skeleton" },
+            { QuestObjectiveTarget.WarmasterBrukal, "Warmaster Brukal" },
+            { QuestObjectiveTarget.RatkinRootTender, "Ratkin Root Tender" },
+            { QuestObjectiveTarget.OrcPovusCamp, "Orc Povus Camp" },
+            { QuestObjectiveTarget.Sentient, "Sentient" },
+            { QuestObjectiveTarget.Elite, "Elite" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -3865,6 +4006,8 @@
             { RecipeAction.CraftIceHandsaw, "Craft Ice Handsaw" },
             { RecipeAction.Dustify, "Dustify" },
             { RecipeAction.OpenPortal, "Open Portal" },
+            { RecipeAction.DyeFur, "Dye Fur" },
+            { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
         };
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
@@ -4294,6 +4437,8 @@
             { RecipeItemKey.TreasureCluesSunValeAmazing, "Treasure Clues Sun Vale (Amazing)" },
             { RecipeItemKey.Edible, "Edible" },
             { RecipeItemKey.VendorTrash, "Vendor Trash" },
+            { RecipeItemKey.Wood, "Wood" },
+            { RecipeItemKey.Clay, "Clay" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -4417,6 +4562,24 @@
             { RecipeKeyword.CandleFloral4, "Candle Floral #4" },
             { RecipeKeyword.CandleBacon5, "Candle Bacon #5" },
             { RecipeKeyword.CandleCrushing8, "Candle Crushing #8" },
+            { RecipeKeyword.MeditationStool9, "Meditation Stool #9" },
+            { RecipeKeyword.MeditationStool8, "Meditation Stool #8" },
+            { RecipeKeyword.CalligraphyBench9, "Calligraphy Bench #9" },
+            { RecipeKeyword.CalligraphyBench8, "Calligraphy Bench #8" },
+            { RecipeKeyword.ComfortableChair8, "Comfortable Chair #8" },
+            { RecipeKeyword.StorageCrate24Items, "Storage Crate 24 Items" },
+            { RecipeKeyword.Hogshead, "Hogshead" },
+            { RecipeKeyword.CraftedMeleeStaff8E, "Crafted Melee Staff #8 (E)" },
+            { RecipeKeyword.ShroomFeast, "Shroom Feast" },
+            { RecipeKeyword.OrcishOnionSoup, "Orcish Onion Soup" },
+            { RecipeKeyword.SpicyPorciniBites, "Spicy Porcini Bites" },
+            { RecipeKeyword.Ruktagh, "Ruktagh" },
+            { RecipeKeyword.CavefishSupper, "Cavefish Supper" },
+            { RecipeKeyword.StuffedBellPepper, "Stuffed Bell Pepper" },
+            { RecipeKeyword.SwampSalad, "Swamp Salad" },
+            { RecipeKeyword.GrilledAmberjack, "Grilled Amberjack" },
+            { RecipeKeyword.DeluxeBeetleSkewer, "Deluxe Beetle Skewer" },
+            { RecipeKeyword.MapleCarrots, "Maple Carrots" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
@@ -4656,6 +4819,11 @@
             { XpTableEnum.AuxCombatSkill_FastTo50, "Aux Combat Skill, Fast To 50" },
             { XpTableEnum.PerformanceDance, "Performance Dance" },
             { XpTableEnum.CookingUnused, "Cooking (Unused)" },
+            { XpTableEnum.Paleontology, "Paleontology" },
+            { XpTableEnum.AnimalHusbandry, "Animal Husbandry" },
+            { XpTableEnum.None, "None" },
+            { XpTableEnum.PovusTown, "Povus Town" },
+            { XpTableEnum.PovusStorage, "Povus Storage" },
         };
     }
 }

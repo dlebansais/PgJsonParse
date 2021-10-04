@@ -85,6 +85,8 @@
             { "Event_Halloween_Riiiiiiiiiii", "Title_5017" },
             { "GuideEvent_TurkeyWrangler", "Title_5212" },
             { "GuideEvent_ALittleFruity", "Title_5219" },
+            { "Warsmith", "Title_5018" },
+            { "GuideEvent_LikeABoss", "Title_5222" },
         };
     }
 }

@@ -124,5 +124,7 @@
         TreasureCluesSunValeAmazing,
         Edible,
         VendorTrash,
+        Wood,
+        Clay,
     }
 }
