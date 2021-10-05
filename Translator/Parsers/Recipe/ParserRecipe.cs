@@ -302,6 +302,7 @@
                     Result = ParseTeleport(EffectParameter, parsedFile, parsedKey, out recipeResult);
                     break;
                 case "CreateMiningSurvey8Y":
+                case "CreateMiningSurvey9Y":
                     Result = ParseCreateMiningSurvey(EffectParameter, parsedFile, parsedKey, out recipeResult);
                     break;
                 case "PolymorphRabbitPermanentBlue":
