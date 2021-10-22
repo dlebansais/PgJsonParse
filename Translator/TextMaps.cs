@@ -182,6 +182,7 @@
             { AbilityAnimation.Attack_Unarmed_Headbutt, "Attack Unarmed Headbutt" },
             { AbilityAnimation.Attack_Staff_Phoenix, "Attack Staff Phoenix" },
             { AbilityAnimation.Attack_Druid_Swing, "Attack Druid Swing" },
+            { AbilityAnimation.Attack_Archery_CrossbowShoot, "Attack Archery Crossbow Shoot" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -1199,6 +1200,7 @@
             { Deaths.FoxBite, "Fox Bite" },
             { Deaths.SoulDamage, "Soul Damage" },
             { Deaths.TentakillerTouch, "Tentakiller Touch" },
+            { Deaths.LickedByAFrog, "Licked By A Frog" },
         };
 
         public static Dictionary<DisallowedState, string> DisallowedStateTextMap { get; } = new Dictionary<DisallowedState, string>()
@@ -2297,14 +2299,6 @@
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
-            { ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
-            { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
-            { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
-            { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
-            { ItemDroppedAppearance.LootScroll6, "Loot Scroll #6" },
-            { ItemDroppedAppearance.LootScroll7, "Loot Scroll #7" },
-            { ItemDroppedAppearance.LootScroll8, "Loot Scroll #8" },
-            { ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -3858,7 +3852,6 @@
             { QuestObjectiveTarget.ExtraTag_WardenNatureElementals, "Extra Tag (Warden Nature Elementals)" },
             { QuestObjectiveTarget.KurHookBeast, "Kur Hook Beast" },
             { QuestObjectiveTarget.KurRazorslashPanther, "Kur Razorslash Panther" },
-            { QuestObjectiveTarget.FlapSkull, "Flap Skull" },
             { QuestObjectiveTarget.ExtraTag_HalloweenFaeSkeleton, "Extra Tag (Halloween Fae Skeleton)" },
             { QuestObjectiveTarget.MotUrak, "Mot-Urak" },
             { QuestObjectiveTarget.StarvingTundraWolf, "Starving Tundra Wolf" },
@@ -3945,6 +3938,16 @@
             { QuestObjectiveTarget.OrcPovusCamp, "Orc Povus Camp" },
             { QuestObjectiveTarget.Sentient, "Sentient" },
             { QuestObjectiveTarget.Elite, "Elite" },
+            { QuestObjectiveTarget.IlmariHalloweenFlapskulls, "Ilmari Halloween Flapskulls" },
+            { QuestObjectiveTarget.RahuRatkinNecromancer, "Rahu Ratkin Necromancer" },
+            { QuestObjectiveTarget.HalloweenFrog, "Halloween Frog" },
+            { QuestObjectiveTarget.Fashnagar, "Fashnagar" },
+            { QuestObjectiveTarget.GazlukGoat, "Gazluk Goat" },
+            { QuestObjectiveTarget.IlmariHalloweenGhostlySpider, "Ilmari Halloween Ghostly Spider" },
+            { QuestObjectiveTarget.PovusRatkinSkeleton, "Povus Ratkin Skeleton" },
+            { QuestObjectiveTarget.FangyLim, "Fangy Lim" },
+            { QuestObjectiveTarget.PovusEliteTriceratops, "Povus Elite Triceratops" },
+            { QuestObjectiveTarget.PovusEliteGallimimus, "Povus Elite Gallimimus" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -4580,6 +4583,7 @@
             { RecipeKeyword.GrilledAmberjack, "Grilled Amberjack" },
             { RecipeKeyword.DeluxeBeetleSkewer, "Deluxe Beetle Skewer" },
             { RecipeKeyword.MapleCarrots, "Maple Carrots" },
+            { RecipeKeyword.SourPumpkinSoup, "Sour Pumpkin Soup" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()

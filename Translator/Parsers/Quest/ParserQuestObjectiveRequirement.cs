@@ -21,6 +21,7 @@
             { QuestObjectiveRequirementType.ActiveCombatSkill, FinishItemActiveCombatSkill },
             { QuestObjectiveRequirementType.PetCount, FinishItemPetCount },
             { QuestObjectiveRequirementType.EntityPhysicalState, FinishEntityPhysicalState },
+            { QuestObjectiveRequirementType.EquipmentSlotEmpty, FinishEquipmentSlotEmpty },
         };
 
         private static Dictionary<QuestObjectiveRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveRequirementType, List<string>>()
@@ -32,6 +33,7 @@
             { QuestObjectiveRequirementType.ActiveCombatSkill, new List<string>() { "T", "Skill" } },
             { QuestObjectiveRequirementType.PetCount, new List<string>() { "T", "MinCount", "MaxCount", "PetTypeTag" } },
             { QuestObjectiveRequirementType.EntityPhysicalState, new List<string>() { "T", "AllowedStates" } },
+            { QuestObjectiveRequirementType.EquipmentSlotEmpty, new List<string>() { "T", "Slot" } },
         };
 
         private static Dictionary<QuestObjectiveRequirementType, List<string>> HandledTable = new Dictionary<QuestObjectiveRequirementType, List<string>>();
@@ -382,6 +384,49 @@
                             break;
                         case "AllowedStates":
                             Result = StringToEnumConversion<AllowedState>.SetEnum((AllowedState valueEnum) => NewItem.AllowedState = valueEnum, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishEquipmentSlotEmpty(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestObjectiveRequirementEquipmentSlotEmpty NewItem = new PgQuestObjectiveRequirementEquipmentSlotEmpty();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Slot":
+                            Result = StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => NewItem.Slot = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

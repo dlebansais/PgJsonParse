@@ -556,6 +556,7 @@
             { "MaxCount", typeof(int) },
             { "PetTypeTag", typeof(string) },
             { "AllowedStates", typeof(string[]) },
+            { "Slot", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableQuestRewardItem { get; } = new Dictionary<string, Type>()

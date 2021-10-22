@@ -152,5 +152,6 @@
         FoxBite,
         SoulDamage,
         TentakillerTouch,
+        LickedByAFrog,
     }
 }

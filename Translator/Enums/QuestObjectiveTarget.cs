@@ -156,7 +156,6 @@
         ExtraTag_WardenNatureElementals,
         KurHookBeast,
         KurRazorslashPanther,
-        FlapSkull,
         ExtraTag_HalloweenFaeSkeleton,
         MotUrak,
         StarvingTundraWolf,
@@ -243,5 +242,15 @@
         OrcPovusCamp,
         Sentient,
         Elite,
+        IlmariHalloweenFlapskulls,
+        RahuRatkinNecromancer,
+        HalloweenFrog,
+        Fashnagar,
+        GazlukGoat,
+        IlmariHalloweenGhostlySpider,
+        PovusRatkinSkeleton,
+        FangyLim,
+        PovusEliteTriceratops,
+        PovusEliteGallimimus,
     }
 }

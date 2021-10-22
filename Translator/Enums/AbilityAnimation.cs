@@ -173,5 +173,6 @@
         Attack_Unarmed_Headbutt,
         Attack_Staff_Phoenix,
         Attack_Druid_Swing,
+        Attack_Archery_CrossbowShoot,
     }
 }

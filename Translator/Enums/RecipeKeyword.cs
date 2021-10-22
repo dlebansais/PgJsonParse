@@ -139,5 +139,6 @@
         GrilledAmberjack,
         DeluxeBeetleSkewer,
         MapleCarrots,
+        SourPumpkinSoup,
     }
 }

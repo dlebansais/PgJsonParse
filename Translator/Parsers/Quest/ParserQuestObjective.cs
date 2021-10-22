@@ -72,9 +72,9 @@
             { QuestObjectiveType.DruidScripted, new List<string>() { "Type", "Target", "Description", "Number" } },
             { QuestObjectiveType.Loot, new List<string>() { "Type", "Target", "Description", "ItemName", "MonsterTypeTag", "GroupId", "Number" } },
             { QuestObjectiveType.ScriptedReceiveItem, new List<string>() { "Type", "Target", "Description", "Item", "Number" } },
-            { QuestObjectiveType.UseAbilityOnTargets, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Number" } },
+            { QuestObjectiveType.UseAbilityOnTargets, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Number", "Requirements" } },
             { QuestObjectiveType.CompleteQuest, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
-            { QuestObjectiveType.MeetRequirements, new List<string>() { "Type", "Description", "Number", "Requirements" } },
+            { QuestObjectiveType.MeetRequirements, new List<string>() { "Type", "Description", "GroupId", "Number", "Requirements" } },
             { QuestObjectiveType.ScriptAtomicInt, new List<string>() { "Type", "Description", "GroupId", "Number", "Target" } },
         };
 
@@ -183,7 +183,14 @@
                             Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => RequirementKeyword = valueEnum, Value);
                             break;
                         case "Requirements":
-                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => Requirement = valueQuestRequirement, Value);
+                            if (Value is List<object>)
+                            {
+                                Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
+                            }
+                            else
+                            {
+                                Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => Requirement = valueQuestRequirement, Value);
+                            }
                             break;
                         case "Description":
                         case "GroupId":
@@ -2079,6 +2086,9 @@
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
                             break;
+                        case "Requirements":
+                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                            break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
                             break;
@@ -2182,12 +2192,13 @@
                     {
                         case "Type":
                             break;
+                        case "Requirements":
+                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestObjectiveRequirement) => NewItem.QuestRequirement = valueQuestObjectiveRequirement, Value);
+                            break;
+                        case "GroupId":
                         case "Description":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
-                            break;
-                        case "Requirements":
-                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestObjectiveRequirement) => NewItem.QuestRequirement = valueQuestObjectiveRequirement, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

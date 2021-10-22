@@ -10,5 +10,6 @@
         ActiveCombatSkill,
         PetCount,
         EntityPhysicalState,
+        EquipmentSlotEmpty,
     }
 }
