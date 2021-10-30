@@ -1098,5 +1098,10 @@
         TruePaleontologyPick,
         Catfish,
         YellowPerch,
+        NoPlayerShops,
+        PovusTradeIn,
+        FloatingPumpkin,
+        FloatingPumpkin1,
+        FloatingPumpkin2,
     }
 }

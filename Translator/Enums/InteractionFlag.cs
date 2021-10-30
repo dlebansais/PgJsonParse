@@ -171,5 +171,6 @@
         Povus_Flapskulls,
         GaveGerruxKimetasGhostKey,
         DogEar_KnowsYoureAWarden,
+        Povus_RiverTerror,
     }
 }

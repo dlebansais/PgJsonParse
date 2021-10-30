@@ -252,5 +252,6 @@
         FangyLim,
         PovusEliteTriceratops,
         PovusEliteGallimimus,
+        Povus_RiverTerror1,
     }
 }

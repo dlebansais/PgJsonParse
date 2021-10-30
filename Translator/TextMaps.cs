@@ -1538,6 +1538,9 @@
             { EffectKeyword.NecromanticInvincibility, "Necromantic Invincibility" },
             { EffectKeyword.TremorsCurse, "Tremor's Curse" },
             { EffectKeyword.KuvouAcid, "Kuvou Acid" },
+            { EffectKeyword.SpawnPremonition_Undead_10sec, "Spawn Premonition (Undead, 10 seconds)" },
+            { EffectKeyword.SpawnPremonition_Perfect, "Spawn Premonition (Perfect)" },
+            { EffectKeyword.SpawnPremonition_Rodents_10sec, "Spawn Premonition (Rodents, 10 seconds)" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2219,6 +2222,7 @@
             { InteractionFlag.Povus_Flapskulls, "Povus (Flapskulls)" },
             { InteractionFlag.GaveGerruxKimetasGhostKey, "Gave Gerrux Kimeta's Ghost Key" },
             { InteractionFlag.DogEar_KnowsYoureAWarden, "Dog Ear (Knows You're A Warden)" },
+            { InteractionFlag.Povus_RiverTerror, "Povus River Terror" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -3397,6 +3401,11 @@
             { ItemKeyword.TruePaleontologyPick, "True Paleontology Pick" },
             { ItemKeyword.Catfish, "Catfish" },
             { ItemKeyword.YellowPerch, "Yellow Perch" },
+            { ItemKeyword.NoPlayerShops, "No Player Shops" },
+            { ItemKeyword.PovusTradeIn, "Povus Trade In" },
+            { ItemKeyword.FloatingPumpkin, "Floating Pumpkin" },
+            { ItemKeyword.FloatingPumpkin1, "Floating Pumpkin #1" },
+            { ItemKeyword.FloatingPumpkin2, "Floating Pumpkin #2" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3948,6 +3957,7 @@
             { QuestObjectiveTarget.FangyLim, "Fangy Lim" },
             { QuestObjectiveTarget.PovusEliteTriceratops, "Povus Elite Triceratops" },
             { QuestObjectiveTarget.PovusEliteGallimimus, "Povus Elite Gallimimus" },
+            { QuestObjectiveTarget.Povus_RiverTerror1, "Povus River Terror #1" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -4289,8 +4299,8 @@
             { RecipeEffect.Calligraphy5D, "Calligraphy 5D" },
             { RecipeEffect.Particle_Psychic, "Particle Psychic" },
             { RecipeEffect.DispelSpawnPremonitionsOnDeath, "Dispel Spawn Premonitions On Death" },
-            { RecipeEffect.SpawnPremonition_All_3sec, "Spawn Premonition All 3sec" },
-            { RecipeEffect.SpawnPremonition_All_5sec, "Spawn Premonition All 5sec" },
+            //{ RecipeEffect.SpawnPremonition_All_3sec, "Spawn Premonition All 3sec" },
+            //{ RecipeEffect.SpawnPremonition_All_5sec, "Spawn Premonition All 5sec" },
             { RecipeEffect.SpawnPremonition_Undead_10sec, "Spawn Premonition Undead 10sec" },
             { RecipeEffect.ResearchFireMagic75, "Research Fire Magic, Level 75" },
             { RecipeEffect.ResearchFireMagic80, "Research Fire Magic, Level 80" },
@@ -4736,6 +4746,7 @@
             { SpecialNpc.LiveNpc_Raim, "Raim" },
             { SpecialNpc.LiveNpc_Moxie, "Moxie" },
             { SpecialNpc.LiveNpc_Torana, "Torana" },
+            { SpecialNpc.LiveNpc_BatInTheHat, "Bat In The Hat" },
         };
 
         public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap { get; } = new Dictionary<TargetEffectKeyword, string>()

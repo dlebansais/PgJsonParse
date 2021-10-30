@@ -287,5 +287,8 @@
         NecromanticInvincibility,
         TremorsCurse,
         KuvouAcid,
+        SpawnPremonition_Undead_10sec,
+        SpawnPremonition_Perfect,
+        SpawnPremonition_Rodents_10sec,
     }
 }

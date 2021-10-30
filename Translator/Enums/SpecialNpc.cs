@@ -74,5 +74,6 @@
         LiveNpc_Raim,
         LiveNpc_Moxie,
         LiveNpc_Torana,
+        LiveNpc_BatInTheHat,
     }
 }

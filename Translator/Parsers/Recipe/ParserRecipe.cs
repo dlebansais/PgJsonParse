@@ -311,6 +311,12 @@
                 case "SpawnPovusPaleomonster":
                     Result = ParseSpawnMonster(EffectName, parsedFile, parsedKey, out recipeResult);
                     break;
+                case "SpawnPremonition_All_2sec":
+                    Result = ParseSpawnPremonition(EffectName, parsedFile, parsedKey, 2, out recipeResult);
+                    break;
+                case "SpawnPremonition_All_4sec":
+                    Result = ParseSpawnPremonition(EffectName, parsedFile, parsedKey, 4, out recipeResult);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect '{effectString}'");
                     break;
@@ -817,6 +823,15 @@
         private bool ParseSpawnMonster(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
             PgRecipeResultSpawnMonster RecipeResultEffect = new PgRecipeResultSpawnMonster();
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseSpawnPremonition(string buffName, string parsedFile, string parsedKey, int duration, out PgRecipeResultEffect recipeResult)
+        {
+            PgRecipeResultSpawnPremonition RecipeResultEffect = new PgRecipeResultSpawnPremonition();
+            RecipeResultEffect.Duration = duration;
 
             recipeResult = RecipeResultEffect;
             return true;
