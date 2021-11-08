@@ -3369,7 +3369,7 @@
             { ItemKeyword.HusbandryRelated, "Husbandry Related" },
             { ItemKeyword.RequireCaptiveBredPet, "Require Captive Bred Pet" },
             { ItemKeyword.RequireNonBreedingPet, "Require Non Breeding Pet" },
-            { ItemKeyword.UseInStable_NonBreeding, "Use In Stable (NonB reeding)" },
+            { ItemKeyword.UseInStable_NonBreeding, "Use In Stable (Non Breeding)" },
             { ItemKeyword.UseInStable_Unregistered, "Use In Stable (Unregistered)" },
             { ItemKeyword.RequireBeeOrWasp, "Require Bee Or Wasp" },
             { ItemKeyword.UseInStable_Gestating, "Use In Stable (Gestating)" },
