@@ -1254,7 +1254,7 @@
         public static Dictionary<EffectKeyword, string> EffectKeywordTextMap { get; } = new Dictionary<EffectKeyword, string>()
         {
             { EffectKeyword.Internal_None, string.Empty },
-            { EffectKeyword.Hyphen, "Hyphen" },
+            //{ EffectKeyword.Hyphen, "Hyphen" },
             { EffectKeyword.Debuff, "Debuff" },
             { EffectKeyword.MusicPerformance, "Music Performance" },
             { EffectKeyword.Dispel, "Dispel" },
@@ -1541,6 +1541,8 @@
             { EffectKeyword.SpawnPremonition_Undead_10sec, "Spawn Premonition (Undead, 10 seconds)" },
             { EffectKeyword.SpawnPremonition_Perfect, "Spawn Premonition (Perfect)" },
             { EffectKeyword.SpawnPremonition_Rodents_10sec, "Spawn Premonition (Rodents, 10 seconds)" },
+            { EffectKeyword.Lint_SelfStun, "Lint (Self Stun)" },
+            { EffectKeyword.MountedEffect, "Mounted Effect" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2014,6 +2016,7 @@
             { EffectStackingType.WhittlingKnifeSpecialBonus, "Whittling Knife Special Bonus" },
             { EffectStackingType.LickingMoss, "Licking Moss" },
             { EffectStackingType.TentakillerShock, "Tentakiller Shock" },
+            { EffectStackingType.Coax, "Coax" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -3406,6 +3409,9 @@
             { ItemKeyword.FloatingPumpkin, "Floating Pumpkin" },
             { ItemKeyword.FloatingPumpkin1, "Floating Pumpkin #1" },
             { ItemKeyword.FloatingPumpkin2, "Floating Pumpkin #2" },
+            { ItemKeyword.Saddle, "Saddle" },
+            { ItemKeyword.TofuDish, "Tofu Dish" },
+            { ItemKeyword.TofurkeyDish, "Tofurkey Dish" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3424,6 +3430,7 @@
             { ItemSlot.None, "None" },
             { ItemSlot.OffHandShield, "Off Hand Shield" },
             { ItemSlot.Racial, "Racial" },
+            { ItemSlot.Saddle, "Saddle" },
         };
 
         public static Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap { get; } = new Dictionary<ItemUseAnimation, string>()
@@ -3703,6 +3710,7 @@
             //{ QuestKeyword.GeneticsTraining_Cats, "Genetics Training (Cats)" },
             //{ QuestKeyword.GeneticsTraining_Ruminants, "Genetics Training (Ruminants)" },
             { QuestKeyword.PovusNightly, "Povus Nightly" },
+            { QuestKeyword.TofurkeyQuest, "Tofurkey Quest" },
         };
 
         public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
@@ -3958,6 +3966,7 @@
             { QuestObjectiveTarget.PovusEliteTriceratops, "Povus Elite Triceratops" },
             { QuestObjectiveTarget.PovusEliteGallimimus, "Povus Elite Gallimimus" },
             { QuestObjectiveTarget.Povus_RiverTerror1, "Povus River Terror #1" },
+            { QuestObjectiveTarget.AngryTurkey, "AngryTurkey" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -4594,6 +4603,16 @@
             { RecipeKeyword.DeluxeBeetleSkewer, "Deluxe Beetle Skewer" },
             { RecipeKeyword.MapleCarrots, "Maple Carrots" },
             { RecipeKeyword.SourPumpkinSoup, "Sour Pumpkin Soup" },
+            { RecipeKeyword.BottleOfSoyMilk, "Bottle Of Soy Milk" },
+            { RecipeKeyword.TofurkeyGravy, "Tofurkey Gravy" },
+            { RecipeKeyword.LemonGlazedTofurkey, "Lemon Glazed Tofurkey" },
+            { RecipeKeyword.TofurkeyWithCranberrySauce, "Tofurkey With Cranberry Sauce" },
+            { RecipeKeyword.TofurkeyVeggieLoaf, "Tofurkey Veggie Loaf" },
+            { RecipeKeyword.CranberryGlazedMeatballs, "Cranberry Glazed Meatballs" },
+            { RecipeKeyword.TofuPumpkinKebab, "Tofu Pumpkin Kebab" },
+            { RecipeKeyword.PumpkinHummus, "Pumpkin Hummus" },
+            { RecipeKeyword.BrunostCheese, "Brunost Cheese" },
+            { RecipeKeyword.BrieCheese, "Brie Cheese" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()

@@ -32,11 +32,12 @@
             { QuestRequirementType.MinFavor, FinishItemMinFavor },
             { QuestRequirementType.ScriptAtomicMatches, FinishItemScriptAtomicMatches },
             { QuestRequirementType.AreaEventOff, FinishItemAreaEventOff },
+            { QuestRequirementType.QuestCompletedRecently, FinishItemQuestCompletedRecently },
         };
 
         private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
         {
-            { QuestRequirementType.MinFavorLevel, new List<string>() { "T", "Npc", "Level" } },
+            { QuestRequirementType.MinFavorLevel, new List<string>() { "T", "Npc", "Level" /*, "Quest"*/ } },
             { QuestRequirementType.Race, new List<string>() { "T", "AllowedRace", "DisallowedRace" } },
             { QuestRequirementType.QuestCompleted, new List<string>() { "T", "Quest" } },
             { QuestRequirementType.IsWarden, new List<string>() { "T" } },
@@ -54,6 +55,7 @@
             { QuestRequirementType.MinFavor, new List<string>() { "T", "Npc", "MinFavor" } },
             { QuestRequirementType.ScriptAtomicMatches, new List<string>() { "T", "AtomicVar", "Value" } },
             { QuestRequirementType.AreaEventOff, new List<string>() { "T", "AreaEvent" } },
+            { QuestRequirementType.QuestCompletedRecently, new List<string>() { "T", "Quest" } },
         };
 
         private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
@@ -129,6 +131,9 @@
                         case "Level":
                             Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => NewItem.FavorLevel = valueEnum, Value);
                             break;
+                        /*case "Quest":
+                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.QuestList.Add(valueQuest), Value);
+                            break;*/
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
                             break;
@@ -963,6 +968,49 @@
                             break;
                         case "AreaEvent":
                             Result = ParseAreaEvent(NewItem, Value, parsedFile, parsedKey);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemQuestCompletedRecently(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRequirementQuestCompletedRecently NewItem = new PgQuestRequirementQuestCompletedRecently();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Quest":
+                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.QuestList.Add(valueQuest), Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

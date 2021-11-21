@@ -1103,5 +1103,8 @@
         FloatingPumpkin,
         FloatingPumpkin1,
         FloatingPumpkin2,
+        Saddle,
+        TofuDish,
+        TofurkeyDish,
     }
 }

@@ -20,5 +20,6 @@
         MinFavor,
         ScriptAtomicMatches,
         AreaEventOff,
+        QuestCompletedRecently,
     }
 }

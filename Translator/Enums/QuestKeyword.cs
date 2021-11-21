@@ -20,5 +20,6 @@
         //GeneticsTraining_Cats,
         //GeneticsTraining_Ruminants,
         PovusNightly,
+        TofurkeyQuest,
     }
 }

@@ -26,7 +26,7 @@
 
         public static readonly Dictionary<EffectKeyword, string> EffectKeywordTable = new Dictionary<EffectKeyword, string>()
         {
-            { EffectKeyword.Hyphen, "-" },
+//            { EffectKeyword.Hyphen, "-" },
         };
 
         public static readonly Dictionary<EffectParticle, string> EffectParticleTable = new Dictionary<EffectParticle, string>()

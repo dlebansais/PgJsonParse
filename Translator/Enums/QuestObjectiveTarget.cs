@@ -253,5 +253,6 @@
         PovusEliteTriceratops,
         PovusEliteGallimimus,
         Povus_RiverTerror1,
+        AngryTurkey,
     }
 }

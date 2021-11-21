@@ -337,5 +337,6 @@
         WhittlingKnifeSpecialBonus,
         LickingMoss,
         TentakillerShock,
+        Coax,
     }
 }

@@ -140,5 +140,15 @@
         DeluxeBeetleSkewer,
         MapleCarrots,
         SourPumpkinSoup,
+        BottleOfSoyMilk,
+        TofurkeyGravy,
+        LemonGlazedTofurkey,
+        TofurkeyWithCranberrySauce,
+        TofurkeyVeggieLoaf,
+        CranberryGlazedMeatballs,
+        TofuPumpkinKebab,
+        PumpkinHummus,
+        BrunostCheese,
+        BrieCheese,
     }
 }

@@ -3,7 +3,7 @@
     public enum EffectKeyword
     {
         Internal_None,
-        Hyphen,
+        //Hyphen,
         Debuff,
         MusicPerformance,
         Dispel,
@@ -290,5 +290,7 @@
         SpawnPremonition_Undead_10sec,
         SpawnPremonition_Perfect,
         SpawnPremonition_Rodents_10sec,
+        Lint_SelfStun,
+        MountedEffect,
     }
 }

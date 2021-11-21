@@ -16,5 +16,6 @@
         None,
         OffHandShield,
         Racial,
+        Saddle,
     }
 }
