@@ -338,5 +338,6 @@
         LickingMoss,
         TentakillerShock,
         Coax,
+        Gallop,
     }
 }

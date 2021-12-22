@@ -292,5 +292,6 @@
         SpawnPremonition_Rodents_10sec,
         Lint_SelfStun,
         MountedEffect,
+        DisperseSkeletonEnabled,
     }
 }

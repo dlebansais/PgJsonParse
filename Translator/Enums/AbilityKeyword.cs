@@ -519,5 +519,6 @@
         HymnOfResurrection2Enabled,
         KuvouAcid,
         AnalyzeGenes,
+        DisperseSkeletonEnabled,
     }
 }

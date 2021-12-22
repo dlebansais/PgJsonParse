@@ -66,6 +66,7 @@
             { "AmmoConsumeChance", typeof(float) },
             { "AmmoStickChance", typeof(float) },
             { "TargetTypeTagReq", typeof(string) },
+            { "WorksWhileMounted", typeof(bool) },
         };
 
         public static Dictionary<string, Type> TableAbilityAmmo { get; } = new Dictionary<string, Type>()
@@ -445,6 +446,9 @@
         {
             { "EffectDescs", typeof(string[]) },
             { "SkillLevelPrereq", typeof(int) },
+            { "MinLevel", typeof(int) },
+            { "MaxLevel", typeof(int) },
+            { "MinRarity", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableQuest { get; } = new Dictionary<string, Type>()

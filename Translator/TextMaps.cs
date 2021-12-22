@@ -778,6 +778,7 @@
             { AbilityKeyword.HymnOfResurrection2Enabled, "Hymn Of Resurrection #2 Enabled" },
             { AbilityKeyword.KuvouAcid, "Kuvou Acid" },
             { AbilityKeyword.AnalyzeGenes, "Analyze Genes" },
+            { AbilityKeyword.DisperseSkeletonEnabled, "Disperse Skeleton Enabled" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -1201,6 +1202,7 @@
             { Deaths.SoulDamage, "Soul Damage" },
             { Deaths.TentakillerTouch, "Tentakiller Touch" },
             { Deaths.LickedByAFrog, "Licked By A Frog" },
+            { Deaths.FungusBullet, "Fungus Bullet" },
         };
 
         public static Dictionary<DisallowedState, string> DisallowedStateTextMap { get; } = new Dictionary<DisallowedState, string>()
@@ -1543,6 +1545,7 @@
             { EffectKeyword.SpawnPremonition_Rodents_10sec, "Spawn Premonition (Rodents, 10 seconds)" },
             { EffectKeyword.Lint_SelfStun, "Lint (Self Stun)" },
             { EffectKeyword.MountedEffect, "Mounted Effect" },
+            { EffectKeyword.DisperseSkeletonEnabled, "Disperse Skeleton Enabled" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2017,6 +2020,7 @@
             { EffectStackingType.LickingMoss, "Licking Moss" },
             { EffectStackingType.TentakillerShock, "Tentakiller Shock" },
             { EffectStackingType.Coax, "Coax" },
+            { EffectStackingType.Gallop, "Gallop" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()

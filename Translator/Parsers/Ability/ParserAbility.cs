@@ -204,6 +204,9 @@
                     case "TargetTypeTagReq":
                         Result = ParseTargetTypeTagReq(item, Value, parsedFile, parsedKey);
                         break;
+                    case "WorksWhileMounted":
+                        Result = SetBoolProperty((bool valueBool) => item.RawWorksWhileMounted = valueBool, Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;

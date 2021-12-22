@@ -85,6 +85,8 @@
         public string DigitStrippedName { get; set; } = string.Empty;
         public Dictionary<CombatKeyword, PgEffect> AssociatedEffectTable { get; set; } = new Dictionary<CombatKeyword, PgEffect>();
         public PgSkill? TargetTypeTagReq { get; set; }
+        public bool WorksWhileMounted { get { return RawWorksWhileMounted.HasValue && RawWorksWhileMounted.Value; } }
+        public bool? RawWorksWhileMounted { get; set; }
 
         public int FriendlyIconId { get; set; }
 

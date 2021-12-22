@@ -153,5 +153,6 @@
         SoulDamage,
         TentakillerTouch,
         LickedByAFrog,
+        FungusBullet,
     }
 }
