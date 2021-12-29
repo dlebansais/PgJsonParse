@@ -1,6 +1,6 @@
 ﻿namespace PgObjects
 {
-    public class PgQuestPreGiveEffectInteractionFlag : PgQuestPreGiveEffect
+    public class PgQuestPreGiveEffectClearInteractionFlag : PgQuestPreGiveEffect
     {
         public InteractionFlag InteractionFlag { get; set; }
     }

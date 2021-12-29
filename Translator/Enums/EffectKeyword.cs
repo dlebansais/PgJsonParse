@@ -293,5 +293,9 @@
         Lint_SelfStun,
         MountedEffect,
         DisperseSkeletonEnabled,
+        UnfunGuyCurse,
+        ImarakCurse,
+        VemutaCurse,
+        PeacemasterGuztokCurse,
     }
 }

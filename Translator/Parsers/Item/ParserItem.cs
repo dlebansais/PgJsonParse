@@ -112,6 +112,9 @@
                     case "StockDye":
                         Result = ParseStockDye(item, Value, parsedFile, parsedKey);
                         break;
+                    case "TSysProfile":
+                        Result = StringToEnumConversion<Profile>.SetEnum((Profile valueEnum) => item.TSysProfile = valueEnum, Value);
+                        break;
                     case "Value":
                         Result = SetFloatProperty((float valueFloat) => item.RawValue = valueFloat, Value);
                         break;

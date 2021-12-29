@@ -1,5 +1,6 @@
 ﻿namespace Translator
 {
+    using PgObjects;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -22,7 +23,7 @@
 
         private static bool FinalizeKnownParsed()
         {
-            if (KnownParsedEnumtable.Count != 75)
+            if (KnownParsedEnumtable.Count != TextMaps.TotalEnumTypes)
             {
                 List<string> NameList = new List<string>();
                 foreach (KeyValuePair<Type, bool[]> Entry in KnownParsedEnumtable)

@@ -56,6 +56,7 @@
         public int? RawNumUses { get; set; }
         public bool DestroyWhenUsedUp { get { return RawDestroyWhenUsedUp.HasValue && RawDestroyWhenUsedUp.Value; } }
         public bool? RawDestroyWhenUsedUp { get; set; }
+        public Profile TSysProfile { get; set; }
         public PgItemBehaviorCollection BehaviorList { get; set; } = new PgItemBehaviorCollection();
         public string DynamicCraftingSummary { get; set; } = string.Empty;
         public bool IsSkillReqsDefaults { get { return RawIsSkillReqsDefaults.HasValue && RawIsSkillReqsDefaults.Value; } }

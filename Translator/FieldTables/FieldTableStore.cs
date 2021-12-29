@@ -365,6 +365,7 @@
             { "RequiredAppearance", typeof(string) },
             { "SkillReqs", typeof(PgItemSkillLink) },
             { "StockDye", typeof(string) },
+            { "TSysProfile", typeof(string) },
             { "Value", typeof(float) },
             { "NumUses", typeof(int) },
             { "DestroyWhenUsedUp", typeof(bool) },

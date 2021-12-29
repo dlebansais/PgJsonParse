@@ -38,5 +38,6 @@
         MusicHitLoud,
         MusicHit,
         PoisonCloud,
+        SporeParticle,
     }
 }

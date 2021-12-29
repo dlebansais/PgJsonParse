@@ -4,6 +4,8 @@
 
     public static class TextMaps
     {
+        public const int TotalEnumTypes = 76;
+
         static TextMaps()
         {
             Tools.VerifyTables(typeof(TextMaps));
@@ -882,6 +884,7 @@
             { AbilityTargetParticle.MusicHitLoud, "Music Hit Loud" },
             { AbilityTargetParticle.MusicHit, "Music Hit" },
             { AbilityTargetParticle.PoisonCloud, "Poison Cloud" },
+            { AbilityTargetParticle.SporeParticle, "Spore Particle" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
@@ -1203,6 +1206,7 @@
             { Deaths.TentakillerTouch, "Tentakiller Touch" },
             { Deaths.LickedByAFrog, "Licked By A Frog" },
             { Deaths.FungusBullet, "Fungus Bullet" },
+            { Deaths.FungusManSpores, "Fungus Man Spores" },
         };
 
         public static Dictionary<DisallowedState, string> DisallowedStateTextMap { get; } = new Dictionary<DisallowedState, string>()
@@ -1546,6 +1550,10 @@
             { EffectKeyword.Lint_SelfStun, "Lint (Self Stun)" },
             { EffectKeyword.MountedEffect, "Mounted Effect" },
             { EffectKeyword.DisperseSkeletonEnabled, "Disperse Skeleton Enabled" },
+            { EffectKeyword.UnfunGuyCurse, "Unfun Guy Curse" },
+            { EffectKeyword.ImarakCurse, "Imarak Curse" },
+            { EffectKeyword.VemutaCurse, "Vemuta Curse" },
+            { EffectKeyword.PeacemasterGuztokCurse, "Peacemaster Guztok Curse" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2230,6 +2238,12 @@
             { InteractionFlag.GaveGerruxKimetasGhostKey, "Gave Gerrux Kimeta's Ghost Key" },
             { InteractionFlag.DogEar_KnowsYoureAWarden, "Dog Ear (Knows You're A Warden)" },
             { InteractionFlag.Povus_RiverTerror, "Povus River Terror" },
+            { InteractionFlag.ChristmasTree_Povus_1, "Christmas Tree (Povus #1)" },
+            { InteractionFlag.ChristmasTree_Povus_2, "Christmas Tree (Povus #2)" },
+            { InteractionFlag.ChristmasTree_Povus_3, "Christmas Tree (Povus #3)" },
+            { InteractionFlag.ChristmasTree_Povus_4, "Christmas Tree (Povus #4)" },
+            { InteractionFlag.ChristmasTree_Povus_5, "Christmas Tree (Povus #5)" },
+            { InteractionFlag.Christmas_MissFlyHater, "Christmas Tree (Miss Fly Hater)" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -3661,6 +3675,35 @@
             { PreEffect.MambaStrikeLowArmorDmgMod, "Mamba Strike Low Armor Damage Mod" },
             { PreEffect.SuperZombie8, "Super Zombie #8" },
             { PreEffect.LethalForceAnimalDmgMod, "Lethal Force Animal Damage Mod" },
+        };
+
+        public static Dictionary<Profile, string> ProfileTextMap { get; } = new Dictionary<Profile, string>()
+        {
+           { Profile.Internal_None, "" },
+           { Profile.Newb, "Newb" },
+           { Profile.All, "All" },
+           { Profile.CowFeet, "Cow Feet" },
+           { Profile.DeerFeet, "Deer Feet" },
+           { Profile.Shield, "Shield" },
+           { Profile.Dagger, "Dagger" },
+           { Profile.Dirk, "Dirk" },
+           { Profile.NewbSword, "Newb Sword" },
+           { Profile.Sword, "Sword" },
+           { Profile.Lute, "Lute" },
+           { Profile.Horn, "Horn" },
+           { Profile.Staff, "Staff" },
+           { Profile.FireStaff, "Fire Staff" },
+           { Profile.MeleeStaff, "Melee Staff" },
+           { Profile.Beaker, "Beaker" },
+           { Profile.Flask, "Flask" },
+           { Profile.Bow, "Bow" },
+           { Profile.Crossbow, "Crossbow" },
+           { Profile.FistWeapon, "Fist Weapon" },
+           { Profile.Claw, "Claw" },
+           { Profile.Belt, "Belt" },
+           { Profile.Orb, "Orb" },
+           { Profile.Club, "Club" },
+           { Profile.Hammer, "Hammer" },
         };
 
         public static Dictionary<QuestGroup, string> QuestGroupTextMap { get; } = new Dictionary<QuestGroup, string>()

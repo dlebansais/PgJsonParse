@@ -172,5 +172,11 @@
         GaveGerruxKimetasGhostKey,
         DogEar_KnowsYoureAWarden,
         Povus_RiverTerror,
+        ChristmasTree_Povus_1,
+        ChristmasTree_Povus_2,
+        ChristmasTree_Povus_3,
+        ChristmasTree_Povus_4,
+        ChristmasTree_Povus_5,
+        Christmas_MissFlyHater,
     }
 }

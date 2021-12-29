@@ -545,7 +545,20 @@
                 string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? value : value.Substring(0, ParameterStartIndex);
                 string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
 
-                PgQuestPreGiveEffectInteractionFlag NewEffect = new PgQuestPreGiveEffectInteractionFlag();
+                PgQuestPreGiveEffectSetInteractionFlag NewEffect = new PgQuestPreGiveEffectSetInteractionFlag();
+                if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewEffect.InteractionFlag = valueEnum, EffectParameter))
+                    return false;
+
+                preGiveEffect = NewEffect;
+            }
+            else if (value.StartsWith("ClearInteractionFlag("))
+            {
+                int ParameterStartIndex = value.IndexOf('(');
+                int ParameterEndIndex = value.LastIndexOf(')');
+                string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? value : value.Substring(0, ParameterStartIndex);
+                string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+
+                PgQuestPreGiveEffectClearInteractionFlag NewEffect = new PgQuestPreGiveEffectClearInteractionFlag();
                 if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewEffect.InteractionFlag = valueEnum, EffectParameter))
                     return false;
 

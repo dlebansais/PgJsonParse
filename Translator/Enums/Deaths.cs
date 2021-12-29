@@ -154,5 +154,6 @@
         TentakillerTouch,
         LickedByAFrog,
         FungusBullet,
+        FungusManSpores,
     }
 }
