@@ -183,6 +183,7 @@
             { RecipeAction.OpenPortal, "Open Portal" },
             { RecipeAction.DyeFur, "Dye Fur" },
             { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
+            { RecipeAction.SendToSaddlebag, "Send to Saddlebag" },
         };
 
         public static readonly Dictionary<RecipeEffect, string> RecipeEffectTable = new Dictionary<RecipeEffect, string>()
@@ -244,6 +245,7 @@
             { RecipeItemKey.MaxTSysPrereq_60, "MaxTSysPrereq:60" },
             { RecipeItemKey.MinTSysPrereq_61, "MinTSysPrereq:61" },
             { RecipeItemKey.MaxTSysPrereq_90, "MaxTSysPrereq:90" },
+            { RecipeItemKey.NotNoSendToSaddlebag, "!NoSendToSaddlebag" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTable = new Dictionary<XpTableEnum, string>()

@@ -50,5 +50,7 @@
         OpenPortal,
         DyeFur,
         AssembleAndAnimate,
+        Assemble,
+        SendToSaddlebag,
     }
 }

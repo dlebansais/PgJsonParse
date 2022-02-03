@@ -207,6 +207,12 @@
                     case "WorksWhileMounted":
                         Result = SetBoolProperty((bool valueBool) => item.RawWorksWhileMounted = valueBool, Value);
                         break;
+                    case "SelfPreParticle":
+                        Result = StringToEnumConversion<SelfPreParticle>.SetEnum((SelfPreParticle valueEnum) => item.SelfPreParticle = valueEnum, Value);
+                        break;
+                    case "IsCosmeticPet":
+                        Result = SetBoolProperty((bool valueBool) => item.RawIsCosmeticPet = valueBool, Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;

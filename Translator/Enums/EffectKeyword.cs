@@ -274,7 +274,7 @@
         SkeletonIllusionForm,
         BulwarkMode,
         LiveEvent_Gobblejack,
-        VanityPet,
+        //VanityPet,
         SpawnPremonition_Plants_10sec,
         CryogenicFreeze,
         FaeDPImmunity,
@@ -297,5 +297,7 @@
         ImarakCurse,
         VemutaCurse,
         PeacemasterGuztokCurse,
+        CosmeticPet,
+        PlayedOut,
     }
 }

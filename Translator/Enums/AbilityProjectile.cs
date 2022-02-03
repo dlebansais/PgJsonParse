@@ -27,5 +27,6 @@
         Projectile_ElectricSpell,
         Projectile_ChaosMissile,
         Attack_Taunt1,
+        Projectile_Poison,
     }
 }

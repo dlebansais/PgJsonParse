@@ -67,6 +67,8 @@
             { "AmmoStickChance", typeof(float) },
             { "TargetTypeTagReq", typeof(string) },
             { "WorksWhileMounted", typeof(bool) },
+            { "SelfPreParticle", typeof(string) },
+            { "IsCosmeticPet", typeof(bool) },
         };
 
         public static Dictionary<string, Type> TableAbilityAmmo { get; } = new Dictionary<string, Type>()
@@ -215,7 +217,7 @@
             { "MONSTER_COMBAT_XP_VALUE", typeof(float) },
             { "COMBAT_REGEN_ARMOR_DELTA", typeof(float) },
             { "COMBAT_REGEN_POWER_DELTA", typeof(float) },
-            { "MAX_INVENTORY_SIZE", typeof(float) },
+            { "MAX_INVENTORY_SIZE", typeof(int) },
             { "MAX_METABOLISM", typeof(float) },
             { "NPC_MOD_FAVORFROMGIFTS", typeof(float) },
             { "NPC_MOD_FAVORFROMHANGOUTS", typeof(float) },
@@ -263,8 +265,9 @@
             { "EVASION_CHANCE_BURST", typeof(float) },
             { "BONUS_STABLE_SLOTS", typeof(int) },
             { "MAX_BREEDING_ATTEMPTS", typeof(int) },
-            { "BOOST_ANIMALPETHEAL_SENDER", typeof(int) },
-            { "BOOST_ACID_INDIRECT", typeof(int) },
+            { "BOOST_ANIMALPETHEAL_SENDER", typeof(float) },
+            { "BOOST_ACID_INDIRECT", typeof(float) },
+            { "MAX_SADDLEBAG_VAULT_SIZE", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
@@ -375,6 +378,7 @@
             { "BestowTitle", typeof(int) },
             { "BestowLoreBook", typeof(int) },
             { "Lint_VendorNpc", typeof(string) },
+            { "MountedAppearance", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableItemBehavior { get; } = new Dictionary<string, Type>()
@@ -621,6 +625,7 @@
             { "ValidationIngredientKeywords", typeof(string[]) },
             { "ProtoResultItems", typeof(PgRecipeItem[]) },
             { "RewardAllowBonusXp", typeof(bool) },
+            { "RequiredAttributeNonZero", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableRecipeItem { get; } = new Dictionary<string, Type>()

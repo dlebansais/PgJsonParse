@@ -39,5 +39,8 @@
         MusicHit,
         PoisonCloud,
         SporeParticle,
+        PoisonHit,
+        LifeStealSiphon,
+        NecroFear,
     }
 }

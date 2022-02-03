@@ -142,6 +142,9 @@
                     case "Lint_VendorNpc":
                         Result = StringToEnumConversion<WorkOrderSign>.SetEnum((WorkOrderSign valueEnum) => item.LintVendorNpc = valueEnum, Value);
                         break;
+                    case "MountedAppearance":
+                        Result = SetStringProperty((string valueString) => item.MountedAppearance = valueString, Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;

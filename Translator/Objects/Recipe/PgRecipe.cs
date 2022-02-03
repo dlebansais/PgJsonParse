@@ -57,6 +57,7 @@
         public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
         public bool? RawRewardAllowBonusXp { get; set; }
         public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
+        public PgAttribute? RequiredAttributeNonZero { get; set; }
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

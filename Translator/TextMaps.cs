@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 76;
+        public const int TotalEnumTypes = 77;
 
         static TextMaps()
         {
@@ -185,6 +185,10 @@
             { AbilityAnimation.Attack_Staff_Phoenix, "Attack Staff Phoenix" },
             { AbilityAnimation.Attack_Druid_Swing, "Attack Druid Swing" },
             { AbilityAnimation.Attack_Archery_CrossbowShoot, "Attack Archery Crossbow Shoot" },
+            { AbilityAnimation.Attack_Necromancy_SingleTarget, "Attack Necromancy (Single Target)" },
+            { AbilityAnimation.Attack_Necromancy_AoE, "Attack Necromancy (AoE)" },
+            { AbilityAnimation.Attack_Horse_Coax, "Attack Horse Coax" },
+            { AbilityAnimation.Attack_Horse_Calm, "Attack Horse Calm" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -831,6 +835,7 @@
             { AbilityProjectile.Projectile_ElectricSpell, "Electric Spell" },
             { AbilityProjectile.Projectile_ChaosMissile, "Chaos Missile" },
             { AbilityProjectile.Attack_Taunt1, "Attack Taunt" },
+            { AbilityProjectile.Projectile_Poison, "Projectile Poison" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -885,6 +890,9 @@
             { AbilityTargetParticle.MusicHit, "Music Hit" },
             { AbilityTargetParticle.PoisonCloud, "Poison Cloud" },
             { AbilityTargetParticle.SporeParticle, "Spore Particle" },
+            { AbilityTargetParticle.PoisonHit, "Poison Hit" },
+            { AbilityTargetParticle.LifeStealSiphon, "Life Steal Siphon" },
+            { AbilityTargetParticle.NecroFear, "Necro Fear" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
@@ -1531,7 +1539,7 @@
             { EffectKeyword.SkeletonIllusionForm, "Skeleton Illusion Form" },
             { EffectKeyword.BulwarkMode, "Bulwar kMode" },
             { EffectKeyword.LiveEvent_Gobblejack, "Live Event (Gobblejack)" },
-            { EffectKeyword.VanityPet, "Vanity Pet" },
+            //{ EffectKeyword.VanityPet, "Vanity Pet" },
             { EffectKeyword.SpawnPremonition_Plants_10sec, "Spawn Premonition (Plants, 10 sec)" },
             { EffectKeyword.CryogenicFreeze, "Cryogenic Freeze" },
             { EffectKeyword.FaeDPImmunity, "Fae Death Penalty Immunity" },
@@ -1554,6 +1562,8 @@
             { EffectKeyword.ImarakCurse, "Imarak Curse" },
             { EffectKeyword.VemutaCurse, "Vemuta Curse" },
             { EffectKeyword.PeacemasterGuztokCurse, "Peacemaster Guztok Curse" },
+            { EffectKeyword.CosmeticPet, "Cosmetic Pet" },
+            { EffectKeyword.PlayedOut, "Played Out" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2324,6 +2334,17 @@
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
+            { ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
+            { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
+            { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
+            { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
+            { ItemDroppedAppearance.LootScroll6, "Loot Scroll #6" },
+            { ItemDroppedAppearance.LootScroll7, "Loot Scroll #7" },
+            { ItemDroppedAppearance.LootScroll8, "Loot Scroll #8" },
+            { ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
+            { ItemDroppedAppearance.LootScroll10, "Loot Scroll #10" },
+            { ItemDroppedAppearance.LootScroll11, "Loot Scroll #11" },
+            { ItemDroppedAppearance.LootScroll12, "Loot Scroll #12" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -3430,6 +3451,14 @@
             { ItemKeyword.Saddle, "Saddle" },
             { ItemKeyword.TofuDish, "Tofu Dish" },
             { ItemKeyword.TofurkeyDish, "Tofurkey Dish" },
+            { ItemKeyword.SaddleBlanket, "Saddle Blanket" },
+            { ItemKeyword.NoSendToSaddlebag, "No Send To Saddlebag" },
+            { ItemKeyword.SaddleryRecipe, "Saddlery Recipe" },
+            { ItemKeyword.GoblinArmor, "Goblin Armor" },
+            { ItemKeyword.HobgoblinArmor, "Hobgoblin Armor" },
+            { ItemKeyword.Saddlebag, "Saddlebag" },
+            { ItemKeyword.Reins, "Reins" },
+            { ItemKeyword.Horseshoes, "Horseshoes" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3449,6 +3478,9 @@
             { ItemSlot.OffHandShield, "Off Hand Shield" },
             { ItemSlot.Racial, "Racial" },
             { ItemSlot.Saddle, "Saddle" },
+            { ItemSlot.Saddlebag, "Saddlebag" },
+            { ItemSlot.Reins, "Reins" },
+            { ItemSlot.Horseshoes, "Horseshoes" },
         };
 
         public static Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap { get; } = new Dictionary<ItemUseAnimation, string>()
@@ -3704,6 +3736,7 @@
            { Profile.Orb, "Orb" },
            { Profile.Club, "Club" },
            { Profile.Hammer, "Hammer" },
+           { Profile.Riding, "Riding" },
         };
 
         public static Dictionary<QuestGroup, string> QuestGroupTextMap { get; } = new Dictionary<QuestGroup, string>()
@@ -4077,6 +4110,8 @@
             { RecipeAction.OpenPortal, "Open Portal" },
             { RecipeAction.DyeFur, "Dye Fur" },
             { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
+            { RecipeAction.Assemble, "Assemble" },
+            { RecipeAction.SendToSaddlebag, "Send to Saddlebag" },
         };
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
@@ -4508,6 +4543,7 @@
             { RecipeItemKey.VendorTrash, "Vendor Trash" },
             { RecipeItemKey.Wood, "Wood" },
             { RecipeItemKey.Clay, "Clay" },
+            { RecipeItemKey.NotNoSendToSaddlebag, "Is not: No Send To Saddlebag" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -4693,6 +4729,17 @@
             { SelfEffect.EliteMonsterCrit, "Elite Monster Crit" },
         };
 
+        public static Dictionary<SelfPreParticle, string> SelfPreParticleTextMap { get; } = new Dictionary<SelfPreParticle, string>()
+        {
+            { SelfPreParticle.Internal_None, string.Empty },
+            { SelfPreParticle.NecroSummon1, "Necro Summon #1" },
+            { SelfPreParticle.NecroSummon2, "Necro Summon #2" },
+            { SelfPreParticle.DarknessHandBlast1, "Darkness Hand Blast #1" },
+            { SelfPreParticle.LifeStealHands, "Life Steal Hands" },
+            { SelfPreParticle.NecroSmokeOffHand, "Necro Smoke Off Hand" },
+            { SelfPreParticle.NecroGatherSmoke, "Necro Gather Smoke" },
+        };
+
         public static Dictionary<SelfParticle, string> SelfParticleTextMap { get; } = new Dictionary<SelfParticle, string>()
         {
             { SelfParticle.Internal_None, string.Empty },
@@ -4703,6 +4750,12 @@
             { SelfParticle.GooBurst, "Goo Burst" },
             { SelfParticle.AcidBite, "Acid Bite" },
             { SelfParticle.FloatyHeartsToDark, "Floaty Hearts To Dark" },
+            { SelfParticle.HealingParticle, "Healing Particle" },
+            { SelfParticle.NecroHeal, "Necro Heal" },
+            { SelfParticle.NecroEat, "Necro Eat" },
+            { SelfParticle.NecroHandExplosion, "Necro Hand Explosion" },
+            { SelfParticle.NecroBuff, "Necro Buff" },
+            { SelfParticle.DeathExplosion, "Death Explosion" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()
@@ -4905,6 +4958,7 @@
             { XpTableEnum.None, "None" },
             { XpTableEnum.PovusTown, "Povus Town" },
             { XpTableEnum.PovusStorage, "Povus Storage" },
+            { XpTableEnum.Riding, "Riding" },
         };
     }
 }

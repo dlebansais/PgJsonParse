@@ -142,6 +142,9 @@
                     case "RewardAllowBonusXp":
                         Result = SetBoolProperty((bool valueBool) => item.RawRewardAllowBonusXp = valueBool, Value);
                         break;
+                    case "RequiredAttributeNonZero":
+                        Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.RequiredAttributeNonZero = valueAttribute, Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
@@ -253,6 +256,9 @@
                 case "TSysCraftedEquipment":
                     Result = ParseTSysCraftedEquipment(EffectParameter, parsedFile, parsedKey, out recipeResult);
                     break;
+                case "CraftSimpleTSysItem":
+                    Result = ParseCraftSimpleTSysItem(EffectParameter, parsedFile, parsedKey, out recipeResult);
+                    break;
                 case "CraftingEnhanceItemPockets":
                     Result = ParseCraftingEnhanceItem(EnhancementEffect.Pockets, EffectParameter, parsedFile, parsedKey, out recipeResult);
                     break;
@@ -307,6 +313,9 @@
                     break;
                 case "PolymorphRabbitPermanentBlue":
                     Result = ParsePolymorph(EffectName, parsedFile, parsedKey, out recipeResult);
+                    break;
+                case "SendItemToSaddlebag":
+                    Result = ParseSendItemToSaddlebag(EffectName, parsedFile, parsedKey, out recipeResult);
                     break;
                 case "SpawnPovusPaleomonster":
                     Result = ParseSpawnMonster(EffectName, parsedFile, parsedKey, out recipeResult);
@@ -473,6 +482,21 @@
             RecipeResultEffect.RawBoostLevel = RawBoostLevel;
             RecipeResultEffect.RawAdditionalEnchantments = RawAdditionalEnchantments;
             RecipeResultEffect.BoostedAnimal = BoostedAnimal;
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseCraftSimpleTSysItem(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            recipeResult = null!;
+
+            PgItem ParsedItem = null!;
+            if (!Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => ParsedItem = valueItem, effectParameter))
+                return false;
+
+            PgRecipeResultCraftSimpleTSysItem RecipeResultEffect = new PgRecipeResultCraftSimpleTSysItem();
+            RecipeResultEffect.Item = ParsedItem;
 
             recipeResult = RecipeResultEffect;
             return true;
@@ -832,6 +856,14 @@
         {
             PgRecipeResultSpawnPremonition RecipeResultEffect = new PgRecipeResultSpawnPremonition();
             RecipeResultEffect.Duration = duration;
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseSendItemToSaddlebag(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            PgRecipeResultSendItemToSaddlebag RecipeResultEffect = new PgRecipeResultSendItemToSaddlebag();
 
             recipeResult = RecipeResultEffect;
             return true;

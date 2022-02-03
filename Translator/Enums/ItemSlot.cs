@@ -17,5 +17,8 @@
         OffHandShield,
         Racial,
         Saddle,
+        Saddlebag,
+        Reins,
+        Horseshoes,
     }
 }

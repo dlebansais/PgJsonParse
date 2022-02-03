@@ -49,5 +49,6 @@
         None,
         PovusTown,
         PovusStorage,
+        Riding,
     }
 }

@@ -27,5 +27,6 @@
         Orb,
         Club,
         Hammer,
+        Riding,
     }
 }

@@ -1106,5 +1106,13 @@
         Saddle,
         TofuDish,
         TofurkeyDish,
+        SaddleBlanket,
+        NoSendToSaddlebag,
+        SaddleryRecipe,
+        GoblinArmor,
+        HobgoblinArmor,
+        Saddlebag,
+        Reins,
+        Horseshoes,
     }
 }

@@ -174,5 +174,9 @@
         Attack_Staff_Phoenix,
         Attack_Druid_Swing,
         Attack_Archery_CrossbowShoot,
+        Attack_Necromancy_SingleTarget,
+        Attack_Necromancy_AoE,
+        Attack_Horse_Coax,
+        Attack_Horse_Calm,
     }
 }

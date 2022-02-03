@@ -87,6 +87,9 @@
         public PgSkill? TargetTypeTagReq { get; set; }
         public bool WorksWhileMounted { get { return RawWorksWhileMounted.HasValue && RawWorksWhileMounted.Value; } }
         public bool? RawWorksWhileMounted { get; set; }
+        public SelfPreParticle SelfPreParticle { get; set; }
+        public bool IsCosmeticPet { get { return RawIsCosmeticPet.HasValue && RawIsCosmeticPet.Value; } }
+        public bool? RawIsCosmeticPet { get; set; }
 
         public int FriendlyIconId { get; set; }
 

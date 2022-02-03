@@ -126,5 +126,6 @@
         VendorTrash,
         Wood,
         Clay,
+        NotNoSendToSaddlebag,
     }
 }

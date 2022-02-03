@@ -10,5 +10,11 @@
         GooBurst,
         AcidBite,
         FloatyHeartsToDark,
+        HealingParticle,
+        NecroHeal,
+        NecroEat,
+        NecroHandExplosion,
+        NecroBuff,
+        DeathExplosion,
     }
 }

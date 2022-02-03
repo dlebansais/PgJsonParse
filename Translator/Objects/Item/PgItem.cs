@@ -65,6 +65,7 @@
         public PgLoreBook? BestowLoreBook { get; set; }
         public WorkOrderSign LintVendorNpc { get; set; }
         public Dictionary<ItemKeyword, List<float>> KeywordTable { get; set; } = new Dictionary<ItemKeyword, List<float>>();
+        public string MountedAppearance { get; set; } = string.Empty;
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }
