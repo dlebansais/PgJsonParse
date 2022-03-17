@@ -49,6 +49,7 @@
             if (!ParseFile(Version, "attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
                 return -1;
 
+            /*
             AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
             AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
             AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
@@ -59,6 +60,7 @@
             AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
             AddHardCodedAttribute(PgAttribute.BOOST_ANIMALPETHEAL_SENDER);
             AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
+            */
 
             if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
                 return -1;
@@ -852,7 +854,7 @@
                 WebClientTool.DownloadText(Address, null, (bool isFound, string? content) => FindSales(isFound, Address, content, true, npc, itemList), ignoreCache: false, out IsFound);
             }
 
-            if (!IsFound)
+            if (!IsFound && npc.ObjectName != "Chest")
                 Debug.WriteLine($"{npc} NOT FOUND in wiki");
         }
 
@@ -1053,7 +1055,7 @@
             string Address = $"http://wiki.projectgorgon.com/wiki/{NpcName}";
             WebClientTool.DownloadText(Address, null, (bool isFound, string? content) => FindBarters(isFound, Address, content, npc, itemList), ignoreCache: false, out bool IsFound);
 
-            if (!IsFound)
+            if (!IsFound && npc.ObjectName != "Chest")
                 Debug.WriteLine($"{npc} NOT FOUND in wiki");
         }
 

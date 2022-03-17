@@ -189,6 +189,7 @@
             { AbilityAnimation.Attack_Necromancy_AoE, "Attack Necromancy (AoE)" },
             { AbilityAnimation.Attack_Horse_Coax, "Attack Horse Coax" },
             { AbilityAnimation.Attack_Horse_Calm, "Attack Horse Calm" },
+            { AbilityAnimation.Attack_Knife_DualSlash, "Attack Knife Dual Slash" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -893,6 +894,8 @@
             { AbilityTargetParticle.PoisonHit, "Poison Hit" },
             { AbilityTargetParticle.LifeStealSiphon, "Life Steal Siphon" },
             { AbilityTargetParticle.NecroFear, "Necro Fear" },
+            { AbilityTargetParticle.SlashHitSmall, "Slash Hit Small" },
+            { AbilityTargetParticle.SlashHitMultiSmall, "Slash Hit Multi Small" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
@@ -1564,6 +1567,8 @@
             { EffectKeyword.PeacemasterGuztokCurse, "Peacemaster Guztok Curse" },
             { EffectKeyword.CosmeticPet, "Cosmetic Pet" },
             { EffectKeyword.PlayedOut, "Played Out" },
+            { EffectKeyword.NoMountOverride, "No Mount Override" },
+            { EffectKeyword.LiveEvent_ErranaBunny, "Live Event (Errana Bunny)" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1698,6 +1703,14 @@
             { EffectParticle.BodyslamInvincibility, "Bodyslam Invincibility" },
             { EffectParticle.ArcaneDebuff, "Arcane Debuff" },
             { EffectParticle.UnholyDefensePerm, "Unholy Defense Permanent" },
+            { EffectParticle.BlurSmoke, "Blur Smoke" },
+            { EffectParticle.PoisonWeapon, "Poison Weapon" },
+            { EffectParticle.PoisonHit, "Poison Hit" },
+            { EffectParticle.BloodSplatQuick, "Blood Splat Quick" },
+            { EffectParticle.PlayingHealingSong, "Playing Healing Song" },
+            { EffectParticle.PlayingPowerSong, "Playing Power Song" },
+            { EffectParticle.PlayingDamageSong, "Playing Damage Song" },
+            { EffectParticle.MountAccelerate, "Mount Accelerate" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2039,6 +2052,9 @@
             { EffectStackingType.TentakillerShock, "Tentakiller Shock" },
             { EffectStackingType.Coax, "Coax" },
             { EffectStackingType.Gallop, "Gallop" },
+            { EffectStackingType.SpecialEventMountSpeed, "Special Event Mount Speed" },
+            { EffectStackingType.SpecialEventMountAccel, "Special Event Mount Accel" },
+            { EffectStackingType.SpecialEventSaddlebag, "Special Event Saddlebag" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2094,11 +2110,11 @@
             { InteractionFlag.RahuSewerWaterSamples8, "Rahu Sewer Water Samples (#8)" },
             { InteractionFlag.RahuSewerWaterSamples9, "Rahu Sewer Water Samples (#9)" },
             { InteractionFlag.RahuSewerWaterSamples10, "Rahu Sewer Water Samples (#10)" },
-            { InteractionFlag.Serbule2_Quest_FarmSurveys_Farm1, "Farm Surveys (#1)" },
-            { InteractionFlag.Serbule2_Quest_FarmSurveys_Farm2, "Farm Surveys (#2)" },
-            { InteractionFlag.Serbule2_Quest_FarmSurveys_Farm3, "Farm Surveys (#3)" },
-            { InteractionFlag.Serbule2_Quest_FarmSurveys_Farm4, "Farm Surveys (#4)" },
-            { InteractionFlag.Serbule2_Quest_FarmSurveys_Farm5, "Farm Surveys (#5)" },
+            //{ InteractionFlag.Serbule2_Quest_FarmSurveys_Farm1, "Farm Surveys (#1)" },
+            //{ InteractionFlag.Serbule2_Quest_FarmSurveys_Farm2, "Farm Surveys (#2)" },
+            //{ InteractionFlag.Serbule2_Quest_FarmSurveys_Farm3, "Farm Surveys (#3)" },
+            //{ InteractionFlag.Serbule2_Quest_FarmSurveys_Farm4, "Farm Surveys (#4)" },
+            //{ InteractionFlag.Serbule2_Quest_FarmSurveys_Farm5, "Farm Surveys (#5)" },
             { InteractionFlag.LoreItem10, "Lore Item (#10)" },
             { InteractionFlag.LoreItem11, "Lore Item (#11)" },
             { InteractionFlag.LoreItem12, "Lore Item (#12)" },
@@ -2140,7 +2156,7 @@
             { InteractionFlag.Tomb1_Candle33, "Crypt Candle (#33)" },
             { InteractionFlag.Tomb1_Candle34, "Crypt Candle (#34)" },
             { InteractionFlag.Tomb1_Candle35, "Crypt Candle (#35)" },
-            { InteractionFlag.SunVale_Oyster1, "Sun Vale Oyster (#1)" },
+            /*{ InteractionFlag.SunVale_Oyster1, "Sun Vale Oyster (#1)" },
             { InteractionFlag.SunVale_Oyster2, "Sun Vale Oyster (#2)" },
             { InteractionFlag.SunVale_Oyster3, "Sun Vale Oyster (#3)" },
             { InteractionFlag.SunVale_Oyster4, "Sun Vale Oyster (#4)" },
@@ -2148,15 +2164,15 @@
             { InteractionFlag.SunVale_Oyster6, "Sun Vale Oyster (#6)" },
             { InteractionFlag.LoreItemDalvos2, "Lore Item: Dalvos" },
             { InteractionFlag.KurTowerPastIceWall, "Past Ice Wall in Kur Tower" },
-            { InteractionFlag.Tutorial_BoundToTeleportCircle, "Tutorial: Bound To Teleport Circle" },
+            { InteractionFlag.Tutorial_BoundToTeleportCircle, "Tutorial: Bound To Teleport Circle" },*/
             { InteractionFlag.Tutorial_Obelisk1, "Tutorial: Obelisk #1" },
             { InteractionFlag.Tutorial_Obelisk2, "Tutorial: Obelisk #2" },
             { InteractionFlag.Tutorial_Obelisk3, "Tutorial: Obelisk #3" },
             { InteractionFlag.Tutorial_Obelisk4, "Tutorial: Obelisk #4" },
-            { InteractionFlag.Serbule_HasEnteredBrainBugCave, "Has Entered Brain Bug Cave" },
-            { InteractionFlag.LoreItem_BrainBugCave2, "Lore Item: Brain Bug Cave" },
-            { InteractionFlag.Serbule_HasUsedEltibulePortal, "Has Used Eltibule Portal" },
-            { InteractionFlag.Quest_Halloween_PartyPrep1, "Halloween: Party Preparation" },
+            //{ InteractionFlag.Serbule_HasEnteredBrainBugCave, "Has Entered Brain Bug Cave" },
+            //{ InteractionFlag.LoreItem_BrainBugCave2, "Lore Item: Brain Bug Cave" },
+            //{ InteractionFlag.Serbule_HasUsedEltibulePortal, "Has Used Eltibule Portal" },
+            //{ InteractionFlag.Quest_Halloween_PartyPrep1, "Halloween: Party Preparation" },
             { InteractionFlag.Quest_Halloween_HelpWestley, "Halloween: Help Westley" },
             { InteractionFlag.Quest_Halloween_HelpDeville, "Halloween: Help Deville" },
             { InteractionFlag.Quest_Halloween_HelpRick, "Halloween: Help Rick" },
@@ -2232,7 +2248,7 @@
             { InteractionFlag.Druid_IsIgnoredBySewerTreants, "Druid (Is Ignored By Sewer Treants)" },
             { InteractionFlag.Event_Christmas_RiShinShrineQuest, "Event (Christmas Ri-Shin Shrine Quest)" },
             { InteractionFlag.UI_StowItems1, "UI Stow Items #1" },
-            { InteractionFlag.Povus_LampLit, "Povus (Lamp Lit)" },
+            /*{ InteractionFlag.Povus_LampLit, "Povus (Lamp Lit)" },
             { InteractionFlag.Povus_RanalonFlooding, "Povus (Ranalon Flooding)" },
             { InteractionFlag.Povus_RatkinFumigators, "Povus (Ratkin Fumigators)" },
             { InteractionFlag.Povus_OrcInvaders, "Povus (Orc Invaders)" },
@@ -2244,10 +2260,10 @@
             { InteractionFlag.Povus_WarmasterBrukal, "Povus (Warmaster Brukal)" },
             { InteractionFlag.Povus_BoneWar, "Povus (Bone War)" },
             { InteractionFlag.Povus_PagodaThieves, "Povus (Pagoda Thieves)" },
-            { InteractionFlag.Povus_Flapskulls, "Povus (Flapskulls)" },
+            { InteractionFlag.Povus_Flapskulls, "Povus (Flapskulls)" },*/
             { InteractionFlag.GaveGerruxKimetasGhostKey, "Gave Gerrux Kimeta's Ghost Key" },
             { InteractionFlag.DogEar_KnowsYoureAWarden, "Dog Ear (Knows You're A Warden)" },
-            { InteractionFlag.Povus_RiverTerror, "Povus River Terror" },
+            //{ InteractionFlag.Povus_RiverTerror, "Povus River Terror" },
             { InteractionFlag.ChristmasTree_Povus_1, "Christmas Tree (Povus #1)" },
             { InteractionFlag.ChristmasTree_Povus_2, "Christmas Tree (Povus #2)" },
             { InteractionFlag.ChristmasTree_Povus_3, "Christmas Tree (Povus #3)" },
@@ -3459,6 +3475,8 @@
             { ItemKeyword.Saddlebag, "Saddlebag" },
             { ItemKeyword.Reins, "Reins" },
             { ItemKeyword.Horseshoes, "Horseshoes" },
+            { ItemKeyword.EltibuleArmor, "Eltibule Armor" },
+            { ItemKeyword.Wine, "Wine" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4756,6 +4774,8 @@
             { SelfParticle.NecroHandExplosion, "Necro Hand Explosion" },
             { SelfParticle.NecroBuff, "Necro Buff" },
             { SelfParticle.DeathExplosion, "Death Explosion" },
+            { SelfParticle.MountSpeedup, "Mount Speedup" },
+            { SelfParticle.CalmMount, "Calm Mount" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()

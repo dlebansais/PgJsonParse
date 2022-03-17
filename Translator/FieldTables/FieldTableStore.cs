@@ -485,7 +485,7 @@
             { "Rewards", typeof(PgQuestReward[]) },
             { "PreGiveItems", typeof(PgQuestRewardItem[]) },
             { "TSysLevel", typeof(int) },
-            { "Reward_Gold", typeof(int) },
+            //{ "Reward_Gold", typeof(int) },
             { "Rewards_NamedLootProfile", typeof(string) },
             { "PreGiveRecipes", typeof(string[]) },
             { "Keywords", typeof(string[]) },
@@ -522,6 +522,8 @@
             { "MinFavor", typeof(int) },
             { "AtomicVar", typeof(string) },
             { "Value", typeof(string) },
+            { "Shape", typeof(string) },
+            { "Appearance", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()
@@ -532,7 +534,7 @@
             { "Number", typeof(int) },
             { "InteractionFlags", typeof(string[]) },
             { "ItemName", typeof(string) },
-            { "InteractionFlag", typeof(string) },
+            //{ "InteractionFlag", typeof(string) },
             { "MinAmount", typeof(string) },
             { "MinFavorReceived", typeof(string) },
             { "MaxFavorReceived", typeof(string) },

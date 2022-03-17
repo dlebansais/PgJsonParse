@@ -339,5 +339,8 @@
         TentakillerShock,
         Coax,
         Gallop,
+        SpecialEventMountSpeed,
+        SpecialEventMountAccel,
+        SpecialEventSaddlebag,
     }
 }

@@ -132,5 +132,13 @@
         BodyslamInvincibility,
         ArcaneDebuff,
         UnholyDefensePerm,
+        BlurSmoke,
+        PoisonWeapon,
+        PoisonHit,
+        BloodSplatQuick,
+        PlayingHealingSong,
+        PlayingPowerSong,
+        PlayingDamageSong,
+        MountAccelerate,
     }
 }

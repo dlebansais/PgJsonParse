@@ -51,9 +51,9 @@
             { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
             { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "Number" } },
             { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number", "InternalName" } },
-            { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", "InteractionFlag", "GroupId", "Number" } },
+            { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", /*"InteractionFlag",*/ "GroupId", "Number" } },
             { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "Number", "InternalName" } },
-            { QuestObjectiveType.Have, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number" } },
+            { QuestObjectiveType.Have, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number", "InternalName" } },
             { QuestObjectiveType.Harvest, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "Number" } },
             { QuestObjectiveType.TipPlayer, new List<string>() { "Type", "Description", "MinAmount", "Number" } },
             { QuestObjectiveType.Special, new List<string>() { "Type", "Target", "Description", "MinAmount", "StringParam", "MaxAmount", "Requirements", "GroupId", "Number" } },
@@ -531,9 +531,9 @@
                         case "Target":
                             Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                             break;
-                        case "InteractionFlag":
+                        /*case "InteractionFlag":
                             Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
-                            break;
+                            break;*/
                         case "Description":
                         case "GroupId":
                         case "Number":
@@ -554,8 +554,8 @@
                 if (NewItem.Description.Length == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
 
-                if (!contentTable.ContainsKey("InteractionFlag"))
-                    return Program.ReportFailure(parsedFile, parsedKey, "Missing interaction flag");
+                /*if (!contentTable.ContainsKey("InteractionFlag"))
+                    return Program.ReportFailure(parsedFile, parsedKey, "Missing interaction flag");*/
 
                 item = NewItem;
                 return true;
@@ -669,6 +669,8 @@
                         case "GroupId":
                         case "Number":
                             Result = ParseCommonFields(NewItem, Key, Value);
+                            break;
+                        case "InternalName":
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

@@ -1114,5 +1114,7 @@
         Saddlebag,
         Reins,
         Horseshoes,
+        EltibuleArmor,
+        Wine,
     }
 }

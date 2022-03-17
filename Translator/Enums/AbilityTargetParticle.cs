@@ -42,5 +42,7 @@
         PoisonHit,
         LifeStealSiphon,
         NecroFear,
+        SlashHitSmall,
+        SlashHitMultiSmall,
     }
 }

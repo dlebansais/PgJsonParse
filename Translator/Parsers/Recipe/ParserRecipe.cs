@@ -312,7 +312,10 @@
                     Result = ParseCreateMiningSurvey(EffectParameter, parsedFile, parsedKey, out recipeResult);
                     break;
                 case "PolymorphRabbitPermanentBlue":
-                    Result = ParsePolymorph(EffectName, parsedFile, parsedKey, out recipeResult);
+                    Result = ParsePolymorph(EffectName, parsedFile, parsedKey, "Blue", out recipeResult);
+                    break;
+                case "PolymorphRabbitPermanentPurple":
+                    Result = ParsePolymorph(EffectName, parsedFile, parsedKey, "Purple", out recipeResult);
                     break;
                 case "SendItemToSaddlebag":
                     Result = ParseSendItemToSaddlebag(EffectName, parsedFile, parsedKey, out recipeResult);
@@ -836,9 +839,9 @@
             return Program.ReportFailure($"Unknown whittling '{buffName}'");
         }
 
-        private bool ParsePolymorph(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        private bool ParsePolymorph(string buffName, string parsedFile, string parsedKey, string color, out PgRecipeResultEffect recipeResult)
         {
-            PgRecipeResultPolymorph RecipeResultEffect = new PgRecipeResultPolymorph();
+            PgRecipeResultPolymorph RecipeResultEffect = new PgRecipeResultPolymorph() { Color = color };
 
             recipeResult = RecipeResultEffect;
             return true;

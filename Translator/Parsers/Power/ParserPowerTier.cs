@@ -188,6 +188,9 @@
                 if (!int.TryParse(IdString, out Id))
                     break;
 
+                if (parsedKey == "power_24154" && Id == 3553)
+                    Id = 3547; // Fix combo rip+bat stability -> bat stability icon.
+
                 if (!IconIdList.Contains(Id))
                     IconIdList.Add(Id);
 

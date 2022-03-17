@@ -178,5 +178,6 @@
         Attack_Necromancy_AoE,
         Attack_Horse_Coax,
         Attack_Horse_Calm,
+        Attack_Knife_DualSlash,
     }
 }

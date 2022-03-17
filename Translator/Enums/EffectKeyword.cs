@@ -299,5 +299,7 @@
         PeacemasterGuztokCurse,
         CosmeticPet,
         PlayedOut,
+        NoMountOverride,
+        LiveEvent_ErranaBunny,
     }
 }

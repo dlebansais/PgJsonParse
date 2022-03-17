@@ -88,6 +88,7 @@
             { "Warsmith", "Title_5018" },
             { "GuideEvent_LikeABoss", "Title_5222" },
             { "Event_TurkeyKiller", "Title_5223" },
+            { "GuideEvent_EggsellentHunter", "Title_5209" },
         };
     }
 }

@@ -33,6 +33,8 @@
             { QuestRequirementType.ScriptAtomicMatches, FinishItemScriptAtomicMatches },
             { QuestRequirementType.AreaEventOff, FinishItemAreaEventOff },
             { QuestRequirementType.QuestCompletedRecently, FinishItemQuestCompletedRecently },
+            { QuestRequirementType.GeneralShape, FinishItemGeneralShape },
+            { QuestRequirementType.Appearance, FinishItemAppearance },
         };
 
         private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
@@ -56,6 +58,8 @@
             { QuestRequirementType.ScriptAtomicMatches, new List<string>() { "T", "AtomicVar", "Value" } },
             { QuestRequirementType.AreaEventOff, new List<string>() { "T", "AreaEvent" } },
             { QuestRequirementType.QuestCompletedRecently, new List<string>() { "T", "Quest" } },
+            { QuestRequirementType.GeneralShape, new List<string>() { "T", "Shape" } },
+            { QuestRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
         };
 
         private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
@@ -1011,6 +1015,92 @@
                             break;
                         case "Quest":
                             Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.QuestList.Add(valueQuest), Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemGeneralShape(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRequirementGeneralShape NewItem = new PgQuestRequirementGeneralShape();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Shape":
+                            Result = SetStringProperty((string valueString) => NewItem.Shape = valueString, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure("Unexpected failure");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishItemAppearance(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgQuestRequirementAppearance NewItem = new PgQuestRequirementAppearance();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Appearance":
+                            Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => NewItem.Appearance = valueEnum, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

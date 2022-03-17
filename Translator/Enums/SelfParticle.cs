@@ -16,5 +16,7 @@
         NecroHandExplosion,
         NecroBuff,
         DeathExplosion,
+        MountSpeedup,
+        CalmMount,
     }
 }

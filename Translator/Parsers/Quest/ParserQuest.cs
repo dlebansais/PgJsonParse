@@ -114,9 +114,9 @@
                     case "TSysLevel":
                         Result = SetIntProperty((int valueInt) => RawTSysLevel = valueInt, Value);
                         break;
-                    case "Reward_Gold":
+                    /*case "Reward_Gold":
                         Result = ParseRewardCurrency(item, Value, parsedFile, parsedKey);
-                        break;
+                        break;*/
                     case "Rewards_NamedLootProfile":
                         Result = ParseRewardNamedLootProfile(item, Value, parsedFile, parsedKey);
                         break;
@@ -334,6 +334,9 @@
                 case "BestowTitle":
                     Result = ParseRewardEffectBestowTitle(item, EffectParameter, parsedFile, parsedKey);
                     break;
+                case "BestowRecipe":
+                    Result = ParseRewardEffectBestowRecipe(item, EffectParameter, parsedFile, parsedKey);
+                    break;
                 case "LearnAbility":
                     Result = ParseRewardAbility(item, EffectParameter, parsedFile, parsedKey);
                     break;
@@ -392,6 +395,18 @@
                 effectParameter = ParserPlayerTitle.TitleToKeyMap[effectParameter];
 
             return Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => AddRewardEffectPlayerTitle(item, valuePlayerTitle), effectParameter);
+        }
+
+        private bool ParseRewardEffectBestowRecipe(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+        {
+            PgRecipe ParsedRecipe = null!;
+            if (!Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, effectParameter))
+                return false;
+
+            PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe = ParsedRecipe };
+            ParsingContext.AddSuplementaryObject(NewReward);
+            item.QuestRewardList.Add(NewReward);
+            return true;
         }
 
         private static void AddRewardEffectPlayerTitle(PgQuest item, PgPlayerTitle valuePlayerTitle)

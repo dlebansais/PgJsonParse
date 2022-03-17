@@ -21,5 +21,7 @@
         ScriptAtomicMatches,
         AreaEventOff,
         QuestCompletedRecently,
+        GeneralShape,
+        Appearance,
     }
 }
