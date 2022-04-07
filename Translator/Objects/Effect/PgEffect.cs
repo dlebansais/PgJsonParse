@@ -4,7 +4,6 @@
 
     public class PgEffect : PgObject
     {
-        public string Key { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }

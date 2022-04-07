@@ -243,7 +243,7 @@
                         case "T":
                             break;
                         case "Quest":
-                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.QuestList.Add(valueQuest), Value);
+                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.QuestList.Add(valueQuest.Key), Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -1014,7 +1014,7 @@
                         case "T":
                             break;
                         case "Quest":
-                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.QuestList.Add(valueQuest), Value);
+                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.QuestList.Add(valueQuest.Key), Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

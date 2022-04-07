@@ -816,10 +816,15 @@
 
         private static List<string> GetCombatSkillList(List<object> objectList)
         {
+            Dictionary<string, PgSkill> SkillTable = new();
+            foreach (object Item in objectList)
+                if (Item is PgSkill AsSkill)
+                    SkillTable.Add(AsSkill.Key, AsSkill);
+
             List<string> KeyList = new List<string>();
 
             foreach (object Item in objectList)
-                if (Item is PgSkill AsSkill && IsCombatSkill(AsSkill))
+                if (Item is PgSkill AsSkill && IsCombatSkill(AsSkill, SkillTable))
                     KeyList.Add(AsSkill.Key);
 
             return KeyList;
@@ -838,6 +843,11 @@
 
         private static Dictionary<object, List<string>> GetCombatSubskillTable(List<object> objectList)
         {
+            Dictionary<string, PgSkill> SkillTable = new();
+            foreach (object Item in objectList)
+                if (Item is PgSkill AsSkill)
+                    SkillTable.Add(AsSkill.Key, AsSkill);
+
             List<PgSkill> SubskillList = new List<PgSkill>();
             List<PgSkill> CombatSkillList = new List<PgSkill>();
             Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
@@ -845,10 +855,10 @@
             foreach (object Item in objectList)
                 if (Item is PgSkill AsSkill)
                 {
-                    if (IsCombatSkill(AsSkill))
+                    if (IsCombatSkill(AsSkill, SkillTable))
                         CombatSkillList.Add(AsSkill);
 
-                    if (IsCombatSubskill(AsSkill))
+                    if (IsCombatSubskill(AsSkill, SkillTable))
                     {
                         SubskillList.Add(AsSkill);
                         KeyTable.Add(AsSkill.Key, new List<string>());
@@ -857,20 +867,20 @@
 
             foreach (PgSkill Subskill in SubskillList)
                 foreach (PgSkill Skill in CombatSkillList)
-                    if (Subskill.ParentSkillList.Contains(Skill))
+                    if (Subskill.ParentSkillList.Contains(Skill.Key))
                         KeyTable[Subskill.Key].Add(Skill.Key);
 
             return KeyTable;
         }
 
-        public static bool IsCombatSkill(PgSkill skill)
+        public static bool IsCombatSkill(PgSkill skill, Dictionary<string, PgSkill> skillTable)
         {
-            return (skill.IsCombatSkill || skill.ParentSkillList.Exists((PgSkill item) => IsCombatSkill(item))) && skill.AssociationTablePower.Count > 0;
+            return (skill.IsCombatSkill || skill.ParentSkillList.Exists((string key) => IsCombatSkill(skillTable[key], skillTable))) && skill.AssociationTablePower.Count > 0;
         }
 
-        private static bool IsCombatSubskill(PgSkill skill)
+        private static bool IsCombatSubskill(PgSkill skill, Dictionary<string, PgSkill> skillTable)
         {
-            return skill.ParentSkillList.Exists((PgSkill item) => IsCombatSkill(item)) && skill.AssociationTablePower.Count > 0;
+            return skill.ParentSkillList.Exists((string key) => IsCombatSkill(skillTable[key], skillTable)) && skill.AssociationTablePower.Count > 0;
         }
 
         private static Dictionary<object, List<string>> GetItemBySlotTable(List<object> objectList)

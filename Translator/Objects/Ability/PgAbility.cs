@@ -4,7 +4,6 @@
 
     public class PgAbility : PgObject
     {
-        public string Key { get; set; } = string.Empty;
         public string? AbilityGroup_Key { get; set; }
         public AbilityAnimation Animation { get; set; }
         public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();

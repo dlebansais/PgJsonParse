@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgQuestCollection : List<PgQuest>
+    public class PgQuestCollection : List<string>
     {
     }
 }

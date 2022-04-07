@@ -18,6 +18,7 @@
         public static int SkillIconId { get; } = 103;
         public static int KillIconId { get; } = 3402;
 
+        public string Key { get; set; } = string.Empty;
         public List<string> LinkList { get; set; } = new List<string>();
 
         public abstract int ObjectIconId { get; }

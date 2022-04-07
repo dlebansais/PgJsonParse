@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgItemCollection : List<PgItem>
+    public class PgItemCollection : List<string>
     {
     }
 }

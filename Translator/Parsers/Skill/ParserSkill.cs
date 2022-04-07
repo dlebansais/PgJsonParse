@@ -94,7 +94,7 @@
                         Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
                         break;
                     case "Parents":
-                        Result = Inserter<PgSkill>.AddArrayByKey(item.ParentSkillList, Value);
+                        Result = Inserter<PgSkill>.AddPgObjectArrayByKey<PgSkill>(item.ParentSkillList, Value);
                         break;
                     case "SkipBonusLevelsIfSkillUnlearned":
                         Result = SetBoolProperty((bool valueBool) => item.RawSkipBonusLevelsIfSkillUnlearned = valueBool, Value);
@@ -186,16 +186,11 @@
 
         private bool ParseCompatibleCombatSkills(PgSkill item, object value, string parsedFile, string parsedKey)
         {
-            if (!Inserter<PgSkill>.AddArrayByKey(item.CompatibleCombatSkillList, value))
+            if (!Inserter<PgSkill>.AddPgObjectArrayByKey<PgSkill>(item.CompatibleCombatSkillList, value))
                 return false;
 
-            item.CompatibleCombatSkillList.Sort(SortSkillByKey);
+            item.CompatibleCombatSkillList.Sort();
             return true;
-        }
-
-        private static int SortSkillByKey(PgSkill skill1, PgSkill skill2)
-        {
-            return string.Compare(skill1.Key, skill2.Key);
         }
 
         private bool ParseInteractionFlagLevelCaps(PgSkill item, object value, string parsedFile, string parsedKey)

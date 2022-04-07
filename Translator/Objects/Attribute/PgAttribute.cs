@@ -15,7 +15,6 @@
         public static PgAttribute BOOST_ANIMALPETHEAL_SENDER { get; } = new PgAttribute() { Key = "BOOST_ANIMALPETHEAL_SENDER" };
         public static PgAttribute MONSTER_COMBAT_XP_VALUE { get; } = new PgAttribute() { Key = "MONSTER_COMBAT_XP_VALUE" };
 
-        public string Key { get; set; } = string.Empty;
         public string Label { get; set; } = string.Empty;
         public List<int> IconIdList { get; set; } = new List<int>();
         public string Tooltip { get; set; } = string.Empty;

@@ -15,6 +15,11 @@
 
         public void AnalyzeCachedData(List<ItemSlot> validSlotList, List<object> objectList, Dictionary<string, PgModEffect> existingPowerKeyToCompleteEffectTable, Dictionary<string, PgModEffect> existingEffectKeyToCompleteEffectTable)
         {
+            Dictionary<string, PgSkill> SkillTable = new();
+            foreach (object Item in objectList)
+                if (Item is PgSkill AsSkill)
+                    SkillTable.Add(AsSkill.Key, AsSkill);
+
             List<PgSkill> SkillList = new List<PgSkill>();
 
             foreach (object Item in objectList)
@@ -30,12 +35,12 @@
                         PowerObjectKeyList.Add(AsPower.Key);
                         break;
                     case PgSkill AsSkill:
-                        if (Generate.IsCombatSkill(AsSkill))
+                        if (Generate.IsCombatSkill(AsSkill, SkillTable))
                             SkillList.Add(AsSkill);
                         break;
                 }
 
-            InitValidAbilityList();
+            InitValidAbilityList(SkillTable);
             FilterValidPowers(validSlotList, SkillList, out _, out List<PgPower> PowerSimpleEffectList);
             FilterValidEffects(out Dictionary<string, Dictionary<string, List<PgEffect>>> AllEffectTable);
             FindAbilitiesWithMatchingEffect();
@@ -89,7 +94,7 @@
                 CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList, existingPowerKeyToCompleteEffectTable, existingEffectKeyToCompleteEffectTable);
         }
 
-        private void InitValidAbilityList()
+        private void InitValidAbilityList(Dictionary<string, PgSkill> skillTable)
         {
             ValidAbilityList = new List<PgAbility>();
 
@@ -99,7 +104,7 @@
                 string Skill_Key = Ability.Skill_Key ?? throw new NullReferenceException();
                 PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
-                if (!Generate.IsCombatSkill(AbilitySkill) && AbilitySkill.Key != "Crossbow")
+                if (!Generate.IsCombatSkill(AbilitySkill, skillTable) && AbilitySkill.Key != "Crossbow")
                     continue;
 
                 ValidAbilityList.Add(Ability);

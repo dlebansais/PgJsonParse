@@ -4,7 +4,6 @@
 
     public class PgLoreBook : PgObject
     {
-        public string Key { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string LocationHint { get; set; } = string.Empty;
         public PgLoreBookInfoCategory Category { get; set; } = null!;

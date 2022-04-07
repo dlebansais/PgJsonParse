@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgSkillCollection : List<PgSkill>
+    public class PgSkillCollection : List<string>
     {
     }
 }

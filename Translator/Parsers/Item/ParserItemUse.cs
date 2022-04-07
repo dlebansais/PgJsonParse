@@ -60,10 +60,10 @@
                 if (!Inserter<PgRecipe>.SetItemByKey((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, Key))
                     return false;
 
-                if (item.RecipeList.Contains(ParsedRecipe))
+                if (item.RecipeList.Contains(ParsedRecipe.Key))
                     return Program.ReportFailure(parsedFile, parsedKey, $"Recipe '{Key}' already listed");
 
-                item.RecipeList.Add(ParsedRecipe);
+                item.RecipeList.Add(ParsedRecipe.Key);
             }
 
             return true;

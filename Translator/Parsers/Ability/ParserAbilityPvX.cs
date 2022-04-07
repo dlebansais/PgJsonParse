@@ -70,37 +70,37 @@
                         Result = SetFloatProperty((float valueFloat) => item.RawAccuracy = valueFloat, Value);
                         break;
                     case "AttributesThatDeltaDamage":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaDamageList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaDamageList, Value);
                         break;
                     case "AttributesThatModDamage":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModDamageList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModDamageList, Value);
                         break;
                     case "AttributesThatModBaseDamage":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModBaseDamageList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModBaseDamageList, Value);
                         break;
                     case "AttributesThatDeltaTaunt":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaTauntList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaTauntList, Value);
                         break;
                     case "AttributesThatModTaunt":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModTauntList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModTauntList, Value);
                         break;
                     case "AttributesThatDeltaRage":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaRageList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaRageList, Value);
                         break;
                     case "AttributesThatModRage":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModRageList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModRageList, Value);
                         break;
                     case "AttributesThatDeltaRange":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaRangeList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaRangeList, Value);
                         break;
                     case "AttributesThatDeltaAccuracy":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaAccuracyList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaAccuracyList, Value);
                         break;
                     case "AttributesThatModCritDamage":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModCritDamageList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModCritDamageList, Value);
                         break;
                     case "AttributesThatDeltaTempTaunt":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaTempTauntList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaTempTauntList, Value);
                         break;
                     case "SpecialValues":
                         Result = Inserter<PgSpecialValue>.AddKeylessArray(item.SpecialValueList, Value);

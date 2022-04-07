@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgRecipeCollection : List<PgRecipe>
+    public class PgRecipeCollection : List<string>
     {
     }
 }

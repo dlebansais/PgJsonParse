@@ -7,7 +7,6 @@
         public static PgSkill Unknown { get; } = new PgSkill() { Name = "Unknown" };
         public static PgSkill AnySkill { get; } = new PgSkill() { Name = "Any Skill", Key = "AnySkill" };
 
-        public string Key { get; set; } = string.Empty;
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; set; }
         public string Description { get; set; } = string.Empty;

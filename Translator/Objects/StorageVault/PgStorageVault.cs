@@ -4,7 +4,6 @@
 
     public class PgStorageVault : PgObject
     {
-        public string Key { get; set; } = string.Empty;
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; set; }
         public string NpcFriendlyName { get; set; } = string.Empty;

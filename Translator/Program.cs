@@ -867,6 +867,7 @@
                 return;
 
             int StartIndex = 0;
+            List<PgItem> SaleList = new();
 
             for (; ;)
             {
@@ -906,7 +907,10 @@
                         }
 
                     if (ItemMatch != null)
-                        npc.SaleList.Add(ItemMatch);
+                    {
+                        SaleList.Add(ItemMatch);
+                        npc.SaleList.Add(ItemMatch.Key);
+                    }
                     else if (!ItemName.StartsWith("Title:"))
                         Debug.WriteLine($"{ItemName} NOT FOUND, parsed from: {Line}, Npc is {npc}");
                 }
@@ -916,12 +920,12 @@
                 StartIndex = EndIndex;
             }
 
-            if (npc.SaleList.Count > 0)
+            if (SaleList.Count > 0)
             {
                 npc.WikiAddress = address;
 
-                WriteSaleLine($"\n{npc.ObjectName}: {npc.SaleList.Count} item(s) sold");
-                foreach (PgItem Item in npc.SaleList)
+                WriteSaleLine($"\n{npc.ObjectName}: {SaleList.Count} item(s) sold");
+                foreach (PgItem Item in SaleList)
                     WriteSaleLine($"  {Item.ObjectName}");
             }
         }

@@ -121,7 +121,7 @@
                         Result = ParseRewardNamedLootProfile(item, Value, parsedFile, parsedKey);
                         break;
                     case "PreGiveRecipes":
-                        Result = Inserter<PgRecipe>.AddArrayByInternalName(item.PreGiveRecipeList, Value);
+                        Result = Inserter<PgRecipe>.AddPgObjectArrayByInternalName<PgRecipe>(item.PreGiveRecipeList, Value);
                         break;
                     case "Keywords":
                         Result = StringToEnumConversion<QuestKeyword>.TryParseList(Value, item.KeywordList);
@@ -519,7 +519,7 @@
                 if (!Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => ParsedQuest = valueQuest, ValueString))
                     return false;
 
-                item.FollowUpQuestList.Add(ParsedQuest);
+                item.FollowUpQuestList.Add(ParsedQuest.Key);
             }
 
             return true;

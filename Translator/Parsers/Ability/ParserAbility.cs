@@ -40,19 +40,19 @@
                         Result = StringToEnumConversion<AbilityAnimation>.SetEnum((AbilityAnimation valueEnum) => item.Animation = valueEnum, Value);
                         break;
                     case "AttributesThatModAmmoConsumeChance":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModAmmoConsumeChanceList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModAmmoConsumeChanceList, Value);
                         break;
                     case "AttributesThatDeltaDelayLoopTime":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaDelayLoopTimeList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaDelayLoopTimeList, Value);
                         break;
                     case "AttributesThatDeltaPowerCost":
                         Result = ParseCostDeltaAttribute(item, Value, parsedFile, parsedKey);
                         break;
                     case "AttributesThatDeltaResetTime":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaResetTimeList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaResetTimeList, Value);
                         break;
                     case "AttributesThatModPowerCost":
-                        Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatModPowerCostList, Value);
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModPowerCostList, Value);
                         break;
                     case "CanBeOnSidebar":
                         Result = SetBoolProperty((bool valueBool) => item.RawCanBeOnSidebar = valueBool, Value);
@@ -250,7 +250,7 @@
                     ValueCopy.Add(ValueKey);
             }
 
-            bool Result = Inserter<PgAttribute>.AddArrayByKey(item.AttributesThatDeltaPowerCostList, ValueCopy);
+            bool Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaPowerCostList, ValueCopy);
             return Result;
         }
 

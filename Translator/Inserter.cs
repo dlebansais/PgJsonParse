@@ -74,6 +74,20 @@
             return AddArrayByString(ParsingContext.ObjectKeyTable, linkList, value);
         }
 
+        public static bool AddPgObjectArrayByKey<TObject>(List<string> keyList, object value)
+            where TObject : PgObject
+        {
+            List<T> LinkList = new();
+            if (!AddArrayByString(ParsingContext.ObjectKeyTable, LinkList, value))
+                return false;
+
+            foreach (T Item in LinkList)
+                if (Item is TObject ItemObject)
+                    keyList.Add(ItemObject.Key);
+
+            return true;
+        }
+
         public static bool AddArrayByName(List<T> linkList, object value)
         {
             return AddArrayByString(ParsingContext.ObjectNameTable, linkList, value);
@@ -82,6 +96,20 @@
         public static bool AddArrayByInternalName(List<T> linkList, object value)
         {
             return AddArrayByString(ParsingContext.ObjectInternalNameTable, linkList, value);
+        }
+
+        public static bool AddPgObjectArrayByInternalName<TObject>(List<string> keyList, object value)
+            where TObject : PgObject
+        {
+            List<T> LinkList = new();
+            if (!AddArrayByString(ParsingContext.ObjectInternalNameTable, LinkList, value))
+                return false;
+
+            foreach (T Item in LinkList)
+                if (Item is TObject ItemObject)
+                    keyList.Add(ItemObject.Key);
+
+            return true;
         }
 
         public static bool AddArrayByString(Dictionary<Type, Dictionary<string, ParsingContext>> table, List<T> linkList, object value)

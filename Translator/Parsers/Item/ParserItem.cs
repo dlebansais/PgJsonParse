@@ -179,7 +179,7 @@
                 if (!Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, RecipeInternalName))
                     return false;
 
-                item.BestowRecipeList.Add(ParsedRecipe);
+                item.BestowRecipeList.Add(ParsedRecipe.Key);
             }
 
             return true;

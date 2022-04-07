@@ -4,7 +4,6 @@
 
     public class PgItem : PgObject
     {
-        public string Key { get; set; } = string.Empty;
         public PgRecipeCollection BestowRecipeList { get; set; } = new PgRecipeCollection();
         public string? BestowAbility_Key { get; set; }
         public string? BestowQuest_Key { get; set; }

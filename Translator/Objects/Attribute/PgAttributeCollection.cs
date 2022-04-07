@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgAttributeCollection : List<PgAttribute>
+    public class PgAttributeCollection : List<string>
     {
     }
 }
