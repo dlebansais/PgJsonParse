@@ -2,7 +2,7 @@
 {
     public class PgQuestPreGiveEffectItem : PgQuestPreGiveEffect
     {
-        public PgItem Item { get; set; } = null!;
+        public string? Item_Key { get; set; }
         public QuestGroup QuestGroup { get; set; }
     }
 }

@@ -19,7 +19,7 @@
         public string RequirementDescription { get; set; } = string.Empty;
         public MapAreaName Grouping { get; set; }
         public List<ItemKeyword> RequiredItemKeywordList { get; set; } = new List<ItemKeyword>();
-        public PgAttribute? SlotAttribute { get; set; }
+        public string? SlotAttribute_Key { get; set; }
         public PgStorageEventList? EventLevels { get; set; }
 
         public override int ObjectIconId { get { return PgObject.StorageVaultIconId; } }

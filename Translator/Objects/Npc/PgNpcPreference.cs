@@ -7,13 +7,20 @@
         public List<ItemKeyword> ItemKeywordList { get; set; } = new List<ItemKeyword>();
         public int MinValueRequirement { get { return RawMinValueRequirement.HasValue ? RawMinValueRequirement.Value : 0; } }
         public int? RawMinValueRequirement { get; set; }
-        public PgSkill? SkillRequirement { get; set; }
+        public string? SkillRequirement_Key { get; set; }
         public ItemSlot SlotRequirement { get; set; }
         public RecipeItemKey MinRarityRequirement { get; set; }
         public RecipeItemKey RarityRequirement { get; set; }
         public float Preference { get { return RawPreference.HasValue ? RawPreference.Value : 0; } }
         public float? RawPreference { get; set; }
         public Favor PreferenceFavor { get; set; }
+        private PgSkill? SkillRequirementRef;
+
+        public void SetSkillRequirement(PgSkill skill)
+        {
+            SkillRequirement_Key = skill.Key;
+            SkillRequirementRef = skill;
+        }
 
         public Dictionary<PgItem, int> ItemValueTable { get; set; } = new Dictionary<PgItem, int>();
 
@@ -35,8 +42,8 @@
             if (RawMinValueRequirement.HasValue)
                 AddContent(ref Result, $"MinValue: {RawMinValueRequirement.Value}");
 
-            if (SkillRequirement != null)
-                AddContent(ref Result, $"Skill: {SkillRequirement.Name}");
+            if (SkillRequirement_Key != null && SkillRequirementRef != null)
+                AddContent(ref Result, $"Skill: {SkillRequirementRef.ObjectName}");
 
             if (SlotRequirement != ItemSlot.Internal_None)
                 AddContent(ref Result, $"Slot: {SlotRequirement}");

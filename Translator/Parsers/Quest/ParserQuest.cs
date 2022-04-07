@@ -148,7 +148,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawLevel = valueInt, Value);
                         break;
                     case "WorkOrderSkill":
-                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.WorkOrderSkill = valueSkill, Value, parsedFile, parsedKey);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.WorkOrderSkill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
                         break;
                     case "DisplayedLocation":
                         Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.DisplayedLocation = valueEnum, Value);
@@ -274,7 +274,7 @@
                 if (!(KeyTable[ValueKey].Item is PgRecipe AsLink))
                     return Program.ReportFailure($"Key '{Item}' was found but for the wrong object type");
 
-                PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe = AsLink };
+                PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = AsLink.Key };
                 ParsingContext.AddSuplementaryObject(NewReward);
                 item.QuestRewardList.Add(NewReward);
             }
@@ -289,7 +289,7 @@
             if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, value))
                 return false;
 
-            PgQuestRewardAbility NewReward = new PgQuestRewardAbility() { Ability = ParsedAbility };
+            PgQuestRewardAbility NewReward = new PgQuestRewardAbility() { Ability_Key = ParsedAbility.Key };
             ParsingContext.AddSuplementaryObject(NewReward);
             item.QuestRewardList.Add(NewReward);
 
@@ -359,7 +359,7 @@
                     Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, effectString);
                     if (Result)
                     {
-                        PgQuestRewardEffect NewReward = new PgQuestRewardEffect() { Effect = ParsedEffect };
+                        PgQuestRewardEffect NewReward = new PgQuestRewardEffect() { Effect_Key = ParsedEffect.Key };
                         ParsingContext.AddSuplementaryObject(NewReward);
                         item.QuestRewardList.Add(NewReward);
                     }
@@ -384,7 +384,7 @@
 
         private static void AddRewardEffectLoreBookKnown(PgQuest item, PgLoreBook valueLoreBook)
         {
-            PgQuestRewardLoreBook NewReward = new PgQuestRewardLoreBook() { LoreBook = valueLoreBook };
+            PgQuestRewardLoreBook NewReward = new PgQuestRewardLoreBook() { LoreBook_Key = valueLoreBook.Key };
             ParsingContext.AddSuplementaryObject(NewReward);
             item.QuestRewardList.Add(NewReward);
         }
@@ -403,7 +403,7 @@
             if (!Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, effectParameter))
                 return false;
 
-            PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe = ParsedRecipe };
+            PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = ParsedRecipe.Key };
             ParsingContext.AddSuplementaryObject(NewReward);
             item.QuestRewardList.Add(NewReward);
             return true;
@@ -411,7 +411,7 @@
 
         private static void AddRewardEffectPlayerTitle(PgQuest item, PgPlayerTitle valuePlayerTitle)
         {
-            PgQuestRewardPlayerTitle NewReward = new PgQuestRewardPlayerTitle() { PlayerTitle = valuePlayerTitle };
+            PgQuestRewardPlayerTitle NewReward = new PgQuestRewardPlayerTitle() { PlayerTitle_Key = valuePlayerTitle.Key };
             ParsingContext.AddSuplementaryObject(NewReward);
             item.QuestRewardList.Add(NewReward);
         }
@@ -441,7 +441,7 @@
             if (!int.TryParse(Split[1], out int XpValue))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}': int expected");
 
-            PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill = ParsedSkill, RawXp = XpValue };
+            PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill_Key = ParsedSkill.Key, RawXp = XpValue };
 
             ParsingContext.AddSuplementaryObject(NewReward);
             item.QuestRewardList.Add(NewReward);
@@ -488,7 +488,7 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Raise to level reward '{effectParameter}': int expected");
 
             PgQuestRewardSkillLevel NewReward = new PgQuestRewardSkillLevel();
-            NewReward.Skill = ParsedSkill;
+            NewReward.Skill_Key = ParsedSkill.Key;
             NewReward.RawLevel = LevelValue;
 
             ParsingContext.AddSuplementaryObject(NewReward);
@@ -590,7 +590,7 @@
                 if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, EffectParameter))
                     return false;
 
-                PgQuestPreGiveEffectLearnAbility NewEffect = new PgQuestPreGiveEffectLearnAbility() { Ability = ParsedAbility };
+                PgQuestPreGiveEffectLearnAbility NewEffect = new PgQuestPreGiveEffectLearnAbility() { Ability_Key = ParsedAbility.Key };
 
                 preGiveEffect = NewEffect;
             }
@@ -616,7 +616,7 @@
                             if (!StringToEnumConversion<QuestGroup>.TryParse(EffectParameter[1], out ParsedQuestGroup))
                                 return false;
 
-                            preGiveEffect = new PgQuestPreGiveEffectItem() { Description = "Create Ilmari War Cache Map", Item = ParsedItem, QuestGroup = ParsedQuestGroup };
+                            preGiveEffect = new PgQuestPreGiveEffectItem() { Description = "Create Ilmari War Cache Map", Item_Key = ParsedItem.Key, QuestGroup = ParsedQuestGroup };
                         }
                         else
                             return Program.ReportFailure(parsedFile, parsedKey, $"Pre-Give effect '{Description}' has wrong format");
@@ -663,19 +663,27 @@
                 if (iconId != 0)
                     break;
 
+                PgAbility Ability;
+                PgItem Item;
+                PgRecipe Recipe;
+                PgSkill Skill;
+
                 switch (QuestReward)
                 {
                     case PgQuestRewardAbility AsRewardAbility:
-                        if (AsRewardAbility.Ability.IconId != 0)
-                            iconId = AsRewardAbility.Ability.IconId;
+                        Ability = ParsingContext.GetParsedAbilityByKey(AsRewardAbility.Ability_Key);
+                        if (Ability.IconId != 0)
+                            iconId = Ability.IconId;
                         break;
                     case PgQuestRewardItem AsRewardItem:
-                        if (AsRewardItem.Item.IconId != 0)
-                            iconId = AsRewardItem.Item.IconId;
+                        Item = ParsingContext.GetParsedItemByKey(AsRewardItem.Item_Key);
+                        if (Item.IconId != 0)
+                            iconId = Item.IconId;
                         break;
                     case PgQuestRewardRecipe AsRewardRecipe:
-                        if (AsRewardRecipe.Recipe.IconId != 0)
-                            iconId = AsRewardRecipe.Recipe.IconId;
+                        Recipe = ParsingContext.GetParsedRecipeByKey(AsRewardRecipe.Recipe_Key);
+                        if (Recipe.IconId != 0)
+                            iconId = Recipe.IconId;
                         break;
                     case PgQuestRewardLoreBook AsRewardLoreBook:
                         if (iconId == 0)
@@ -687,7 +695,10 @@
                         break;
                     case PgQuestRewardSkillXp AsRewardSkillXp:
                         if (iconId == 0)
-                            iconId = ParserSkill.SkillToIcon(AsRewardSkillXp.Skill);
+                        {
+                            Skill = ParsingContext.GetParsedSkillByKey(AsRewardSkillXp.Skill_Key);
+                            iconId = ParserSkill.SkillToIcon(Skill);
+                        }
                         break;
                 }
             }
@@ -721,39 +732,69 @@
                 if (iconId != 0)
                     break;
 
+                PgItem Item;
+
                 switch (QuestObjective)
                 {
                     case PgQuestObjectiveCollectItem AsObjectiveCollectItem:
-                        if (AsObjectiveCollectItem.Item != null && AsObjectiveCollectItem.Item.IconId != 0)
-                            iconId = AsObjectiveCollectItem.Item.IconId;
+                        if (AsObjectiveCollectItem.Item_Key != null)
+                        {
+                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveCollectItem.Item_Key);
+                            if (Item.IconId != 0)
+                                iconId = Item.IconId;
+                        }
                         break;
                     case PgQuestObjectiveDeliver AsObjectiveDeliver:
-                        if (AsObjectiveDeliver.Item != null && AsObjectiveDeliver.Item.IconId != 0)
-                            iconId = AsObjectiveDeliver.Item.IconId;
+                        if (AsObjectiveDeliver.Item_Key != null)
+                        {
+                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveDeliver.Item_Key);
+                            if (Item.IconId != 0)
+                                iconId = Item.IconId;
+                        }
                         break;
                     case PgQuestObjectiveGuildGiveItem AsObjectiveGuildGiveItem:
-                        if (AsObjectiveGuildGiveItem.Item != null && AsObjectiveGuildGiveItem.Item.IconId != 0)
-                            iconId = AsObjectiveGuildGiveItem.Item.IconId;
+                        if (AsObjectiveGuildGiveItem.Item_Key != null)
+                        {
+                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveGuildGiveItem.Item_Key);
+                            if (Item.IconId != 0)
+                                iconId = Item.IconId;
+                        }
                         break;
                     case PgQuestObjectiveHarvestItem AsObjectiveHarvestItem:
-                        if (AsObjectiveHarvestItem.Item != null && AsObjectiveHarvestItem.Item.IconId != 0)
-                            iconId = AsObjectiveHarvestItem.Item.IconId;
+                        if (AsObjectiveHarvestItem.Item_Key != null)
+                        {
+                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveHarvestItem.Item_Key);
+                            if (Item.IconId != 0)
+                                iconId = Item.IconId;
+                        }
                         break;
                     case PgQuestObjectiveHaveItem AsObjectiveHaveItem:
-                        if (AsObjectiveHaveItem.Item != null && AsObjectiveHaveItem.Item.IconId != 0)
-                            iconId = AsObjectiveHaveItem.Item.IconId;
+                        if (AsObjectiveHaveItem.Item_Key != null)
+                        {
+                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveHaveItem.Item_Key);
+                            if (Item.IconId != 0)
+                                iconId = Item.IconId;
+                        }
                         break;
                     case PgQuestObjectiveKill AsObjectiveKill:
                         if (AsObjectiveKill.QuestObjectiveRequirementList.Count > 0 && AsObjectiveKill.QuestObjectiveRequirementList[0] is PgQuestObjectiveRequirementUseAbility UseAbilityRequirement)
                             UpdateIconIdFromAbilityKeyword(ref iconId, UseAbilityRequirement.Keyword);
                         break;
                     case PgQuestObjectiveLootItem AsObjectiveLootItem:
-                        if (AsObjectiveLootItem.Item != null && AsObjectiveLootItem.Item.IconId != 0)
-                            iconId = AsObjectiveLootItem.Item.IconId;
+                        if (AsObjectiveLootItem.Item_Key != null)
+                        {
+                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveLootItem.Item_Key);
+                            if (Item.IconId != 0)
+                                iconId = Item.IconId;
+                        }
                         break;
                     case PgQuestObjectiveScriptedReceiveItem AsObjectiveScriptedReceiveItem:
-                        if (AsObjectiveScriptedReceiveItem.Item != null && AsObjectiveScriptedReceiveItem.Item.IconId != 0)
-                            iconId = AsObjectiveScriptedReceiveItem.Item.IconId;
+                        if (AsObjectiveScriptedReceiveItem.Item_Key != null)
+                        {
+                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveScriptedReceiveItem.Item_Key);
+                            if (Item.IconId != 0)
+                                iconId = Item.IconId;
+                        }
                         break;
                     case PgQuestObjectiveUseAbility AsObjectiveUseAbility:
                         UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbility.Keyword);
@@ -762,8 +803,12 @@
                         UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbilityOnTargets.Keyword);
                         break;
                     case PgQuestObjectiveUseItem AsObjectiveUseItem:
-                        if (AsObjectiveUseItem.Item != null && AsObjectiveUseItem.Item.IconId != 0)
-                            iconId = AsObjectiveUseItem.Item.IconId;
+                        if (AsObjectiveUseItem.Item_Key != null)
+                        {
+                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveUseItem.Item_Key);
+                            if (Item.IconId != 0)
+                                iconId = Item.IconId;
+                        }
                         break;
                     case PgQuestObjectiveUseRecipe AsObjectiveUseRecipe:
                         UpdateIconIdFromRecipeKeyword(ref iconId, AsObjectiveUseRecipe.Target);

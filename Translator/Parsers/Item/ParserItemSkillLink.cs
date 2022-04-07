@@ -37,10 +37,10 @@
                 if (!SetIntProperty((int valueInt) => ParsedLevel = valueInt, Value))
                     return false;
 
-                if (item.SkillTable.ContainsKey(ParsedSkill))
+                if (item.SkillTable.ContainsKey(ParsedSkill.Key))
                     return Program.ReportFailure(parsedFile, parsedKey, $"Skill {Key} already parsed in skill link");
 
-                item.SkillTable.Add(ParsedSkill, ParsedLevel);
+                item.SkillTable.Add(ParsedSkill.Key, ParsedLevel);
             }
 
             return true;

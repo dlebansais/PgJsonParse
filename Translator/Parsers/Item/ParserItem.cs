@@ -25,7 +25,7 @@
             bool Result = true;
             Dictionary<ItemKeyword, List<float>> KeywordTable = new Dictionary<ItemKeyword, List<float>>();
             List<string> KeywordValueList = new List<string>();
-            Dictionary<PgSkill, int> SkillRequirementTable = new Dictionary<PgSkill, int>();
+            Dictionary<string, int> SkillRequirementTable = new Dictionary<string, int>();
 
             foreach (KeyValuePair<string, object> Entry in contentTable)
             {
@@ -38,10 +38,10 @@
                         Result = ParseBestowRecipeList(item, Value, parsedFile, parsedKey);
                         break;
                     case "BestowAbility":
-                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.BestowAbility = valueAbility, Value);
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.BestowAbility_Key = valueAbility.Key, Value);
                         break;
                     case "BestowQuest":
-                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.BestowQuest = valueQuest, Value);
+                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.BestowQuest_Key = valueQuest.Key, Value);
                         break;
                     case "AllowPrefix":
                         Result = SetBoolProperty((bool valueBool) => item.RawAllowPrefix = valueBool, Value);
@@ -89,7 +89,7 @@
                         Result = ParseKeywordList(item, Value, KeywordTable, KeywordValueList, parsedFile, parsedKey);
                         break;
                     case "MacGuffinQuestName":
-                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.MacGuffinQuest = valueQuest, Value);
+                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.MacGuffinQuest_Key = valueQuest.Key, Value);
                         break;
                     case "MaxCarryable":
                         Result = SetIntProperty((int valueInt) => item.RawMaxCarryable = valueInt, Value);
@@ -134,10 +134,10 @@
                         Result = SetBoolProperty((bool valueBool) => item.RawIsSkillReqsDefaults = valueBool, Value);
                         break;
                     case "BestowTitle":
-                        Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.BestowTitle = valuePlayerTitle, $"Title_{Value}");
+                        Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.BestowTitle_Key = valuePlayerTitle.Key, $"Title_{Value}");
                         break;
                     case "BestowLoreBook":
-                        Result = Inserter<PgLoreBook>.SetItemByKey((PgLoreBook valueLoreBook) => item.BestowLoreBook = valueLoreBook, $"Book_{Value}");
+                        Result = Inserter<PgLoreBook>.SetItemByKey((PgLoreBook valueLoreBook) => item.BestowLoreBook_Key = valueLoreBook.Key, $"Book_{Value}");
                         break;
                     case "Lint_VendorNpc":
                         Result = StringToEnumConversion<WorkOrderSign>.SetEnum((WorkOrderSign valueEnum) => item.LintVendorNpc = valueEnum, Value);
@@ -339,7 +339,7 @@
             if (ParsedEffectFormat != FloatFormat.Standard)
                 return false;
 
-            itemEffect = new PgItemEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+            itemEffect = new PgItemEffectAttribute() { Attribute_Key = ParsedAttribute.Key, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
             return true;
         }
 
@@ -442,19 +442,21 @@
             return true;
         }
 
-        private bool ParseSkillRequirements(PgItem item, object value, Dictionary<PgSkill, int> skillRequirementTable, string parsedFile, string parsedKey)
+        private bool ParseSkillRequirements(PgItem item, object value, Dictionary<string, int> skillRequirementTable, string parsedFile, string parsedKey)
         {
             List<PgItemSkillLink> SkillRequirementList = new List<PgItemSkillLink>();
             if (!Inserter<PgItemSkillLink>.AddKeylessArray(SkillRequirementList, value))
                 return false;
 
             foreach (PgItemSkillLink Item in SkillRequirementList)
-                foreach (KeyValuePair<PgSkill, int> Entry in Item.SkillTable)
+                foreach (KeyValuePair<string, int> Entry in Item.SkillTable)
                 {
-                    if (skillRequirementTable.ContainsKey(Entry.Key))
-                        return Program.ReportFailure($"Skill already added as requirement '{Entry.Key.Key}'");
+                    string SkillKey = Entry.Key;
 
-                    skillRequirementTable.Add(Entry.Key, Entry.Value);
+                    if (skillRequirementTable.ContainsKey(SkillKey))
+                        return Program.ReportFailure($"Skill already added as requirement '{SkillKey}'");
+
+                    skillRequirementTable.Add(SkillKey, Entry.Value);
                 }
 
             return true;

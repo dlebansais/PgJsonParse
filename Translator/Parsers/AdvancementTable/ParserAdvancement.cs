@@ -48,7 +48,7 @@
 
                 if (Result)
                 {
-                    PgAdvancementEffectAttribute NewAdvancementEffectAttribute = new PgAdvancementEffectAttribute() { Attribute = ParsedAttribute, RawValue = ParsedValue };
+                    PgAdvancementEffectAttribute NewAdvancementEffectAttribute = new PgAdvancementEffectAttribute() { Attribute_Key = ParsedAttribute.Key, RawValue = ParsedValue };
 
                     ParsingContext.AddSuplementaryObject(NewAdvancementEffectAttribute);
                     item.EffectAttributeList.Add(NewAdvancementEffectAttribute);

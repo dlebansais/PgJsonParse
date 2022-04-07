@@ -4,7 +4,7 @@
 
     public class PgNpcBarter
     {
-        public Dictionary<PgItem, int> GiveTable { get; set; } = new Dictionary<PgItem, int>();
-        public Dictionary<PgItem, int> ReceiveTable { get; set; } = new Dictionary<PgItem, int>();
+        public Dictionary<string, int> GiveTable { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> ReceiveTable { get; set; } = new Dictionary<string, int>();
     }
 }

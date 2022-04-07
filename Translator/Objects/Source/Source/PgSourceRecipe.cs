@@ -2,6 +2,6 @@
 {
     public class PgSourceRecipe : PgSource
     {
-        public PgRecipe Recipe { get; set; } = null!;
+        public string? Recipe_Key { get; set; }
     }
 }

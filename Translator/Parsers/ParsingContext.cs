@@ -230,5 +230,53 @@
 
             return Result;
         }
+
+        public static PgAbility GetParsedAbilityByKey(string? key)
+        {
+            if (key is not null)
+            {
+                foreach (ParsingContext Context in ContextList)
+                    if (Context.Item is PgAbility AsAbility && AsAbility.Key == key)
+                        return AsAbility;
+            }
+
+            throw new InvalidOperationException($"Expected to find ability with key '{key}'");
+        }
+
+        public static PgItem GetParsedItemByKey(string? key)
+        {
+            if (key is not null)
+            {
+                foreach (ParsingContext Context in ContextList)
+                    if (Context.Item is PgItem AsItem && AsItem.Key == key)
+                        return AsItem;
+            }
+
+            throw new InvalidOperationException($"Expected to find item with key '{key}'");
+        }
+
+        public static PgRecipe GetParsedRecipeByKey(string? key)
+        {
+            if (key is not null)
+            {
+                foreach (ParsingContext Context in ContextList)
+                    if (Context.Item is PgRecipe AsRecipe && AsRecipe.Key == key)
+                        return AsRecipe;
+            }
+
+            throw new InvalidOperationException($"Expected to find ability with key '{key}'");
+        }
+
+        public static PgSkill GetParsedSkillByKey(string? key)
+        {
+            if (key is not null)
+            {
+                foreach (ParsingContext Context in ContextList)
+                    if (Context.Item is PgSkill AsSkill && AsSkill.Key == key)
+                        return AsSkill;
+            }
+
+            throw new InvalidOperationException($"Expected to find skill with key '{key}'");
+        }
     }
 }

@@ -628,7 +628,7 @@
                     else if (Property.Name == "SourceKey")
                     {
                     }
-                    else
+                    else if (StringValue != null)
                         content += GeStringIndexContent(StringValue);
                 }
                 else if (PropertyType.BaseType == typeof(PgObject))
@@ -1234,7 +1234,7 @@
 
             foreach (object Item in objectList)
                 if (Item is PgPower AsPower)
-                    if (AsPower.Skill.Key == skillKey || (AsPower.Skill == PgSkill.AnySkill && skillKey == "AnySkill"))
+                    if (AsPower.Skill_Key == skillKey)
                     {
                         foreach (ItemSlot Slot in AsPower.SlotList)
                         {
@@ -1405,9 +1405,11 @@
             {
                 StringValue = StringValue.Replace("\n", "\\n");
                 StringValue = StringValue.Replace("\"", "\\\"");
-            }
 
-            return $"\"{StringValue}\"";
+                return $"\"{StringValue}\"";
+            }
+            else
+                return "null";
         }
 
         private static string GetEnumValueString(Type type, object value)

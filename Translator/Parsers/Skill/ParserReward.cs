@@ -31,13 +31,13 @@
                 switch (Key)
                 {
                     case "Ability":
-                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Ability = valueAbility, Value);
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Ability_Key = valueAbility.Key, Value);
                         break;
                     case "BonusToSkill":
-                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.BonusLevelSkill = valueSkill, Value, parsedFile, parsedKey);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.BonusLevelSkill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
                         break;
                     case "Recipe":
-                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.Recipe = valueRecipe, Value);
+                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.Recipe_Key = valueRecipe.Key, Value);
                         break;
                     case "Notes":
                         Result = SetStringProperty((string valueString) => item.Notes = Tools.CleanedUpString(valueString), Value);
@@ -53,7 +53,7 @@
 
             if (Result)
             {
-                if (item.Ability == null && item.BonusLevelSkill == null && item.Recipe == null && item.Notes.Length == 0)
+                if (item.Ability_Key == null && item.BonusLevelSkill_Key == null && item.Recipe_Key == null && item.Notes.Length == 0)
                     Result = Program.ReportFailure(parsedFile, parsedKey, "Not enough rewards");
             }
 

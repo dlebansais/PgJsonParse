@@ -50,7 +50,7 @@
 
             if (Result)
             {
-                if (item.ItemKeywordList.Count == 0 && item.SkillRequirement == null && item.MinRarityRequirement == RecipeItemKey.Internal_None && item.RarityRequirement == RecipeItemKey.Internal_None && item.RawMinValueRequirement == null && item.SlotRequirement == ItemSlot.Internal_None)
+                if (item.ItemKeywordList.Count == 0 && item.SkillRequirement_Key == null && item.MinRarityRequirement == RecipeItemKey.Internal_None && item.RarityRequirement == RecipeItemKey.Internal_None && item.RawMinValueRequirement == null && item.SlotRequirement == ItemSlot.Internal_None)
                     return Program.ReportFailure(parsedFile, parsedKey, "Empty preference list");
 
                 if (item.MinRarityRequirement != RecipeItemKey.Internal_None && item.RarityRequirement != RecipeItemKey.Internal_None)
@@ -111,7 +111,7 @@
 
         private bool ParseKeywordAsSkillRequirement(PgNpcPreference item, string value, string parsedFile, string parsedKey)
         {
-            return Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.SkillRequirement = valueSkill, value);
+            return Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.SetSkillRequirement(valueSkill), value);
         }
 
         private bool ParseKeywordAsEquipmentSlot(PgNpcPreference item, string value, string parsedFile, string parsedKey)

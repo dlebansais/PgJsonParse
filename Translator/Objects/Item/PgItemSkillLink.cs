@@ -4,6 +4,6 @@
 
     public class PgItemSkillLink
     {
-        public Dictionary<PgSkill, int> SkillTable { get; set; } = new Dictionary<PgSkill, int>();
+        public Dictionary<string, int> SkillTable { get; set; } = new Dictionary<string, int>();
     }
 }

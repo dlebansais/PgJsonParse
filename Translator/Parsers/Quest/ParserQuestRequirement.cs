@@ -436,7 +436,7 @@
                             Result = SetIntProperty((int valueInt) => NewItem.RawSkillLevel = valueInt, Value);
                             break;
                         case "Skill":
-                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value);
+                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = valueSkill.Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -651,7 +651,7 @@
                         case "T":
                             break;
                         case "Quest":
-                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.Quest = valueQuest, Value);
+                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.Quest_Key = valueQuest.Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

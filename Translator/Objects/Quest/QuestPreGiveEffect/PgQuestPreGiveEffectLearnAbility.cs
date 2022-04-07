@@ -2,6 +2,6 @@
 {
     public class PgQuestPreGiveEffectLearnAbility : PgQuestPreGiveEffect
     {
-        public PgAbility Ability { get; set; } = null!;
+        public string? Ability_Key { get; set; }
     }
 }

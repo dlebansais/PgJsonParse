@@ -419,7 +419,7 @@
                         case "Type":
                             break;
                         case "ItemName":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -589,7 +589,7 @@
                             Result = Inserter<PgQuestObjectiveDeliver>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                             break;
                         case "ItemName":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         case "NumToDeliver":
                             Result = SetIntProperty((int valueInt) => NewItem.RawNumToDeliver = valueInt, Value);
@@ -617,7 +617,7 @@
 
                 if (NewItem.DeliverNpc == null)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing NPC");
-                if (NewItem.Item == null)
+                if (NewItem.Item_Key == null)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing item");
                 if ((NewItem.RawNumToDeliver != null && NewItem.Number > 1) || (NewItem.RawNumToDeliver == null && NewItem.RawNumber.HasValue && NewItem.RawNumber.Value != 1))
                     return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent number to deliver");
@@ -663,7 +663,7 @@
                         case "Type":
                             break;
                         case "ItemName":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -785,7 +785,7 @@
                         case "Type":
                             break;
                         case "ItemName":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
@@ -1007,7 +1007,7 @@
             if (ValueString.StartsWith("Genetics_"))
             {
                 string AnatomySkillName = "Anatomy_" + ValueString.Substring(9);
-                if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.AnatomySkill = valueSkill, AnatomySkillName))
+                if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.AnatomySkill_Key = valueSkill.Key, AnatomySkillName))
                     return false;
             }
             else
@@ -1108,7 +1108,7 @@
                         case "Type":
                             break;
                         case "ItemName":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
@@ -1226,7 +1226,7 @@
                             Result = StringToEnumConversion<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.Target = valueEnum, Value);
                             break;
                         case "Skill":
-                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value);
+                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = valueSkill.Key, Value);
                             break;
                         case "ResultItemKeyword":
                             Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ResultItemKeyword = valueEnum, Value);
@@ -1251,7 +1251,7 @@
                 if (NewItem.Description.Length == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
 
-                if ((NewItem.Skill != null && NewItem.Target != RecipeKeyword.Internal_None) || (NewItem.Skill != null && NewItem.ResultItemKeyword != ItemKeyword.Internal_None) || (NewItem.ResultItemKeyword != ItemKeyword.Internal_None && NewItem.Target != RecipeKeyword.Internal_None))
+                if ((NewItem.Skill_Key != null && NewItem.Target != RecipeKeyword.Internal_None) || (NewItem.Skill_Key != null && NewItem.ResultItemKeyword != ItemKeyword.Internal_None) || (NewItem.ResultItemKeyword != ItemKeyword.Internal_None && NewItem.Target != RecipeKeyword.Internal_None))
                     return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent recipe");
 
                 item = NewItem;
@@ -1390,7 +1390,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                             break;
                         case "AnatomyType":
-                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill = valueSkill, $"Anatomy_{Value}");
+                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill_Key = valueSkill.Key, $"Anatomy_{Value}");
                             break;
                         case "Description":
                         case "GroupId":
@@ -1412,7 +1412,7 @@
                 if (NewItem.Description.Length == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
 
-                if (NewItem.Target.Length == 0 && NewItem.AnatomySkill == null)
+                if (NewItem.Target.Length == 0 && NewItem.AnatomySkill_Key == null)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing target or skill");
 
                 item = NewItem;
@@ -1447,7 +1447,7 @@
                             Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                             break;
                         case "AnatomyType":
-                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill = valueSkill, $"Anatomy_{Value}");
+                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill_Key = valueSkill.Key, $"Anatomy_{Value}");
                             break;
                         case "Description":
                         case "Number":
@@ -1468,7 +1468,7 @@
                 if (NewItem.Description.Length == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
 
-                if (NewItem.Target.Length == 0 && NewItem.AnatomySkill == null)
+                if (NewItem.Target.Length == 0 && NewItem.AnatomySkill_Key == null)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing target or skill");
 
                 item = NewItem;
@@ -1619,7 +1619,7 @@
                             Result = Inserter<PgQuestObjectiveDeliver>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                             break;
                         case "ItemName":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         case "Description":
                         case "GroupId":
@@ -1909,7 +1909,7 @@
                         case "Type":
                             break;
                         case "ItemName":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         case "MonsterTypeTag":
                             Result = StringToEnumConversion<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
@@ -2026,7 +2026,7 @@
                             Result = Inserter<PgQuestObjectiveScriptedReceiveItem>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                             break;
                         case "Item":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         case "Description":
                         case "Number":
@@ -2047,7 +2047,7 @@
                 if (NewItem.Description.Length == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
 
-                if (NewItem.DeliverNpc == null || NewItem.Item == null)
+                if (NewItem.DeliverNpc == null || NewItem.Item_Key == null)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing target NPC or item");
 
                 item = NewItem;
@@ -2138,7 +2138,7 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.TargetQuest = valueQuest, Value);
+                            Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.TargetQuest_Key = valueQuest.Key, Value);
                             break;
                         case "Description":
                         case "IsHiddenUntilEarlierObjectivesComplete":
@@ -2161,7 +2161,7 @@
                 if (NewItem.Description.Length == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
 
-                if (NewItem.TargetQuest == null)
+                if (NewItem.TargetQuest_Key == null)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing quest");
                 if (NewItem.RawNumber.HasValue && NewItem.RawNumber.Value > 1)
                     return Program.ReportFailure(parsedFile, parsedKey, "Too many quests");

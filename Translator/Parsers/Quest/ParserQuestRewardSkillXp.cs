@@ -38,7 +38,7 @@
                 if (!(Value is int XpValue))
                     return Program.ReportFailure($"Value '{Value}' was expected to be an int");
 
-                PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill = ParsedSkill, RawXp = XpValue };
+                PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill_Key = ParsedSkill.Key, RawXp = XpValue };
                 item.Add(NewReward);
             }
 

@@ -6,6 +6,6 @@
         public int? RawLevel { get; set; }
         public int RangeUnlock { get { return RawRangeUnlock.HasValue ? RawRangeUnlock.Value : 0; } }
         public int? RawRangeUnlock { get; set; }
-        public PgSkill Skill { get; set; } = null!;
+        public string? Skill_Key { get; set; }
     }
 }

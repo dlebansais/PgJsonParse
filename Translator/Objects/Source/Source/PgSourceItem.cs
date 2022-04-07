@@ -2,6 +2,6 @@
 {
     public class PgSourceItem : PgSource
     {
-        public PgItem Item { get; set; } = null!;
+        public string? Item_Key { get; set; }
     }
 }

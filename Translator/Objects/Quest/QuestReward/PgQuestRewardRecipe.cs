@@ -2,6 +2,6 @@
 {
     public class PgQuestRewardRecipe : PgQuestReward
     {
-        public PgRecipe Recipe { get; set; } = null!;
+        public string? Recipe_Key { get; set; }
     }
 }

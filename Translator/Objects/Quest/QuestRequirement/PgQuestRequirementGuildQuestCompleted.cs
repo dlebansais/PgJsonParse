@@ -2,6 +2,6 @@
 {
     public class PgQuestRequirementGuildQuestCompleted : PgQuestRequirement
     {
-        public PgQuest Quest { get; set; } = null!;
+        public string? Quest_Key { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Translator
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
@@ -95,8 +96,10 @@
             foreach (string Key in AbilityObjectKeyList)
             {
                 PgAbility Ability = (PgAbility)ParsingContext.ObjectKeyTable[typeof(PgAbility)][Key].Item;
+                string Skill_Key = Ability.Skill_Key ?? throw new NullReferenceException();
+                PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
-                if (!Generate.IsCombatSkill(Ability.Skill) && Ability.Skill.Key != "Crossbow")
+                if (!Generate.IsCombatSkill(AbilitySkill) && AbilitySkill.Key != "Crossbow")
                     continue;
 
                 ValidAbilityList.Add(Ability);
@@ -137,19 +140,20 @@
             if (!IsSlotCompatible(validSlotList, power))
                 return;
 
-            if (power.Skill.Key == "SpiritFox")
+            if (power.Skill_Key == "SpiritFox")
             {
             }
 
-            Debug.Assert(power.Skill == PgSkill.Unknown ||
-                         IsSkillInList(skillList, power.Skill) ||
-                         power.Skill.Key == "Gourmand" ||
-                         power.Skill == PgSkill.AnySkill ||
-                         power.Skill.Key == "Endurance" ||
-                         power.Skill.Key == "ArmorPatching" ||
-                         power.Skill.Key == "ShamanicInfusion");
+            Debug.Assert(power.Skill_Key != null &&
+                         (power.Skill_Key.Length == 0 ||
+                         IsSkillInList(skillList, power.Skill_Key) ||
+                         power.Skill_Key == "Gourmand" ||
+                         power.Skill_Key == PgSkill.AnySkill.Key ||
+                         power.Skill_Key == "Endurance" ||
+                         power.Skill_Key == "ArmorPatching" ||
+                         power.Skill_Key == "ShamanicInfusion"));
 
-            if (power.Skill == PgSkill.Unknown || power.Skill.Key == "Gourmand")
+            if (power.Skill_Key != null && (power.Skill_Key.Length == 0 || power.Skill_Key == "Gourmand"))
                 return;
             if (power.IsUnavailable)
                 return;
@@ -172,10 +176,10 @@
             totalTierCount += TierList.Count;
         }
 
-        private static bool IsSkillInList(List<PgSkill> skillList, PgSkill skill)
+        private static bool IsSkillInList(List<PgSkill> skillList, string skillKey)
         {
             foreach (PgSkill Item in skillList)
-                if (Item == skill)
+                if (Item.Key == skillKey)
                     return true;
 
             return false;
@@ -401,8 +405,8 @@
 
         private void AddAssociatedEffect(PgAbility ability, CombatKeyword keyword, PgEffect effect)
         {
-            if (!ability.AssociatedEffectTable.ContainsKey(keyword))
-                ability.AssociatedEffectTable.Add(keyword, effect);
+            if (!ability.AssociatedEffectKeyTable.ContainsKey(keyword))
+                ability.AssociatedEffectKeyTable.Add(keyword, effect.Key);
         }
 
         private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, List<PgPower> powerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> powerToEffectTable, out List<PgPower> unmatchedPowerList, out List<PgEffect> unmatchedEffectList, out Dictionary<PgPower, List<PgEffect>> candidateEffectTable)
@@ -489,8 +493,8 @@
                 PgPowerTier LastTier = power.TierList[power.TierList.Count - 1];
                 PgPowerEffect FirstEffect = LastTier.EffectList[0];
 
-                if (FirstEffect is PgPowerEffectAttribute AsAttribute && AsAttribute.Attribute != null)
-                    Debug.WriteLine($"Possible mod bug: {AsAttribute.Attribute.Label}");
+                if (FirstEffect is PgPowerEffectAttribute AsAttribute && AsAttribute.Attribute_Key != null)
+                    Debug.WriteLine($"Possible mod bug: key={AsAttribute.Attribute_Key}");
                 else if (FirstEffect is PgPowerEffectSimple AsSimple)
                     Debug.WriteLine($"Possible mod bug: {AsSimple.Description}");
                 return false;
@@ -632,16 +636,16 @@
                 AbilityKeywordList.Contains(AbilityKeyword.SignatureSupport))
                 EffectIconList.Add(108);
 
-            if (AbilityKeywordList.Contains(AbilityKeyword.Sword) && power.Skill.Key == "Sword")
+            if (AbilityKeywordList.Contains(AbilityKeyword.Sword) && power.Skill_Key == "Sword")
                 EffectIconList.Add(108);
 
-            if (AbilityKeywordList.Contains(AbilityKeyword.FireSpell) && power.Skill.Key == "FireMagic")
+            if (AbilityKeywordList.Contains(AbilityKeyword.FireSpell) && power.Skill_Key == "FireMagic")
                 EffectIconList.Add(108);
 
-            if (AbilityKeywordList.Contains(AbilityKeyword.Unarmed) && power.Skill.Key == "Unarmed")
+            if (AbilityKeywordList.Contains(AbilityKeyword.Unarmed) && power.Skill_Key == "Unarmed")
                 EffectIconList.Add(108);
 
-            if (AbilityKeywordList.Contains(AbilityKeyword.Knife) && power.Skill.Key == "Knife")
+            if (AbilityKeywordList.Contains(AbilityKeyword.Knife) && power.Skill_Key == "Knife")
                 EffectIconList.Add(108);
 
             if (AbilityKeywordList.Contains(AbilityKeyword.Melee))
@@ -937,7 +941,10 @@
 
             foreach (PgAbility Item in ValidAbilityList)
             {
-                if (!IsSkillInList(skillList, Item.Skill))
+                string Skill_Key = Item.Skill_Key ?? throw new NullReferenceException();
+                PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
+
+                if (!IsSkillInList(skillList, AbilitySkill.Key))
                     continue;
 
                 string Name = AbilityBaseName(Item);

@@ -2,6 +2,6 @@
 {
     public class PgQuestObjectiveCompleteQuest : PgQuestObjective
     {
-        public PgQuest TargetQuest { get; set; } = null!;
+        public string? TargetQuest_Key { get; set; }
     }
 }

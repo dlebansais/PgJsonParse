@@ -5,7 +5,7 @@
     public class PgAbility : PgObject
     {
         public string Key { get; set; } = string.Empty;
-        public PgAbility? AbilityGroup { get; set; }
+        public string? AbilityGroup_Key { get; set; }
         public AbilityAnimation Animation { get; set; }
         public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; set; } = new PgAttributeCollection();
@@ -49,7 +49,7 @@
         public AbilityPetType PetTypeTagReq { get; set; }
         public int PetTypeTagReqMax { get { return RawPetTypeTagReqMax.HasValue ? RawPetTypeTagReqMax.Value : 0; } }
         public int? RawPetTypeTagReqMax { get; set; }
-        public PgAbility? Prerequisite { get; set; }
+        public string? Prerequisite_Key { get; set; }
         public AbilityProjectile Projectile { get; set; }
         public PgAbilityPvX PvE { get; set; } = null!;
         public PgAbilityPvX? PvP { get; set; }
@@ -57,8 +57,8 @@
         public float? RawResetTime { get; set; }
         public SelfParticle SelfParticle { get; set; }
         public string AmmoDescription { get; set; } = string.Empty;
-        public PgAbility? SharesResetTimerWith { get; set; }
-        public PgSkill Skill { get; set; } = null!;
+        public string? SharesResetTimerWith_Key { get; set; }
+        public string? Skill_Key { get; set; }
         public PgAbilityRequirementCollection SpecialCasterRequirementList { get; set; } = new PgAbilityRequirementCollection();
         public string SpecialCasterRequirementsErrorMessage { get; set; } = string.Empty;
         public string SpecialInfo { get; set; } = string.Empty;
@@ -67,7 +67,7 @@
         public AbilityTarget Target { get; set; }
         public TargetEffectKeyword TargetEffectKeywordReq { get; set; }
         public AbilityTargetParticle TargetParticle { get; set; }
-        public PgAbility? UpgradeOf { get; set; }
+        public string? UpgradeOf_Key { get; set; }
         public bool WorksInCombat { get { return RawWorksInCombat.HasValue && RawWorksInCombat.Value; } }
         public bool? RawWorksInCombat { get; set; }
         public bool WorksUnderwater { get { return RawWorksUnderwater.HasValue && RawWorksUnderwater.Value; } }
@@ -83,8 +83,8 @@
         public float? RawAmmoStickChance { get; set; }
         public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
         public string DigitStrippedName { get; set; } = string.Empty;
-        public Dictionary<CombatKeyword, PgEffect> AssociatedEffectTable { get; set; } = new Dictionary<CombatKeyword, PgEffect>();
-        public PgSkill? TargetTypeTagReq { get; set; }
+        public Dictionary<CombatKeyword, string> AssociatedEffectKeyTable { get; set; } = new Dictionary<CombatKeyword, string>();
+        public string? TargetTypeTagReq_Key { get; set; }
         public bool WorksWhileMounted { get { return RawWorksWhileMounted.HasValue && RawWorksWhileMounted.Value; } }
         public bool? RawWorksWhileMounted { get; set; }
         public SelfPreParticle SelfPreParticle { get; set; }

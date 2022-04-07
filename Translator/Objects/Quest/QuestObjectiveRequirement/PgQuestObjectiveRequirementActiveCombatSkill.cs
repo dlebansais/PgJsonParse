@@ -2,6 +2,6 @@
 {
     public class PgQuestObjectiveRequirementActiveCombatSkill : PgQuestObjectiveRequirement
     {
-        public PgSkill Skill { get; set; } = null!;
+        public string? Skill_Key { get; set; }
     }
 }

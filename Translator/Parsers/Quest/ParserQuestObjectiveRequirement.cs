@@ -291,7 +291,7 @@
                         case "T":
                             break;
                         case "Skill":
-                            Result = ParserSkill.Parse((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value, parsedFile, parsedKey);
+                            Result = ParserSkill.Parse((PgSkill valueSkill) => NewItem.Skill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

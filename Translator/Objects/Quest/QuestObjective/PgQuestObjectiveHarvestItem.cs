@@ -2,7 +2,7 @@
 {
     public class PgQuestObjectiveHarvestItem : PgQuestObjective
     {
-        public PgItem Item { get; set; } = null!;
+        public string? Item_Key { get; set; }
         public PgQuestObjectiveRequirementCollection QuestObjectiveRequirementList { get; set; } = new PgQuestObjectiveRequirementCollection();
     }
 }

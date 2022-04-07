@@ -62,7 +62,7 @@
                         Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.RequiredItemKeywordList);
                         break;
                     case "SlotAttribute":
-                        Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.SlotAttribute = valueAttribute, Value);
+                        Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.SlotAttribute_Key = valueAttribute.Key, Value);
                         break;
                     case "EventLevels":
                         Result = Inserter<PgStorageEventList>.SetItemProperty((PgStorageEventList valueStorageEventLevel) => item.EventLevels = valueStorageEventLevel, Value);

@@ -76,7 +76,7 @@
                     case "Type":
                         break;
                     case "SkillTypeId":
-                        Result = ParserSkill.Parse((PgSkill valueSkill) => NewSource.Skill = valueSkill, Value, parsedFile, parsedKey);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => NewSource.Skill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -111,7 +111,7 @@
                     case "Type":
                         break;
                     case "ItemTypeId":
-                        Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item = valueItem, $"item_{Value}");
+                        Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item_Key = valueItem.Key, $"item_{Value}");
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -184,13 +184,13 @@
 
             if (Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, EffectNameString, ErrorControl.IgnoreIfNotFound))
             {
-                item = new PgSourceRecipe() { Recipe = ParsedRecipe };
+                item = new PgSourceRecipe() { Recipe_Key = ParsedRecipe.Key };
                 return true;
             }
 
             if (Inserter<PgRecipe>.SetItemByName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, EffectNameString, ErrorControl.IgnoreIfNotFound))
             {
-                item = new PgSourceRecipe() { Recipe = ParsedRecipe };
+                item = new PgSourceRecipe() { Recipe_Key = ParsedRecipe.Key };
                 return true;
             }
 
@@ -198,7 +198,7 @@
 
             if (Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, EffectNameString, ErrorControl.IgnoreIfNotFound))
             {
-                item = new PgSourceEffect() { Effect = ParsedEffect };
+                item = new PgSourceEffect() { Effect_Key = ParsedEffect.Key };
                 return true;
             }
 
@@ -212,7 +212,7 @@
 
             if (Inserter<PgEffect>.SetItemByKey((PgEffect valueEffect) => ParsedEffect = valueEffect, EffectKey, ErrorControl.IgnoreIfNotFound))
             {
-                item = new PgSourceEffect() { Effect = ParsedEffect };
+                item = new PgSourceEffect() { Effect_Key = ParsedEffect.Key };
                 return true;
             }
 
@@ -234,7 +234,7 @@
                     case "Type":
                         break;
                     case "QuestId":
-                        Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest = valueQuest, $"quest_{Value}");
+                        Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = valueQuest.Key, $"quest_{Value}");
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

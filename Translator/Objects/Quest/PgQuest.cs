@@ -41,7 +41,7 @@
         public int? RawNumExpectedParticipants { get; set; }
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; set; }
-        public PgSkill? WorkOrderSkill { get; set; }
+        public string? WorkOrderSkill_Key { get; set; }
         public MapAreaName DisplayedLocation { get; set; }
         public PgQuestRewardCollection QuestMidwayGiveItemList { get; set; } = new PgQuestRewardCollection();
 

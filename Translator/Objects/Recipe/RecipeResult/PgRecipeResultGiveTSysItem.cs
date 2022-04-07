@@ -2,6 +2,6 @@
 {
     public class PgRecipeResultGiveTSysItem : PgRecipeResultEffect
     {
-        public PgItem Item { get; set; } = null!;
+        public string? Item_Key { get; set; }
     }
 }

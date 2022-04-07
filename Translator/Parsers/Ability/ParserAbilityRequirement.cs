@@ -396,7 +396,7 @@
                         case "T":
                             break;
                         case "Recipe":
-                            Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe = valueRecipe, Value);
+                            Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = valueRecipe.Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -562,7 +562,7 @@
                         case "T":
                             break;
                         case "Item":
-                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item = valueItem, Value);
+                            Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

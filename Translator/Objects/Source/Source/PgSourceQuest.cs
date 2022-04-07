@@ -2,6 +2,6 @@
 {
     public class PgSourceQuest : PgSource
     {
-        public PgQuest Quest { get; set; } = null!;
+        public string? Quest_Key { get; set; }
     }
 }

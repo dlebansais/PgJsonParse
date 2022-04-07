@@ -141,6 +141,8 @@
             if (ParsedEffectFormat != FloatFormat.Standard)
                 return false;
 
+            PgPowerEffectAttribute NewPowerEffectAttribute;
+
             if (Split.Length == 3)
             {
                 string AttributeSkill = Split[2];
@@ -152,11 +154,13 @@
                 else if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, AttributeSkill))
                     return false;
 
-                powerEffect = new PgPowerEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill = ParsedSkill };
+                NewPowerEffectAttribute = new PgPowerEffectAttribute() { AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill_Key = ParsedSkill.Key };
             }
             else
-                powerEffect = new PgPowerEffectAttribute() { Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+                NewPowerEffectAttribute = new PgPowerEffectAttribute() { AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
 
+            NewPowerEffectAttribute.SetAttribute(ParsedAttribute);
+            powerEffect = NewPowerEffectAttribute;
             return true;
         }
 
@@ -224,7 +228,9 @@
                 Tools.TryParseFloat(description.Substring(startPattern.Length, EndIndex - startPattern.Length), out float ParsedEffect, out FloatFormat ParsedEffectFormat) &&
                 Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, attributeKey))
             {
-                fixedEffect = new PgPowerEffectAttribute() { Description = description, IconIdList = iconIdList, Attribute = ParsedAttribute, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+                PgPowerEffectAttribute NewPowerEffectAttribute = new PgPowerEffectAttribute() { Description = description, IconIdList = iconIdList, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+                NewPowerEffectAttribute.SetAttribute(ParsedAttribute);
+                fixedEffect = NewPowerEffectAttribute;
                 return true;
             }
             else

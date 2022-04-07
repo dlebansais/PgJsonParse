@@ -207,9 +207,9 @@
             foreach (PgLevelCapInteraction Item in ParsedLevelCapInteractionList.List)
             {
                 int Level = Item.Level;
-                PgSkill Skill = Item.Skill;
+                string? SkillKey = Item.Skill_Key;
 
-                PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementLevelCapInteraction() { RawLevel = Level, Skill = Skill };
+                PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementLevelCapInteraction() { RawLevel = Level, Skill_Key = SkillKey };
 
                 ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
                 item.SkillAdvancementList.Add(NewSkillAdvancement);
@@ -318,30 +318,30 @@
             {
                 int Level = Reward.RewardLevel;
                 List<Race> RaceRestrictionList = Reward.RaceRestrictionList;
-                PgAbility? Ability = Reward.Ability;
-                PgSkill? BonusLevelSkill = Reward.BonusLevelSkill;
-                PgRecipe? Recipe = Reward.Recipe;
+                string? AbilityKey = Reward.Ability_Key;
+                string? BonusLevelSkillKey = Reward.BonusLevelSkill_Key;
+                string? RecipeKey = Reward.Recipe_Key;
                 string Notes = Reward.Notes;
 
-                if (Ability != null)
+                if (AbilityKey != null)
                 {
-                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardAbility() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Ability = Ability };
+                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardAbility() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Ability_Key = AbilityKey };
 
                     ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
                     item.SkillAdvancementList.Add(NewSkillAdvancement);
                 }
 
-                if (BonusLevelSkill != null)
+                if (BonusLevelSkillKey != null)
                 {
-                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardBonusLevel() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, BonusLevelSkill = BonusLevelSkill };
+                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardBonusLevel() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, BonusLevelSkill_Key = BonusLevelSkillKey };
 
                     ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
                     item.SkillAdvancementList.Add(NewSkillAdvancement);
                 }
 
-                if (Recipe != null)
+                if (RecipeKey != null)
                 {
-                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardRecipe() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Recipe = Recipe };
+                    PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardRecipe() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Recipe_Key = RecipeKey };
 
                     ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
                     item.SkillAdvancementList.Add(NewSkillAdvancement);
@@ -394,7 +394,7 @@
                 string PowerKey = Entry.Key;
                 PgPower Power = (PgPower)Entry.Value.Item;
 
-                if (Power.Skill != skill)
+                if (Power.Skill_Key != skill.Key)
                     continue;
                 if (Power.IsUnavailable)
                     continue;
@@ -418,8 +418,10 @@
             {
                 string AbilityKey = Entry.Key;
                 PgAbility Ability = (PgAbility)Entry.Value.Item;
+                string Skill_Key = Ability.Skill_Key ?? throw new NullReferenceException();
+                PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
-                if (Ability.Skill != skill)
+                if (AbilitySkill != skill)
                     continue;
                 if (Ability.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable) && Ability.Name != "Sword Slash")
                     continue;
@@ -481,7 +483,10 @@
                     break;
 
                 PgAbility Ability = (PgAbility)Entry.Value.Item;
-                if (Ability.Skill == skill && Ability.IconId != 0)
+                string Skill_Key = Ability.Skill_Key ?? throw new NullReferenceException();
+                PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
+
+                if (AbilitySkill == skill && Ability.IconId != 0)
                 {
                     if (Ability.KeywordList.Contains(AbilityKeyword.BasicAttack))
                         iconId = Ability.IconId;
@@ -506,7 +511,7 @@
                     break;
 
                 PgRecipe Recipe = (PgRecipe)Entry.Value.Item;
-                if (Recipe.Skill == skill && Recipe.IconId != 0)
+                if (Recipe.Skill_Key == skill.Key && Recipe.IconId != 0)
                     iconId = Recipe.IconId;
             }
         }
@@ -525,8 +530,8 @@
                 PgItem Item = (PgItem)Entry.Value.Item;
                 if (Item.IconId != 0)
                 {
-                    foreach (KeyValuePair<PgSkill, int> SkillEntry in Item.SkillRequirementTable)
-                        if (SkillEntry.Key == skill)
+                    foreach (KeyValuePair<string, int> SkillEntry in Item.SkillRequirementTable)
+                        if ((SkillEntry.Key.Length == 0 && skill == PgSkill.Unknown) || (SkillEntry.Key == "AnySkill" && skill == PgSkill.AnySkill) || (SkillEntry.Key == skill.Key))
                         {
                             if (LowestLevel > SkillEntry.Value)
                             {

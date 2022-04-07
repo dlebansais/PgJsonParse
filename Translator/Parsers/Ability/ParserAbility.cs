@@ -34,7 +34,7 @@
                 switch (Key)
                 {
                     case "AbilityGroup":
-                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.AbilityGroup = valueAbility, Value);
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.AbilityGroup_Key = valueAbility.Key, Value);
                         break;
                     case "Animation":
                         Result = StringToEnumConversion<AbilityAnimation>.SetEnum((AbilityAnimation valueEnum) => item.Animation = valueEnum, Value);
@@ -130,7 +130,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawPetTypeTagReqMax = valueInt, Value);
                         break;
                     case "Prerequisite":
-                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Prerequisite = valueAbility, Value);
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Prerequisite_Key = valueAbility.Key, Value);
                         break;
                     case "Projectile":
                         Result = StringToEnumConversion<AbilityProjectile>.SetEnum((AbilityProjectile valueEnum) => item.Projectile = valueEnum, Value);
@@ -151,10 +151,10 @@
                         Result = SetStringProperty((string valueString) => item.AmmoDescription = valueString, Value);
                         break;
                     case "SharesResetTimerWith":
-                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.SharesResetTimerWith = valueAbility, Value);
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.SharesResetTimerWith_Key = valueAbility.Key, Value);
                         break;
                     case "Skill":
-                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill = valueSkill, Value, parsedFile, parsedKey);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
                         break;
                     case "SpecialCasterRequirements":
                         Result = Inserter<PgAbilityRequirement>.AddKeylessArray(item.SpecialCasterRequirementList, Value);
@@ -178,7 +178,7 @@
                         Result = StringToEnumConversion<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, Value);
                         break;
                     case "UpgradeOf":
-                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.UpgradeOf = valueAbility, Value);
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.UpgradeOf_Key = valueAbility.Key, Value);
                         break;
                     case "WorksInCombat":
                         Result = SetBoolProperty((bool valueBool) => item.RawWorksInCombat = valueBool, Value);
@@ -276,7 +276,7 @@
             string AnatomySkillName = AsString.Substring(12);
             AnatomySkillName = $"Anatomy_{AnatomySkillName}";
 
-            if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.TargetTypeTagReq = valueSkill, AnatomySkillName))
+            if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.TargetTypeTagReq_Key = valueSkill.Key, AnatomySkillName))
                 return false;
 
             return true;

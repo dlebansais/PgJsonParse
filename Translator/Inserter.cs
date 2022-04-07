@@ -207,7 +207,7 @@
             NpcLocation.NpcId = npcId;
 
             if (Inserter<PgNpc>.SetItemByKey((PgNpc valueNpc) => ParsedNpc = valueNpc, npcId, ErrorControl.IgnoreIfNotFound))
-                NpcLocation.Npc = ParsedNpc;
+                NpcLocation.Npc_Key = ParsedNpc.Key;
             else if (StringToEnumConversion<SpecialNpc>.TryParse(npcId, out NpcEnum, ErrorControl.IgnoreIfNotFound))
                 NpcLocation.NpcEnum = NpcEnum;
             else if (npcId.ToUpper().StartsWith("NPC_"))
@@ -218,7 +218,7 @@
             ParsingContext.AddSuplementaryObject(NpcLocation);
 
             Debug.Assert(!string.IsNullOrEmpty(NpcLocation.NpcId));
-            Debug.Assert(NpcLocation.Npc != null || NpcLocation.NpcEnum != SpecialNpc.Internal_None || NpcLocation.NpcName.Length > 0);
+            Debug.Assert(NpcLocation.Npc_Key != null || NpcLocation.NpcEnum != SpecialNpc.Internal_None || NpcLocation.NpcName.Length > 0);
 
             setter(NpcLocation);
             return true;

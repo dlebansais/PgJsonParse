@@ -2,9 +2,17 @@
 {
     public class PgPowerEffectAttribute : PgPowerEffect
     {
-        public PgAttribute Attribute { get; set; } = null!;
+        public string? Attribute_Key { get; set; }
         public float AttributeEffect { get; set; }
-        public PgSkill? Skill { get; set; }
+        public string? Skill_Key { get; set; }
         public FloatFormat AttributeEffectFormat { get; set; }
+
+        public PgAttribute? AttributeRef;
+
+        public void SetAttribute(PgAttribute attribute)
+        {
+            Attribute_Key = attribute.Key;
+            AttributeRef = attribute;
+        }
     }
 }

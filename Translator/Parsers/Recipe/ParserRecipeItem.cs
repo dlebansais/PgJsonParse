@@ -31,7 +31,7 @@
                 switch (Key)
                 {
                     case "ItemCode":
-                        Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => item.Item = valueItem, $"item_{Value}");
+                        Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => item.Item_Key = valueItem.Key, $"item_{Value}");
                         break;
                     case "StackSize":
                         Result = SetIntProperty((int valueInt) => item.RawStackSize = valueInt, Value);
@@ -65,10 +65,10 @@
 
             if (Result)
             {
-                if (item.Item == null && item.ItemKeyList.Count == 0)
+                if (item.Item_Key == null && item.ItemKeyList.Count == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing item or item keys");
 
-                if (item.Item != null && item.ItemKeyList.Count > 0)
+                if (item.Item_Key != null && item.ItemKeyList.Count > 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent item or item keys");
 
                 if (item.ItemKeyList.Count > 0 && item.Description.Length == 0)

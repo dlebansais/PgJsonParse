@@ -3,6 +3,6 @@
     public class PgQuestObjectiveBury : PgQuestObjective
     {
         public string Target { get; set; } = string.Empty;
-        public PgSkill? AnatomySkill { get; set; }
+        public string? AnatomySkill_Key { get; set; }
     }
 }

@@ -107,7 +107,7 @@
                         case "T":
                             break;
                         case "Skill":
-                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill = valueSkill, Value);
+                            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = valueSkill.Key, Value);
                             break;
                         case "Xp":
                             Result = SetIntProperty((int valueInt) => NewItem.RawXp = valueInt, Value);
@@ -153,7 +153,7 @@
                         case "T":
                             break;
                         case "Recipe":
-                            Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe = valueRecipe, Value);
+                            Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = valueRecipe.Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");
@@ -371,7 +371,7 @@
                         case "T":
                             break;
                         case "Ability":
-                            Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => NewItem.Ability = valueAbility, Value);
+                            Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => NewItem.Ability_Key = valueAbility.Key, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

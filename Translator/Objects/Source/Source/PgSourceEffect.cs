@@ -2,6 +2,6 @@
 {
     public class PgSourceEffect : PgSource
     {
-        public PgEffect Effect { get; set; } = null!;
+        public string? Effect_Key { get; set; }
     }
 }

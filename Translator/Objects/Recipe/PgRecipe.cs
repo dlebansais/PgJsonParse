@@ -13,11 +13,11 @@
         public string InternalName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public PgRecipeItemCollection ResultItemList { get; set; } = new PgRecipeItemCollection();
-        public PgSkill Skill { get; set; } = null!;
+        public string? Skill_Key { get; set; }
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; set; }
         public PgRecipeResultEffectCollection ResultEffectList { get; set; } = new PgRecipeResultEffectCollection();
-        public PgSkill? SortSkill { get; set; }
+        public string? SortSkill_Key { get; set; }
         public List<RecipeKeyword> KeywordList { get; set; } = new List<RecipeKeyword>();
         public RecipeAction ActionLabel { get; set; }
         public float UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
@@ -32,7 +32,7 @@
         public TimeSpan ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : TimeSpan.Zero; } }
         public TimeSpan? RawResetTime { get; set; }
         public uint? DyeColor { get; set; }
-        public PgSkill RewardSkill { get; set; } = null!;
+        public string? RewardSkill_Key { get; set; }
         public int RewardSkillXp { get { return RawRewardSkillXp.HasValue ? RawRewardSkillXp.Value : 0; } }
         public int? RawRewardSkillXp { get; set; }
         public int RewardSkillXpDropOffLevel { get { return RawRewardSkillXpDropOffLevel.HasValue ? RawRewardSkillXpDropOffLevel.Value : 0; } }
@@ -43,7 +43,7 @@
         public int? RawRewardSkillXpDropOffRate { get; set; }
         public int RewardSkillXpFirstTime { get { return RawRewardSkillXpFirstTime.HasValue ? RawRewardSkillXpFirstTime.Value : 0; } }
         public int? RawRewardSkillXpFirstTime { get; set; }
-        public PgRecipe? SharesResetTimerWith { get; set; }
+        public string? SharesResetTimerWith_Key { get; set; }
         public string ItemMenuLabel { get; set; } = string.Empty;
         public ItemKeyword RecipeItemKeyword { get; set; }
         public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
@@ -51,13 +51,13 @@
         public string ItemMenuCategory { get; set; } = string.Empty;
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; set; }
-        public PgRecipe? PrereqRecipe { get; set; }
+        public string? PrereqRecipe_Key { get; set; }
         public List<ItemKeyword> ValidationIngredientKeywordList { get; set; } = new List<ItemKeyword>();
         public PgRecipeItemCollection ProtoResultItemList { get; set; } = new PgRecipeItemCollection();
         public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
         public bool? RawRewardAllowBonusXp { get; set; }
         public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
-        public PgAttribute? RequiredAttributeNonZero { get; set; }
+        public string? RequiredAttributeNonZero_Key { get; set; }
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

@@ -961,6 +961,7 @@
             List<PgSource> SourceList = new List<PgSource>();
             List<PgAbility> AbilityList = new List<PgAbility>();
             List<PgRecipe> RecipeList = new List<PgRecipe>();
+            List<PgNpc> NpcList = new List<PgNpc>();
 
             foreach (object Item in objectList)
                 switch (Item)
@@ -974,6 +975,9 @@
                     case PgRecipe AsRecipe:
                         RecipeList.Add(AsRecipe);
                         break;
+                    case PgNpc AsNpc:
+                        NpcList.Add(AsNpc);
+                        break;
                 }
 
             foreach (PgSource Source in SourceList)
@@ -985,10 +989,10 @@
                     case PgSourceEffect AsSourceEffect:
                         break;
                     case PgSourceGift AsSourceGift:
-                        AddNpcSource(Source, AsSourceGift.Npc, AbilityList, RecipeList);
+                        AddNpcSource(Source, AsSourceGift.Npc, AbilityList, RecipeList, NpcList);
                         break;
                     case PgSourceHangOut AsSourceHangOut:
-                        AddNpcSource(Source, AsSourceHangOut.Npc, AbilityList, RecipeList);
+                        AddNpcSource(Source, AsSourceHangOut.Npc, AbilityList, RecipeList, NpcList);
                         break;
                     case PgSourceItem AsSourceItem:
                         break;
@@ -999,15 +1003,26 @@
                     case PgSourceRecipe AsSourceRecipe:
                         break;
                     case PgSourceTraining AsSourceTraining:
-                        AddNpcSource(Source, AsSourceTraining.Npc, AbilityList, RecipeList);
+                        AddNpcSource(Source, AsSourceTraining.Npc, AbilityList, RecipeList, NpcList);
                         break;
                 }
             }
         }
 
-        private static void AddNpcSource(PgSource source, PgNpcLocation location, List<PgAbility> abilityList, List<PgRecipe> recipeList)
+        private static void AddNpcSource(PgSource source, PgNpcLocation location, List<PgAbility> abilityList, List<PgRecipe> recipeList, List<PgNpc> npcList)
         {
-            PgNpc? Npc = location.Npc;
+            string? Npc_Key = location.Npc_Key;
+            if (Npc_Key == null)
+                return;
+
+            PgNpc? Npc = null;
+            foreach (PgNpc Item in npcList)
+                if (Item.Key == Npc_Key)
+                {
+                    Npc = Item;
+                    break;
+                }
+
             if (Npc == null)
                 return;
 
@@ -1113,17 +1128,17 @@
 
                     if (IsMultiBarter && NewBarter != null)
                     {
-                        Dictionary<PgItem, int> GiveTable = NewBarter.GiveTable;
-                        Dictionary<PgItem, int> ReceiveTable = NewBarter.ReceiveTable;
+                        Dictionary<string, int> GiveTable = NewBarter.GiveTable;
+                        Dictionary<string, int> ReceiveTable = NewBarter.ReceiveTable;
 
                         if (SplitGive)
                         {
-                            foreach (KeyValuePair<PgItem, int> Entry in GiveTable)
+                            foreach (KeyValuePair<string, int> Entry in GiveTable)
                             {
                                 PgNpcBarter Barter = new PgNpcBarter();
                                 Barter.GiveTable.Add(Entry.Key, Entry.Value);
 
-                                foreach (KeyValuePair<PgItem, int> ReceiveEntry in ReceiveTable)
+                                foreach (KeyValuePair<string, int> ReceiveEntry in ReceiveTable)
                                     Barter.ReceiveTable.Add(ReceiveEntry.Key, ReceiveEntry.Value);
 
                                 ParsingContext.AddSuplementaryObject(Barter);
@@ -1140,13 +1155,13 @@
 
                         if (GiveCell == null)
                         {
-                            foreach (KeyValuePair<PgItem, int> Entry in GiveTable)
+                            foreach (KeyValuePair<string, int> Entry in GiveTable)
                                 NewBarter.GiveTable.Add(Entry.Key, Entry.Value);
                         }
 
                         if (ReceiveCell == null)
                         {
-                            foreach (KeyValuePair<PgItem, int> Entry in ReceiveTable)
+                            foreach (KeyValuePair<string, int> Entry in ReceiveTable)
                                 NewBarter.ReceiveTable.Add(Entry.Key, Entry.Value);
                         }
                     }
@@ -1164,17 +1179,17 @@
 
                     if (NewBarter != null && NewBarter.GiveTable.Count > 0 && NewBarter.ReceiveTable.Count > 0)
                     {
-                        Dictionary<PgItem, int> GiveTable = NewBarter.GiveTable;
-                        Dictionary<PgItem, int> ReceiveTable = NewBarter.ReceiveTable;
+                        Dictionary<string, int> GiveTable = NewBarter.GiveTable;
+                        Dictionary<string, int> ReceiveTable = NewBarter.ReceiveTable;
 
                         if (SplitGive)
                         {
-                            foreach (KeyValuePair<PgItem, int> Entry in GiveTable)
+                            foreach (KeyValuePair<string, int> Entry in GiveTable)
                             {
                                 PgNpcBarter Barter = new PgNpcBarter();
                                 Barter.GiveTable.Add(Entry.Key, Entry.Value);
 
-                                foreach (KeyValuePair<PgItem, int> ReceiveEntry in ReceiveTable)
+                                foreach (KeyValuePair<string, int> ReceiveEntry in ReceiveTable)
                                     Barter.ReceiveTable.Add(ReceiveEntry.Key, ReceiveEntry.Value);
 
                                 ParsingContext.AddSuplementaryObject(Barter);
@@ -1210,8 +1225,8 @@
                         Debug.Assert(GiveSectionItem != null);
 
                         PgItem Item;
-                        GetItem(GiveSectionItem!, itemList, out Item);
-                        Debug.Assert(Item != null);
+                        bool IsItemFound = GetItem(GiveSectionItem!, itemList, out Item);
+                        Debug.Assert(IsItemFound);
 
                         int MinCount = 1;
                         int MaxCount = 0;
@@ -1220,7 +1235,7 @@
                         if (MinCount == 0)
                             MinCount = 1;
 
-                        NewBarter?.GiveTable.Add(Item!, MinCount + (MaxCount * 100000));
+                        NewBarter?.GiveTable.Add(Item.Key, MinCount + (MaxCount * 100000));
                     }
                 }
 
@@ -1250,7 +1265,7 @@
                             if (MinCount == 0)
                                 MinCount = 1;
 
-                            NewBarter?.ReceiveTable.Add(Item, MinCount + (MaxCount * 100000));
+                            NewBarter?.ReceiveTable.Add(Item.Key, MinCount + (MaxCount * 100000));
                         }
                         else
                             Debug.WriteLine($"Item NOT FOUND in wiki");
@@ -1262,15 +1277,15 @@
             {
                 if (SplitGive)
                 {
-                    Dictionary<PgItem, int> GiveTable = NewBarter.GiveTable;
-                    Dictionary<PgItem, int> ReceiveTable = NewBarter.ReceiveTable;
+                    Dictionary<string, int> GiveTable = NewBarter.GiveTable;
+                    Dictionary<string, int> ReceiveTable = NewBarter.ReceiveTable;
 
-                    foreach (KeyValuePair<PgItem, int> Entry in GiveTable)
+                    foreach (KeyValuePair<string, int> Entry in GiveTable)
                     {
                         PgNpcBarter Barter = new PgNpcBarter();
                         Barter.GiveTable.Add(Entry.Key, Entry.Value);
 
-                        foreach (KeyValuePair<PgItem, int> ReceiveEntry in ReceiveTable)
+                        foreach (KeyValuePair<string, int> ReceiveEntry in ReceiveTable)
                             Barter.ReceiveTable.Add(ReceiveEntry.Key, ReceiveEntry.Value);
 
                         ParsingContext.AddSuplementaryObject(Barter);
@@ -1293,12 +1308,18 @@
                 {
                     string GiveList = string.Empty;
 
-                    foreach (KeyValuePair<PgItem, int> Entry in Barter.GiveTable)
+                    foreach (KeyValuePair<string, int> Entry in Barter.GiveTable)
                     {
                         if (GiveList.Length > 0)
                             GiveList += ", ";
 
-                        GiveList += Entry.Key.ObjectName;
+                        foreach (PgItem Item in itemList)
+                            if (Item.Key == Entry.Key)
+                            {
+                                GiveList += Item.ObjectName;
+                                break;
+                            }
+
                         if (Entry.Value > 1)
                         {
                             int MinCount = Entry.Value % 100000;
@@ -1313,12 +1334,18 @@
 
                     string ReceiveList = string.Empty;
 
-                    foreach (KeyValuePair<PgItem, int> Entry in Barter.ReceiveTable)
+                    foreach (KeyValuePair<string, int> Entry in Barter.ReceiveTable)
                     {
                         if (ReceiveList.Length > 0)
                             ReceiveList += ", ";
 
-                        ReceiveList += Entry.Key.ObjectName;
+                        foreach (PgItem Item in itemList)
+                            if (Item.Key == Entry.Key)
+                            {
+                                ReceiveList += Item.ObjectName;
+                                break;
+                            }
+
                         if (Entry.Value > 1)
                         {
                             int MinCount = Entry.Value % 100000;

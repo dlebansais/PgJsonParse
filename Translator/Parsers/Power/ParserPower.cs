@@ -44,7 +44,7 @@
                         Result = StringToEnumConversion<ItemSlot>.TryParseList(Value, item.SlotList);
                         break;
                     case "Skill":
-                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill = valueSkill, Value, parsedFile, parsedKey);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
                         break;
                     case "IsUnavailable":
                         Result = SetBoolProperty((bool valueBool) => item.RawIsUnavailable = valueBool, Value);
@@ -133,8 +133,8 @@
 
                     if (PowerEffect is PgPowerEffectSimple AsSimple)
                         IconIdList = AsSimple.IconIdList;
-                    else if (PowerEffect is PgPowerEffectAttribute AsAttribute && AsAttribute.Attribute != null)
-                        IconIdList = AsAttribute.Attribute.IconIdList;
+                    else if (PowerEffect is PgPowerEffectAttribute AsAttribute && AsAttribute.AttributeRef != null)
+                        IconIdList = AsAttribute.AttributeRef.IconIdList;
 
                     foreach (int Id in IconIdList)
                         if (Id > 0)

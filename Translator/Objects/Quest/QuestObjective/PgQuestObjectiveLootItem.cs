@@ -2,7 +2,7 @@
 {
     public class PgQuestObjectiveLootItem : PgQuestObjective
     {
-        public PgItem Item { get; set; } = null!;
+        public string? Item_Key { get; set; }
         public MonsterTypeTag MonsterTypeTag { get; set; }
     }
 }

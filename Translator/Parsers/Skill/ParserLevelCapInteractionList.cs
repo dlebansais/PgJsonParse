@@ -79,7 +79,7 @@
             PgLevelCapInteraction NewInteraction = new PgLevelCapInteraction();
             NewInteraction.RawLevel = level;
             NewInteraction.RawRangeUnlock = OtherLevel - level;
-            NewInteraction.Skill = ParsedSkill;
+            NewInteraction.Skill_Key = ParsedSkill.Key;
 
             ParsingContext.AddSuplementaryObject(NewInteraction);
             item.List.Add(NewInteraction);
