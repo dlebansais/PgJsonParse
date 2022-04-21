@@ -11,7 +11,7 @@
         public static int DirectedGoalIconId { get; } = 2118;
         public static int EffectIconId { get; } = 108;
         public static int LoreBookIconId { get; } = 5792;
-        public static int NpcIconId { get; } = 3589;
+        public static int NpcIconId { get; } = 3592;
         public static int PlayerTitleIconId { get; } = 5851;
         public static int PowerIconId { get; } = 108;
         public static int StorageVaultIconId { get; } = 5116;

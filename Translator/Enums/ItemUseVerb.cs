@@ -65,5 +65,6 @@
         ClaimVIPTime,
         ApplyToSnoot,
         KillAndHarvest,
+        Glamourize,
     }
 }

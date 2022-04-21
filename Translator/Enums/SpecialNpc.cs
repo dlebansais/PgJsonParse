@@ -29,7 +29,7 @@
         NPC_Glortok,
         NPC_InjuredRakshasa,
         NPC_Uriana,
-        NPC_AgrashabGod,
+        //NPC_AgrashabGod,
         Flopsy,
         Lopsy,
         Boop,

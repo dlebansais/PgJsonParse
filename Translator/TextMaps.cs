@@ -190,6 +190,7 @@
             { AbilityAnimation.Attack_Horse_Coax, "Attack Horse Coax" },
             { AbilityAnimation.Attack_Horse_Calm, "Attack Horse Calm" },
             { AbilityAnimation.Attack_Knife_DualSlash, "Attack Knife Dual Slash" },
+            { AbilityAnimation.Attack_Fairy_Buff, "Attack Fairy Buff" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -1569,6 +1570,7 @@
             { EffectKeyword.PlayedOut, "Played Out" },
             { EffectKeyword.NoMountOverride, "No Mount Override" },
             { EffectKeyword.LiveEvent_ErranaBunny, "Live Event (Errana Bunny)" },
+            { EffectKeyword.WerewolfForm, "Werewolf Form" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1618,7 +1620,7 @@
             { EffectParticle.StaticBurst, "Static Burst" },
             { EffectParticle.IcefallStorm, "Icefall Storm" },
             { EffectParticle.Firework, "Firework" },
-            { EffectParticle.FloatingGem, "Floating Gem" },
+            //{ EffectParticle.FloatingGem, "Floating Gem" },
             { EffectParticle.SpawnParticle, "Spawn Particle" },
             { EffectParticle.WindBlast, "Wind Blast" },
             { EffectParticle.BoneWhirlwind, "Bone Whirlwind" },
@@ -1688,10 +1690,10 @@
             { EffectParticle.OnFireGreen, "On Fire (Green)" },
             { EffectParticle.BlindingFlash, "Blinding Flash" },
             { EffectParticle.EnergyTrap, "Energy Trap" },
-            { EffectParticle.FloatingGem2, "Floating Gem #2" },
+            //{ EffectParticle.FloatingGem2, "Floating Gem #2" },
             { EffectParticle.AcidfallAura, "Acidfall Aura" },
             { EffectParticle.ShieldOfGoo, "Shield Of Goo" },
-            { EffectParticle.FloatingGem3, "Floating Gem #3" },
+            //{ EffectParticle.FloatingGem3, "Floating Gem #3" },
             { EffectParticle.HolyDefense2, "Holy Defense #2" },
             { EffectParticle.BulwarkMode, "Bulwark Mode" },
             { EffectParticle.Agitate, "Agitate" },
@@ -1711,6 +1713,8 @@
             { EffectParticle.PlayingPowerSong, "Playing Power Song" },
             { EffectParticle.PlayingDamageSong, "Playing Damage Song" },
             { EffectParticle.MountAccelerate, "Mount Accelerate" },
+            { EffectParticle.FireShield, "Fire Shield," },
+            { EffectParticle.ThornsShield, "Thorns Shield" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2350,7 +2354,7 @@
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
-            { ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
+            /*{ ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
             { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
             { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
             { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
@@ -2360,7 +2364,7 @@
             { ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
             { ItemDroppedAppearance.LootScroll10, "Loot Scroll #10" },
             { ItemDroppedAppearance.LootScroll11, "Loot Scroll #11" },
-            { ItemDroppedAppearance.LootScroll12, "Loot Scroll #12" },
+            { ItemDroppedAppearance.LootScroll12, "Loot Scroll #12" },*/
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -3588,6 +3592,7 @@
             { ItemUseVerb.ClaimVIPTime, "Claim VIP Time" },
             { ItemUseVerb.ApplyToSnoot, "Apply to Snoot" },
             { ItemUseVerb.KillAndHarvest, "Kill and Harvest" },
+            { ItemUseVerb.Glamourize, "Glamourize" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap { get; } = new Dictionary<LoreBookKeyword, string>()
@@ -4130,6 +4135,7 @@
             { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
             { RecipeAction.Assemble, "Assemble" },
             { RecipeAction.SendToSaddlebag, "Send to Saddlebag" },
+            { RecipeAction.ApplyGlamour, "Apply Glamour" },
         };
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
@@ -4714,6 +4720,7 @@
             { RecipeKeyword.PumpkinHummus, "Pumpkin Hummus" },
             { RecipeKeyword.BrunostCheese, "Brunost Cheese" },
             { RecipeKeyword.BrieCheese, "Brie Cheese" },
+            { RecipeKeyword.DistillSimpleMagicalItem1, "Distill Simple Magical Item #1" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
@@ -4840,7 +4847,7 @@
             { SpecialNpc.NPC_Glortok, "Glortok" },
             { SpecialNpc.NPC_InjuredRakshasa, "Injured Rakshasa" },
             { SpecialNpc.NPC_Uriana, "Uriana" },
-            { SpecialNpc.NPC_AgrashabGod, "Agrashab God" },
+            //{ SpecialNpc.NPC_AgrashabGod, "Agrashab God" },
             { SpecialNpc.Flopsy, "Flopsy" },
             { SpecialNpc.Lopsy, "Lopsy" },
             { SpecialNpc.Boop, "Boop" },

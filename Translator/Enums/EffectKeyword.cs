@@ -301,5 +301,6 @@
         PlayedOut,
         NoMountOverride,
         LiveEvent_ErranaBunny,
+        WerewolfForm,
     }
 }

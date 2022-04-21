@@ -626,15 +626,27 @@
 
         private static void FindLinks(List<object> objectList)
         {
+            Dictionary<string, PgObject> ObjectTable = new();
+
             foreach (object Item in objectList)
-                if (Item is PgObject AsLinkable)
+                if (Item is PgObject Reference)
                 {
-                    string ItemKey = GetItemKey(AsLinkable);
-                    FindLinks(ItemKey, AsLinkable);
+                    string ItemKey = Reference.Key;
+
+                    if (!ObjectTable.ContainsKey(ItemKey))
+                        ObjectTable.Add(ItemKey, Reference);
                 }
+
+            foreach (KeyValuePair<string, PgObject> Entry in ObjectTable)
+            {
+                PgObject Reference = Entry.Value;
+                string LinkKey = GetItemKey(Reference);
+
+                FindLinks(LinkKey, Reference, ObjectTable);
+            }
         }
 
-        private static void FindLinks(string itemKey, object nestedItem)
+        private static void FindLinks(string linkKey, object nestedItem, Dictionary<string, PgObject> objectTable)
         {
             PropertyInfo[] Properties = nestedItem.GetType().GetProperties();
 
@@ -648,13 +660,14 @@
 
                 Type PropertyType = Property.PropertyType;
 
-                if (PropertyType == typeof(string) || PropertyType.IsEnum || Generate.IsTypeIgnoredForIndex(PropertyType))
+                if ((PropertyType == typeof(string) && !Property.Name.EndsWith("_Key")) || PropertyType.IsEnum || Generate.IsTypeIgnoredForIndex(PropertyType))
                     continue;
 
-                if (PropertyType.BaseType == typeof(PgObject))
+                if (PropertyType == typeof(string) && Property.Name.EndsWith("_Key"))
                 {
-                    PgObject Reference = (PgObject)Property.GetValue(nestedItem);
-                    AddLinkKey(itemKey, Reference);
+                    string? ReferenceKey = Property.GetValue(nestedItem) as string;
+                    if (ReferenceKey is not null)
+                        AddLinkKey(linkKey, ReferenceKey, objectTable);
                 }
                 else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
                 {
@@ -667,29 +680,24 @@
                     Type ItemType = GenericArguments[0]!;
                     if (ItemType != null)
                     {
-                        if (ItemType == typeof(string) || ItemType == typeof(List<float>) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
+                        if (ItemType == typeof(List<float>) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
                         {
                         }
-                        else if (ItemType.BaseType == typeof(PgObject))
+                        else if (ItemType == typeof(string))
                         {
-                            foreach (PgObject Reference in ObjectDictionary.Keys)
-                            {
-                                Debug.Assert(Reference != null);
-                                AddLinkKey(itemKey, Reference!);
-                            }
+                            foreach (string ReferenceKey in ObjectDictionary.Keys)
+                                AddLinkKey(linkKey, ReferenceKey, objectTable);
                         }
                         else if (ItemType.Name.StartsWith("Pg"))
                         {
                             foreach (object Key in ObjectDictionary.Keys)
                             {
-                                object Reference = ObjectDictionary[Key];
-
-                                Debug.Assert(Reference != null);
+                                object? Reference = ObjectDictionary[Key];
 
                                 if (Reference is PgObject AsLinkable)
-                                    AddLinkKey(itemKey, AsLinkable);
-                                else
-                                    FindLinks(itemKey, Reference!);
+                                    AddLinkKey(linkKey, AsLinkable.Key, objectTable);
+                                else if (Reference is not null)
+                                    FindLinks(linkKey, Reference, objectTable);
                             }
                         }
                         else
@@ -708,27 +716,22 @@
                     Type ItemType = GenericArguments[0]!;
                     if (ItemType != null)
                     {
-                        if (ItemType == typeof(string) || ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
+                        if (ItemType.IsEnum || Generate.IsTypeIgnoredForIndex(ItemType))
                         {
                         }
-                        else if (ItemType.BaseType == typeof(PgObject))
+                        else if (ItemType == typeof(string))
                         {
-                            foreach (PgObject Reference in ObjectCollection)
-                            {
-                                Debug.Assert(Reference != null);
-                                AddLinkKey(itemKey, Reference!);
-                            }
+                            foreach (string ReferenceKey in ObjectCollection)
+                                AddLinkKey(linkKey, ReferenceKey, objectTable);
                         }
                         else if (ItemType.Name.StartsWith("Pg"))
                         {
                             foreach (object Reference in ObjectCollection)
                             {
-                                Debug.Assert(Reference != null);
-
                                 if (Reference is PgObject AsLinkable)
-                                    AddLinkKey(itemKey, AsLinkable);
+                                    AddLinkKey(linkKey, AsLinkable.Key, objectTable);
                                 else
-                                    FindLinks(itemKey, Reference!);
+                                    FindLinks(linkKey, Reference, objectTable);
                             }
                         }
                         else
@@ -740,7 +743,7 @@
                 {
                     object Reference = Property.GetValue(nestedItem);
                     if (Reference != null)
-                        FindLinks(itemKey, Reference);
+                        FindLinks(linkKey, Reference, objectTable);
                 }
                 else
                 {
@@ -817,13 +820,19 @@
             return $"{Prefix}{Key}";
         }
 
-        private static void AddLinkKey(string itemKey, PgObject reference)
+        private static void AddLinkKey(string linkKey, string referenceKey, Dictionary<string, PgObject> objectTable)
         {
-            if (reference == null || reference == PgSkill.Unknown || reference == PgSkill.AnySkill)
-                return;
+            if (referenceKey.Length > 0 && referenceKey != "AnySkill")
+            {
+                //Debug.WriteLine(referenceKey);
+                if (objectTable.ContainsKey(referenceKey))
+                {
+                    PgObject Reference = objectTable[referenceKey];
 
-            if (!reference.LinkList.Contains(itemKey))
-                reference.LinkList.Add(itemKey);
+                    if (!Reference.LinkList.Contains(linkKey))
+                        Reference.LinkList.Add(linkKey);
+                }
+            }
         }
 
         private static void FindNpcSales(List<object> objectList)

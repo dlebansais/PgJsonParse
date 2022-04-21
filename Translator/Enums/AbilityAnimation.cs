@@ -179,5 +179,6 @@
         Attack_Horse_Coax,
         Attack_Horse_Calm,
         Attack_Knife_DualSlash,
+        Attack_Fairy_Buff,
     }
 }

@@ -52,5 +52,6 @@
         AssembleAndAnimate,
         Assemble,
         SendToSaddlebag,
+        ApplyGlamour,
     }
 }

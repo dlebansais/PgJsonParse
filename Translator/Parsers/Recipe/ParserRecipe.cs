@@ -329,6 +329,9 @@
                 case "SpawnPremonition_All_4sec":
                     Result = ParseSpawnPremonition(EffectName, parsedFile, parsedKey, 4, out recipeResult);
                     break;
+                case "TransmogItemAppearance":
+                    Result = ParseTransmogItemAppearance(EffectName, parsedFile, parsedKey, out recipeResult);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect '{effectString}'");
                     break;
@@ -867,6 +870,14 @@
         private bool ParseSendItemToSaddlebag(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
             PgRecipeResultSendItemToSaddlebag RecipeResultEffect = new PgRecipeResultSendItemToSaddlebag();
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseTransmogItemAppearance(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            PgRecipeResultTransmogItemAppearance RecipeResultEffect = new PgRecipeResultTransmogItemAppearance();
 
             recipeResult = RecipeResultEffect;
             return true;

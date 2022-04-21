@@ -150,5 +150,6 @@
         PumpkinHummus,
         BrunostCheese,
         BrieCheese,
+        DistillSimpleMagicalItem1,
     }
 }

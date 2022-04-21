@@ -184,6 +184,7 @@
             { RecipeAction.DyeFur, "Dye Fur" },
             { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
             { RecipeAction.SendToSaddlebag, "Send to Saddlebag" },
+            { RecipeAction.ApplyGlamour, "Apply Glamour" },
         };
 
         public static readonly Dictionary<RecipeEffect, string> RecipeEffectTable = new Dictionary<RecipeEffect, string>()
