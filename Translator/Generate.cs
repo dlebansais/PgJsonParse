@@ -810,6 +810,7 @@
             WriteGroupingDictionary(objectList, Writer, typeof(InteractionFlag), "QuestByInteractionFlag", GetQuestByInteractionFlagTable);
             WriteGroupingDictionary(objectList, Writer, typeof(RecipeItemKey), "ItemByRecipeKey", GetItemByRecipeKeyTable);
             WriteGroupingList(objectList, Writer, "Buff", GetBuffList);
+            WriteIconIdList(Writer);
 
             Writer.WriteLine("    }");
             Writer.WriteLine("}");
@@ -1308,6 +1309,20 @@
                 }
 
                 writer.WriteLine($"            {{ {KeyString}, new List<string>() {{ {ValueListString} }} }},");
+            }
+
+            writer.WriteLine($"        }};");
+        }
+
+        private static void WriteIconIdList(StreamWriter writer)
+        {
+            writer.WriteLine();
+            writer.WriteLine($"        public static List<int> IconIdList = new()");
+            writer.WriteLine($"        {{");
+
+            foreach (int Id in Parser.IconIdList)
+            {
+                writer.WriteLine($"            {Id},");
             }
 
             writer.WriteLine($"        }};");

@@ -35,7 +35,7 @@
                         Result = SetStringProperty((string valueString) => item.Description = Tools.CleanedUpString(valueString), Value);
                         break;
                     case "IconId":
-                        Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
+                        Result = SetIconIdProperty((int valueInt) => item.RawIconId = valueInt, Value);
                         break;
                     case "Ingredients":
                         Result = Inserter<PgRecipeItem>.AddKeylessArray(item.IngredientList, Value);

@@ -94,7 +94,7 @@
                         Result = StringToEnumConversion<TooltipsExtraKeywords>.SetEnum((TooltipsExtraKeywords valueEnum) => item.ExtraKeywordsForTooltips = valueEnum, Value);
                         break;
                     case "IconID":
-                        Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
+                        Result = SetIconIdProperty((int valueInt) => item.RawIconId = valueInt, Value);
                         break;
                     case "IgnoreEffectErrors":
                         Result = SetBoolProperty((bool valueBool) => item.SetIgnoreEffectErrors(valueBool), Value);

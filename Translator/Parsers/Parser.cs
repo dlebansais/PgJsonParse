@@ -7,6 +7,8 @@
 
     public abstract class Parser
     {
+        public static List<int> IconIdList = new();
+
         public abstract object CreateItem();
 
         public virtual bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
@@ -23,6 +25,40 @@
             }
             else
                 return Program.ReportFailure($"Value {value} was expected to be a bool");
+        }
+
+        public static bool SetIconIdProperty(Action<int> setter, object value)
+        {
+            if (value is int ValueInt)
+            {
+                AddIconToList(ValueInt);
+
+                setter(ValueInt);
+                return true;
+            }
+            else
+                return Program.ReportFailure($"Value {value} was expected to be an int");
+        }
+
+        public static void AddIconToList(int iconId)
+        {
+            if (IconIdList.Count == 0)
+            {
+                IconIdList.Add(PgObject.AbilityIconId);
+                AddIconToList(PgObject.AttributeIconId);
+                AddIconToList(PgObject.DirectedGoalIconId);
+                AddIconToList(PgObject.EffectIconId);
+                AddIconToList(PgObject.LoreBookIconId);
+                AddIconToList(PgObject.NpcIconId);
+                AddIconToList(PgObject.PlayerTitleIconId);
+                AddIconToList(PgObject.PowerIconId);
+                AddIconToList(PgObject.StorageVaultIconId);
+                AddIconToList(PgObject.SkillIconId);
+                AddIconToList(PgObject.KillIconId);
+            }
+
+            if (!IconIdList.Contains(iconId))
+                IconIdList.Add(iconId);
         }
 
         public static bool SetIntProperty(Action<int> setter, object value)

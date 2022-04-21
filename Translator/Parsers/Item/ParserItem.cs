@@ -74,7 +74,7 @@
                         Result = StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.EquipSlot = valueEnum, Value);
                         break;
                     case "IconId":
-                        Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
+                        Result = SetIconIdProperty((int valueInt) => item.RawIconId = valueInt, Value);
                         break;
                     case "InternalName":
                         Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);

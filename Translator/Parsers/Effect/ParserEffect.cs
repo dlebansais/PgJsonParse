@@ -38,7 +38,7 @@
                         Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                         break;
                     case "IconId":
-                        Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
+                        Result = SetIconIdProperty((int valueInt) => item.RawIconId = valueInt, Value);
                         break;
                     case "DisplayMode":
                         Result = StringToEnumConversion<EffectDisplayMode>.SetEnum((EffectDisplayMode valueEnum) => item.DisplayMode = valueEnum, Value);

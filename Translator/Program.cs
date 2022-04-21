@@ -4,7 +4,9 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
+    using System.Net;
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Text;
@@ -173,6 +175,7 @@
 
             ObjectList = ParsingContext.GetParsedObjectList();
             Generate.Write(Version, ObjectList);
+            DownloadNewIcons(Version);
 
             return 0;
         }
@@ -1539,6 +1542,95 @@
             };
 
             return IsNpcMultiBarterTable.Contains(name);
+        }
+
+        public static void DownloadNewIcons(int version)
+        {
+            string ApplicationDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string SharedIconsFolder = Path.Combine(ApplicationDataFolder, @"PgJsonParse\Shared Icons"); //C:\Users\DLB\AppData\Roaming\PgJsonParse\Shared Icons
+            string[] FileNames = Directory.GetFiles(SharedIconsFolder);
+            List<int> ExistingIconIdList = new();
+
+            foreach (string FileName in FileNames)
+            {
+                if (FileName.EndsWith(".txt"))
+                {
+                    string DownloadedString = Path.GetFileNameWithoutExtension(FileName);
+                    if (int.TryParse(DownloadedString, out int Value) && Value >= version)
+                    {
+                        Debug.WriteLine($"Icons for version v{version} have already been downloaded.");
+                        return;
+                    }
+                }
+                else
+                {
+                    string ShortFileName = Path.GetFileName(FileName);
+
+                    if (ShortFileName.StartsWith("icon_") && ShortFileName.EndsWith(".png"))
+                    {
+                        string IconIdString = ShortFileName.Substring(5, ShortFileName.Length - 9);
+                        if (int.TryParse(IconIdString, out int IconId))
+                            ExistingIconIdList.Add(IconId);
+                    }
+                }
+
+            }
+
+            Debug.WriteLine($"Icons for version v{version} have not been downloaded, starting it.");
+
+            List<int> IdToRemoveList = new();
+
+            foreach (int IconId in ExistingIconIdList)
+                if (!Parser.IconIdList.Contains(IconId) && !IdToRemoveList.Contains(IconId))
+                    IdToRemoveList.Add(IconId);
+
+            foreach (int IconId in Parser.IconIdList)
+                DownloadIcon(version, SharedIconsFolder, IconId);
+
+            Debug.WriteLine($"Download done, deleting old ones.");
+
+            foreach (int IconId in IdToRemoveList)
+            {
+                string FileName = @$"{SharedIconsFolder}\icon_{IconId}.png";
+
+                try
+                {
+                    File.Delete(FileName);
+                }
+                catch
+                {
+                }
+            }
+
+            string VersionFile = Path.Combine(SharedIconsFolder, $"{version}.txt");
+            FileStream Stream = new(VersionFile, FileMode.Create, FileAccess.Write);
+            StreamWriter Writer = new StreamWriter(Stream);
+            Writer.WriteLine($"Last download: {DateTime.UtcNow.ToString("g", CultureInfo.InvariantCulture)}");
+        }
+
+        public static void DownloadIcon(int version, string folder, int iconId)
+        {
+            string SourceLocation = "icons";
+            string IconFileName = $"icon_{iconId}.png";
+            string RequestUri = $"http://cdn.projectgorgon.com/{version}/{SourceLocation}/{IconFileName}";
+            try
+            {
+                HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(new Uri(RequestUri));
+                using WebResponse Response = Request.GetResponse();
+                using Stream ResponseStream = Response.GetResponseStream();
+                using BinaryReader Reader = new BinaryReader(ResponseStream);
+                byte[] Content = Reader.ReadBytes((int)Response.ContentLength);
+
+                string DestinationFile = Path.Combine(folder, IconFileName);
+                using FileStream Stream = new FileStream(DestinationFile, FileMode.Create, FileAccess.Write);
+                using BinaryWriter Writer = new BinaryWriter(Stream);
+                Writer.Write(Content);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Failed to download {IconFileName}");
+                Debug.WriteLine(e.Message);
+            }
         }
     }
 }
