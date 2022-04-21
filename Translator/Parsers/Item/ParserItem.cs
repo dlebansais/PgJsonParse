@@ -44,10 +44,10 @@
                         Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.BestowQuest_Key = valueQuest.Key, Value);
                         break;
                     case "AllowPrefix":
-                        Result = SetBoolProperty((bool valueBool) => item.RawAllowPrefix = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetAllowPrefix(valueBool), Value);
                         break;
                     case "AllowSuffix":
-                        Result = SetBoolProperty((bool valueBool) => item.RawAllowSuffix = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetAllowSuffix(valueBool), Value);
                         break;
                     case "CraftPoints":
                         Result = SetIntProperty((int valueInt) => item.RawCraftPoints = valueInt, Value);
@@ -80,10 +80,10 @@
                         Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
                         break;
                     case "IsTemporary":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsTemporary = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsTemporary(valueBool), Value);
                         break;
                     case "IsCrafted":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsCrafted = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsCrafted(valueBool), Value);
                         break;
                     case "Keywords":
                         Result = ParseKeywordList(item, Value, KeywordTable, KeywordValueList, parsedFile, parsedKey);
@@ -122,7 +122,7 @@
                         Result = SetIntProperty((int valueInt) => item.RawNumUses = valueInt, Value);
                         break;
                     case "DestroyWhenUsedUp":
-                        Result = SetBoolProperty((bool valueBool) => item.RawDestroyWhenUsedUp = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetDestroyWhenUsedUp(valueBool), Value);
                         break;
                     case "Behaviors":
                         Result = Inserter<PgItemBehavior>.AddKeylessArray(item.BehaviorList, Value);
@@ -131,7 +131,7 @@
                         Result = SetStringProperty((string valueString) => item.DynamicCraftingSummary = valueString, Value);
                         break;
                     case "IsSkillReqsDefaults":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsSkillReqsDefaults = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsSkillReqsDefaults(valueBool), Value);
                         break;
                     case "BestowTitle":
                         Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.BestowTitle_Key = valuePlayerTitle.Key, $"Title_{Value}");
@@ -550,7 +550,7 @@
             if (GlowContent != "y")
                 return Program.ReportFailure(parsedFile, parsedKey, "Valid glow expected");
 
-            item.RawHasGlow = true;
+            item.SetHasGlow(true);
 
             for (int n = 0; n < ParsedColors.Length; n++)
             {

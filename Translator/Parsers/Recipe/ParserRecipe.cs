@@ -122,7 +122,7 @@
                         Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.RecipeItemKeyword = valueEnum, Value);
                         break;
                     case "IsItemMenuKeywordReqSufficient":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsItemMenuKeywordReqSufficient = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsItemMenuKeywordReqSufficient(valueBool), Value);
                         break;
                     case "ItemMenuCategory":
                         Result = ParseItemMenuCategory(item, Value, parsedFile, parsedKey);
@@ -140,7 +140,7 @@
                         Result = Inserter<PgRecipeItem>.AddKeylessArray(item.ProtoResultItemList, Value);
                         break;
                     case "RewardAllowBonusXp":
-                        Result = SetBoolProperty((bool valueBool) => item.RawRewardAllowBonusXp = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetRewardAllowBonusXp(valueBool), Value);
                         break;
                     case "RequiredAttributeNonZero":
                         Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.RequiredAttributeNonZero_Key = valueAttribute.Key, Value);

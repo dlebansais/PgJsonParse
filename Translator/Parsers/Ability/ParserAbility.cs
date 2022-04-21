@@ -55,13 +55,13 @@
                         Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModPowerCostList, Value);
                         break;
                     case "CanBeOnSidebar":
-                        Result = SetBoolProperty((bool valueBool) => item.RawCanBeOnSidebar = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetCanBeOnSidebar(valueBool), Value);
                         break;
                     case "CanSuppressMonsterShout":
-                        Result = SetBoolProperty((bool valueBool) => item.RawCanSuppressMonsterShout = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetCanSuppressMonsterShout(valueBool), Value);
                         break;
                     case "CanTargetUntargetableEnemies":
-                        Result = SetBoolProperty((bool valueBool) => item.RawCanTargetUntargetableEnemies = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetCanTargetUntargetableEnemies(valueBool), Value);
                         break;
                     case "CausesOfDeath":
                         Result = StringToEnumConversion<Deaths>.TryParseList(Value, item.CausesOfDeathList);
@@ -76,7 +76,7 @@
                         Result = StringToEnumConversion<DamageType>.SetEnum((DamageType valueEnum) => item.DamageType = valueEnum, DamageType.Internal_None, DamageType.Internal_Empty, Value);
                         break;
                     case "DelayLoopIsAbortedIfAttacked":
-                        Result = SetBoolProperty((bool valueBool) => item.RawDelayLoopIsAbortedIfAttacked = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetDelayLoopIsAbortedIfAttacked(valueBool), Value);
                         break;
                     case "DelayLoopMessage":
                         Result = SetStringProperty((string valueString) => item.DelayLoopMessage = valueString, Value);
@@ -97,16 +97,16 @@
                         Result = SetIntProperty((int valueInt) => item.RawIconId = valueInt, Value);
                         break;
                     case "IgnoreEffectErrors":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIgnoreEffectErrors = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIgnoreEffectErrors(valueBool), Value);
                         break;
                     case "InternalAbility":
-                        Result = SetBoolProperty((bool valueBool) => item.RawInternalAbility = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetInternalAbility(valueBool), Value);
                         break;
                     case "InternalName":
                         Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
                         break;
                     case "IsHarmless":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsHarmless = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsHarmless(valueBool), Value);
                         break;
                     case "ItemKeywordReqErrorMessage":
                         Result = SetStringProperty((string valueString) => item.ItemKeywordReqErrorMessage = valueString, Value);
@@ -181,16 +181,16 @@
                         Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.UpgradeOf_Key = valueAbility.Key, Value);
                         break;
                     case "WorksInCombat":
-                        Result = SetBoolProperty((bool valueBool) => item.RawWorksInCombat = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetWorksInCombat(valueBool), Value);
                         break;
                     case "WorksUnderwater":
-                        Result = SetBoolProperty((bool valueBool) => item.RawWorksUnderwater = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetWorksUnderwater(valueBool), Value);
                         break;
                     case "WorksWhileFalling":
-                        Result = SetBoolProperty((bool valueBool) => item.RawWorksWhileFalling = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetWorksWhileFalling(valueBool), Value);
                         break;
                     case "DelayLoopIsOnlyUsedInCombat":
-                        Result = SetBoolProperty((bool valueBool) => item.RawDelayLoopIsOnlyUsedInCombat = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetDelayLoopIsOnlyUsedInCombat(valueBool), Value);
                         break;
                     case "AmmoKeywords":
                         Result = Inserter<PgAbilityAmmo>.AddKeylessArray(item.AmmoKeywordList, Value);
@@ -205,13 +205,13 @@
                         Result = ParseTargetTypeTagReq(item, Value, parsedFile, parsedKey);
                         break;
                     case "WorksWhileMounted":
-                        Result = SetBoolProperty((bool valueBool) => item.RawWorksWhileMounted = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetWorksWhileMounted(valueBool), Value);
                         break;
                     case "SelfPreParticle":
                         Result = StringToEnumConversion<SelfPreParticle>.SetEnum((SelfPreParticle valueEnum) => item.SelfPreParticle = valueEnum, Value);
                         break;
                     case "IsCosmeticPet":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsCosmeticPet = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsCosmeticPet(valueBool), Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

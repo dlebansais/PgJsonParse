@@ -61,7 +61,7 @@
                         Result = SetStringProperty((string valueString) => item.Description = Tools.CleanedUpString(valueString), Value);
                         break;
                     case "HideWhenZero":
-                        Result = SetBoolProperty((bool valueBool) => item.RawHideWhenZero = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetHideWhenZero(valueBool), Value);
                         break;
                     case "XpTable":
                         Result = Inserter<PgXpTable>.SetItemByInternalName((PgXpTable valueXpTable) => item.XpTable = valueXpTable, Value);
@@ -70,7 +70,7 @@
                         Result = ParseAdvancementTable(item, Value, parsedFile, parsedKey);
                         break;
                     case "Combat":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsCombatSkill = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsCombatSkill(valueBool), Value);
                         break;
                     case "TSysCompatibleCombatSkills":
                         Result = ParseCompatibleCombatSkills(item, Value, parsedFile, parsedKey);
@@ -97,10 +97,10 @@
                         Result = Inserter<PgSkill>.AddPgObjectArrayByKey<PgSkill>(item.ParentSkillList, Value);
                         break;
                     case "SkipBonusLevelsIfSkillUnlearned":
-                        Result = SetBoolProperty((bool valueBool) => item.RawSkipBonusLevelsIfSkillUnlearned = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetSkipBonusLevelsIfSkillUnlearned(valueBool), Value);
                         break;
                     case "AuxCombat":
-                        Result = SetBoolProperty((bool valueBool) => item.RawAuxCombat = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetAuxCombat(valueBool), Value);
                         break;
                     case "RecipeIngredientKeywords":
                         Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.RecipeIngredientKeywordList);
@@ -112,10 +112,10 @@
                         Result = SetIntProperty((int valueInt) => item.RawGuestLevelCap = valueInt, Value);
                         break;
                     case "IsFakeCombatSkill":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsFakeCombatSkill = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsFakeCombatSkill(valueBool), Value);
                         break;
                     case "IsUmbrellaSkill":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsUmbrellaSkill = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsUmbrellaSkill(valueBool), Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

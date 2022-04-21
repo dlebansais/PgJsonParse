@@ -8,6 +8,7 @@
         public string Description { get; set; } = string.Empty;
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get; set; }
+        public int BoolValues { get; set; }
         public PgRecipeItemCollection IngredientList { get; set; } = new PgRecipeItemCollection();
         public string InternalName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
@@ -45,16 +46,22 @@
         public string? SharesResetTimerWith_Key { get; set; }
         public string ItemMenuLabel { get; set; } = string.Empty;
         public ItemKeyword RecipeItemKeyword { get; set; }
-        public bool IsItemMenuKeywordReqSufficient { get { return RawIsItemMenuKeywordReqSufficient.HasValue && RawIsItemMenuKeywordReqSufficient.Value; } }
-        public bool? RawIsItemMenuKeywordReqSufficient { get; set; }
+        public const int IsItemMenuKeywordReqSufficientNotNull = 1 << 0;
+        public const int IsItemMenuKeywordReqSufficientIsTrue = 1 << 1;
+        public bool IsItemMenuKeywordReqSufficient { get { return (BoolValues & (IsItemMenuKeywordReqSufficientNotNull + IsItemMenuKeywordReqSufficientIsTrue)) != 0; } }
+        public bool? RawIsItemMenuKeywordReqSufficient { get { return ((BoolValues & IsItemMenuKeywordReqSufficientNotNull) != 0) ? (BoolValues & IsItemMenuKeywordReqSufficientIsTrue) != 0 : null; } }
+        public void SetIsItemMenuKeywordReqSufficient(bool value) { BoolValues |= (BoolValues & ~(IsItemMenuKeywordReqSufficientNotNull + IsItemMenuKeywordReqSufficientIsTrue)) | ((value ? IsItemMenuKeywordReqSufficientIsTrue : 0) + IsItemMenuKeywordReqSufficientNotNull); }
         public string ItemMenuCategory { get; set; } = string.Empty;
         public int ItemMenuCategoryLevel { get { return RawItemMenuCategoryLevel.HasValue ? RawItemMenuCategoryLevel.Value : 0; } }
         public int? RawItemMenuCategoryLevel { get; set; }
         public string? PrereqRecipe_Key { get; set; }
         public List<ItemKeyword> ValidationIngredientKeywordList { get; set; } = new List<ItemKeyword>();
         public PgRecipeItemCollection ProtoResultItemList { get; set; } = new PgRecipeItemCollection();
-        public bool RewardAllowBonusXp { get { return RawRewardAllowBonusXp.HasValue && RawRewardAllowBonusXp.Value; } }
-        public bool? RawRewardAllowBonusXp { get; set; }
+        public const int RewardAllowBonusXpNotNull = 1 << 2;
+        public const int RewardAllowBonusXpIsTrue = 1 << 3;
+        public bool RewardAllowBonusXp { get { return (BoolValues & (RewardAllowBonusXpNotNull + RewardAllowBonusXpIsTrue)) != 0; } }
+        public bool? RawRewardAllowBonusXp { get { return ((BoolValues & RewardAllowBonusXpNotNull) != 0) ? (BoolValues & RewardAllowBonusXpIsTrue) != 0 : null; } }
+        public void SetRewardAllowBonusXp(bool value) { BoolValues |= (BoolValues & ~(RewardAllowBonusXpNotNull + RewardAllowBonusXpIsTrue)) | ((value ? RewardAllowBonusXpIsTrue : 0) + RewardAllowBonusXpNotNull); }
         public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
         public string? RequiredAttributeNonZero_Key { get; set; }
 

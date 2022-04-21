@@ -8,13 +8,17 @@
         public string InternalName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public int BoolValues { get; set; }
         public int Version { get { return RawVersion.HasValue ? RawVersion.Value : 0; } }
         public int? RawVersion { get; set; }
         public PgQuestRequirementCollection QuestRequirementToSustainList { get; set; } = new PgQuestRequirementCollection();
         public TimeSpan ReuseTime { get { return RawReuseTime.HasValue ? RawReuseTime.Value : TimeSpan.Zero; } }
         public TimeSpan? RawReuseTime { get; set; }
-        public bool IsCancellable { get { return RawIsCancellable.HasValue && RawIsCancellable.Value; } }
-        public bool? RawIsCancellable { get; set; }
+        public const int IsCancellableNotNull = 1 << 0;
+        public const int IsCancellableIsTrue = 1 << 1;
+        public bool IsCancellable { get { return (BoolValues & (IsCancellableNotNull + IsCancellableIsTrue)) != 0; } }
+        public bool? RawIsCancellable { get { return ((BoolValues & IsCancellableNotNull) != 0) ? (BoolValues & IsCancellableIsTrue) != 0 : null; } }
+        public void SetIsCancellable(bool value) { BoolValues |= (BoolValues & ~(IsCancellableNotNull + IsCancellableIsTrue)) | ((value ? IsCancellableIsTrue : 0) + IsCancellableNotNull); }
         public PgQuestObjectiveCollection QuestObjectiveList { get; set; } = new PgQuestObjectiveCollection();
         public PgNpcLocation? FavorNpc { get; set; }
         public string PrefaceText { get; set; } = string.Empty;
@@ -29,13 +33,22 @@
         public PgNpcLocation? QuestCompleteNpc { get; set; }
         public PgQuestCollection FollowUpQuestList { get; set; } = new PgQuestCollection();
         public PgQuestPreGiveEffectCollection PreGiveEffectList { get; set; } = new PgQuestPreGiveEffectCollection();
-        public bool IsAutoPreface { get { return RawIsAutoPreface.HasValue && RawIsAutoPreface.Value; } }
-        public bool? RawIsAutoPreface { get; set; }
-        public bool IsAutoWrapUp { get { return RawIsAutoWrapUp.HasValue && RawIsAutoWrapUp.Value; } }
-        public bool? RawIsAutoWrapUp { get; set; }
+        public const int IsAutoPrefaceNotNull = 1 << 2;
+        public const int IsAutoPrefaceIsTrue = 1 << 3;
+        public bool IsAutoPreface { get { return (BoolValues & (IsAutoPrefaceNotNull + IsAutoPrefaceIsTrue)) != 0; } }
+        public bool? RawIsAutoPreface { get { return ((BoolValues & IsAutoPrefaceNotNull) != 0) ? (BoolValues & IsAutoPrefaceIsTrue) != 0 : null; } }
+        public void SetIsAutoPreface(bool value) { BoolValues |= (BoolValues & ~(IsAutoPrefaceNotNull + IsAutoPrefaceIsTrue)) | ((value ? IsAutoPrefaceIsTrue : 0) + IsAutoPrefaceNotNull); }
+        public const int IsAutoWrapUpNotNull = 1 << 4;
+        public const int IsAutoWrapUpIsTrue = 1 << 5;
+        public bool IsAutoWrapUp { get { return (BoolValues & (IsAutoWrapUpNotNull + IsAutoWrapUpIsTrue)) != 0; } }
+        public bool? RawIsAutoWrapUp { get { return ((BoolValues & IsAutoWrapUpNotNull) != 0) ? (BoolValues & IsAutoWrapUpIsTrue) != 0 : null; } }
+        public void SetIsAutoWrapUp(bool value) { BoolValues |= (BoolValues & ~(IsAutoWrapUpNotNull + IsAutoWrapUpIsTrue)) | ((value ? IsAutoWrapUpIsTrue : 0) + IsAutoWrapUpNotNull); }
         public QuestGroupingName GroupingName { get; set; }
-        public bool IsGuildQuest { get { return RawIsGuildQuest.HasValue && RawIsGuildQuest.Value; } }
-        public bool? RawIsGuildQuest { get; set; }
+        public const int IsGuildQuestNotNull = 1 << 6;
+        public const int IsGuildQuestIsTrue = 1 << 7;
+        public bool IsGuildQuest { get { return (BoolValues & (IsGuildQuestNotNull + IsGuildQuestIsTrue)) != 0; } }
+        public bool? RawIsGuildQuest { get { return ((BoolValues & IsGuildQuestNotNull) != 0) ? (BoolValues & IsGuildQuestIsTrue) != 0 : null; } }
+        public void SetIsGuildQuest(bool value) { BoolValues |= (BoolValues & ~(IsGuildQuestNotNull + IsGuildQuestIsTrue)) | ((value ? IsGuildQuestIsTrue : 0) + IsGuildQuestNotNull); }
         public int NumExpectedParticipants { get { return RawNumExpectedParticipants.HasValue ? RawNumExpectedParticipants.Value : 0; } }
         public int? RawNumExpectedParticipants { get; set; }
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }

@@ -58,7 +58,7 @@
                         Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 60 * 24, Value);
                         break;
                     case "IsCancellable":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsCancellable = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsCancellable(valueBool), Value);
                         break;
                     case "Objectives":
                         Result = Inserter<PgQuestObjective>.AddKeylessArray(item.QuestObjectiveList, Value);
@@ -130,16 +130,16 @@
                         Result = ParseRewardEffects(item, Value, parsedFile, parsedKey);
                         break;
                     case "IsAutoPreface":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsAutoPreface = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsAutoPreface(valueBool), Value);
                         break;
                     case "IsAutoWrapUp":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsAutoWrapUp = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsAutoWrapUp(valueBool), Value);
                         break;
                     case "GroupingName":
                         Result = StringToEnumConversion<QuestGroupingName>.SetEnum((QuestGroupingName valueEnum) => item.GroupingName = valueEnum, Value);
                         break;
                     case "IsGuildQuest":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsGuildQuest = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsGuildQuest(valueBool), Value);
                         break;
                     case "NumExpectedParticipants":
                         Result = SetIntProperty((int valueInt) => item.RawNumExpectedParticipants = valueInt, Value);

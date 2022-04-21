@@ -10,11 +10,18 @@
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; set; }
         public string Description { get; set; } = string.Empty;
-        public bool HideWhenZero { get { return RawHideWhenZero.HasValue && RawHideWhenZero.Value; } }
-        public bool? RawHideWhenZero { get; set; }
+        public int BoolValues { get; set; }
+        public const int HideWhenZeroNotNull = 1 << 0;
+        public const int HideWhenZeroIsTrue = 1 << 1;
+        public bool HideWhenZero { get { return (BoolValues & (HideWhenZeroNotNull + HideWhenZeroIsTrue)) != 0; } }
+        public bool? RawHideWhenZero { get { return ((BoolValues & HideWhenZeroNotNull) != 0) ? (BoolValues & HideWhenZeroIsTrue) != 0 : null; } }
+        public void SetHideWhenZero(bool value) { BoolValues |= (BoolValues & ~(HideWhenZeroNotNull + HideWhenZeroIsTrue)) | ((value ? HideWhenZeroIsTrue : 0) + HideWhenZeroNotNull); }
         public PgXpTable XpTable { get; set; } = null!;
-        public bool IsCombatSkill { get { return RawIsCombatSkill.HasValue && RawIsCombatSkill.Value; } }
-        public bool? RawIsCombatSkill { get; set; }
+        public const int IsCombatSkillNotNull = 1 << 2;
+        public const int IsCombatSkillIsTrue = 1 << 3;
+        public bool IsCombatSkill { get { return (BoolValues & (IsCombatSkillNotNull + IsCombatSkillIsTrue)) != 0; } }
+        public bool? RawIsCombatSkill { get { return ((BoolValues & IsCombatSkillNotNull) != 0) ? (BoolValues & IsCombatSkillIsTrue) != 0 : null; } }
+        public void SetIsCombatSkill(bool value) { BoolValues |= (BoolValues & ~(IsCombatSkillNotNull + IsCombatSkillIsTrue)) | ((value ? IsCombatSkillIsTrue : 0) + IsCombatSkillNotNull); }
         public PgSkillCollection CompatibleCombatSkillList { get; set; } = new PgSkillCollection();
         public int MaxBonusLevels { get { return RawMaxBonusLevels.HasValue ? RawMaxBonusLevels.Value : 0; } }
         public int? RawMaxBonusLevels { get; set; }
@@ -22,17 +29,29 @@
         public PgReportCollection ReportList { get; set; } = new PgReportCollection();
         public string Name { get; set; } = string.Empty;
         public PgSkillCollection ParentSkillList { get; set; } = new PgSkillCollection();
-        public bool SkipBonusLevelsIfSkillUnlearned { get { return RawSkipBonusLevelsIfSkillUnlearned.HasValue && RawSkipBonusLevelsIfSkillUnlearned.Value; } }
-        public bool? RawSkipBonusLevelsIfSkillUnlearned { get; set; }
-        public bool AuxCombat { get { return RawAuxCombat.HasValue && RawAuxCombat.Value; } }
-        public bool? RawAuxCombat { get; set; }
+        public const int SkipBonusLevelsIfSkillUnlearnedNotNull = 1 << 4;
+        public const int SkipBonusLevelsIfSkillUnlearnedIsTrue = 1 << 5;
+        public bool SkipBonusLevelsIfSkillUnlearned { get { return (BoolValues & (SkipBonusLevelsIfSkillUnlearnedNotNull + SkipBonusLevelsIfSkillUnlearnedIsTrue)) != 0; } }
+        public bool? RawSkipBonusLevelsIfSkillUnlearned { get { return ((BoolValues & SkipBonusLevelsIfSkillUnlearnedNotNull) != 0) ? (BoolValues & SkipBonusLevelsIfSkillUnlearnedIsTrue) != 0 : null; } }
+        public void SetSkipBonusLevelsIfSkillUnlearned(bool value) { BoolValues |= (BoolValues & ~(SkipBonusLevelsIfSkillUnlearnedNotNull + SkipBonusLevelsIfSkillUnlearnedIsTrue)) | ((value ? SkipBonusLevelsIfSkillUnlearnedIsTrue : 0) + SkipBonusLevelsIfSkillUnlearnedNotNull); }
+        public const int AuxCombatNotNull = 1 << 6;
+        public const int AuxCombatIsTrue = 1 << 7;
+        public bool AuxCombat { get { return (BoolValues & (AuxCombatNotNull + AuxCombatIsTrue)) != 0; } }
+        public bool? RawAuxCombat { get { return ((BoolValues & AuxCombatNotNull) != 0) ? (BoolValues & AuxCombatIsTrue) != 0 : null; } }
+        public void SetAuxCombat(bool value) { BoolValues |= (BoolValues & ~(AuxCombatNotNull + AuxCombatIsTrue)) | ((value ? AuxCombatIsTrue : 0) + AuxCombatNotNull); }
         public List<ItemKeyword> RecipeIngredientKeywordList { get; set; } = new List<ItemKeyword>();
         public int GuestLevelCap { get { return RawGuestLevelCap.HasValue ? RawGuestLevelCap.Value : 0; } }
         public int? RawGuestLevelCap { get; set; }
-        public bool IsFakeCombatSkill { get { return RawIsFakeCombatSkill.HasValue && RawIsFakeCombatSkill.Value; } }
-        public bool? RawIsFakeCombatSkill { get; set; }
-        public bool IsUmbrellaSkill { get { return RawIsUmbrellaSkill.HasValue && RawIsUmbrellaSkill.Value; } }
-        public bool? RawIsUmbrellaSkill { get; set; }
+        public const int IsFakeCombatSkillNotNull = 1 << 8;
+        public const int IsFakeCombatSkillIsTrue = 1 << 9;
+        public bool IsFakeCombatSkill { get { return (BoolValues & (IsFakeCombatSkillNotNull + IsFakeCombatSkillIsTrue)) != 0; } }
+        public bool? RawIsFakeCombatSkill { get { return ((BoolValues & IsFakeCombatSkillNotNull) != 0) ? (BoolValues & IsFakeCombatSkillIsTrue) != 0 : null; } }
+        public void SetIsFakeCombatSkill(bool value) { BoolValues |= (BoolValues & ~(IsFakeCombatSkillNotNull + IsFakeCombatSkillIsTrue)) | ((value ? IsFakeCombatSkillIsTrue : 0) + IsFakeCombatSkillNotNull); }
+        public const int IsUmbrellaSkillNotNull = 1 << 10;
+        public const int IsUmbrellaSkillIsTrue = 1 << 11;
+        public bool IsUmbrellaSkill { get { return (BoolValues & (IsUmbrellaSkillNotNull + IsUmbrellaSkillIsTrue)) != 0; } }
+        public bool? RawIsUmbrellaSkill { get { return ((BoolValues & IsUmbrellaSkillNotNull) != 0) ? (BoolValues & IsUmbrellaSkillIsTrue) != 0 : null; } }
+        public void SetIsUmbrellaSkill(bool value) { BoolValues |= (BoolValues & ~(IsUmbrellaSkillNotNull + IsUmbrellaSkillIsTrue)) | ((value ? IsUmbrellaSkillIsTrue : 0) + IsUmbrellaSkillNotNull); }
 
         public Dictionary<ItemSlot, List<string>> AssociationTablePower { get; set; } = new Dictionary<ItemSlot, List<string>>();
         public List<string> AssociationListAbility { get; set; } = new List<string>();

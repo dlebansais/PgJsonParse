@@ -483,7 +483,8 @@
                 object PropertyValue = Property.GetValue(item);
                 string ValueString = GetValueString(PropertyType, PropertyValue, objectList);
 
-                writer.WriteLine($"                    {PropertyName} = {ValueString},");
+                if (ValueString != "null" && ValueString != "\"\"" && ValueString != "0" && ValueString != "false")
+                    writer.WriteLine($"                    {PropertyName} = {ValueString},");
             }
         }
 

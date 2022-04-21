@@ -34,31 +34,31 @@
                         Result = Inserter<PgAIAbilitySet>.SetItemProperty((PgAIAbilitySet valueAIAbilitySet) => item.Abilities = valueAIAbilitySet, Value);
                         break;
                     case "Melee":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsMelee = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsMelee(valueBool), Value);
                         break;
                     case "Comment":
                         Result = SetStringProperty((string valueString) => item.Comment = valueString, Value);
                         break;
                     case "UncontrolledPet":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsUncontrolledPet = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsUncontrolledPet(valueBool), Value);
                         break;
                     case "ServerDriven":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsServerDriven = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsServerDriven(valueBool), Value);
                         break;
                     case "MinDelayBetweenAbilities":
                         Result = SetFloatProperty((float valueFloat) => item.RawMinDelayBetweenAbilities = valueFloat, Value);
                         break;
                     case "UseAbilitiesWithoutEnemyTarget":
-                        Result = SetBoolProperty((bool valueBool) => item.RawUseAbilitiesWithoutEnemyTarget = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetUseAbilitiesWithoutEnemyTarget(valueBool), Value);
                         break;
                     case "Swimming":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsSwimming = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsSwimming(valueBool), Value);
                         break;
                     case "MobilityType":
                         Result = StringToEnumConversion<MobilityType>.SetEnum((MobilityType valueEnum) => item.MobilityType = valueEnum, Value);
                         break;
                     case "Flying":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsFlying = valueBool, Value);
+                        Result = SetBoolProperty((bool valueBool) => item.SetIsFlying(valueBool), Value);
                         break;
                     case "Description":
                         Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
