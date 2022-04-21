@@ -454,10 +454,8 @@
             writer.WriteLine($"        {{");
             writer.WriteLine($"            get");
             writer.WriteLine($"            {{");
-            writer.WriteLine($"                if (_{objectName} == null)");
+            writer.WriteLine($"                _{objectName} ??= new {objectTypeName}()");
             writer.WriteLine($"                {{");
-            writer.WriteLine($"                    _{objectName} = new {objectTypeName}();");
-            writer.WriteLine(string.Empty);
         }
 
         private static void WriteItemPrologWithKey(StreamWriter writer, string objectTypeName, string objectName, string objectKey)
@@ -468,9 +466,8 @@
             writer.WriteLine($"            {{");
             writer.WriteLine($"                if (!Table.ContainsKey(\"{objectKey}\"))");
             writer.WriteLine($"                {{");
-            writer.WriteLine($"                    {objectTypeName} _{objectName} = new();");
-            writer.WriteLine($"                    Table.Add(\"{objectKey}\", _{objectName});");
-            writer.WriteLine(string.Empty);
+            writer.WriteLine($"                    {objectTypeName} _{objectName} = new()");
+            writer.WriteLine($"                    {{");
         }
 
         private static void WriteItemProperties(StreamWriter writer, object item, Type type, List<object> objectList, string objectName)
@@ -486,13 +483,13 @@
                 object PropertyValue = Property.GetValue(item);
                 string ValueString = GetValueString(PropertyType, PropertyValue, objectList);
 
-                writer.WriteLine($"                    _{objectName}.{PropertyName} = {ValueString};");
+                writer.WriteLine($"                    {PropertyName} = {ValueString},");
             }
         }
 
         private static void WriteItemEpilog(StreamWriter writer, string objectTypeName, string objectName)
         {
-            writer.WriteLine($"                }}");
+            writer.WriteLine($"                }};");
             writer.WriteLine(string.Empty);
             writer.WriteLine($"                return _{objectName};");
             writer.WriteLine($"            }}");
@@ -502,6 +499,9 @@
 
         private static void WriteItemEpilogWithKey(StreamWriter writer, string objectTypeName, string objectName, string objectKey)
         {
+            writer.WriteLine($"                    }};");
+            writer.WriteLine(string.Empty);
+            writer.WriteLine($"                    Table.Add(\"{objectKey}\", _{objectName});");
             writer.WriteLine($"                }}");
             writer.WriteLine(string.Empty);
             writer.WriteLine($"                return Table[\"{objectKey}\"];");
