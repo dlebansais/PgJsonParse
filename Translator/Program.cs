@@ -51,7 +51,6 @@
             if (!ParseFile(Version, "attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
                 return -1;
 
-            /*
             AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
             AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
             AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
@@ -62,7 +61,6 @@
             AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
             AddHardCodedAttribute(PgAttribute.BOOST_ANIMALPETHEAL_SENDER);
             AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
-            */
 
             if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
                 return -1;
@@ -1573,7 +1571,6 @@
                             ExistingIconIdList.Add(IconId);
                     }
                 }
-
             }
 
             Debug.WriteLine($"Icons for version v{version} have not been downloaded, starting it.");
@@ -1602,6 +1599,20 @@
                 }
             }
 
+            foreach (string FileName in FileNames)
+            {
+                if (FileName.EndsWith(".txt"))
+                {
+                    try
+                    {
+                        File.Delete(FileName);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
             string VersionFile = Path.Combine(SharedIconsFolder, $"{version}.txt");
             FileStream Stream = new(VersionFile, FileMode.Create, FileAccess.Write);
             StreamWriter Writer = new StreamWriter(Stream);
@@ -1610,9 +1621,12 @@
 
         public static void DownloadIcon(int version, string folder, int iconId)
         {
+            if (iconId == 0)
+                return;
+
             string SourceLocation = "icons";
             string IconFileName = $"icon_{iconId}.png";
-            string RequestUri = $"http://cdn.projectgorgon.com/{version}/{SourceLocation}/{IconFileName}";
+            string RequestUri = $"http://cdn.projectgorgon.com/v{version}/{SourceLocation}/{IconFileName}";
             try
             {
                 HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(new Uri(RequestUri));

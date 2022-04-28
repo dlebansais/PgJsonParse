@@ -379,6 +379,7 @@
             { "BestowLoreBook", typeof(int) },
             { "Lint_VendorNpc", typeof(string) },
             { "MountedAppearance", typeof(string) },
+            { "AttuneOnPickup", typeof(bool) },
         };
 
         public static Dictionary<string, Type> TableItemBehavior { get; } = new Dictionary<string, Type>()

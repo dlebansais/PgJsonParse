@@ -532,8 +532,6 @@
             { AbilityKeyword.StrategicPreparation, "Strategic Preparation" },
             { AbilityKeyword.ElementalWard, "Elemental Ward" },
             { AbilityKeyword.Reinforce, "Reinforce" },
-
-            // { AbilityKeyword.VigorousDefense, "Vigorous Defense" },
             { AbilityKeyword.TakeTheLead, "Take The Lead" },
             { AbilityKeyword.FireShield, "Fire Shield" },
             { AbilityKeyword.FightMeYouFools, "Fight Me You Fools" },
@@ -691,11 +689,8 @@
             { AbilityKeyword.SnowHareMode, "Snow Hare Mode" },
             { AbilityKeyword.MushroomTurret, "Mushroom Turret" },
             { AbilityKeyword.MeleeKnife, "Melee Knife" },
-
-            // { AbilityKeyword.BunFuBlitz, "Bun-Fu Blitz" },
             { AbilityKeyword.BunFuStrike, "Bun-Fu Strike" },
             { AbilityKeyword.Echolocation, "Echolocation" },
-            //{ AbilityKeyword.EnthusiasmCriticals, "Enthusiasm Criticals" },
             { AbilityKeyword.DuelistsSlash, "Duelist's Slash" },
             { AbilityKeyword.Priest, "Priest" },
             { AbilityKeyword.PriestAttack, "Priest Attack" },
@@ -3481,6 +3476,7 @@
             { ItemKeyword.Horseshoes, "Horseshoes" },
             { ItemKeyword.EltibuleArmor, "Eltibule Armor" },
             { ItemKeyword.Wine, "Wine" },
+            { ItemKeyword.GlamourGourd, "GlamourGourd" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3593,6 +3589,7 @@
             { ItemUseVerb.ApplyToSnoot, "Apply to Snoot" },
             { ItemUseVerb.KillAndHarvest, "Kill and Harvest" },
             { ItemUseVerb.Glamourize, "Glamourize" },
+            { ItemUseVerb.CollectCredits, "Collect Credits" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap { get; } = new Dictionary<LoreBookKeyword, string>()
@@ -4568,6 +4565,7 @@
             { RecipeItemKey.Wood, "Wood" },
             { RecipeItemKey.Clay, "Clay" },
             { RecipeItemKey.NotNoSendToSaddlebag, "Is not: No Send To Saddlebag" },
+            { RecipeItemKey.GlamourGourd, "Glamour Gourd" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()

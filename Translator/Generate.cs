@@ -1486,6 +1486,8 @@
                 return GetListValueString(type, (IList)value, objectList);
             else if (value is ICollection AsCollection)
                 return GetCollectionValueString(type, AsCollection, objectList);
+            else if (value is PgFavorSlotPair AsFavorSlotPair)
+                return $"new PgFavorSlotPair() {{ Favor = Favor.{AsFavorSlotPair.Favor}, SlotCount = {AsFavorSlotPair.SlotCount} }}";
             else
                 throw new ArgumentException();
         }

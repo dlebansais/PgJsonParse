@@ -1116,5 +1116,6 @@
         Horseshoes,
         EltibuleArmor,
         Wine,
+        GlamourGourd,
     }
 }

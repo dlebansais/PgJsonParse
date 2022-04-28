@@ -22,8 +22,6 @@
             SkillRequirementRef = skill;
         }
 
-        public Dictionary<PgItem, int> ItemValueTable { get; set; } = new Dictionary<PgItem, int>();
-
         public override string ToString()
         {
             string Result = string.Empty;

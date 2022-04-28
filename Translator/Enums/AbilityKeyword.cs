@@ -265,8 +265,6 @@
         StrategicPreparation,
         ElementalWard,
         Reinforce,
-
-        // VigorousDefense,
         TakeTheLead,
         FireShield,
         FightMeYouFools,
@@ -424,11 +422,8 @@
         SnowHareMode,
         MushroomTurret,
         MeleeKnife,
-
-        // BunFuBlitz,
         BunFuStrike,
         Echolocation,
-        //EnthusiasmCriticals,
         DuelistsSlash,
         Priest,
         PriestAttack,

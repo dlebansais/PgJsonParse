@@ -66,5 +66,6 @@
         ApplyToSnoot,
         KillAndHarvest,
         Glamourize,
+        CollectCredits,
     }
 }

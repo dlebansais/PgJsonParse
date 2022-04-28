@@ -145,6 +145,9 @@
                     case "MountedAppearance":
                         Result = SetStringProperty((string valueString) => item.MountedAppearance = valueString, Value);
                         break;
+                    case "AttuneOnPickup":
+                        Result = SetBoolProperty((bool valueBool) => item.SetAttuneOnPickup(valueBool), Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;

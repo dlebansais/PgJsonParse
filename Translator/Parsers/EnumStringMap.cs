@@ -102,6 +102,7 @@
             { ItemUseVerb.ClaimVIPTime, "Claim VIP Time" },
             { ItemUseVerb.ApplyToSnoot, "Apply to Snoot" },
             { ItemUseVerb.KillAndHarvest, "Kill and Harvest" },
+            { ItemUseVerb.CollectCredits, "Collect Credits" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()

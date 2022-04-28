@@ -87,6 +87,10 @@
         public WorkOrderSign LintVendorNpc { get; set; }
         public Dictionary<ItemKeyword, List<float>> KeywordTable { get; set; } = new Dictionary<ItemKeyword, List<float>>();
         public string MountedAppearance { get; set; } = string.Empty;
+        public const int AttuneOnPickupNotNull = 1 << 14;
+        public const int AttuneOnPickupIsTrue = 1 << 15;
+        public bool? RawAttuneOnPickup { get { return ((BoolValues & AttuneOnPickupNotNull) != 0) ? (BoolValues & AttuneOnPickupIsTrue) != 0 : null; } }
+        public void SetAttuneOnPickup(bool value) { BoolValues |= (BoolValues & ~(AttuneOnPickupNotNull + AttuneOnPickupIsTrue)) | ((value ? AttuneOnPickupIsTrue : 0) + AttuneOnPickupNotNull); }
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

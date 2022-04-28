@@ -32,8 +32,10 @@
                 if (!(Value is int SlotCount))
                     return Program.ReportFailure($"Value {Value} was expected to be an int");
 
-                item.LevelTable.Add(Favor, SlotCount);
+                item.LevelTable.Add(new PgFavorSlotPair() { Favor = Favor, SlotCount = SlotCount });
             }
+
+            item.LevelTable.Sort((PgFavorSlotPair p1, PgFavorSlotPair p2) => p1.SlotCount - p2.SlotCount);
 
             return true;
         }

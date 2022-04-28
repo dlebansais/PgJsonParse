@@ -127,5 +127,6 @@
         Wood,
         Clay,
         NotNoSendToSaddlebag,
+        GlamourGourd,
     }
 }
