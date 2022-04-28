@@ -4934,7 +4934,7 @@
             { WorkOrderSign.FaeRealm1WorkOrderSign, "Fae Realm Work Order Sign" },
         };
 
-        public static readonly Dictionary<XpTableEnum, string> XpTableEnumTextMap = new Dictionary<XpTableEnum, string>()
+        public static Dictionary<XpTableEnum, string> XpTableEnumTextMap { get; } = new Dictionary<XpTableEnum, string>()
         {
             { XpTableEnum.Internal_None, string.Empty },
             { XpTableEnum.TypicalCombatSkill, "Typical Combat Skill" },
