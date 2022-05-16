@@ -811,6 +811,8 @@
             WriteGroupingDictionary(objectList, Writer, typeof(RecipeItemKey), "ItemByRecipeKey", GetItemByRecipeKeyTable);
             WriteGroupingList(objectList, Writer, "Buff", GetBuffList);
             WriteIconIdList(Writer);
+            WriteSkillNamesDictionary(objectList, Writer);
+            WriteItemNamesDictionary(objectList, Writer);
 
             Writer.WriteLine("    }");
             Writer.WriteLine("}");
@@ -877,12 +879,26 @@
 
         public static bool IsCombatSkill(PgSkill skill, Dictionary<string, PgSkill> skillTable)
         {
-            return (skill.IsCombatSkill || skill.ParentSkillList.Exists((string key) => IsCombatSkill(skillTable[key], skillTable))) && skill.AssociationTablePower.Count > 0;
+            if (skill.AssociationTablePower.Count == 0)
+                return false;
+
+            bool Result = skill.IsCombatSkill && !skill.IsFakeCombatSkill;
+            foreach (string ParentSkill in skill.ParentSkillList)
+                Result |= IsCombatSkill(skillTable[ParentSkill], skillTable);
+
+            return Result;
         }
 
         private static bool IsCombatSubskill(PgSkill skill, Dictionary<string, PgSkill> skillTable)
         {
-            return skill.ParentSkillList.Exists((string key) => IsCombatSkill(skillTable[key], skillTable)) && skill.AssociationTablePower.Count > 0;
+            if (skill.AssociationTablePower.Count == 0)
+                return false;
+
+            foreach (string ParentSkill in skill.ParentSkillList)
+                if (IsCombatSkill(skillTable[ParentSkill], skillTable))
+                    return true;
+
+            return false;
         }
 
         private static Dictionary<object, List<string>> GetItemBySlotTable(List<object> objectList)
@@ -1323,6 +1339,53 @@
             foreach (int Id in Parser.IconIdList)
             {
                 writer.WriteLine($"            {Id},");
+            }
+
+            writer.WriteLine($"        }};");
+        }
+
+        private static void WriteSkillNamesDictionary(List<object> objectList, StreamWriter writer)
+        {
+            Dictionary<string, string> SkillNamesTable = new();
+
+            foreach (object Item in objectList)
+                if (Item is PgSkill AsSkill)
+                {
+                    if (!SkillNamesTable.ContainsKey(AsSkill.Key))
+                        SkillNamesTable.Add(AsSkill.Key, AsSkill.Name);
+                }
+
+            writer.WriteLine();
+            writer.WriteLine($"        public static Dictionary<string, string> SkillNamesTable = new()");
+            writer.WriteLine($"        {{");
+
+            foreach (KeyValuePair<string, string> Entry in SkillNamesTable)
+                writer.WriteLine($"            {{ \"{Entry.Key}\", \"{Entry.Value}\" }},");
+
+            writer.WriteLine($"        }};");
+        }
+
+        private static void WriteItemNamesDictionary(List<object> objectList, StreamWriter writer)
+        {
+            Dictionary<string, string> ItemNamesTable = new();
+
+            foreach (object Item in objectList)
+                if (Item is PgItem AsItem)
+                {
+                    if (!ItemNamesTable.ContainsKey(AsItem.Key))
+                        ItemNamesTable.Add(AsItem.Key, AsItem.Name);
+                }
+
+            writer.WriteLine();
+            writer.WriteLine($"        public static Dictionary<string, string> ItemNamesTable = new()");
+            writer.WriteLine($"        {{");
+
+            foreach (KeyValuePair<string, string> Entry in ItemNamesTable)
+            {
+                string ItemName = Entry.Value;
+                ItemName = ItemName.Replace("\"", "\\\"");
+
+                writer.WriteLine($"            {{ \"{Entry.Key}\", \"{ItemName}\" }},");
             }
 
             writer.WriteLine($"        }};");

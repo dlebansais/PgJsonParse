@@ -16,7 +16,7 @@
         public TimeSpan? RawReuseTime { get; set; }
         public const int IsCancellableNotNull = 1 << 0;
         public const int IsCancellableIsTrue = 1 << 1;
-        public bool IsCancellable { get { return (BoolValues & (IsCancellableNotNull + IsCancellableIsTrue)) != 0; } }
+        public bool IsCancellable { get { return (BoolValues & (IsCancellableNotNull + IsCancellableIsTrue)) == (IsCancellableNotNull + IsCancellableIsTrue); } }
         public bool? RawIsCancellable { get { return ((BoolValues & IsCancellableNotNull) != 0) ? (BoolValues & IsCancellableIsTrue) != 0 : null; } }
         public void SetIsCancellable(bool value) { BoolValues |= (BoolValues & ~(IsCancellableNotNull + IsCancellableIsTrue)) | ((value ? IsCancellableIsTrue : 0) + IsCancellableNotNull); }
         public PgQuestObjectiveCollection QuestObjectiveList { get; set; } = new PgQuestObjectiveCollection();
@@ -35,18 +35,18 @@
         public PgQuestPreGiveEffectCollection PreGiveEffectList { get; set; } = new PgQuestPreGiveEffectCollection();
         public const int IsAutoPrefaceNotNull = 1 << 2;
         public const int IsAutoPrefaceIsTrue = 1 << 3;
-        public bool IsAutoPreface { get { return (BoolValues & (IsAutoPrefaceNotNull + IsAutoPrefaceIsTrue)) != 0; } }
+        public bool IsAutoPreface { get { return (BoolValues & (IsAutoPrefaceNotNull + IsAutoPrefaceIsTrue)) == (IsAutoPrefaceNotNull + IsAutoPrefaceIsTrue); } }
         public bool? RawIsAutoPreface { get { return ((BoolValues & IsAutoPrefaceNotNull) != 0) ? (BoolValues & IsAutoPrefaceIsTrue) != 0 : null; } }
         public void SetIsAutoPreface(bool value) { BoolValues |= (BoolValues & ~(IsAutoPrefaceNotNull + IsAutoPrefaceIsTrue)) | ((value ? IsAutoPrefaceIsTrue : 0) + IsAutoPrefaceNotNull); }
         public const int IsAutoWrapUpNotNull = 1 << 4;
         public const int IsAutoWrapUpIsTrue = 1 << 5;
-        public bool IsAutoWrapUp { get { return (BoolValues & (IsAutoWrapUpNotNull + IsAutoWrapUpIsTrue)) != 0; } }
+        public bool IsAutoWrapUp { get { return (BoolValues & (IsAutoWrapUpNotNull + IsAutoWrapUpIsTrue)) == (IsAutoWrapUpNotNull + IsAutoWrapUpIsTrue); } }
         public bool? RawIsAutoWrapUp { get { return ((BoolValues & IsAutoWrapUpNotNull) != 0) ? (BoolValues & IsAutoWrapUpIsTrue) != 0 : null; } }
         public void SetIsAutoWrapUp(bool value) { BoolValues |= (BoolValues & ~(IsAutoWrapUpNotNull + IsAutoWrapUpIsTrue)) | ((value ? IsAutoWrapUpIsTrue : 0) + IsAutoWrapUpNotNull); }
         public QuestGroupingName GroupingName { get; set; }
         public const int IsGuildQuestNotNull = 1 << 6;
         public const int IsGuildQuestIsTrue = 1 << 7;
-        public bool IsGuildQuest { get { return (BoolValues & (IsGuildQuestNotNull + IsGuildQuestIsTrue)) != 0; } }
+        public bool IsGuildQuest { get { return (BoolValues & (IsGuildQuestNotNull + IsGuildQuestIsTrue)) == (IsGuildQuestNotNull + IsGuildQuestIsTrue); } }
         public bool? RawIsGuildQuest { get { return ((BoolValues & IsGuildQuestNotNull) != 0) ? (BoolValues & IsGuildQuestIsTrue) != 0 : null; } }
         public void SetIsGuildQuest(bool value) { BoolValues |= (BoolValues & ~(IsGuildQuestNotNull + IsGuildQuestIsTrue)) | ((value ? IsGuildQuestIsTrue : 0) + IsGuildQuestNotNull); }
         public int NumExpectedParticipants { get { return RawNumExpectedParticipants.HasValue ? RawNumExpectedParticipants.Value : 0; } }
