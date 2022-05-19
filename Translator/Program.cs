@@ -634,6 +634,9 @@
                 {
                     string ItemKey = Reference.Key;
 
+                    if (Reference is PgStorageVault)
+                        ItemKey = $"Vault_{ItemKey}";
+
                     if (!ObjectTable.ContainsKey(ItemKey))
                         ObjectTable.Add(ItemKey, Reference);
                 }
