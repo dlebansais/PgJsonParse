@@ -1400,7 +1400,7 @@
             foreach (object Item in objectList)
                 if (Item is PgItem AsItem)
                 {
-                    if (AsItem.SkillRequirementTable.ContainsKey("Gourmand"))
+                    if (AsItem.KeywordTable.ContainsKey(ItemKeyword.Edible) || AsItem.RecipeItemKeyList.Contains(RecipeItemKey.Edible))
                         if (!FoodItemsTable.ContainsKey(AsItem.Name))
                             FoodItemsTable.Add(AsItem.Name, AsItem.Key);
                 }
