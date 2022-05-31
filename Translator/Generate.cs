@@ -813,6 +813,7 @@
             WriteIconIdList(Writer);
             WriteSkillNamesDictionary(objectList, Writer);
             WriteItemNamesDictionary(objectList, Writer);
+            WriteFoodItemDictionary(objectList, Writer);
 
             Writer.WriteLine("    }");
             Writer.WriteLine("}");
@@ -1304,6 +1305,7 @@
         {
             string KeyTypeName = SimpleTypeName(keyType);
 
+            writer.WriteLine();
             writer.WriteLine($"        public static Dictionary<{KeyTypeName}, List<string>> {groupingName}List = new Dictionary<{KeyTypeName}, List<string>>()");
             writer.WriteLine($"        {{");
 
@@ -1386,6 +1388,33 @@
                 ItemName = ItemName.Replace("\"", "\\\"");
 
                 writer.WriteLine($"            {{ \"{Entry.Key}\", \"{ItemName}\" }},");
+            }
+
+            writer.WriteLine($"        }};");
+        }
+
+        private static void WriteFoodItemDictionary(List<object> objectList, StreamWriter writer)
+        {
+            Dictionary<string, string> FoodItemsTable = new();
+
+            foreach (object Item in objectList)
+                if (Item is PgItem AsItem)
+                {
+                    if (AsItem.SkillRequirementTable.ContainsKey("Gourmand"))
+                        if (!FoodItemsTable.ContainsKey(AsItem.Name))
+                            FoodItemsTable.Add(AsItem.Name, AsItem.Key);
+                }
+
+            writer.WriteLine();
+            writer.WriteLine($"        public static Dictionary<string, string> FoodItemsTable = new()");
+            writer.WriteLine($"        {{");
+
+            foreach (KeyValuePair<string, string> Entry in FoodItemsTable)
+            {
+                string ItemName = Entry.Key;
+                ItemName = ItemName.Replace("\"", "\\\"");
+
+                writer.WriteLine($"            {{ \"{ItemName}\", \"{Entry.Value}\" }},");
             }
 
             writer.WriteLine($"        }};");

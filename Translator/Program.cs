@@ -826,17 +826,15 @@
 
         private static void AddLinkKey(string linkKey, string referenceKey, Dictionary<string, PgObject> objectTable)
         {
-            if (linkKey == referenceKey)
-                return;
-
             if (referenceKey.Length > 0 && referenceKey != "AnySkill")
             {
                 //Debug.WriteLine(referenceKey);
                 if (objectTable.ContainsKey(referenceKey))
                 {
                     PgObject Reference = objectTable[referenceKey];
+                    string ItemKey = GetItemKey(Reference);
 
-                    if (!Reference.LinkList.Contains(linkKey))
+                    if (ItemKey != linkKey && !Reference.LinkList.Contains(linkKey))
                         Reference.LinkList.Add(linkKey);
                 }
             }
