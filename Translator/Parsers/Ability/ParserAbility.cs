@@ -51,6 +51,9 @@
                     case "AttributesThatDeltaResetTime":
                         Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaResetTimeList, Value);
                         break;
+                    case "AttributesThatDeltaWorksWhileStunned":
+                        Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaWorksWhileStunnedList, Value);
+                        break;
                     case "AttributesThatModPowerCost":
                         Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModPowerCostList, Value);
                         break;
@@ -212,6 +215,9 @@
                         break;
                     case "IsCosmeticPet":
                         Result = SetBoolProperty((bool valueBool) => item.SetIsCosmeticPet(valueBool), Value);
+                        break;
+                    case "WorksWhileStunned":
+                        Result = SetBoolProperty((bool valueBool) => item.SetWorksWhileStunned(valueBool), Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

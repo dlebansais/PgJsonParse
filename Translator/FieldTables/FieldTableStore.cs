@@ -15,6 +15,7 @@
             { "AttributesThatDeltaDelayLoopTime", typeof(string[]) },
             { "AttributesThatDeltaPowerCost", typeof(string[]) },
             { "AttributesThatDeltaResetTime", typeof(string[]) },
+            { "AttributesThatDeltaWorksWhileStunned", typeof(string[]) },
             { "AttributesThatModPowerCost", typeof(string[]) },
             { "CanBeOnSidebar", typeof(bool) },
             { "CanSuppressMonsterShout", typeof(bool) },
@@ -69,6 +70,7 @@
             { "WorksWhileMounted", typeof(bool) },
             { "SelfPreParticle", typeof(string) },
             { "IsCosmeticPet", typeof(bool) },
+            { "WorksWhileStunned", typeof(bool) },
         };
 
         public static Dictionary<string, Type> TableAbilityAmmo { get; } = new Dictionary<string, Type>()
@@ -268,6 +270,16 @@
             { "BOOST_ANIMALPETHEAL_SENDER", typeof(float) },
             { "BOOST_ACID_INDIRECT", typeof(float) },
             { "MAX_SADDLEBAG_VAULT_SIZE", typeof(int) },
+            { "MAX_MOUNT_ANXIETY", typeof(int) },
+            { "MOUNTED_ACCELERATION_LAND", typeof(float) },
+            { "MOUNTED_ACCELERATION_WATER_DEEP", typeof(float) },
+            { "MOUNTED_ACCELERATION_WATER_SHALLOW", typeof(float) },
+            { "MOUNTED_JUMP_BURST", typeof(float) },
+            { "MOUNTED_TOP_SPEED_LAND", typeof(float) },
+            { "MOUNTED_TURN_SPEED_LAND", typeof(float) },
+            { "MOUNTED_TURN_SPEED_WATER_DEEP", typeof(float) },
+            { "MOUNTED_TURN_SPEED_WATER_SHALLOW", typeof(float) },
+            { "MOUNT_RESILIENCE", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
@@ -356,6 +368,7 @@
             { "EquipAppearance", typeof(string) },
             { "EquipSlot", typeof(string) },
             { "IconId", typeof(int) },
+            { "FoodDesc", typeof(string) },
             { "InternalName", typeof(string) },
             { "IsTemporary", typeof(bool) },
             { "IsCrafted", typeof(bool) },
@@ -473,6 +486,7 @@
             //{ "Rewards_Currency", typeof(PgQuestRewardCurrency) },
             { "Rewards_Items", typeof(PgQuestRewardItem[]) },
             { "Reward_CombatXP", typeof(int) },
+            { "QuestNpc", typeof(string) },
             { "FavorNpc", typeof(string) },
             { "PrefaceText", typeof(string) },
             { "SuccessText", typeof(string) },
@@ -629,6 +643,8 @@
             { "ProtoResultItems", typeof(PgRecipeItem[]) },
             { "RewardAllowBonusXp", typeof(bool) },
             { "RequiredAttributeNonZero", typeof(string) },
+            { "LoopParticle", typeof(string) },
+            { "Particle", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableRecipeItem { get; } = new Dictionary<string, Type>()

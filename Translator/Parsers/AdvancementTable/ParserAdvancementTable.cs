@@ -18,11 +18,11 @@
 
             AsPgAdvancementTable.Key = objectKey;
 
-            string[] Split = objectKey.Split('_');
-            if (Split.Length != 2)
+            int Index = objectKey.IndexOf("_");
+            if (Index < 0)
                 return Program.ReportFailure($"Invalid advancement table key '{objectKey}'");
 
-            AsPgAdvancementTable.InternalName = Split[1];
+            AsPgAdvancementTable.InternalName = objectKey.Substring(Index + 1);
 
             return FinishItem(AsPgAdvancementTable, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
         }

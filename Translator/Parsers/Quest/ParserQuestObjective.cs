@@ -1223,7 +1223,9 @@
                         case "Type":
                             break;
                         case "Target":
-                            Result = StringToEnumConversion<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.Target = valueEnum, Value);
+                            Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Target_Key = valueRecipe.Key, Value, ErrorControl.IgnoreIfNotFound);
+                            if (!Result)
+                                Result = StringToEnumConversion<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.TargetKeyword = valueEnum, Value);
                             break;
                         case "Skill":
                             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = valueSkill.Key, Value);
@@ -1251,7 +1253,9 @@
                 if (NewItem.Description.Length == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
 
-                if ((NewItem.Skill_Key != null && NewItem.Target != RecipeKeyword.Internal_None) || (NewItem.Skill_Key != null && NewItem.ResultItemKeyword != ItemKeyword.Internal_None) || (NewItem.ResultItemKeyword != ItemKeyword.Internal_None && NewItem.Target != RecipeKeyword.Internal_None))
+                if ((NewItem.Skill_Key != null && NewItem.TargetKeyword != RecipeKeyword.Internal_None) ||
+                    (NewItem.Skill_Key != null && NewItem.ResultItemKeyword != ItemKeyword.Internal_None) ||
+                    (NewItem.ResultItemKeyword != ItemKeyword.Internal_None && NewItem.TargetKeyword != RecipeKeyword.Internal_None))
                     return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent recipe");
 
                 item = NewItem;

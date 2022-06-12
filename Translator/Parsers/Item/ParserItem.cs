@@ -73,6 +73,9 @@
                     case "EquipSlot":
                         Result = StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.EquipSlot = valueEnum, Value);
                         break;
+                    case "FoodDesc":
+                        Result = SetStringProperty((string valueString) => item.FoodDesc = valueString, Value); // TODO: parse
+                        break;
                     case "IconId":
                         Result = SetIconIdProperty((int valueInt) => item.RawIconId = valueInt, Value);
                         break;

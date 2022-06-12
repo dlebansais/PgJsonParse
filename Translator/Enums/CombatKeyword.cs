@@ -146,6 +146,7 @@
         IfDamageType,
         IfWerewolf,
         TargetSubsequentAttacks,
+        TargetSubsequentRageAttacks,
         TargetNextRageAttack,
         NextUse,
         WithinDistance,

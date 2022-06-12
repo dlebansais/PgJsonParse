@@ -1580,6 +1580,13 @@
                 return GetCollectionValueString(type, AsCollection, objectList);
             else if (value is PgFavorSlotPair AsFavorSlotPair)
                 return $"new PgFavorSlotPair() {{ Favor = Favor.{AsFavorSlotPair.Favor}, SlotCount = {AsFavorSlotPair.SlotCount} }}";
+            else if (value is PgRecipeParticle AsPgRecipeParticle)
+            {
+                string RawColor0String = AsPgRecipeParticle.RawColor0 is not null ? $", RawColor0 = {AsPgRecipeParticle.Color0}" : string.Empty;
+                string RawColor1String = AsPgRecipeParticle.RawColor1 is not null ? $", RawColor1 = {AsPgRecipeParticle.Color1}" : string.Empty;
+                string RawLightColorString = AsPgRecipeParticle.RawLightColor is not null ? $", RawLightColor = {AsPgRecipeParticle.LightColor}" : string.Empty;
+                return $"new PgRecipeParticle() {{ Particle = RecipeParticle.{AsPgRecipeParticle.Particle}{RawColor0String}{RawColor1String}{RawLightColorString} }}";
+            }
             else
                 throw new ArgumentException();
         }

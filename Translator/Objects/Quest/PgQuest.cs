@@ -20,6 +20,7 @@
         public bool? RawIsCancellable { get { return ((BoolValues & IsCancellableNotNull) != 0) ? (BoolValues & IsCancellableIsTrue) != 0 : null; } }
         public void SetIsCancellable(bool value) { BoolValues |= (BoolValues & ~(IsCancellableNotNull + IsCancellableIsTrue)) | ((value ? IsCancellableIsTrue : 0) + IsCancellableNotNull); }
         public PgQuestObjectiveCollection QuestObjectiveList { get; set; } = new PgQuestObjectiveCollection();
+        public PgNpcLocation? QuestNpc { get; set; }
         public PgNpcLocation? FavorNpc { get; set; }
         public string PrefaceText { get; set; } = string.Empty;
         public string SuccessText { get; set; } = string.Empty;

@@ -35,6 +35,7 @@
         public uint? RawDyeColor { get; set; }
         public string EquipAppearance { get; set; } = string.Empty;
         public ItemSlot EquipSlot { get; set; }
+        public string FoodDesc { get; set; } = string.Empty;
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get; set; }
         public string InternalName { get; set; } = string.Empty;

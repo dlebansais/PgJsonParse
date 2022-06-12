@@ -16,7 +16,7 @@
         AlchemyBook_SpiderEggs,
         DeathPenaltyAltar,
         NPC_Sphere,
-        NPC_Oritania,
+        // NPC_Oritania,
         NPC_Pennoc,
         NPC_Lakrea,
         NPC_Chirrra,
@@ -75,5 +75,6 @@
         LiveNpc_Moxie,
         LiveNpc_Torana,
         LiveNpc_BatInTheHat,
+        LiveNpc_Thedar,
     }
 }

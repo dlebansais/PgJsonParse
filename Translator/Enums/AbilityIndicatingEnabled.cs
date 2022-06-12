@@ -15,5 +15,8 @@
         ShadowFeint,
         BulwarkMode,
         CryogenicFreeze,
+        HuntingSpeed1,
+        HuntingSpeed2,
+        HuntingSpeed3,
     }
 }

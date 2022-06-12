@@ -144,7 +144,7 @@
         TSysPoisonBoost,
         MudArmor,
         FrostbiteMiss,
-        FrostbiteDebuff,
+        //FrostbiteDebuff,
         Psychoanalyze,
         ButILoveYou,
         HeartThorn,

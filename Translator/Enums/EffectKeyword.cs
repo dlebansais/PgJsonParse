@@ -302,5 +302,9 @@
         NoMountOverride,
         LiveEvent_ErranaBunny,
         WerewolfForm,
+        HuntingSpeed,
+        HuntingSpeed1,
+        HuntingSpeed2,
+        HuntingSpeed3,
     }
 }

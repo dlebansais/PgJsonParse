@@ -10,6 +10,7 @@
         public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaPowerCostList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaResetTimeList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaWorksWhileStunnedList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatModPowerCostList { get; set; } = new PgAttributeCollection();
         public int BoolValues { get; set; }
         public const int CanBeOnSidebarNotNull = 1 << 0;
@@ -129,6 +130,11 @@
         public bool IsCosmeticPet { get { return (BoolValues & (IsCosmeticPetNotNull + IsCosmeticPetIsTrue)) == (IsCosmeticPetNotNull + IsCosmeticPetIsTrue); } }
         public bool? RawIsCosmeticPet { get { return ((BoolValues & IsCosmeticPetNotNull) != 0) ? (BoolValues & IsCosmeticPetIsTrue) != 0 : null; } }
         public void SetIsCosmeticPet(bool value) { BoolValues |= (BoolValues & ~(IsCosmeticPetNotNull + IsCosmeticPetIsTrue)) | ((value ? IsCosmeticPetIsTrue : 0) + IsCosmeticPetNotNull); }
+        public const int WorksWhileStunnedNotNull = 1 << 26;
+        public const int WorksWhileStunnedIsTrue = 1 << 27;
+        public bool WorksWhileStunned { get { return (BoolValues & (WorksWhileStunnedNotNull + WorksWhileStunnedIsTrue)) == (WorksWhileStunnedNotNull + WorksWhileStunnedIsTrue); } }
+        public bool? RawWorksWhileStunned { get { return ((BoolValues & WorksWhileStunnedNotNull) != 0) ? (BoolValues & WorksWhileStunnedIsTrue) != 0 : null; } }
+        public void SetWorksWhileStunned(bool value) { BoolValues |= (BoolValues & ~(WorksWhileStunnedNotNull + WorksWhileStunnedIsTrue)) | ((value ? WorksWhileStunnedIsTrue : 0) + WorksWhileStunnedNotNull); }
 
         public int FriendlyIconId { get; set; }
 

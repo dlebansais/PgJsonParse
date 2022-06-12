@@ -64,6 +64,8 @@
         public void SetRewardAllowBonusXp(bool value) { BoolValues |= (BoolValues & ~(RewardAllowBonusXpNotNull + RewardAllowBonusXpIsTrue)) | ((value ? RewardAllowBonusXpIsTrue : 0) + RewardAllowBonusXpNotNull); }
         public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
         public string? RequiredAttributeNonZero_Key { get; set; }
+        public PgRecipeParticle? LoopParticle { get; set; }
+        public PgRecipeParticle? Particle { get; set; }
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

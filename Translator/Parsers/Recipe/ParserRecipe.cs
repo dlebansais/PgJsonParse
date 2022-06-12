@@ -145,6 +145,12 @@
                     case "RequiredAttributeNonZero":
                         Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.RequiredAttributeNonZero_Key = valueAttribute.Key, Value);
                         break;
+                    case "LoopParticle":
+                        Result = ParseRecipeLoopParticle(item, Value, parsedFile, parsedKey);
+                        break;
+                    case "Particle":
+                        Result = ParseRecipeParticle(item, Value, parsedFile, parsedKey);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
@@ -880,6 +886,91 @@
             PgRecipeResultTransmogItemAppearance RecipeResultEffect = new PgRecipeResultTransmogItemAppearance();
 
             recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseRecipeLoopParticle(PgRecipe item, object value, string parsedFile, string parsedKey)
+        {
+            if (ParseRecipeParticleString(value, parsedFile, parsedKey, out PgRecipeParticle Particle))
+            {
+                item.LoopParticle = Particle;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private bool ParseRecipeParticle(PgRecipe item, object value, string parsedFile, string parsedKey)
+        {
+            if (ParseRecipeParticleString(value, parsedFile, parsedKey, out PgRecipeParticle Particle))
+            {
+                item.Particle = Particle;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private bool ParseRecipeParticleString(object value, string parsedFile, string parsedKey, out PgRecipeParticle recipeParticle)
+        {
+            recipeParticle = null!;
+            RecipeParticle Particle;
+
+            if (!(value is string ValueString))
+                return Program.ReportFailure($"Value '{value}' was expected to be an int");
+
+            int StartIndex = ValueString.IndexOf('(');
+            if (StartIndex >= 0)
+            {
+                if (StartIndex > 0 && ValueString.EndsWith(")"))
+                {
+                    string ParticleString = ValueString.Substring(0, StartIndex);
+                    if (!StringToEnumConversion<RecipeParticle>.TryParse(ParticleString, out Particle))
+                        return false;
+
+                    string ColorString = ValueString.Substring(StartIndex + 1, ValueString.Length - 2 - StartIndex);
+                    string[] Split = ColorString.Split(';');
+
+                    string MainColorString = Split[0];
+                    if (!MainColorString.StartsWith("Color="))
+                        return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad main color");
+
+                    string[] MainColorSplit = MainColorString.Substring(6).Split(',');
+
+                    if (MainColorSplit.Length != 2 || !Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
+                        return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad main color");
+
+                    if (Split.Length == 1)
+                    {
+                        recipeParticle = new PgRecipeParticle() { Particle = Particle, RawColor0 = Color0, RawColor1 = Color1 };
+                        return true;
+                    }
+                    else if (Split.Length == 2)
+                    {
+                        string LightColorString = Split[1];
+                        if (!LightColorString.StartsWith("LightColor="))
+                            return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad light color");
+
+                        if (Tools.TryParseColor(LightColorString.Substring(12), out uint LightColor))
+                        {
+                            recipeParticle = new PgRecipeParticle() { Particle = Particle, RawColor0 = Color0, RawColor1 = Color1, RawLightColor = LightColor };
+                            return true;
+                        }
+                        else
+                            return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad light color");
+                    }
+                    else
+                        return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' too many colors");
+                }
+                else
+                    return Program.ReportFailure($"failed to parse recipe particle '{ValueString}'");
+            }
+
+            if (!StringToEnumConversion<RecipeParticle>.TryParse(ValueString, out Particle))
+                return false;
+
+            recipeParticle = new PgRecipeParticle() { Particle = Particle };
+
             return true;
         }
 

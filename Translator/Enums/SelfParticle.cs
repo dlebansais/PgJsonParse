@@ -18,5 +18,7 @@
         DeathExplosion,
         MountSpeedup,
         CalmMount,
+        GroundImpact_Large,
+        GroundImpact_OffsetForward,
     }
 }

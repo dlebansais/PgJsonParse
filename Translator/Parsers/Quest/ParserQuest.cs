@@ -75,6 +75,9 @@
                     case "Reward_CombatXP":
                         Result = ParseRewardCombatXp(item, Value, parsedFile, parsedKey);
                         break;
+                    case "QuestNpc":
+                        Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.QuestNpc = npcLocation, Value, parsedFile, parsedKey);
+                        break;
                     case "FavorNpc":
                         Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.FavorNpc = npcLocation, Value, parsedFile, parsedKey);
                         break;
@@ -733,6 +736,7 @@
                     break;
 
                 PgItem Item;
+                PgRecipe Recipe;
 
                 switch (QuestObjective)
                 {
@@ -811,7 +815,14 @@
                         }
                         break;
                     case PgQuestObjectiveUseRecipe AsObjectiveUseRecipe:
-                        UpdateIconIdFromRecipeKeyword(ref iconId, AsObjectiveUseRecipe.Target);
+                        if (AsObjectiveUseRecipe.Target_Key is not null)
+                        {
+                            Recipe = ParsingContext.GetParsedRecipeByKey(AsObjectiveUseRecipe.Target_Key);
+                            if (Recipe.IconId != 0)
+                                iconId = Recipe.IconId;
+                        }
+                        else
+                            UpdateIconIdFromRecipeKeyword(ref iconId, AsObjectiveUseRecipe.TargetKeyword);
                         break;
                 }
             }
