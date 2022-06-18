@@ -94,6 +94,7 @@
                 CombatKeyword.DamageBoost, new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("Deal", "Damage every 2 seconds"),
+                    new KeyValuePair<string, string>("Deal", "Trauma Damage every 2 seconds"),
                     new KeyValuePair<string, string>("Existing Zombie's Direct Damage", "for 60 seconds"),
                     new KeyValuePair<string, string>("Existing Zombie's Direct Damage", "for 5 minutes"),
                     new KeyValuePair<string, string>("Existing Zombie's Damage Boosted", "for 60 seconds"),
