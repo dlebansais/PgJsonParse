@@ -1117,5 +1117,6 @@
         EltibuleArmor,
         Wine,
         GlamourGourd,
+        EventLootKey,
     }
 }

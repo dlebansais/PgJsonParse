@@ -3484,6 +3484,7 @@
             { ItemKeyword.EltibuleArmor, "Eltibule Armor" },
             { ItemKeyword.Wine, "Wine" },
             { ItemKeyword.GlamourGourd, "GlamourGourd" },
+            { ItemKeyword.EventLootKey, "Event Loot Key" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()

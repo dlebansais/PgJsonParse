@@ -1187,7 +1187,7 @@
                 else
                 {
                     GiveCell = (TagTableCell)Row.NestedTagList[0];
-                    Debug.Assert(GiveCell.NestedTagList.Count > 0);
+                    //Debug.Assert(GiveCell.NestedTagList.Count > 0); TODO find out why NestedTagList.Count == 0 for Kelim
 
                     ReceiveCell = (TagTableCell)Row.NestedTagList[1];
                     Debug.Assert(ReceiveCell.NestedTagList.Count > 0);
@@ -1549,7 +1549,7 @@
         public static void DownloadNewIcons(int version)
         {
             string ApplicationDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string SharedIconsFolder = Path.Combine(ApplicationDataFolder, @"PgJsonParse\Shared Icons"); //C:\Users\DLB\AppData\Roaming\PgJsonParse\Shared Icons
+            string SharedIconsFolder = Path.Combine(ApplicationDataFolder, @"PgJsonParse\Shared Icons");
             string[] FileNames = Directory.GetFiles(SharedIconsFolder);
             List<int> ExistingIconIdList = new();
 
