@@ -46,5 +46,7 @@
         Daytime,
         PovusNightlyQuest,
         AreaPovus,
+        AreaSerbule,
+        AreaGazluk,
     }
 }

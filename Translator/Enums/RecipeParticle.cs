@@ -10,5 +10,9 @@
         TeleportLoop,
         TeleportShroomLoop,
         TeleportShroomFlash,
+        InfuseLoop,
+        InfuseFinish,
+        FireResearchLoop,
+        FireResearchSuccess,
     }
 }

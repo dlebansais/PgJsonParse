@@ -128,5 +128,7 @@
         Clay,
         NotNoSendToSaddlebag,
         GlamourGourd,
+        NecroFuel,
+        FlowerPower,
     }
 }

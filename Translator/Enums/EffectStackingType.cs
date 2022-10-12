@@ -342,5 +342,6 @@
         SpecialEventMountSpeed,
         SpecialEventMountAccel,
         SpecialEventSaddlebag,
+        DrunkNectar1,
     }
 }

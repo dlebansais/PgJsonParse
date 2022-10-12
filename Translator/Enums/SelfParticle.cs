@@ -20,5 +20,12 @@
         CalmMount,
         GroundImpact_Large,
         GroundImpact_OffsetForward,
+        BatStability,
+        SonicEmit,
+        AdmonishBuff,
+        ChannelHeal,
+        MendFlesh,
+        CorruptHateHands,
+        RelentlessHope,
     }
 }

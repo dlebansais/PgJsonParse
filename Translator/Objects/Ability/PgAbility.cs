@@ -78,6 +78,14 @@
         public float ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : 0; } }
         public float? RawResetTime { get; set; }
         public SelfParticle SelfParticle { get; set; }
+        public uint SelfParticleColor0 { get { return RawSelfParticleColor0.HasValue ? RawSelfParticleColor0.Value : 0; } }
+        public uint? RawSelfParticleColor0 { get; set; }
+        public uint SelfParticleColor1{ get { return RawSelfParticleColor1.HasValue ? RawSelfParticleColor1.Value : 0; } }
+        public uint? RawSelfParticleColor1 { get; set; }
+        public uint SelfPreParticleColor0 { get { return RawSelfPreParticleColor0.HasValue ? RawSelfPreParticleColor0.Value : 0; } }
+        public uint? RawSelfPreParticleColor0 { get; set; }
+        public uint SelfPreParticleColor1 { get { return RawSelfPreParticleColor1.HasValue ? RawSelfPreParticleColor1.Value : 0; } }
+        public uint? RawSelfPreParticleColor1 { get; set; }
         public string AmmoDescription { get; set; } = string.Empty;
         public string? SharesResetTimerWith_Key { get; set; }
         public string? Skill_Key { get; set; }

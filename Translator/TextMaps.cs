@@ -191,6 +191,8 @@
             { AbilityAnimation.Attack_Horse_Calm, "Attack Horse Calm" },
             { AbilityAnimation.Attack_Knife_DualSlash, "Attack Knife Dual Slash" },
             { AbilityAnimation.Attack_Fairy_Buff, "Attack Fairy Buff" },
+            { AbilityAnimation.Attack_Magic_Channel1, "Attack Magic Channel #1" },
+            { AbilityAnimation.Attack_Priest_ChannelHeal, "Attack Priest Channel Heal" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -822,7 +824,7 @@
             { AbilityProjectile.Projectile_Electricity, "Electricity" },
             { AbilityProjectile.Projectile_Arrow, "Arrow" },
             { AbilityProjectile.Projectile_AcidBall, "Acid Ball" },
-            { AbilityProjectile.Projectile_WhirlDisk, "Whirl Disk" },
+            // { AbilityProjectile.Projectile_WhirlDisk, "Whirl Disk" },
             { AbilityProjectile.Projectile_FrostMeteor, "Frost Meteor" },
             { AbilityProjectile.Projectile_IceDagger, "Ice Dagger" },
             { AbilityProjectile.Projectile_Fireball_NoLight, "Fireball No Light" },
@@ -835,7 +837,9 @@
             { AbilityProjectile.Projectile_ElectricSpell, "Electric Spell" },
             { AbilityProjectile.Projectile_ChaosMissile, "Chaos Missile" },
             { AbilityProjectile.Attack_Taunt1, "Attack Taunt" },
-            { AbilityProjectile.Projectile_Poison, "Projectile Poison" },
+            { AbilityProjectile.Projectile_Poison, "Projectile (Poison)" },
+            { AbilityProjectile.Projectile_Sonic, "Projectile (Sonic)" },
+            { AbilityProjectile.Projectile_Fireball_Offhand, "Projectile (Fireball Offhand)" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -895,6 +899,10 @@
             { AbilityTargetParticle.NecroFear, "Necro Fear" },
             { AbilityTargetParticle.SlashHitSmall, "Slash Hit Small" },
             { AbilityTargetParticle.SlashHitMultiSmall, "Slash Hit Multi Small" },
+            { AbilityTargetParticle.SmokeHit, "Smoke Hit" },
+            { AbilityTargetParticle.SonicHit, "Sonic Hit" },
+            { AbilityTargetParticle.SpiritHit, "Spirit Hit" },
+            { AbilityTargetParticle.CastigateHit, "Castigate Hit" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
@@ -914,6 +922,7 @@
             { Appearance.GiantBat, "Giant Bat" },
             { Appearance.Rabbit, "Rabbit" },
             { Appearance.Fox, "Fox" },
+            { Appearance.Butterfly, "Butterfly" },
         };
 
         public static Dictionary<AppearanceSkin, string> AppearanceSkinTextMap { get; } = new Dictionary<AppearanceSkin, string>()
@@ -1573,6 +1582,7 @@
             { EffectKeyword.HuntingSpeed1, "HuntingSpeed #1" },
             { EffectKeyword.HuntingSpeed2, "HuntingSpeed #2" },
             { EffectKeyword.HuntingSpeed3, "HuntingSpeed #3" },
+            { EffectKeyword.NectarBuff, "Nectar Buff" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1717,6 +1727,7 @@
             { EffectParticle.MountAccelerate, "Mount Accelerate" },
             { EffectParticle.FireShield, "Fire Shield," },
             { EffectParticle.ThornsShield, "Thorns Shield" },
+            { EffectParticle.TakeTheLead, "Take The Lead" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2061,6 +2072,7 @@
             { EffectStackingType.SpecialEventMountSpeed, "Special Event Mount Speed" },
             { EffectStackingType.SpecialEventMountAccel, "Special Event Mount Accel" },
             { EffectStackingType.SpecialEventSaddlebag, "Special Event Saddlebag" },
+            { EffectStackingType.DrunkNectar1, "Drunk Nectar #1" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2356,7 +2368,7 @@
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
-            /*{ ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
+            { ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
             { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
             { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
             { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
@@ -2366,7 +2378,11 @@
             { ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
             { ItemDroppedAppearance.LootScroll10, "Loot Scroll #10" },
             { ItemDroppedAppearance.LootScroll11, "Loot Scroll #11" },
-            { ItemDroppedAppearance.LootScroll12, "Loot Scroll #12" },*/
+            { ItemDroppedAppearance.LootScroll12, "Loot Scroll #12" },
+            { ItemDroppedAppearance.LootScroll13, "Loot Scroll #13" },
+            { ItemDroppedAppearance.LootScroll14, "Loot Scroll #14" },
+            { ItemDroppedAppearance.LootScroll15, "Loot Scroll #15" },
+            { ItemDroppedAppearance.LootScroll16, "Loot Scroll #16" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -3485,6 +3501,11 @@
             { ItemKeyword.Wine, "Wine" },
             { ItemKeyword.GlamourGourd, "GlamourGourd" },
             { ItemKeyword.EventLootKey, "Event Loot Key" },
+            { ItemKeyword.SmallFirework, "Small Firework" },
+            { ItemKeyword.NecromancyDust, "Necromancy Dust" },
+            { ItemKeyword.NecroFuel, "Necro Fuel" },
+            { ItemKeyword.FlowerPower, "Flower Power" },
+            { ItemKeyword.TwoHanded, "Two Handed" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3670,6 +3691,8 @@
             { MapAreaName.Daytime, "Daytime" },
             { MapAreaName.PovusNightlyQuest, "Povus (At Night)" },
             { MapAreaName.AreaPovus, "Povus" },
+            { MapAreaName.AreaSerbule, "Serbule" },
+            { MapAreaName.AreaGazluk, "Gazluk" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -4141,6 +4164,8 @@
             { RecipeAction.Assemble, "Assemble" },
             { RecipeAction.SendToSaddlebag, "Send to Saddlebag" },
             { RecipeAction.ApplyGlamour, "Apply Glamour" },
+            { RecipeAction.PerformRitual, "Perform Ritual" },
+            { RecipeAction.DrinkNectar, "Drink Nectar" },
         };
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
@@ -4417,7 +4442,7 @@
             { RecipeEffect.SpawnPlayerPortal1, "Spawn Player Portal #1" },
             { RecipeEffect.SpawnPlayerPortal2, "Spawn Player Portal #2" },
             { RecipeEffect.Calligraphy5D, "Calligraphy 5D" },
-            { RecipeEffect.Particle_Psychic, "Particle Psychic" },
+            { RecipeEffect.Particle_Psychic, "Particle (Psychic)" },
             { RecipeEffect.DispelSpawnPremonitionsOnDeath, "Dispel Spawn Premonitions On Death" },
             //{ RecipeEffect.SpawnPremonition_All_3sec, "Spawn Premonition All 3sec" },
             //{ RecipeEffect.SpawnPremonition_All_5sec, "Spawn Premonition All 5sec" },
@@ -4444,6 +4469,10 @@
             { RecipeEffect.SummonFairyLight, "Summon Fairy Light" },
             { RecipeEffect.CreateMiningSurvey7Y_MiningSurveyPovus7Y, "Create Motherlode Mining Survey (Astounding, Povus)" },
             { RecipeEffect.CreateMiningSurvey8Y_MiningSurveyPovus8Y, "Create Motherlode Mining Survey (Superb, Povus)" },
+            { RecipeEffect.CreateNecroFuel, "Create Necro Fuel" },
+            { RecipeEffect.DrinkNectar, "Drink Nectar" },
+            { RecipeEffect.Particle_Action, "Particle (Action)" },
+            { RecipeEffect.Calligraphy13B, "Calligraphy 13B" },
         };
 
         public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()
@@ -4574,6 +4603,8 @@
             { RecipeItemKey.Clay, "Clay" },
             { RecipeItemKey.NotNoSendToSaddlebag, "Is not: No Send To Saddlebag" },
             { RecipeItemKey.GlamourGourd, "Glamour Gourd" },
+            { RecipeItemKey.NecroFuel, "Necro Fuel" },
+            { RecipeItemKey.FlowerPower, "Flower Power" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -4609,6 +4640,7 @@
             { RecipeKeyword.RatkinNecroRat, "Ratkin Necro Rat" },
             { RecipeKeyword.DyeGoblinOrange, "Dye Goblin Orange" },
             { RecipeKeyword.DistillSimpleMagicalItem1, "Distill Simple Magical Item #1" },
+            { RecipeKeyword.Lint_UnusedHotspot, "Unused Hotspot" },
         };
 
         public static Dictionary<RecipeParticle, string> RecipeParticleTextMap { get; } = new Dictionary<RecipeParticle, string>()
@@ -4621,6 +4653,10 @@
             { RecipeParticle.TeleportLoop, "Teleport Loop" },
             { RecipeParticle.TeleportShroomLoop, "Teleport Shroom Loop" },
             { RecipeParticle.TeleportShroomFlash, "Teleport Shroom Flash" },
+            { RecipeParticle.InfuseLoop, "Infuse Loop" },
+            { RecipeParticle.InfuseFinish, "Infuse Finish" },
+            { RecipeParticle.FireResearchLoop, "Fire Research Loop" },
+            { RecipeParticle.FireResearchSuccess, "Fire Research Success" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
@@ -4663,6 +4699,9 @@
             { SelfPreParticle.LifeStealHands, "Life Steal Hands" },
             { SelfPreParticle.NecroSmokeOffHand, "Necro Smoke Off Hand" },
             { SelfPreParticle.NecroGatherSmoke, "Necro Gather Smoke" },
+            { SelfPreParticle.ConfusingDouble, "Confusing Double" },
+            { SelfPreParticle.ChannelHealPre, "Channel Heal Pre" },
+            { SelfPreParticle.CorruptHatePreHands, "Corrupt Hate Pre Hands" },
         };
 
         public static Dictionary<SelfParticle, string> SelfParticleTextMap { get; } = new Dictionary<SelfParticle, string>()
@@ -4685,6 +4724,13 @@
             { SelfParticle.CalmMount, "Calm Mount" },
             { SelfParticle.GroundImpact_Large, "Ground Impact (Large)" },
             { SelfParticle.GroundImpact_OffsetForward, "Ground Impact (Offset Forward)" },
+            { SelfParticle.BatStability, "Bat Stability" },
+            { SelfParticle.SonicEmit, "Sonic Emit" },
+            { SelfParticle.AdmonishBuff, "Admonish Buff" },
+            { SelfParticle.ChannelHeal, "Channel Heal" },
+            { SelfParticle.MendFlesh, "Mend Flesh" },
+            { SelfParticle.CorruptHateHands, "Corrupt Hate Hands" },
+            { SelfParticle.RelentlessHope, "Relentless Hope" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()

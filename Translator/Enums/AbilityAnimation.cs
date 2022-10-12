@@ -180,5 +180,7 @@
         Attack_Horse_Calm,
         Attack_Knife_DualSlash,
         Attack_Fairy_Buff,
+        Attack_Magic_Channel1,
+        Attack_Priest_ChannelHeal,
     }
 }

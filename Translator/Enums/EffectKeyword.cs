@@ -306,5 +306,6 @@
         HuntingSpeed1,
         HuntingSpeed2,
         HuntingSpeed3,
+        NectarBuff,
     }
 }

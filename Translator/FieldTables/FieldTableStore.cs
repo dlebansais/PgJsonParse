@@ -45,7 +45,7 @@
             { "Prerequisite", typeof(string) },
             { "Projectile", typeof(string) },
             { "PvE", typeof(PgAbilityPvX) },
-            { "PvP", typeof(PgAbilityPvX) },
+            // { "PvP", typeof(PgAbilityPvX) },
             { "ResetTime", typeof(float) },
             { "SelfParticle", typeof(string) },
             { "AmmoDescription", typeof(string) },
@@ -87,7 +87,7 @@
             { "ArmorSpecificDamage", typeof(int) },
             { "Range", typeof(int) },
             { "PowerCost", typeof(int) },
-            { "MetabolismCost", typeof(int) },
+            // { "MetabolismCost", typeof(int) },
             { "ArmorMitigationRatio", typeof(int) },
             { "AoE", typeof(int) },
             { "SelfPreEffects", typeof(string[]) },
@@ -128,6 +128,8 @@
             { "Recipe", typeof(string) },
             { "InteractionFlag", typeof(string) },
             { "Appearance", typeof(string) },
+            { "MinHour", typeof(int) },
+            { "MaxHour", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableDoT { get; } = new Dictionary<string, Type>()
@@ -567,6 +569,7 @@
             { "IsHiddenUntilEarlierObjectivesComplete", typeof(bool) },
             { "InternalName", typeof(string) },
             { "GroupId", typeof(int) },
+            { "BehaviorId", typeof(string) },
         };
 
         public static Dictionary<string, Type> TableQuestObjectiveRequirement { get; } = new Dictionary<string, Type>()

@@ -36,6 +36,7 @@
             { OtherRequirementType.InventoryItemKeyword, FinishInventoryItemKeyword },
             { OtherRequirementType.Appearance, FinishAppearance },
             { OtherRequirementType.HasHands, FinishHasHands },
+            { OtherRequirementType.TimeOfDay, FinishTimeOfDay },
         };
 
         private static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
@@ -62,6 +63,7 @@
             { OtherRequirementType.InventoryItemKeyword, new List<string>() { "T", "Keyword" } },
             { OtherRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
             { OtherRequirementType.HasHands, new List<string>() { "T" } },
+            { OtherRequirementType.TimeOfDay, new List<string>() { "T", "MinHour", "MaxHour" } },
         };
 
         private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
@@ -1091,6 +1093,52 @@
                     switch (Key)
                     {
                         case "T":
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishTimeOfDay(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgAbilityRequirementTimeOfDay NewItem = new PgAbilityRequirementTimeOfDay();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "MinHour":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawMinHour = valueInt, Value);
+                            break;
+                        case "MaxHour":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawMaxHour = valueInt, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

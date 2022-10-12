@@ -48,9 +48,9 @@
                     case "PowerCost":
                         Result = SetIntProperty((int valueInt) => item.RawPowerCost = valueInt, Value);
                         break;
-                    case "MetabolismCost":
+                    /*case "MetabolismCost":
                         Result = SetIntProperty((int valueInt) => item.RawMetabolismCost = valueInt, Value);
-                        break;
+                        break;*/
                     case "ArmorMitigationRatio":
                         Result = SetIntProperty((int valueInt) => item.RawArmorMitigationRatio = valueInt, Value);
                         break;

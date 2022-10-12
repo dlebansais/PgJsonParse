@@ -11,5 +11,6 @@
         GiantBat,
         Rabbit,
         Fox,
+        Butterfly,
     }
 }

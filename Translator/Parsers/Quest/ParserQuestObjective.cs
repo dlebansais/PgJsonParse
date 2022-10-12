@@ -58,7 +58,7 @@
             { QuestObjectiveType.TipPlayer, new List<string>() { "Type", "Description", "MinAmount", "Number" } },
             { QuestObjectiveType.Special, new List<string>() { "Type", "Target", "Description", "MinAmount", "StringParam", "MaxAmount", "Requirements", "GroupId", "Number" } },
             { QuestObjectiveType.GiveGift, new List<string>() { "Type", "Description", "MinFavorReceived", "MaxFavorReceived", "Number" } },
-            { QuestObjectiveType.UseItem, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "Number", "InternalName" } },
+            { QuestObjectiveType.UseItem, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "BehaviorId", "Number", "InternalName" } },
             { QuestObjectiveType.UseRecipe, new List<string>() { "Type", "Target", "Description", "Skill", "ResultItemKeyword", "GroupId", "Number" } },
             { QuestObjectiveType.KillElite, new List<string>() { "Type", "Target", "Description", "Number", "Requirements" } },
             { QuestObjectiveType.SayInChat, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
@@ -1112,6 +1112,9 @@
                             break;
                         case "Requirements":
                             Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                            break;
+                        case "BehaviorId":
+                            Result = SetStringProperty((string valueString) => NewItem.BehaviorId = valueString, Value);
                             break;
                         case "Description":
                         case "GroupId":

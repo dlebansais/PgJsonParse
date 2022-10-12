@@ -186,6 +186,8 @@
             { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
             { RecipeAction.SendToSaddlebag, "Send to Saddlebag" },
             { RecipeAction.ApplyGlamour, "Apply Glamour" },
+            { RecipeAction.PerformRitual, "Perform Ritual" },
+            { RecipeAction.DrinkNectar, "Drink Nectar" },
         };
 
         public static readonly Dictionary<RecipeEffect, string> RecipeEffectTable = new Dictionary<RecipeEffect, string>()

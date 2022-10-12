@@ -4,5 +4,6 @@
     {
         public string? Item_Key { get; set; }
         public PgQuestObjectiveRequirement? QuestObjectiveRequirement { get; set; }
+        public string? BehaviorId { get; set; }
     }
 }

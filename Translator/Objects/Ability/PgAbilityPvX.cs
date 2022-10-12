@@ -16,8 +16,8 @@
         public int? RawRange { get; set; }
         public int PowerCost { get { return RawPowerCost.HasValue ? RawPowerCost.Value : 0; } }
         public int? RawPowerCost { get; set; }
-        public int MetabolismCost { get { return RawMetabolismCost.HasValue ? RawMetabolismCost.Value : 0; } }
-        public int? RawMetabolismCost { get; set; }
+        //public int MetabolismCost { get { return RawMetabolismCost.HasValue ? RawMetabolismCost.Value : 0; } }
+        //public int? RawMetabolismCost { get; set; }
         public int ArmorMitigationRatio { get { return RawArmorMitigationRatio.HasValue ? RawArmorMitigationRatio.Value : 0; } }
         public int? RawArmorMitigationRatio { get; set; }
         public int AoE { get { return RawAoE.HasValue ? RawAoE.Value : 0; } }

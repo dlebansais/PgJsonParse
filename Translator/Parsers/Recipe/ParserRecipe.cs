@@ -762,6 +762,10 @@
 
             if (OtherString == " NewFairySpot")
                 OtherString = "New Fairy Spot";
+            else if (OtherString == " Landing_Boat")
+                OtherString = "Landing Boat";
+            else if (OtherString == " SpecialDestination")
+                OtherString = "Special Destination";
             else
                 return Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect Teleport location '{OtherString}'");
 

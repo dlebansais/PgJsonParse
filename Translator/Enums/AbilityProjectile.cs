@@ -14,7 +14,7 @@
         Projectile_Electricity,
         Projectile_Arrow,
         Projectile_AcidBall,
-        Projectile_WhirlDisk,
+        // Projectile_WhirlDisk,
         Projectile_FrostMeteor,
         Projectile_IceDagger,
         Projectile_Fireball_NoLight,
@@ -28,5 +28,7 @@
         Projectile_ChaosMissile,
         Attack_Taunt1,
         Projectile_Poison,
+        Projectile_Sonic,
+        Projectile_Fireball_Offhand,
     }
 }

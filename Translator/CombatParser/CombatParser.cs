@@ -811,6 +811,7 @@
             { "Epic Attack", new List<AbilityKeyword>() { AbilityKeyword.EpicAttack } },
             { "Basic Attack", new List<AbilityKeyword>() { AbilityKeyword.BasicAttack } },
             { "Nice and Epic Attack", new List<AbilityKeyword>() { AbilityKeyword.NiceAttack, AbilityKeyword.EpicAttack } },
+            { "Nice Attack and Epic Attack", new List<AbilityKeyword>() { AbilityKeyword.NiceAttack, AbilityKeyword.EpicAttack } },
             { "Core and Nice Attack", new List<AbilityKeyword>() { AbilityKeyword.CoreAttack, AbilityKeyword.NiceAttack } },
             { "Basic, Core, and Nice Attack", new List<AbilityKeyword>() { AbilityKeyword.BasicAttack, AbilityKeyword.CoreAttack, AbilityKeyword.NiceAttack } },
             { "Signature Support", new List<AbilityKeyword>() { AbilityKeyword.SignatureSupport } },

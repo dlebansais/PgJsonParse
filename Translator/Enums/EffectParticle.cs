@@ -142,5 +142,6 @@
         MountAccelerate,
         FireShield,
         ThornsShield,
+        TakeTheLead,
     }
 }

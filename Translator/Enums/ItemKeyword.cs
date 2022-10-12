@@ -1118,5 +1118,10 @@
         Wine,
         GlamourGourd,
         EventLootKey,
+        SmallFirework,
+        NecromancyDust,
+        NecroFuel,
+        FlowerPower,
+        TwoHanded,
     }
 }

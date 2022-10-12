@@ -44,5 +44,9 @@
         NecroFear,
         SlashHitSmall,
         SlashHitMultiSmall,
+        SmokeHit,
+        SonicHit,
+        SpiritHit,
+        CastigateHit,
     }
 }

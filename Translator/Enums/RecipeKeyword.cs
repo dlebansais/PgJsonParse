@@ -33,5 +33,6 @@
         RatkinNecroRat,
         DyeGoblinOrange,
         DistillSimpleMagicalItem1,
+        Lint_UnusedHotspot,
     }
 }

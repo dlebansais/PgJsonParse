@@ -53,5 +53,7 @@
         Assemble,
         SendToSaddlebag,
         ApplyGlamour,
+        PerformRitual,
+        DrinkNectar,
     }
 }

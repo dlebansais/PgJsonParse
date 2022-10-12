@@ -9,5 +9,8 @@
         LifeStealHands,
         NecroSmokeOffHand,
         NecroGatherSmoke,
+        ConfusingDouble,
+        ChannelHealPre,
+        CorruptHatePreHands,
     }
 }

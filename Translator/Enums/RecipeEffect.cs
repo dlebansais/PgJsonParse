@@ -294,5 +294,9 @@
         SummonFairyLight,
         CreateMiningSurvey7Y_MiningSurveyPovus7Y,
         CreateMiningSurvey8Y_MiningSurveyPovus8Y,
+        CreateNecroFuel,
+        DrinkNectar,
+        Particle_Action,
+        Calligraphy13B,
     }
 }
