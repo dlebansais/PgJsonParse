@@ -254,5 +254,8 @@
         PovusEliteGallimimus,
         Povus_RiverTerror1,
         AngryTurkey,
+        EvilLungs1,
+        EvilLungs2,
+        EvilLungs3,
     }
 }

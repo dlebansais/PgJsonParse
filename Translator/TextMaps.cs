@@ -2368,7 +2368,7 @@
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
-            { ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
+            /*{ ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
             { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
             { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
             { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
@@ -2382,7 +2382,7 @@
             { ItemDroppedAppearance.LootScroll13, "Loot Scroll #13" },
             { ItemDroppedAppearance.LootScroll14, "Loot Scroll #14" },
             { ItemDroppedAppearance.LootScroll15, "Loot Scroll #15" },
-            { ItemDroppedAppearance.LootScroll16, "Loot Scroll #16" },
+            { ItemDroppedAppearance.LootScroll16, "Loot Scroll #16" },*/
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -4098,6 +4098,9 @@
             { QuestObjectiveTarget.PovusEliteGallimimus, "Povus Elite Gallimimus" },
             { QuestObjectiveTarget.Povus_RiverTerror1, "Povus River Terror #1" },
             { QuestObjectiveTarget.AngryTurkey, "AngryTurkey" },
+            { QuestObjectiveTarget.EvilLungs1, "Evil Lungs #1" },
+            { QuestObjectiveTarget.EvilLungs2, "Evil Lungs #2" },
+            { QuestObjectiveTarget.EvilLungs3, "Evil Lungs #3" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()

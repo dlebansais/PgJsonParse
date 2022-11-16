@@ -78,7 +78,7 @@
         Mushroom15,
         Starfish,
         JackOLantern3,
-        LootScroll2,
+        /*LootScroll2,
         LootScroll3,
         LootScroll4,
         LootScroll5,
@@ -92,6 +92,6 @@
         LootScroll13,
         LootScroll14,
         LootScroll15,
-        LootScroll16,
+        LootScroll16,*/
     }
 }

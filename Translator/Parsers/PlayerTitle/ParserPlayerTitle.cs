@@ -89,6 +89,7 @@
             { "GuideEvent_LikeABoss", "Title_5222" },
             { "Event_TurkeyKiller", "Title_5223" },
             { "GuideEvent_EggsellentHunter", "Title_5209" },
+            { "Event_Halloween_NotAfraidOfLungs", "Title_5024" },
         };
     }
 }
