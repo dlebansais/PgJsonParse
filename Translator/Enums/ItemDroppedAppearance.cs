@@ -78,6 +78,7 @@
         Mushroom15,
         Starfish,
         JackOLantern3,
+        LootPotion1,
         /*LootScroll2,
         LootScroll3,
         LootScroll4,

@@ -14,5 +14,9 @@
         InfuseFinish,
         FireResearchLoop,
         FireResearchSuccess,
+        NecroDustLoop,
+        FlashLightHand,
+        IceResearchLoop,
+        IceResearchSuccess,
     }
 }

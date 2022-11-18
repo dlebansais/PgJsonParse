@@ -155,5 +155,6 @@
         LickedByAFrog,
         FungusBullet,
         FungusManSpores,
+        GobbledUp,
     }
 }

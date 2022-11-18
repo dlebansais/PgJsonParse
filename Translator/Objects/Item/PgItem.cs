@@ -30,6 +30,8 @@
         public AppearanceSkin ItemAppearancePlate { get; set; }
         public uint ItemAppearanceColor { get { return RawItemAppearanceColor.HasValue ? RawItemAppearanceColor.Value : 0; } }
         public uint? RawItemAppearanceColor { get; set; }
+        public uint ItemAppearanceSkinColor { get { return RawItemAppearanceSkinColor.HasValue ? RawItemAppearanceSkinColor.Value : 0; } }
+        public uint? RawItemAppearanceSkinColor { get; set; }
         public PgItemEffectCollection EffectDescriptionList { get; set; } = new PgItemEffectCollection();
         public uint DyeColor { get { return RawDyeColor.HasValue ? RawDyeColor.Value : 0; } }
         public uint? RawDyeColor { get; set; }

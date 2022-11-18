@@ -252,6 +252,9 @@
                     case "^Plate":
                         Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearancePlate = valueEnum, DetailValue);
                         break;
+                    case "Color":
+                        Result = ParseDroppedAppearanceColor(item, DetailValue, parsedFile, parsedKey);
+                        break;
                     case "Skin_Color":
                         Result = ParseDroppedAppearanceSkinColor(item, DetailValue, parsedFile, parsedKey);
                         break;
@@ -267,11 +270,22 @@
             return Result;
         }
 
-        private bool ParseDroppedAppearanceSkinColor(PgItem item, string detailValue, string parsedFile, string parsedKey)
+        private bool ParseDroppedAppearanceColor(PgItem item, string detailValue, string parsedFile, string parsedKey)
         {
             if (Tools.TryParseColor(detailValue, out uint ParsedColor))
             {
                 item.RawItemAppearanceColor = ParsedColor;
+                return true;
+            }
+            else
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unknown color in dropped appaearance detail '{detailValue}'");
+        }
+
+        private bool ParseDroppedAppearanceSkinColor(PgItem item, string detailValue, string parsedFile, string parsedKey)
+        {
+            if (Tools.TryParseColor(detailValue, out uint ParsedColor))
+            {
+                item.RawItemAppearanceSkinColor = ParsedColor;
                 return true;
             }
             else

@@ -273,7 +273,7 @@
         IllusionForm,
         SkeletonIllusionForm,
         BulwarkMode,
-        LiveEvent_Gobblejack,
+        //LiveEvent_Gobblejack,
         //VanityPet,
         SpawnPremonition_Plants_10sec,
         CryogenicFreeze,
@@ -307,5 +307,6 @@
         HuntingSpeed2,
         HuntingSpeed3,
         NectarBuff,
+        Darkness,
     }
 }

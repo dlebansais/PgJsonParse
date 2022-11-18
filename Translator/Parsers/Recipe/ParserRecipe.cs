@@ -934,34 +934,36 @@
 
                     string ColorString = ValueString.Substring(StartIndex + 1, ValueString.Length - 2 - StartIndex);
                     string[] Split = ColorString.Split(';');
+                    uint Color0 = 0;
+                    uint Color1 = 0;
+                    uint LightColor = 0;
 
-                    string MainColorString = Split[0];
-                    if (!MainColorString.StartsWith("Color="))
-                        return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad main color");
-
-                    string[] MainColorSplit = MainColorString.Substring(6).Split(',');
-
-                    if (MainColorSplit.Length != 2 || !Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
-                        return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad main color");
-
-                    if (Split.Length == 1)
+                    for (int i = 0; i < Split.Length; i++)
                     {
-                        recipeParticle = new PgRecipeParticle() { Particle = Particle, RawColor0 = Color0, RawColor1 = Color1 };
-                        return true;
-                    }
-                    else if (Split.Length == 2)
-                    {
-                        string LightColorString = Split[1];
-                        if (!LightColorString.StartsWith("LightColor="))
-                            return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad light color");
+                        ColorString = Split[i];
 
-                        if (Tools.TryParseColor(LightColorString.Substring(12), out uint LightColor))
+                        if (ColorString.StartsWith("Color="))
                         {
-                            recipeParticle = new PgRecipeParticle() { Particle = Particle, RawColor0 = Color0, RawColor1 = Color1, RawLightColor = LightColor };
-                            return true;
+                            string[] MainColorSplit = ColorString.Substring(6).Split(',');
+
+                            if (MainColorSplit.Length != 2 || !Tools.TryParseColor(MainColorSplit[0].Substring(1), out Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out Color1))
+                                return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad main color");
+                        }
+                        else if (ColorString.StartsWith("LightColor="))
+                        {
+                            string LightColorString = ColorString.Substring(12);
+
+                            if (!Tools.TryParseColor(LightColorString, out LightColor))
+                                return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad light color");
                         }
                         else
-                            return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad light color");
+                            return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad main color");
+                    }
+
+                    if (Split.Length >= 1 && Split.Length <= 2)
+                    {
+                        recipeParticle = new PgRecipeParticle() { Particle = Particle, RawColor0 = Color0, RawColor1 = Color1, RawLightColor = LightColor };
+                        return true;
                     }
                     else
                         return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' too many colors");

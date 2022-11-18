@@ -50,7 +50,7 @@
             { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Requirements", "GroupId", "Number", "InternalName" } },
             { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
             { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "Number" } },
-            { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number", "InternalName" } },
+            { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "Requirements", "ItemName", "GroupId", "Number", "InternalName" } },
             { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", /*"InteractionFlag",*/ "GroupId", "Number" } },
             { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "Number", "InternalName" } },
             { QuestObjectiveType.Have, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number", "InternalName" } },
@@ -420,6 +420,9 @@
                             break;
                         case "ItemName":
                             Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                            break;
+                        case "Requirements":
+                            Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                             break;
                         case "Description":
                         case "GroupId":

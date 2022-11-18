@@ -1226,6 +1226,7 @@
             { Deaths.LickedByAFrog, "Licked By A Frog" },
             { Deaths.FungusBullet, "Fungus Bullet" },
             { Deaths.FungusManSpores, "Fungus Man Spores" },
+            { Deaths.GobbledUp, "Gobbled Up" },
         };
 
         public static Dictionary<DisallowedState, string> DisallowedStateTextMap { get; } = new Dictionary<DisallowedState, string>()
@@ -1549,7 +1550,7 @@
             { EffectKeyword.IllusionForm, "Illusion Form" },
             { EffectKeyword.SkeletonIllusionForm, "Skeleton Illusion Form" },
             { EffectKeyword.BulwarkMode, "Bulwar kMode" },
-            { EffectKeyword.LiveEvent_Gobblejack, "Live Event (Gobblejack)" },
+            //{ EffectKeyword.LiveEvent_Gobblejack, "Live Event (Gobblejack)" },
             //{ EffectKeyword.VanityPet, "Vanity Pet" },
             { EffectKeyword.SpawnPremonition_Plants_10sec, "Spawn Premonition (Plants, 10 sec)" },
             { EffectKeyword.CryogenicFreeze, "Cryogenic Freeze" },
@@ -1583,6 +1584,7 @@
             { EffectKeyword.HuntingSpeed2, "HuntingSpeed #2" },
             { EffectKeyword.HuntingSpeed3, "HuntingSpeed #3" },
             { EffectKeyword.NectarBuff, "Nectar Buff" },
+            { EffectKeyword.Darkness, "Darkness" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2368,6 +2370,7 @@
             { ItemDroppedAppearance.Mushroom15, "Mushroom #15" },
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
+            { ItemDroppedAppearance.LootPotion1, "Loot Potion #1" },
             /*{ ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
             { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
             { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
@@ -4660,6 +4663,10 @@
             { RecipeParticle.InfuseFinish, "Infuse Finish" },
             { RecipeParticle.FireResearchLoop, "Fire Research Loop" },
             { RecipeParticle.FireResearchSuccess, "Fire Research Success" },
+            { RecipeParticle.NecroDustLoop, "Necro Dust Loop" },
+            { RecipeParticle.FlashLightHand, "Flash Light Hand" },
+            { RecipeParticle.IceResearchLoop, "Ice Research Loop" },
+            { RecipeParticle.IceResearchSuccess, "Ice Research Success" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
