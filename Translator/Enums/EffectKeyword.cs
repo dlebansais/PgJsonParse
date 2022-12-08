@@ -308,5 +308,8 @@
         HuntingSpeed3,
         NectarBuff,
         Darkness,
+        FaeInnateAttrs,
+        SwimSpeedWoP,
+        MaxBreathWoP,
     }
 }

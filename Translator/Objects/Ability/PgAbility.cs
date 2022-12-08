@@ -86,6 +86,10 @@
         public uint? RawSelfPreParticleColor0 { get; set; }
         public uint SelfPreParticleColor1 { get { return RawSelfPreParticleColor1.HasValue ? RawSelfPreParticleColor1.Value : 0; } }
         public uint? RawSelfPreParticleColor1 { get; set; }
+        public uint AbilityTargetParticleColor0 { get { return RawAbilityTargetParticleColor0.HasValue ? RawAbilityTargetParticleColor0.Value : 0; } }
+        public uint? RawAbilityTargetParticleColor0 { get; set; }
+        public uint AbilityTargetParticleColor1 { get { return RawAbilityTargetParticleColor1.HasValue ? RawAbilityTargetParticleColor1.Value : 0; } }
+        public uint? RawAbilityTargetParticleColor1 { get; set; }
         public string AmmoDescription { get; set; } = string.Empty;
         public string? SharesResetTimerWith_Key { get; set; }
         public string? Skill_Key { get; set; }

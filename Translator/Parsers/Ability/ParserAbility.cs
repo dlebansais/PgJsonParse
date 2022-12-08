@@ -178,7 +178,7 @@
                         Result = StringToEnumConversion<TargetEffectKeyword>.SetEnum((TargetEffectKeyword valueEnum) => item.TargetEffectKeywordReq = valueEnum, Value);
                         break;
                     case "TargetParticle":
-                        Result = StringToEnumConversion<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, Value);
+                        Result = ParseTargetParticle(item, Value, parsedFile, parsedKey);
                         break;
                     case "UpgradeOf":
                         Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.UpgradeOf_Key = valueAbility.Key, Value);
@@ -306,18 +306,76 @@
 
                 string MainColorString = AsString.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
                 if (!MainColorString.StartsWith("Color="))
-                    return Program.ReportFailure($"failed to parse SelfParticle '{AsString}' bad main color");
+                    return Program.ReportFailure($"Failed to parse SelfParticle '{AsString}' bad main color");
 
                 string[] MainColorSplit = MainColorString.Substring(6).Split(',');
 
-                if (MainColorSplit.Length != 2 || !Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
-                    return Program.ReportFailure($"failed to parse SelfParticle '{MainColorString}' bad main color");
+                if (MainColorSplit.Length == 1)
+                {
+                    if (!Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0))
+                        return Program.ReportFailure($"Failed to parse SelfParticle '{MainColorString}' bad main color");
 
-                item.RawSelfParticleColor0 = Color0;
-                item.RawSelfParticleColor1 = Color1;
+                    item.RawSelfParticleColor0 = Color0;
+                }
+                else if (MainColorSplit.Length == 2)
+                {
+                    if (!Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
+                        return Program.ReportFailure($"Failed to parse SelfParticle '{MainColorString}' bad main color");
+
+                    item.RawSelfParticleColor0 = Color0;
+                    item.RawSelfParticleColor1 = Color1;
+                }
+                else
+                    return Program.ReportFailure($"Failed to parse SelfParticle '{MainColorString}' bad main color");
             }
             else
                 Result = StringToEnumConversion<SelfParticle>.SetEnum((SelfParticle valueEnum) => item.SelfParticle = valueEnum, AsString);
+
+            return Result;
+        }
+
+        private bool ParseTargetParticle(PgAbility item, object value, string parsedFile, string parsedKey)
+        {
+            if (value is not string AsString)
+                return Program.ReportFailure($"Value '{value}' was expected to be a string");
+
+            bool Result;
+
+            int StartIndex = AsString.IndexOf('(');
+            int EndIndex = AsString.IndexOf(')');
+            if (StartIndex > 0 && EndIndex > StartIndex + 1 && EndIndex + 1 == AsString.Length)
+            {
+                string Prefix = AsString.Substring(0, StartIndex);
+                Result = StringToEnumConversion<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, Prefix);
+                if (!Result)
+                    return Program.ReportFailure($"AbilityTargetParticle {AsString} not parsed");
+
+                string MainColorString = AsString.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
+                if (!MainColorString.StartsWith("Color="))
+                    return Program.ReportFailure($"Failed to parse AbilityTargetParticle '{AsString}' bad main color");
+
+                string[] MainColorSplit = MainColorString.Substring(6).Split(',');
+
+                if (MainColorSplit.Length == 1)
+                {
+                    if (!Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0))
+                        return Program.ReportFailure($"Failed to parse AbilityTargetParticle '{MainColorString}' bad main color");
+
+                    item.RawAbilityTargetParticleColor0 = Color0;
+                }
+                else if (MainColorSplit.Length == 2)
+                {
+                    if (!Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
+                        return Program.ReportFailure($"Failed to parse AbilityTargetParticle '{MainColorString}' bad main color");
+
+                    item.RawAbilityTargetParticleColor0 = Color0;
+                    item.RawAbilityTargetParticleColor1 = Color1;
+                }
+                else
+                    return Program.ReportFailure($"Failed to parse AbilityTargetParticle '{MainColorString}' bad main color");
+            }
+            else
+                Result = StringToEnumConversion<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, AsString);
 
             return Result;
         }

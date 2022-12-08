@@ -27,5 +27,6 @@
         MendFlesh,
         CorruptHateHands,
         RelentlessHope,
+        HeadBubble,
     }
 }

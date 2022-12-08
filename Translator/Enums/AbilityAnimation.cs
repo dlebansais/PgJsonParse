@@ -182,5 +182,8 @@
         Attack_Fairy_Buff,
         Attack_Magic_Channel1,
         Attack_Priest_ChannelHeal,
+        Fish,
+        FishReel,
+        QuickFish,
     }
 }

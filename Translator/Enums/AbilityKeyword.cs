@@ -515,5 +515,6 @@
         KuvouAcid,
         AnalyzeGenes,
         DisperseSkeletonEnabled,
+        Lint_MajorHealWithoutDelta,
     }
 }

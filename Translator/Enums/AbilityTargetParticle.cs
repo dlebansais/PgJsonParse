@@ -48,5 +48,7 @@
         SonicHit,
         SpiritHit,
         CastigateHit,
+        PsiWave,
+        Mindreave,
     }
 }

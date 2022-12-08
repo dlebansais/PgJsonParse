@@ -193,6 +193,9 @@
             { AbilityAnimation.Attack_Fairy_Buff, "Attack Fairy Buff" },
             { AbilityAnimation.Attack_Magic_Channel1, "Attack Magic Channel #1" },
             { AbilityAnimation.Attack_Priest_ChannelHeal, "Attack Priest Channel Heal" },
+            { AbilityAnimation.Fish, "Fish" },
+            { AbilityAnimation.FishReel, "Fish Reel" },
+            { AbilityAnimation.QuickFish, "Quick Fish" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -787,6 +790,7 @@
             { AbilityKeyword.KuvouAcid, "Kuvou Acid" },
             { AbilityKeyword.AnalyzeGenes, "Analyze Genes" },
             { AbilityKeyword.DisperseSkeletonEnabled, "Disperse Skeleton Enabled" },
+            { AbilityKeyword.Lint_MajorHealWithoutDelta, "Major Heal Without Delta" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -903,6 +907,8 @@
             { AbilityTargetParticle.SonicHit, "Sonic Hit" },
             { AbilityTargetParticle.SpiritHit, "Spirit Hit" },
             { AbilityTargetParticle.CastigateHit, "Castigate Hit" },
+            { AbilityTargetParticle.PsiWave, "Psi Wave" },
+            { AbilityTargetParticle.Mindreave, "Mindreave" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
@@ -1585,6 +1591,9 @@
             { EffectKeyword.HuntingSpeed3, "HuntingSpeed #3" },
             { EffectKeyword.NectarBuff, "Nectar Buff" },
             { EffectKeyword.Darkness, "Darkness" },
+            { EffectKeyword.FaeInnateAttrs, "Fae Innate Attrs" },
+            { EffectKeyword.SwimSpeedWoP, "Swim Speed WoP" },
+            { EffectKeyword.MaxBreathWoP, "Max Breath WoP" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1730,6 +1739,8 @@
             { EffectParticle.FireShield, "Fire Shield," },
             { EffectParticle.ThornsShield, "Thorns Shield" },
             { EffectParticle.TakeTheLead, "Take The Lead" },
+            { EffectParticle.HolyDefense3, "Holy Defense #3" },
+            { EffectParticle.BubbleSplash, "Bubble Splash" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2371,13 +2382,13 @@
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
             { ItemDroppedAppearance.LootPotion1, "Loot Potion #1" },
-            /*{ ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
+            { ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
             { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
             { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
             { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
             { ItemDroppedAppearance.LootScroll6, "Loot Scroll #6" },
             { ItemDroppedAppearance.LootScroll7, "Loot Scroll #7" },
-            { ItemDroppedAppearance.LootScroll8, "Loot Scroll #8" },
+            /*{ ItemDroppedAppearance.LootScroll8, "Loot Scroll #8" },
             { ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
             { ItemDroppedAppearance.LootScroll10, "Loot Scroll #10" },
             { ItemDroppedAppearance.LootScroll11, "Loot Scroll #11" },
@@ -4712,6 +4723,8 @@
             { SelfPreParticle.ConfusingDouble, "Confusing Double" },
             { SelfPreParticle.ChannelHealPre, "Channel Heal Pre" },
             { SelfPreParticle.CorruptHatePreHands, "Corrupt Hate Pre Hands" },
+            { SelfPreParticle.FishingRod, "Fishing Rod" },
+            { SelfPreParticle.ElectricBuildup, "Electric Buildup" },
         };
 
         public static Dictionary<SelfParticle, string> SelfParticleTextMap { get; } = new Dictionary<SelfParticle, string>()
@@ -4741,6 +4754,7 @@
             { SelfParticle.MendFlesh, "Mend Flesh" },
             { SelfParticle.CorruptHateHands, "Corrupt Hate Hands" },
             { SelfParticle.RelentlessHope, "Relentless Hope" },
+            { SelfParticle.HeadBubble, "Head Bubble" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()

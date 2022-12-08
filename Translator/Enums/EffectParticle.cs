@@ -143,5 +143,7 @@
         FireShield,
         ThornsShield,
         TakeTheLead,
+        HolyDefense3,
+        BubbleSplash,
     }
 }

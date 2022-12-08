@@ -12,5 +12,7 @@
         ConfusingDouble,
         ChannelHealPre,
         CorruptHatePreHands,
+        FishingRod,
+        ElectricBuildup,
     }
 }
