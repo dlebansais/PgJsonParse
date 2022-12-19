@@ -196,6 +196,7 @@
             { AbilityAnimation.Fish, "Fish" },
             { AbilityAnimation.FishReel, "Fish Reel" },
             { AbilityAnimation.QuickFish, "Quick Fish" },
+            { AbilityAnimation.Attack_FireMagic_BreatheFire, "Attack Fire Magic Breathe Fire" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -3520,6 +3521,9 @@
             { ItemKeyword.NecroFuel, "Necro Fuel" },
             { ItemKeyword.FlowerPower, "Flower Power" },
             { ItemKeyword.TwoHanded, "Two Handed" },
+            { ItemKeyword.TextbookSkill_ShamanicInfusion, "Textbook Skill (Shamanic Infusion)" },
+            { ItemKeyword.TextbookSkill_Foraging, "Textbook Skill (Foraging)" },
+            { ItemKeyword.TextbookSkill_Industry, "Textbook Skill (Industry)" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()

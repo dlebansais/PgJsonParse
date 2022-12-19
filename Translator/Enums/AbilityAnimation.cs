@@ -185,5 +185,6 @@
         Fish,
         FishReel,
         QuickFish,
+        Attack_FireMagic_BreatheFire,
     }
 }

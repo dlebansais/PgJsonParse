@@ -1123,5 +1123,8 @@
         NecroFuel,
         FlowerPower,
         TwoHanded,
+        TextbookSkill_ShamanicInfusion,
+        TextbookSkill_Foraging,
+        TextbookSkill_Industry,
     }
 }
