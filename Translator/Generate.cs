@@ -595,6 +595,13 @@
             if (!typeIndexTable.ContainsKey(Type))
                 typeIndexTable.Add(Type, new List<string>());
 
+            if (Item is PgItem AsItem)
+            {
+                if (AsItem.Description.Contains("Horseshoes, but fitted for a cow"))
+                {
+                }
+            }
+
             if (GetObjectIndexContent(Item, Type, 2, out string Key, out string Content))
             {
                 Debug.Assert(Key != null);

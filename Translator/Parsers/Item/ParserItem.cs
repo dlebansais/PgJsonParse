@@ -359,7 +359,7 @@
             if (ParsedEffectFormat != FloatFormat.Standard)
                 return false;
 
-            itemEffect = new PgItemEffectAttribute() { Attribute_Key = ParsedAttribute.Key, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+            itemEffect = new PgItemEffectAttribute() { Attribute_Key = ParsedAttribute.Key, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Label = ParsedAttribute.Label };
             return true;
         }
 
