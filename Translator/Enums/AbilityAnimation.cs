@@ -186,5 +186,7 @@
         FishReel,
         QuickFish,
         Attack_FireMagic_BreatheFire,
+        Attack_Sword_Riposte,
+        Attack_Sword_Decapitate,
     }
 }

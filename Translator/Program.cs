@@ -51,6 +51,7 @@
             if (!ParseFile(Version, "attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
                 return -1;
 
+            /*
             AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
             AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
             AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
@@ -61,6 +62,7 @@
             AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
             AddHardCodedAttribute(PgAttribute.BOOST_ANIMALPETHEAL_SENDER);
             AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
+            */
 
             if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
                 return -1;
@@ -138,6 +140,113 @@
             ParserSkill.UpdateIconsAndNames();
 
             ParserSkill.FillAssociationTables();
+
+/*
+            Dictionary<string, ParsingContext> QuestParsingTable = ParsingContext.ObjectKeyTable[typeof(PgQuest)];
+            Dictionary<MapAreaName, string> QuestAreas = new()
+            {
+                { MapAreaName.Internal_None, "Other" },
+                { MapAreaName.NewbieIsland, "Anagoge island" },
+                { MapAreaName.Dungeons, "Dungeons" },
+                { MapAreaName.Eltibule, "Eltibule" },
+                { MapAreaName.FaeRealm, "Fae Realm" },
+                { MapAreaName.GazlukCaves, "Gazluk Dungeons" },
+                { MapAreaName.GazlukKeep, "Gazluk Keep" },
+                { MapAreaName.Gazluk, "Gazluk Plateau" },
+                { MapAreaName.Desert1, "Ilmari Desert" },
+                { MapAreaName.Tomb1, "Khyrulek's Crypt" },
+                { MapAreaName.KurMountains, "Kur Mountains" },
+                { MapAreaName.MyconianCave, "Myconian Caverns" },
+                { MapAreaName.AreaPovus, "Povus" },
+                { MapAreaName.Rahu, "Rahu" },
+                { MapAreaName.RahuSewer, "Rahu Sewer" },
+                { MapAreaName.RahuSewers, "Rahu Sewers" },
+                { MapAreaName.Casino, "Red Wing Casino" },
+                { MapAreaName.SacredGrotto, "Sacred Grotto" },
+                { MapAreaName.Serbule, "Serbule" },
+                { MapAreaName.Serbule2, "Serbule Hills" },
+                { MapAreaName.SunVale, "Sun Vale" },
+            };
+
+            Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();
+
+            foreach (KeyValuePair<MapAreaName, string> QuestAreaEntry in QuestAreas)
+            {
+                foreach (KeyValuePair<string, ParsingContext> Entry in QuestParsingTable)
+                {
+                    PgQuest Quest = (PgQuest)Entry.Value.Item;
+
+                    if (Quest.Name.Contains("Learn Oritania"))
+                    {
+                    }
+
+                    if (Quest.KeywordList.Contains(QuestKeyword.EventQuest) ||
+                        Quest.KeywordList.Contains(QuestKeyword.WorkOrder) ||
+                        Quest.KeywordList.Contains(QuestKeyword.DruidGroup))
+                        continue;
+
+                    if (Quest.IsGuildQuest)
+                        continue;
+                    if (Quest.IsAutoWrapUp)
+                        continue;
+
+                    if (Quest.ReuseTime != TimeSpan.Zero)
+                        continue;
+
+                    string QuestName = Quest.Name;
+
+                    if (QuestName == string.Empty ||
+                        QuestName.StartsWith("Event: "))
+                        continue;
+
+                    if (QuestName.StartsWith("Hunting: ") ||
+                        QuestName.StartsWith("Wolf: "))
+                    {
+                    }
+
+                    if (Quest.QuestObjectiveList.Count == 1 && Quest.QuestObjectiveList[0] is PgQuestObjectiveScripted)
+                    {
+                        if (QuestName.StartsWith("Visit"))
+                            continue;
+                        else
+                        {
+                        }
+                    }
+
+                    MapAreaName DisplayedLocation = Quest.DisplayedLocation;
+                    PgNpcLocation? QuestNpc = Quest.QuestNpc;
+
+                    if (QuestNpc is null)
+                        QuestNpc = Quest.FavorNpc;
+
+                    if (QuestNpc is null)
+                        QuestNpc = Quest.QuestCompleteNpc;
+
+                    if (QuestNpc is not null && DisplayedLocation == MapAreaName.Internal_None)
+                        DisplayedLocation = QuestNpc.NpcArea;
+
+                    if (DisplayedLocation == QuestAreaEntry.Key)
+                    {
+                        if (!QuestAreaListedTable.ContainsKey(DisplayedLocation))
+                            QuestAreaListedTable.Add(DisplayedLocation, new List<PgQuest>());
+
+                        QuestAreaListedTable[DisplayedLocation].Add(Quest);
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<MapAreaName, List<PgQuest>> Entry in QuestAreaListedTable)
+            {
+                List<PgQuest> NameList = Entry.Value;
+                NameList.Sort((PgQuest q1, PgQuest q2) => string.Compare(q1.Name, q2.Name));
+
+                Debug.WriteLine($"{QuestAreas[Entry.Key]}");
+
+                foreach (PgQuest Quest in NameList)
+                    Debug.WriteLine($"    {Quest.Name}");
+            }
+*/
+
 
             List<object> ObjectList = ParsingContext.GetParsedObjectList();
 

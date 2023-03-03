@@ -215,7 +215,7 @@
         Revitalize,
         PainBubble,
         Archery,
-        BasicShot,
+        //BasicShot,
         AnatomyCriticals,
         HookShot,
         MultiShot,

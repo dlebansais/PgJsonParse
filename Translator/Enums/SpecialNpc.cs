@@ -33,7 +33,7 @@
         Flopsy,
         Lopsy,
         Boop,
-        LiveNpc_Tantai,
+        /*LiveNpc_Tantai,
         LiveNpc_Kimoc,
         LiveNpc_Serrold,
         LiveNpc_Garad,
@@ -42,7 +42,7 @@
         LiveNpc_Rayar,
         LiveNpc_Aceri,
         LiveNpc_Loche,
-        LiveNpc_Delia,
+        LiveNpc_Delia,*/
         BeeHiveA,
         BeeHiveB,
         BeeHiveH,
@@ -59,7 +59,7 @@
         BeeHiveI,
         BeeHiveJ,
         BeeHiveK,
-        LiveNpc_Jopol,
+        //LiveNpc_Jopol,
         TrainingStation1,
         TrainingStation2,
         CandleMakingBook_Bacon,
@@ -71,10 +71,10 @@
         LiveNpc_Lopsy,
         LiveNpc_Flopsy,
         LiveNpc_Boop,
-        LiveNpc_Raim,
+        /*LiveNpc_Raim,
         LiveNpc_Moxie,
-        LiveNpc_Torana,
+        LiveNpc_Torana,*/
         LiveNpc_BatInTheHat,
-        LiveNpc_Thedar,
+        //LiveNpc_Thedar,
     }
 }

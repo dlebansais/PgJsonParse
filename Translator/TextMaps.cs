@@ -197,6 +197,8 @@
             { AbilityAnimation.FishReel, "Fish Reel" },
             { AbilityAnimation.QuickFish, "Quick Fish" },
             { AbilityAnimation.Attack_FireMagic_BreatheFire, "Attack Fire Magic Breathe Fire" },
+            { AbilityAnimation.Attack_Sword_Riposte, "Attack Sword Riposte" },
+            { AbilityAnimation.Attack_Sword_Decapitate, "Attack Sword Decapitate" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -491,7 +493,7 @@
             { AbilityKeyword.Revitalize, "Revitalize" },
             { AbilityKeyword.PainBubble, "Pain Bubble" },
             { AbilityKeyword.Archery, "Archery" },
-            { AbilityKeyword.BasicShot, "Basic Shot" },
+            //{ AbilityKeyword.BasicShot, "Basic Shot" },
             { AbilityKeyword.AnatomyCriticals, "Anatomy Criticals" },
             { AbilityKeyword.HookShot, "Hook Shot" },
             { AbilityKeyword.MultiShot, "Multi Shot" },
@@ -1677,7 +1679,7 @@
             { EffectParticle.BloodSplatBurst, "Burst Blood Splat" },
             { EffectParticle.StealthSmoke, "Stealth Smoke" },
             { EffectParticle.DarkBuff, "Dark Buff" },
-            { EffectParticle.CycloneFire, "Cyclone Fire" },
+            // { EffectParticle.CycloneFire, "Cyclone Fire" },
             { EffectParticle.ElectricityBurst, "Electricity Burst" },
             { EffectParticle.Shield_Healing, "Healing Shield" },
             { EffectParticle.PurpleGlitterBuff, "Purple Glitter Buff" },
@@ -1742,6 +1744,7 @@
             { EffectParticle.TakeTheLead, "Take The Lead" },
             { EffectParticle.HolyDefense3, "Holy Defense #3" },
             { EffectParticle.BubbleSplash, "Bubble Splash" },
+            { EffectParticle.PhoenixFire,"Phoenix Fire" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2389,8 +2392,8 @@
             { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
             { ItemDroppedAppearance.LootScroll6, "Loot Scroll #6" },
             { ItemDroppedAppearance.LootScroll7, "Loot Scroll #7" },
-            /*{ ItemDroppedAppearance.LootScroll8, "Loot Scroll #8" },
-            { ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
+            { ItemDroppedAppearance.LootScroll8, "Loot Scroll #8" },
+            /*{ ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
             { ItemDroppedAppearance.LootScroll10, "Loot Scroll #10" },
             { ItemDroppedAppearance.LootScroll11, "Loot Scroll #11" },
             { ItemDroppedAppearance.LootScroll12, "Loot Scroll #12" },
@@ -3524,6 +3527,47 @@
             { ItemKeyword.TextbookSkill_ShamanicInfusion, "Textbook Skill (Shamanic Infusion)" },
             { ItemKeyword.TextbookSkill_Foraging, "Textbook Skill (Foraging)" },
             { ItemKeyword.TextbookSkill_Industry, "Textbook Skill (Industry)" },
+            { ItemKeyword.OrcArrow1, "Orc Arrow #1" },
+            { ItemKeyword.OrcArrow2, "Orc Arrow #2" },
+            { ItemKeyword.OrcArrow3, "Orc Arrow #3" },
+            { ItemKeyword.OrcArrow4, "Orc Arrow #4" },
+            { ItemKeyword.OrcArrow5, "Orc Arrow #5" },
+            { ItemKeyword.OrcArrow6, "Orc Arrow #6" },
+            { ItemKeyword.OrcArrow7, "Orc Arrow #7" },
+            { ItemKeyword.OrcBarbedArrow1, "Orc Barbed Arrow #1" },
+            { ItemKeyword.OrcBarbedArrow2, "Orc Barbed Arrow #2" },
+            { ItemKeyword.OrcBarbedArrow3, "Orc Barbed Arrow #3" },
+            { ItemKeyword.OrcBarbedArrow4, "Orc Barbed Arrow #4" },
+            { ItemKeyword.OrcBarbedArrow5, "Orc Barbed Arrow #5" },
+            { ItemKeyword.OrcBarbedArrow6, "Orc Barbed Arrow #6" },
+            { ItemKeyword.OrcLongArrow1, "Orc Long Arrow #1" },
+            { ItemKeyword.OrcLongArrow2, "Orc Long Arrow #2" },
+            { ItemKeyword.OrcLongArrow3, "Orc Long Arrow #3" },
+            { ItemKeyword.OrcLongArrow4, "Orc Long Arrow #4" },
+            { ItemKeyword.OrcLongArrow5, "Orc Long Arrow #5" },
+            { ItemKeyword.OrcLongArrow6, "Orc Long Arrow #6" },
+            { ItemKeyword.OrcLongArrow7, "Orc Long Arrow #7" },
+            { ItemKeyword.OrcReservoirArrow1, "Orc Reservoir Arrow #1" },
+            { ItemKeyword.OrcReservoirArrow2, "Orc Reservoir Arrow #2" },
+            { ItemKeyword.OrcReservoirArrow3, "Orc Reservoir Arrow #3" },
+            { ItemKeyword.OrcReservoirArrow4, "Orc Reservoir Arrow #4" },
+            { ItemKeyword.OrcReservoirArrow5, "Orc Reservoir Arrow #5" },
+            { ItemKeyword.OrcReservoirArrow6, "Orc Reservoir Arrow #6" },
+            { ItemKeyword.OrcReservoirArrow7, "Orc Reservoir Arrow #7" },
+            { ItemKeyword.OrcSnareArrow1, "Orc Snare Arrow #1" },
+            { ItemKeyword.OrcSnareArrow2, "Orc Snare Arrow #2" },
+            { ItemKeyword.OrcSnareArrow3, "Orc Snare Arrow #3" },
+            { ItemKeyword.OrcSnareArrow4, "Orc Snare Arrow #4" },
+            { ItemKeyword.OrcSnareArrow5, "Orc Snare Arrow #5" },
+            { ItemKeyword.OrcSnareArrow6, "Orc Snare Arrow #6" },
+            { ItemKeyword.OrcSnareArrow7, "Orc Snare Arrow #7" },
+            { ItemKeyword.OrcDenseArrow1, "Orc Dense Arrow #1" },
+            { ItemKeyword.OrcDenseArrow2, "Orc Dense Arrow #2" },
+            { ItemKeyword.OrcDenseArrow3, "Orc Dense Arrow #3" },
+            { ItemKeyword.OrcDenseArrow4, "Orc Dense Arrow #4" },
+            { ItemKeyword.OrcDenseArrow5, "Orc Dense Arrow #5" },
+            { ItemKeyword.OrcDenseArrow6, "Orc Dense Arrow #6" },
+            { ItemKeyword.OrcArrow, "Orc Arrow" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3711,6 +3755,7 @@
             { MapAreaName.AreaPovus, "Povus" },
             { MapAreaName.AreaSerbule, "Serbule" },
             { MapAreaName.AreaGazluk, "Gazluk" },
+            { MapAreaName.Staging, "Staging" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -4827,7 +4872,7 @@
             { SpecialNpc.Flopsy, "Flopsy" },
             { SpecialNpc.Lopsy, "Lopsy" },
             { SpecialNpc.Boop, "Boop" },
-            { SpecialNpc.LiveNpc_Tantai, "Tantai" },
+            /*{ SpecialNpc.LiveNpc_Tantai, "Tantai" },
             { SpecialNpc.LiveNpc_Kimoc, "Kimoc" },
             { SpecialNpc.LiveNpc_Serrold, "Serrold" },
             { SpecialNpc.LiveNpc_Garad, "Garad" },
@@ -4836,7 +4881,7 @@
             { SpecialNpc.LiveNpc_Rayar, "Rayar" },
             { SpecialNpc.LiveNpc_Aceri, "Aceri" },
             { SpecialNpc.LiveNpc_Loche, "Loche" },
-            { SpecialNpc.LiveNpc_Delia, "Delia" },
+            { SpecialNpc.LiveNpc_Delia, "Delia" },*/
             { SpecialNpc.BeeHiveA, "Bee Hive (A)" },
             { SpecialNpc.BeeHiveB, "Bee Hive (B)" },
             { SpecialNpc.BeeHiveH, "Bee Hive (H)" },
@@ -4853,7 +4898,7 @@
             { SpecialNpc.BeeHiveI, "Bee Hive (I)" },
             { SpecialNpc.BeeHiveJ, "Bee Hive (J)" },
             { SpecialNpc.BeeHiveK, "Bee Hive (K)" },
-            { SpecialNpc.LiveNpc_Jopol, "Jopol" },
+            //{ SpecialNpc.LiveNpc_Jopol, "Jopol" },
             { SpecialNpc.TrainingStation1, "Training Station #1" },
             { SpecialNpc.TrainingStation2, "Training Station #2" },
             { SpecialNpc.CandleMakingBook_Bacon, "Candle Making Book (Bacon)" },
@@ -4865,11 +4910,11 @@
             { SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
             { SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
             { SpecialNpc.LiveNpc_Boop, "Boop" },
-            { SpecialNpc.LiveNpc_Raim, "Raim" },
+            /*{ SpecialNpc.LiveNpc_Raim, "Raim" },
             { SpecialNpc.LiveNpc_Moxie, "Moxie" },
-            { SpecialNpc.LiveNpc_Torana, "Torana" },
+            { SpecialNpc.LiveNpc_Torana, "Torana" },*/
             { SpecialNpc.LiveNpc_BatInTheHat, "Bat In The Hat" },
-            { SpecialNpc.LiveNpc_Thedar, "Thedar" },
+            //{ SpecialNpc.LiveNpc_Thedar, "Thedar" },
         };
 
         public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap { get; } = new Dictionary<TargetEffectKeyword, string>()

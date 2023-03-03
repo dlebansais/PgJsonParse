@@ -80,7 +80,7 @@
         BloodSplatBurst,
         StealthSmoke,
         DarkBuff,
-        CycloneFire,
+        // CycloneFire,
         ElectricityBurst,
         Shield_Healing,
         PurpleGlitterBuff,
@@ -145,5 +145,6 @@
         TakeTheLead,
         HolyDefense3,
         BubbleSplash,
+        PhoenixFire,
     }
 }

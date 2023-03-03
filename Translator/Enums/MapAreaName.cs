@@ -48,5 +48,6 @@
         AreaPovus,
         AreaSerbule,
         AreaGazluk,
+        Staging,
     }
 }

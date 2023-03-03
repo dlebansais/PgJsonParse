@@ -26,7 +26,15 @@
             string EnumString;
 
             if (value is string ValueString)
+            {
+                if (ValueString == "0")
+                {
+                    setter(default(T)!);
+                    return true;
+                }
+
                 EnumString = ValueString;
+            }
             else if (value is List<object> ValueList && ValueList.Count == 1 && ValueList[0] is string ItemString)
                 EnumString = ItemString;
             else

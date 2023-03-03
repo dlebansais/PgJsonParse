@@ -1016,11 +1016,15 @@
                                     KeywordListString += Keyword.ToString();
                                 }
 
-                                Debug.WriteLine($"{Name} has more than one keyword: {KeywordListString}. Selected: {FinalMatchingKeyword}");
+                                if (!Name.EndsWith(" (Orc)"))
+                                    Debug.WriteLine($"{Name} has more than one keyword: {KeywordListString}. Selected: {FinalMatchingKeyword}");
                             }
 
                             if (KeywordToName.ContainsKey(FinalMatchingKeyword))
-                                Debug.WriteLine($"Keyword {FinalMatchingKeyword} for {Name} is already used by {KeywordToName[FinalMatchingKeyword]}.");
+                            {
+                                if (!Name.EndsWith(" (Orc)"))
+                                    Debug.WriteLine($"Keyword {FinalMatchingKeyword} for {Name} is already used by {KeywordToName[FinalMatchingKeyword]}.");
+                            }
                             else
                                 KeywordToName.Add(FinalMatchingKeyword, Name);
                         }
