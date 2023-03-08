@@ -50,5 +50,9 @@
         CastigateHit,
         PsiWave,
         Mindreave,
+        WaterExplosionSmall,
+        LightningExplosionBlue,
+        DelugeBurst,
+        LightningHit,
     }
 }

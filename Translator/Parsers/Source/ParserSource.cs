@@ -17,17 +17,17 @@
             if (item != null)
                 return Program.ReportFailure("Unexpected failure");
 
-            if (!contentTable.ContainsKey("Type"))
+            if (!contentTable.ContainsKey("type"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Source has no type");
 
-            if (!(contentTable["Type"] is string TypeString))
+            if (!(contentTable["type"] is string TypeString))
                 return Program.ReportFailure("Source type was expected to be a string");
 
             bool Result;
 
             switch (TypeString)
             {
-                case "AutomaticFromSkill":
+                case "Skill":
                     Result = ParseSourceAutomaticFromSkill(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                     break;
                 case "Item":
@@ -73,9 +73,9 @@
 
                 switch (Key)
                 {
-                    case "Type":
+                    case "type":
                         break;
-                    case "SkillTypeId":
+                    case "skill":
                         Result = ParserSkill.Parse((PgSkill valueSkill) => NewSource.Skill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
                         break;
                     default:
@@ -108,9 +108,9 @@
 
                 switch (Key)
                 {
-                    case "Type":
+                    case "type":
                         break;
-                    case "ItemTypeId":
+                    case "itemTypeId":
                         Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item_Key = valueItem.Key, $"item_{Value}");
                         break;
                     default:
@@ -143,9 +143,9 @@
 
                 switch (Key)
                 {
-                    case "Type":
+                    case "type":
                         break;
-                    case "Npc":
+                    case "npc":
                         Result = Inserter<PgSource>.SetNpc((PgNpcLocation location) => NewSource.Npc = location, Value, parsedFile, parsedKey);
                         break;
                     default:
@@ -168,6 +168,7 @@
 
         private bool ParseSourceEffect(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
         {
+            /*
             if (!contentTable.ContainsKey("EffectName"))
                 return Program.ReportFailure(parsedFile, parsedKey, "Source has no effect name");
 
@@ -217,6 +218,9 @@
             }
 
             return Program.ReportFailure($"Unknown effect name {EffectNameString}");
+            */
+            item = new PgSourceEffect() { Effect_Key = null };
+            return true;
         }
 
         private bool ParseSourceQuest(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
@@ -231,9 +235,9 @@
 
                 switch (Key)
                 {
-                    case "Type":
+                    case "type":
                         break;
-                    case "QuestId":
+                    case "questId":
                         Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = valueQuest.Key, $"quest_{Value}");
                         break;
                     default:
@@ -266,9 +270,9 @@
 
                 switch (Key)
                 {
-                    case "Type":
+                    case "type":
                         break;
-                    case "Npc":
+                    case "npc":
                         Result = Inserter<PgSource>.SetNpc((PgNpcLocation location) => NewSource.Npc = location, Value, parsedFile, parsedKey);
                         break;
                     default:
@@ -301,10 +305,13 @@
 
                 switch (Key)
                 {
-                    case "Type":
+                    case "type":
                         break;
-                    case "Npc":
+                    case "npc":
                         Result = Inserter<PgSource>.SetNpc((PgNpcLocation location) => NewSource.Npc = location, Value, parsedFile, parsedKey);
+                        break;
+                    case "hangOutId":
+                        Result = SetIntProperty((int valueInt) => NewSource.RawHangOut = valueInt, Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

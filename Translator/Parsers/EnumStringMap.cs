@@ -103,6 +103,7 @@
             { ItemUseVerb.ApplyToSnoot, "Apply to Snoot" },
             { ItemUseVerb.KillAndHarvest, "Kill and Harvest" },
             { ItemUseVerb.CollectCredits, "Collect Credits" },
+            { ItemUseVerb.EmptyAllBottles, "Empty All Bottles" },
         };
 
         public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()

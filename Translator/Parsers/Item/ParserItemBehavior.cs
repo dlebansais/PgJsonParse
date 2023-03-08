@@ -48,6 +48,9 @@
                     case "UseDelay":
                         Result = SetFloatProperty((float valueFloat) => item.RawUseDelay = valueFloat, Value);
                         break;
+                    case "MinStackSizeNeeded":
+                        Result = SetIntProperty((int valueInt) => item.RawMinStackSizeNeeded = valueInt, Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;

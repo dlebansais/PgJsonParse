@@ -67,5 +67,6 @@
         KillAndHarvest,
         Glamourize,
         CollectCredits,
+        EmptyAllBottles,
     }
 }

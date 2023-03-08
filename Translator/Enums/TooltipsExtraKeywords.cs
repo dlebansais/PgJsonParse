@@ -10,5 +10,6 @@
         SummonFox,
         ShadowFeintActivation,
         TriageActivation,
+        CloudTrickActivation,
     }
 }

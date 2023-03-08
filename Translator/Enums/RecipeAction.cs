@@ -55,5 +55,7 @@
         ApplyGlamour,
         PerformRitual,
         DrinkNectar,
+        Perform,
+        //BrownAle,
     }
 }

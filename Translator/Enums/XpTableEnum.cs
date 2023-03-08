@@ -50,5 +50,6 @@
         PovusTown,
         PovusStorage,
         Riding,
+        TempestEnergyByLevel,
     }
 }

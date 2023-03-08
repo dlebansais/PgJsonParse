@@ -66,6 +66,8 @@
         public string? RequiredAttributeNonZero_Key { get; set; }
         public PgRecipeParticle? LoopParticle { get; set; }
         public PgRecipeParticle? Particle { get; set; }
+        public int MaxUses { get { return RawMaxUses.HasValue ? RawMaxUses.Value : 0; } }
+        public int? RawMaxUses { get; set; }
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

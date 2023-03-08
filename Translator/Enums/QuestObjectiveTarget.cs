@@ -257,5 +257,6 @@
         EvilLungs1,
         EvilLungs2,
         EvilLungs3,
+        Windbiter,
     }
 }

@@ -14,5 +14,9 @@
         CorruptHatePreHands,
         FishingRod,
         ElectricBuildup,
+        DelugePreParticles,
+        TsunamiPreParticles,
+        SummonTornado,
+        ShockingGraspBuildup,
     }
 }

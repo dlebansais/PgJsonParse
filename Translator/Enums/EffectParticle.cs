@@ -146,5 +146,12 @@
         HolyDefense3,
         BubbleSplash,
         PhoenixFire,
+        DelugeBurst,
+        FlyCloudSubtle,
+        WindWard,
+        MiniThunderstorm,
+        IceStorm,
+        CloudTrick,
+        MountSpeedup,
     }
 }

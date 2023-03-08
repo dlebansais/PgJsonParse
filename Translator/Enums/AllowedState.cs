@@ -4,5 +4,6 @@
     {
         Internal_None,
         Underwater,
+        PartiallyUnderwater,
     }
 }

@@ -12,5 +12,7 @@
         public int? RawMetabolismCost { get; set; }
         public float UseDelay { get { return RawUseDelay.HasValue ? RawUseDelay.Value : 0; } }
         public float? RawUseDelay { get; set; }
+        public int MinStackSizeNeeded { get { return RawMinStackSizeNeeded.HasValue ? RawMinStackSizeNeeded.Value : 0; } }
+        public int? RawMinStackSizeNeeded { get; set; }
     }
 }

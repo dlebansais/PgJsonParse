@@ -130,5 +130,6 @@
         GlamourGourd,
         NecroFuel,
         FlowerPower,
+        BrownAle,
     }
 }

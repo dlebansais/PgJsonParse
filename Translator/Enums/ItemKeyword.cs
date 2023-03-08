@@ -1167,5 +1167,13 @@
         OrcDenseArrow5,
         OrcDenseArrow6,
         OrcArrow,
+        Druidic,
+        RanalonCulture,
+        SparkDust,
+        BrownAle,
+        WeatherWitchingRecipe,
+        TextbookSkill_WeatherWitching,
+        WeatherStaff,
+        GrowingVegetable,
     }
 }

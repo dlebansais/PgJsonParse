@@ -26,5 +26,10 @@
         Appearance,
         HasHands,
         TimeOfDay,
+        RecipeUsed,
+        Weather,
+        MoonPhase,
+        EntityPhysicalState,
+        EntitiesNear,
     }
 }

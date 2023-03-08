@@ -58,6 +58,7 @@
             { typeof(PgRewardList), new ParserRewardList() },
             { typeof(PgReward), new ParserReward() },
             { typeof(PgReportList), new ParserReportList() },
+            { typeof(PgSourceEntries), new ParserSourceEntries() },
             { typeof(PgSource), new ParserSource() },
             { typeof(PgStorageVault), new ParserStorageVault() },
             { typeof(PgStorageEventList), new ParserStorageEventLevel() },

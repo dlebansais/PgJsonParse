@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 78;
+        public const int TotalEnumTypes = 79;
 
         static TextMaps()
         {
@@ -199,6 +199,20 @@
             { AbilityAnimation.Attack_FireMagic_BreatheFire, "Attack Fire Magic Breathe Fire" },
             { AbilityAnimation.Attack_Sword_Riposte, "Attack Sword Riposte" },
             { AbilityAnimation.Attack_Sword_Decapitate, "Attack Sword Decapitate" },
+            { AbilityAnimation.Attack_BattleChemistry_PlantMushroom, "Attack Battle Chemistry Plant Mushroom" },
+            { AbilityAnimation.Attack_SummonGlyph, "Attack Summon Glyph" },
+            { AbilityAnimation.Attack_WeatherWitch_Dampen, "Attack Weather Witch Dampen" },
+            { AbilityAnimation.Attack_WeatherWitch_LightningBolt, "Attack Weather Witch Lightning Bolt" },
+            { AbilityAnimation.Attack_WeatherWitch_Deluge, "Attack Weather Witch Deluge" },
+            { AbilityAnimation.Attack_WeatherWitch_Tsunami, "Attack Weather Witch Tsunami" },
+            { AbilityAnimation.Attack_WeatherWitch_SummonTornado, "Attack Weather Witch Summon Tornado" },
+            { AbilityAnimation.Attack_WeatherWitch_Hailstorm, "Attack Weather Witch Hailstorm" },
+            { AbilityAnimation.Attack_WeatherWitch_TempestFlight, "Attack Weather Witch Tempest Flight" },
+            { AbilityAnimation.Attack_WeatherWitch_CalmSkies, "Attack Weather Witch Calm Skies" },
+            { AbilityAnimation.Attack_WeatherWitch_WindWard, "Attack Weather Witch Wind Ward" },
+            { AbilityAnimation.Attack_WeatherWitch_ShockingGrasp, "Attack Weather Witch Shocking Grasp" },
+            { AbilityAnimation.Attack_WeatherWitch_CloudTrick, "Attack Weather Witch Cloud Trick" },
+            { AbilityAnimation.Attack_WeatherWitch_Squall, "Attack Weather Witch Squall" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -229,6 +243,9 @@
             { AbilityIndicatingEnabled.HuntingSpeed1, "Hunting Speed #1" },
             { AbilityIndicatingEnabled.HuntingSpeed2, "Hunting Speed #2" },
             { AbilityIndicatingEnabled.HuntingSpeed3, "Hunting Speed #3" },
+            { AbilityIndicatingEnabled.TempestFlight, "Tempest Flight" },
+            { AbilityIndicatingEnabled.WindWard, "Wind Ward" },
+            { AbilityIndicatingEnabled.CloudTrick, "Cloud Trick" },
         };
 
         public static Dictionary<AbilityItemKeyword, string> AbilityItemKeywordTextMap { get; } = new Dictionary<AbilityItemKeyword, string>()
@@ -276,6 +293,7 @@
             { AbilityItemKeyword.EnergyBow, "Energy Bow" },
             { AbilityItemKeyword.form_Fox, "Fox only" },
             { AbilityItemKeyword.Darkcaster, "Darkcaster" },
+            { AbilityItemKeyword.WeatherStaff, "Weather Staff" },
         };
 
         public static Dictionary<AbilityKeyword, string> AbilityKeywordTextMap { get; } = new Dictionary<AbilityKeyword, string>()
@@ -794,6 +812,31 @@
             { AbilityKeyword.AnalyzeGenes, "Analyze Genes" },
             { AbilityKeyword.DisperseSkeletonEnabled, "Disperse Skeleton Enabled" },
             { AbilityKeyword.Lint_MajorHealWithoutDelta, "Major Heal Without Delta" },
+            { AbilityKeyword.WeatherWitching, "Weather Witching" },
+            { AbilityKeyword.Dampen, "Dampen" },
+            { AbilityKeyword.LightningBolt, "Lightning Bolt" },
+            { AbilityKeyword.Deluge, "Deluge" },
+            { AbilityKeyword.Tsunami, "Tsunami" },
+            { AbilityKeyword.Hailstorm, "Hailstorm" },
+            { AbilityKeyword.TempestFlight, "Tempest Flight" },
+            { AbilityKeyword.CalmSkies, "Calm Skies" },
+            { AbilityKeyword.WindWard, "Wind Ward" },
+            { AbilityKeyword.ShockingGrasp, "Shocking Grasp" },
+            { AbilityKeyword.CloudTrick, "Cloud Trick" },
+            { AbilityKeyword.StormShield, "Storm Shield" },
+            { AbilityKeyword.InfectiousInstincts, "Infectious Instincts" },
+            { AbilityKeyword.SummonTornado, "Summon Tornado" },
+            { AbilityKeyword.CloudTrickActivation, "Cloud Trick Activation" },
+            { AbilityKeyword.Lint_UnreachableLevel, "Lint Unreachable Level" },
+            { AbilityKeyword.SummonedTornado, "Summoned Tornado" },
+            { AbilityKeyword.Sandstorm, "Sandstorm" },
+            { AbilityKeyword.Disease, "Disease" },
+            { AbilityKeyword.Curse, "Curse" },
+            { AbilityKeyword.BrokenBone, "Broken Bone" },
+            { AbilityKeyword.Drunk6, "Drunk #6" },
+            { AbilityKeyword.DrugPenalty_PinealJuice, "Drug Penalty Pineal Juice" },
+            { AbilityKeyword.PostCoitalBliss, "Post Coital Bliss" },
+            { AbilityKeyword.FrogToxin, "Frog Toxin" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -847,6 +890,7 @@
             { AbilityProjectile.Projectile_Poison, "Projectile (Poison)" },
             { AbilityProjectile.Projectile_Sonic, "Projectile (Sonic)" },
             { AbilityProjectile.Projectile_Fireball_Offhand, "Projectile (Fireball Offhand)" },
+            { AbilityProjectile.Projectile_WaterBall, "Projectile (Water Ball)" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -860,6 +904,7 @@
             { AbilityTarget.PermanentPet, "Permanent pet" },
             { AbilityTarget.Corpse, "Corpse" },
             { AbilityTarget.Ally, "Ally" },
+            { AbilityTarget.Pet, "Pet" },
         };
 
         public static Dictionary<AbilityTargetParticle, string> AbilityTargetParticleTextMap { get; } = new Dictionary<AbilityTargetParticle, string>()
@@ -912,12 +957,17 @@
             { AbilityTargetParticle.CastigateHit, "Castigate Hit" },
             { AbilityTargetParticle.PsiWave, "Psi Wave" },
             { AbilityTargetParticle.Mindreave, "Mindreave" },
+            { AbilityTargetParticle.WaterExplosionSmall, "Water Explosion Small" },
+            { AbilityTargetParticle.LightningExplosionBlue, "Lightning Explosion Blue" },
+            { AbilityTargetParticle.DelugeBurst, "Deluge Burst" },
+            { AbilityTargetParticle.LightningHit, "Lightning Hit" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
         {
             { AllowedState.Internal_None, string.Empty },
             { AllowedState.Underwater, "Underwater" },
+            { AllowedState.PartiallyUnderwater, "Partially Underwater" },
         };
 
         public static Dictionary<Appearance, string> AppearanceTextMap { get; } = new Dictionary<Appearance, string>()
@@ -1236,6 +1286,18 @@
             { Deaths.FungusBullet, "Fungus Bullet" },
             { Deaths.FungusManSpores, "Fungus Man Spores" },
             { Deaths.GobbledUp, "Gobbled Up" },
+            { Deaths.InhaledWater, "Inhaled Water" },
+            { Deaths.Tsunami, "Tsunami" },
+            { Deaths.Hail, "Hail" },
+        };
+
+        public static Dictionary<Desire, string> DesireTextMap { get; } = new Dictionary<Desire, string>()
+        {
+            { Desire.Internal_None, string.Empty },
+            { Desire.Love, "Love" },
+            { Desire.Like, "Like" },
+            { Desire.Hate, "Hate" },
+            { Desire.Dislike, "Dislike" },
         };
 
         public static Dictionary<DisallowedState, string> DisallowedStateTextMap { get; } = new Dictionary<DisallowedState, string>()
@@ -1597,6 +1659,30 @@
             { EffectKeyword.FaeInnateAttrs, "Fae Innate Attrs" },
             { EffectKeyword.SwimSpeedWoP, "Swim Speed WoP" },
             { EffectKeyword.MaxBreathWoP, "Max Breath WoP" },
+            { EffectKeyword.PostCoitalBliss, "Post Coital Bliss" },
+            { EffectKeyword.Drunk1, "Drunk #1" },
+            { EffectKeyword.Drunk2, "Drunk #2" },
+            { EffectKeyword.Drunk3, "Drunk #3" },
+            { EffectKeyword.Drunk4, "Drunk #4" },
+            { EffectKeyword.Drunk5, "Drunk #5" },
+            { EffectKeyword.Drunk6, "Drunk #6" },
+            { EffectKeyword.Drunk7, "Drunk #7" },
+            { EffectKeyword.Drunk8, "Drunk #8" },
+            { EffectKeyword.Drunk9, "Drunk #9" },
+            { EffectKeyword.Drunk10, "Drunk #10" },
+            { EffectKeyword.Drunk11, "Drunk #11" },
+            { EffectKeyword.Drunk12, "Drunk #12" },
+            { EffectKeyword.Drunk13, "Drunk #13" },
+            { EffectKeyword.TempestFlight, "Tempest Flight" },
+            { EffectKeyword.WindWard, "Wind Ward" },
+            { EffectKeyword.Knockback, "Knockback" },
+            { EffectKeyword.Tornado, "Tornado" },
+            { EffectKeyword.SummonTornado, "Summon Tornado" },
+            { EffectKeyword.CloudTrick, "Cloud Trick" },
+            { EffectKeyword.CloudTrickBuff, "Cloud Trick Buff" },
+            { EffectKeyword.DelugeStun, "Deluge Stun" },
+            { EffectKeyword.WeatherWeaknessA, "Weather Weakness A" },
+            { EffectKeyword.WeatherWeaknessB, "Weather Weakness B" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1745,6 +1831,13 @@
             { EffectParticle.HolyDefense3, "Holy Defense #3" },
             { EffectParticle.BubbleSplash, "Bubble Splash" },
             { EffectParticle.PhoenixFire,"Phoenix Fire" },
+            { EffectParticle.DelugeBurst, "Deluge Burst" },
+            { EffectParticle.FlyCloudSubtle, "Fly Cloud Subtle" },
+            { EffectParticle.WindWard, "Wind Ward" },
+            { EffectParticle.MiniThunderstorm, "Mini Thunderstorm" },
+            { EffectParticle.IceStorm, "Ice Storm" },
+            { EffectParticle.CloudTrick, "Cloud Trick" },
+            { EffectParticle.MountSpeedup, "Mount Speedup" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2386,14 +2479,14 @@
             { ItemDroppedAppearance.Starfish, "Starfish" },
             { ItemDroppedAppearance.JackOLantern3, "Jack O' Lantern #3" },
             { ItemDroppedAppearance.LootPotion1, "Loot Potion #1" },
-            { ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
+            /*{ ItemDroppedAppearance.LootScroll2, "Loot Scroll #2" },
             { ItemDroppedAppearance.LootScroll3, "Loot Scroll #3" },
             { ItemDroppedAppearance.LootScroll4, "Loot Scroll #4" },
             { ItemDroppedAppearance.LootScroll5, "Loot Scroll #5" },
             { ItemDroppedAppearance.LootScroll6, "Loot Scroll #6" },
             { ItemDroppedAppearance.LootScroll7, "Loot Scroll #7" },
             { ItemDroppedAppearance.LootScroll8, "Loot Scroll #8" },
-            /*{ ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
+            { ItemDroppedAppearance.LootScroll9, "Loot Scroll #9" },
             { ItemDroppedAppearance.LootScroll10, "Loot Scroll #10" },
             { ItemDroppedAppearance.LootScroll11, "Loot Scroll #11" },
             { ItemDroppedAppearance.LootScroll12, "Loot Scroll #12" },
@@ -3568,6 +3661,14 @@
             { ItemKeyword.OrcDenseArrow5, "Orc Dense Arrow #5" },
             { ItemKeyword.OrcDenseArrow6, "Orc Dense Arrow #6" },
             { ItemKeyword.OrcArrow, "Orc Arrow" },
+            { ItemKeyword.Druidic, "Druidic" },
+            { ItemKeyword.RanalonCulture, "Ranalon Culture" },
+            { ItemKeyword.SparkDust, "Spark Dust" },
+            { ItemKeyword.BrownAle, "Brown Ale" },
+            { ItemKeyword.WeatherWitchingRecipe, "Weather Witching Recipe" },
+            { ItemKeyword.TextbookSkill_WeatherWitching, "Textbook Skill (Weather Witching)" },
+            { ItemKeyword.WeatherStaff, "Weather Staff" },
+            { ItemKeyword.GrowingVegetable, "Growing Vegetable" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3681,6 +3782,7 @@
             { ItemUseVerb.KillAndHarvest, "Kill and Harvest" },
             { ItemUseVerb.Glamourize, "Glamourize" },
             { ItemUseVerb.CollectCredits, "Collect Credits" },
+            { ItemUseVerb.EmptyAllBottles, "Empty All Bottles" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap { get; } = new Dictionary<LoreBookKeyword, string>()
@@ -3821,6 +3923,11 @@
             { PreEffect.MambaStrikeLowArmorDmgMod, "Mamba Strike Low Armor Damage Mod" },
             { PreEffect.SuperZombie8, "Super Zombie #8" },
             { PreEffect.LethalForceAnimalDmgMod, "Lethal Force Animal Damage Mod" },
+            { PreEffect.WeatherExtraDamageAgainstWeakenedA, "Weather Extra Damage Against Weakened A" },
+            { PreEffect.WeatherExtraDamageAgainstWeakenedB, "Weather Extra Damage Against Weakened B" },
+            { PreEffect.DampenToggleEveryOtherUse, "Dampen Toggle Every Other Use" },
+            { PreEffect.TsunamiToggleEveryOtherUse, "Tsunami Toggle Every Other Use" },
+            { PreEffect.ShockingGraspToggleEveryOtherUse, "Shocking Grasp Toggle Every Other Use" },
         };
 
         public static Dictionary<Profile, string> ProfileTextMap { get; } = new Dictionary<Profile, string>()
@@ -4164,6 +4271,7 @@
             { QuestObjectiveTarget.EvilLungs1, "Evil Lungs #1" },
             { QuestObjectiveTarget.EvilLungs2, "Evil Lungs #2" },
             { QuestObjectiveTarget.EvilLungs3, "Evil Lungs #3" },
+            { QuestObjectiveTarget.Windbiter, "Windbiter" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -4232,6 +4340,8 @@
             { RecipeAction.ApplyGlamour, "Apply Glamour" },
             { RecipeAction.PerformRitual, "Perform Ritual" },
             { RecipeAction.DrinkNectar, "Drink Nectar" },
+            { RecipeAction.Perform, "Perform" },
+            //{ RecipeAction.BrownAle, "Brown Ale" },
         };
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
@@ -4539,6 +4649,23 @@
             { RecipeEffect.DrinkNectar, "Drink Nectar" },
             { RecipeEffect.Particle_Action, "Particle (Action)" },
             { RecipeEffect.Calligraphy13B, "Calligraphy 13B" },
+            { RecipeEffect.ResearchWeatherWitching1, "Weather Witching Research, Level 1" },
+            { RecipeEffect.ResearchWeatherWitching5, "Weather Witching Research, Level 5" },
+            { RecipeEffect.ResearchWeatherWitching10, "Weather Witching Research, Level 10" },
+            { RecipeEffect.ResearchWeatherWitching15, "Weather Witching Research, Level 15" },
+            { RecipeEffect.ResearchWeatherWitching20, "Weather Witching Research, Level 20" },
+            { RecipeEffect.ResearchWeatherWitching25, "Weather Witching Research, Level 25" },
+            { RecipeEffect.ResearchWeatherWitching30, "Weather Witching Research, Level 30" },
+            { RecipeEffect.ResearchWeatherWitching35, "Weather Witching Research, Level 35" },
+            { RecipeEffect.ResearchWeatherWitching40, "Weather Witching Research, Level 40" },
+            { RecipeEffect.ResearchWeatherWitching45, "Weather Witching Research, Level 45" },
+            { RecipeEffect.ResearchWeatherWitching50, "Weather Witching Research, Level 50" },
+            { RecipeEffect.ResearchWeatherWitching55, "Weather Witching Research, Level 55" },
+            { RecipeEffect.ResearchWeatherWitching60, "Weather Witching Research, Level 60" },
+            { RecipeEffect.ResearchWeatherWitching65, "Weather Witching Research, Level 65" },
+            { RecipeEffect.ResearchWeatherWitching70, "Weather Witching Research, Level 70" },
+            { RecipeEffect.ResearchWeatherWitching75, "Weather Witching Research, Level 75" },
+            { RecipeEffect.ResearchWeatherWitching80, "Weather Witching Research, Level 80" },
         };
 
         public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()
@@ -4671,6 +4798,7 @@
             { RecipeItemKey.GlamourGourd, "Glamour Gourd" },
             { RecipeItemKey.NecroFuel, "Necro Fuel" },
             { RecipeItemKey.FlowerPower, "Flower Power" },
+            { RecipeItemKey.BrownAle, "Brown Ale" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -4707,6 +4835,8 @@
             { RecipeKeyword.DyeGoblinOrange, "Dye Goblin Orange" },
             { RecipeKeyword.DistillSimpleMagicalItem1, "Distill Simple Magical Item #1" },
             { RecipeKeyword.Lint_UnusedHotspot, "Unused Hotspot" },
+            { RecipeKeyword.Research, "Research" },
+            { RecipeKeyword.Lint_MealGroup, "Lint Meal Group" },
         };
 
         public static Dictionary<RecipeParticle, string> RecipeParticleTextMap { get; } = new Dictionary<RecipeParticle, string>()
@@ -4727,6 +4857,8 @@
             { RecipeParticle.FlashLightHand, "Flash Light Hand" },
             { RecipeParticle.IceResearchLoop, "Ice Research Loop" },
             { RecipeParticle.IceResearchSuccess, "Ice Research Success" },
+            { RecipeParticle.WeatherWitchResearchLoop, "Weather Witch Research Loop" },
+            { RecipeParticle.WeatherWitchResearchSuccess, "Weather Witch Research Success" },
         };
 
         public static Dictionary<RecipeResultKey, string> RecipeResultKeyTextMap { get; } = new Dictionary<RecipeResultKey, string>()
@@ -4774,6 +4906,10 @@
             { SelfPreParticle.CorruptHatePreHands, "Corrupt Hate Pre Hands" },
             { SelfPreParticle.FishingRod, "Fishing Rod" },
             { SelfPreParticle.ElectricBuildup, "Electric Buildup" },
+            { SelfPreParticle.DelugePreParticles, "Deluge Pre Particles" },
+            { SelfPreParticle.TsunamiPreParticles, "Tsunami Pre Particles" },
+            { SelfPreParticle.SummonTornado, "Summon Tornado" },
+            { SelfPreParticle.ShockingGraspBuildup, "Shocking Grasp Buildup" },
         };
 
         public static Dictionary<SelfParticle, string> SelfParticleTextMap { get; } = new Dictionary<SelfParticle, string>()
@@ -4804,6 +4940,8 @@
             { SelfParticle.CorruptHateHands, "Corrupt Hate Hands" },
             { SelfParticle.RelentlessHope, "Relentless Hope" },
             { SelfParticle.HeadBubble, "Head Bubble" },
+            { SelfParticle.StormEnchant, "Storm Enchant" },
+            { SelfParticle.TempestParticles, "Tempest Particles" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()
@@ -4842,7 +4980,7 @@
         public static Dictionary<SpecialNpc, string> SpecialNpcTextMap { get; } = new Dictionary<SpecialNpc, string>()
         {
             { SpecialNpc.Internal_None, string.Empty },
-            { SpecialNpc.CatCharmPedestal, "Cat Charm Pedestal" },
+            /*{ SpecialNpc.CatCharmPedestal, "Cat Charm Pedestal" },
             { SpecialNpc.BearCharmPedestal, "Bear Charm Pedestal" },
             { SpecialNpc.GoblinFireResearchDesk1, "Goblin Fire Research Desk" },
             { SpecialNpc.AlchemyBook, "Alchemy Book" },
@@ -4854,12 +4992,12 @@
             { SpecialNpc.GolemBook, "Golem Book" },
             { SpecialNpc.AlchemyBook_SpiderEggs, "Alchemy Book (Spider Eggs)" },
             { SpecialNpc.DeathPenaltyAltar, "Death Penalty Altar" },
-            { SpecialNpc.NPC_Sphere, "Glowing Sphere" },
+            { SpecialNpc.NPC_Sphere, "Glowing Sphere" },*/
             // { SpecialNpc.NPC_Oritania, "Oritania" },
             { SpecialNpc.NPC_Pennoc, "Pennoc" },
             { SpecialNpc.NPC_Lakrea, "Lakrea" },
             { SpecialNpc.NPC_Chirrra, "Chirrra" },
-            { SpecialNpc.ModeratorToolbox, "Moderator Toolbox" },
+            //{ SpecialNpc.ModeratorToolbox, "Moderator Toolbox" },
             { SpecialNpc.NPC_Halloween_BrandonMellus, "Brandon Mellus (Halloween)" },
             { SpecialNpc.NPC_Halloween_Westley, "Westley (Halloween)" },
             { SpecialNpc.NPC_Halloween_Deville, "Deville (Halloween)" },
@@ -4899,14 +5037,14 @@
             { SpecialNpc.BeeHiveJ, "Bee Hive (J)" },
             { SpecialNpc.BeeHiveK, "Bee Hive (K)" },
             //{ SpecialNpc.LiveNpc_Jopol, "Jopol" },
-            { SpecialNpc.TrainingStation1, "Training Station #1" },
+            /*{ SpecialNpc.TrainingStation1, "Training Station #1" },
             { SpecialNpc.TrainingStation2, "Training Station #2" },
             { SpecialNpc.CandleMakingBook_Bacon, "Candle Making Book (Bacon)" },
             { SpecialNpc.CandleMakingBook_Ocean, "Candle Making Book (Ocean)" },
             { SpecialNpc.CandleMakingBook_Sprint, "Candle Making Book (Sprint)" },
             { SpecialNpc.CandleMakingBook_Cold, "Candle Making Book (Cold)" },
             { SpecialNpc.CandleMakingBook_Precog, "Candle Making Book (Precog)" },
-            { SpecialNpc.CandleMakingBook_Halloween, "Candle Making Book (Halloween)" },
+            { SpecialNpc.CandleMakingBook_Halloween, "Candle Making Book (Halloween)" },*/
             { SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
             { SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
             { SpecialNpc.LiveNpc_Boop, "Boop" },
@@ -4943,6 +5081,7 @@
             { TooltipsExtraKeywords.SummonFox, "Summon Fox" },
             { TooltipsExtraKeywords.ShadowFeintActivation, "Shadow Feint Activation" },
             { TooltipsExtraKeywords.TriageActivation, "Triage Activation" },
+            { TooltipsExtraKeywords.CloudTrickActivation, "Cloud Trick Activation" },
         };
 
         public static Dictionary<WorkOrderSign, string> WorkOrderSignTextMap { get; } = new Dictionary<WorkOrderSign, string>()
@@ -5008,6 +5147,7 @@
             { XpTableEnum.PovusTown, "Povus Town" },
             { XpTableEnum.PovusStorage, "Povus Storage" },
             { XpTableEnum.Riding, "Riding" },
+            { XpTableEnum.TempestEnergyByLevel, "Tempest Energy By Level" },
         };
     }
 }

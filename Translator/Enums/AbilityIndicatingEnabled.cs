@@ -18,5 +18,8 @@
         HuntingSpeed1,
         HuntingSpeed2,
         HuntingSpeed3,
+        TempestFlight,
+        WindWard,
+        CloudTrick,
     }
 }

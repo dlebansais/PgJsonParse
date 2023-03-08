@@ -1284,6 +1284,9 @@
                 case CombatKeyword.But:
                 case CombatKeyword.TargetElite:
                 case CombatKeyword.AnimalPetRageAttackBoost:
+                case CombatKeyword.ApplyToAllies:
+                case CombatKeyword.WhenTeleporting:
+                case CombatKeyword.AddAccuracy:
                     break;
 
                 default:
@@ -1641,7 +1644,7 @@
                     continue;
                 }
 
-                if (Entry.Key.Key == "power_17042")
+                if (Entry.Key.Key == "power_28683")
                 {
                 }
 
@@ -2241,12 +2244,19 @@
                 modText = modText.Substring(27) + " while Blur Step is active";
             else if (effectText.StartsWith("Universal Direct Elite Mitigation ") && effectText.EndsWith(" for 15 seconds"))
                 effectText = effectText.Replace("for 15 seconds", "for 10 seconds");
+            
+            /*if (modText.StartsWith("When you trigger Cloud Trick, "))
+                modText = modText.Replace("When you trigger Cloud Trick", "When you trigger Teleport");*/
+            if (effectText.StartsWith("When you trigger Cloud Trick, "))
+                effectText = effectText.Replace("When you trigger Cloud Trick", "When you trigger Teleport");
 
             int IndexFound = 0;
             RemoveDecorativeText(ref modText, "have less than a third of their Armor", "have less than 33% of their Armor", out _, ref IndexFound);
             RemoveDecorativeText(ref effectText, "have less than a third of their Armor", "have less than 33% of their Armor", out _, ref IndexFound);
             RemoveDecorativeText(ref modText, "you take half damage from", "you take 50% damage from", out _, ref IndexFound);
             RemoveDecorativeText(ref modText, "and Paradox Trot boosts Sprint Speed +1", out _, ref IndexFound);
+            RemoveDecorativeText(ref modText, "(so it can be used again more quickly)", out _, ref IndexFound);
+            RemoveDecorativeText(ref modText, "(both direct and indirect)", out _, ref IndexFound);
 
             int NegateIndex = modText.IndexOf(". (You can negate the latent psychic damage by using");
             if (NegateIndex >= 0)
@@ -2380,6 +2390,22 @@
                     if (extractedTargetAbilityList.Count == 1 && extractedTargetAbilityList[0] == AbilityKeyword.MajorHeal)
                         Item.Keyword = CombatKeyword.RestoreHealth;
                 }
+
+            // Hack for multiple evasion
+            float? EvasionValue = null;
+            bool? EvasionIsPercent = null;
+            foreach (PgCombatEffect Item in extractedCombatEffectList)
+                if (Item.Keyword == CombatKeyword.AddEvasionBurst || Item.Keyword == CombatKeyword.AddEvasionProjectile || Item.Keyword == CombatKeyword.AddEvasionMelee)
+                    if (Item.Data.RawValue.HasValue && !EvasionValue.HasValue)
+                    {
+                        EvasionValue = Item.Data.RawValue.Value;
+                        EvasionIsPercent = Item.Data.RawIsPercent;
+                    }
+                    else if (!Item.Data.RawValue.HasValue && EvasionValue.HasValue)
+                    {
+                        Item.Data.RawValue = EvasionValue.Value;
+                        Item.Data.RawIsPercent = EvasionIsPercent;
+                    }
 
             bool IsRandom = false;
             int i = 0;
@@ -2553,6 +2579,7 @@
             ReplaceCaseInsensitive(ref text, "dispels ", "dispel ");
             ReplaceCaseInsensitive(ref text, " seconds", " second");
             ReplaceCaseInsensitive(ref text, "-second", " second");
+            ReplaceCaseInsensitive(ref text, " secs", " second");
             ReplaceCaseInsensitive(ref text, " minutes", " minute");
             ReplaceCaseInsensitive(ref text, " meters", " meter");
             ReplaceCaseInsensitive(ref text, " timer ", " time ");
@@ -2570,6 +2597,7 @@
             ReplaceCaseInsensitive(ref text, "+Up ", "Add up ");
             ReplaceCaseInsensitive(ref text, " direct-damage ", " direct damage ");
             ReplaceCaseInsensitive(ref text, " abilities ", " ability ");
+            ReplaceCaseInsensitive(ref text, "anf  ", "and ");
         }
 
         private void ReplaceCaseInsensitive(ref string text, string searchPattern, string replacementPattern)
@@ -2769,6 +2797,10 @@
                     extractedCombatEffectList.Add(new PgCombatEffect() { Keyword = CombatKeyword.ReflectOnMelee, Data = new PgNumericValue() { RawIsPercent = false } });
             }
 
+            // Hack for CloudTrick.
+            if (extractedAbilityList.Count >= 1 && extractedAbilityList[0] == AbilityKeyword.CloudTrick)
+                extractedCombatEffectList.Add(new PgCombatEffect() { Keyword = CombatKeyword.WhenTeleporting, Data = new PgNumericValue() });
+
             CombatKeyword MitigationKeyword = CombatKeyword.Internal_None;
             GameDamageType MitigationDamageType = GameDamageType.Internal_None;
 
@@ -2877,7 +2909,7 @@
             string ModifiedText = text;
             Sentence? SelectedSentence = null;
 
-            if (text.Contains("up to a max of"))
+            if (text.Contains("When you trigger"))
             {
             }
 
@@ -3845,6 +3877,9 @@
             new Sentence("(Randomly determined)", CombatKeyword.RandomDamage),
             new Sentence("(Random)", CombatKeyword.RandomDamage),
             new Sentence("If it is a #D attack", CombatKeyword.IfDamageType),
+            new Sentence("If it deal #D damage", CombatKeyword.IfDamageType),
+            new Sentence("Gain %f Direct", CombatKeyword.DamageBoost),
+            new Sentence("#D damage for your next attack", new List<CombatKeyword>() { CombatKeyword.IfDamageType, CombatKeyword.NextAttack }),
             new Sentence("Briefly terrifies the target", CombatKeyword.Fear),
             new Sentence("Cause all sentient targets to flee in terror", CombatKeyword.FearSentient),
             new Sentence("Trigger the target's Vulnerability", CombatKeyword.SetVulnerable),
@@ -3895,6 +3930,7 @@
             new Sentence("Target take %f indirect #D damage", CombatKeyword.AddIndirectVulnerability),
             new Sentence("Indirect #D damage is %f per tick", CombatKeyword.AddIndirectVulnerability),
             new Sentence("Cause the target to take %f damage from indirect #D", CombatKeyword.AddIndirectVulnerability),
+            new Sentence("Cause the target to take %f more damage from #D", CombatKeyword.AddVulnerability),
             new Sentence("Target is %f more vulnerable to #D damage", CombatKeyword.AddVulnerability),
             new Sentence("Target %f more vulnerable to #D damage", CombatKeyword.AddVulnerability),
             new Sentence("Make the target %f more vulnerable to #D", CombatKeyword.AddVulnerability),
@@ -3927,10 +3963,12 @@
             new Sentence("Pet's Rage Attack Damage %f", CombatKeyword.AnimalPetRageAttackBoost),
             new Sentence("Rage Attack Damage %f", CombatKeyword.AnimalPetRageAttackBoost),
             new Sentence("Deal up to %f damage", CombatKeyword.DamageBoost),
+            //new Sentence("#D damage and #D damage", CombatKeyword.DamageBoost),
             new Sentence("Add up to %f extra damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f Armor damage", CombatKeyword.DealArmorDamage),
             new Sentence("Deal %f immediate #D damage", CombatKeyword.DamageBoost),
             new Sentence("Deal %f #D damage", CombatKeyword.DamageBoost),
+            //new Sentence("Gain %f direct #S Damage", CombatKeyword.DamageBoost),
             new Sentence("Critical hit deal %f damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits }),
             new Sentence("Deal %f damage", CombatKeyword.DamageBoost),
             new Sentence("Plus %f more damage", CombatKeyword.DamageBoost),
@@ -4087,6 +4125,8 @@
             new Sentence("Shorten the remaining reset time of @ by %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
             new Sentence("Shorten the current reuse time of @ by %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
             new Sentence("Reuse time of @ is hastened by %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
+            new Sentence("Reuse time on @ is hastened %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
+            new Sentence("@ reuse time is hastened %f second", CombatKeyword.AddResetTimer, SignInterpretation.AlwaysNegative),
             new Sentence("Its reuse time is increased %f second", CombatKeyword.AddResetTimer),
             new Sentence("Reset time of @ is increased %f second", CombatKeyword.AddCombatRefreshTimer),
             new Sentence("Reduce the taunt of all your attack by %f", CombatKeyword.AddTaunt, SignInterpretation.Opposite),
@@ -4119,7 +4159,7 @@
             new Sentence("Heal %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Restore %f armor", CombatKeyword.RestoreArmor),
             new Sentence("Restore %f Power", CombatKeyword.RestorePower),
-            new Sentence("Recover Power when", CombatKeyword.RestorePower),
+            //new Sentence("Recover Power when", CombatKeyword.RestorePower),
             new Sentence("Recover %f health", CombatKeyword.RestoreHealth),
             new Sentence("Recover %f power", CombatKeyword.RestorePower),
             new Sentence("Restoration %f", CombatKeyword.RestoreHealth),
@@ -4211,7 +4251,10 @@
             new Sentence("Stacks up to %fx", CombatKeyword.MaxStack),
             new Sentence("Max of %f stacks", CombatKeyword.MaxStack),
             new Sentence("To all allies", CombatKeyword.ApplyToAllies),
+            new Sentence("All allies gain", CombatKeyword.ApplyToAllies),
+            new Sentence("Grant all allies", CombatKeyword.ApplyToAllies),
             new Sentence("And your allies' attack", CombatKeyword.ApplyToAllies),
+            new Sentence("Burst Evasion and Projectile evasion %f", new List<CombatKeyword>() { CombatKeyword.AddEvasionBurst, CombatKeyword.AddEvasionProjectile }),
             new Sentence("%f chance to avoid being hit by burst attack", CombatKeyword.AddEvasionBurst),
             new Sentence("%f evasion of burst attack", CombatKeyword.AddEvasionBurst),
             new Sentence("Burst Evasion %f", CombatKeyword.AddEvasionBurst),
@@ -4239,6 +4282,7 @@
             new Sentence("%f direct damage mitigation", CombatKeyword.AddMitigationDirect),
             new Sentence("Boost your direct damage mitigation %f", CombatKeyword.AddMitigationDirect),
             new Sentence("Cause all targets to suffer %f damage from direct #D attack", CombatKeyword.AddMitigation, SignInterpretation.Opposite),
+            new Sentence("Debuff the target so that it take %f damage from future #D attack", CombatKeyword.AddMitigation, SignInterpretation.Opposite),
             new Sentence("You take %f damage from #D attack", CombatKeyword.AddMitigation, SignInterpretation.Opposite),
             new Sentence("%f #D mitigation", CombatKeyword.AddMitigation),
             new Sentence("Increase your #D Mitigation %f", CombatKeyword.AddMitigation),
@@ -4268,7 +4312,7 @@
             new Sentence("The first melee attacker is knock away", CombatKeyword.ReflectKnockbackOnFirstMelee),
             new Sentence("First attacker is knock back", CombatKeyword.ReflectKnockbackOnFirstMelee),
             new Sentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
-            new Sentence("Melee attackers deal damage to you", CombatKeyword.ReflectOnMelee),
+            //new Sentence("Melee attackers deal damage to you", CombatKeyword.ReflectOnMelee),
 
             // new Sentence("Melee damagers take", CombatKeyword.ReflectOnMelee),
             new Sentence("Deal its damage when you are hit by burst attack", CombatKeyword.ReflectOnBurst),
@@ -4379,6 +4423,7 @@
             // new Sentence("Each time they attack and damage you", CombatKeyword.ReflectOnAnyAttack),
             new Sentence("Returning it to you as armor", CombatKeyword.DrainAsArmor),
             new Sentence("When you teleport", CombatKeyword.WhenTeleporting),
+            new Sentence("When you trigger teleport", CombatKeyword.WhenTeleporting),
             new Sentence("b*u*t", CombatKeyword.But),
             new Sentence("However,", CombatKeyword.But),
         };

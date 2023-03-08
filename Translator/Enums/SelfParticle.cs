@@ -28,5 +28,7 @@
         CorruptHateHands,
         RelentlessHope,
         HeadBubble,
+        StormEnchant,
+        TempestParticles,
     }
 }

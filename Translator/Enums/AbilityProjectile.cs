@@ -30,5 +30,6 @@
         Projectile_Poison,
         Projectile_Sonic,
         Projectile_Fireball_Offhand,
+        Projectile_WaterBall,
     }
 }

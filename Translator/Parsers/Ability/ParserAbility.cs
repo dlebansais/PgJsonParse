@@ -434,13 +434,13 @@
 
         public static bool UpdateSource()
         {
-            Dictionary<string, ParsingContext> SourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSource)];
+            Dictionary<string, ParsingContext> SourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSourceEntries)];
             Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
 
             foreach (KeyValuePair<string, ParsingContext> Entry in SourceParsingTable)
             {
-                PgSource AbilitySource = (PgSource)Entry.Value.Item;
-                string Key = AbilitySource.SourceKey;
+                PgSourceEntries AbilitySource = (PgSourceEntries)Entry.Value.Item;
+                string Key = AbilitySource.Key;
 
                 if (Key.StartsWith("ability_"))
                 {
@@ -448,7 +448,13 @@
                         return Program.ReportFailure($"Source for '{Key}' but no such object");
 
                     PgAbility Ability = (PgAbility)AbilityParsingTable[Key].Item;
-                    Ability.SourceList.Add(AbilitySource);
+                    foreach (PgSource SourceEntry in AbilitySource.EntryList)
+                        Ability.SourceList.Add(SourceEntry);
+                }
+                else if (!Key.StartsWith("recipe_"))
+                {
+                    Debug.WriteLine($"Unexpected ability source key '{Key}'");
+                    return false;
                 }
             }
 

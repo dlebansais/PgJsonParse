@@ -130,6 +130,13 @@
             { "Appearance", typeof(string) },
             { "MinHour", typeof(int) },
             { "MaxHour", typeof(int) },
+            { "MaxTimesUsed", typeof(int) },
+            { "ClearSky", typeof(bool) },
+            { "MoonPhase", typeof(string) },
+            { "Distance", typeof(int) },
+            { "EntityTypeTag", typeof(string) },
+            { "ErrorMsg", typeof(string) },
+            { "AllowedStates", typeof(string[]) },
         };
 
         public static Dictionary<string, Type> TableDoT { get; } = new Dictionary<string, Type>()
@@ -405,6 +412,7 @@
             { "UseDelayAnimation", typeof(string) },
             { "MetabolismCost", typeof(int) },
             { "UseDelay", typeof(float) },
+            { "MinStackSizeNeeded", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableItemUse { get; } = new Dictionary<string, Type>()
@@ -444,6 +452,7 @@
             { "Keywords", typeof(string[]) },
             { "Pref", typeof(float) },
             { "Favor", typeof(string) },
+            { "Desire", typeof(string) },
         };
 
         public static Dictionary<string, Type> TablePlayerTitle { get; } = new Dictionary<string, Type>()
@@ -648,6 +657,7 @@
             { "RequiredAttributeNonZero", typeof(string) },
             { "LoopParticle", typeof(string) },
             { "Particle", typeof(string) },
+            { "MaxUses", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableRecipeItem { get; } = new Dictionary<string, Type>()
@@ -701,15 +711,23 @@
             { "Notes", typeof(string) },
         };
 
+        public static Dictionary<string, Type> TableSourceEntries { get; } = new Dictionary<string, Type>()
+        {
+            { "entries", typeof(PgSource[]) },
+        };
+
         public static Dictionary<string, Type> TableSource { get; } = new Dictionary<string, Type>()
         {
-            { "SkillTypeId", typeof(string) },
-            { "Type", typeof(string) },
-            { "ItemTypeId", typeof(int) },
-            { "Npc", typeof(string) },
+/*            { "SkillTypeId", typeof(string) },
             { "EffectName", typeof(string) },
             { "EffectTypeId", typeof(string) },
-            { "QuestId", typeof(int) },
+*/
+            { "skill", typeof(string) },
+            { "type", typeof(string) },
+            { "itemTypeId", typeof(int) },
+            { "npc", typeof(string) },
+            { "questId", typeof(int) },
+            { "hangOutId", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableStorageVault { get; } = new Dictionary<string, Type>()
@@ -806,6 +824,7 @@
             { typeof(PgReward), new FixedFieldTable(TableReward) },
             { typeof(PgReportList), new VariadicFieldTable(typeof(string)) },
             { typeof(PgSource), new FixedFieldTable(TableSource) },
+            { typeof(PgSourceEntries), new FixedFieldTable(TableSourceEntries) },
             { typeof(PgStorageVault), new FixedFieldTable(TableStorageVault) },
             { typeof(PgStorageEventList), new FixedFieldTable(TableStorageEventList) },
             { typeof(PgStorageFavorLevel), new FixedFieldTable(TableStorageFavorLevel) },

@@ -156,5 +156,8 @@
         FungusBullet,
         FungusManSpores,
         GobbledUp,
+        InhaledWater,
+        Tsunami,
+        Hail,
     }
 }

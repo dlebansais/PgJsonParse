@@ -39,6 +39,9 @@
                     case "Favor":
                         Result = ParseFavor(item, Value, parsedFile, parsedKey);
                         break;
+                    case "Desire":
+                        Result = ParseDesire(item, Value, parsedFile, parsedKey);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;
@@ -58,10 +61,24 @@
 
                 if (item.RawPreference == null || item.RawPreference == 0)
                     return Program.ReportFailure(parsedFile, parsedKey, "No preference value");
+
+                if (item.PreferenceDesire != Desire.Internal_None)
+                {
+                    if (!DesireToPreferenceTable.ContainsKey(item.PreferenceDesire))
+                        return Program.ReportFailure(parsedFile, parsedKey, "Unknown desire value");
+                }
             }
 
             return Result;
         }
+
+        private static Dictionary<Desire, float> DesireToPreferenceTable = new()
+        {
+            { Desire.Love, 2.0F },
+            { Desire.Like, 1.0F },
+            { Desire.Dislike, -1.0F },
+            { Desire.Hate, -3.0F },
+        };
 
         private bool ParseKeywords(PgNpcPreference item, object value, string parsedFile, string parsedKey)
         {
@@ -158,6 +175,22 @@
                 return Program.ReportFailure(parsedFile, parsedKey, $"Unknown favor level '{FavorString}'");
 
             item.PreferenceFavor = ParsedFavor;
+            return true;
+        }
+
+        private bool ParseDesire(PgNpcPreference item, object value, string parsedFile, string parsedKey)
+        {
+            if (!(value is string DesireString))
+                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
+
+            Desire ParsedDesire;
+
+            if (DesireString == "Error")
+                ParsedDesire = Desire.Internal_None;
+            else if (!StringToEnumConversion<Desire>.TryParse(DesireString, out ParsedDesire))
+                return Program.ReportFailure(parsedFile, parsedKey, $"Unknown favor level '{DesireString}'");
+
+            item.PreferenceDesire = ParsedDesire;
             return true;
         }
     }

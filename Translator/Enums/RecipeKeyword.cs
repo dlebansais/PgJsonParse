@@ -34,5 +34,7 @@
         DyeGoblinOrange,
         DistillSimpleMagicalItem1,
         Lint_UnusedHotspot,
+        Research,
+        Lint_MealGroup,
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using PgJsonReader;
     using PgObjects;
 
@@ -150,6 +151,9 @@
                         break;
                     case "Particle":
                         Result = ParseRecipeParticle(item, Value, parsedFile, parsedKey);
+                        break;
+                    case "MaxUses":
+                        Result = SetIntProperty((int valueInt) => item.RawMaxUses = valueInt, Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -337,6 +341,9 @@
                     break;
                 case "TransmogItemAppearance":
                     Result = ParseTransmogItemAppearance(EffectName, parsedFile, parsedKey, out recipeResult);
+                    break;
+                case "PermanentlyRaiseMaxTempestEnergy":
+                    Result = ParsePermanentlyRaiseMaxTempestEnergy(EffectParameter, parsedFile, parsedKey, out recipeResult);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect '{effectString}'");
@@ -893,6 +900,25 @@
             return true;
         }
 
+        private bool ParsePermanentlyRaiseMaxTempestEnergy(string effectParameter, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            recipeResult = null!;
+
+            string RaiseEnergyString = effectParameter;
+
+            if (!int.TryParse(RaiseEnergyString, out int RaiseEnergy))
+                return Program.ReportFailure($"Value '{RaiseEnergyString}' was expected to be an int");
+
+            if (RaiseEnergy < 1)
+                return Program.ReportFailure($"Energy should be positive");
+
+            PgRecipeResultRaiseMaxTempestRaiseEnergy RecipeResultEffect = new PgRecipeResultRaiseMaxTempestRaiseEnergy();
+            RecipeResultEffect.RawRaiseEnergy = RaiseEnergy;
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
         private bool ParseRecipeLoopParticle(PgRecipe item, object value, string parsedFile, string parsedKey)
         {
             if (ParseRecipeParticleString(value, parsedFile, parsedKey, out PgRecipeParticle Particle))
@@ -982,13 +1008,13 @@
 
         public static bool UpdateSource()
         {
-            Dictionary<string, ParsingContext> SourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSource)];
+            Dictionary<string, ParsingContext> SourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSourceEntries)];
             Dictionary<string, ParsingContext> RecipeParsingTable = ParsingContext.ObjectKeyTable[typeof(PgRecipe)];
 
             foreach (KeyValuePair<string, ParsingContext> Entry in SourceParsingTable)
             {
-                PgSource RecipeSource = (PgSource)Entry.Value.Item;
-                string Key = RecipeSource.SourceKey;
+                PgSourceEntries RecipeSource = (PgSourceEntries)Entry.Value.Item;
+                string Key = RecipeSource.Key;
 
                 if (Key.StartsWith("recipe_"))
                 {
@@ -996,7 +1022,13 @@
                         return Program.ReportFailure($"Source for '{Key}' but no such object");
 
                     PgRecipe Recipe = (PgRecipe)RecipeParsingTable[Key].Item;
-                    Recipe.SourceList.Add(RecipeSource);
+                    foreach (PgSource SourceEntry in RecipeSource.EntryList)
+                        Recipe.SourceList.Add(SourceEntry);
+                }
+                else if (!Key.StartsWith("ability_"))
+                {
+                    Debug.WriteLine($"Unexpected recipe source key '{Key}'");
+                    return false;
                 }
             }
 

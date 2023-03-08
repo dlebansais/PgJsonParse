@@ -14,6 +14,7 @@
         public float Preference { get { return RawPreference.HasValue ? RawPreference.Value : 0; } }
         public float? RawPreference { get; set; }
         public Favor PreferenceFavor { get; set; }
+        public Desire PreferenceDesire { get; set; }
         private PgSkill? SkillRequirementRef;
 
         public void SetSkillRequirement(PgSkill skill)

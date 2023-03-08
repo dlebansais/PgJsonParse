@@ -18,5 +18,7 @@
         FlashLightHand,
         IceResearchLoop,
         IceResearchSuccess,
+        WeatherWitchResearchLoop,
+        WeatherWitchResearchSuccess,
     }
 }

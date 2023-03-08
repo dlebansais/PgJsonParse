@@ -51,7 +51,6 @@
             if (!ParseFile(Version, "attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
                 return -1;
 
-            /*
             AddHardCodedAttribute(PgAttribute.COCKATRICEDEBUFF_COST_DELTA);
             AddHardCodedAttribute(PgAttribute.LAMIADEBUFF_COST_DELTA);
             AddHardCodedAttribute(PgAttribute.MONSTER_MATCH_OWNER_SPEED);
@@ -62,7 +61,6 @@
             AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
             AddHardCodedAttribute(PgAttribute.BOOST_ANIMALPETHEAL_SENDER);
             AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
-            */
 
             if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
                 return -1;
@@ -100,10 +98,10 @@
             if (!ParseFile(Version, "skills", typeof(PgSkill), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile(Version, "sources_abilities", typeof(PgSource), FileType.KeyedArray))
+            if (!ParseFile(Version, "sources_abilities", typeof(PgSourceEntries), FileType.EmbeddedObjects))
                 return -1;
 
-            if (!ParseFile(Version, "sources_recipes", typeof(PgSource), FileType.KeyedArray))
+            if (!ParseFile(Version, "sources_recipes", typeof(PgSourceEntries), FileType.EmbeddedObjects))
                 return -1;
 
             if (!ParseFile(Version, "storagevaults", typeof(PgStorageVault), FileType.EmbeddedObjects))

@@ -37,12 +37,17 @@
             { OtherRequirementType.Appearance, FinishAppearance },
             { OtherRequirementType.HasHands, FinishHasHands },
             { OtherRequirementType.TimeOfDay, FinishTimeOfDay },
+            { OtherRequirementType.RecipeUsed, FinishRecipeUsed },
+            { OtherRequirementType.Weather, FinishWeather },
+            { OtherRequirementType.MoonPhase, FinishMoonPhase },
+            { OtherRequirementType.EntityPhysicalState, FinishEntityPhysicalState },
+            { OtherRequirementType.EntitiesNear, FinishEntitiesNear },
         };
 
         private static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
         {
             { OtherRequirementType.IsLycanthrope, new List<string>() { "T" } },
-            { OtherRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword" } },
+            { OtherRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword", "MinCount" } },
             { OtherRequirementType.FullMoon, new List<string>() { "T" } },
             { OtherRequirementType.IsHardcore, new List<string>() { "T" } },
             { OtherRequirementType.DruidEventState, new List<string>() { "T", "DisallowedStates" } },
@@ -64,6 +69,11 @@
             { OtherRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
             { OtherRequirementType.HasHands, new List<string>() { "T" } },
             { OtherRequirementType.TimeOfDay, new List<string>() { "T", "MinHour", "MaxHour" } },
+            { OtherRequirementType.RecipeUsed, new List<string>() { "T", "Recipe", "MaxTimesUsed" } },
+            { OtherRequirementType.Weather, new List<string>() { "T", "ClearSky" } },
+            { OtherRequirementType.MoonPhase, new List<string>() { "T", "MoonPhase" } },
+            { OtherRequirementType.EntityPhysicalState, new List<string>() { "T", "AllowedStates" } },
+            { OtherRequirementType.EntitiesNear, new List<string>() { "T", "Distance", "EntityTypeTag", "ErrorMsg", "MinCount" } },
         };
 
         private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
@@ -175,6 +185,9 @@
                             break;
                         case "Keyword":
                             Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                            break;
+                        case "MinCount":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawMinCount = valueInt, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -1139,6 +1152,233 @@
                             break;
                         case "MaxHour":
                             Result = SetIntProperty((int valueInt) => NewItem.RawMaxHour = valueInt, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishRecipeUsed(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgAbilityRequirementRecipeUsed NewItem = new PgAbilityRequirementRecipeUsed();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Recipe":
+                            Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = valueRecipe.Key, Value);
+                            break;
+                        case "MaxTimesUsed":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawMaxTimesUsed = valueInt, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishWeather(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgAbilityRequirementWeather NewItem = new PgAbilityRequirementWeather();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "ClearSky":
+                            Result = SetBoolProperty((bool valueBool) => NewItem.SetClearSky(valueBool), Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishMoonPhase(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgAbilityRequirementMoonPhase NewItem = new PgAbilityRequirementMoonPhase();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "MoonPhase":
+                            Result = StringToEnumConversion<MoonPhases>.SetEnum((MoonPhases valueEnum) => NewItem.MoonPhase = valueEnum, Value);
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishEntityPhysicalState(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgAbilityRequirementEntityPhysicalState NewItem = new PgAbilityRequirementEntityPhysicalState();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "AllowedStates":
+                            Result = StringToEnumConversion<AllowedState>.TryParseList(Value, NewItem.AllowedStateList);
+                            break;
+                        default:
+                            Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                            break;
+                    }
+                }
+
+                if (!Result)
+                    break;
+            }
+
+            if (Result)
+            {
+                item = NewItem;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool FinishEntitiesNear(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+        {
+            PgAbilityRequirementEntitiesNear NewItem = new PgAbilityRequirementEntitiesNear();
+
+            bool Result = true;
+
+            foreach (KeyValuePair<string, object> Entry in contentTable)
+            {
+                string Key = Entry.Key;
+                object Value = Entry.Value;
+
+                if (!knownFieldList.Contains(Key))
+                    Result = Program.ReportFailure($"Unknown field {Key}");
+                else
+                {
+                    usedFieldList.Add(Key);
+
+                    switch (Key)
+                    {
+                        case "T":
+                            break;
+                        case "Distance":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawDistance = valueInt, Value);
+                            break;
+                        case "EntityTypeTag":
+                            Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.EntityTypeTag = valueEnum, Value);
+                            break;
+                        case "ErrorMsg":
+                            Result = SetStringProperty((string valueString) => NewItem.ErrorMsg = valueString, Value);
+                            break;
+                        case "MinCount":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawMinCount = valueInt, Value);
                             break;
                         default:
                             Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

@@ -23,5 +23,10 @@
         MambaStrikeLowArmorDmgMod,
         SuperZombie8,
         LethalForceAnimalDmgMod,
+        WeatherExtraDamageAgainstWeakenedA,
+        WeatherExtraDamageAgainstWeakenedB,
+        DampenToggleEveryOtherUse,
+        TsunamiToggleEveryOtherUse,
+        ShockingGraspToggleEveryOtherUse,
     }
 }
