@@ -193,9 +193,9 @@
             { AbilityAnimation.Attack_Fairy_Buff, "Attack Fairy Buff" },
             { AbilityAnimation.Attack_Magic_Channel1, "Attack Magic Channel #1" },
             { AbilityAnimation.Attack_Priest_ChannelHeal, "Attack Priest Channel Heal" },
-            { AbilityAnimation.Fish, "Fish" },
-            { AbilityAnimation.FishReel, "Fish Reel" },
-            { AbilityAnimation.QuickFish, "Quick Fish" },
+            //{ AbilityAnimation.Fish, "Fish" },
+            //{ AbilityAnimation.FishReel, "Fish Reel" },
+            //{ AbilityAnimation.QuickFish, "Quick Fish" },
             { AbilityAnimation.Attack_FireMagic_BreatheFire, "Attack Fire Magic Breathe Fire" },
             { AbilityAnimation.Attack_Sword_Riposte, "Attack Sword Riposte" },
             { AbilityAnimation.Attack_Sword_Decapitate, "Attack Sword Decapitate" },
@@ -2183,6 +2183,7 @@
             { EffectStackingType.SpecialEventMountAccel, "Special Event Mount Accel" },
             { EffectStackingType.SpecialEventSaddlebag, "Special Event Saddlebag" },
             { EffectStackingType.DrunkNectar1, "Drunk Nectar #1" },
+            { EffectStackingType.TornadoDebuff, "Tornado Debuff" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -4904,7 +4905,7 @@
             { SelfPreParticle.ConfusingDouble, "Confusing Double" },
             { SelfPreParticle.ChannelHealPre, "Channel Heal Pre" },
             { SelfPreParticle.CorruptHatePreHands, "Corrupt Hate Pre Hands" },
-            { SelfPreParticle.FishingRod, "Fishing Rod" },
+            //{ SelfPreParticle.FishingRod, "Fishing Rod" },
             { SelfPreParticle.ElectricBuildup, "Electric Buildup" },
             { SelfPreParticle.DelugePreParticles, "Deluge Pre Particles" },
             { SelfPreParticle.TsunamiPreParticles, "Tsunami Pre Particles" },
@@ -5148,6 +5149,7 @@
             { XpTableEnum.PovusStorage, "Povus Storage" },
             { XpTableEnum.Riding, "Riding" },
             { XpTableEnum.TempestEnergyByLevel, "Tempest Energy By Level" },
+            { XpTableEnum.Endurance, "Endurance" },
         };
     }
 }

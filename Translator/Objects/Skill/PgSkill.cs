@@ -52,6 +52,11 @@
         public bool IsUmbrellaSkill { get { return (BoolValues & (IsUmbrellaSkillNotNull + IsUmbrellaSkillIsTrue)) == (IsUmbrellaSkillNotNull + IsUmbrellaSkillIsTrue); } }
         public bool? RawIsUmbrellaSkill { get { return ((BoolValues & IsUmbrellaSkillNotNull) != 0) ? (BoolValues & IsUmbrellaSkillIsTrue) != 0 : null; } }
         public void SetIsUmbrellaSkill(bool value) { BoolValues |= (BoolValues & ~(IsUmbrellaSkillNotNull + IsUmbrellaSkillIsTrue)) | ((value ? IsUmbrellaSkillIsTrue : 0) + IsUmbrellaSkillNotNull); }
+        public const int SkillLevelDisparityAppliesNotNull = 1 << 12;
+        public const int SkillLevelDisparityAppliesIsTrue = 1 << 13;
+        public bool SkillLevelDisparityApplies { get { return (BoolValues & (SkillLevelDisparityAppliesNotNull + SkillLevelDisparityAppliesIsTrue)) == (SkillLevelDisparityAppliesNotNull + SkillLevelDisparityAppliesIsTrue); } }
+        public bool? RawSkillLevelDisparityApplies { get { return ((BoolValues & SkillLevelDisparityAppliesNotNull) != 0) ? (BoolValues & SkillLevelDisparityAppliesIsTrue) != 0 : null; } }
+        public void SetSkillLevelDisparityApplies(bool value) { BoolValues |= (BoolValues & ~(SkillLevelDisparityAppliesNotNull + SkillLevelDisparityAppliesIsTrue)) | ((value ? SkillLevelDisparityAppliesIsTrue : 0) + SkillLevelDisparityAppliesNotNull); }
 
         public Dictionary<ItemSlot, List<string>> AssociationTablePower { get; set; } = new Dictionary<ItemSlot, List<string>>();
         public List<string> AssociationListAbility { get; set; } = new List<string>();

@@ -72,9 +72,9 @@
                     case "Rewards_Items":
                         Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
                         break;
-                    case "Reward_CombatXP":
+/*                    case "Reward_CombatXP":
                         Result = ParseRewardCombatXp(item, Value, parsedFile, parsedKey);
-                        break;
+                        break;*/
                     case "QuestNpc":
                         Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.QuestNpc = npcLocation, Value, parsedFile, parsedKey);
                         break;

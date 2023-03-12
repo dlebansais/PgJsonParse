@@ -117,6 +117,9 @@
                     case "IsUmbrellaSkill":
                         Result = SetBoolProperty((bool valueBool) => item.SetIsUmbrellaSkill(valueBool), Value);
                         break;
+                    case "SkillLevelDisparityApplies":
+                        Result = SetBoolProperty((bool valueBool) => item.SetSkillLevelDisparityApplies(valueBool), Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;

@@ -496,7 +496,7 @@
             //{ "Rewards_XP", typeof(PgQuestRewardSkillXp) },
             //{ "Rewards_Currency", typeof(PgQuestRewardCurrency) },
             { "Rewards_Items", typeof(PgQuestRewardItem[]) },
-            { "Reward_CombatXP", typeof(int) },
+            //{ "Reward_CombatXP", typeof(int) },
             { "QuestNpc", typeof(string) },
             { "FavorNpc", typeof(string) },
             { "PrefaceText", typeof(string) },
@@ -613,6 +613,7 @@
             { "Amount", typeof(int) },
             { "Currency", typeof(string) },
             { "Ability", typeof(string) },
+            { "Level", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableRecipe { get; } = new Dictionary<string, Type>()
@@ -701,6 +702,7 @@
             { "GuestLevelCap", typeof(int) },
             { "IsFakeCombatSkill", typeof(bool) },
             { "IsUmbrellaSkill", typeof(bool) },
+            { "SkillLevelDisparityApplies", typeof(bool) },
         };
 
         public static Dictionary<string, Type> TableReward { get; } = new Dictionary<string, Type>()

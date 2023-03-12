@@ -51,5 +51,6 @@
         PovusStorage,
         Riding,
         TempestEnergyByLevel,
+        Endurance,
     }
 }

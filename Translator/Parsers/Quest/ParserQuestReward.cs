@@ -29,7 +29,7 @@
             { QuestRewardType.SkillXp, new List<string>() { "T", "Skill", "Xp" } },
             { QuestRewardType.Recipe, new List<string>() { "T", "Recipe" } },
             { QuestRewardType.GuildCredits, new List<string>() { "T", "Credits" } },
-            { QuestRewardType.CombatXp, new List<string>() { "T", "Xp" } },
+            { QuestRewardType.CombatXp, new List<string>() { "T", "Xp", "Level" } },
             { QuestRewardType.GuildXp, new List<string>() { "T", "Xp" } },
             { QuestRewardType.Currency, new List<string>() { "T", "Amount", "Currency" } },
             { QuestRewardType.Ability, new List<string>() { "T", "Ability" } },
@@ -240,6 +240,9 @@
                             break;
                         case "Xp":
                             Result = SetIntProperty((int valueInt) => NewItem.RawXp = valueInt, Value);
+                            break;
+                        case "Level":
+                            Result = SetIntProperty((int valueInt) => NewItem.RawLevel = valueInt, Value);
                             break;
                         default:
                             Result = Program.ReportFailure("Unexpected failure");

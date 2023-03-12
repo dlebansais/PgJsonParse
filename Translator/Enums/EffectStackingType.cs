@@ -343,5 +343,6 @@
         SpecialEventMountAccel,
         SpecialEventSaddlebag,
         DrunkNectar1,
+        TornadoDebuff,
     }
 }
