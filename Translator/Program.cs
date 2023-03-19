@@ -139,112 +139,7 @@
 
             ParserSkill.FillAssociationTables();
 
-/*
-            Dictionary<string, ParsingContext> QuestParsingTable = ParsingContext.ObjectKeyTable[typeof(PgQuest)];
-            Dictionary<MapAreaName, string> QuestAreas = new()
-            {
-                { MapAreaName.Internal_None, "Other" },
-                { MapAreaName.NewbieIsland, "Anagoge island" },
-                { MapAreaName.Dungeons, "Dungeons" },
-                { MapAreaName.Eltibule, "Eltibule" },
-                { MapAreaName.FaeRealm, "Fae Realm" },
-                { MapAreaName.GazlukCaves, "Gazluk Dungeons" },
-                { MapAreaName.GazlukKeep, "Gazluk Keep" },
-                { MapAreaName.Gazluk, "Gazluk Plateau" },
-                { MapAreaName.Desert1, "Ilmari Desert" },
-                { MapAreaName.Tomb1, "Khyrulek's Crypt" },
-                { MapAreaName.KurMountains, "Kur Mountains" },
-                { MapAreaName.MyconianCave, "Myconian Caverns" },
-                { MapAreaName.AreaPovus, "Povus" },
-                { MapAreaName.Rahu, "Rahu" },
-                { MapAreaName.RahuSewer, "Rahu Sewer" },
-                { MapAreaName.RahuSewers, "Rahu Sewers" },
-                { MapAreaName.Casino, "Red Wing Casino" },
-                { MapAreaName.SacredGrotto, "Sacred Grotto" },
-                { MapAreaName.Serbule, "Serbule" },
-                { MapAreaName.Serbule2, "Serbule Hills" },
-                { MapAreaName.SunVale, "Sun Vale" },
-            };
-
-            Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();
-
-            foreach (KeyValuePair<MapAreaName, string> QuestAreaEntry in QuestAreas)
-            {
-                foreach (KeyValuePair<string, ParsingContext> Entry in QuestParsingTable)
-                {
-                    PgQuest Quest = (PgQuest)Entry.Value.Item;
-
-                    if (Quest.Name.Contains("Learn Oritania"))
-                    {
-                    }
-
-                    if (Quest.KeywordList.Contains(QuestKeyword.EventQuest) ||
-                        Quest.KeywordList.Contains(QuestKeyword.WorkOrder) ||
-                        Quest.KeywordList.Contains(QuestKeyword.DruidGroup))
-                        continue;
-
-                    if (Quest.IsGuildQuest)
-                        continue;
-                    if (Quest.IsAutoWrapUp)
-                        continue;
-
-                    if (Quest.ReuseTime != TimeSpan.Zero)
-                        continue;
-
-                    string QuestName = Quest.Name;
-
-                    if (QuestName == string.Empty ||
-                        QuestName.StartsWith("Event: "))
-                        continue;
-
-                    if (QuestName.StartsWith("Hunting: ") ||
-                        QuestName.StartsWith("Wolf: "))
-                    {
-                    }
-
-                    if (Quest.QuestObjectiveList.Count == 1 && Quest.QuestObjectiveList[0] is PgQuestObjectiveScripted)
-                    {
-                        if (QuestName.StartsWith("Visit"))
-                            continue;
-                        else
-                        {
-                        }
-                    }
-
-                    MapAreaName DisplayedLocation = Quest.DisplayedLocation;
-                    PgNpcLocation? QuestNpc = Quest.QuestNpc;
-
-                    if (QuestNpc is null)
-                        QuestNpc = Quest.FavorNpc;
-
-                    if (QuestNpc is null)
-                        QuestNpc = Quest.QuestCompleteNpc;
-
-                    if (QuestNpc is not null && DisplayedLocation == MapAreaName.Internal_None)
-                        DisplayedLocation = QuestNpc.NpcArea;
-
-                    if (DisplayedLocation == QuestAreaEntry.Key)
-                    {
-                        if (!QuestAreaListedTable.ContainsKey(DisplayedLocation))
-                            QuestAreaListedTable.Add(DisplayedLocation, new List<PgQuest>());
-
-                        QuestAreaListedTable[DisplayedLocation].Add(Quest);
-                    }
-                }
-            }
-
-            foreach (KeyValuePair<MapAreaName, List<PgQuest>> Entry in QuestAreaListedTable)
-            {
-                List<PgQuest> NameList = Entry.Value;
-                NameList.Sort((PgQuest q1, PgQuest q2) => string.Compare(q1.Name, q2.Name));
-
-                Debug.WriteLine($"{QuestAreas[Entry.Key]}");
-
-                foreach (PgQuest Quest in NameList)
-                    Debug.WriteLine($"    {Quest.Name}");
-            }
-*/
-
+            ListUniqueQuests();
 
             List<object> ObjectList = ParsingContext.GetParsedObjectList();
 
@@ -1757,5 +1652,781 @@
                 Debug.WriteLine(e.Message);
             }
         }
+
+        private static void ListUniqueQuests()
+        {
+            Dictionary<string, ParsingContext> QuestParsingTable = ParsingContext.ObjectKeyTable[typeof(PgQuest)];
+            Dictionary<MapAreaName, string> QuestAreas = new()
+            {
+                { MapAreaName.Internal_None, "Other" },
+                { MapAreaName.NewbieIsland, "Anagoge island" },
+                { MapAreaName.Dungeons, "Dungeons" },
+                { MapAreaName.Eltibule, "Eltibule" },
+                { MapAreaName.FaeRealm, "Fae Realm" },
+                { MapAreaName.GazlukCaves, "Gazluk Dungeons" },
+                { MapAreaName.GazlukKeep, "Gazluk Keep" },
+                { MapAreaName.Gazluk, "Gazluk Plateau" },
+                { MapAreaName.Desert1, "Ilmari Desert" },
+                { MapAreaName.Tomb1, "Khyrulek's Crypt" },
+                { MapAreaName.KurMountains, "Kur Mountains" },
+                { MapAreaName.MyconianCave, "Myconian Caverns" },
+                { MapAreaName.AreaPovus, "Povus" },
+                { MapAreaName.Rahu, "Rahu" },
+                { MapAreaName.RahuSewer, "Rahu Sewer" },
+                { MapAreaName.RahuSewers, "Rahu Sewers" },
+                { MapAreaName.Casino, "Red Wing Casino" },
+                { MapAreaName.SacredGrotto, "Sacred Grotto" },
+                { MapAreaName.Serbule, "Serbule" },
+                { MapAreaName.Serbule2, "Serbule Hills" },
+                { MapAreaName.SunVale, "Sun Vale" },
+            };
+
+            Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();
+
+            foreach (KeyValuePair<MapAreaName, string> QuestAreaEntry in QuestAreas)
+            {
+                foreach (KeyValuePair<string, ParsingContext> Entry in QuestParsingTable)
+                {
+                    PgQuest Quest = (PgQuest)Entry.Value.Item;
+
+                    if (Quest.Name.Contains("Learn Oritania"))
+                    {
+                    }
+
+                    if (Quest.KeywordList.Contains(QuestKeyword.EventQuest) ||
+                        Quest.KeywordList.Contains(QuestKeyword.WorkOrder))
+                        continue;
+
+                    if (Quest.IsGuildQuest)
+                        continue;
+                    if (Quest.IsAutoWrapUp)
+                        continue;
+
+                    if (Quest.ReuseTime != TimeSpan.Zero)
+                        continue;
+
+                    string QuestName = Quest.Name;
+
+                    if (QuestName == string.Empty ||
+                        QuestName.StartsWith("Event: "))
+                        continue;
+
+                    if (QuestName.StartsWith("Hunting: ") ||
+                        QuestName.StartsWith("Wolf: "))
+                    {
+                    }
+
+                    if (Quest.QuestObjectiveList.Count == 1 && Quest.QuestObjectiveList[0] is PgQuestObjectiveScripted)
+                    {
+                        if (QuestName.StartsWith("Visit"))
+                            continue;
+                        else
+                        {
+                        }
+                    }
+
+                    MapAreaName DisplayedLocation = Quest.DisplayedLocation;
+                    PgNpcLocation? QuestNpc = Quest.QuestNpc;
+
+                    if (QuestNpc is null)
+                        QuestNpc = Quest.FavorNpc;
+
+                    if (QuestNpc is null)
+                        QuestNpc = Quest.QuestCompleteNpc;
+
+                    if (QuestNpc is not null && DisplayedLocation == MapAreaName.Internal_None)
+                        DisplayedLocation = QuestNpc.NpcArea;
+
+                    if (DisplayedLocation == QuestAreaEntry.Key)
+                    {
+                        if (!QuestAreaListedTable.ContainsKey(DisplayedLocation))
+                            QuestAreaListedTable.Add(DisplayedLocation, new List<PgQuest>());
+
+                        QuestAreaListedTable[DisplayedLocation].Add(Quest);
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<MapAreaName, List<PgQuest>> Entry in QuestAreaListedTable)
+            {
+                MapAreaName Area = Entry.Key;
+
+                if (!KnownUniqueQuests.ContainsKey(Area))
+                    Debug.WriteLine($"UNKNOWN QUEST AREA: {Area}");
+                else
+                {
+                    foreach (PgQuest Quest in Entry.Value)
+                        if (!KnownUniqueQuests[Area].ContainsKey(Quest.Name))
+                            Debug.WriteLine($"UNKNOWN QUEST: {Quest.Name}");
+                }
+            }
+        }
+
+        enum QuestSpecifics
+        {
+            None,
+            Bugged,
+            NotTracked,
+            DruidOnly,
+            LycanOnly,
+            FaeOnly,
+            Hunting,
+        };
+
+        private static Dictionary<MapAreaName, Dictionary<string, QuestSpecifics>> KnownUniqueQuests = new()
+        {
+            {
+                MapAreaName.Internal_None, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Get Jesina's Help", QuestSpecifics.None },
+                    { "If Trees Could Talk", QuestSpecifics.None },
+                    { "Learn Oritania's Secret Info", QuestSpecifics.None },
+                    { "Lucky Teeth", QuestSpecifics.None },
+                    { "Orange Proof", QuestSpecifics.None },
+                    { "The Sewer Man", QuestSpecifics.None },
+                    { "Under The Hand Is An Orb", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.NewbieIsland, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Cheer Up Riger", QuestSpecifics.None },
+                    { "Find an Amethyst", QuestSpecifics.None },
+                    { "Find Bones", QuestSpecifics.None },
+                    { "Find Spoons", QuestSpecifics.None },
+                    { "Obelisk Math", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Dungeons, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Anti-Lycanthropy Potion", QuestSpecifics.None },
+                    { "Bandage The Soul", QuestSpecifics.None },
+                    { "Better Skulls Needed", QuestSpecifics.None },
+                    { "Convince Ultashk to Help", QuestSpecifics.None },
+                    { "Corey Wants Ogre Stomachs", QuestSpecifics.None },
+                    { "Corey Wants Wings", QuestSpecifics.None },
+                    { "Find Dalvos's Machine Parts", QuestSpecifics.None },
+                    { "Free Tortured Fairies", QuestSpecifics.None },
+                    { "Garnets", QuestSpecifics.None },
+                    { "Goblin Genocide", QuestSpecifics.None },
+                    { "Gorvessa's Cheesy Demand", QuestSpecifics.None },
+                    { "Gribburn Wants Eel Kabobs", QuestSpecifics.None },
+                    { "Gribburn's Hair Pin", QuestSpecifics.None },
+                    { "Into the Kur Tower", QuestSpecifics.None },
+                    { "Looking at Skulls", QuestSpecifics.None },
+                    { "Malvol's Calligraphy Needs", QuestSpecifics.None },
+                    { "Murdering Gorgos", QuestSpecifics.None },
+                    { "Necromancy Goblets", QuestSpecifics.None },
+                    { "Orange Juice for Malgath", QuestSpecifics.None },
+                    { "Slabs for Malvol", QuestSpecifics.None },
+                    { "The Sexy Panther", QuestSpecifics.None },
+                    { "Tongues for Shoes", QuestSpecifics.None },
+                    { "Worm Teeth", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Eltibule, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "An Experiment Involving Rats", QuestSpecifics.None },
+                    { "Chasing Dalvos to Eltibule", QuestSpecifics.None },
+                    { "Cocktails for Thimble Pete", QuestSpecifics.None },
+                    { "Collect Giant Snail Shells", QuestSpecifics.None },
+                    { "Cotton Pickin'", QuestSpecifics.None },
+                    { "Cream for Potatoes", QuestSpecifics.None },
+                    { "Delivering Phlogiston to Makara", QuestSpecifics.None },
+                    { "Explosive Ink for Yasinda", QuestSpecifics.None },
+                    { "Feathers For Yetta", QuestSpecifics.None },
+                    { "Finding Yasinda's Daughter", QuestSpecifics.None },
+                    { "Flitterbies", QuestSpecifics.None },
+                    { "Flowers for Dye Practice", QuestSpecifics.None },
+                    { "Game Night Is Calling", QuestSpecifics.None },
+                    { "Get Some Cotton", QuestSpecifics.None },
+                    { "Gratflower Millet", QuestSpecifics.None },
+                    { "Groupie Killing", QuestSpecifics.None },
+                    { "Gruzark's Works", QuestSpecifics.None },
+                    { "Guavas of the Land", QuestSpecifics.None },
+                    { "Hogan's Request", QuestSpecifics.None },
+                    { "Hooks", QuestSpecifics.None },
+                    { "James' Birthday Adventure", QuestSpecifics.None },
+                    { "Kar-Get on Villas Wake", QuestSpecifics.None },
+                    { "Kill Fey Panthers", QuestSpecifics.None },
+                    { "Kill Giant Mantises", QuestSpecifics.None },
+                    { "Kill Giant Snails", QuestSpecifics.None },
+                    { "Kill Goblins", QuestSpecifics.None },
+                    { "Kill Panthers", QuestSpecifics.None },
+                    { "Kill Spiders", QuestSpecifics.None },
+                    { "Lydia's Ghost", QuestSpecifics.None },
+                    { "Mandrake Root", QuestSpecifics.None },
+                    { "Milk!", QuestSpecifics.None },
+                    { "Muntok Peppercorns", QuestSpecifics.None },
+                    { "Mystery Rocks", QuestSpecifics.None },
+                    { "Perfectly Round Pebbles", QuestSpecifics.None },
+                    { "Phlogiston Basics", QuestSpecifics.None },
+                    { "Pick-Me-Up", QuestSpecifics.None },
+                    { "Potato Dinner", QuestSpecifics.None },
+                    { "Power Potions!", QuestSpecifics.None },
+                    { "Preventing a Predictable Problem", QuestSpecifics.None },
+                    { "Quarter Hoops!", QuestSpecifics.None },
+                    { "Revenge For Slavery, Pt. 1", QuestSpecifics.None },
+                    { "Revenge For Slavery, Pt. 2", QuestSpecifics.None },
+                    { "Revenge For Slavery, Pt. 3", QuestSpecifics.None },
+                    { "Sachets of Onion Powder", QuestSpecifics.None },
+                    { "Safe For Travel", QuestSpecifics.None },
+                    { "Saltpeter for Percy Evans", QuestSpecifics.None },
+                    { "Sarina's Lost Clothes", QuestSpecifics.None },
+                    { "Save Sarina", QuestSpecifics.None },
+                    { "Scrap Paintings", QuestSpecifics.None },
+                    { "Sie's Roadside Assistance", QuestSpecifics.None },
+                    { "Spider Legs For Yetta", QuestSpecifics.None },
+                    { "Spiders Too Near The Herd", QuestSpecifics.None },
+                    { "Stomachs!", QuestSpecifics.None },
+                    { "Strips", QuestSpecifics.None },
+                    { "Sturdy Phlogiston", QuestSpecifics.None },
+                    { "Sulfur For Yetta", QuestSpecifics.None },
+                    { "The Mauler", QuestSpecifics.None },
+                    { "The Perfect Cow Hide", QuestSpecifics.None },
+                    { "Urak Mandibles", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.FaeRealm, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Aquamarine Gems for Solgribue", QuestSpecifics.None },
+                    { "Bad Memory Fixer", QuestSpecifics.None },
+                    { "Bad Memory Potion", QuestSpecifics.None },
+                    { "Barghest Snouts", QuestSpecifics.None },
+                    { "Blinding Wasp Removal", QuestSpecifics.None },
+                    { "Carnivine Teeth", QuestSpecifics.None },
+                    { "Dangerous Weeds", QuestSpecifics.None },
+                    { "Elven Sketches", QuestSpecifics.FaeOnly },
+                    { "Explosive Mushrooms", QuestSpecifics.None },
+                    { "Fae Panther Hunt", QuestSpecifics.None },
+                    { "Fae Rhino Horns", QuestSpecifics.None },
+                    { "Fashion Kittens", QuestSpecifics.None },
+                    { "Felmer's First Aid", QuestSpecifics.None },
+                    { "Freshest Pears", QuestSpecifics.None },
+                    { "Freshest Pixie's Parasols", QuestSpecifics.None },
+                    { "Freshest Shimmerwing Wings", QuestSpecifics.None },
+                    { "Freshest Stingers", QuestSpecifics.None },
+                    { "Gigantic Barbecue", QuestSpecifics.None },
+                    { "Honey-Loving Bears", QuestSpecifics.None },
+                    { "Icebreeze Moth Wings", QuestSpecifics.None },
+                    { "Just a Hop Away", QuestSpecifics.None },
+                    { "Just Kill 'Em", QuestSpecifics.None },
+                    { "Maybe For the Best", QuestSpecifics.FaeOnly },
+                    { "Meet the Hive", QuestSpecifics.FaeOnly },
+                    { "Mortal Lemons", QuestSpecifics.None },
+                    { "Mushroom Samples", QuestSpecifics.None },
+                    { "Pegast's Armor Patching", QuestSpecifics.FaeOnly },
+                    { "Pile of Parasol Flakes", QuestSpecifics.FaeOnly },
+                    { "Pile of Parasols", QuestSpecifics.FaeOnly },
+                    { "Plant Duty", QuestSpecifics.None },
+                    { "Precious Buckets of Slime", QuestSpecifics.None },
+                    { "Re-Awakening", QuestSpecifics.FaeOnly },
+                    { "Refreshment Duty", QuestSpecifics.None },
+                    { "Snack From The Homeland", QuestSpecifics.None },
+                    { "Spiders On Fire", QuestSpecifics.None },
+                    { "Spriggan Weed Teeth", QuestSpecifics.None },
+                    { "Two Thousand Potatoes", QuestSpecifics.FaeOnly },
+                    { "Winter Troll Extermination", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.GazlukCaves, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Barghest Hunt", QuestSpecifics.None },
+                    { "Black Foot Morels for Hemmit", QuestSpecifics.None },
+                    { "Blankets From Ghosts", QuestSpecifics.None },
+                    { "Cave Fishing", QuestSpecifics.None },
+                    { "Cave Mummies", QuestSpecifics.None },
+                    { "Confronting Tal-Saka", QuestSpecifics.None },
+                    { "Confronting Urzab", QuestSpecifics.None },
+                    { "Deadly Yellow Crystals", QuestSpecifics.None },
+                    { "Dissolution of Cave Snails", QuestSpecifics.None },
+                    { "Fake Cinnamon", QuestSpecifics.None },
+                    { "Ghost Puke", QuestSpecifics.None },
+                    { "Grisly Polar Bear Deaths", QuestSpecifics.None },
+                    { "Groxmax Mushrooms for Hemmit", QuestSpecifics.None },
+                    { "Ice Sludge", QuestSpecifics.None },
+                    { "Inconsiderate Slime Organisms", QuestSpecifics.None },
+                    { "Mummy Mastermind", QuestSpecifics.None },
+                    { "Only The Best Handles", QuestSpecifics.None },
+                    { "Proof of Rahu's Involvement", QuestSpecifics.None },
+                    { "Puke Sweetener", QuestSpecifics.None },
+                    { "Safer Crystal Transport", QuestSpecifics.None },
+                    { "Sentimental Jewelry", QuestSpecifics.None },
+                    { "Steel From Ghosts", QuestSpecifics.None },
+                    { "The Chain of Gasu'um's Necklace", QuestSpecifics.None },
+                    { "The Gem in Gasu'um's Necklace", QuestSpecifics.None },
+                    { "The Gem in Gasu'um's Necklace (round 2)", QuestSpecifics.None },
+                    { "The Mushroom Man's Secret", QuestSpecifics.None },
+                    { "The Worst Slug", QuestSpecifics.None },
+                    { "True Orcish Ore", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.GazlukKeep, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Contacting Melandria's Brother", QuestSpecifics.None },
+                    { "Melandria's Little Helper", QuestSpecifics.None },
+                    { "Mint for Melandria", QuestSpecifics.None },
+                    { "Resisting Extreme Punishment", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Gazluk, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Lumber for Campsite Repairs", QuestSpecifics.None },
+                    { "Sampling Local Cinnabar", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Desert1, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Nice Stool", QuestSpecifics.None },
+                    { "A Stencil to Make Runes", QuestSpecifics.None },
+                    { "Carnelians for Urzab", QuestSpecifics.None },
+                    { "Fresh Carrots", QuestSpecifics.None },
+                    { "Geometric Rune Charts", QuestSpecifics.None },
+                    { "Hairballs Are Edible?!", QuestSpecifics.None },
+                    { "Manticore Tails Needed!", QuestSpecifics.None },
+                    { "The Ink For Something Amazing", QuestSpecifics.None },
+                    { "The Weird Prism", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Tomb1, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Damned Dinosaurs", QuestSpecifics.None },
+                    { "Deer In The Crypt", QuestSpecifics.None },
+                    { "Fiery Secrets", QuestSpecifics.None },
+                    { "Fiery Secrets, Round 2", QuestSpecifics.NotTracked },
+                    { "Fiery Secrets, Round 3", QuestSpecifics.NotTracked },
+                    { "Mana Sponges", QuestSpecifics.None },
+                    { "Sludge!", QuestSpecifics.None },
+                    { "Ursula's Creepy Bear", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.KurMountains, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Bench For Writing", QuestSpecifics.None },
+                    { "Anomalous Fire Sheep", QuestSpecifics.None },
+                    { "Arrows for the Occasion", QuestSpecifics.None },
+                    { "Bear Massacre", QuestSpecifics.None },
+                    { "Better Chairs", QuestSpecifics.None },
+                    { "Check In On Gribburn", QuestSpecifics.None },
+                    { "Check In On Malgath", QuestSpecifics.None },
+                    { "Check In On Poe", QuestSpecifics.None },
+                    { "Check In On Syndra", QuestSpecifics.None },
+                    { "Cheddar of Friendship", QuestSpecifics.None },
+                    { "Deer Meat", QuestSpecifics.None },
+                    { "Defeat Bleddyn", QuestSpecifics.LycanOnly },
+                    { "Disguising Fox Outpost", QuestSpecifics.None },
+                    { "Disguising Fox Outpost, pt 2", QuestSpecifics.None },
+                    { "Gurki Wants Silver", QuestSpecifics.None },
+                    { "Ice Plane Research", QuestSpecifics.None },
+                    { "Ink for the Inscription", QuestSpecifics.None },
+                    { "Keep the Kitchen Stocked", QuestSpecifics.None },
+                    { "Killing Kin", QuestSpecifics.None },
+                    { "Lapis for the Priest", QuestSpecifics.None },
+                    { "Lichens for Research", QuestSpecifics.None },
+                    { "Magic Teeth", QuestSpecifics.None },
+                    { "Return to the Sacred Grotto", QuestSpecifics.None },
+                    { "Saltpeter for Landri the Cold", QuestSpecifics.None },
+                    { "Scales of a Dragon!", QuestSpecifics.None },
+                    { "Silver Ore for Swords", QuestSpecifics.None },
+                    { "Smelly Gurki", QuestSpecifics.None },
+                    { "So... Cold...", QuestSpecifics.None },
+                    { "Stool Order", QuestSpecifics.None },
+                    { "The Dawn Flower", QuestSpecifics.None },
+                    { "The Lightning Connection", QuestSpecifics.None },
+                    { "The Sacred Grotto Password", QuestSpecifics.None },
+                    { "Thin The Food Supply", QuestSpecifics.None },
+                    { "Trophy Wolves", QuestSpecifics.None },
+                    { "Ukorga's Fur Order", QuestSpecifics.None },
+                    { "Ultimate Woolly Comfort", QuestSpecifics.None },
+                    { "Werewolves", QuestSpecifics.None },
+                    { "Wolfsbane Needed", QuestSpecifics.None },
+                    { "Wool Supply", QuestSpecifics.None },
+                    { "Wooly Needs", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.MyconianCave, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Cross-Pollination", QuestSpecifics.None },
+                    { "Find Poe", QuestSpecifics.None },
+                    { "Fixing Way's Yo-Yo", QuestSpecifics.None },
+                    { "Gold Ore For Poe", QuestSpecifics.None },
+                    { "Greta Must Die", QuestSpecifics.None },
+                    { "Heartshrooms", QuestSpecifics.None },
+                    { "Inhibiting the Sporing", QuestSpecifics.None },
+                    { "Iocaine Samples", QuestSpecifics.None },
+                    { "The Secret Ingredient", QuestSpecifics.None },
+                    { "Too Many Tenders", QuestSpecifics.None },
+                    { "Way's Lost Yo-Yo", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.AreaPovus, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Kick In The Whiskers", QuestSpecifics.None },
+                    { "Auto-Clamp Safety Blanket", QuestSpecifics.None },
+                    { "Beautiful Beaker Bits", QuestSpecifics.None },
+                    { "Better Hammer Wraps", QuestSpecifics.None },
+                    { "Bones For Inspection", QuestSpecifics.None },
+                    { "Brukal Must Die", QuestSpecifics.None },
+                    { "Exotic Varieties of Fungus", QuestSpecifics.None },
+                    { "Forging Armor from Blood", QuestSpecifics.None },
+                    { "Fresh Tallow For The Bees", QuestSpecifics.None },
+                    { "Fresh-Picked Death", QuestSpecifics.None },
+                    { "Hammer Steel, Hammer Brain", QuestSpecifics.None },
+                    { "Hunting: Kuvou", QuestSpecifics.Hunting },
+                    { "In Memoriam", QuestSpecifics.None },
+                    { "Khopesh Parts", QuestSpecifics.None },
+                    { "Kimeta's Key", QuestSpecifics.None },
+                    { "No Ordinary Blacksmith's Challenge", QuestSpecifics.None },
+                    { "Norala's Armor", QuestSpecifics.None },
+                    { "Only the Freshest Grizlark", QuestSpecifics.None },
+                    { "Parts For An Auto-Clamp", QuestSpecifics.None },
+                    { "Povus Chapter, Reporting In", QuestSpecifics.None },
+                    { "Prettier Knife Coatings", QuestSpecifics.None },
+                    { "Repurposing Old Fishing Nets", QuestSpecifics.None },
+                    { "Secrets of Orcish Armor (part 1)", QuestSpecifics.None },
+                    { "Secrets of Orcish Armor (part 2)", QuestSpecifics.None },
+                    { "Squid-Beasts In the River", QuestSpecifics.None },
+                    { "Stephie's Gorget", QuestSpecifics.None },
+                    { "Tending To the Root-Tenders", QuestSpecifics.None },
+                    { "Time For a Smoke Break", QuestSpecifics.None },
+                    { "Way of the Warsmith", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Rahu, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Ratkin Talisman for Daniel", QuestSpecifics.None },
+                    { "A Secret Type of Skeleton", QuestSpecifics.None },
+                    { "A Substitute for the Horn Bow", QuestSpecifics.None },
+                    { "Amutasa Needs To Stop Working Faster", QuestSpecifics.None },
+                    { "Amutasa Wants To Work Faster", QuestSpecifics.None },
+                    { "Amutasa's Metal", QuestSpecifics.None },
+                    { "Answers for Shirogin", QuestSpecifics.None },
+                    { "Aquamarine Dye for Shirogin", QuestSpecifics.None },
+                    { "Bear Gallbladders for Ashk", QuestSpecifics.None },
+                    { "Care Package from Rahu", QuestSpecifics.None },
+                    { "Drumskins", QuestSpecifics.None },
+                    { "Escaped Snail Meat", QuestSpecifics.DruidOnly },
+                    { "Furnishing Nishika's Restaurant", QuestSpecifics.None },
+                    { "Grapefish for Snacks", QuestSpecifics.None },
+                    { "Killing Orcs For Old Times' Sake", QuestSpecifics.None },
+                    { "Lac for Amutasa", QuestSpecifics.None },
+                    { "Nishika's Meat Request", QuestSpecifics.None },
+                    { "Powering The Back-Scratcher", QuestSpecifics.None },
+                    { "Questions for Shirogin", QuestSpecifics.None },
+                    { "Rabbit's Feet for Ashk", QuestSpecifics.None },
+                    { "Rat Tails for Ashk", QuestSpecifics.None },
+                    { "Repairing the Horn Bow", QuestSpecifics.None },
+                    { "Restringing the Horn Bow", QuestSpecifics.None },
+                    { "Sewer Crystal Water Samples", QuestSpecifics.DruidOnly },
+                    { "Spice For The General's Dish", QuestSpecifics.None },
+                    { "Spiderwebs for Beautiful Clothes", QuestSpecifics.None },
+                    { "Telka's Tail for Furlak", QuestSpecifics.None },
+                    { "The Eye of Fate", QuestSpecifics.None },
+                    { "The Knife Backlog", QuestSpecifics.None },
+                    { "The Missing Gown Ingredient", QuestSpecifics.None },
+                    { "The Perfect Rice For Weddings", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.RahuSewer, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Bogaku's Lost Notebook", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.RahuSewers, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "Cheese Testing", QuestSpecifics.None },
+                    { "More Miner Tests", QuestSpecifics.None },
+                    { "Necromancy Target Practice", QuestSpecifics.None },
+                    { "Necro-Rats!", QuestSpecifics.None },
+                    { "Punt Some Loungers", QuestSpecifics.None },
+                    { "Ratkin Appetizers", QuestSpecifics.None },
+                    { "Ratkin Gaming Habits", QuestSpecifics.None },
+                    { "Ratkin Snails", QuestSpecifics.None },
+                    { "Rattus Root, The Book Of Knowledge", QuestSpecifics.None },
+                    { "Sewer Chicken", QuestSpecifics.None },
+                    { "Some Miner Tests", QuestSpecifics.None },
+                    { "Underground Trees", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Casino, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Message For Willem", QuestSpecifics.None },
+                    { "Bear Meat Swirlers", QuestSpecifics.None },
+                    { "Better Cheese Needed", QuestSpecifics.None },
+                    { "Better Lac Than Lac?", QuestSpecifics.None },
+                    { "Cheese For Reasons", QuestSpecifics.None },
+                    { "Cottage Pie", QuestSpecifics.None },
+                    { "Cotton For Dresses", QuestSpecifics.None },
+                    { "Darker Than Dark", QuestSpecifics.None },
+                    { "Dirty Snow Water", QuestSpecifics.None },
+                    { "Fae Felt", QuestSpecifics.None },
+                    { "Fiddler's Favorite Snack", QuestSpecifics.None },
+                    { "Fiddler's Hoof Scrubber", QuestSpecifics.None },
+                    { "Fiddler's New Comb", QuestSpecifics.None },
+                    { "Goblin Ale", QuestSpecifics.None },
+                    { "Hatred Oil", QuestSpecifics.None },
+                    { "Keeping Meat Cold", QuestSpecifics.None },
+                    { "Kib Wants Fire Resistance", QuestSpecifics.None },
+                    { "Killing Goblins in Mandibles' Name", QuestSpecifics.None },
+                    { "Letting Qatik Down Gently", QuestSpecifics.None },
+                    { "Lucky Rabbit Feet", QuestSpecifics.None },
+                    { "Metal for Repairs", QuestSpecifics.None },
+                    { "Moss Agates for the Garden", QuestSpecifics.Bugged },
+                    { "NEED POTION", QuestSpecifics.None },
+                    { "NEED STINGER", QuestSpecifics.None },
+                    { "NEW CLUB", QuestSpecifics.None },
+                    { "NEW STOMACH", QuestSpecifics.None },
+                    { "Paladium Potions", QuestSpecifics.None },
+                    { "Paralytic Chicken Meat", QuestSpecifics.None },
+                    { "Probing Tavilak's History", QuestSpecifics.None },
+                    { "Quartz Jewelry", QuestSpecifics.None },
+                    { "Specialty Bread Order", QuestSpecifics.None },
+                    { "Still Better Cheese", QuestSpecifics.None },
+                    { "Sulfur Bath", QuestSpecifics.None },
+                    { "The Natural Food Experience", QuestSpecifics.None },
+                    { "The Natural Food Experience, pt 2", QuestSpecifics.None },
+                    { "The Natural Food Experience, pt 3", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.SacredGrotto, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Little Guidance Goes A Long Way", QuestSpecifics.None },
+                    { "A Weighty Repair", QuestSpecifics.None },
+                    { "Checking In On Lumpfuzz", QuestSpecifics.None },
+                    { "Checking In On Norbert", QuestSpecifics.None },
+                    { "Checking In On The Suspicious Cow", QuestSpecifics.None },
+                    { "Checking In On Trekker", QuestSpecifics.None },
+                    { "Even More Parts?!", QuestSpecifics.None },
+                    { "Fox Drawing Lessons", QuestSpecifics.None },
+                    { "Fox Sewing Lessons", QuestSpecifics.None },
+                    { "Gears and Screws For Warden Alerts", QuestSpecifics.None },
+                    { "Getting Warden Alerts Working", QuestSpecifics.None },
+                    { "Prop Gems", QuestSpecifics.None },
+                    { "Rubies for Rubi", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Serbule, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Soothing Balm", QuestSpecifics.None },
+                    { "Arrowhead Delivery", QuestSpecifics.None },
+                    { "Bacon for Joeh", QuestSpecifics.None },
+                    { "Bandage for Blanche", QuestSpecifics.None },
+                    { "Beneath the Red Crystal", QuestSpecifics.None },
+                    { "Blanche Needs Acid", QuestSpecifics.None },
+                    { "Blanche Wants a Shroom", QuestSpecifics.None },
+                    { "Blanche Wants A Spoon", QuestSpecifics.None },
+                    { "Bloody Bandages", QuestSpecifics.None },
+                    { "Bone Meal", QuestSpecifics.None },
+                    { "Brain Bug Infestation", QuestSpecifics.None },
+                    { "Brains For Drugs", QuestSpecifics.None },
+                    { "Cabbage Time", QuestSpecifics.None },
+                    { "Cheese Run", QuestSpecifics.None },
+                    { "Collect Apples", QuestSpecifics.None },
+                    { "Convince Leonard", QuestSpecifics.None },
+                    { "Cranium Cure: Brain Bug Lobes", QuestSpecifics.None },
+                    { "Cranium Cure: Willpower Gel", QuestSpecifics.None },
+                    { "Cranium Powder", QuestSpecifics.None },
+                    { "Defeat the Wolf Trial", QuestSpecifics.None },
+                    { "Dinner For Zeratak", QuestSpecifics.None },
+                    { "Dinosaur Scales For Therese", QuestSpecifics.None },
+                    { "Feathers For Elahil", QuestSpecifics.None },
+                    { "Find Gravestones", QuestSpecifics.NotTracked },
+                    { "Find Mushrooms", QuestSpecifics.None },
+                    { "Flia's Odd Mushroom Request", QuestSpecifics.None },
+                    { "Fresh Grass for Gisli", QuestSpecifics.None },
+                    { "Gather More Mushrooms", QuestSpecifics.None },
+                    { "Get 100 Fish", QuestSpecifics.None },
+                    { "Get a Pig Snout", QuestSpecifics.None },
+                    { "Get Cat Eyeballs for Joeh", QuestSpecifics.None },
+                    { "Get Crystal Samples", QuestSpecifics.None },
+                    { "Get Some Culture", QuestSpecifics.None },
+                    { "Giant Mushroom Sample", QuestSpecifics.None },
+                    { "Graveyard Cleanup", QuestSpecifics.None },
+                    { "Horseshoe Order", QuestSpecifics.None },
+                    { "Hulon's Bribe", QuestSpecifics.None },
+                    { "Hunt for Preservative Runes", QuestSpecifics.None },
+                    { "Ivory Horn", QuestSpecifics.None },
+                    { "Ivyn Made a Salmpo", QuestSpecifics.None },
+                    { "Ivyn Needs Butter", QuestSpecifics.None },
+                    { "Ivyn Needs Seedlings", QuestSpecifics.None },
+                    { "Ivyn's Demon Bean", QuestSpecifics.None },
+                    { "Kill Myconians", QuestSpecifics.None },
+                    { "Lapis Lazuli for Marna", QuestSpecifics.None },
+                    { "Lumber for the Forge", QuestSpecifics.None },
+                    { "Message for Therese", QuestSpecifics.None },
+                    { "Metal Slabs", QuestSpecifics.None },
+                    { "New Spiky Headgear", QuestSpecifics.None },
+                    { "Oak For A MasterPiece", QuestSpecifics.None },
+                    { "Oils for Arrows", QuestSpecifics.None },
+                    { "Old Fangsworth", QuestSpecifics.None },
+                    { "Oritania's Navel Ring", QuestSpecifics.None },
+                    { "Perfect Tiger Skin", QuestSpecifics.None },
+                    { "Peridots Needed", QuestSpecifics.None },
+                    { "Pork Party", QuestSpecifics.None },
+                    { "Rita Needs Slippers", QuestSpecifics.None },
+                    { "Rita's Curiosity", QuestSpecifics.None },
+                    { "Rita's Soap", QuestSpecifics.None },
+                    { "Sewer Rats", QuestSpecifics.None },
+                    { "Sir Coth's Obsession", QuestSpecifics.None },
+                    { "Strange Dirt", QuestSpecifics.None },
+                    { "Talk to Jack", QuestSpecifics.None },
+                    { "Talk to Someone Who Knows", QuestSpecifics.None },
+                    { "Talking Mantises", QuestSpecifics.None },
+                    { "The Bear in There", QuestSpecifics.None },
+                    { "The Beautiful Topaz", QuestSpecifics.None },
+                    { "The Cat's Glassy Stare", QuestSpecifics.None },
+                    { "The Cure For Cranium Blues", QuestSpecifics.None },
+                    { "The Fate of Commander Ferrows", QuestSpecifics.None },
+                    { "The Galvanizer", QuestSpecifics.None },
+                    { "The Golem's Gear", QuestSpecifics.None },
+                    { "The Mythical Heartshroom", QuestSpecifics.None },
+                    { "The Nature Of Mantis Love", QuestSpecifics.None },
+                    { "The Rat Tiara", QuestSpecifics.None },
+                    { "The Red Crystal", QuestSpecifics.NotTracked },
+                    { "The Ring's Requirement", QuestSpecifics.None },
+                    { "The Second Woo", QuestSpecifics.None },
+                    { "The Spies", QuestSpecifics.None },
+                    { "The Sweet Butter Secret", QuestSpecifics.None },
+                    { "The Trespassing Charlatan", QuestSpecifics.None },
+                    { "Their Hairy Legs", QuestSpecifics.None },
+                    { "Therese Wants Hash Browns", QuestSpecifics.None },
+                    { "Those Deer Aren't Gonna Kill Themselves", QuestSpecifics.None },
+                    { "Un-cow-ification", QuestSpecifics.None },
+                    { "Unlocking the Crystal Lattice", QuestSpecifics.None },
+                    { "Unusual Powder", QuestSpecifics.None },
+                    { "Ur-Bacon", QuestSpecifics.None },
+                    { "Velkort Desires Grapes", QuestSpecifics.None },
+                    { "Velkort Needs Spore Bombs", QuestSpecifics.None },
+                    { "Velkort Wants A Lobe", QuestSpecifics.None },
+                    { "Velkort Wants Acid Claws", QuestSpecifics.None },
+                    { "Wooing Zeratak", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.Serbule2, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Crop of Onions", QuestSpecifics.None },
+                    { "A Scray Stinger", QuestSpecifics.None },
+                    { "All The Fish You Could Want", QuestSpecifics.None },
+                    { "Attacking Ranalon Farms", QuestSpecifics.None },
+                    { "Boar Tusks For Bardic Lore", QuestSpecifics.None },
+                    { "Breaded Perch with Onions", QuestSpecifics.None },
+                    { "Citrus For Tyler", QuestSpecifics.None },
+                    { "Clearing the Ranalon Temple", QuestSpecifics.None },
+                    { "Cleo's Lost Books", QuestSpecifics.None },
+                    { "Cold Iron Shackles", QuestSpecifics.None },
+                    { "Collecting Keg Orders", QuestSpecifics.None },
+                    { "Cress Paper", QuestSpecifics.None },
+                    { "Distracting the Ranalon", QuestSpecifics.None },
+                    { "Eggs for The Road", QuestSpecifics.None },
+                    { "Grapes for Sammie", QuestSpecifics.None },
+                    { "Guardian Lures", QuestSpecifics.None },
+                    { "Kill That Wooly Bastard", QuestSpecifics.None },
+                    { "'Leeka and the Blade Trials' Chapter 1", QuestSpecifics.None },
+                    { "'Leeka and the Blade Trials' Chapter 2", QuestSpecifics.None },
+                    { "'Leeka and the Blade Trials' Chapter 3", QuestSpecifics.None },
+                    { "'Leeka and the Blade Trials' Chapter 4", QuestSpecifics.None },
+                    { "'Leeka and the Blade Trials' Chapter 5", QuestSpecifics.None },
+                    { "'Leeka and the Blade Trials' Chapter 6", QuestSpecifics.None },
+                    { "Meditation Stool for Gershok", QuestSpecifics.None },
+                    { "Merriana's Second Request", QuestSpecifics.None },
+                    { "Merriana's Strange Request", QuestSpecifics.None },
+                    { "Mushrooms for Beer", QuestSpecifics.None },
+                    { "Paul's Beer Additive", QuestSpecifics.None },
+                    { "Paul's Lucky Buckle", QuestSpecifics.None },
+                    { "Paul's Mycena Weakness", QuestSpecifics.None },
+                    { "Potato Beer?", QuestSpecifics.None },
+                    { "Ranalan Pickles", QuestSpecifics.None },
+                    { "Rat Teeth for Gershok", QuestSpecifics.None },
+                    { "Real Catgut", QuestSpecifics.None },
+                    { "Repelling a Bear", QuestSpecifics.None },
+                    { "Rotten Beer Needs Rotten Fruit", QuestSpecifics.None },
+                    { "Rubbery Tongues", QuestSpecifics.None },
+                    { "Scary Sheep", QuestSpecifics.None },
+                    { "Serbule Hills Farm Samples", QuestSpecifics.None },
+                    { "Shield-Repair Metal", QuestSpecifics.None },
+                    { "Spore Bombs for Julius", QuestSpecifics.None },
+                    { "Stocking Up on Travel Meds", QuestSpecifics.None },
+                    { "The Borghild Lead", QuestSpecifics.None },
+                    { "The Grapefish Roundup", QuestSpecifics.None },
+                    { "The Grapefish Roundup, Part 2", QuestSpecifics.None },
+                    { "The Logging Camp Overseers", QuestSpecifics.None },
+                    { "The Lost Spade", QuestSpecifics.None },
+                    { "The Melted Shield", QuestSpecifics.None },
+                    { "The Sweater", QuestSpecifics.None },
+                    { "Watercress Salad", QuestSpecifics.None },
+                    { "Why Violet Glass?", QuestSpecifics.None },
+                    { "Windbiter!", QuestSpecifics.None },
+                }
+            },
+            {
+                MapAreaName.SunVale, new Dictionary<string, QuestSpecifics>()
+                {
+                    { "A Brighter Glow", QuestSpecifics.None },
+                    { "Analyzing Antler", QuestSpecifics.FaeOnly },
+                    { "Analyzing Chitin", QuestSpecifics.FaeOnly },
+                    { "Apple Juice", QuestSpecifics.None },
+                    { "Bananas!", QuestSpecifics.None },
+                    { "Blasted Vines", QuestSpecifics.None },
+                    { "Camembert", QuestSpecifics.None },
+                    { "Cleanse Sun Vale", QuestSpecifics.FaeOnly },
+                    { "Collect Eels", QuestSpecifics.None },
+                    { "Crab Soup", QuestSpecifics.FaeOnly },
+                    { "Encroaching Winter Camps", QuestSpecifics.None },
+                    { "Expert's Advice", QuestSpecifics.None },
+                    { "Eyes On Stalks", QuestSpecifics.None },
+                    { "Fake Honey For a Fake Bee", QuestSpecifics.None },
+                    { "Fancier Knives", QuestSpecifics.None },
+                    { "Fresh Grass", QuestSpecifics.None },
+                    { "Fresh Troll Guts", QuestSpecifics.None },
+                    { "Giant Oyster Invasion", QuestSpecifics.None },
+                    { "Lemony Dye", QuestSpecifics.None },
+                    { "Lost Recipe Hunt", QuestSpecifics.None },
+                    { "Making Do With Crap Kits", QuestSpecifics.None },
+                    { "Maple Dowels Make Odd Fences", QuestSpecifics.None },
+                    { "More Cleansing", QuestSpecifics.FaeOnly },
+                    { "Powdered Mammal", QuestSpecifics.None },
+                    { "Powdery Secretions", QuestSpecifics.None },
+                    { "Preta Wants a Gem Crusher", QuestSpecifics.None },
+                    { "Rabid Deer", QuestSpecifics.None },
+                    { "Ready for Note-Taking", QuestSpecifics.None },
+                    { "Reasonably Evil Grass", QuestSpecifics.None },
+                    { "Shell Fragments", QuestSpecifics.FaeOnly },
+                    { "Sick Spiders", QuestSpecifics.FaeOnly },
+                    { "Simple Knives", QuestSpecifics.None },
+                    { "Slabs for Yogzi", QuestSpecifics.None },
+                    { "Snail Armor", QuestSpecifics.None },
+                    { "Tasty Perch", QuestSpecifics.None },
+                    { "The Beauty in Predation", QuestSpecifics.FaeOnly },
+                    { "The Beauty in Seeds", QuestSpecifics.FaeOnly },
+                    { "The Boreal Fist", QuestSpecifics.None },
+                    { "The Bridge Bully", QuestSpecifics.None },
+                    { "The Deadliest Mushroom", QuestSpecifics.None },
+                    { "The External Resource Coordinator", QuestSpecifics.None },
+                    { "The Warden Test", QuestSpecifics.None },
+                    { "Tongues of The Ranalan", QuestSpecifics.None },
+                    { "Trade-In For Nice Werewolf Barding", QuestSpecifics.None },
+                    { "Trade-In For Nice Werewolf Champron", QuestSpecifics.None },
+                    { "Vegetable Masterpiece", QuestSpecifics.None },
+                }
+            },
+        };
     }
 }
