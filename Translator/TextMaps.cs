@@ -213,6 +213,8 @@
             { AbilityAnimation.Attack_WeatherWitch_ShockingGrasp, "Attack Weather Witch Shocking Grasp" },
             { AbilityAnimation.Attack_WeatherWitch_CloudTrick, "Attack Weather Witch Cloud Trick" },
             { AbilityAnimation.Attack_WeatherWitch_Squall, "Attack Weather Witch Squall" },
+            { AbilityAnimation.Attack_Skulk, "Attack Skulk" },
+            { AbilityAnimation.Attack_Howl, "Attack Howl" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -1838,6 +1840,7 @@
             { EffectParticle.IceStorm, "Ice Storm" },
             { EffectParticle.CloudTrick, "Cloud Trick" },
             { EffectParticle.MountSpeedup, "Mount Speedup" },
+            { EffectParticle.ShadowFeintTeleport, "Shadow Feint Teleport" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -3670,6 +3673,7 @@
             { ItemKeyword.TextbookSkill_WeatherWitching, "Textbook Skill (Weather Witching)" },
             { ItemKeyword.WeatherStaff, "Weather Staff" },
             { ItemKeyword.GrowingVegetable, "Growing Vegetable" },
+            { ItemKeyword.Rapier, "Rapier" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3959,6 +3963,7 @@
            { Profile.Club, "Club" },
            { Profile.Hammer, "Hammer" },
            { Profile.Riding, "Riding" },
+           { Profile.Rapier, "Rapier" },
         };
 
         public static Dictionary<QuestGroup, string> QuestGroupTextMap { get; } = new Dictionary<QuestGroup, string>()
@@ -4343,6 +4348,7 @@
             { RecipeAction.DrinkNectar, "Drink Nectar" },
             { RecipeAction.Perform, "Perform" },
             //{ RecipeAction.BrownAle, "Brown Ale" },
+            { RecipeAction.Reset, "Reset" },
         };
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
@@ -4800,6 +4806,12 @@
             { RecipeItemKey.NecroFuel, "Necro Fuel" },
             { RecipeItemKey.FlowerPower, "Flower Power" },
             { RecipeItemKey.BrownAle, "Brown Ale" },
+            { RecipeItemKey.MinRarity_Legendary, "MinRarity:Legendary" },
+            { RecipeItemKey.Special_Mastercrafted, "Special:Mastercrafted" },
+            { RecipeItemKey.ClothArmor, "Cloth Armor" },
+            { RecipeItemKey.LeatherArmor, "Leather Armor" },
+            { RecipeItemKey.MetalArmor, "Metal Armor" },
+            { RecipeItemKey.OrganicArmor, "Organic Armor" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -4943,6 +4955,7 @@
             { SelfParticle.HeadBubble, "Head Bubble" },
             { SelfParticle.StormEnchant, "Storm Enchant" },
             { SelfParticle.TempestParticles, "Tempest Particles" },
+            { SelfParticle.WolfSeeRed, "Wolf-SeeRed" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()

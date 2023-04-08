@@ -57,5 +57,6 @@
         DrinkNectar,
         Perform,
         //BrownAle,
+        Reset,
     }
 }

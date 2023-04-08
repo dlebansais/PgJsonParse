@@ -71,6 +71,8 @@
             { "SelfPreParticle", typeof(string) },
             { "IsCosmeticPet", typeof(bool) },
             { "WorksWhileStunned", typeof(bool) },
+            { "AbilityGroupName", typeof(string) },
+            { "Rank", typeof(int) },
         };
 
         public static Dictionary<string, Type> TableAbilityAmmo { get; } = new Dictionary<string, Type>()

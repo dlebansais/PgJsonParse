@@ -251,11 +251,18 @@
             { RecipeItemKey.MinTSysPrereq_61, "MinTSysPrereq:61" },
             { RecipeItemKey.MaxTSysPrereq_90, "MaxTSysPrereq:90" },
             { RecipeItemKey.NotNoSendToSaddlebag, "!NoSendToSaddlebag" },
+            { RecipeItemKey.MinRarity_Legendary, "MinRarity:Legendary" },
+            { RecipeItemKey.Special_Mastercrafted, "Special:Mastercrafted" },
         };
 
         public static readonly Dictionary<XpTableEnum, string> XpTableEnumTable = new Dictionary<XpTableEnum, string>()
         {
             { XpTableEnum.CookingUnused, "Cooking-unused" },
+        };
+
+        public static readonly Dictionary<SelfParticle, string> SelfParticleTable = new Dictionary<SelfParticle, string>()
+        {
+            { SelfParticle.WolfSeeRed, "Wolf-SeeRed" },
         };
 
         public static Dictionary<Type, IDictionary> Tables { get; } = new Dictionary<Type, IDictionary>()
@@ -272,6 +279,7 @@
             { typeof(RecipeAction), RecipeActionTable },
             { typeof(RecipeEffect), RecipeEffectTable },
             { typeof(RecipeItemKey), RecipeItemKeyTable },
+            { typeof(SelfParticle), SelfParticleTable },
             { typeof(XpTableEnum), XpTableEnumTable },
         };
     }

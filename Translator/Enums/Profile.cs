@@ -28,5 +28,6 @@
         Club,
         Hammer,
         Riding,
+        Rapier,
     }
 }

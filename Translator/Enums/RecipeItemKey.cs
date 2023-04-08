@@ -131,5 +131,11 @@
         NecroFuel,
         FlowerPower,
         BrownAle,
+        MinRarity_Legendary,
+        Special_Mastercrafted,
+        ClothArmor,
+        LeatherArmor,
+        MetalArmor,
+        OrganicArmor,
     }
 }

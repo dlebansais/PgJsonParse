@@ -202,5 +202,7 @@
         Attack_WeatherWitch_ShockingGrasp,
         Attack_WeatherWitch_CloudTrick,
         Attack_WeatherWitch_Squall,
+        Attack_Skulk,
+        Attack_Howl,
     }
 }

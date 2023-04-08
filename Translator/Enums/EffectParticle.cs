@@ -153,5 +153,6 @@
         IceStorm,
         CloudTrick,
         MountSpeedup,
+        ShadowFeintTeleport,
     }
 }

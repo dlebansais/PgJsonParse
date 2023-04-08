@@ -1175,5 +1175,6 @@
         TextbookSkill_WeatherWitching,
         WeatherStaff,
         GrowingVegetable,
+        Rapier,
     }
 }

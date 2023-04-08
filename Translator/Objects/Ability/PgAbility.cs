@@ -5,6 +5,7 @@
     public class PgAbility : PgObject
     {
         public string? AbilityGroup_Key { get; set; }
+        public string AbilityGroupName { get; set; } = string.Empty;
         public AbilityAnimation Animation { get; set; }
         public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; set; } = new PgAttributeCollection();
@@ -147,6 +148,8 @@
         public bool WorksWhileStunned { get { return (BoolValues & (WorksWhileStunnedNotNull + WorksWhileStunnedIsTrue)) == (WorksWhileStunnedNotNull + WorksWhileStunnedIsTrue); } }
         public bool? RawWorksWhileStunned { get { return ((BoolValues & WorksWhileStunnedNotNull) != 0) ? (BoolValues & WorksWhileStunnedIsTrue) != 0 : null; } }
         public void SetWorksWhileStunned(bool value) { BoolValues |= (BoolValues & ~(WorksWhileStunnedNotNull + WorksWhileStunnedIsTrue)) | ((value ? WorksWhileStunnedIsTrue : 0) + WorksWhileStunnedNotNull); }
+        public int Rank { get { return RawRank.HasValue ? RawRank.Value : 0; } }
+        public int? RawRank { get; set; }
 
         public int FriendlyIconId { get; set; }
 

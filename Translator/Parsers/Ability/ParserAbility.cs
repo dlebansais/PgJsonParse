@@ -220,6 +220,12 @@
                     case "WorksWhileStunned":
                         Result = SetBoolProperty((bool valueBool) => item.SetWorksWhileStunned(valueBool), Value);
                         break;
+                    case "AbilityGroupName":
+                        Result = SetStringProperty((string valueString) => item.AbilityGroupName = valueString, Value);
+                        break;
+                    case "Rank":
+                        Result = SetIntProperty((int valueInt) => item.RawRank = valueInt, Value);
+                        break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                         break;

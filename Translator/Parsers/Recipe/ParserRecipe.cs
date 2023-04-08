@@ -345,6 +345,9 @@
                 case "PermanentlyRaiseMaxTempestEnergy":
                     Result = ParsePermanentlyRaiseMaxTempestEnergy(EffectParameter, parsedFile, parsedKey, out recipeResult);
                     break;
+                case "CraftingResetItem":
+                    Result = ParseCraftingResetItem(EffectName, parsedFile, parsedKey, out recipeResult);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown recipe result effect '{effectString}'");
                     break;
@@ -895,6 +898,14 @@
         private bool ParseTransmogItemAppearance(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
         {
             PgRecipeResultTransmogItemAppearance RecipeResultEffect = new PgRecipeResultTransmogItemAppearance();
+
+            recipeResult = RecipeResultEffect;
+            return true;
+        }
+
+        private bool ParseCraftingResetItem(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
+        {
+            PgRecipeResultCraftingResetItem RecipeResultEffect = new PgRecipeResultCraftingResetItem();
 
             recipeResult = RecipeResultEffect;
             return true;
