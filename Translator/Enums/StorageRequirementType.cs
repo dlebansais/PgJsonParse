@@ -1,10 +1,9 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+public enum StorageRequirementType
 {
-    public enum StorageRequirementType
-    {
-        Internal_None,
-        InteractionFlagSet,
-        IsLongtimeAnimal,
-        IsWarden,
-    }
+    Internal_None,
+    InteractionFlagSet,
+    IsLongtimeAnimal,
+    IsWarden,
 }

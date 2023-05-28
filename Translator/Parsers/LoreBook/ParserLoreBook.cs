@@ -1,98 +1,97 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+using System.Collections.Generic;
+using PgJsonReader;
+using PgObjects;
+
+public class ParserLoreBook : Parser
 {
-    using System.Collections.Generic;
-    using PgJsonReader;
-    using PgObjects;
-
-    public class ParserLoreBook : Parser
+    public override object CreateItem()
     {
-        public override object CreateItem()
+        return new PgLoreBook();
+    }
+
+    public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    {
+        if (item is not PgLoreBook AsPgLoreBook)
+            return Program.ReportFailure("Unexpected failure");
+
+        return FinishItem(AsPgLoreBook, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
+    }
+
+    private bool FinishItem(PgLoreBook item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    {
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
         {
-            return new PgLoreBook();
-        }
+            string Key = Entry.Key;
+            object Value = Entry.Value;
 
-        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
-        {
-            if (item is not PgLoreBook AsPgLoreBook)
-                return Program.ReportFailure("Unexpected failure");
-
-            return FinishItem(AsPgLoreBook, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
-        }
-
-        private bool FinishItem(PgLoreBook item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
-        {
-            bool Result = true;
-
-            foreach (KeyValuePair<string, object> Entry in contentTable)
+            switch (Key)
             {
-                string Key = Entry.Key;
-                object Value = Entry.Value;
-
-                switch (Key)
-                {
-                    case "Title":
-                        Result = SetStringProperty((string valueString) => item.Title = valueString, Value);
-                        break;
-                    case "LocationHint":
-                        Result = SetStringProperty((string valueString) => item.LocationHint = valueString, Value);
-                        break;
-                    case "Category":
-                        Result = ParserLoreBookInfoCategory(item, Value, parsedFile, parsedKey);
-                        break;
-                    case "Keywords":
-                        Result = StringToEnumConversion<LoreBookKeyword>.TryParseList(Value, item.KeywordList);
-                        break;
-                    case "IsClientLocal":
-                        Result = SetBoolProperty((bool valueBool) => item.RawIsClientLocal = valueBool, Value);
-                        break;
-                    case "Visibility":
-                        Result = StringToEnumConversion<LoreBookVisibility>.SetEnum((LoreBookVisibility valueEnum) => item.Visibility = valueEnum, Value);
-                        break;
-                    case "InternalName":
-                        Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
-                        break;
-                    case "Text":
-                        Result = SetStringProperty((string valueString) => item.Text = Tools.CleanedUpString(valueString), Value);
-                        break;
-                    default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
-                        break;
-                }
-
-                if (!Result)
+                case "Title":
+                    Result = SetStringProperty((string valueString) => item.Title = valueString, Value);
+                    break;
+                case "LocationHint":
+                    Result = SetStringProperty((string valueString) => item.LocationHint = valueString, Value);
+                    break;
+                case "Category":
+                    Result = ParserLoreBookInfoCategory(item, Value, parsedFile, parsedKey);
+                    break;
+                case "Keywords":
+                    Result = StringToEnumConversion<LoreBookKeyword>.TryParseList(Value, item.KeywordList);
+                    break;
+                case "IsClientLocal":
+                    Result = SetBoolProperty((bool valueBool) => item.RawIsClientLocal = valueBool, Value);
+                    break;
+                case "Visibility":
+                    Result = StringToEnumConversion<LoreBookVisibility>.SetEnum((LoreBookVisibility valueEnum) => item.Visibility = valueEnum, Value);
+                    break;
+                case "InternalName":
+                    Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
+                    break;
+                case "Text":
+                    Result = SetStringProperty((string valueString) => item.Text = Tools.CleanedUpString(valueString), Value);
+                    break;
+                default:
+                    Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;
             }
 
-            return Result;
+            if (!Result)
+                break;
         }
 
-        private bool ParserLoreBookInfoCategory(PgLoreBook item, object value, string parsedFile, string parsedKey)
-        {
-            if (!(value is string ValueKey))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
+        return Result;
+    }
 
-            if (!ParsingContext.ObjectKeyTable.ContainsKey(typeof(PgLoreBookInfo)))
-                return Program.ReportFailure(parsedFile, parsedKey, "No lore book info");
+    private bool ParserLoreBookInfoCategory(PgLoreBook item, object value, string parsedFile, string parsedKey)
+    {
+        if (!(value is string ValueKey))
+            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
 
-            Dictionary<string, ParsingContext> Table = ParsingContext.ObjectKeyTable[typeof(PgLoreBookInfo)];
+        if (!ParsingContext.ObjectKeyTable.ContainsKey(typeof(PgLoreBookInfo)))
+            return Program.ReportFailure(parsedFile, parsedKey, "No lore book info");
 
-            if (!Table.ContainsKey("Categories"))
-                return Program.ReportFailure(parsedFile, parsedKey, "No lore book info categories");
+        Dictionary<string, ParsingContext> Table = ParsingContext.ObjectKeyTable[typeof(PgLoreBookInfo)];
 
-            ParsingContext Context = Table["Categories"];
-            Dictionary<string, object> ContentTable = Context.ContentTable;
+        if (!Table.ContainsKey("Categories"))
+            return Program.ReportFailure(parsedFile, parsedKey, "No lore book info categories");
 
-            if (!ContentTable.ContainsKey(ValueKey))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Category {ValueKey} not found");
+        ParsingContext Context = Table["Categories"];
+        Dictionary<string, object> ContentTable = Context.ContentTable;
 
-            if (!(ContentTable[ValueKey] is ParsingContext CategoryContext))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Category {ValueKey} is expected to be a parsing context");
+        if (!ContentTable.ContainsKey(ValueKey))
+            return Program.ReportFailure(parsedFile, parsedKey, $"Category {ValueKey} not found");
 
-            if (!(CategoryContext.Item is PgLoreBookInfoCategory AsCategory))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Category {ValueKey} is not the expected object");
+        if (!(ContentTable[ValueKey] is ParsingContext CategoryContext))
+            return Program.ReportFailure(parsedFile, parsedKey, $"Category {ValueKey} is expected to be a parsing context");
 
-            item.Category = AsCategory;
-            return true;
-        }
+        if (!(CategoryContext.Item is PgLoreBookInfoCategory AsCategory))
+            return Program.ReportFailure(parsedFile, parsedKey, $"Category {ValueKey} is not the expected object");
+
+        item.Category = AsCategory;
+        return true;
     }
 }

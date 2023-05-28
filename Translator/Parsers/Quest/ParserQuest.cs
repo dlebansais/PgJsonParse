@@ -1,912 +1,911 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using PgJsonReader;
+using PgObjects;
+
+public class ParserQuest : Parser
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using PgJsonReader;
-    using PgObjects;
-
-    public class ParserQuest : Parser
+    public override object CreateItem()
     {
-        public override object CreateItem()
+        return new PgQuest();
+    }
+
+    public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    {
+        if (item is not PgQuest AsPgQuest)
+            return Program.ReportFailure("Unexpected failure");
+
+        return FinishItem(AsPgQuest, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
+    }
+
+    private bool FinishItem(PgQuest item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    {
+        bool Result = true;
+        int? RawTSysLevel = null;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
         {
-            return new PgQuest();
-        }
+            string Key = Entry.Key;
+            object Value = Entry.Value;
 
-        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
-        {
-            if (item is not PgQuest AsPgQuest)
-                return Program.ReportFailure("Unexpected failure");
-
-            return FinishItem(AsPgQuest, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
-        }
-
-        private bool FinishItem(PgQuest item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
-        {
-            bool Result = true;
-            int? RawTSysLevel = null;
-
-            foreach (KeyValuePair<string, object> Entry in contentTable)
+            switch (Key)
             {
-                string Key = Entry.Key;
-                object Value = Entry.Value;
-
-                switch (Key)
-                {
-                    case "InternalName":
-                        Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
-                        break;
-                    case "Name":
-                        Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
-                        break;
-                    case "Description":
-                        Result = SetStringProperty((string valueString) => item.Description = Tools.CleanedUpString(valueString), Value);
-                        break;
-                    case "Version":
-                        Result = SetIntProperty((int valueInt) => item.RawVersion = valueInt, Value);
-                        break;
-                    case "RequirementsToSustain":
-                        Result = Inserter<PgQuestRequirement>.AddKeylessArray(item.QuestRequirementToSustainList, Value);
-                        break;
-                    case "ReuseTime_Minutes":
-                        Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 1, Value);
-                        break;
-                    case "ReuseTime_Hours":
-                        Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 60, Value);
-                        break;
-                    case "ReuseTime_Days":
-                        Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 60 * 24, Value);
-                        break;
-                    case "IsCancellable":
-                        Result = SetBoolProperty((bool valueBool) => item.SetIsCancellable(valueBool), Value);
-                        break;
-                    case "Objectives":
-                        Result = Inserter<PgQuestObjective>.AddKeylessArray(item.QuestObjectiveList, Value);
-                        break;
+                case "InternalName":
+                    Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
+                    break;
+                case "Name":
+                    Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
+                    break;
+                case "Description":
+                    Result = SetStringProperty((string valueString) => item.Description = Tools.CleanedUpString(valueString), Value);
+                    break;
+                case "Version":
+                    Result = SetIntProperty((int valueInt) => item.RawVersion = valueInt, Value);
+                    break;
+                case "RequirementsToSustain":
+                    Result = Inserter<PgQuestRequirement>.AddKeylessArray(item.QuestRequirementToSustainList, Value);
+                    break;
+                case "ReuseTime_Minutes":
+                    Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 1, Value);
+                    break;
+                case "ReuseTime_Hours":
+                    Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 60, Value);
+                    break;
+                case "ReuseTime_Days":
+                    Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 60 * 24, Value);
+                    break;
+                case "IsCancellable":
+                    Result = SetBoolProperty((bool valueBool) => item.SetIsCancellable(valueBool), Value);
+                    break;
+                case "Objectives":
+                    Result = Inserter<PgQuestObjective>.AddKeylessArray(item.QuestObjectiveList, Value);
+                    break;
 /*                    case "Rewards_XP":
-                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
-                        break;*/
+                    Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
+                    break;*/
 /*                    case "Rewards_Currency":
-                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
-                        break;*/
-                    case "Rewards_Items":
-                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
-                        break;
+                    Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
+                    break;*/
+                case "Rewards_Items":
+                    Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
+                    break;
 /*                    case "Reward_CombatXP":
-                        Result = ParseRewardCombatXp(item, Value, parsedFile, parsedKey);
-                        break;*/
-                    case "QuestNpc":
-                        Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.QuestNpc = npcLocation, Value, parsedFile, parsedKey);
-                        break;
-                    case "FavorNpc":
-                        Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.FavorNpc = npcLocation, Value, parsedFile, parsedKey);
-                        break;
-                    case "PrefaceText":
-                        Result = SetStringProperty((string valueString) => item.PrefaceText = Tools.CleanedUpString(valueString), Value);
-                        break;
-                    case "SuccessText":
-                        Result = SetStringProperty((string valueString) => item.SuccessText = Tools.CleanedUpString(valueString), Value);
-                        break;
-                    case "MidwayText":
-                        Result = SetStringProperty((string valueString) => item.MidwayText = Tools.CleanedUpString(valueString), Value);
-                        break;
-                    case "PrerequisiteFavorLevel":
-                        Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => item.PrerequisiteFavorLevel = valueEnum, Value);
-                        break;
-                    case "Rewards_Favor":
-                        Result = ParseRewardFavor(item, Value, parsedFile, parsedKey);
-                        break;
+                    Result = ParseRewardCombatXp(item, Value, parsedFile, parsedKey);
+                    break;*/
+                case "QuestNpc":
+                    Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.QuestNpc = npcLocation, Value, parsedFile, parsedKey);
+                    break;
+                case "FavorNpc":
+                    Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.FavorNpc = npcLocation, Value, parsedFile, parsedKey);
+                    break;
+                case "PrefaceText":
+                    Result = SetStringProperty((string valueString) => item.PrefaceText = Tools.CleanedUpString(valueString), Value);
+                    break;
+                case "SuccessText":
+                    Result = SetStringProperty((string valueString) => item.SuccessText = Tools.CleanedUpString(valueString), Value);
+                    break;
+                case "MidwayText":
+                    Result = SetStringProperty((string valueString) => item.MidwayText = Tools.CleanedUpString(valueString), Value);
+                    break;
+                case "PrerequisiteFavorLevel":
+                    Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => item.PrerequisiteFavorLevel = valueEnum, Value);
+                    break;
+                case "Rewards_Favor":
+                    Result = ParseRewardFavor(item, Value, parsedFile, parsedKey);
+                    break;
 /*                    case "Rewards_Recipes":
-                        Result = ParseRewardRecipes(item, Value, parsedFile, parsedKey);
-                        break;*/
+                    Result = ParseRewardRecipes(item, Value, parsedFile, parsedKey);
+                    break;*/
 /*                    case "Rewards_Ability":
-                        Result = ParseRewardAbility(item, Value, parsedFile, parsedKey);
-                        break;*/
-                    case "Requirements":
-                        Result = Inserter<PgQuestRequirement>.AddKeylessArray(item.QuestRequirementList, Value);
-                        break;
-                    case "Reward_Favor":
-                        Result = ParseRewardFavor(item, Value, parsedFile, parsedKey);
-                        break;
-                    case "Rewards":
-                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
-                        break;
-                    case "PreGiveItems":
-                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.PreGiveItemList, Value);
-                        break;
-                    case "TSysLevel":
-                        Result = SetIntProperty((int valueInt) => RawTSysLevel = valueInt, Value);
-                        break;
-                    /*case "Reward_Gold":
-                        Result = ParseRewardCurrency(item, Value, parsedFile, parsedKey);
-                        break;*/
-                    case "Rewards_NamedLootProfile":
-                        Result = ParseRewardNamedLootProfile(item, Value, parsedFile, parsedKey);
-                        break;
-                    case "PreGiveRecipes":
-                        Result = Inserter<PgRecipe>.AddPgObjectArrayByInternalName<PgRecipe>(item.PreGiveRecipeList, Value);
-                        break;
-                    case "Keywords":
-                        Result = StringToEnumConversion<QuestKeyword>.TryParseList(Value, item.KeywordList);
-                        break;
-                    case "Rewards_Effects":
-                        Result = ParseRewardEffects(item, Value, parsedFile, parsedKey);
-                        break;
-                    case "IsAutoPreface":
-                        Result = SetBoolProperty((bool valueBool) => item.SetIsAutoPreface(valueBool), Value);
-                        break;
-                    case "IsAutoWrapUp":
-                        Result = SetBoolProperty((bool valueBool) => item.SetIsAutoWrapUp(valueBool), Value);
-                        break;
-                    case "GroupingName":
-                        Result = StringToEnumConversion<QuestGroupingName>.SetEnum((QuestGroupingName valueEnum) => item.GroupingName = valueEnum, Value);
-                        break;
-                    case "IsGuildQuest":
-                        Result = SetBoolProperty((bool valueBool) => item.SetIsGuildQuest(valueBool), Value);
-                        break;
-                    case "NumExpectedParticipants":
-                        Result = SetIntProperty((int valueInt) => item.RawNumExpectedParticipants = valueInt, Value);
-                        break;
-                    case "Level":
-                        Result = SetIntProperty((int valueInt) => item.RawLevel = valueInt, Value);
-                        break;
-                    case "WorkOrderSkill":
-                        Result = ParserSkill.Parse((PgSkill valueSkill) => item.WorkOrderSkill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
-                        break;
-                    case "DisplayedLocation":
-                        Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.DisplayedLocation = valueEnum, Value);
-                        break;
-                    case "FollowUpQuests":
-                        Result = ParseFollowUpQuests(item, Value, parsedFile, parsedKey);
-                        break;
-                    case "PreGiveEffects":
-                        Result = ParsePreGiveEffects(item, Value, parsedFile, parsedKey);
-                        break;
-                    case "MidwayGiveItems":
-                        Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestMidwayGiveItemList, Value);
-                        break;
-                    default:
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
-                        break;
-                }
-
-                if (!Result)
+                    Result = ParseRewardAbility(item, Value, parsedFile, parsedKey);
+                    break;*/
+                case "Requirements":
+                    Result = Inserter<PgQuestRequirement>.AddKeylessArray(item.QuestRequirementList, Value);
                     break;
-            }
-
-            if (Result)
-            {
-                if (item.RawLevel.HasValue && RawTSysLevel.HasValue)
-                    return Program.ReportFailure(parsedFile, parsedKey, "Both levels set");
-
-                if (RawTSysLevel.HasValue)
-                {
-                    Debug.Assert(!item.RawLevel.HasValue);
-                    item.RawLevel = RawTSysLevel;
-                }
-            }
-
-            return Result;
-        }
-
-        private bool ParseRewardCombatXp(PgQuest item, object value, string parsedFile, string parsedKey)
-        {
-            int ValueCombatXp;
-
-            if (value is int ValueInt)
-                ValueCombatXp = ValueInt;
-            else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
-                ValueCombatXp = ValueIntFromString;
-            else
-                return Program.ReportFailure($"Value {value} was expected to be an int");
-
-            PgQuestRewardCombatXp NewReward = new PgQuestRewardCombatXp() { RawXp = ValueCombatXp };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private bool ParseRewardFavor(PgQuest item, object value, string parsedFile, string parsedKey)
-        {
-            int ValueFavor;
-
-            if (value is int ValueInt)
-                ValueFavor = ValueInt;
-            else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
-                ValueFavor = ValueIntFromString;
-            else
-                return Program.ReportFailure($"Value {value} was expected to be an int");
-
-            if (ValueFavor != 0)
-            {
-                PgQuestRewardFavor NewReward = new PgQuestRewardFavor() { RawFavor = ValueFavor };
-                ParsingContext.AddSuplementaryObject(NewReward);
-                item.QuestRewardList.Add(NewReward);
-            }
-
-            return true;
-        }
-
-        private bool ParseRewardCurrency(PgQuest item, object value, string parsedFile, string parsedKey)
-        {
-            int ValueCurrency;
-
-            if (value is int ValueInt)
-                ValueCurrency = ValueInt;
-            else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
-                ValueCurrency = ValueIntFromString;
-            else
-                return Program.ReportFailure($"Value {value} was expected to be an int");
-
-            PgQuestRewardCurrency NewReward = new PgQuestRewardCurrency() { Currency = Currency.Gold, RawAmount = ValueCurrency };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private bool ParseRewardNamedLootProfile(PgQuest item, object value, string parsedFile, string parsedKey)
-        {
-            if (!(value is string ValueString))
-                return Program.ReportFailure($"Value {value} was expected to be a string");
-
-            NamedLootProfile ParsedNamedLootProfile = NamedLootProfile.Internal_None;
-            if (!StringToEnumConversion<NamedLootProfile>.SetEnum((NamedLootProfile valueEnum) => ParsedNamedLootProfile = valueEnum, ValueString))
-                return false;
-
-            PgQuestRewardNamedLootProfile NewReward = new PgQuestRewardNamedLootProfile() { NamedLootProfile = ParsedNamedLootProfile };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private bool ParseRewardRecipes(PgQuest item, object value, string parsedFile, string parsedKey)
-        {
-            if (!(value is List<object> ArrayKey))
-                return Program.ReportFailure($"Value '{value}' was expected to be a list");
-
-            Dictionary<string, ParsingContext> KeyTable = ParsingContext.ObjectInternalNameTable[typeof(PgRecipe)];
-
-            foreach (object Item in ArrayKey)
-            {
-                if (!(Item is string ValueKey))
-                    return Program.ReportFailure($"Value '{Item}' was expected to be a string");
-
-                if (!KeyTable.ContainsKey(ValueKey))
-                    return Program.ReportFailure($"Key '{Item}' is not a known Internal Name");
-
-                if (!(KeyTable[ValueKey].Item is PgRecipe AsLink))
-                    return Program.ReportFailure($"Key '{Item}' was found but for the wrong object type");
-
-                PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = AsLink.Key };
-                ParsingContext.AddSuplementaryObject(NewReward);
-                item.QuestRewardList.Add(NewReward);
-            }
-
-            return true;
-        }
-
-        private bool ParseRewardAbility(PgQuest item, object value, string parsedFile, string parsedKey)
-        {
-            PgAbility ParsedAbility = null!;
-
-            if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, value))
-                return false;
-
-            PgQuestRewardAbility NewReward = new PgQuestRewardAbility() { Ability_Key = ParsedAbility.Key };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-
-            return true;
-        }
-
-        private bool ParseRewardEffects(PgQuest item, object value, string parsedFile, string parsedKey)
-        {
-            if (!(value is List<object> StringArray))
-                return Program.ReportFailure($"Value {value} was expected to be a list");
-
-            foreach (object StringItem in StringArray)
-            {
-                if (!(StringItem is string EffectString))
-                    return Program.ReportFailure($"Value {StringItem} was expected to be a string");
-
-                if (!ParseRewardEffect(item, EffectString, parsedFile, parsedKey))
-                    return false;
-            }
-
-            return true;
-        }
-
-        private bool ParseRewardEffect(PgQuest item, string effectString, string parsedFile, string parsedKey)
-        {
-            int ParameterStartIndex = effectString.IndexOf('(');
-            int ParameterEndIndex = effectString.LastIndexOf(')');
-            string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < effectString.Length - 1) ? effectString : effectString.Substring(0, ParameterStartIndex);
-            string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < effectString.Length - 1) ? string.Empty : effectString.Substring(ParameterStartIndex + 1, effectString.Length - 2 - ParameterStartIndex);
-
-            bool Result;
-            PgEffect ParsedEffect = null!;
-
-            switch (EffectName)
-            {
-                case "SetInteractionFlag":
-                    Result = ParseRewardEffectSetInteractionFlag(item, EffectParameter, parsedFile, parsedKey);
+                case "Reward_Favor":
+                    Result = ParseRewardFavor(item, Value, parsedFile, parsedKey);
                     break;
-                case "EnsureLoreBookKnown":
-                    Result = Inserter<PgLoreBook>.SetItemByInternalName((PgLoreBook valueLoreBook) => AddRewardEffectLoreBookKnown(item, valueLoreBook), EffectParameter);
+                case "Rewards":
+                    Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
                     break;
-                case "BestowTitle":
-                    Result = ParseRewardEffectBestowTitle(item, EffectParameter, parsedFile, parsedKey);
+                case "PreGiveItems":
+                    Result = Inserter<PgQuestReward>.AddKeylessArray(item.PreGiveItemList, Value);
                     break;
-                case "BestowRecipe":
-                    Result = ParseRewardEffectBestowRecipe(item, EffectParameter, parsedFile, parsedKey);
+                case "TSysLevel":
+                    Result = SetIntProperty((int valueInt) => RawTSysLevel = valueInt, Value);
                     break;
-                case "LearnAbility":
-                    Result = ParseRewardAbility(item, EffectParameter, parsedFile, parsedKey);
+                /*case "Reward_Gold":
+                    Result = ParseRewardCurrency(item, Value, parsedFile, parsedKey);
+                    break;*/
+                case "Rewards_NamedLootProfile":
+                    Result = ParseRewardNamedLootProfile(item, Value, parsedFile, parsedKey);
                     break;
-                case "AdvanceScriptedQuestObjective":
-                    Result = ParseRewardEffectAdvanceScriptedQuestObjective(item, EffectParameter, parsedFile, parsedKey);
+                case "PreGiveRecipes":
+                    Result = Inserter<PgRecipe>.AddPgObjectArrayByInternalName<PgRecipe>(item.PreGiveRecipeList, Value);
                     break;
-                case "GiveXP":
-                    Result = ParseRewardEffectGiveXP(item, EffectParameter, parsedFile, parsedKey);
+                case "Keywords":
+                    Result = StringToEnumConversion<QuestKeyword>.TryParseList(Value, item.KeywordList);
                     break;
-                case "DeltaNpcFavor":
-                    Result = ParseRewardEffectDeltaNpcFavor(item, EffectParameter, parsedFile, parsedKey);
+                case "Rewards_Effects":
+                    Result = ParseRewardEffects(item, Value, parsedFile, parsedKey);
                     break;
-                case "RaiseSkillToLevel":
-                    Result = ParseRewardEffectRaiseSkillToLevel(item, EffectParameter, parsedFile, parsedKey);
+                case "IsAutoPreface":
+                    Result = SetBoolProperty((bool valueBool) => item.SetIsAutoPreface(valueBool), Value);
                     break;
-                case "DispelFaeBombSporeBuff":
-                    Result = ParseRewardEffectDispelFaeBombSporeBuff(item, EffectParameter, parsedFile, parsedKey);
+                case "IsAutoWrapUp":
+                    Result = SetBoolProperty((bool valueBool) => item.SetIsAutoWrapUp(valueBool), Value);
+                    break;
+                case "GroupingName":
+                    Result = StringToEnumConversion<QuestGroupingName>.SetEnum((QuestGroupingName valueEnum) => item.GroupingName = valueEnum, Value);
+                    break;
+                case "IsGuildQuest":
+                    Result = SetBoolProperty((bool valueBool) => item.SetIsGuildQuest(valueBool), Value);
+                    break;
+                case "NumExpectedParticipants":
+                    Result = SetIntProperty((int valueInt) => item.RawNumExpectedParticipants = valueInt, Value);
+                    break;
+                case "Level":
+                    Result = SetIntProperty((int valueInt) => item.RawLevel = valueInt, Value);
+                    break;
+                case "WorkOrderSkill":
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.WorkOrderSkill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
+                    break;
+                case "DisplayedLocation":
+                    Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.DisplayedLocation = valueEnum, Value);
+                    break;
+                case "FollowUpQuests":
+                    Result = ParseFollowUpQuests(item, Value, parsedFile, parsedKey);
+                    break;
+                case "PreGiveEffects":
+                    Result = ParsePreGiveEffects(item, Value, parsedFile, parsedKey);
+                    break;
+                case "MidwayGiveItems":
+                    Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestMidwayGiveItemList, Value);
                     break;
                 default:
-                    Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, effectString);
-                    if (Result)
-                    {
-                        PgQuestRewardEffect NewReward = new PgQuestRewardEffect() { Effect_Key = ParsedEffect.Key };
-                        ParsingContext.AddSuplementaryObject(NewReward);
-                        item.QuestRewardList.Add(NewReward);
-                    }
-
+                    Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;
             }
 
-            return Result;
+            if (!Result)
+                break;
         }
 
-        private bool ParseRewardEffectSetInteractionFlag(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+        if (Result)
         {
-            InteractionFlag ParsedFlag = InteractionFlag.Internal_None;
-            if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => ParsedFlag = valueEnum, effectParameter))
-                return false;
+            if (item.RawLevel.HasValue && RawTSysLevel.HasValue)
+                return Program.ReportFailure(parsedFile, parsedKey, "Both levels set");
 
-            PgQuestRewardInteractionFlag NewReward = new PgQuestRewardInteractionFlag() { InteractionFlag = ParsedFlag };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private static void AddRewardEffectLoreBookKnown(PgQuest item, PgLoreBook valueLoreBook)
-        {
-            PgQuestRewardLoreBook NewReward = new PgQuestRewardLoreBook() { LoreBook_Key = valueLoreBook.Key };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-        }
-
-        private bool ParseRewardEffectBestowTitle(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
-        {
-            if (ParserPlayerTitle.TitleToKeyMap.ContainsKey(effectParameter))
-                effectParameter = ParserPlayerTitle.TitleToKeyMap[effectParameter];
-
-            return Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => AddRewardEffectPlayerTitle(item, valuePlayerTitle), effectParameter);
-        }
-
-        private bool ParseRewardEffectBestowRecipe(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
-        {
-            PgRecipe ParsedRecipe = null!;
-            if (!Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, effectParameter))
-                return false;
-
-            PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = ParsedRecipe.Key };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private static void AddRewardEffectPlayerTitle(PgQuest item, PgPlayerTitle valuePlayerTitle)
-        {
-            PgQuestRewardPlayerTitle NewReward = new PgQuestRewardPlayerTitle() { PlayerTitle_Key = valuePlayerTitle.Key };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-        }
-
-        private bool ParseRewardEffectAdvanceScriptedQuestObjective(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
-        {
-            if (effectParameter.EndsWith("_Complete"))
-                effectParameter = effectParameter.Substring(0, effectParameter.Length - 9);
-            else if (effectParameter.EndsWith("_Done"))
-                effectParameter = effectParameter.Substring(0, effectParameter.Length - 5);
-
-            return Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.QuestCompleteNpc = npcLocation, effectParameter, parsedFile, parsedKey);
-        }
-
-        private bool ParseRewardEffectGiveXP(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
-        {
-            string[] Split = effectParameter.Split(',');
-
-            if (Split.Length != 2)
-                return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}' not parsed");
-
-            string SkillName = Split[0];
-            PgSkill ParsedSkill = null!;
-            if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, SkillName))
-                return false;
-
-            if (!int.TryParse(Split[1], out int XpValue))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}': int expected");
-
-            PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill_Key = ParsedSkill.Key, RawXp = XpValue };
-
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private bool ParseRewardEffectDeltaNpcFavor(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
-        {
-            string[] Split = effectParameter.Split(',');
-
-            if (Split.Length != 2)
-                return Program.ReportFailure(parsedFile, parsedKey, $"NPC favor reward '{effectParameter}' not parsed");
-
-            PgQuestRewardFavor NewReward = new PgQuestRewardFavor();
-
-            string NpcName = Split[0];
-
-            if (!int.TryParse(Split[1], out int FavorValue))
-                return Program.ReportFailure(parsedFile, parsedKey, $"NPC favor reward '{effectParameter}': int expected");
-
-            if (!Inserter<PgQuestRewardFavor>.SetNpc((PgNpcLocation npcLocation) => NewReward.FavorNpcLocation = npcLocation, NpcName, parsedFile, parsedKey))
-                return false;
-
-            NewReward.RawFavor = FavorValue;
-
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private bool ParseRewardEffectRaiseSkillToLevel(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
-        {
-            string[] Split = effectParameter.Split(',');
-
-            if (Split.Length != 2)
-                return Program.ReportFailure(parsedFile, parsedKey, $"Raise to level reward '{effectParameter}' not parsed");
-
-            string SkillName = Split[0].Trim();
-            PgSkill ParsedSkill = null!;
-            if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, SkillName))
-                return false;
-
-            if (!int.TryParse(Split[1], out int LevelValue))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Raise to level reward '{effectParameter}': int expected");
-
-            PgQuestRewardSkillLevel NewReward = new PgQuestRewardSkillLevel();
-            NewReward.Skill_Key = ParsedSkill.Key;
-            NewReward.RawLevel = LevelValue;
-
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private bool ParseRewardEffectDispelFaeBombSporeBuff(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
-        {
-            PgQuestRewardDispelFaeBombSporeBuff NewReward = new PgQuestRewardDispelFaeBombSporeBuff();
-
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-            return true;
-        }
-
-        private bool ParseFollowUpQuests(PgQuest item, object value, string parsedFile, string parsedKey)
-        {
-            if (!(value is List<object> ArrayString))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a list");
-
-            foreach (object Item in ArrayString)
+            if (RawTSysLevel.HasValue)
             {
-                if (!(Item is string ValueString))
-                    return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be a string");
-
-                PgQuest ParsedQuest = null!;
-                if (!Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => ParsedQuest = valueQuest, ValueString))
-                    return false;
-
-                item.FollowUpQuestList.Add(ParsedQuest.Key);
+                Debug.Assert(!item.RawLevel.HasValue);
+                item.RawLevel = RawTSysLevel;
             }
-
-            return true;
         }
 
-        private bool ParsePreGiveEffects(PgQuest item, object value, string parsedFile, string parsedKey)
+        return Result;
+    }
+
+    private bool ParseRewardCombatXp(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        int ValueCombatXp;
+
+        if (value is int ValueInt)
+            ValueCombatXp = ValueInt;
+        else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
+            ValueCombatXp = ValueIntFromString;
+        else
+            return Program.ReportFailure($"Value {value} was expected to be an int");
+
+        PgQuestRewardCombatXp NewReward = new PgQuestRewardCombatXp() { RawXp = ValueCombatXp };
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private bool ParseRewardFavor(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        int ValueFavor;
+
+        if (value is int ValueInt)
+            ValueFavor = ValueInt;
+        else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
+            ValueFavor = ValueIntFromString;
+        else
+            return Program.ReportFailure($"Value {value} was expected to be an int");
+
+        if (ValueFavor != 0)
         {
-            if (!(value is List<object> ArrayString))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a list");
-
-            foreach (object Item in ArrayString)
-            {
-                if (!(Item is string ValueString))
-                    return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be a string");
-
-                if (!ParsePreGiveEffect(ValueString, parsedFile, parsedKey, out PgQuestPreGiveEffect NewPreGiveEffect))
-                    return false;
-
-                ParsingContext.AddSuplementaryObject(NewPreGiveEffect);
-                item.PreGiveEffectList.Add(NewPreGiveEffect);
-            }
-
-            return true;
+            PgQuestRewardFavor NewReward = new PgQuestRewardFavor() { RawFavor = ValueFavor };
+            ParsingContext.AddSuplementaryObject(NewReward);
+            item.QuestRewardList.Add(NewReward);
         }
 
-        private bool ParsePreGiveEffect(string value, string parsedFile, string parsedKey, out PgQuestPreGiveEffect preGiveEffect)
+        return true;
+    }
+
+    private bool ParseRewardCurrency(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        int ValueCurrency;
+
+        if (value is int ValueInt)
+            ValueCurrency = ValueInt;
+        else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
+            ValueCurrency = ValueIntFromString;
+        else
+            return Program.ReportFailure($"Value {value} was expected to be an int");
+
+        PgQuestRewardCurrency NewReward = new PgQuestRewardCurrency() { Currency = Currency.Gold, RawAmount = ValueCurrency };
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private bool ParseRewardNamedLootProfile(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        if (!(value is string ValueString))
+            return Program.ReportFailure($"Value {value} was expected to be a string");
+
+        NamedLootProfile ParsedNamedLootProfile = NamedLootProfile.Internal_None;
+        if (!StringToEnumConversion<NamedLootProfile>.SetEnum((NamedLootProfile valueEnum) => ParsedNamedLootProfile = valueEnum, ValueString))
+            return false;
+
+        PgQuestRewardNamedLootProfile NewReward = new PgQuestRewardNamedLootProfile() { NamedLootProfile = ParsedNamedLootProfile };
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private bool ParseRewardRecipes(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        if (!(value is List<object> ArrayKey))
+            return Program.ReportFailure($"Value '{value}' was expected to be a list");
+
+        Dictionary<string, ParsingContext> KeyTable = ParsingContext.ObjectInternalNameTable[typeof(PgRecipe)];
+
+        foreach (object Item in ArrayKey)
         {
-            preGiveEffect = null!;
+            if (!(Item is string ValueKey))
+                return Program.ReportFailure($"Value '{Item}' was expected to be a string");
 
-            if (value == "DeleteWarCacheMapFog")
-                preGiveEffect = new PgQuestPreGiveEffectSimple() { Description = "Delete War Cache Map Fog" };
-            else if (value == "DeleteWarCacheMapPins")
-                preGiveEffect = new PgQuestPreGiveEffectSimple() { Description = "Delete War Cache Map Pins" };
-            else if (value.StartsWith("SetInteractionFlag("))
-            {
-                int ParameterStartIndex = value.IndexOf('(');
-                int ParameterEndIndex = value.LastIndexOf(')');
-                string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? value : value.Substring(0, ParameterStartIndex);
-                string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+            if (!KeyTable.ContainsKey(ValueKey))
+                return Program.ReportFailure($"Key '{Item}' is not a known Internal Name");
 
-                PgQuestPreGiveEffectSetInteractionFlag NewEffect = new PgQuestPreGiveEffectSetInteractionFlag();
-                if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewEffect.InteractionFlag = valueEnum, EffectParameter))
-                    return false;
+            if (!(KeyTable[ValueKey].Item is PgRecipe AsLink))
+                return Program.ReportFailure($"Key '{Item}' was found but for the wrong object type");
 
-                preGiveEffect = NewEffect;
-            }
-            else if (value.StartsWith("ClearInteractionFlag("))
-            {
-                int ParameterStartIndex = value.IndexOf('(');
-                int ParameterEndIndex = value.LastIndexOf(')');
-                string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? value : value.Substring(0, ParameterStartIndex);
-                string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+            PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = AsLink.Key };
+            ParsingContext.AddSuplementaryObject(NewReward);
+            item.QuestRewardList.Add(NewReward);
+        }
 
-                PgQuestPreGiveEffectClearInteractionFlag NewEffect = new PgQuestPreGiveEffectClearInteractionFlag();
-                if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewEffect.InteractionFlag = valueEnum, EffectParameter))
-                    return false;
+        return true;
+    }
 
-                preGiveEffect = NewEffect;
-            }
-            else if (value.StartsWith("LearnAbility("))
-            {
-                int ParameterStartIndex = value.IndexOf('(');
-                int ParameterEndIndex = value.LastIndexOf(')');
-                string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+    private bool ParseRewardAbility(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        PgAbility ParsedAbility = null!;
 
-                PgAbility ParsedAbility = null!;
+        if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, value))
+            return false;
 
-                if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, EffectParameter))
-                    return false;
+        PgQuestRewardAbility NewReward = new PgQuestRewardAbility() { Ability_Key = ParsedAbility.Key };
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
 
-                PgQuestPreGiveEffectLearnAbility NewEffect = new PgQuestPreGiveEffectLearnAbility() { Ability_Key = ParsedAbility.Key };
+        return true;
+    }
 
-                preGiveEffect = NewEffect;
-            }
-            else
-            {
-                int StartIndex = value.IndexOf('(');
-                int EndIndex = value.LastIndexOf(')');
+    private bool ParseRewardEffects(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        if (!(value is List<object> StringArray))
+            return Program.ReportFailure($"Value {value} was expected to be a list");
 
-                if (StartIndex > 0 && EndIndex == value.Length - 1)
+        foreach (object StringItem in StringArray)
+        {
+            if (!(StringItem is string EffectString))
+                return Program.ReportFailure($"Value {StringItem} was expected to be a string");
+
+            if (!ParseRewardEffect(item, EffectString, parsedFile, parsedKey))
+                return false;
+        }
+
+        return true;
+    }
+
+    private bool ParseRewardEffect(PgQuest item, string effectString, string parsedFile, string parsedKey)
+    {
+        int ParameterStartIndex = effectString.IndexOf('(');
+        int ParameterEndIndex = effectString.LastIndexOf(')');
+        string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < effectString.Length - 1) ? effectString : effectString.Substring(0, ParameterStartIndex);
+        string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < effectString.Length - 1) ? string.Empty : effectString.Substring(ParameterStartIndex + 1, effectString.Length - 2 - ParameterStartIndex);
+
+        bool Result;
+        PgEffect ParsedEffect = null!;
+
+        switch (EffectName)
+        {
+            case "SetInteractionFlag":
+                Result = ParseRewardEffectSetInteractionFlag(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            case "EnsureLoreBookKnown":
+                Result = Inserter<PgLoreBook>.SetItemByInternalName((PgLoreBook valueLoreBook) => AddRewardEffectLoreBookKnown(item, valueLoreBook), EffectParameter);
+                break;
+            case "BestowTitle":
+                Result = ParseRewardEffectBestowTitle(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            case "BestowRecipe":
+                Result = ParseRewardEffectBestowRecipe(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            case "LearnAbility":
+                Result = ParseRewardAbility(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            case "AdvanceScriptedQuestObjective":
+                Result = ParseRewardEffectAdvanceScriptedQuestObjective(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            case "GiveXP":
+                Result = ParseRewardEffectGiveXP(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            case "DeltaNpcFavor":
+                Result = ParseRewardEffectDeltaNpcFavor(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            case "RaiseSkillToLevel":
+                Result = ParseRewardEffectRaiseSkillToLevel(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            case "DispelFaeBombSporeBuff":
+                Result = ParseRewardEffectDispelFaeBombSporeBuff(item, EffectParameter, parsedFile, parsedKey);
+                break;
+            default:
+                Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, effectString);
+                if (Result)
                 {
-                    string Description = value.Substring(0, StartIndex);
-                    string[] EffectParameter = value.Substring(StartIndex + 1, EndIndex - StartIndex - 1).Split(',');
+                    PgQuestRewardEffect NewReward = new PgQuestRewardEffect() { Effect_Key = ParsedEffect.Key };
+                    ParsingContext.AddSuplementaryObject(NewReward);
+                    item.QuestRewardList.Add(NewReward);
+                }
 
-                    if (Description == "CreateIlmariWarCacheMap")
+                break;
+        }
+
+        return Result;
+    }
+
+    private bool ParseRewardEffectSetInteractionFlag(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+    {
+        InteractionFlag ParsedFlag = InteractionFlag.Internal_None;
+        if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => ParsedFlag = valueEnum, effectParameter))
+            return false;
+
+        PgQuestRewardInteractionFlag NewReward = new PgQuestRewardInteractionFlag() { InteractionFlag = ParsedFlag };
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private static void AddRewardEffectLoreBookKnown(PgQuest item, PgLoreBook valueLoreBook)
+    {
+        PgQuestRewardLoreBook NewReward = new PgQuestRewardLoreBook() { LoreBook_Key = valueLoreBook.Key };
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+    }
+
+    private bool ParseRewardEffectBestowTitle(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+    {
+        if (ParserPlayerTitle.TitleToKeyMap.ContainsKey(effectParameter))
+            effectParameter = ParserPlayerTitle.TitleToKeyMap[effectParameter];
+
+        return Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => AddRewardEffectPlayerTitle(item, valuePlayerTitle), effectParameter);
+    }
+
+    private bool ParseRewardEffectBestowRecipe(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+    {
+        PgRecipe ParsedRecipe = null!;
+        if (!Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, effectParameter))
+            return false;
+
+        PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = ParsedRecipe.Key };
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private static void AddRewardEffectPlayerTitle(PgQuest item, PgPlayerTitle valuePlayerTitle)
+    {
+        PgQuestRewardPlayerTitle NewReward = new PgQuestRewardPlayerTitle() { PlayerTitle_Key = valuePlayerTitle.Key };
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+    }
+
+    private bool ParseRewardEffectAdvanceScriptedQuestObjective(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+    {
+        if (effectParameter.EndsWith("_Complete"))
+            effectParameter = effectParameter.Substring(0, effectParameter.Length - 9);
+        else if (effectParameter.EndsWith("_Done"))
+            effectParameter = effectParameter.Substring(0, effectParameter.Length - 5);
+
+        return Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.QuestCompleteNpc = npcLocation, effectParameter, parsedFile, parsedKey);
+    }
+
+    private bool ParseRewardEffectGiveXP(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+    {
+        string[] Split = effectParameter.Split(',');
+
+        if (Split.Length != 2)
+            return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}' not parsed");
+
+        string SkillName = Split[0];
+        PgSkill ParsedSkill = null!;
+        if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, SkillName))
+            return false;
+
+        if (!int.TryParse(Split[1], out int XpValue))
+            return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}': int expected");
+
+        PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill_Key = ParsedSkill.Key, RawXp = XpValue };
+
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private bool ParseRewardEffectDeltaNpcFavor(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+    {
+        string[] Split = effectParameter.Split(',');
+
+        if (Split.Length != 2)
+            return Program.ReportFailure(parsedFile, parsedKey, $"NPC favor reward '{effectParameter}' not parsed");
+
+        PgQuestRewardFavor NewReward = new PgQuestRewardFavor();
+
+        string NpcName = Split[0];
+
+        if (!int.TryParse(Split[1], out int FavorValue))
+            return Program.ReportFailure(parsedFile, parsedKey, $"NPC favor reward '{effectParameter}': int expected");
+
+        if (!Inserter<PgQuestRewardFavor>.SetNpc((PgNpcLocation npcLocation) => NewReward.FavorNpcLocation = npcLocation, NpcName, parsedFile, parsedKey))
+            return false;
+
+        NewReward.RawFavor = FavorValue;
+
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private bool ParseRewardEffectRaiseSkillToLevel(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+    {
+        string[] Split = effectParameter.Split(',');
+
+        if (Split.Length != 2)
+            return Program.ReportFailure(parsedFile, parsedKey, $"Raise to level reward '{effectParameter}' not parsed");
+
+        string SkillName = Split[0].Trim();
+        PgSkill ParsedSkill = null!;
+        if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, SkillName))
+            return false;
+
+        if (!int.TryParse(Split[1], out int LevelValue))
+            return Program.ReportFailure(parsedFile, parsedKey, $"Raise to level reward '{effectParameter}': int expected");
+
+        PgQuestRewardSkillLevel NewReward = new PgQuestRewardSkillLevel();
+        NewReward.Skill_Key = ParsedSkill.Key;
+        NewReward.RawLevel = LevelValue;
+
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private bool ParseRewardEffectDispelFaeBombSporeBuff(PgQuest item, string effectParameter, string parsedFile, string parsedKey)
+    {
+        PgQuestRewardDispelFaeBombSporeBuff NewReward = new PgQuestRewardDispelFaeBombSporeBuff();
+
+        ParsingContext.AddSuplementaryObject(NewReward);
+        item.QuestRewardList.Add(NewReward);
+        return true;
+    }
+
+    private bool ParseFollowUpQuests(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        if (!(value is List<object> ArrayString))
+            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a list");
+
+        foreach (object Item in ArrayString)
+        {
+            if (!(Item is string ValueString))
+                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be a string");
+
+            PgQuest ParsedQuest = null!;
+            if (!Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => ParsedQuest = valueQuest, ValueString))
+                return false;
+
+            item.FollowUpQuestList.Add(ParsedQuest.Key);
+        }
+
+        return true;
+    }
+
+    private bool ParsePreGiveEffects(PgQuest item, object value, string parsedFile, string parsedKey)
+    {
+        if (!(value is List<object> ArrayString))
+            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a list");
+
+        foreach (object Item in ArrayString)
+        {
+            if (!(Item is string ValueString))
+                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be a string");
+
+            if (!ParsePreGiveEffect(ValueString, parsedFile, parsedKey, out PgQuestPreGiveEffect NewPreGiveEffect))
+                return false;
+
+            ParsingContext.AddSuplementaryObject(NewPreGiveEffect);
+            item.PreGiveEffectList.Add(NewPreGiveEffect);
+        }
+
+        return true;
+    }
+
+    private bool ParsePreGiveEffect(string value, string parsedFile, string parsedKey, out PgQuestPreGiveEffect preGiveEffect)
+    {
+        preGiveEffect = null!;
+
+        if (value == "DeleteWarCacheMapFog")
+            preGiveEffect = new PgQuestPreGiveEffectSimple() { Description = "Delete War Cache Map Fog" };
+        else if (value == "DeleteWarCacheMapPins")
+            preGiveEffect = new PgQuestPreGiveEffectSimple() { Description = "Delete War Cache Map Pins" };
+        else if (value.StartsWith("SetInteractionFlag("))
+        {
+            int ParameterStartIndex = value.IndexOf('(');
+            int ParameterEndIndex = value.LastIndexOf(')');
+            string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? value : value.Substring(0, ParameterStartIndex);
+            string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+
+            PgQuestPreGiveEffectSetInteractionFlag NewEffect = new PgQuestPreGiveEffectSetInteractionFlag();
+            if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewEffect.InteractionFlag = valueEnum, EffectParameter))
+                return false;
+
+            preGiveEffect = NewEffect;
+        }
+        else if (value.StartsWith("ClearInteractionFlag("))
+        {
+            int ParameterStartIndex = value.IndexOf('(');
+            int ParameterEndIndex = value.LastIndexOf(')');
+            string EffectName = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? value : value.Substring(0, ParameterStartIndex);
+            string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+
+            PgQuestPreGiveEffectClearInteractionFlag NewEffect = new PgQuestPreGiveEffectClearInteractionFlag();
+            if (!StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewEffect.InteractionFlag = valueEnum, EffectParameter))
+                return false;
+
+            preGiveEffect = NewEffect;
+        }
+        else if (value.StartsWith("LearnAbility("))
+        {
+            int ParameterStartIndex = value.IndexOf('(');
+            int ParameterEndIndex = value.LastIndexOf(')');
+            string EffectParameter = (ParameterStartIndex < 0 || ParameterEndIndex < value.Length - 1) ? string.Empty : value.Substring(ParameterStartIndex + 1, value.Length - 2 - ParameterStartIndex);
+
+            PgAbility ParsedAbility = null!;
+
+            if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, EffectParameter))
+                return false;
+
+            PgQuestPreGiveEffectLearnAbility NewEffect = new PgQuestPreGiveEffectLearnAbility() { Ability_Key = ParsedAbility.Key };
+
+            preGiveEffect = NewEffect;
+        }
+        else
+        {
+            int StartIndex = value.IndexOf('(');
+            int EndIndex = value.LastIndexOf(')');
+
+            if (StartIndex > 0 && EndIndex == value.Length - 1)
+            {
+                string Description = value.Substring(0, StartIndex);
+                string[] EffectParameter = value.Substring(StartIndex + 1, EndIndex - StartIndex - 1).Split(',');
+
+                if (Description == "CreateIlmariWarCacheMap")
+                {
+                    if (EffectParameter.Length == 2)
                     {
-                        if (EffectParameter.Length == 2)
-                        {
-                            PgItem ParsedItem = null!;
-                            if (!Inserter<PgItem>.SetItemByInternalName((PgItem itemValue) => ParsedItem = itemValue, EffectParameter[0]))
-                                return false;
+                        PgItem ParsedItem = null!;
+                        if (!Inserter<PgItem>.SetItemByInternalName((PgItem itemValue) => ParsedItem = itemValue, EffectParameter[0]))
+                            return false;
 
-                            QuestGroup ParsedQuestGroup = QuestGroup.Internal_None;
-                            if (!StringToEnumConversion<QuestGroup>.TryParse(EffectParameter[1], out ParsedQuestGroup))
-                                return false;
+                        QuestGroup ParsedQuestGroup = QuestGroup.Internal_None;
+                        if (!StringToEnumConversion<QuestGroup>.TryParse(EffectParameter[1], out ParsedQuestGroup))
+                            return false;
 
-                            preGiveEffect = new PgQuestPreGiveEffectItem() { Description = "Create Ilmari War Cache Map", Item_Key = ParsedItem.Key, QuestGroup = ParsedQuestGroup };
-                        }
-                        else
-                            return Program.ReportFailure(parsedFile, parsedKey, $"Pre-Give effect '{Description}' has wrong format");
+                        preGiveEffect = new PgQuestPreGiveEffectItem() { Description = "Create Ilmari War Cache Map", Item_Key = ParsedItem.Key, QuestGroup = ParsedQuestGroup };
                     }
                     else
-                        return Program.ReportFailure(parsedFile, parsedKey, $"Pre-Give effect '{Description}' unknown");
+                        return Program.ReportFailure(parsedFile, parsedKey, $"Pre-Give effect '{Description}' has wrong format");
                 }
                 else
-                    return Program.ReportFailure(parsedFile, parsedKey, $"Pre-Give effect '{value}' unknown");
+                    return Program.ReportFailure(parsedFile, parsedKey, $"Pre-Give effect '{Description}' unknown");
             }
-
-            return true;
+            else
+                return Program.ReportFailure(parsedFile, parsedKey, $"Pre-Give effect '{value}' unknown");
         }
 
-        public static void UpdateIconsAndNames()
+        return true;
+    }
+
+    public static void UpdateIconsAndNames()
+    {
+        Dictionary<string, ParsingContext> QuestParsingTable = ParsingContext.ObjectKeyTable[typeof(PgQuest)];
+        foreach (KeyValuePair<string, ParsingContext> Entry in QuestParsingTable)
         {
-            Dictionary<string, ParsingContext> QuestParsingTable = ParsingContext.ObjectKeyTable[typeof(PgQuest)];
-            foreach (KeyValuePair<string, ParsingContext> Entry in QuestParsingTable)
+            PgQuest Quest = (PgQuest)Entry.Value.Item;
+
+            int IconId = 0;
+
+            UpdateIconIdFromRewards(Quest, ref IconId);
+            UpdateIconIdFromObjectives(Quest, ref IconId);
+            UpdateIconIdFromGenericObjectives(Quest, ref IconId);
+            UpdateIconIdFromGenericRewards(Quest, ref IconId);
+
+            Quest.IconId = IconId;
+
+            if (Quest.ObjectIconId == 0)
             {
-                PgQuest Quest = (PgQuest)Entry.Value.Item;
-
-                int IconId = 0;
-
-                UpdateIconIdFromRewards(Quest, ref IconId);
-                UpdateIconIdFromObjectives(Quest, ref IconId);
-                UpdateIconIdFromGenericObjectives(Quest, ref IconId);
-                UpdateIconIdFromGenericRewards(Quest, ref IconId);
-
-                Quest.IconId = IconId;
-
-                if (Quest.ObjectIconId == 0)
-                {
-                }
-
-                Debug.Assert(Quest.ObjectIconId != 0);
-                Debug.Assert(Quest.ObjectName.Length > 0);
             }
-        }
 
-        private static void UpdateIconIdFromRewards(PgQuest quest, ref int iconId)
+            Debug.Assert(Quest.ObjectIconId != 0);
+            Debug.Assert(Quest.ObjectName.Length > 0);
+        }
+    }
+
+    private static void UpdateIconIdFromRewards(PgQuest quest, ref int iconId)
+    {
+        foreach (PgQuestReward QuestReward in quest.QuestRewardList)
         {
-            foreach (PgQuestReward QuestReward in quest.QuestRewardList)
+            if (iconId != 0)
+                break;
+
+            PgAbility Ability;
+            PgItem Item;
+            PgRecipe Recipe;
+            PgSkill Skill;
+
+            switch (QuestReward)
             {
-                if (iconId != 0)
+                case PgQuestRewardAbility AsRewardAbility:
+                    Ability = ParsingContext.GetParsedAbilityByKey(AsRewardAbility.Ability_Key);
+                    if (Ability.IconId != 0)
+                        iconId = Ability.IconId;
                     break;
+                case PgQuestRewardItem AsRewardItem:
+                    Item = ParsingContext.GetParsedItemByKey(AsRewardItem.Item_Key);
+                    if (Item.IconId != 0)
+                        iconId = Item.IconId;
+                    break;
+                case PgQuestRewardRecipe AsRewardRecipe:
+                    Recipe = ParsingContext.GetParsedRecipeByKey(AsRewardRecipe.Recipe_Key);
+                    if (Recipe.IconId != 0)
+                        iconId = Recipe.IconId;
+                    break;
+                case PgQuestRewardLoreBook AsRewardLoreBook:
+                    if (iconId == 0)
+                        iconId = PgObject.LoreBookIconId;
+                    break;
+                case PgQuestRewardPlayerTitle AsRewardPlayerTitle:
+                    if (iconId == 0)
+                        iconId = PgObject.PlayerTitleIconId;
+                    break;
+                case PgQuestRewardSkillXp AsRewardSkillXp:
+                    if (iconId == 0)
+                    {
+                        Skill = ParsingContext.GetParsedSkillByKey(AsRewardSkillXp.Skill_Key);
+                        iconId = ParserSkill.SkillToIcon(Skill);
+                    }
+                    break;
+            }
+        }
+    }
 
-                PgAbility Ability;
-                PgItem Item;
-                PgRecipe Recipe;
-                PgSkill Skill;
+    private static void UpdateIconIdFromGenericRewards(PgQuest quest, ref int iconId)
+    {
+        foreach (PgQuestReward QuestReward in quest.QuestRewardList)
+        {
+            if (iconId != 0)
+                break;
 
-                switch (QuestReward)
-                {
-                    case PgQuestRewardAbility AsRewardAbility:
-                        Ability = ParsingContext.GetParsedAbilityByKey(AsRewardAbility.Ability_Key);
-                        if (Ability.IconId != 0)
-                            iconId = Ability.IconId;
-                        break;
-                    case PgQuestRewardItem AsRewardItem:
-                        Item = ParsingContext.GetParsedItemByKey(AsRewardItem.Item_Key);
+            switch (QuestReward)
+            {
+                case PgQuestRewardCurrency AsRewardCurrency:
+                    if (iconId == 0)
+                        iconId = ParserReward.CurrencyToIcon(AsRewardCurrency.Currency);
+                    break;
+                case PgQuestRewardWorkOrderCurrency AsRewardWorkOrderCurrency:
+                    if (iconId == 0)
+                        iconId = ParserReward.CurrencyToIcon(AsRewardWorkOrderCurrency.Currency);
+                    break;
+            }
+        }
+    }
+
+    private static void UpdateIconIdFromObjectives(PgQuest quest, ref int iconId)
+    {
+        foreach (PgQuestObjective QuestObjective in quest.QuestObjectiveList)
+        {
+            if (iconId != 0)
+                break;
+
+            PgItem Item;
+            PgRecipe Recipe;
+
+            switch (QuestObjective)
+            {
+                case PgQuestObjectiveCollectItem AsObjectiveCollectItem:
+                    if (AsObjectiveCollectItem.Item_Key != null)
+                    {
+                        Item = ParsingContext.GetParsedItemByKey(AsObjectiveCollectItem.Item_Key);
                         if (Item.IconId != 0)
                             iconId = Item.IconId;
-                        break;
-                    case PgQuestRewardRecipe AsRewardRecipe:
-                        Recipe = ParsingContext.GetParsedRecipeByKey(AsRewardRecipe.Recipe_Key);
+                    }
+                    break;
+                case PgQuestObjectiveDeliver AsObjectiveDeliver:
+                    if (AsObjectiveDeliver.Item_Key != null)
+                    {
+                        Item = ParsingContext.GetParsedItemByKey(AsObjectiveDeliver.Item_Key);
+                        if (Item.IconId != 0)
+                            iconId = Item.IconId;
+                    }
+                    break;
+                case PgQuestObjectiveGuildGiveItem AsObjectiveGuildGiveItem:
+                    if (AsObjectiveGuildGiveItem.Item_Key != null)
+                    {
+                        Item = ParsingContext.GetParsedItemByKey(AsObjectiveGuildGiveItem.Item_Key);
+                        if (Item.IconId != 0)
+                            iconId = Item.IconId;
+                    }
+                    break;
+                case PgQuestObjectiveHarvestItem AsObjectiveHarvestItem:
+                    if (AsObjectiveHarvestItem.Item_Key != null)
+                    {
+                        Item = ParsingContext.GetParsedItemByKey(AsObjectiveHarvestItem.Item_Key);
+                        if (Item.IconId != 0)
+                            iconId = Item.IconId;
+                    }
+                    break;
+                case PgQuestObjectiveHaveItem AsObjectiveHaveItem:
+                    if (AsObjectiveHaveItem.Item_Key != null)
+                    {
+                        Item = ParsingContext.GetParsedItemByKey(AsObjectiveHaveItem.Item_Key);
+                        if (Item.IconId != 0)
+                            iconId = Item.IconId;
+                    }
+                    break;
+                case PgQuestObjectiveKill AsObjectiveKill:
+                    if (AsObjectiveKill.QuestObjectiveRequirementList.Count > 0 && AsObjectiveKill.QuestObjectiveRequirementList[0] is PgQuestObjectiveRequirementUseAbility UseAbilityRequirement)
+                        UpdateIconIdFromAbilityKeyword(ref iconId, UseAbilityRequirement.Keyword);
+                    break;
+                case PgQuestObjectiveLootItem AsObjectiveLootItem:
+                    if (AsObjectiveLootItem.Item_Key != null)
+                    {
+                        Item = ParsingContext.GetParsedItemByKey(AsObjectiveLootItem.Item_Key);
+                        if (Item.IconId != 0)
+                            iconId = Item.IconId;
+                    }
+                    break;
+                case PgQuestObjectiveScriptedReceiveItem AsObjectiveScriptedReceiveItem:
+                    if (AsObjectiveScriptedReceiveItem.Item_Key != null)
+                    {
+                        Item = ParsingContext.GetParsedItemByKey(AsObjectiveScriptedReceiveItem.Item_Key);
+                        if (Item.IconId != 0)
+                            iconId = Item.IconId;
+                    }
+                    break;
+                case PgQuestObjectiveUseAbility AsObjectiveUseAbility:
+                    UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbility.Keyword);
+                    break;
+                case PgQuestObjectiveUseAbilityOnTargets AsObjectiveUseAbilityOnTargets:
+                    UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbilityOnTargets.Keyword);
+                    break;
+                case PgQuestObjectiveUseItem AsObjectiveUseItem:
+                    if (AsObjectiveUseItem.Item_Key != null)
+                    {
+                        Item = ParsingContext.GetParsedItemByKey(AsObjectiveUseItem.Item_Key);
+                        if (Item.IconId != 0)
+                            iconId = Item.IconId;
+                    }
+                    break;
+                case PgQuestObjectiveUseRecipe AsObjectiveUseRecipe:
+                    if (AsObjectiveUseRecipe.Target_Key is not null)
+                    {
+                        Recipe = ParsingContext.GetParsedRecipeByKey(AsObjectiveUseRecipe.Target_Key);
                         if (Recipe.IconId != 0)
                             iconId = Recipe.IconId;
-                        break;
-                    case PgQuestRewardLoreBook AsRewardLoreBook:
-                        if (iconId == 0)
-                            iconId = PgObject.LoreBookIconId;
-                        break;
-                    case PgQuestRewardPlayerTitle AsRewardPlayerTitle:
-                        if (iconId == 0)
-                            iconId = PgObject.PlayerTitleIconId;
-                        break;
-                    case PgQuestRewardSkillXp AsRewardSkillXp:
-                        if (iconId == 0)
-                        {
-                            Skill = ParsingContext.GetParsedSkillByKey(AsRewardSkillXp.Skill_Key);
-                            iconId = ParserSkill.SkillToIcon(Skill);
-                        }
-                        break;
-                }
+                    }
+                    else
+                        UpdateIconIdFromRecipeKeyword(ref iconId, AsObjectiveUseRecipe.TargetKeyword);
+                    break;
             }
         }
+    }
 
-        private static void UpdateIconIdFromGenericRewards(PgQuest quest, ref int iconId)
+    private static void UpdateIconIdFromGenericObjectives(PgQuest quest, ref int iconId)
+    {
+        foreach (PgQuestObjective QuestObjective in quest.QuestObjectiveList)
         {
-            foreach (PgQuestReward QuestReward in quest.QuestRewardList)
-            {
-                if (iconId != 0)
-                    break;
+            if (iconId != 0)
+                break;
 
-                switch (QuestReward)
-                {
-                    case PgQuestRewardCurrency AsRewardCurrency:
-                        if (iconId == 0)
-                            iconId = ParserReward.CurrencyToIcon(AsRewardCurrency.Currency);
-                        break;
-                    case PgQuestRewardWorkOrderCurrency AsRewardWorkOrderCurrency:
-                        if (iconId == 0)
-                            iconId = ParserReward.CurrencyToIcon(AsRewardWorkOrderCurrency.Currency);
-                        break;
-                }
+            switch (QuestObjective)
+            {
+                case PgQuestObjectiveCollectItemKeyword AsObjectiveCollectItemKeyword:
+                    UpdateIconIdFromItemKeyword(ref iconId, AsObjectiveCollectItemKeyword.Keyword);
+                    break;
+                case PgQuestObjectiveKill _:
+                    iconId = PgObject.KillIconId;
+                    break;
+                case PgQuestObjectiveDruidKill _:
+                    iconId = PgObject.KillIconId;
+                    break;
+                case PgQuestObjectiveScripted _:
+                    iconId = PgObject.KillIconId;
+                    break;
+                case PgQuestObjectiveCompleteQuest _:
+                    iconId = PgObject.KillIconId;
+                    break;
+                case PgQuestObjectiveScriptAtomicInt _:
+                    iconId = PgObject.DirectedGoalIconId;
+                    break;
             }
         }
+    }
 
-        private static void UpdateIconIdFromObjectives(PgQuest quest, ref int iconId)
+    private static void UpdateIconIdFromAbilityKeyword(ref int iconId, AbilityKeyword keyword)
+    {
+        if (keyword == AbilityKeyword.Internal_None)
+            return;
+
+        Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
+        foreach (KeyValuePair<string, ParsingContext> Entry in AbilityParsingTable)
         {
-            foreach (PgQuestObjective QuestObjective in quest.QuestObjectiveList)
+            PgAbility Ability = (PgAbility)Entry.Value.Item;
+            if (Ability.KeywordList.Contains(keyword))
             {
-                if (iconId != 0)
-                    break;
-
-                PgItem Item;
-                PgRecipe Recipe;
-
-                switch (QuestObjective)
-                {
-                    case PgQuestObjectiveCollectItem AsObjectiveCollectItem:
-                        if (AsObjectiveCollectItem.Item_Key != null)
-                        {
-                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveCollectItem.Item_Key);
-                            if (Item.IconId != 0)
-                                iconId = Item.IconId;
-                        }
-                        break;
-                    case PgQuestObjectiveDeliver AsObjectiveDeliver:
-                        if (AsObjectiveDeliver.Item_Key != null)
-                        {
-                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveDeliver.Item_Key);
-                            if (Item.IconId != 0)
-                                iconId = Item.IconId;
-                        }
-                        break;
-                    case PgQuestObjectiveGuildGiveItem AsObjectiveGuildGiveItem:
-                        if (AsObjectiveGuildGiveItem.Item_Key != null)
-                        {
-                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveGuildGiveItem.Item_Key);
-                            if (Item.IconId != 0)
-                                iconId = Item.IconId;
-                        }
-                        break;
-                    case PgQuestObjectiveHarvestItem AsObjectiveHarvestItem:
-                        if (AsObjectiveHarvestItem.Item_Key != null)
-                        {
-                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveHarvestItem.Item_Key);
-                            if (Item.IconId != 0)
-                                iconId = Item.IconId;
-                        }
-                        break;
-                    case PgQuestObjectiveHaveItem AsObjectiveHaveItem:
-                        if (AsObjectiveHaveItem.Item_Key != null)
-                        {
-                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveHaveItem.Item_Key);
-                            if (Item.IconId != 0)
-                                iconId = Item.IconId;
-                        }
-                        break;
-                    case PgQuestObjectiveKill AsObjectiveKill:
-                        if (AsObjectiveKill.QuestObjectiveRequirementList.Count > 0 && AsObjectiveKill.QuestObjectiveRequirementList[0] is PgQuestObjectiveRequirementUseAbility UseAbilityRequirement)
-                            UpdateIconIdFromAbilityKeyword(ref iconId, UseAbilityRequirement.Keyword);
-                        break;
-                    case PgQuestObjectiveLootItem AsObjectiveLootItem:
-                        if (AsObjectiveLootItem.Item_Key != null)
-                        {
-                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveLootItem.Item_Key);
-                            if (Item.IconId != 0)
-                                iconId = Item.IconId;
-                        }
-                        break;
-                    case PgQuestObjectiveScriptedReceiveItem AsObjectiveScriptedReceiveItem:
-                        if (AsObjectiveScriptedReceiveItem.Item_Key != null)
-                        {
-                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveScriptedReceiveItem.Item_Key);
-                            if (Item.IconId != 0)
-                                iconId = Item.IconId;
-                        }
-                        break;
-                    case PgQuestObjectiveUseAbility AsObjectiveUseAbility:
-                        UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbility.Keyword);
-                        break;
-                    case PgQuestObjectiveUseAbilityOnTargets AsObjectiveUseAbilityOnTargets:
-                        UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbilityOnTargets.Keyword);
-                        break;
-                    case PgQuestObjectiveUseItem AsObjectiveUseItem:
-                        if (AsObjectiveUseItem.Item_Key != null)
-                        {
-                            Item = ParsingContext.GetParsedItemByKey(AsObjectiveUseItem.Item_Key);
-                            if (Item.IconId != 0)
-                                iconId = Item.IconId;
-                        }
-                        break;
-                    case PgQuestObjectiveUseRecipe AsObjectiveUseRecipe:
-                        if (AsObjectiveUseRecipe.Target_Key is not null)
-                        {
-                            Recipe = ParsingContext.GetParsedRecipeByKey(AsObjectiveUseRecipe.Target_Key);
-                            if (Recipe.IconId != 0)
-                                iconId = Recipe.IconId;
-                        }
-                        else
-                            UpdateIconIdFromRecipeKeyword(ref iconId, AsObjectiveUseRecipe.TargetKeyword);
-                        break;
-                }
+                iconId = Ability.IconId;
+                break;
             }
         }
+    }
 
-        private static void UpdateIconIdFromGenericObjectives(PgQuest quest, ref int iconId)
+    private static void UpdateIconIdFromItemKeyword(ref int iconId, ItemKeyword keyword)
+    {
+        if (keyword == ItemKeyword.Internal_None)
+            return;
+
+        Dictionary<string, ParsingContext> ItemParsingTable = ParsingContext.ObjectKeyTable[typeof(PgItem)];
+        foreach (KeyValuePair<string, ParsingContext> Entry in ItemParsingTable)
         {
-            foreach (PgQuestObjective QuestObjective in quest.QuestObjectiveList)
+            PgItem Item = (PgItem)Entry.Value.Item;
+            if (Item.KeywordTable.ContainsKey(keyword))
             {
-                if (iconId != 0)
-                    break;
-
-                switch (QuestObjective)
-                {
-                    case PgQuestObjectiveCollectItemKeyword AsObjectiveCollectItemKeyword:
-                        UpdateIconIdFromItemKeyword(ref iconId, AsObjectiveCollectItemKeyword.Keyword);
-                        break;
-                    case PgQuestObjectiveKill _:
-                        iconId = PgObject.KillIconId;
-                        break;
-                    case PgQuestObjectiveDruidKill _:
-                        iconId = PgObject.KillIconId;
-                        break;
-                    case PgQuestObjectiveScripted _:
-                        iconId = PgObject.KillIconId;
-                        break;
-                    case PgQuestObjectiveCompleteQuest _:
-                        iconId = PgObject.KillIconId;
-                        break;
-                    case PgQuestObjectiveScriptAtomicInt _:
-                        iconId = PgObject.DirectedGoalIconId;
-                        break;
-                }
+                iconId = Item.IconId;
+                break;
             }
         }
+    }
 
-        private static void UpdateIconIdFromAbilityKeyword(ref int iconId, AbilityKeyword keyword)
+    private static void UpdateIconIdFromRecipeKeyword(ref int iconId, RecipeKeyword keyword)
+    {
+        if (keyword == RecipeKeyword.Internal_None)
+            return;
+
+        Dictionary<string, ParsingContext> RecipeParsingTable = ParsingContext.ObjectKeyTable[typeof(PgRecipe)];
+        foreach (KeyValuePair<string, ParsingContext> Entry in RecipeParsingTable)
         {
-            if (keyword == AbilityKeyword.Internal_None)
-                return;
-
-            Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
-            foreach (KeyValuePair<string, ParsingContext> Entry in AbilityParsingTable)
+            PgRecipe Recipe = (PgRecipe)Entry.Value.Item;
+            if (Recipe.KeywordList.Contains(keyword))
             {
-                PgAbility Ability = (PgAbility)Entry.Value.Item;
-                if (Ability.KeywordList.Contains(keyword))
-                {
-                    iconId = Ability.IconId;
-                    break;
-                }
-            }
-        }
-
-        private static void UpdateIconIdFromItemKeyword(ref int iconId, ItemKeyword keyword)
-        {
-            if (keyword == ItemKeyword.Internal_None)
-                return;
-
-            Dictionary<string, ParsingContext> ItemParsingTable = ParsingContext.ObjectKeyTable[typeof(PgItem)];
-            foreach (KeyValuePair<string, ParsingContext> Entry in ItemParsingTable)
-            {
-                PgItem Item = (PgItem)Entry.Value.Item;
-                if (Item.KeywordTable.ContainsKey(keyword))
-                {
-                    iconId = Item.IconId;
-                    break;
-                }
-            }
-        }
-
-        private static void UpdateIconIdFromRecipeKeyword(ref int iconId, RecipeKeyword keyword)
-        {
-            if (keyword == RecipeKeyword.Internal_None)
-                return;
-
-            Dictionary<string, ParsingContext> RecipeParsingTable = ParsingContext.ObjectKeyTable[typeof(PgRecipe)];
-            foreach (KeyValuePair<string, ParsingContext> Entry in RecipeParsingTable)
-            {
-                PgRecipe Recipe = (PgRecipe)Entry.Value.Item;
-                if (Recipe.KeywordList.Contains(keyword))
-                {
-                    iconId = Recipe.IconId;
-                    break;
-                }
+                iconId = Recipe.IconId;
+                break;
             }
         }
     }

@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net48</TargetFrameworks>
-    <LangVersion>9.0</LangVersion>
+    <TargetFrameworks>net481</TargetFrameworks>
+    <LangVersion>11</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
@@ -37,7 +37,7 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net481'">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsBase" />

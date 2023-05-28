@@ -1,6 +1,5 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+public class StringOrStringArray
 {
-    public class StringOrStringArray
-    {
-    }
 }

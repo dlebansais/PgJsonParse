@@ -1,15 +1,14 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+public enum QuestRewardType
 {
-    public enum QuestRewardType
-    {
-        Internal_None,
-        SkillXp,
-        Recipe,
-        GuildCredits,
-        CombatXp,
-        GuildXp,
-        Currency,
-        Ability,
-        WorkOrderCurrency,
-    }
+    Internal_None,
+    SkillXp,
+    Recipe,
+    GuildCredits,
+    CombatXp,
+    GuildXp,
+    Currency,
+    Ability,
+    WorkOrderCurrency,
 }

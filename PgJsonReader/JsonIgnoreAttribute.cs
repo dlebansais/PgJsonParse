@@ -1,7 +1,6 @@
-﻿namespace PgJsonReader
-{
-    using System;
+﻿namespace PgJsonReader;
 
-    [AttributeUsage(validOn: AttributeTargets.Field)]
-    public class JsonIgnoreAttribute : Attribute { }
-}
+using System;
+
+[AttributeUsage(validOn: AttributeTargets.Field)]
+public class JsonIgnoreAttribute : Attribute { }

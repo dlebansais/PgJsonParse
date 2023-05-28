@@ -1,6 +1,5 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+public class StringOrInteger
 {
-    public class StringOrInteger
-    {
-    }
 }

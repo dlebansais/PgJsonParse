@@ -1,9 +1,8 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+public enum SignInterpretation
 {
-    public enum SignInterpretation
-    {
-        Normal,
-        Opposite,
-        AlwaysNegative,
-    }
+    Normal,
+    Opposite,
+    AlwaysNegative,
 }

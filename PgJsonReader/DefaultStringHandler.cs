@@ -1,17 +1,16 @@
-﻿namespace PgJsonReader
+﻿namespace PgJsonReader;
+
+using System;
+
+public class DefaultStringHandler : IStringHandler
 {
-    using System;
-
-    public class DefaultStringHandler : IStringHandler
+    public string ReadString(string input)
     {
-        public string ReadString(string input)
-        {
-            return input;
-        }
+        return input;
+    }
 
-        public string WriteString(string input)
-        {
-            return input;
-        }
+    public string WriteString(string input)
+    {
+        return input;
     }
 }

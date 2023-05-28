@@ -1,7 +1,6 @@
-﻿namespace PgJsonReader
+﻿namespace PgJsonReader;
+
+public interface IJsonValue
 {
-    public interface IJsonValue
-    {
-        Json.Type Type { get; }
-    }
+    Json.Type Type { get; }
 }

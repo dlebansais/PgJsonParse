@@ -1,10 +1,9 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+public class ParserNative : Parser
 {
-    public class ParserNative : Parser
+    public override object CreateItem()
     {
-        public override object CreateItem()
-        {
-            return null!;
-        }
+        return null!;
     }
 }

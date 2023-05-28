@@ -1,41 +1,40 @@
-﻿namespace PgJsonReader
+﻿namespace PgJsonReader;
+
+using System.Collections.Generic;
+
+public class JsonValueCollection : List<IJsonValue>, IJsonValue
 {
-    using System.Collections.Generic;
+    public Json.Type Type { get { return Json.Type.Array; } }
 
-    public class JsonValueCollection : List<IJsonValue>, IJsonValue
+    public JsonString Add(string? value)
     {
-        public Json.Type Type { get { return Json.Type.Array; } }
+        JsonString StringValue = new JsonString(value);
+        Add(StringValue);
 
-        public JsonString Add(string? value)
-        {
-            JsonString StringValue = new JsonString(value);
-            Add(StringValue);
+        return StringValue;
+    }
 
-            return StringValue;
-        }
+    public JsonFloat Add(float value)
+    {
+        JsonFloat FloatValue = new JsonFloat(value);
+        Add(FloatValue);
 
-        public JsonFloat Add(float value)
-        {
-            JsonFloat FloatValue = new JsonFloat(value);
-            Add(FloatValue);
+        return FloatValue;
+    }
 
-            return FloatValue;
-        }
+    public JsonObject AddObject()
+    {
+        JsonObject ObjectValue = new JsonObject();
+        Add(ObjectValue);
 
-        public JsonObject AddObject()
-        {
-            JsonObject ObjectValue = new JsonObject();
-            Add(ObjectValue);
+        return ObjectValue;
+    }
 
-            return ObjectValue;
-        }
+    public JsonValueCollection AddArray()
+    {
+        JsonValueCollection ArrayValue = new JsonValueCollection();
+        Add(ArrayValue);
 
-        public JsonValueCollection AddArray()
-        {
-            JsonValueCollection ArrayValue = new JsonValueCollection();
-            Add(ArrayValue);
-
-            return ArrayValue;
-        }
+        return ArrayValue;
     }
 }

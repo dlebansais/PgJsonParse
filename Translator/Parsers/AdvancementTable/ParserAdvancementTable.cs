@@ -1,58 +1,57 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+using System.Collections.Generic;
+using PgJsonReader;
+using PgObjects;
+
+public class ParserAdvancementTable : Parser
 {
-    using System.Collections.Generic;
-    using PgJsonReader;
-    using PgObjects;
-
-    public class ParserAdvancementTable : Parser
+    public override object CreateItem()
     {
-        public override object CreateItem()
+        return new PgAdvancementTable();
+    }
+
+    public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    {
+        if (item is not PgAdvancementTable AsPgAdvancementTable)
+            return Program.ReportFailure("Unexpected failure");
+
+        AsPgAdvancementTable.Key = objectKey;
+
+        int Index = objectKey.IndexOf("_");
+        if (Index < 0)
+            return Program.ReportFailure($"Invalid advancement table key '{objectKey}'");
+
+        AsPgAdvancementTable.InternalName = objectKey.Substring(Index + 1);
+
+        return FinishItem(AsPgAdvancementTable, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
+    }
+
+    private bool FinishItem(PgAdvancementTable item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    {
+        foreach (KeyValuePair<string, object> Entry in contentTable)
         {
-            return new PgAdvancementTable();
+            string LevelKey = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!LevelKey.StartsWith("Level_"))
+                return Program.ReportFailure($"Invalid advancement key format '{LevelKey}'");
+
+            if (!int.TryParse(LevelKey.Substring(6), out int EntryLevel))
+                return Program.ReportFailure($"Invalid level in key '{LevelKey}'");
+
+            if (item.LevelTable.ContainsKey(EntryLevel))
+                return Program.ReportFailure($"Level {EntryLevel} already added");
+
+            if (!(Value is ParsingContext Context))
+                return Program.ReportFailure($"Value '{Value}' was expected to be a context");
+
+            if (!(Context.Item is PgAdvancement AsAdvancement))
+                return Program.ReportFailure($"Object '{Value}' was unexpected");
+
+            item.LevelTable.Add(EntryLevel, AsAdvancement);
         }
 
-        public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
-        {
-            if (item is not PgAdvancementTable AsPgAdvancementTable)
-                return Program.ReportFailure("Unexpected failure");
-
-            AsPgAdvancementTable.Key = objectKey;
-
-            int Index = objectKey.IndexOf("_");
-            if (Index < 0)
-                return Program.ReportFailure($"Invalid advancement table key '{objectKey}'");
-
-            AsPgAdvancementTable.InternalName = objectKey.Substring(Index + 1);
-
-            return FinishItem(AsPgAdvancementTable, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
-        }
-
-        private bool FinishItem(PgAdvancementTable item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
-        {
-            foreach (KeyValuePair<string, object> Entry in contentTable)
-            {
-                string LevelKey = Entry.Key;
-                object Value = Entry.Value;
-
-                if (!LevelKey.StartsWith("Level_"))
-                    return Program.ReportFailure($"Invalid advancement key format '{LevelKey}'");
-
-                if (!int.TryParse(LevelKey.Substring(6), out int EntryLevel))
-                    return Program.ReportFailure($"Invalid level in key '{LevelKey}'");
-
-                if (item.LevelTable.ContainsKey(EntryLevel))
-                    return Program.ReportFailure($"Level {EntryLevel} already added");
-
-                if (!(Value is ParsingContext Context))
-                    return Program.ReportFailure($"Value '{Value}' was expected to be a context");
-
-                if (!(Context.Item is PgAdvancement AsAdvancement))
-                    return Program.ReportFailure($"Object '{Value}' was unexpected");
-
-                item.LevelTable.Add(EntryLevel, AsAdvancement);
-            }
-
-            return true;
-        }
+        return true;
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+public enum FileType
 {
-    public enum FileType
-    {
-        EmbeddedObjects,
-        KeylessArray,
-        KeyedArray,
-    }
+    EmbeddedObjects,
+    KeylessArray,
+    KeyedArray,
 }

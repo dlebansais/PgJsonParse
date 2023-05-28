@@ -1,9 +1,8 @@
-﻿namespace Translator
+﻿namespace Translator;
+
+public enum ErrorControl
 {
-    public enum ErrorControl
-    {
-        Normal,
-        IgnoreIfNotFound,
-        IgnoreIfFound,
-    }
+    Normal,
+    IgnoreIfNotFound,
+    IgnoreIfFound,
 }

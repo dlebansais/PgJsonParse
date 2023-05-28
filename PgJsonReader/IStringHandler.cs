@@ -1,10 +1,9 @@
-﻿namespace PgJsonReader
-{
-    using System;
+﻿namespace PgJsonReader;
 
-    public interface IStringHandler
-    {
-        string ReadString(string input);
-        string WriteString(string input);
-    }
+using System;
+
+public interface IStringHandler
+{
+    string ReadString(string input);
+    string WriteString(string input);
 }
