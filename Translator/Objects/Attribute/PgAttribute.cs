@@ -25,6 +25,7 @@
         public static PgAttribute SHOW_FAIRYENERGY_INDICATORS { get; } = new PgAttribute("SHOW_FAIRYENERGY_INDICATORS");
         public static PgAttribute BOOST_ANIMALPETHEAL_SENDER { get; } = new PgAttribute("BOOST_ANIMALPETHEAL_SENDER");
         public static PgAttribute MONSTER_COMBAT_XP_VALUE { get; } = new PgAttribute("MONSTER_COMBAT_XP_VALUE");
+        public static PgAttribute MOD_VAULT_SIZE { get; } = new PgAttribute("MOD_VAULT_SIZE");
 
         public string Label { get; set; } = string.Empty;
         public List<int> IconIdList { get; set; } = new List<int>();

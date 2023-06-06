@@ -32,5 +32,6 @@
         CompleteQuest,
         MeetRequirements,
         ScriptAtomicInt,
+        Angling,
     }
 }

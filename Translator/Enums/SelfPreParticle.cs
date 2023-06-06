@@ -18,5 +18,8 @@
         TsunamiPreParticles,
         SummonTornado,
         ShockingGraspBuildup,
+        FishingRod,
+        ToxinBombExplosion,
+        MycotoxinExplosion,
     }
 }

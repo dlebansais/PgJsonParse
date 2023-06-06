@@ -1,5 +1,6 @@
 ﻿namespace Translator;
 
+using System.Collections;
 using System.Collections.Generic;
 using PgJsonReader;
 using PgObjects;
@@ -31,7 +32,7 @@ public class ParserReward : Parser
             switch (Key)
             {
                 case "Ability":
-                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Ability_Key = valueAbility.Key, Value);
+                    Result = ParseAbility(item, Value, parsedFile, parsedKey);
                     break;
                 case "BonusToSkill":
                     Result = ParserSkill.Parse((PgSkill valueSkill) => item.BonusLevelSkill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
@@ -53,11 +54,37 @@ public class ParserReward : Parser
 
         if (Result)
         {
-            if (item.Ability_Key == null && item.BonusLevelSkill_Key == null && item.Recipe_Key == null && item.Notes.Length == 0)
+            if (item.Ability_Keys == null && item.BonusLevelSkill_Key == null && item.Recipe_Key == null && item.Notes.Length == 0)
                 Result = Program.ReportFailure(parsedFile, parsedKey, "Not enough rewards");
         }
 
         return Result;
+    }
+
+    private bool ParseAbility(PgReward item, object value, string parsedFile, string parsedKey)
+    {
+        if (value is string AsString)
+        {
+            if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Ability_Keys = new string[] { valueAbility.Key }, AsString))
+                return false;
+        }
+        else if (value is IList AsList)
+        {
+            item.Ability_Keys = new string[AsList.Count];
+
+            for (int i = 0; i < AsList.Count; i++)
+            {
+                item.Ability_Keys[i] = string.Empty;
+
+                if (AsList[i] is string AsStringItem)
+                    if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Ability_Keys[i] = valueAbility.Key, AsStringItem))
+                        return false;
+            }
+        }
+        else
+            return Program.ReportFailure($"Expected string or string[] for Ability but got {value.GetType().Name}");
+
+        return true;
     }
 
     public static int CurrencyToIcon(Currency currency)

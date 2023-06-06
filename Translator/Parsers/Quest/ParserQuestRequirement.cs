@@ -522,7 +522,7 @@ public class ParserQuestRequirement : Parser
                     case "T":
                         break;
                     case "HangOut":
-                        Result = SetStringProperty((string valueString) => NewItem.HangOut = valueString, Value);
+                        Result = StringToEnumConversion<HangOut>.SetEnum((HangOut valueEnum) => NewItem.HangOut = valueEnum, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

@@ -541,5 +541,10 @@
         DrugPenalty_PinealJuice,
         PostCoitalBliss,
         FrogToxin,
+        AnglingAbility,
+        AnglingMode,
+        Reel,
+        Juke,
+        Troll,
     }
 }

@@ -54,5 +54,7 @@
         LightningExplosionBlue,
         DelugeBurst,
         LightningHit,
+        MycotoxinHit,
+        AcidHit,
     }
 }

@@ -226,6 +226,15 @@ public class ParserAbility : Parser
                 case "Rank":
                     Result = SetIntProperty((int valueInt) => item.RawRank = valueInt, Value);
                     break;
+                case "InventoryKeywordReqErrorMessage":
+                    Result = SetStringProperty((string valueString) => item.InventoryKeywordReqErrorMessage = valueString, Value);
+                    break;
+                case "InventoryKeywordReqs":
+                    Result = StringToEnumConversion<AbilityItemKeyword>.TryParseList(Value, item.InventoryKeywordReqList);
+                    break;
+                case "AoEIsCenteredOnCaster":
+                    Result = SetBoolProperty((bool valueBool) => item.SetAoEIsCenteredOnCaster(valueBool), Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;
@@ -403,17 +412,47 @@ public class ParserAbility : Parser
             if (!Result)
                 return Program.ReportFailure($"SelfPreParticle {AsString} not parsed");
 
-            string MainColorString = AsString.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
-            if (!MainColorString.StartsWith("Color="))
-                return Program.ReportFailure($"failed to parse SelfPreParticle '{AsString}' bad main color");
+            string MainColorOrAoERangeString = AsString.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
+            if (MainColorOrAoERangeString.StartsWith("Color="))
+            {
+                string[] MainColorSplit = MainColorOrAoERangeString.Substring(6).Split(',');
 
-            string[] MainColorSplit = MainColorString.Substring(6).Split(',');
+                if (MainColorSplit.Length != 2 || !Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
+                    return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorOrAoERangeString}' bad main color");
 
-            if (MainColorSplit.Length != 2 || !Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
-                return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorString}' bad main color");
+                item.RawSelfPreParticleColor0 = Color0;
+                item.RawSelfPreParticleColor1 = Color1;
+            }
+            else if (MainColorOrAoERangeString.StartsWith("AoeRange="))
+            {
+                string[] AoERangeSplit = MainColorOrAoERangeString.Substring(9).Split(';');
 
-            item.RawSelfPreParticleColor0 = Color0;
-            item.RawSelfPreParticleColor1 = Color1;
+                if (AoERangeSplit.Length < 1 || AoERangeSplit.Length > 2)
+                    return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorOrAoERangeString}' bad AoE range syntax");
+
+                string AoERangeString = AoERangeSplit[0];
+                if (!Tools.TryParseSingle(AoERangeString, out float AoERange))
+                    return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorOrAoERangeString}' bad AoE range");
+
+                item.RawAoERange = AoERange;
+
+                if (AoERangeSplit.Length == 2)
+                {
+                    if (!AoERangeSplit[1].StartsWith("AoeColor="))
+                        return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorOrAoERangeString}' bad AoE range color");
+
+                    string AoEColorString = AoERangeSplit[1].Substring(9);
+                    if (AoEColorString.StartsWith("#"))
+                        AoEColorString = AoEColorString.Substring(1);
+
+                    if (!Tools.TryParseColor(AoEColorString, out uint AoEColor))
+                        return Program.ReportFailure($"failed to parse SelfPreParticle '{AoEColorString}' bad AoE range color");
+
+                    item.RawSelfPreParticleAoEColor0 = AoEColor;
+                }
+            }
+            else
+                return Program.ReportFailure($"failed to parse SelfPreParticle '{AsString}' bad main color or AoE range");
         }
         else
             Result = StringToEnumConversion<SelfPreParticle>.SetEnum((SelfPreParticle valueEnum) => item.SelfPreParticle = valueEnum, AsString);

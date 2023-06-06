@@ -21,5 +21,6 @@
         //GeneticsTraining_Ruminants,
         PovusNightly,
         TofurkeyQuest,
+        AnglingNatureSpiritIsHappy,
     }
 }

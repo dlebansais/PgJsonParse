@@ -11,5 +11,6 @@
         PetCount,
         EntityPhysicalState,
         EquipmentSlotEmpty,
+        HangOutCompleted,
     }
 }

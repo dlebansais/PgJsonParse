@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 79;
+        public const int TotalEnumTypes = 82;
 
         static TextMaps()
         {
@@ -215,6 +215,14 @@
             { AbilityAnimation.Attack_WeatherWitch_Squall, "Attack Weather Witch Squall" },
             { AbilityAnimation.Attack_Skulk, "Attack Skulk" },
             { AbilityAnimation.Attack_Howl, "Attack Howl" },
+            { AbilityAnimation.Fish, "Fish" },
+            { AbilityAnimation.Attack_Fishing_Reel, "Attack Fishing Reel" },
+            { AbilityAnimation.Attack_QuickHowl, "Attack Quick Howl" },
+            { AbilityAnimation.Attack_BattleChemistry_Inject_Generic, "Attack Battle Chemistry Inject Generic" },
+            { AbilityAnimation.Attack_BattleChemistry_TriggerGolem, "Attack Battle Chemistry Trigger Golem" },
+            { AbilityAnimation.Attack_BattleChemistry_ToxicIrritant, "Attack Battle Chemistry Toxic Irritant" },
+            { AbilityAnimation.PlayFairyChimesFast, "Play Fairy Chimes Fast" },
+            { AbilityAnimation.PlayFairyChimesSlow, "Play Fairy Chimes Slow" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -248,6 +256,7 @@
             { AbilityIndicatingEnabled.TempestFlight, "Tempest Flight" },
             { AbilityIndicatingEnabled.WindWard, "Wind Ward" },
             { AbilityIndicatingEnabled.CloudTrick, "Cloud Trick" },
+            { AbilityIndicatingEnabled.AnglingMode, "Angling Mode" },
         };
 
         public static Dictionary<AbilityItemKeyword, string> AbilityItemKeywordTextMap { get; } = new Dictionary<AbilityItemKeyword, string>()
@@ -296,6 +305,7 @@
             { AbilityItemKeyword.form_Fox, "Fox only" },
             { AbilityItemKeyword.Darkcaster, "Darkcaster" },
             { AbilityItemKeyword.WeatherStaff, "Weather Staff" },
+            { AbilityItemKeyword.AnglingPole, "Angling Pole" },
         };
 
         public static Dictionary<AbilityKeyword, string> AbilityKeywordTextMap { get; } = new Dictionary<AbilityKeyword, string>()
@@ -839,6 +849,11 @@
             { AbilityKeyword.DrugPenalty_PinealJuice, "Drug Penalty Pineal Juice" },
             { AbilityKeyword.PostCoitalBliss, "Post Coital Bliss" },
             { AbilityKeyword.FrogToxin, "Frog Toxin" },
+            { AbilityKeyword.AnglingAbility, "Angling Ability" },
+            { AbilityKeyword.AnglingMode, "Angling Mode" },
+            { AbilityKeyword.Reel, "Reel" },
+            { AbilityKeyword.Juke, "Juke" },
+            { AbilityKeyword.Troll, "Troll" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -963,6 +978,27 @@
             { AbilityTargetParticle.LightningExplosionBlue, "Lightning Explosion Blue" },
             { AbilityTargetParticle.DelugeBurst, "Deluge Burst" },
             { AbilityTargetParticle.LightningHit, "Lightning Hit" },
+            { AbilityTargetParticle.MycotoxinHit, "Mycotoxin Hit" },
+            { AbilityTargetParticle.AcidHit, "Acid Hit" },
+        };
+
+        public static Dictionary<AllowedFishingZone, string> AllowedFishingZoneTextMap { get; } = new Dictionary<AllowedFishingZone, string>()
+        {
+            { AllowedFishingZone.Internal_None, string.Empty },
+            { AllowedFishingZone.SerbuleMoat, "Serbule Moat" },
+            { AllowedFishingZone.SerbuleDocks, "Serbule Docks" },
+            { AllowedFishingZone.Serbule2Lake4, "Serbule Hills Lake #4" },
+            { AllowedFishingZone.EltibuleWaterfall, "Eltibule Waterfall" },
+            { AllowedFishingZone.EltibuleSoutheast, "Eltibule Southeast" },
+            { AllowedFishingZone.SunValeMainIslandNortheast, "Sun Vale Main Island Northeast" },
+            { AllowedFishingZone.SunValeMainIslandSouth, "Sun Vale Main Island South" },
+            { AllowedFishingZone.SunValeRanalonIslandSouth, "Sun Vale Ranalon Island South" },
+            { AllowedFishingZone.KurMountainsOcean, "Kur Mountains Ocean" },
+            { AllowedFishingZone.Desert1HotSpring, "Desert Hot Spring" },
+            { AllowedFishingZone.RahuDocks, "Rahu Docks" },
+            { AllowedFishingZone.PovusTownProper, "Povus Town Proper" },
+            { AllowedFishingZone.PovusOrcLandsMain, "Povus Orc Lands Main" },
+            { AllowedFishingZone.PovusUpperLakesEast, "Povus Upper Lakes East" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
@@ -1685,6 +1721,8 @@
             { EffectKeyword.DelugeStun, "Deluge Stun" },
             { EffectKeyword.WeatherWeaknessA, "Weather Weakness A" },
             { EffectKeyword.WeatherWeaknessB, "Weather Weakness B" },
+            { EffectKeyword.Angling, "Angling" },
+            { EffectKeyword.AnglingMode, "Angling Mode" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1788,7 +1826,6 @@
             { EffectParticle.HealingParticleHuge, "Healing Particle Huge" },
             { EffectParticle.GoodJob_Gold, "Good Job (Gold)" },
             { EffectParticle.WebbedDebuff, "Webbed Debuff" },
-            { EffectParticle.LocationCircle_White, "Location Circle (White)" },
             { EffectParticle.AcidShieldPerm, "Acid Shield Permanent" },
             { EffectParticle.Confetti2, "Confetti #2" },
             { EffectParticle.IceDebuff, "Ice Debuff" },
@@ -1841,6 +1878,29 @@
             { EffectParticle.CloudTrick, "Cloud Trick" },
             { EffectParticle.MountSpeedup, "Mount Speedup" },
             { EffectParticle.ShadowFeintTeleport, "Shadow Feint Teleport" },
+            { EffectParticle.AnglingAcidSphere, "Angling Acid Sphere" },
+            { EffectParticle.AnglingBioSphere, "Angling Bio Sphere" },
+            { EffectParticle.AnglingBloodSphere, "Angling Blood Sphere" },
+            { EffectParticle.AnglingCrystalEruption, "Angling Crystal Eruption" },
+            { EffectParticle.AnglingDarkness, "Angling Darkness" },
+            { EffectParticle.AnglingFireColumn, "Angling Fire Column" },
+            { EffectParticle.AnglingFlowerEruption, "Angling Flower Eruption" },
+            { EffectParticle.AnglingPrismatic, "Angling Prismatic" },
+            { EffectParticle.AnglingPurpleSquiggles, "Angling Purple Squiggles" },
+            { EffectParticle.AnglingSand, "Angling Sand" },
+            { EffectParticle.AnglingShockSphere, "Angling Shock Sphere" },
+            { EffectParticle.AnglingSonic, "Angling Sonic" },
+            { EffectParticle.AnglingSparkles, "Angling Sparkles" },
+            { EffectParticle.AnglingStarStream, "Angling Star Stream" },
+            { EffectParticle.AnglingSwords, "Angling Swords" },
+            { EffectParticle.AnglingIceSpray, "Angling Ice Spray" },
+            { EffectParticle.Mutation_ExtraToes, "Mutation Extra Toes" },
+            { EffectParticle.Mutation_StretchySpine, "Mutation Stretchy Spine" },
+            { EffectParticle.Mutation_KneeSpikes, "Mutation Knee Spikes" },
+            { EffectParticle.Mutation_ExtraSkin, "Mutation Extra Skin" },
+            { EffectParticle.Mutation_ExtraHeart, "Mutation Extra Heart" },
+            { EffectParticle.HealingParticleQuick_Silent, "Healing Particle Quick (Silent)" },
+            { EffectParticle.ShadowFeintOrigin, "Shadow Feint Origin" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2222,6 +2282,23 @@
             { Favor.BestFriends, "Best Friends" },
             { Favor.LikeFamily, "Like Family" },
             { Favor.SoulMates, "Soul Mates" },
+        };
+
+        public static Dictionary<FishConfig, string> FishConfigTextMap { get; } = new Dictionary<FishConfig, string>()
+        {
+            { FishConfig.Internal_None, string.Empty },
+            { FishConfig.Special_ViciousEel, "Special (Vicious Eel)" },
+            { FishConfig.Special_ParticularlyViciousDorado, "Special (Particularly Vicious Dorado)" },
+            { FishConfig.Special_GhostBass, "Special (Ghost Bass)" },
+            { FishConfig.Special_OldDreadtooth, "Special (Old Dreadtooth)" },
+            { FishConfig.Special_PovusFrog, "Special (Povus Frog)" },
+        };
+
+        public static Dictionary<HangOut, string> HangOutTextMap { get; } = new Dictionary<HangOut, string>()
+        {
+            { HangOut.Internal_None, string.Empty },
+            { HangOut.TeachDanielMurderdark, "“Teach Daniel Murderdark”" },
+            { HangOut.DiscussNAMA, "“Discuss NAMA”" },
         };
 
         public static Dictionary<InteractionFlag, string> InteractionFlagTextMap { get; } = new Dictionary<InteractionFlag, string>()
@@ -3674,6 +3751,63 @@
             { ItemKeyword.WeatherStaff, "Weather Staff" },
             { ItemKeyword.GrowingVegetable, "Growing Vegetable" },
             { ItemKeyword.Rapier, "Rapier" },
+            { ItemKeyword.AnglingBait1, "Angling Bait #1" },
+            { ItemKeyword.AnglingBait2, "Angling Bait #2" },
+            { ItemKeyword.AnglingBait3, "Angling Bait #3" },
+            { ItemKeyword.AnglingBait, "Angling Bait" },
+            { ItemKeyword.AnglingPole, "Angling Pole" },
+            { ItemKeyword.FishSalt, "Fish Salt" },
+            { ItemKeyword.FishSmall, "Fish Small" },
+            { ItemKeyword.FishSmallSalt, "Fish Small Salt" },
+            { ItemKeyword.FishFresh, "Fish Fresh" },
+            { ItemKeyword.FishSmallFresh, "Fish Small Fresh" },
+            { ItemKeyword.FishMedium, "Fish Medium" },
+            { ItemKeyword.FishMediumFresh, "Fish Medium Fresh" },
+            { ItemKeyword.FishMediumSalt, "Fish Medium Salt" },
+            { ItemKeyword.FishLarge, "Fish Large" },
+            { ItemKeyword.FishLargeSalt, "Fish Large Salt" },
+            { ItemKeyword.FishLargeFresh, "Fish Large Fresh" },
+            { ItemKeyword.Minnow, "Minnow" },
+            { ItemKeyword.Carp, "Carp" },
+            { ItemKeyword.Pinfish, "Pinfish" },
+            { ItemKeyword.Bluegill, "Bluegill" },
+            { ItemKeyword.Chub, "Chub" },
+            { ItemKeyword.Oscar, "Oscar" },
+            { ItemKeyword.Papermouth, "Papermouth" },
+            { ItemKeyword.Tilapia, "Tilapia" },
+            { ItemKeyword.Trout, "Trout" },
+            { ItemKeyword.Pompano, "Pompano" },
+            { ItemKeyword.SeaCat, "Sea Cat" },
+            { ItemKeyword.Sunfish, "Sunfish" },
+            { ItemKeyword.Pike, "Pike" },
+            { ItemKeyword.Walleye, "Walleye" },
+            { ItemKeyword.Dorado, "Dorado" },
+            { ItemKeyword.SeaTrout, "Sea Trout" },
+            { ItemKeyword.DockCod, "Dock Cod" },
+            { ItemKeyword.Tench, "Tench" },
+            { ItemKeyword.MahiMahi, "Mahi Mahi" },
+            { ItemKeyword.RedSnapper, "Red Snapper" },
+            { ItemKeyword.SmallmouthBass, "Smallmouth Bass" },
+            { ItemKeyword.RockCarp, "Rock Carp" },
+            { ItemKeyword.Salmon, "Salmon" },
+            { ItemKeyword.RiverSalmon, "River Salmon" },
+            { ItemKeyword.FishExtraLarge, "Fish Extra Large" },
+            { ItemKeyword.FishExtraLargeFresh, "Fish Extra Large Fresh" },
+            { ItemKeyword.RainbowTrout, "Rainbow Trout" },
+            { ItemKeyword.Tigerfish, "Tigerfish" },
+            { ItemKeyword.FilletSalt, "Fillet Salt" },
+            { ItemKeyword.FilletSmall, "Fillet Small" },
+            { ItemKeyword.FilletSmallSalt, "Fillet Small Salt" },
+            { ItemKeyword.FilletFresh, "Fillet Fresh" },
+            { ItemKeyword.FilletSmallFresh, "Fillet Small Fresh" },
+            { ItemKeyword.FilletMedium, "Fillet Medium" },
+            { ItemKeyword.FilletMediumFresh, "Fillet Medium Fresh" },
+            { ItemKeyword.FilletMediumSalt, "Fillet Medium Salt" },
+            { ItemKeyword.FilletLarge, "Fillet Large" },
+            { ItemKeyword.FilletLargeSalt, "Fillet Large Salt" },
+            { ItemKeyword.FilletLargeFresh, "Fillet Large Fresh" },
+            { ItemKeyword.FilletExtraLarge, "Fillet Extra Large" },
+            { ItemKeyword.FilletExtraLargeFresh, "Fillet Extra Large Fresh" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4018,6 +4152,7 @@
             //{ QuestKeyword.GeneticsTraining_Ruminants, "Genetics Training (Ruminants)" },
             { QuestKeyword.PovusNightly, "Povus Nightly" },
             { QuestKeyword.TofurkeyQuest, "Tofurkey Quest" },
+            { QuestKeyword.AnglingNatureSpiritIsHappy, "Angling Nature Spirit Is Happy" },
         };
 
         public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
@@ -4349,6 +4484,7 @@
             { RecipeAction.Perform, "Perform" },
             //{ RecipeAction.BrownAle, "Brown Ale" },
             { RecipeAction.Reset, "Reset" },
+            { RecipeAction.CutBait, "Cut Bait" },
         };
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
@@ -4812,6 +4948,16 @@
             { RecipeItemKey.LeatherArmor, "Leather Armor" },
             { RecipeItemKey.MetalArmor, "Metal Armor" },
             { RecipeItemKey.OrganicArmor, "Organic Armor" },
+            { RecipeItemKey.FilletSmallFresh, "Fillet Small Fresh" },
+            { RecipeItemKey.FilletSmallSalt, "Fillet Small Salt" },
+            { RecipeItemKey.FilletMediumFresh, "Fillet Medium Fresh" },
+            { RecipeItemKey.FilletMediumSalt, "Fillet Medium Salt" },
+            { RecipeItemKey.FilletLargeFresh, "Fillet Large Fresh" },
+            { RecipeItemKey.FilletLargeSalt, "Fillet Large Salt" },
+            { RecipeItemKey.FilletExtraLargeFresh, "Fillet Extra Large Fresh" },
+            { RecipeItemKey.FishSmall, "Fish Small" },
+            { RecipeItemKey.FishMedium, "Fish Medium" },
+            { RecipeItemKey.FishLarge, "Fish Large" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -4923,6 +5069,9 @@
             { SelfPreParticle.TsunamiPreParticles, "Tsunami Pre Particles" },
             { SelfPreParticle.SummonTornado, "Summon Tornado" },
             { SelfPreParticle.ShockingGraspBuildup, "Shocking Grasp Buildup" },
+            { SelfPreParticle.FishingRod, "Fishing Rod" },
+            { SelfPreParticle.ToxinBombExplosion, "Toxin Bomb Explosion" },
+            { SelfPreParticle.MycotoxinExplosion, "Mycotoxin Explosion" },
         };
 
         public static Dictionary<SelfParticle, string> SelfParticleTextMap { get; } = new Dictionary<SelfParticle, string>()
@@ -4956,6 +5105,10 @@
             { SelfParticle.StormEnchant, "Storm Enchant" },
             { SelfParticle.TempestParticles, "Tempest Particles" },
             { SelfParticle.WolfSeeRed, "Wolf-SeeRed" },
+            { SelfParticle.AcidExplosion, "Acid Explosion" },
+            { SelfParticle.HasteExplosion, "Haste Explosion" },
+            { SelfParticle.HealingMist, "Healing Mist" },
+            { SelfParticle.FreezingMist, "Freezing Mist" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()
@@ -5067,6 +5220,7 @@
             { SpecialNpc.LiveNpc_Torana, "Torana" },*/
             { SpecialNpc.LiveNpc_BatInTheHat, "Bat In The Hat" },
             //{ SpecialNpc.LiveNpc_Thedar, "Thedar" },
+            { SpecialNpc.NPC_Ultashk, "Ultashk" },
         };
 
         public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap { get; } = new Dictionary<TargetEffectKeyword, string>()

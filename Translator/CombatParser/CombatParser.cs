@@ -389,6 +389,10 @@ public class CombatParser
                         StringToEnumConversion<CombatKeyword>.SetCustomParsedEnum(CombatKeyword.ImmunityDirect);
                         break;
 
+                    case "Resistance":
+                        AddAssociatedEffect(ability, CombatKeyword.AddDamageResistance, Effect);
+                        break;
+
                     default:
                         Debug.WriteLine($"Additional Effect '{Effect.Name}' for ability '{ability.Name}'");
                         break;
@@ -1017,7 +1021,12 @@ public class CombatParser
                             }
 
                             if (!Name.EndsWith(" (Orc)"))
+                            {
+                                if (FinalMatchingKeyword == AbilityKeyword.WeatherWitching && KeywordList.Contains(AbilityKeyword.SummonedTornado))
+                                    FinalMatchingKeyword = AbilityKeyword.SummonedTornado;
+
                                 Debug.WriteLine($"{Name} has more than one keyword: {KeywordListString}. Selected: {FinalMatchingKeyword}");
+                            }
                         }
 
                         if (KeywordToName.ContainsKey(FinalMatchingKeyword))
@@ -4311,7 +4320,7 @@ public class CombatParser
         new Sentence("If target is not focused on you", CombatKeyword.RequireNoAggro),
         new Sentence("The first melee attacker is knock away", CombatKeyword.ReflectKnockbackOnFirstMelee),
         new Sentence("First attacker is knock back", CombatKeyword.ReflectKnockbackOnFirstMelee),
-        new Sentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
+        //new Sentence("When a melee attack deal damage to you", CombatKeyword.ReflectOnMelee),
         //new Sentence("Melee attackers deal damage to you", CombatKeyword.ReflectOnMelee),
 
         // new Sentence("Melee damagers take", CombatKeyword.ReflectOnMelee),

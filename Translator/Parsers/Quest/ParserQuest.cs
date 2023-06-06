@@ -648,11 +648,12 @@ public class ParserQuest : Parser
             UpdateIconIdFromGenericObjectives(Quest, ref IconId);
             UpdateIconIdFromGenericRewards(Quest, ref IconId);
 
-            Quest.IconId = IconId;
-
-            if (Quest.ObjectIconId == 0)
+            if (IconId == 0)
             {
+                IconId = 2001;
             }
+
+            Quest.IconId = IconId;
 
             Debug.Assert(Quest.ObjectIconId != 0);
             Debug.Assert(Quest.ObjectName.Length > 0);

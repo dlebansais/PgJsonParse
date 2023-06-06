@@ -21,5 +21,6 @@
         TempestFlight,
         WindWard,
         CloudTrick,
+        AnglingMode,
     }
 }

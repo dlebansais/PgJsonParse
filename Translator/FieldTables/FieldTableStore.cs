@@ -73,6 +73,9 @@ public class FieldTableStore
         { "WorksWhileStunned", typeof(bool) },
         { "AbilityGroupName", typeof(string) },
         { "Rank", typeof(int) },
+        { "InventoryKeywordReqErrorMessage", typeof(string) },
+        { "InventoryKeywordReqs", typeof(string[]) },
+        { "AoEIsCenteredOnCaster", typeof(bool) },
     };
 
     public static Dictionary<string, Type> TableAbilityAmmo { get; } = new Dictionary<string, Type>()
@@ -291,6 +294,7 @@ public class FieldTableStore
         { "MOUNTED_TURN_SPEED_WATER_DEEP", typeof(float) },
         { "MOUNTED_TURN_SPEED_WATER_SHALLOW", typeof(float) },
         { "MOUNT_RESILIENCE", typeof(int) },
+        { "MOD_VAULT_SIZE", typeof(float) },
     };
 
     public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
@@ -581,6 +585,8 @@ public class FieldTableStore
         { "InternalName", typeof(string) },
         { "GroupId", typeof(int) },
         { "BehaviorId", typeof(string) },
+        { "AllowedFishingZone", typeof(string) },
+        { "FishConfig", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestObjectiveRequirement { get; } = new Dictionary<string, Type>()
@@ -597,6 +603,7 @@ public class FieldTableStore
         { "PetTypeTag", typeof(string) },
         { "AllowedStates", typeof(string[]) },
         { "Slot", typeof(string) },
+        { "HangOut", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestRewardItem { get; } = new Dictionary<string, Type>()
@@ -709,7 +716,7 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TableReward { get; } = new Dictionary<string, Type>()
     {
-        { "Ability", typeof(string) },
+        { "Ability", typeof(StringOrStringArray) },
         { "BonusToSkill", typeof(string) },
         { "Recipe", typeof(string) },
         { "Notes", typeof(string) },

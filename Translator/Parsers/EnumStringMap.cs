@@ -189,6 +189,7 @@ public class EnumStringMap
         { RecipeAction.ApplyGlamour, "Apply Glamour" },
         { RecipeAction.PerformRitual, "Perform Ritual" },
         { RecipeAction.DrinkNectar, "Drink Nectar" },
+        { RecipeAction.CutBait, "Cut Bait" },
     };
 
     public static readonly Dictionary<RecipeEffect, string> RecipeEffectTable = new Dictionary<RecipeEffect, string>()

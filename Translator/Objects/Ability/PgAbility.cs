@@ -5,15 +5,22 @@
     public class PgAbility : PgObject
     {
         public string? AbilityGroup_Key { get; set; }
+        public int BoolValues { get; set; }
         public string AbilityGroupName { get; set; } = string.Empty;
         public AbilityAnimation Animation { get; set; }
+        public const int AoEIsCenteredOnCasterNotNull = 1 << 28;
+        public const int AoEIsCenteredOnCasterIsTrue = 1 << 29;
+        public bool AoEIsCenteredOnCaster { get { return (BoolValues & (AoEIsCenteredOnCasterNotNull + AoEIsCenteredOnCasterIsTrue)) == (AoEIsCenteredOnCasterNotNull + AoEIsCenteredOnCasterIsTrue); } }
+        public bool? RawAoEIsCenteredOnCaster { get { return ((BoolValues & AoEIsCenteredOnCasterNotNull) != 0) ? (BoolValues & AoEIsCenteredOnCasterIsTrue) != 0 : null; } }
+        public void SetAoEIsCenteredOnCaster(bool value) { BoolValues |= (BoolValues & ~(AoEIsCenteredOnCasterNotNull + AoEIsCenteredOnCasterIsTrue)) | ((value ? AoEIsCenteredOnCasterIsTrue : 0) + AoEIsCenteredOnCasterNotNull); }
+        public float AoERange { get { return RawAoERange.HasValue ? RawAoERange.Value : 0; } }
+        public float? RawAoERange { get; set; }
         public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaPowerCostList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaResetTimeList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaWorksWhileStunnedList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatModPowerCostList { get; set; } = new PgAttributeCollection();
-        public int BoolValues { get; set; }
         public const int CanBeOnSidebarNotNull = 1 << 0;
         public const int CanBeOnSidebarIsTrue = 1 << 1;
         public bool CanBeOnSidebar { get { return (BoolValues & (CanBeOnSidebarNotNull + CanBeOnSidebarIsTrue)) == (CanBeOnSidebarNotNull + CanBeOnSidebarIsTrue); } }
@@ -87,6 +94,8 @@
         public uint? RawSelfPreParticleColor0 { get; set; }
         public uint SelfPreParticleColor1 { get { return RawSelfPreParticleColor1.HasValue ? RawSelfPreParticleColor1.Value : 0; } }
         public uint? RawSelfPreParticleColor1 { get; set; }
+        public uint SelfPreParticleAoEColor0 { get { return RawSelfPreParticleAoEColor0.HasValue ? RawSelfPreParticleAoEColor0.Value : 0; } }
+        public uint? RawSelfPreParticleAoEColor0 { get; set; }
         public uint AbilityTargetParticleColor0 { get { return RawAbilityTargetParticleColor0.HasValue ? RawAbilityTargetParticleColor0.Value : 0; } }
         public uint? RawAbilityTargetParticleColor0 { get; set; }
         public uint AbilityTargetParticleColor1 { get { return RawAbilityTargetParticleColor1.HasValue ? RawAbilityTargetParticleColor1.Value : 0; } }
@@ -150,6 +159,8 @@
         public void SetWorksWhileStunned(bool value) { BoolValues |= (BoolValues & ~(WorksWhileStunnedNotNull + WorksWhileStunnedIsTrue)) | ((value ? WorksWhileStunnedIsTrue : 0) + WorksWhileStunnedNotNull); }
         public int Rank { get { return RawRank.HasValue ? RawRank.Value : 0; } }
         public int? RawRank { get; set; }
+        public string InventoryKeywordReqErrorMessage { get; set; } = string.Empty;
+        public List<AbilityItemKeyword> InventoryKeywordReqList { get; set; } = new List<AbilityItemKeyword>();
 
         public int FriendlyIconId { get; set; }
 

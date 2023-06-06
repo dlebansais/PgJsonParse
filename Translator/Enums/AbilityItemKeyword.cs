@@ -47,6 +47,7 @@
         form_Fox,
         Darkcaster,
         WeatherStaff,
+        AnglingPole,
     }
 #pragma warning restore SA1300 // Element should begin with upper-case letter
 }

@@ -58,5 +58,6 @@
         Perform,
         //BrownAle,
         Reset,
+        CutBait,
     }
 }

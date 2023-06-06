@@ -316,14 +316,14 @@ public class ParserSkill : Parser
         {
             int Level = Reward.RewardLevel;
             List<Race> RaceRestrictionList = Reward.RaceRestrictionList;
-            string? AbilityKey = Reward.Ability_Key;
+            string[]? AbilityKeys = Reward.Ability_Keys;
             string? BonusLevelSkillKey = Reward.BonusLevelSkill_Key;
             string? RecipeKey = Reward.Recipe_Key;
             string Notes = Reward.Notes;
 
-            if (AbilityKey != null)
+            if (AbilityKeys != null)
             {
-                PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardAbility() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Ability_Key = AbilityKey };
+                PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardAbility() { RawLevel = Level, RaceRestrictionList = RaceRestrictionList, Ability_Keys = AbilityKeys };
 
                 ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
                 item.SkillAdvancementList.Add(NewSkillAdvancement);

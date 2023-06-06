@@ -25,7 +25,7 @@ public class Generate
         {
             string Folder = Path.GetFileName(FilePath);
 
-            if (Folder == "net48" || Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
+            if (Folder == "net481" || Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
                 FilePath = Path.GetDirectoryName(FilePath);
             else
                 break;
@@ -483,7 +483,14 @@ public class Generate
             object PropertyValue = Property.GetValue(item);
             string ValueString = GetValueString(PropertyType, PropertyValue, objectList);
 
-            if (ValueString != "null" && ValueString != "\"\"" && ValueString != "0" && ValueString != "false")
+            bool IsNullable = false;
+            if (PropertyType.IsGenericType)
+            {
+                Type GenericType = PropertyType.GetGenericTypeDefinition();
+                IsNullable = GenericType.Name == "Nullable`1";
+            }
+
+            if (ValueString != "null" && ValueString != "\"\"" && ((ValueString != "0" && ValueString != "false") || IsNullable))
                 writer.WriteLine($"                    {PropertyName} = {ValueString},");
         }
     }
@@ -562,28 +569,6 @@ public class Generate
         Writer.WriteLine($"                                             {KeyValue}, ");
     }
 
-    private static void WriteItemToDictionary(List<object> objectList, int objectIndex)
-    {
-        object Item = objectList[objectIndex];
-        Type Type = Item.GetType();
-
-        PropertyInfo Property = Type.GetProperty("Key");
-        if (Property == null || Property.PropertyType != typeof(string))
-            return;
-
-        string Key = (string)Property.GetValue(Item);
-
-        string KeyValue = GetStringValueString(Key);
-        string LinkValue = ToObjectName(objectIndex);
-
-        Debug.Assert(WriterTable.ContainsKey(Type));
-        StreamWriter Writer = WriterTable[Type];
-
-        Writer.WriteLine($"                    case {KeyValue}:");
-        Writer.WriteLine($"                        Add_{LinkValue}(Table, key);");
-        Writer.WriteLine($"                        break;");
-    }
-
     private static void GetItemIndexContent(List<object> objectList, int objectIndex, Dictionary<Type, List<string>> typeIndexTable)
     {
         object Item = objectList[objectIndex];
@@ -638,6 +623,13 @@ public class Generate
                 }
                 else if (StringValue != null)
                     content += GeStringIndexContent(StringValue);
+            }
+            else if (PropertyType == typeof(string[]))
+            {
+                string[] ObjectCollection = (string[])Property.GetValue(item);
+                Type ItemType = typeof(string);
+
+                GetObjectItemContent(recursion, ItemType, ObjectCollection, ref content);
             }
             else if (PropertyType.BaseType == typeof(PgObject))
             {
@@ -1583,6 +1575,8 @@ public class Generate
             return GetDictionaryValueString(type, AsDictionary, objectList);
         else if (type.Name.StartsWith("List"))
             return GetListValueString(type, (IList)value, objectList);
+        else if (value is string[] AsStringArray)
+            return GetStringArrayString(AsStringArray, objectList);
         else if (value is ICollection AsCollection)
             return GetCollectionValueString(type, AsCollection, objectList);
         else if (value is PgFavorSlotPair AsFavorSlotPair)
@@ -1593,6 +1587,12 @@ public class Generate
             string RawColor1String = AsPgRecipeParticle.RawColor1 is not null ? $", RawColor1 = {AsPgRecipeParticle.Color1}" : string.Empty;
             string RawLightColorString = AsPgRecipeParticle.RawLightColor is not null ? $", RawLightColor = {AsPgRecipeParticle.LightColor}" : string.Empty;
             return $"new PgRecipeParticle() {{ Particle = RecipeParticle.{AsPgRecipeParticle.Particle}{RawColor0String}{RawColor1String}{RawLightColorString} }}";
+        }
+        else if (value is PgEffectParticle AsPgEffectParticle)
+        {
+            string RawAoEColorString = AsPgEffectParticle.RawAoEColor is not null ? $", RawAoEColor = {AsPgEffectParticle.RawAoEColor}" : string.Empty;
+            string RawAoERangeString = AsPgEffectParticle.RawAoERange is not null ? $", RawAoERange = {AsPgEffectParticle.RawAoERange}" : string.Empty;
+            return $"new PgEffectParticle() {{ Particle = EffectParticle.{AsPgEffectParticle.Particle}{RawAoEColorString}{RawAoERangeString} }}";
         }
         else
             throw new ArgumentException();
@@ -1660,6 +1660,25 @@ public class Generate
         }
 
         Result += $" {{ {ListContentString} }}";
+
+        return Result;
+    }
+
+    private static string GetStringArrayString(string[] collection, List<object> objectList)
+    {
+        string Result = $"new string[]";
+
+        string CollectionContentString = string.Empty;
+
+        foreach (object Item in collection)
+        {
+            if (CollectionContentString.Length > 0)
+                CollectionContentString += ", ";
+
+            CollectionContentString += GetValueString(Item.GetType(), Item, objectList);
+        }
+
+        Result += $" {{ {CollectionContentString} }}";
 
         return Result;
     }

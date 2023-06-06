@@ -22,6 +22,7 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.PetCount, FinishItemPetCount },
         { QuestObjectiveRequirementType.EntityPhysicalState, FinishEntityPhysicalState },
         { QuestObjectiveRequirementType.EquipmentSlotEmpty, FinishEquipmentSlotEmpty },
+        { QuestObjectiveRequirementType.HangOutCompleted, FinishHangOutCompleted },
     };
 
     private static Dictionary<QuestObjectiveRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveRequirementType, List<string>>()
@@ -34,6 +35,7 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.PetCount, new List<string>() { "T", "MinCount", "MaxCount", "PetTypeTag" } },
         { QuestObjectiveRequirementType.EntityPhysicalState, new List<string>() { "T", "AllowedStates" } },
         { QuestObjectiveRequirementType.EquipmentSlotEmpty, new List<string>() { "T", "Slot" } },
+        { QuestObjectiveRequirementType.HangOutCompleted, new List<string>() { "T", "HangOut" } },
     };
 
     private static Dictionary<QuestObjectiveRequirementType, List<string>> HandledTable = new Dictionary<QuestObjectiveRequirementType, List<string>>();
@@ -427,6 +429,49 @@ public class ParserQuestObjectiveRequirement : Parser
                         break;
                     case "Slot":
                         Result = StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => NewItem.Slot = valueEnum, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishHangOutCompleted(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestObjectiveRequirementHangOutCompleted NewItem = new PgQuestObjectiveRequirementHangOutCompleted();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "HangOut":
+                        Result = StringToEnumConversion<HangOut>.SetEnum((HangOut valueEnum) => NewItem.HangOut = valueEnum, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

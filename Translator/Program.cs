@@ -61,6 +61,7 @@ public class Program
         AddHardCodedAttribute(PgAttribute.SHOW_FAIRYENERGY_INDICATORS);
         AddHardCodedAttribute(PgAttribute.BOOST_ANIMALPETHEAL_SENDER);
         AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
+        AddHardCodedAttribute(PgAttribute.MOD_VAULT_SIZE);
 
         if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
             return -1;
@@ -82,6 +83,22 @@ public class Program
 
         if (!ParseFile(Version, "npcs", typeof(PgNpc), FileType.EmbeddedObjects))
             return -1;
+
+        /*AddHardCodedNpc(PgNpc.NPC_Ultashk);
+        AddHardCodedNpc(PgNpc.NPC_GoblinDoorGuard);
+        AddHardCodedNpc(PgNpc.NPC_Glortok);
+        AddHardCodedNpc(PgNpc.BeeHiveA);
+        AddHardCodedNpc(PgNpc.BeeHiveB);
+        AddHardCodedNpc(PgNpc.BeeHiveC);
+        AddHardCodedNpc(PgNpc.BeeHiveD);
+        AddHardCodedNpc(PgNpc.BeeHiveE);
+        AddHardCodedNpc(PgNpc.BeeHiveF);
+        AddHardCodedNpc(PgNpc.BeeHiveG);
+        AddHardCodedNpc(PgNpc.BeeHiveH);
+        AddHardCodedNpc(PgNpc.BeeHiveI);
+        AddHardCodedNpc(PgNpc.BeeHiveJ);
+        AddHardCodedNpc(PgNpc.BeeHiveK);
+        AddHardCodedNpc(PgNpc.BeeHiveL);*/
 
         if (!ParseFile(Version, "playertitles", typeof(PgPlayerTitle), FileType.EmbeddedObjects))
             return -1;
@@ -186,6 +203,14 @@ public class Program
         ParsingContext Context = new ParsingContext(MainParser.Parsers[typeof(PgAttribute)], typeof(PgAttribute), staticAttribute, FieldTableStore.Tables[typeof(PgAttribute)], staticAttribute.Key);
 
         AttributeContextTable.Add(staticAttribute.Key, Context);
+    }
+
+    private static void AddHardCodedNpc(PgNpc staticNpc)
+    {
+        Dictionary<string, ParsingContext> AttributeContextTable = ParsingContext.ObjectKeyTable[typeof(PgNpc)];
+        ParsingContext Context = new ParsingContext(MainParser.Parsers[typeof(PgNpc)], typeof(PgNpc), staticNpc, FieldTableStore.Tables[typeof(PgNpc)], staticNpc.Key);
+
+        AttributeContextTable.Add(staticNpc.Key, Context);
     }
 
     public static string VersionPath { get; set; } = string.Empty;
@@ -674,6 +699,15 @@ public class Program
                 string? ReferenceKey = Property.GetValue(nestedItem) as string;
                 if (ReferenceKey is not null)
                     AddLinkKey(linkKey, ReferenceKey, objectTable);
+            }
+            else if (PropertyType == typeof(string[]) && Property.Name.EndsWith("_Keys"))
+            {
+                string[]? ReferenceKeys = Property.GetValue(nestedItem) as string[];
+                if (ReferenceKeys is not null)
+                {
+                    foreach (string ReferenceKey in ReferenceKeys)
+                        AddLinkKey(linkKey, ReferenceKey, objectTable);
+                }
             }
             else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
             {
@@ -1689,18 +1723,18 @@ public class Program
             {
                 PgQuest Quest = (PgQuest)Entry.Value.Item;
 
-                if (Quest.Name.Contains("Learn Oritania"))
-                {
-                }
-
                 if (Quest.KeywordList.Contains(QuestKeyword.EventQuest) ||
                     Quest.KeywordList.Contains(QuestKeyword.WorkOrder))
                     continue;
 
                 if (Quest.IsGuildQuest)
                     continue;
-                if (Quest.IsAutoWrapUp)
-                    continue;
+
+                if (!Quest.Name.StartsWith("Angling:"))
+                {
+                    if (Quest.IsAutoWrapUp)
+                        continue;
+                }
 
                 if (Quest.ReuseTime != TimeSpan.Zero)
                     continue;
@@ -1757,7 +1791,7 @@ public class Program
             {
                 foreach (PgQuest Quest in Entry.Value)
                     if (!KnownUniqueQuests[Area].ContainsKey(Quest.Name))
-                        Debug.WriteLine($"UNKNOWN QUEST: {Quest.Name}");
+                        Debug.WriteLine($"UNKNOWN QUEST: {Quest.Name}, Area: {Area}");
             }
         }
     }
@@ -1829,6 +1863,9 @@ public class Program
             MapAreaName.Eltibule, new Dictionary<string, QuestSpecifics>()
             {
                 { "An Experiment Involving Rats", QuestSpecifics.None },
+                { "Angling: Poison Slug Infestation", QuestSpecifics.None },
+                { "Angling: The Scary Pike", QuestSpecifics.None },
+                { "Chasing Dalvos Through the Nexus", QuestSpecifics.None },
                 { "Chasing Dalvos to Eltibule", QuestSpecifics.None },
                 { "Cocktails for Thimble Pete", QuestSpecifics.None },
                 { "Collect Giant Snail Shells", QuestSpecifics.None },
@@ -1858,6 +1895,7 @@ public class Program
                 { "Kill Spiders", QuestSpecifics.None },
                 { "Lydia's Ghost", QuestSpecifics.None },
                 { "Mandrake Root", QuestSpecifics.None },
+                { "Meet with Jesina and Sarina", QuestSpecifics.None },
                 { "Milk!", QuestSpecifics.None },
                 { "Muntok Peppercorns", QuestSpecifics.None },
                 { "Mystery Rocks", QuestSpecifics.None },
@@ -2012,6 +2050,7 @@ public class Program
             MapAreaName.KurMountains, new Dictionary<string, QuestSpecifics>()
             {
                 { "A Bench For Writing", QuestSpecifics.None },
+                { "Angling: Frozen... For Now", QuestSpecifics.None },
                 { "Anomalous Fire Sheep", QuestSpecifics.None },
                 { "Arrows for the Occasion", QuestSpecifics.None },
                 { "Bear Massacre", QuestSpecifics.None },
@@ -2225,6 +2264,8 @@ public class Program
             MapAreaName.Serbule, new Dictionary<string, QuestSpecifics>()
             {
                 { "A Soothing Balm", QuestSpecifics.None },
+                { "Angling: Junk Removal", QuestSpecifics.None },
+                { "Angling: Invasive Species", QuestSpecifics.None },
                 { "Arrowhead Delivery", QuestSpecifics.None },
                 { "Bacon for Joeh", QuestSpecifics.None },
                 { "Bandage for Blanche", QuestSpecifics.None },
@@ -2325,6 +2366,7 @@ public class Program
                 { "A Crop of Onions", QuestSpecifics.None },
                 { "A Scray Stinger", QuestSpecifics.None },
                 { "All The Fish You Could Want", QuestSpecifics.None },
+                { "Angling: Scray Overpopulation", QuestSpecifics.None },
                 { "Attacking Ranalon Farms", QuestSpecifics.None },
                 { "Boar Tusks For Bardic Lore", QuestSpecifics.None },
                 { "Breaded Perch with Onions", QuestSpecifics.None },
@@ -2380,8 +2422,10 @@ public class Program
             MapAreaName.SunVale, new Dictionary<string, QuestSpecifics>()
             {
                 { "A Brighter Glow", QuestSpecifics.None },
+                { "A Dark Surprise", QuestSpecifics.None },
                 { "Analyzing Antler", QuestSpecifics.FaeOnly },
                 { "Analyzing Chitin", QuestSpecifics.FaeOnly },
+                { "Angling: The Overgrown Clownfish", QuestSpecifics.None },
                 { "Apple Juice", QuestSpecifics.None },
                 { "Bananas!", QuestSpecifics.None },
                 { "Blasted Vines", QuestSpecifics.None },

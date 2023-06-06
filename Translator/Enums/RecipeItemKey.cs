@@ -137,5 +137,15 @@
         LeatherArmor,
         MetalArmor,
         OrganicArmor,
+        FilletSmallFresh,
+        FilletSmallSalt,
+        FilletMediumFresh,
+        FilletMediumSalt,
+        FilletLargeFresh,
+        FilletLargeSalt,
+        FilletExtraLargeFresh,
+        FishSmall,
+        FishMedium,
+        FishLarge,
     }
 }

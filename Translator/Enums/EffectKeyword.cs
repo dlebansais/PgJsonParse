@@ -335,5 +335,7 @@
         DelugeStun,
         WeatherWeaknessA,
         WeatherWeaknessB,
+        Angling,
+        AnglingMode,
     }
 }

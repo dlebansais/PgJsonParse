@@ -958,7 +958,7 @@ public class ParserRecipe : Parser
         RecipeParticle Particle;
 
         if (!(value is string ValueString))
-            return Program.ReportFailure($"Value '{value}' was expected to be an int");
+            return Program.ReportFailure($"Value '{value}' was expected to be a string");
 
         int StartIndex = ValueString.IndexOf('(');
         if (StartIndex >= 0)

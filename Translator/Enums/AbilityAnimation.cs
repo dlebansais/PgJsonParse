@@ -204,5 +204,13 @@
         Attack_WeatherWitch_Squall,
         Attack_Skulk,
         Attack_Howl,
+        Fish,
+        Attack_Fishing_Reel,
+        Attack_QuickHowl,
+        Attack_BattleChemistry_Inject_Generic,
+        Attack_BattleChemistry_TriggerGolem,
+        Attack_BattleChemistry_ToxicIrritant,
+        PlayFairyChimesFast,
+        PlayFairyChimesSlow,
     }
 }

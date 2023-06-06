@@ -12,8 +12,8 @@
     <Product />
     <Description>PG json reader</Description>
     <Copyright>Copyright © 2019 David Le Bansais</Copyright>
-    <AssemblyVersion>1.1.0.4846</AssemblyVersion>
-    <FileVersion>1.1.0.4816</FileVersion>
+    <AssemblyVersion>1.1.0.4847</AssemblyVersion>
+    <FileVersion>1.1.0.4817</FileVersion>
     <RepositoryUrl>https://github.com/dlebansais/PgJsonParse</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>PgJsonReader</RootNamespace>
