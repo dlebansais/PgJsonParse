@@ -68,5 +68,6 @@
         Glamourize,
         CollectCredits,
         EmptyAllBottles,
+        Chug,
     }
 }

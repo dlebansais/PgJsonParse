@@ -337,5 +337,6 @@
         WeatherWeaknessB,
         Angling,
         AnglingMode,
+        SuperBuffs,
     }
 }

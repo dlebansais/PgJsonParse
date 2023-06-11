@@ -3980,6 +3980,7 @@ public class CombatParser
         //new Sentence("Gain %f direct #S Damage", CombatKeyword.DamageBoost),
         new Sentence("Critical hit deal %f damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits }),
         new Sentence("Deal %f damage", CombatKeyword.DamageBoost),
+        new Sentence("Deal %f more damage", CombatKeyword.DamageBoost),
         new Sentence("Plus %f more damage", CombatKeyword.DamageBoost),
         new Sentence("Pet take %f #D damage", CombatKeyword.PetImmolation),
         new Sentence("Pet bleed for %f #D damage", CombatKeyword.PetImmolation),

@@ -21,5 +21,7 @@
         FishingRod,
         ToxinBombExplosion,
         MycotoxinExplosion,
+        AcidExplosion,
+        FreezingMist,
     }
 }

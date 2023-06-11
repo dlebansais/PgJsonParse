@@ -1723,6 +1723,7 @@
             { EffectKeyword.WeatherWeaknessB, "Weather Weakness B" },
             { EffectKeyword.Angling, "Angling" },
             { EffectKeyword.AnglingMode, "Angling Mode" },
+            { EffectKeyword.SuperBuffs, "Super Buffs" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -3808,6 +3809,7 @@
             { ItemKeyword.FilletLargeFresh, "Fillet Large Fresh" },
             { ItemKeyword.FilletExtraLarge, "Fillet Extra Large" },
             { ItemKeyword.FilletExtraLargeFresh, "Fillet Extra Large Fresh" },
+            { ItemKeyword.SuperBuffs, "Super Buffs" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -3922,6 +3924,7 @@
             { ItemUseVerb.Glamourize, "Glamourize" },
             { ItemUseVerb.CollectCredits, "Collect Credits" },
             { ItemUseVerb.EmptyAllBottles, "Empty All Bottles" },
+            { ItemUseVerb.Chug, "Chug" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap { get; } = new Dictionary<LoreBookKeyword, string>()
@@ -5072,6 +5075,8 @@
             { SelfPreParticle.FishingRod, "Fishing Rod" },
             { SelfPreParticle.ToxinBombExplosion, "Toxin Bomb Explosion" },
             { SelfPreParticle.MycotoxinExplosion, "Mycotoxin Explosion" },
+            { SelfPreParticle.AcidExplosion, "Acid Explosion" },
+            { SelfPreParticle.FreezingMist, "Freezing Mist" },
         };
 
         public static Dictionary<SelfParticle, string> SelfParticleTextMap { get; } = new Dictionary<SelfParticle, string>()
@@ -5105,10 +5110,10 @@
             { SelfParticle.StormEnchant, "Storm Enchant" },
             { SelfParticle.TempestParticles, "Tempest Particles" },
             { SelfParticle.WolfSeeRed, "Wolf-SeeRed" },
-            { SelfParticle.AcidExplosion, "Acid Explosion" },
+            //{ SelfParticle.AcidExplosion, "Acid Explosion" },
             { SelfParticle.HasteExplosion, "Haste Explosion" },
             { SelfParticle.HealingMist, "Healing Mist" },
-            { SelfParticle.FreezingMist, "Freezing Mist" },
+            //{ SelfParticle.FreezingMist, "Freezing Mist" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()

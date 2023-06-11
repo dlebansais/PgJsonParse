@@ -31,9 +31,9 @@
         StormEnchant,
         TempestParticles,
         WolfSeeRed,
-        AcidExplosion,
+        //AcidExplosion,
         HasteExplosion,
         HealingMist,
-        FreezingMist,
+        //FreezingMist,
     }
 }

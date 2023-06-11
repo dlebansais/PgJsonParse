@@ -1233,5 +1233,6 @@
         FilletLargeFresh,
         FilletExtraLarge,
         FilletExtraLargeFresh,
+        SuperBuffs,
     }
 }
