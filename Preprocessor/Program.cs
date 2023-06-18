@@ -17,8 +17,11 @@ internal class Program
         /*Preprocess<RawAbilityDictionary>("abilities");
         Preprocess<RawAdvancementTableDictionary>("advancementtables");
         Preprocess<RawAIDictionary>("ai");
-        Preprocess<RawAreaDictionary>("areas");*/
+        Preprocess<RawAreaDictionary>("areas");
         Preprocess<RawAttributeDictionary>("attributes");
+        Preprocess<RawDirectedGoalDictionary>("directedgoals");
+        Preprocess<RawEffectDictionary>("effects");*/
+        Preprocess<RawItemDictionary>("items");
 
         Debug.WriteLine("Done");
     }
@@ -48,6 +51,10 @@ internal class Program
             new RawAIAbilityDictionaryJsonConverter(),
             new RawAreaDictionaryJsonConverter(),
             new RawAttributeDictionaryJsonConverter(),
+            new RawDirectedGoalDictionaryJsonConverter(),
+            new RawEffectDictionaryJsonConverter(),
+            new RawItemDictionaryJsonConverter(),
+            new RawSkillRequirementDictionaryJsonConverter(),
         };
 
         JsonSerializerOptions ReadOptions = new();

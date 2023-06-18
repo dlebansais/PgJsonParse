@@ -9,5 +9,6 @@ internal class RawAdvancementTable
     }
 
     public string Name { get; set; }
+    
     public RawAdvancementDictionary Levels { get; set; }
 }

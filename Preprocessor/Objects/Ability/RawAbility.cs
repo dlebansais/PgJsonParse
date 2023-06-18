@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿namespace Preprocessor;
 
-namespace Preprocessor;
+using System.Text.Json.Serialization;
 
 internal class RawAbility
 {
