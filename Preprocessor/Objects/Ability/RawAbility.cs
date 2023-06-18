@@ -1,7 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System.Text.Json.Serialization;
-
 internal class RawAbility
 {
     public RawAbility(RawAbility1 fromRawAbility1)
@@ -58,7 +56,7 @@ internal class RawAbility
         SelfPreParticle = fromRawAbility1.SelfPreParticle;
         SharesResetTimerWith = fromRawAbility1.SharesResetTimerWith;
         Skill = fromRawAbility1.Skill;
-        SpecialCasterRequirements = fromRawAbility1.SpecialCasterRequirements is null ? null : new RawRequirement[] { fromRawAbility1.SpecialCasterRequirements };
+        SpecialCasterRequirements = Preprocessor.ToSingleOrMultiple<RawRequirement>(fromRawAbility1.SpecialCasterRequirements, out SpecialCasterRequirementsIsSingle);
         SpecialCasterRequirementsErrorMessage = fromRawAbility1.SpecialCasterRequirementsErrorMessage;
         SpecialInfo = fromRawAbility1.SpecialInfo;
         SpecialTargetingTypeReq = fromRawAbility1.SpecialTargetingTypeReq;
@@ -72,80 +70,6 @@ internal class RawAbility
         WorksWhileFalling = fromRawAbility1.WorksWhileFalling;
         WorksWhileMounted = fromRawAbility1.WorksWhileMounted;
         WorksWhileStunned = fromRawAbility1.WorksWhileStunned;
-
-        SpecialCasterRequirementsIsSingle = true;
-    }
-
-    public RawAbility(RawAbility2 fromRawAbility2)
-    {
-        AbilityGroup = fromRawAbility2.AbilityGroup;
-        AbilityGroupName = fromRawAbility2.AbilityGroupName;
-        AmmoConsumeChance = fromRawAbility2.AmmoConsumeChance;
-        AmmoDescription = fromRawAbility2.AmmoDescription;
-        AmmoKeywords = fromRawAbility2.AmmoKeywords;
-        AmmoStickChance = fromRawAbility2.AmmoStickChance;
-        Animation = fromRawAbility2.Animation;
-        AoEIsCenteredOnCaster = fromRawAbility2.AoEIsCenteredOnCaster;
-        AttributesThatDeltaDelayLoopTime = fromRawAbility2.AttributesThatDeltaDelayLoopTime;
-        AttributesThatDeltaPowerCost = fromRawAbility2.AttributesThatDeltaPowerCost;
-        AttributesThatDeltaResetTime = fromRawAbility2.AttributesThatDeltaResetTime;
-        AttributesThatDeltaWorksWhileStunned = fromRawAbility2.AttributesThatDeltaWorksWhileStunned;
-        AttributesThatModAmmoConsumeChance = fromRawAbility2.AttributesThatModAmmoConsumeChance;
-        AttributesThatModPowerCost = fromRawAbility2.AttributesThatModPowerCost;
-        CanBeOnSidebar = fromRawAbility2.CanBeOnSidebar;
-        CanSuppressMonsterShout = fromRawAbility2.CanSuppressMonsterShout;
-        CanTargetUntargetableEnemies = fromRawAbility2.CanTargetUntargetableEnemies;
-        CausesOfDeath = fromRawAbility2.CausesOfDeath;
-        CombatRefreshBaseAmount = fromRawAbility2.CombatRefreshBaseAmount;
-        Costs = fromRawAbility2.Costs;
-        DamageType = fromRawAbility2.DamageType;
-        DelayLoopIsAbortedIfAttacked = fromRawAbility2.DelayLoopIsAbortedIfAttacked;
-        DelayLoopIsOnlyUsedInCombat = fromRawAbility2.DelayLoopIsOnlyUsedInCombat;
-        DelayLoopMessage = fromRawAbility2.DelayLoopMessage;
-        DelayLoopTime = fromRawAbility2.DelayLoopTime;
-        Description = fromRawAbility2.Description;
-        EffectKeywordsIndicatingEnabled = fromRawAbility2.EffectKeywordsIndicatingEnabled;
-        ExtraKeywordsForTooltips = fromRawAbility2.ExtraKeywordsForTooltips;
-        IconID = fromRawAbility2.IconID;
-        IgnoreEffectErrors = fromRawAbility2.IgnoreEffectErrors;
-        InternalAbility = fromRawAbility2.InternalAbility;
-        InternalName = fromRawAbility2.InternalName;
-        InventoryKeywordReqErrorMessage = fromRawAbility2.InventoryKeywordReqErrorMessage;
-        InventoryKeywordReqs = fromRawAbility2.InventoryKeywordReqs;
-        IsCosmeticPet = fromRawAbility2.IsCosmeticPet;
-        IsHarmless = fromRawAbility2.IsHarmless;
-        ItemKeywordReqErrorMessage = fromRawAbility2.ItemKeywordReqErrorMessage;
-        ItemKeywordReqs = fromRawAbility2.ItemKeywordReqs;
-        Keywords = fromRawAbility2.Keywords;
-        Level = fromRawAbility2.Level;
-        Name = fromRawAbility2.Name;
-        PetTypeTagReq = fromRawAbility2.PetTypeTagReq;
-        PetTypeTagReqMax = fromRawAbility2.PetTypeTagReqMax;
-        Prerequisite = fromRawAbility2.Prerequisite;
-        Projectile = fromRawAbility2.Projectile;
-        PvE = fromRawAbility2.PvE is null ? null : new RawPvEAbility(fromRawAbility2.PvE);
-        Rank = fromRawAbility2.Rank is null ? null : int.Parse(fromRawAbility2.Rank);
-        ResetTime = fromRawAbility2.ResetTime;
-        SelfParticle = fromRawAbility2.SelfParticle;
-        SelfPreParticle = fromRawAbility2.SelfPreParticle;
-        SharesResetTimerWith = fromRawAbility2.SharesResetTimerWith;
-        Skill = fromRawAbility2.Skill;
-        SpecialCasterRequirements = fromRawAbility2.SpecialCasterRequirements;
-        SpecialCasterRequirementsErrorMessage = fromRawAbility2.SpecialCasterRequirementsErrorMessage;
-        SpecialInfo = fromRawAbility2.SpecialInfo;
-        SpecialTargetingTypeReq = fromRawAbility2.SpecialTargetingTypeReq;
-        Target = fromRawAbility2.Target;
-        TargetEffectKeywordReq = fromRawAbility2.TargetEffectKeywordReq;
-        TargetParticle = fromRawAbility2.TargetParticle;
-        TargetTypeTagReq = fromRawAbility2.TargetTypeTagReq;
-        UpgradeOf = fromRawAbility2.UpgradeOf;
-        WorksInCombat = fromRawAbility2.WorksInCombat;
-        WorksUnderwater = fromRawAbility2.WorksUnderwater;
-        WorksWhileFalling = fromRawAbility2.WorksWhileFalling;
-        WorksWhileMounted = fromRawAbility2.WorksWhileMounted;
-        WorksWhileStunned = fromRawAbility2.WorksWhileStunned;
-
-        SpecialCasterRequirementsIsSingle = false;
     }
 
     public string? AbilityGroup { get; set; }
@@ -271,7 +195,7 @@ internal class RawAbility
         Result.SelfPreParticle = SelfPreParticle;
         Result.SharesResetTimerWith = SharesResetTimerWith;
         Result.Skill = Skill;
-        Result.SpecialCasterRequirements = SpecialCasterRequirements is null || SpecialCasterRequirements.Length == 0 ? null : SpecialCasterRequirements[0];
+        Result.SpecialCasterRequirements = Preprocessor.FromSingleOrMultiple(SpecialCasterRequirements, SpecialCasterRequirementsIsSingle);
         Result.SpecialCasterRequirementsErrorMessage = SpecialCasterRequirementsErrorMessage;
         Result.SpecialInfo = SpecialInfo;
         Result.SpecialTargetingTypeReq = SpecialTargetingTypeReq;
@@ -289,80 +213,5 @@ internal class RawAbility
         return Result;
     }
 
-    public RawAbility2 ToRawAbility2()
-    {
-        RawAbility2 Result = new();
-
-        Result.AbilityGroup = AbilityGroup;
-        Result.AbilityGroupName = AbilityGroupName;
-        Result.AmmoConsumeChance = AmmoConsumeChance;
-        Result.AmmoDescription = AmmoDescription;
-        Result.AmmoKeywords = AmmoKeywords;
-        Result.AmmoStickChance = AmmoStickChance;
-        Result.Animation = Animation;
-        Result.AoEIsCenteredOnCaster = AoEIsCenteredOnCaster;
-        Result.AttributesThatDeltaDelayLoopTime = AttributesThatDeltaDelayLoopTime;
-        Result.AttributesThatDeltaPowerCost = AttributesThatDeltaPowerCost;
-        Result.AttributesThatDeltaResetTime = AttributesThatDeltaResetTime;
-        Result.AttributesThatDeltaWorksWhileStunned = AttributesThatDeltaWorksWhileStunned;
-        Result.AttributesThatModAmmoConsumeChance = AttributesThatModAmmoConsumeChance;
-        Result.AttributesThatModPowerCost = AttributesThatModPowerCost;
-        Result.CanBeOnSidebar = CanBeOnSidebar;
-        Result.CanSuppressMonsterShout = CanSuppressMonsterShout;
-        Result.CanTargetUntargetableEnemies = CanTargetUntargetableEnemies;
-        Result.CausesOfDeath = CausesOfDeath;
-        Result.CombatRefreshBaseAmount = CombatRefreshBaseAmount;
-        Result.Costs = Costs;
-        Result.DamageType = DamageType;
-        Result.DelayLoopIsAbortedIfAttacked = DelayLoopIsAbortedIfAttacked;
-        Result.DelayLoopIsOnlyUsedInCombat = DelayLoopIsOnlyUsedInCombat;
-        Result.DelayLoopMessage = DelayLoopMessage;
-        Result.DelayLoopTime = DelayLoopTime;
-        Result.Description = Description;
-        Result.EffectKeywordsIndicatingEnabled = EffectKeywordsIndicatingEnabled;
-        Result.ExtraKeywordsForTooltips = ExtraKeywordsForTooltips;
-        Result.IconID = IconID;
-        Result.IgnoreEffectErrors = IgnoreEffectErrors;
-        Result.InternalAbility = InternalAbility;
-        Result.InternalName = InternalName;
-        Result.InventoryKeywordReqErrorMessage = InventoryKeywordReqErrorMessage;
-        Result.InventoryKeywordReqs = InventoryKeywordReqs;
-        Result.IsCosmeticPet = IsCosmeticPet;
-        Result.IsHarmless = IsHarmless;
-        Result.ItemKeywordReqErrorMessage = ItemKeywordReqErrorMessage;
-        Result.ItemKeywordReqs = ItemKeywordReqs;
-        Result.Keywords = Keywords;
-        Result.Level = Level;
-        Result.Name = Name;
-        Result.PetTypeTagReq = PetTypeTagReq;
-        Result.PetTypeTagReqMax = PetTypeTagReqMax;
-        Result.Prerequisite = Prerequisite;
-        Result.Projectile = Projectile;
-        Result.PvE = PvE is null ? null : PvE.ToRawPvEAbility1();
-        Result.Rank = Rank is null ? null : Rank.ToString();
-        Result.ResetTime = ResetTime;
-        Result.SelfParticle = SelfParticle;
-        Result.SelfPreParticle = SelfPreParticle;
-        Result.SharesResetTimerWith = SharesResetTimerWith;
-        Result.Skill = Skill;
-        Result.SpecialCasterRequirements = SpecialCasterRequirements;
-        Result.SpecialCasterRequirementsErrorMessage = SpecialCasterRequirementsErrorMessage;
-        Result.SpecialInfo = SpecialInfo;
-        Result.SpecialTargetingTypeReq = SpecialTargetingTypeReq;
-        Result.Target = Target;
-        Result.TargetEffectKeywordReq = TargetEffectKeywordReq;
-        Result.TargetParticle = TargetParticle;
-        Result.TargetTypeTagReq = TargetTypeTagReq;
-        Result.UpgradeOf = UpgradeOf;
-        Result.WorksInCombat = WorksInCombat;
-        Result.WorksUnderwater = WorksUnderwater;
-        Result.WorksWhileFalling = WorksWhileFalling;
-        Result.WorksWhileMounted = WorksWhileMounted;
-        Result.WorksWhileStunned = WorksWhileStunned;
-
-        return Result;
-    }
-
-    [JsonIgnore]
-    public bool SpecialCasterRequirementsIsSingle { get; }
+    private bool SpecialCasterRequirementsIsSingle;
 }

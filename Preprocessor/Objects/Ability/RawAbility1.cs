@@ -54,7 +54,7 @@ internal class RawAbility1
     public string? SelfPreParticle { get; set; }
     public string? SharesResetTimerWith { get; set; }
     public string? Skill { get; set; }
-    public RawRequirement? SpecialCasterRequirements { get; set; }
+    public object? SpecialCasterRequirements { get; set; }
     public string? SpecialCasterRequirementsErrorMessage { get; set; }
     public string? SpecialInfo { get; set; }
     public int? SpecialTargetingTypeReq { get; set; }

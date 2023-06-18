@@ -10,7 +10,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-internal class Program
+internal class Preprocessor
 {
     static void Main(string[] args)
     {
@@ -109,5 +109,68 @@ internal class Program
         }
         else
             return true;
+    }
+
+    public static object? FromSingleOrMultiple<T>(T[]? items, bool isSingle)
+    {
+        if (items is null)
+            return null;
+        else if (isSingle)
+            return items[0];
+        else
+            return items;
+    }
+
+    public static T[]? ToSingleOrMultiple<T>(object? element, out bool isSingle)
+    {
+        T[]? Result;
+
+        if (element is null)
+        {
+            isSingle = false;
+            return null;
+        }
+        else if (ToSingleItem<T>(element, out Result))
+        {
+            isSingle = true;
+            return Result;
+        }
+        else if (ToMultipleItems<T>(element, out Result))
+        {
+            isSingle = false;
+            return Result;
+        }
+        else
+            throw new InvalidCastException();
+    }
+
+    public static bool ToSingleItem<T>(object element, out T[] result)
+    {
+        if (element is JsonElement AsSingle && AsSingle.ValueKind == JsonValueKind.Object)
+        {
+            result = new T[1];
+            result[0] = AsSingle.Deserialize<T>() ?? throw new InvalidCastException();
+            return true;
+        }
+
+        result = null!;
+        return false;
+    }
+
+    public static bool ToMultipleItems<T>(object element, out T[] result)
+    {
+        if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
+        {
+            int ArrayLength = AsMultiple.GetArrayLength();
+            result = new T[ArrayLength];
+
+            for (int i = 0; i < ArrayLength; i++)
+                result[i] = AsMultiple[i].Deserialize<T>() ?? throw new InvalidCastException();
+
+            return true;
+        }
+
+        result = null!;
+        return false;
     }
 }
