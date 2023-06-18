@@ -14,20 +14,20 @@ internal class Preprocessor
 {
     static void Main(string[] args)
     {
-        PreprocessDictionary<RawAbilityDictionary>("abilities");
-        PreprocessDictionary<RawAdvancementTableDictionary>("advancementtables");
-        PreprocessDictionary<RawAIDictionary>("ai");
-        PreprocessDictionary<RawAreaDictionary>("areas");
-        PreprocessDictionary<RawAttributeDictionary>("attributes");
-        PreprocessDictionary<RawDirectedGoalDictionary>("directedgoals");
-        PreprocessDictionary<RawEffectDictionary>("effects");
-        PreprocessDictionary<RawItemDictionary>("items");
-        PreprocessDictionary<RawItemUseDictionary>("itemuses");
-        PreprocessSingle<RawLoreBookInfo>("lorebookinfo");
-        PreprocessDictionary<RawLoreBookDictionary>("lorebooks");
-        PreprocessDictionary<RawNpcDictionary>("npcs", isPretty: false);
-        PreprocessDictionary<RawPlayerTitleDictionary>("playertitles");
-        PreprocessDictionary<RawQuestDictionary>("quests");
+        PreprocessDictionary<AbilityDictionary>("abilities");
+        PreprocessDictionary<AdvancementTableDictionary>("advancementtables");
+        PreprocessDictionary<AIDictionary>("ai");
+        PreprocessDictionary<AreaDictionary>("areas");
+        PreprocessDictionary<AttributeDictionary>("attributes");
+        PreprocessDictionary<DirectedGoalDictionary>("directedgoals");
+        PreprocessDictionary<EffectDictionary>("effects");
+        PreprocessDictionary<ItemDictionary>("items");
+        PreprocessDictionary<ItemUseDictionary>("itemuses");
+        PreprocessSingle<LoreBookInfo>("lorebookinfo");
+        PreprocessDictionary<LoreBookDictionary>("lorebooks");
+        PreprocessDictionary<NpcDictionary>("npcs", isPretty: false);
+        PreprocessDictionary<PlayerTitleDictionary>("playertitles");
+        PreprocessDictionary<QuestDictionary>("quests");
 
         Debug.WriteLine("Done");
     }
@@ -68,22 +68,22 @@ internal class Preprocessor
 
         List<JsonConverter> Converters = new()
         {
-            new RawIntDictionaryJsonConverter<RawAbility, RawAbility1, RawAbilityDictionary>("ability"),
-            new RawAdvancementTableDictionaryJsonConverter(),
-            new RawStringDictionaryJsonConverter<RawAI, RawAI, RawAIDictionary>(),
-            new RawStringDictionaryJsonConverter<RawAIAbility, RawAIAbility1, RawAIAbilityDictionary>(),
-            new RawStringDictionaryJsonConverter<RawArea, RawArea, RawAreaDictionary>(),
-            new RawStringDictionaryJsonConverter<RawAttribute, RawAttribute, RawAttributeDictionary>(),
-            new RawDirectedGoalDictionaryJsonConverter(),
-            new RawStringDictionaryJsonConverter<RawEffect, RawEffect1, RawEffectDictionary>(),
-            new RawIntDictionaryJsonConverter<RawItem, RawItem, RawItemDictionary>("item"),
-            new RawSkillRequirementDictionaryJsonConverter(),
-            new RawIntDictionaryJsonConverter<RawItemUse, RawItemUse, RawItemUseDictionary>("item"),
-            new RawStringDictionaryJsonConverter<RawLoreBookCategory, RawLoreBookCategory, RawLoreBookCategoryDictionary>(),
-            new RawIntDictionaryJsonConverter<RawLoreBook, RawLoreBook, RawLoreBookDictionary>("Book"),
-            new RawStringDictionaryJsonConverter<RawNpc, RawNpc, RawNpcDictionary>(),
-            new RawIntDictionaryJsonConverter<RawPlayerTitle, RawPlayerTitle, RawPlayerTitleDictionary>("Title"),
-            new RawIntDictionaryJsonConverter<RawQuest, RawQuest, RawQuestDictionary>("quest"),
+            new IntDictionaryJsonConverter<Ability, Ability1, AbilityDictionary>("ability"),
+            new AdvancementTableDictionaryJsonConverter(),
+            new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
+            new StringDictionaryJsonConverter<AIAbility, AIAbility1, AIAbilityDictionary>(),
+            new StringDictionaryJsonConverter<Area, Area, AreaDictionary>(),
+            new StringDictionaryJsonConverter<Attribute, Attribute, AttributeDictionary>(),
+            new DirectedGoalDictionaryJsonConverter(),
+            new StringDictionaryJsonConverter<Effect, Effect1, EffectDictionary>(),
+            new IntDictionaryJsonConverter<Item, Item, ItemDictionary>("item"),
+            new SkillRequirementDictionaryJsonConverter(),
+            new IntDictionaryJsonConverter<ItemUse, ItemUse, ItemUseDictionary>("item"),
+            new StringDictionaryJsonConverter<LoreBookCategory, LoreBookCategory, LoreBookCategoryDictionary>(),
+            new IntDictionaryJsonConverter<LoreBook, LoreBook, LoreBookDictionary>("Book"),
+            new StringDictionaryJsonConverter<Npc, Npc, NpcDictionary>(),
+            new IntDictionaryJsonConverter<PlayerTitle, PlayerTitle, PlayerTitleDictionary>("Title"),
+            new IntDictionaryJsonConverter<Quest, Quest, QuestDictionary>("quest"),
         };
 
         JsonSerializerOptions ReadOptions = new();
