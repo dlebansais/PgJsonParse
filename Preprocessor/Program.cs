@@ -14,19 +14,36 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        /*Preprocess<RawAbilityDictionary>("abilities");
-        Preprocess<RawAdvancementTableDictionary>("advancementtables");
-        Preprocess<RawAIDictionary>("ai");
-        Preprocess<RawAreaDictionary>("areas");
-        Preprocess<RawAttributeDictionary>("attributes");
-        Preprocess<RawDirectedGoalDictionary>("directedgoals");
-        Preprocess<RawEffectDictionary>("effects");*/
-        Preprocess<RawItemDictionary>("items");
+        /*PreprocessDictionary<RawAbilityDictionary>("abilities");
+        PreprocessDictionary<RawAdvancementTableDictionary>("advancementtables");
+        PreprocessDictionary<RawAIDictionary>("ai");
+        PreprocessDictionary<RawAreaDictionary>("areas");
+        PreprocessDictionary<RawAttributeDictionary>("attributes");
+        PreprocessDictionary<RawDirectedGoalDictionary>("directedgoals");
+        PreprocessDictionary<RawEffectDictionary>("effects");
+        PreprocessDictionary<RawItemDictionary>("items");
+        PreprocessDictionary<RawItemUseDictionary>("itemuses");
+        PreprocessSingle<RawLoreBookInfo>("lorebookinfo");
+        PreprocessDictionary<RawLoreBookDictionary>("lorebooks");*/
+        PreprocessDictionary<RawNpcDictionary>("npcs", isPretty: false);
 
         Debug.WriteLine("Done");
     }
-    static void Preprocess<T>(string fileName)
-        where T: ICollection
+
+    static void PreprocessSingle<T>(string fileName, bool isPretty = true)
+    {
+        if (Preprocess<T>(fileName, isPretty, out _))
+            Debug.WriteLine(" OK");
+    }
+
+    static void PreprocessDictionary<T>(string fileName, bool isPretty = true)
+        where T : ICollection
+    {
+        if (Preprocess(fileName, isPretty, out T ObjectCollection))
+            Debug.WriteLine($" OK ({ObjectCollection.Count})");
+    }
+
+    static bool Preprocess<T>(string fileName, bool isPretty, out T result)
     {
         Debug.Write($"Processing {fileName}.json...");
 
@@ -34,12 +51,16 @@ internal class Program
         using StreamReader Reader = new(Stream, Encoding.UTF8);
         string ReadContent = Reader.ReadToEnd();
 
-        string Indent = string.Empty;
-        while (ReadContent.Contains("\t"))
+        if (isPretty)
         {
-            ReadContent = ReadContent.Replace($"\n{Indent}\t", $"\n{Indent}  ");
-            Indent += "  ";
+            string Indent = string.Empty;
+            while (ReadContent.Contains("\t"))
+            {
+                ReadContent = ReadContent.Replace($"\n{Indent}\t", $"\n{Indent}  ");
+                Indent += "  ";
+            }
         }
+
         ReadContent = ReadContent.Replace("[ ]", "[]");
         ReadContent = ReadContent.Replace("{ }", "{}");
 
@@ -55,28 +76,34 @@ internal class Program
             new RawEffectDictionaryJsonConverter(),
             new RawItemDictionaryJsonConverter(),
             new RawSkillRequirementDictionaryJsonConverter(),
+            new RawItemUseDictionaryJsonConverter(),
+            new RawLoreBookCategoryDictionaryJsonConverter(),
+            new RawLoreBookDictionaryJsonConverter(),
+            new RawNpcDictionaryJsonConverter(),
         };
 
         JsonSerializerOptions ReadOptions = new();
         Converters.ForEach(ReadOptions.Converters.Add);
-        T ObjectCollection = JsonSerializer.Deserialize<T>(ReadContent, ReadOptions) ?? throw new InvalidCastException();
+        result = JsonSerializer.Deserialize<T>(ReadContent, ReadOptions) ?? throw new InvalidCastException();
 
         JsonSerializerOptions WriteOptions = new();
         Converters.ForEach(WriteOptions.Converters.Add);
-        WriteOptions.WriteIndented = true;
+        WriteOptions.WriteIndented = isPretty;
         WriteOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         WriteOptions.NumberHandling = JsonNumberHandling.Strict;
         WriteOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-        string WriteContent = JsonSerializer.Serialize(ObjectCollection, WriteOptions);
+        string WriteContent = JsonSerializer.Serialize(result, WriteOptions);
 
-        WriteContent = WriteContent.Replace("\r\n", "\n");
+        if (isPretty)
+            WriteContent = WriteContent.Replace("\r\n", "\n");
 
         if (ReadContent != WriteContent)
         {
             Comparer Comparer = new();
             Comparer.Compare(ReadContent, WriteContent);
+            return false;
         }
         else
-            Debug.WriteLine($" OK ({ObjectCollection.Count})");
+            return true;
     }
 }
