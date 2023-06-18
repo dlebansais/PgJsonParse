@@ -70,18 +70,18 @@ internal class Preprocessor
         {
             new RawIntDictionaryJsonConverter<RawAbility, RawAbility1, RawAbilityDictionary>("ability"),
             new RawAdvancementTableDictionaryJsonConverter(),
-            new RawAIDictionaryJsonConverter(),
-            new RawAIAbilityDictionaryJsonConverter(),
-            new RawAreaDictionaryJsonConverter(),
-            new RawAttributeDictionaryJsonConverter(),
+            new RawStringDictionaryJsonConverter<RawAI, RawAI, RawAIDictionary>(),
+            new RawStringDictionaryJsonConverter<RawAIAbility, RawAIAbility1, RawAIAbilityDictionary>(),
+            new RawStringDictionaryJsonConverter<RawArea, RawArea, RawAreaDictionary>(),
+            new RawStringDictionaryJsonConverter<RawAttribute, RawAttribute, RawAttributeDictionary>(),
             new RawDirectedGoalDictionaryJsonConverter(),
-            new RawEffectDictionaryJsonConverter(),
+            new RawStringDictionaryJsonConverter<RawEffect, RawEffect1, RawEffectDictionary>(),
             new RawIntDictionaryJsonConverter<RawItem, RawItem, RawItemDictionary>("item"),
             new RawSkillRequirementDictionaryJsonConverter(),
             new RawIntDictionaryJsonConverter<RawItemUse, RawItemUse, RawItemUseDictionary>("item"),
-            new RawLoreBookCategoryDictionaryJsonConverter(),
+            new RawStringDictionaryJsonConverter<RawLoreBookCategory, RawLoreBookCategory, RawLoreBookCategoryDictionary>(),
             new RawIntDictionaryJsonConverter<RawLoreBook, RawLoreBook, RawLoreBookDictionary>("Book"),
-            new RawNpcDictionaryJsonConverter(),
+            new RawStringDictionaryJsonConverter<RawNpc, RawNpc, RawNpcDictionary>(),
             new RawIntDictionaryJsonConverter<RawPlayerTitle, RawPlayerTitle, RawPlayerTitleDictionary>("Title"),
             new RawIntDictionaryJsonConverter<RawQuest, RawQuest, RawQuestDictionary>("quest"),
         };
@@ -172,5 +172,36 @@ internal class Preprocessor
 
         result = null!;
         return false;
+    }
+
+    public static object? FromNumberOrString(int? item, bool isNumber)
+    {
+        if (item is null)
+            return null;
+        else if (isNumber)
+            return item;
+        else
+            return item.ToString();
+    }
+
+    public static int? ToNumberOrString(object? element, out bool isNumber)
+    {
+        if (element is null)
+        {
+            isNumber = false;
+            return null;
+        }
+        else if (element is JsonElement AsNumber && AsNumber.ValueKind == JsonValueKind.Number)
+        {
+            isNumber = true;
+            return AsNumber.GetInt32();
+        }
+        else if (element is JsonElement AsString && AsString.ValueKind == JsonValueKind.String)
+        {
+            isNumber = false;
+            return int.Parse(AsString.GetString());
+        }
+        else
+            throw new InvalidCastException();
     }
 }

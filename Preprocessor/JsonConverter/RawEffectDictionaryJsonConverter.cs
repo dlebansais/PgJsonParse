@@ -25,9 +25,7 @@ internal class RawEffectDictionaryJsonConverter : JsonConverter<RawEffectDiction
             reader.Read();
 
             RawEffect1? Effect1 = null;
-            RawEffect2? Effect2 = null;
             Exception? Exception1 = null;
-            Exception? Exception2 = null;
 
             try
             {
@@ -38,25 +36,12 @@ internal class RawEffectDictionaryJsonConverter : JsonConverter<RawEffectDiction
                 Exception1 = Exception;
             }
 
-            try
-            {
-                if (Effect1 is null)
-                    Effect2 = JsonSerializer.Deserialize<RawEffect2>(ref reader, options) ?? throw new InvalidCastException();
-            }
-            catch (Exception Exception)
-            {
-                Exception2 = Exception;
-            }
-
             if (Effect1 is not null)
                 dictionary.Add(Key, new RawEffect(Effect1));
-            else if (Effect2 is not null)
-                dictionary.Add(Key, new RawEffect(Effect2));
             else
             {
                 Debug.WriteLine($"\r\nKey: {Key}");
                 Debug.WriteLine(Exception1?.Message);
-                Debug.WriteLine(Exception2?.Message);
                 throw new InvalidCastException();
             }
         }
@@ -78,10 +63,7 @@ internal class RawEffectDictionaryJsonConverter : JsonConverter<RawEffectDiction
 
             writer.WritePropertyName(Key);
 
-            if (Effect.IsDurationNumber)
-                JsonSerializer.Serialize(writer, Effect.ToRawEffect1(), options);
-            else
-                JsonSerializer.Serialize(writer, Effect.ToRawEffect2(), options);
+            JsonSerializer.Serialize(writer, Effect.ToRawEffect1(), options);
         }
 
         writer.WriteEndObject();
