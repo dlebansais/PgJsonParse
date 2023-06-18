@@ -14,7 +14,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        /*PreprocessDictionary<RawAbilityDictionary>("abilities");
+        PreprocessDictionary<RawAbilityDictionary>("abilities");
         PreprocessDictionary<RawAdvancementTableDictionary>("advancementtables");
         PreprocessDictionary<RawAIDictionary>("ai");
         PreprocessDictionary<RawAreaDictionary>("areas");
@@ -24,8 +24,10 @@ internal class Program
         PreprocessDictionary<RawItemDictionary>("items");
         PreprocessDictionary<RawItemUseDictionary>("itemuses");
         PreprocessSingle<RawLoreBookInfo>("lorebookinfo");
-        PreprocessDictionary<RawLoreBookDictionary>("lorebooks");*/
+        PreprocessDictionary<RawLoreBookDictionary>("lorebooks");
         PreprocessDictionary<RawNpcDictionary>("npcs", isPretty: false);
+        PreprocessDictionary<RawPlayerTitleDictionary>("playertitles");
+        PreprocessDictionary<RawQuestDictionary>("quests");
 
         Debug.WriteLine("Done");
     }
@@ -80,6 +82,8 @@ internal class Program
             new RawLoreBookCategoryDictionaryJsonConverter(),
             new RawLoreBookDictionaryJsonConverter(),
             new RawNpcDictionaryJsonConverter(),
+            new RawPlayerTitleDictionaryJsonConverter(),
+            new RawQuestDictionaryJsonConverter(),
         };
 
         JsonSerializerOptions ReadOptions = new();
