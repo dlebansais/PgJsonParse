@@ -68,7 +68,7 @@ internal class Preprocessor
 
         List<JsonConverter> Converters = new()
         {
-            new RawAbilityDictionaryJsonConverter(),
+            new RawIntDictionaryJsonConverter<RawAbility, RawAbility1, RawAbilityDictionary>("ability"),
             new RawAdvancementTableDictionaryJsonConverter(),
             new RawAIDictionaryJsonConverter(),
             new RawAIAbilityDictionaryJsonConverter(),
@@ -76,14 +76,14 @@ internal class Preprocessor
             new RawAttributeDictionaryJsonConverter(),
             new RawDirectedGoalDictionaryJsonConverter(),
             new RawEffectDictionaryJsonConverter(),
-            new RawItemDictionaryJsonConverter(),
+            new RawIntDictionaryJsonConverter<RawItem, RawItem, RawItemDictionary>("item"),
             new RawSkillRequirementDictionaryJsonConverter(),
-            new RawItemUseDictionaryJsonConverter(),
+            new RawIntDictionaryJsonConverter<RawItemUse, RawItemUse, RawItemUseDictionary>("item"),
             new RawLoreBookCategoryDictionaryJsonConverter(),
-            new RawLoreBookDictionaryJsonConverter(),
+            new RawIntDictionaryJsonConverter<RawLoreBook, RawLoreBook, RawLoreBookDictionary>("Book"),
             new RawNpcDictionaryJsonConverter(),
-            new RawPlayerTitleDictionaryJsonConverter(),
-            new RawQuestDictionaryJsonConverter(),
+            new RawIntDictionaryJsonConverter<RawPlayerTitle, RawPlayerTitle, RawPlayerTitleDictionary>("Title"),
+            new RawIntDictionaryJsonConverter<RawQuest, RawQuest, RawQuestDictionary>("quest"),
         };
 
         JsonSerializerOptions ReadOptions = new();
