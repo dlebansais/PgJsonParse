@@ -6,10 +6,10 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-internal class StringDictionaryJsonConverter<TItem, TRawItem, TDictionary> : JsonConverter<TDictionary>
-    where TItem : class
-    where TRawItem : class
-    where TDictionary : Dictionary<string, TItem>, IDictionaryValueBuilder<TItem, TRawItem>, new()
+internal class StringDictionaryJsonConverter<TElement, TRawElement, TDictionary> : JsonConverter<TDictionary>
+    where TElement : class
+    where TRawElement : class
+    where TDictionary : Dictionary<string, TElement>, IDictionaryValueBuilder<TElement, TRawElement>, new()
 {
     public override TDictionary? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -27,24 +27,24 @@ internal class StringDictionaryJsonConverter<TItem, TRawItem, TDictionary> : Jso
             string Key = reader.GetString() ?? throw new InvalidCastException();
             reader.Read();
 
-            TRawItem? RawItem = null;
-            Exception? Exception1 = null;
+            TRawElement? RawElement = null;
+            Exception? DeserializingException = null;
 
             try
             {
-                RawItem = JsonSerializer.Deserialize<TRawItem>(ref reader, options) ?? throw new InvalidCastException();
+                RawElement = JsonSerializer.Deserialize<TRawElement>(ref reader, options) ?? throw new InvalidCastException();
             }
             catch (Exception Exception)
             {
-                Exception1 = Exception;
+                DeserializingException = Exception;
             }
 
-            if (RawItem is not null)
-                dictionary.Add(Key, dictionary.ToItem(RawItem));
+            if (RawElement is not null)
+                dictionary.Add(Key, dictionary.FromRaw(RawElement));
             else
             {
                 Debug.WriteLine($"\r\nKey: {Key}");
-                Debug.WriteLine(Exception1?.Message);
+                Debug.WriteLine(DeserializingException?.Message);
                 throw new InvalidCastException();
             }
         }
@@ -59,14 +59,14 @@ internal class StringDictionaryJsonConverter<TItem, TRawItem, TDictionary> : Jso
     {
         writer.WriteStartObject();
 
-        foreach (KeyValuePair<string, TItem> Entry in value)
+        foreach (KeyValuePair<string, TElement> Entry in value)
         {
             string Key = Entry.Key;
-            TItem Item = Entry.Value;
+            TElement Element = Entry.Value;
 
             writer.WritePropertyName(Key);
 
-            JsonSerializer.Serialize(writer, value.ToRawItem(Item), options);
+            JsonSerializer.Serialize(writer, value.ToRaw(Element), options);
         }
 
         writer.WriteEndObject();

@@ -2,22 +2,22 @@
 
 internal class AIAbility
 {
-    public AIAbility(AIAbility1 fromRawAIAbility1)
+    public AIAbility(RawAIAbility fromRawAIAbility)
     {
-        Cue = fromRawAIAbility1.cue;
-        CueVal = fromRawAIAbility1.cueVal;
-        MaxLevel = fromRawAIAbility1.maxLevel;
-        MaxRange = fromRawAIAbility1.maxRange;
-        MinLevel = fromRawAIAbility1.minLevel;
+        Cue = fromRawAIAbility.cue;
+        CueVal = fromRawAIAbility.cueVal;
+        MaxLevel = fromRawAIAbility.maxLevel;
+        MaxRange = fromRawAIAbility.maxRange;
+        MinLevel = fromRawAIAbility.minLevel;
 
-        if (fromRawAIAbility1.minDistance is null)
+        if (fromRawAIAbility.minDistance is null)
         {
-            MinRange = fromRawAIAbility1.minRange;
+            MinRange = fromRawAIAbility.minRange;
             IsMinDistance = false;
         }
         else
         {
-            MinRange = fromRawAIAbility1.minDistance;
+            MinRange = fromRawAIAbility.minDistance;
             IsMinDistance = true;
         }
     }
@@ -29,9 +29,9 @@ internal class AIAbility
     public int? MinLevel { get; set; }
     public decimal? MinRange { get; set; }
 
-    public AIAbility1 ToRawAIAbility1()
+    public RawAIAbility ToRawAIAbility()
     {
-        AIAbility1 Result = new();
+        RawAIAbility Result = new();
 
         Result.cue = Cue;
         Result.cueVal = CueVal;

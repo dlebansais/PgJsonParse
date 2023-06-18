@@ -6,10 +6,10 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-internal class IntDictionaryJsonConverter<TItem, TRawItem, TDictionary> : JsonConverter<TDictionary>
-    where TItem : class
-    where TRawItem : class
-    where TDictionary : Dictionary<int, TItem>, IDictionaryValueBuilder<TItem, TRawItem>, new()
+internal class IntDictionaryJsonConverter<TElement, TRawElement, TDictionary> : JsonConverter<TDictionary>
+    where TElement : class
+    where TRawElement : class
+    where TDictionary : Dictionary<int, TElement>, IDictionaryValueBuilder<TElement, TRawElement>, new()
 {
     public IntDictionaryJsonConverter(string prefix)
     {
@@ -34,26 +34,26 @@ internal class IntDictionaryJsonConverter<TItem, TRawItem, TDictionary> : JsonCo
             string Key = reader.GetString() ?? throw new InvalidCastException();
             reader.Read();
 
-            TRawItem? RawAbility1 = null;
-            Exception? Exception1 = null;
+            TRawElement? RawElement = null;
+            Exception? DeserializingException = null;
 
             try
             {
-                RawAbility1 = JsonSerializer.Deserialize<TRawItem>(ref reader, options) ?? throw new InvalidCastException();
+                RawElement = JsonSerializer.Deserialize<TRawElement>(ref reader, options) ?? throw new InvalidCastException();
             }
             catch (Exception Exception)
             {
-                Exception1 = Exception;
+                DeserializingException = Exception;
             }
 
             if (Key.StartsWith($"{Prefix}_") && int.TryParse(Key.Substring(Prefix.Length + 1), out int AbilityKey))
             {
-                if (RawAbility1 is not null)
-                    dictionary.Add(AbilityKey, dictionary.ToItem(RawAbility1));
+                if (RawElement is not null)
+                    dictionary.Add(AbilityKey, dictionary.FromRaw(RawElement));
                 else
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
-                    Debug.WriteLine(Exception1?.Message);
+                    Debug.WriteLine(DeserializingException?.Message);
                     throw new InvalidCastException();
                 }
             }
@@ -74,14 +74,14 @@ internal class IntDictionaryJsonConverter<TItem, TRawItem, TDictionary> : JsonCo
     {
         writer.WriteStartObject();
 
-        foreach (KeyValuePair<int, TItem> Entry in value)
+        foreach (KeyValuePair<int, TElement> Entry in value)
         {
             string Key = $"{Prefix}_{Entry.Key}";
-            TItem Ability = Entry.Value;
+            TElement Element = Entry.Value;
 
             writer.WritePropertyName(Key);
 
-            JsonSerializer.Serialize(writer, value.ToRawItem(Ability), options);
+            JsonSerializer.Serialize(writer, value.ToRaw(Element), options);
         }
 
         writer.WriteEndObject();

@@ -1,6 +1,6 @@
 ﻿namespace Preprocessor;
 
-internal class AIAbility1
+internal class RawAIAbility
 {
     public string? cue { get; set; }
     public int? cueVal { get; set; }

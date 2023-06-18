@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class AbilityDictionary : Dictionary<int, Ability>, IDictionaryValueBuilder<Ability, Ability1>
+internal class AbilityDictionary : Dictionary<int, Ability>, IDictionaryValueBuilder<Ability, RawAbility>
 {
-    public Ability ToItem(Ability1 fromRawAbility1) => new(fromRawAbility1);
-    public Ability1 ToRawItem(Ability fromRawAbility) => fromRawAbility.ToRawAbility1();
+    public Ability FromRaw(RawAbility fromRawAbility1) => new(fromRawAbility1);
+    public RawAbility ToRaw(Ability fromRawAbility) => fromRawAbility.ToRawAbility();
 }

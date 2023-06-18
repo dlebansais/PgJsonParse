@@ -2,50 +2,50 @@
 
 internal class PvEAbility
 {
-    public PvEAbility(PvEAbility1 fromRawPvEAbility1)
+    public PvEAbility(RawPvEAbility fromRawPvEAbility)
     {
-        Accuracy = fromRawPvEAbility1.Accuracy;
-        AoE = fromRawPvEAbility1.AoE;
-        ArmorMitigationRatio = fromRawPvEAbility1.ArmorMitigationRatio;
-        ArmorSpecificDamage = fromRawPvEAbility1.ArmorSpecificDamage;
-        AttributesThatDeltaAccuracy = fromRawPvEAbility1.AttributesThatDeltaAccuracy;
-        AttributesThatDeltaDamage = fromRawPvEAbility1.AttributesThatDeltaDamage;
-        AttributesThatDeltaRage = fromRawPvEAbility1.AttributesThatDeltaRage;
-        AttributesThatDeltaRange = fromRawPvEAbility1.AttributesThatDeltaRange;
-        AttributesThatDeltaTaunt = fromRawPvEAbility1.AttributesThatDeltaTaunt;
-        AttributesThatDeltaTempTaunt = fromRawPvEAbility1.AttributesThatDeltaTempTaunt;
-        AttributesThatModBaseDamage = fromRawPvEAbility1.AttributesThatModBaseDamage;
-        AttributesThatModCritDamage = fromRawPvEAbility1.AttributesThatModCritDamage;
-        AttributesThatModDamage = fromRawPvEAbility1.AttributesThatModDamage;
-        AttributesThatModRage = fromRawPvEAbility1.AttributesThatModRage;
-        AttributesThatModTaunt = fromRawPvEAbility1.AttributesThatModTaunt;
-        CritDamageMod = fromRawPvEAbility1.CritDamageMod;
-        Damage = fromRawPvEAbility1.Damage;
-        DoTs = fromRawPvEAbility1.DoTs;
-        ExtraDamageIfTargetVulnerable = fromRawPvEAbility1.ExtraDamageIfTargetVulnerable;
-        HealthSpecificDamage = fromRawPvEAbility1.HealthSpecificDamage;
-        PowerCost = fromRawPvEAbility1.PowerCost;
-        RageBoost = fromRawPvEAbility1.RageBoost;
-        RageCost = fromRawPvEAbility1.RageCost;
-        RageCostMod = fromRawPvEAbility1.RageCostMod;
-        RageMultiplier = fromRawPvEAbility1.RageMultiplier;
-        Range = fromRawPvEAbility1.Range;
+        Accuracy = fromRawPvEAbility.Accuracy;
+        AoE = fromRawPvEAbility.AoE;
+        ArmorMitigationRatio = fromRawPvEAbility.ArmorMitigationRatio;
+        ArmorSpecificDamage = fromRawPvEAbility.ArmorSpecificDamage;
+        AttributesThatDeltaAccuracy = fromRawPvEAbility.AttributesThatDeltaAccuracy;
+        AttributesThatDeltaDamage = fromRawPvEAbility.AttributesThatDeltaDamage;
+        AttributesThatDeltaRage = fromRawPvEAbility.AttributesThatDeltaRage;
+        AttributesThatDeltaRange = fromRawPvEAbility.AttributesThatDeltaRange;
+        AttributesThatDeltaTaunt = fromRawPvEAbility.AttributesThatDeltaTaunt;
+        AttributesThatDeltaTempTaunt = fromRawPvEAbility.AttributesThatDeltaTempTaunt;
+        AttributesThatModBaseDamage = fromRawPvEAbility.AttributesThatModBaseDamage;
+        AttributesThatModCritDamage = fromRawPvEAbility.AttributesThatModCritDamage;
+        AttributesThatModDamage = fromRawPvEAbility.AttributesThatModDamage;
+        AttributesThatModRage = fromRawPvEAbility.AttributesThatModRage;
+        AttributesThatModTaunt = fromRawPvEAbility.AttributesThatModTaunt;
+        CritDamageMod = fromRawPvEAbility.CritDamageMod;
+        Damage = fromRawPvEAbility.Damage;
+        DoTs = fromRawPvEAbility.DoTs;
+        ExtraDamageIfTargetVulnerable = fromRawPvEAbility.ExtraDamageIfTargetVulnerable;
+        HealthSpecificDamage = fromRawPvEAbility.HealthSpecificDamage;
+        PowerCost = fromRawPvEAbility.PowerCost;
+        RageBoost = fromRawPvEAbility.RageBoost;
+        RageCost = fromRawPvEAbility.RageCost;
+        RageCostMod = fromRawPvEAbility.RageCostMod;
+        RageMultiplier = fromRawPvEAbility.RageMultiplier;
+        Range = fromRawPvEAbility.Range;
 
-        if (fromRawPvEAbility1.SelfEffectOnCrit is not null)
+        if (fromRawPvEAbility.SelfEffectOnCrit is not null)
         {
-            SelfEffectsOnCrit = fromRawPvEAbility1.SelfEffectOnCrit;
+            SelfEffectsOnCrit = fromRawPvEAbility.SelfEffectOnCrit;
             HasSelfEffectOnCrit = true;
         }
         else
         {
-            SelfEffectsOnCrit = fromRawPvEAbility1.SelfEffectsOnCrit;
+            SelfEffectsOnCrit = fromRawPvEAbility.SelfEffectsOnCrit;
             HasSelfEffectOnCrit = false;
         }
 
-        SelfPreEffects = fromRawPvEAbility1.SelfPreEffects;
-        SpecialValues = fromRawPvEAbility1.SpecialValues;
-        TauntDelta = fromRawPvEAbility1.TauntDelta;
-        TempTauntDelta = fromRawPvEAbility1.TempTauntDelta;
+        SelfPreEffects = fromRawPvEAbility.SelfPreEffects;
+        SpecialValues = fromRawPvEAbility.SpecialValues;
+        TauntDelta = fromRawPvEAbility.TauntDelta;
+        TempTauntDelta = fromRawPvEAbility.TempTauntDelta;
     }
 
     public decimal? Accuracy { get; set; }
@@ -80,9 +80,9 @@ internal class PvEAbility
     public int? TauntDelta { get; set; }
     public int? TempTauntDelta { get; set; }
 
-    public PvEAbility1 ToRawPvEAbility1()
+    public RawPvEAbility ToRawPvEAbility()
     {
-        PvEAbility1 Result = new();
+        RawPvEAbility Result = new();
 
         Result.Accuracy = Accuracy;
         Result.AoE = AoE;

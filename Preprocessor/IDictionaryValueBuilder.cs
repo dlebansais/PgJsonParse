@@ -1,7 +1,7 @@
 ﻿namespace Preprocessor;
 
-internal interface IDictionaryValueBuilder<TItem, TRawItem>
+internal interface IDictionaryValueBuilder<TElement, TRawElement>
 {
-    TItem ToItem(TRawItem rawItem);
-    TRawItem ToRawItem(TItem item);
+    TElement FromRaw(TRawElement rawElement);
+    TRawElement ToRaw(TElement element);
 }

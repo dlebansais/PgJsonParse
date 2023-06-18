@@ -68,14 +68,14 @@ internal class Preprocessor
 
         List<JsonConverter> Converters = new()
         {
-            new IntDictionaryJsonConverter<Ability, Ability1, AbilityDictionary>("ability"),
+            new IntDictionaryJsonConverter<Ability, RawAbility, AbilityDictionary>("ability"),
             new AdvancementTableDictionaryJsonConverter(),
             new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
-            new StringDictionaryJsonConverter<AIAbility, AIAbility1, AIAbilityDictionary>(),
+            new StringDictionaryJsonConverter<AIAbility, RawAIAbility, AIAbilityDictionary>(),
             new StringDictionaryJsonConverter<Area, Area, AreaDictionary>(),
             new StringDictionaryJsonConverter<Attribute, Attribute, AttributeDictionary>(),
             new DirectedGoalDictionaryJsonConverter(),
-            new StringDictionaryJsonConverter<Effect, Effect1, EffectDictionary>(),
+            new StringDictionaryJsonConverter<Effect, RawEffect, EffectDictionary>(),
             new IntDictionaryJsonConverter<Item, Item, ItemDictionary>("item"),
             new SkillRequirementDictionaryJsonConverter(),
             new IntDictionaryJsonConverter<ItemUse, ItemUse, ItemUseDictionary>("item"),

@@ -1,6 +1,6 @@
 ﻿namespace Preprocessor;
 
-internal class PvEAbility1
+internal class RawPvEAbility
 {
     public decimal? Accuracy { get; set; }
     public int? AoE { get; set; }

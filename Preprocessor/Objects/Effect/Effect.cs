@@ -2,7 +2,7 @@
 
 internal class Effect
 {
-    public Effect(Effect1 fromRawEffect1)
+    public Effect(RawEffect fromRawEffect1)
     {
         AbilityKeywords = fromRawEffect1.AbilityKeywords;
         Description = fromRawEffect1.Desc;
@@ -29,9 +29,9 @@ internal class Effect
     public int? StackingPriority { get; set; }
     public string? StackingType { get; set; }
 
-    public Effect1 ToRawEffect1()
+    public RawEffect ToRawEffect1()
     {
-        Effect1 Result = new();
+        RawEffect Result = new();
 
         Result.AbilityKeywords = AbilityKeywords;
         Result.Desc = Description;

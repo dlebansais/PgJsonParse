@@ -1,6 +1,6 @@
 ﻿namespace Preprocessor;
 
-internal class Effect1
+internal class RawEffect
 {
     public string[]? AbilityKeywords { get; set; }
     public string? Desc { get; set; }

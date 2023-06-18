@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class AIAbilityDictionary : Dictionary<string, AIAbility>, IDictionaryValueBuilder<AIAbility, AIAbility1>
+internal class AIAbilityDictionary : Dictionary<string, AIAbility>, IDictionaryValueBuilder<AIAbility, RawAIAbility>
 {
-    public AIAbility ToItem(AIAbility1 fromRawAIAbility1) => new(fromRawAIAbility1);
-    public AIAbility1 ToRawItem(AIAbility fromRawAIAbility) => fromRawAIAbility.ToRawAIAbility1();
+    public AIAbility FromRaw(RawAIAbility fromRawAIAbility1) => new(fromRawAIAbility1);
+    public RawAIAbility ToRaw(AIAbility fromRawAIAbility) => fromRawAIAbility.ToRawAIAbility();
 }

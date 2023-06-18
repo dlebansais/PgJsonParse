@@ -2,74 +2,74 @@
 
 internal class Ability
 {
-    public Ability(Ability1 fromRawAbility1)
+    public Ability(RawAbility fromRawAbility)
     {
-        AbilityGroup = fromRawAbility1.AbilityGroup;
-        AbilityGroupName = fromRawAbility1.AbilityGroupName;
-        AmmoConsumeChance = fromRawAbility1.AmmoConsumeChance;
-        AmmoDescription = fromRawAbility1.AmmoDescription;
-        AmmoKeywords = fromRawAbility1.AmmoKeywords;
-        AmmoStickChance = fromRawAbility1.AmmoStickChance;
-        Animation = fromRawAbility1.Animation;
-        AoEIsCenteredOnCaster = fromRawAbility1.AoEIsCenteredOnCaster;
-        AttributesThatDeltaDelayLoopTime = fromRawAbility1.AttributesThatDeltaDelayLoopTime;
-        AttributesThatDeltaPowerCost = fromRawAbility1.AttributesThatDeltaPowerCost;
-        AttributesThatDeltaResetTime = fromRawAbility1.AttributesThatDeltaResetTime;
-        AttributesThatDeltaWorksWhileStunned = fromRawAbility1.AttributesThatDeltaWorksWhileStunned;
-        AttributesThatModAmmoConsumeChance = fromRawAbility1.AttributesThatModAmmoConsumeChance;
-        AttributesThatModPowerCost = fromRawAbility1.AttributesThatModPowerCost;
-        CanBeOnSidebar = fromRawAbility1.CanBeOnSidebar;
-        CanSuppressMonsterShout = fromRawAbility1.CanSuppressMonsterShout;
-        CanTargetUntargetableEnemies = fromRawAbility1.CanTargetUntargetableEnemies;
-        CausesOfDeath = fromRawAbility1.CausesOfDeath;
-        CombatRefreshBaseAmount = fromRawAbility1.CombatRefreshBaseAmount;
-        Costs = fromRawAbility1.Costs;
-        DamageType = fromRawAbility1.DamageType;
-        DelayLoopIsAbortedIfAttacked = fromRawAbility1.DelayLoopIsAbortedIfAttacked;
-        DelayLoopIsOnlyUsedInCombat = fromRawAbility1.DelayLoopIsOnlyUsedInCombat;
-        DelayLoopMessage = fromRawAbility1.DelayLoopMessage;
-        DelayLoopTime = fromRawAbility1.DelayLoopTime;
-        Description = fromRawAbility1.Description;
-        EffectKeywordsIndicatingEnabled = fromRawAbility1.EffectKeywordsIndicatingEnabled;
-        ExtraKeywordsForTooltips = fromRawAbility1.ExtraKeywordsForTooltips;
-        IconID = fromRawAbility1.IconID;
-        IgnoreEffectErrors = fromRawAbility1.IgnoreEffectErrors;
-        InternalAbility = fromRawAbility1.InternalAbility;
-        InternalName = fromRawAbility1.InternalName;
-        InventoryKeywordReqErrorMessage = fromRawAbility1.InventoryKeywordReqErrorMessage;
-        InventoryKeywordReqs = fromRawAbility1.InventoryKeywordReqs;
-        IsCosmeticPet = fromRawAbility1.IsCosmeticPet;
-        IsHarmless = fromRawAbility1.IsHarmless;
-        ItemKeywordReqErrorMessage = fromRawAbility1.ItemKeywordReqErrorMessage;
-        ItemKeywordReqs = fromRawAbility1.ItemKeywordReqs;
-        Keywords = fromRawAbility1.Keywords;
-        Level = fromRawAbility1.Level;
-        Name = fromRawAbility1.Name;
-        PetTypeTagReq = fromRawAbility1.PetTypeTagReq;
-        PetTypeTagReqMax = fromRawAbility1.PetTypeTagReqMax;
-        Prerequisite = fromRawAbility1.Prerequisite;
-        Projectile = fromRawAbility1.Projectile;
-        PvE = fromRawAbility1.PvE is null ? null : new PvEAbility(fromRawAbility1.PvE);
-        Rank = fromRawAbility1.Rank is null ? null : int.Parse(fromRawAbility1.Rank);
-        ResetTime = fromRawAbility1.ResetTime;
-        SelfParticle = fromRawAbility1.SelfParticle;
-        SelfPreParticle = fromRawAbility1.SelfPreParticle;
-        SharesResetTimerWith = fromRawAbility1.SharesResetTimerWith;
-        Skill = fromRawAbility1.Skill;
-        SpecialCasterRequirements = Preprocessor.ToSingleOrMultiple<Requirement>(fromRawAbility1.SpecialCasterRequirements, out SpecialCasterRequirementsIsSingle);
-        SpecialCasterRequirementsErrorMessage = fromRawAbility1.SpecialCasterRequirementsErrorMessage;
-        SpecialInfo = fromRawAbility1.SpecialInfo;
-        SpecialTargetingTypeReq = fromRawAbility1.SpecialTargetingTypeReq;
-        Target = fromRawAbility1.Target;
-        TargetEffectKeywordReq = fromRawAbility1.TargetEffectKeywordReq;
-        TargetParticle = fromRawAbility1.TargetParticle;
-        TargetTypeTagReq = fromRawAbility1.TargetTypeTagReq;
-        UpgradeOf = fromRawAbility1.UpgradeOf;
-        WorksInCombat = fromRawAbility1.WorksInCombat;
-        WorksUnderwater = fromRawAbility1.WorksUnderwater;
-        WorksWhileFalling = fromRawAbility1.WorksWhileFalling;
-        WorksWhileMounted = fromRawAbility1.WorksWhileMounted;
-        WorksWhileStunned = fromRawAbility1.WorksWhileStunned;
+        AbilityGroup = fromRawAbility.AbilityGroup;
+        AbilityGroupName = fromRawAbility.AbilityGroupName;
+        AmmoConsumeChance = fromRawAbility.AmmoConsumeChance;
+        AmmoDescription = fromRawAbility.AmmoDescription;
+        AmmoKeywords = fromRawAbility.AmmoKeywords;
+        AmmoStickChance = fromRawAbility.AmmoStickChance;
+        Animation = fromRawAbility.Animation;
+        AoEIsCenteredOnCaster = fromRawAbility.AoEIsCenteredOnCaster;
+        AttributesThatDeltaDelayLoopTime = fromRawAbility.AttributesThatDeltaDelayLoopTime;
+        AttributesThatDeltaPowerCost = fromRawAbility.AttributesThatDeltaPowerCost;
+        AttributesThatDeltaResetTime = fromRawAbility.AttributesThatDeltaResetTime;
+        AttributesThatDeltaWorksWhileStunned = fromRawAbility.AttributesThatDeltaWorksWhileStunned;
+        AttributesThatModAmmoConsumeChance = fromRawAbility.AttributesThatModAmmoConsumeChance;
+        AttributesThatModPowerCost = fromRawAbility.AttributesThatModPowerCost;
+        CanBeOnSidebar = fromRawAbility.CanBeOnSidebar;
+        CanSuppressMonsterShout = fromRawAbility.CanSuppressMonsterShout;
+        CanTargetUntargetableEnemies = fromRawAbility.CanTargetUntargetableEnemies;
+        CausesOfDeath = fromRawAbility.CausesOfDeath;
+        CombatRefreshBaseAmount = fromRawAbility.CombatRefreshBaseAmount;
+        Costs = fromRawAbility.Costs;
+        DamageType = fromRawAbility.DamageType;
+        DelayLoopIsAbortedIfAttacked = fromRawAbility.DelayLoopIsAbortedIfAttacked;
+        DelayLoopIsOnlyUsedInCombat = fromRawAbility.DelayLoopIsOnlyUsedInCombat;
+        DelayLoopMessage = fromRawAbility.DelayLoopMessage;
+        DelayLoopTime = fromRawAbility.DelayLoopTime;
+        Description = fromRawAbility.Description;
+        EffectKeywordsIndicatingEnabled = fromRawAbility.EffectKeywordsIndicatingEnabled;
+        ExtraKeywordsForTooltips = fromRawAbility.ExtraKeywordsForTooltips;
+        IconID = fromRawAbility.IconID;
+        IgnoreEffectErrors = fromRawAbility.IgnoreEffectErrors;
+        InternalAbility = fromRawAbility.InternalAbility;
+        InternalName = fromRawAbility.InternalName;
+        InventoryKeywordReqErrorMessage = fromRawAbility.InventoryKeywordReqErrorMessage;
+        InventoryKeywordReqs = fromRawAbility.InventoryKeywordReqs;
+        IsCosmeticPet = fromRawAbility.IsCosmeticPet;
+        IsHarmless = fromRawAbility.IsHarmless;
+        ItemKeywordReqErrorMessage = fromRawAbility.ItemKeywordReqErrorMessage;
+        ItemKeywordReqs = fromRawAbility.ItemKeywordReqs;
+        Keywords = fromRawAbility.Keywords;
+        Level = fromRawAbility.Level;
+        Name = fromRawAbility.Name;
+        PetTypeTagReq = fromRawAbility.PetTypeTagReq;
+        PetTypeTagReqMax = fromRawAbility.PetTypeTagReqMax;
+        Prerequisite = fromRawAbility.Prerequisite;
+        Projectile = fromRawAbility.Projectile;
+        PvE = fromRawAbility.PvE is null ? null : new PvEAbility(fromRawAbility.PvE);
+        Rank = fromRawAbility.Rank is null ? null : int.Parse(fromRawAbility.Rank);
+        ResetTime = fromRawAbility.ResetTime;
+        SelfParticle = fromRawAbility.SelfParticle;
+        SelfPreParticle = fromRawAbility.SelfPreParticle;
+        SharesResetTimerWith = fromRawAbility.SharesResetTimerWith;
+        Skill = fromRawAbility.Skill;
+        SpecialCasterRequirements = Preprocessor.ToSingleOrMultiple<Requirement>(fromRawAbility.SpecialCasterRequirements, out SpecialCasterRequirementsIsSingle);
+        SpecialCasterRequirementsErrorMessage = fromRawAbility.SpecialCasterRequirementsErrorMessage;
+        SpecialInfo = fromRawAbility.SpecialInfo;
+        SpecialTargetingTypeReq = fromRawAbility.SpecialTargetingTypeReq;
+        Target = fromRawAbility.Target;
+        TargetEffectKeywordReq = fromRawAbility.TargetEffectKeywordReq;
+        TargetParticle = fromRawAbility.TargetParticle;
+        TargetTypeTagReq = fromRawAbility.TargetTypeTagReq;
+        UpgradeOf = fromRawAbility.UpgradeOf;
+        WorksInCombat = fromRawAbility.WorksInCombat;
+        WorksUnderwater = fromRawAbility.WorksUnderwater;
+        WorksWhileFalling = fromRawAbility.WorksWhileFalling;
+        WorksWhileMounted = fromRawAbility.WorksWhileMounted;
+        WorksWhileStunned = fromRawAbility.WorksWhileStunned;
     }
 
     public string? AbilityGroup { get; set; }
@@ -139,9 +139,9 @@ internal class Ability
     public bool? WorksWhileMounted { get; set; }
     public bool? WorksWhileStunned { get; set; }
 
-    public Ability1 ToRawAbility1()
+    public RawAbility ToRawAbility()
     {
-        Ability1 Result = new();
+        RawAbility Result = new();
 
         Result.AbilityGroup = AbilityGroup;
         Result.AbilityGroupName = AbilityGroupName;
@@ -188,7 +188,7 @@ internal class Ability
         Result.PetTypeTagReqMax = PetTypeTagReqMax;
         Result.Prerequisite = Prerequisite;
         Result.Projectile = Projectile;
-        Result.PvE = PvE is null ? null : PvE.ToRawPvEAbility1();
+        Result.PvE = PvE is null ? null : PvE.ToRawPvEAbility();
         Result.Rank = Rank is null ? null : Rank.ToString();
         Result.ResetTime = ResetTime;
         Result.SelfParticle = SelfParticle;

@@ -1,6 +1,6 @@
 ﻿namespace Preprocessor;
 
-internal class Ability1
+internal class RawAbility
 {
     public string? AbilityGroup { get; set; }
     public string? AbilityGroupName { get; set; }
@@ -47,7 +47,7 @@ internal class Ability1
     public int? PetTypeTagReqMax { get; set; }
     public string? Prerequisite { get; set; }
     public string? Projectile { get; set; }
-    public PvEAbility1? PvE { get; set; }
+    public RawPvEAbility? PvE { get; set; }
     public string? Rank { get; set; }
     public decimal ResetTime { get; set; }
     public string? SelfParticle { get; set; }

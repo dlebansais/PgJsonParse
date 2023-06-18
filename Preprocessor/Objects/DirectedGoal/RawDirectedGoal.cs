@@ -1,6 +1,6 @@
 ﻿namespace Preprocessor;
 
-internal class DirectedGoal1
+internal class RawDirectedGoal
 {
     public int? CategoryGateId { get; set; }
     public string[]? ForRaces { get; set; }

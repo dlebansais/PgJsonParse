@@ -4,16 +4,16 @@ using System.Text.Json.Serialization;
 
 internal class DirectedGoal
 {
-    public DirectedGoal(DirectedGoal1 fromRawDirectedGoal1)
+    public DirectedGoal(RawDirectedGoal fromRawDirectedGoal)
     {
-        CategoryGateId = fromRawDirectedGoal1.CategoryGateId;
-        ForRaces = fromRawDirectedGoal1.ForRaces;
-        Id = fromRawDirectedGoal1.Id;
-        IsCategoryGate = fromRawDirectedGoal1.IsCategoryGate;
-        Label = fromRawDirectedGoal1.Label;
-        LargeHint = fromRawDirectedGoal1.LargeHint;
-        SmallHint = fromRawDirectedGoal1.SmallHint;
-        Zone = fromRawDirectedGoal1.Zone;
+        CategoryGateId = fromRawDirectedGoal.CategoryGateId;
+        ForRaces = fromRawDirectedGoal.ForRaces;
+        Id = fromRawDirectedGoal.Id;
+        IsCategoryGate = fromRawDirectedGoal.IsCategoryGate;
+        Label = fromRawDirectedGoal.Label;
+        LargeHint = fromRawDirectedGoal.LargeHint;
+        SmallHint = fromRawDirectedGoal.SmallHint;
+        Zone = fromRawDirectedGoal.Zone;
     }
 
     public int? CategoryGateId { get; set; }
@@ -24,9 +24,9 @@ internal class DirectedGoal
     public string? SmallHint { get; set; }
     public string? Zone { get; set; }
 
-    public DirectedGoal1 ToRawDirectedGoal1()
+    public RawDirectedGoal ToRawDirectedGoal()
     {
-        DirectedGoal1 Result = new();
+        RawDirectedGoal Result = new();
 
         Result.CategoryGateId = CategoryGateId;
         Result.ForRaces = ForRaces;

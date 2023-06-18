@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class EffectDictionary : Dictionary<string, Effect>, IDictionaryValueBuilder<Effect, Effect1>
+internal class EffectDictionary : Dictionary<string, Effect>, IDictionaryValueBuilder<Effect, RawEffect>
 {
-    public Effect ToItem(Effect1 fromRawEffect1) => new(fromRawEffect1);
-    public Effect1 ToRawItem(Effect fromRawEffect) => fromRawEffect.ToRawEffect1();
+    public Effect FromRaw(RawEffect fromRawEffect1) => new(fromRawEffect1);
+    public RawEffect ToRaw(Effect fromRawEffect) => fromRawEffect.ToRawEffect1();
 }

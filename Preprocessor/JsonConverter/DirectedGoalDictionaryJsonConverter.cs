@@ -22,12 +22,12 @@ internal class DirectedGoalDictionaryJsonConverter : JsonConverter<DirectedGoalD
         while (reader.Read() && reader.TokenType == JsonTokenType.StartObject)
         {
             int Key = 0;
-            DirectedGoal1? DirectedGoal1 = null;
+            RawDirectedGoal? DirectedGoal1 = null;
             Exception? Exception1 = null;
 
             try
             {
-                DirectedGoal1 = JsonSerializer.Deserialize<DirectedGoal1>(ref reader, options) ?? throw new InvalidCastException();
+                DirectedGoal1 = JsonSerializer.Deserialize<RawDirectedGoal>(ref reader, options) ?? throw new InvalidCastException();
                 Key = DirectedGoal1.Id;
             }
             catch (Exception Exception)
@@ -58,7 +58,7 @@ internal class DirectedGoalDictionaryJsonConverter : JsonConverter<DirectedGoalD
         foreach (KeyValuePair<int, DirectedGoal> Entry in value)
         {
             DirectedGoal DirectedGoal = Entry.Value;
-            JsonSerializer.Serialize(writer, DirectedGoal.ToRawDirectedGoal1(), options);
+            JsonSerializer.Serialize(writer, DirectedGoal.ToRawDirectedGoal(), options);
         }
 
         writer.WriteEndArray();
