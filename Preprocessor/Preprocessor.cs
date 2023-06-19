@@ -28,8 +28,9 @@ internal class Preprocessor
         PreprocessDictionary<NpcDictionary>("npcs", isPretty: false);
         PreprocessDictionary<PlayerTitleDictionary>("playertitles");
         PreprocessDictionary<QuestDictionary>("quests");
-        PreprocessDictionary<RecipeDictionary>("recipes");*/
-        PreprocessDictionary<SkillDictionary>("skills");
+        PreprocessDictionary<RecipeDictionary>("recipes");
+        PreprocessDictionary<SkillDictionary>("skills");*/
+        PreprocessDictionary<SourceAbilityDictionary>("sources_abilities");
 
         Debug.WriteLine("Done");
     }
@@ -93,6 +94,7 @@ internal class Preprocessor
             new SkillAdvancementHintCollectionJsonConverter(),
             new SkillLevelCapCollectionJsonConverter(),
             new SkillReportCollectionJsonConverter(),
+            new IntDictionaryJsonConverter<SourceAbility, RawSourceAbility, SourceAbilityDictionary>("ability"),
         };
 
         JsonSerializerOptions ReadOptions = new();
