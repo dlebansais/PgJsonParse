@@ -17,10 +17,11 @@ internal class Skill
     public string? Name { get; set; }
     public string[]? Parents { get; set; }
     public string[]? RecipeIngredientKeywords { get; set; }
-    public string[]? _RecipeIngredientKeywords { get; set; }
+    public SkillReportCollection? Reports { get; set; }
     public SkillRewardCollection? Rewards { get; set; }
     public bool? SkillLevelDisparityApplies { get; set; }
     public bool? SkipBonusLevelsIfSkillUnlearned { get; set; }
     public string[]? TSysCompatibleCombatSkills { get; set; }
     public string? XpTable { get; set; }
+    public string[]? _RecipeIngredientKeywords { get; set; }
 }

@@ -67,6 +67,7 @@ internal class Preprocessor
 
         ReadContent = ReadContent.Replace("[ ]", "[]");
         ReadContent = ReadContent.Replace("{ }", "{}");
+        ReadContent = ReadContent.Replace("\"AdvancementTable\": null,", "\"AdvancementTable\": \"null\",");
 
         List<JsonConverter> Converters = new()
         {
@@ -91,6 +92,7 @@ internal class Preprocessor
             new SkillRewardCollectionJsonConverter(),
             new SkillAdvancementHintCollectionJsonConverter(),
             new SkillLevelCapCollectionJsonConverter(),
+            new SkillReportCollectionJsonConverter(),
         };
 
         JsonSerializerOptions ReadOptions = new();

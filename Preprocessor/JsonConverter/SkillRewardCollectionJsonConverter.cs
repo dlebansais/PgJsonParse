@@ -39,12 +39,19 @@ internal class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardCol
             string[] SplittedKey = Key.Split('_');
             if (SplittedKey.Length >= 1 && int.TryParse(SplittedKey[0], out int Level))
             {
-                string? Race = SplittedKey.Length < 2 ? null : SplittedKey[1];
+                string[]? Races = null;
+
+                if (SplittedKey.Length >= 2)
+                {
+                    Races = new string[SplittedKey.Length - 1];
+                    for (int i = 1; i < SplittedKey.Length; i++)
+                        Races[i - 1] = SplittedKey[i];
+                }
 
                 if (Reward is not null)
                 {
                     Reward.Level = Level;
-                    Reward.Race = Race;
+                    Reward.Races = Races;
                     dictionary.Add(Reward);
                 }
                 else
@@ -73,9 +80,15 @@ internal class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardCol
 
         foreach (SkillReward Reward in value)
         {
-            string Key = Reward.Race is null ? Reward.Level.ToString() : $"{Reward.Level}_{Reward.Race}";
+            string Key;
+
+            if (Reward.Races is null)
+                Key = Reward.Level.ToString();
+            else
+                Key = $"{Reward.Level}_{string.Join("_", Reward.Races)}";
+
             Reward.Level = null;
-            Reward.Race = null;
+            Reward.Races = null;
 
             writer.WritePropertyName(Key);
             JsonSerializer.Serialize(writer, Reward, options);

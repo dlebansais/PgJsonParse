@@ -16,7 +16,7 @@ internal class SkillAdvancementHintCollectionJsonConverter : JsonConverter<Skill
         return Result;
     }
 
-    private void ReadTableDictionary(SkillAdvancementHintCollection dictionary, ref Utf8JsonReader reader, JsonSerializerOptions options)
+    private void ReadTableDictionary(SkillAdvancementHintCollection collection, ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
@@ -29,7 +29,7 @@ internal class SkillAdvancementHintCollectionJsonConverter : JsonConverter<Skill
                 SkillAdvancementHint AdvancementHint = new();
                 AdvancementHint.Level = Level;
                 AdvancementHint.Hint = Hint;
-                dictionary.Add(AdvancementHint);
+                collection.Add(AdvancementHint);
             }
             else
             {
