@@ -14,7 +14,7 @@ internal class Preprocessor
 {
     static void Main(string[] args)
     {
-        /*PreprocessDictionary<AbilityDictionary>("abilities");
+        PreprocessDictionary<AbilityDictionary>("abilities");
         PreprocessDictionary<AdvancementTableDictionary>("advancementtables");
         PreprocessDictionary<AIDictionary>("ai");
         PreprocessDictionary<AreaDictionary>("areas");
@@ -32,8 +32,9 @@ internal class Preprocessor
         PreprocessDictionary<SkillDictionary>("skills");
         PreprocessDictionary<SourceAbilityDictionary>("sources_abilities");
         PreprocessDictionary<SourceRecipeDictionary>("sources_recipes");
-        PreprocessDictionary<StorageVaultDictionary>("storagevaults");*/
+        PreprocessDictionary<StorageVaultDictionary>("storagevaults");
         PreprocessDictionary<PowerDictionary>("tsysclientinfo");
+        PreprocessDictionary<XpTableDictionary>("xptables");
 
         Debug.WriteLine("Done");
     }
@@ -102,6 +103,7 @@ internal class Preprocessor
             new StringDictionaryJsonConverter<StorageVault, StorageVault, StorageVaultDictionary>(),
             new IntDictionaryJsonConverter<Power, Power, PowerDictionary>("power"),
             new IntDictionaryJsonConverter<PowerTier, PowerTier, PowerTierDictionary>("id"),
+            new IntDictionaryJsonConverter<XpTable, XpTable, XpTableDictionary>("Table"),
         };
 
         JsonSerializerOptions ReadOptions = new();
