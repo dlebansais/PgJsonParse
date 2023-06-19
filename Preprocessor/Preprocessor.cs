@@ -31,6 +31,7 @@ internal class Preprocessor
         PreprocessDictionary<RecipeDictionary>("recipes");
         PreprocessDictionary<SkillDictionary>("skills");*/
         PreprocessDictionary<SourceAbilityDictionary>("sources_abilities");
+        PreprocessDictionary<SourceRecipeDictionary>("sources_recipes");
 
         Debug.WriteLine("Done");
     }
@@ -95,6 +96,7 @@ internal class Preprocessor
             new SkillLevelCapCollectionJsonConverter(),
             new SkillReportCollectionJsonConverter(),
             new IntDictionaryJsonConverter<SourceAbility, RawSourceAbility, SourceAbilityDictionary>("ability"),
+            new IntDictionaryJsonConverter<SourceRecipe, RawSourceRecipe, SourceRecipeDictionary>("recipe"),
         };
 
         JsonSerializerOptions ReadOptions = new();
