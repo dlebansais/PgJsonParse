@@ -46,10 +46,14 @@ internal class IntDictionaryJsonConverter<TElement, TRawElement, TDictionary> : 
                 DeserializingException = Exception;
             }
 
-            if (Key.StartsWith($"{Prefix}_") && int.TryParse(Key.Substring(Prefix.Length + 1), out int AbilityKey))
+            string PrefixWithUnderscore = $"{Prefix}_";
+            int ElementKey;
+
+            if ((Prefix == string.Empty && int.TryParse(Key, out ElementKey)) || 
+                (Key.StartsWith(PrefixWithUnderscore) && int.TryParse(Key.Substring(PrefixWithUnderscore.Length), out ElementKey)))
             {
                 if (RawElement is not null)
-                    dictionary.Add(AbilityKey, dictionary.FromRaw(RawElement));
+                    dictionary.Add(ElementKey, dictionary.FromRaw(RawElement));
                 else
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");

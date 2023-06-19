@@ -30,6 +30,11 @@ internal class StringDictionaryJsonConverter<TElement, TRawElement, TDictionary>
             TRawElement? RawElement = null;
             Exception? DeserializingException = null;
 
+            if (Key == "AlcoholTolerance")
+            {
+
+            }
+
             try
             {
                 RawElement = JsonSerializer.Deserialize<TRawElement>(ref reader, options) ?? throw new InvalidCastException();

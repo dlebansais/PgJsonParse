@@ -14,7 +14,7 @@ internal class Preprocessor
 {
     static void Main(string[] args)
     {
-        PreprocessDictionary<AbilityDictionary>("abilities");
+        /*PreprocessDictionary<AbilityDictionary>("abilities");
         PreprocessDictionary<AdvancementTableDictionary>("advancementtables");
         PreprocessDictionary<AIDictionary>("ai");
         PreprocessDictionary<AreaDictionary>("areas");
@@ -28,7 +28,8 @@ internal class Preprocessor
         PreprocessDictionary<NpcDictionary>("npcs", isPretty: false);
         PreprocessDictionary<PlayerTitleDictionary>("playertitles");
         PreprocessDictionary<QuestDictionary>("quests");
-        PreprocessDictionary<RecipeDictionary>("recipes");
+        PreprocessDictionary<RecipeDictionary>("recipes");*/
+        PreprocessDictionary<SkillDictionary>("skills");
 
         Debug.WriteLine("Done");
     }
@@ -86,6 +87,10 @@ internal class Preprocessor
             new IntDictionaryJsonConverter<PlayerTitle, PlayerTitle, PlayerTitleDictionary>("Title"),
             new IntDictionaryJsonConverter<Quest, Quest, QuestDictionary>("quest"),
             new IntDictionaryJsonConverter<Recipe, RawRecipe, RecipeDictionary>("recipe"),
+            new StringDictionaryJsonConverter<Skill, Skill, SkillDictionary>(),
+            new SkillRewardCollectionJsonConverter(),
+            new SkillAdvancementHintCollectionJsonConverter(),
+            new SkillLevelCapCollectionJsonConverter(),
         };
 
         JsonSerializerOptions ReadOptions = new();
