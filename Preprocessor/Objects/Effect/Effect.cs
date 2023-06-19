@@ -2,19 +2,19 @@
 
 internal class Effect
 {
-    public Effect(RawEffect fromRawEffect1)
+    public Effect(RawEffect rawEffect)
     {
-        AbilityKeywords = fromRawEffect1.AbilityKeywords;
-        Description = fromRawEffect1.Desc;
-        DisplayMode = fromRawEffect1.DisplayMode;
-        Duration = Preprocessor.ToNumberOrString(fromRawEffect1.Duration, out IsDurationNumber);
-        IconId = fromRawEffect1.IconId;
-        Keywords = fromRawEffect1.Keywords;
-        Name = fromRawEffect1.Name;
-        Particle = fromRawEffect1.Particle;
-        SpewText = fromRawEffect1.SpewText;
-        StackingPriority = fromRawEffect1.StackingPriority;
-        StackingType = fromRawEffect1.StackingType;
+        AbilityKeywords = rawEffect.AbilityKeywords;
+        Description = rawEffect.Desc;
+        DisplayMode = rawEffect.DisplayMode;
+        Duration = Preprocessor.ToNumberOrString(rawEffect.Duration, out IsDurationNumber);
+        IconId = rawEffect.IconId;
+        Keywords = rawEffect.Keywords;
+        Name = rawEffect.Name;
+        Particle = rawEffect.Particle;
+        SpewText = rawEffect.SpewText;
+        StackingPriority = rawEffect.StackingPriority;
+        StackingType = rawEffect.StackingType;
     }
 
     public string[]? AbilityKeywords { get; set; }
@@ -29,7 +29,7 @@ internal class Effect
     public int? StackingPriority { get; set; }
     public string? StackingType { get; set; }
 
-    public RawEffect ToRawEffect1()
+    public RawEffect ToRawEffect()
     {
         RawEffect Result = new();
 

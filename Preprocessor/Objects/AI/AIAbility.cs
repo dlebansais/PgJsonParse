@@ -2,22 +2,22 @@
 
 internal class AIAbility
 {
-    public AIAbility(RawAIAbility fromRawAIAbility)
+    public AIAbility(RawAIAbility rawAIAbility)
     {
-        Cue = fromRawAIAbility.cue;
-        CueVal = fromRawAIAbility.cueVal;
-        MaxLevel = fromRawAIAbility.maxLevel;
-        MaxRange = fromRawAIAbility.maxRange;
-        MinLevel = fromRawAIAbility.minLevel;
+        Cue = rawAIAbility.cue;
+        CueVal = rawAIAbility.cueVal;
+        MaxLevel = rawAIAbility.maxLevel;
+        MaxRange = rawAIAbility.maxRange;
+        MinLevel = rawAIAbility.minLevel;
 
-        if (fromRawAIAbility.minDistance is null)
+        if (rawAIAbility.minDistance is null)
         {
-            MinRange = fromRawAIAbility.minRange;
+            MinRange = rawAIAbility.minRange;
             IsMinDistance = false;
         }
         else
         {
-            MinRange = fromRawAIAbility.minDistance;
+            MinRange = rawAIAbility.minDistance;
             IsMinDistance = true;
         }
     }

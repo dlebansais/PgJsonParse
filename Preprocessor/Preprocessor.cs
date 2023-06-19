@@ -28,6 +28,7 @@ internal class Preprocessor
         PreprocessDictionary<NpcDictionary>("npcs", isPretty: false);
         PreprocessDictionary<PlayerTitleDictionary>("playertitles");
         PreprocessDictionary<QuestDictionary>("quests");
+        PreprocessDictionary<RecipeDictionary>("recipes");
 
         Debug.WriteLine("Done");
     }
@@ -84,6 +85,7 @@ internal class Preprocessor
             new StringDictionaryJsonConverter<Npc, Npc, NpcDictionary>(),
             new IntDictionaryJsonConverter<PlayerTitle, PlayerTitle, PlayerTitleDictionary>("Title"),
             new IntDictionaryJsonConverter<Quest, Quest, QuestDictionary>("quest"),
+            new IntDictionaryJsonConverter<Recipe, RawRecipe, RecipeDictionary>("recipe"),
         };
 
         JsonSerializerOptions ReadOptions = new();

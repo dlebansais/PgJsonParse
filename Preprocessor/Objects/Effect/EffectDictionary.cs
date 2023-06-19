@@ -4,6 +4,6 @@ using System.Collections.Generic;
 
 internal class EffectDictionary : Dictionary<string, Effect>, IDictionaryValueBuilder<Effect, RawEffect>
 {
-    public Effect FromRaw(RawEffect fromRawEffect1) => new(fromRawEffect1);
-    public RawEffect ToRaw(Effect fromRawEffect) => fromRawEffect.ToRawEffect1();
+    public Effect FromRaw(RawEffect rawEffect) => new(rawEffect);
+    public RawEffect ToRaw(Effect effect) => effect.ToRawEffect();
 }
