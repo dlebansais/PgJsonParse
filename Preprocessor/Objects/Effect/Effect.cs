@@ -48,5 +48,5 @@ internal class Effect
         return Result;
     }
 
-    private bool IsDurationNumber;
+    private readonly bool IsDurationNumber;
 }

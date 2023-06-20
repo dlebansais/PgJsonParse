@@ -8,7 +8,6 @@ internal class AdvancementTable
         Levels = levels;
     }
 
-    public string Name { get; set; }
-    
     public AdvancementDictionary Levels { get; set; }
+    public string Name { get; set; }
 }

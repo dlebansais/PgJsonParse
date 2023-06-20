@@ -12,8 +12,8 @@ internal class QuestObjective
     public string[]? InteractionFlags { get; set; }
     public string? InternalName { get; set; }
     public bool? IsHiddenUntilEarlierObjectivesComplete { get; set; }
-    public string? ItemKeyword { get; set; }
     public string? Item { get; set; }
+    public string? ItemKeyword { get; set; }
     public string? ItemName { get; set; }
     public string? MaxAmount { get; set; }
     public string? MaxFavorReceived { get; set; }

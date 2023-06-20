@@ -1,7 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System.Text.Json.Serialization;
-
 internal class DirectedGoal
 {
     public DirectedGoal(RawDirectedGoal fromRawDirectedGoal)
@@ -40,6 +38,5 @@ internal class DirectedGoal
         return Result;
     }
 
-    [JsonIgnore]
-    public int Id { get; }
+    private readonly int Id;
 }

@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class NpcDictionary : Dictionary<string, Npc>, IDictionaryValueBuilder<Npc, Npc>
+internal class NpcDictionary : Dictionary<string, Npc>, IDictionaryValueBuilder<Npc, RawNpc>
 {
-    public Npc FromRaw(Npc npc) => npc;
-    public Npc ToRaw(Npc npc) => npc;
+    public Npc FromRaw(RawNpc rawNpc) => new(rawNpc);
+    public RawNpc ToRaw(Npc npc) => npc.ToRawNpc();
 }

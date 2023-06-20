@@ -213,5 +213,5 @@ internal class Ability
         return Result;
     }
 
-    private bool SpecialCasterRequirementsIsSingle;
+    private readonly bool SpecialCasterRequirementsIsSingle;
 }

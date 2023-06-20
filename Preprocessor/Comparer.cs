@@ -76,7 +76,7 @@ internal class Comparer
 
     private void AddDifference(string content, int offset, int endOffset, bool isRead, string previousLine, string startLine)
     {
-        string Difference = $"\r\n  {previousLine}\r\n";
+        string Difference = $"  {previousLine}\r\n";
         Difference += $"{(isRead ? "+" : "-")} {startLine}\r\n";
 
         string Line;

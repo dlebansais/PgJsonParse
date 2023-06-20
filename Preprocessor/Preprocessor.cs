@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -12,6 +13,38 @@ using System.Text.Json.Serialization;
 
 internal class Preprocessor
 {
+    private static List<JsonConverter> JsonConverters = new()
+    {
+        new IntDictionaryJsonConverter<Ability, RawAbility, AbilityDictionary>("ability"),
+        new AdvancementTableDictionaryJsonConverter(),
+        new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
+        new StringDictionaryJsonConverter<AIAbility, RawAIAbility, AIAbilityDictionary>(),
+        new StringDictionaryJsonConverter<Area, Area, AreaDictionary>(),
+        new StringDictionaryJsonConverter<Attribute, Attribute, AttributeDictionary>(),
+        new DirectedGoalDictionaryJsonConverter(),
+        new StringDictionaryJsonConverter<Effect, RawEffect, EffectDictionary>(),
+        new IntDictionaryJsonConverter<Item, Item, ItemDictionary>("item"),
+        new SkillRequirementDictionaryJsonConverter(),
+        new IntDictionaryJsonConverter<ItemUse, ItemUse, ItemUseDictionary>("item"),
+        new StringDictionaryJsonConverter<LoreBookCategory, RawLoreBookCategory, LoreBookCategoryDictionary>(),
+        new IntDictionaryJsonConverter<LoreBook, LoreBook, LoreBookDictionary>("Book"),
+        new StringDictionaryJsonConverter<Npc, RawNpc, NpcDictionary>(),
+        new IntDictionaryJsonConverter<PlayerTitle, PlayerTitle, PlayerTitleDictionary>("Title"),
+        new IntDictionaryJsonConverter<Quest, Quest, QuestDictionary>("quest"),
+        new IntDictionaryJsonConverter<Recipe, RawRecipe, RecipeDictionary>("recipe"),
+        new StringDictionaryJsonConverter<Skill, Skill, SkillDictionary>(),
+        new SkillRewardCollectionJsonConverter(),
+        new SkillAdvancementHintCollectionJsonConverter(),
+        new SkillLevelCapCollectionJsonConverter(),
+        new SkillReportCollectionJsonConverter(),
+        new IntDictionaryJsonConverter<SourceAbility, RawSourceAbility, SourceAbilityDictionary>("ability"),
+        new IntDictionaryJsonConverter<SourceRecipe, RawSourceRecipe, SourceRecipeDictionary>("recipe"),
+        new StringDictionaryJsonConverter<StorageVault, StorageVault, StorageVaultDictionary>(),
+        new IntDictionaryJsonConverter<Power, Power, PowerDictionary>("power"),
+        new IntDictionaryJsonConverter<PowerTier, PowerTier, PowerTierDictionary>("id"),
+        new IntDictionaryJsonConverter<XpTable, XpTable, XpTableDictionary>("Table"),
+    };
+
     static void Main(string[] args)
     {
         PreprocessDictionary<AbilityDictionary>("abilities");
@@ -56,7 +89,43 @@ internal class Preprocessor
     {
         Debug.Write($"Processing {fileName}.json...");
 
-        using FileStream Stream = new(@$"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\387\{fileName}.json", FileMode.Open, FileAccess.Read);
+        string SourceDirectory = @"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\387";
+        string SourceFilePath = $"{SourceDirectory}\\{fileName}.json";
+
+        string ReadContent = GetReadContent(SourceFilePath, isPretty);
+        result = GetDeserializedObjects<T>(ReadContent);
+        EnsureAlphabeticalOrder(typeof(T));
+        string WriteContent = GetWriteContent(result, isPretty);
+
+        if (ReadContent != WriteContent)
+        {
+            Debug.WriteLine("\r\nERROR: Difference found");
+
+            if (isPretty)
+            {
+                Comparer Comparer = new();
+                Comparer.Compare(ReadContent, WriteContent);
+            }
+
+            return false;
+        }
+        else
+        {
+            string DestinationDirectory = @"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\387\Curated";
+
+            if (!Directory.Exists(DestinationDirectory))
+                Directory.CreateDirectory(DestinationDirectory);
+
+            string DestinationFilePath = $"{DestinationDirectory}\\{fileName}.json";
+            SaveSerializedContent(DestinationFilePath, result);
+
+            return true;
+        }
+    }
+
+    static string GetReadContent(string filePath, bool isPretty)
+    {
+        using FileStream Stream = new(filePath, FileMode.Open, FileAccess.Read);
         using StreamReader Reader = new(Stream, Encoding.UTF8);
         string ReadContent = Reader.ReadToEnd();
 
@@ -74,61 +143,81 @@ internal class Preprocessor
         ReadContent = ReadContent.Replace("{ }", "{}");
         ReadContent = ReadContent.Replace("\"AdvancementTable\": null,", "\"AdvancementTable\": \"null\",");
 
-        List<JsonConverter> Converters = new()
-        {
-            new IntDictionaryJsonConverter<Ability, RawAbility, AbilityDictionary>("ability"),
-            new AdvancementTableDictionaryJsonConverter(),
-            new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
-            new StringDictionaryJsonConverter<AIAbility, RawAIAbility, AIAbilityDictionary>(),
-            new StringDictionaryJsonConverter<Area, Area, AreaDictionary>(),
-            new StringDictionaryJsonConverter<Attribute, Attribute, AttributeDictionary>(),
-            new DirectedGoalDictionaryJsonConverter(),
-            new StringDictionaryJsonConverter<Effect, RawEffect, EffectDictionary>(),
-            new IntDictionaryJsonConverter<Item, Item, ItemDictionary>("item"),
-            new SkillRequirementDictionaryJsonConverter(),
-            new IntDictionaryJsonConverter<ItemUse, ItemUse, ItemUseDictionary>("item"),
-            new StringDictionaryJsonConverter<LoreBookCategory, LoreBookCategory, LoreBookCategoryDictionary>(),
-            new IntDictionaryJsonConverter<LoreBook, LoreBook, LoreBookDictionary>("Book"),
-            new StringDictionaryJsonConverter<Npc, Npc, NpcDictionary>(),
-            new IntDictionaryJsonConverter<PlayerTitle, PlayerTitle, PlayerTitleDictionary>("Title"),
-            new IntDictionaryJsonConverter<Quest, Quest, QuestDictionary>("quest"),
-            new IntDictionaryJsonConverter<Recipe, RawRecipe, RecipeDictionary>("recipe"),
-            new StringDictionaryJsonConverter<Skill, Skill, SkillDictionary>(),
-            new SkillRewardCollectionJsonConverter(),
-            new SkillAdvancementHintCollectionJsonConverter(),
-            new SkillLevelCapCollectionJsonConverter(),
-            new SkillReportCollectionJsonConverter(),
-            new IntDictionaryJsonConverter<SourceAbility, RawSourceAbility, SourceAbilityDictionary>("ability"),
-            new IntDictionaryJsonConverter<SourceRecipe, RawSourceRecipe, SourceRecipeDictionary>("recipe"),
-            new StringDictionaryJsonConverter<StorageVault, StorageVault, StorageVaultDictionary>(),
-            new IntDictionaryJsonConverter<Power, Power, PowerDictionary>("power"),
-            new IntDictionaryJsonConverter<PowerTier, PowerTier, PowerTierDictionary>("id"),
-            new IntDictionaryJsonConverter<XpTable, XpTable, XpTableDictionary>("Table"),
-        };
+        return ReadContent;
+    }
 
+    private static T GetDeserializedObjects<T>(string readContent)
+    {
         JsonSerializerOptions ReadOptions = new();
-        Converters.ForEach(ReadOptions.Converters.Add);
-        result = JsonSerializer.Deserialize<T>(ReadContent, ReadOptions) ?? throw new InvalidCastException();
+        JsonConverters.ForEach(ReadOptions.Converters.Add);
+        T Result = JsonSerializer.Deserialize<T>(readContent, ReadOptions) ?? throw new InvalidCastException();
 
+        return Result;
+    }
+
+    private static void EnsureAlphabeticalOrder(Type type)
+    {
+        PropertyInfo[] Properties;
+
+        if (type.BaseType.IsGenericType)
+        {
+            Type[] GenericArguments = type.BaseType.GetGenericArguments();
+            Properties = GenericArguments[GenericArguments.Length - 1].GetProperties();
+        }
+        else
+            Properties = type.GetProperties();
+
+        List<string> PropertyNames = new();
+
+        foreach (PropertyInfo Property in Properties)
+        {
+            PropertyNames.Add(Property.Name);
+
+            if (Property.PropertyType.FullName.StartsWith("Preprocessor"))
+            {
+                Type PropertyType = Property.PropertyType;
+                if (PropertyType.IsArray)
+                    PropertyType = PropertyType.GetElementType();
+
+                EnsureAlphabeticalOrder(PropertyType);
+            }
+        }
+
+        List<string> SortedPropertyNames = new(PropertyNames);
+        SortedPropertyNames.Sort(StringComparer.Ordinal);
+
+        for (int i = 0; i < SortedPropertyNames.Count; i++)
+            Debug.Assert(SortedPropertyNames[i] == PropertyNames[i], $"Property {SortedPropertyNames[i]} in {type.Name} is not declared in order");
+    }
+
+    private static string GetWriteContent<T>(T objects, bool isPretty)
+    {
         JsonSerializerOptions WriteOptions = new();
-        Converters.ForEach(WriteOptions.Converters.Add);
+        JsonConverters.ForEach(WriteOptions.Converters.Add);
         WriteOptions.WriteIndented = isPretty;
         WriteOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         WriteOptions.NumberHandling = JsonNumberHandling.Strict;
         WriteOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-        string WriteContent = JsonSerializer.Serialize(result, WriteOptions);
+        string WriteContent = JsonSerializer.Serialize(objects, WriteOptions);
 
         if (isPretty)
             WriteContent = WriteContent.Replace("\r\n", "\n");
 
-        if (ReadContent != WriteContent)
-        {
-            Comparer Comparer = new();
-            Comparer.Compare(ReadContent, WriteContent);
-            return false;
-        }
-        else
-            return true;
+        return WriteContent;
+    }
+
+    private static void SaveSerializedContent<T>(string filePath, T objects)
+    {
+        JsonSerializerOptions WriteOptions = new();
+        WriteOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+        WriteOptions.WriteIndented = true;
+        WriteOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        WriteOptions.NumberHandling = JsonNumberHandling.Strict;
+        string CuratedContent = JsonSerializer.Serialize(objects, WriteOptions);
+
+        using FileStream Stream = new(filePath, FileMode.Create, FileAccess.Write);
+        using StreamWriter Writer = new(Stream, Encoding.UTF8);
+        Writer.Write(CuratedContent);
     }
 
     public static object? FromSingleOrMultiple<T>(T[]? items, bool isSingle)

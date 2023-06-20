@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class LoreBookCategoryDictionary : Dictionary<string, LoreBookCategory>, IDictionaryValueBuilder<LoreBookCategory, LoreBookCategory>
+internal class LoreBookCategoryDictionary : Dictionary<string, LoreBookCategory>, IDictionaryValueBuilder<LoreBookCategory, RawLoreBookCategory>
 {
-    public LoreBookCategory FromRaw(LoreBookCategory loreBookCategory) => loreBookCategory;
-    public LoreBookCategory ToRaw(LoreBookCategory loreBookCategory) => loreBookCategory;
+    public LoreBookCategory FromRaw(RawLoreBookCategory rawLoreBookCategory) => new(rawLoreBookCategory);
+    public RawLoreBookCategory ToRaw(LoreBookCategory loreBookCategory) => loreBookCategory.ToRawLoreBookCategory();
 }

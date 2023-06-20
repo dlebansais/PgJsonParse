@@ -48,5 +48,5 @@ internal class AIAbility
         return Result;
     }
 
-    public bool IsMinDistance { get; }
+    private readonly bool IsMinDistance;
 }

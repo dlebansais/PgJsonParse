@@ -25,8 +25,8 @@ internal class Recipe
         Particle = rawRecipe.Particle;
         PrereqRecipe = rawRecipe.PrereqRecipe;
         ProtoResultItems = rawRecipe.ProtoResultItems;
-        ResetTimeInSeconds = rawRecipe.ResetTimeInSeconds;
         RequiredAttributeNonZero = rawRecipe.RequiredAttributeNonZero;
+        ResetTimeInSeconds = rawRecipe.ResetTimeInSeconds;
         ResultEffects = rawRecipe.ResultEffects;
         ResultItems = rawRecipe.ResultItems;
         RewardAllowBonusXp = rawRecipe.RewardAllowBonusXp;
@@ -68,8 +68,8 @@ internal class Recipe
     public string? Particle { get; set; }
     public string? PrereqRecipe { get; set; }
     public RecipeItem[]? ProtoResultItems { get; set; }
-    public int? ResetTimeInSeconds { get; set; }
     public string? RequiredAttributeNonZero { get; set; }
+    public int? ResetTimeInSeconds { get; set; }
     public string[]? ResultEffects { get; set; }
     public RecipeItem[]? ResultItems { get; set; }
     public bool? RewardAllowBonusXp { get; set; }
@@ -114,8 +114,8 @@ internal class Recipe
         Result.Particle = Particle;
         Result.PrereqRecipe = PrereqRecipe;
         Result.ProtoResultItems = ProtoResultItems;
-        Result.ResetTimeInSeconds = ResetTimeInSeconds;
         Result.RequiredAttributeNonZero = RequiredAttributeNonZero;
+        Result.ResetTimeInSeconds = ResetTimeInSeconds;
         Result.ResultEffects = ResultEffects;
         Result.ResultItems = ResultItems;
         Result.RewardAllowBonusXp = RewardAllowBonusXp;
@@ -138,5 +138,5 @@ internal class Recipe
         return Result;
     }
 
-    private bool IsOtherRequirementsSingle;
+    private readonly bool IsOtherRequirementsSingle;
 }

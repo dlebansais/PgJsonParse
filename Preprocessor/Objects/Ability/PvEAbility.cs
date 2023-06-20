@@ -124,5 +124,5 @@ internal class PvEAbility
         return Result;
     }
 
-    public bool HasSelfEffectOnCrit { get; }
+    private readonly bool HasSelfEffectOnCrit;
 }
