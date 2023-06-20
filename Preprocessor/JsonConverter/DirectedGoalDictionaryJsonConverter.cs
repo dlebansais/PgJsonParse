@@ -22,21 +22,21 @@ internal class DirectedGoalDictionaryJsonConverter : JsonConverter<DirectedGoalD
         while (reader.Read() && reader.TokenType == JsonTokenType.StartObject)
         {
             int Key = 0;
-            RawDirectedGoal? DirectedGoal1 = null;
+            RawDirectedGoal? RawDirectedGoal = null;
             Exception? Exception1 = null;
 
             try
             {
-                DirectedGoal1 = JsonSerializer.Deserialize<RawDirectedGoal>(ref reader, options) ?? throw new InvalidCastException();
-                Key = DirectedGoal1.Id;
+                RawDirectedGoal = JsonSerializer.Deserialize<RawDirectedGoal>(ref reader, options) ?? throw new InvalidCastException();
+                Key = RawDirectedGoal.Id;
             }
             catch (Exception Exception)
             {
                 Exception1 = Exception;
             }
 
-            if (DirectedGoal1 is not null)
-                dictionary.Add(Key, new DirectedGoal(DirectedGoal1));
+            if (RawDirectedGoal is not null)
+                dictionary.Add(Key, new DirectedGoal(RawDirectedGoal));
             else
             {
                 Debug.WriteLine($"\r\nKey: {Key}");
