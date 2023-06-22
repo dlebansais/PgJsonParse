@@ -34,7 +34,7 @@ public class ParserEffect : Parser
                 case "Name":
                     Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
                     break;
-                case "Desc":
+                case "Description":
                     Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                     break;
                 case "IconId":
