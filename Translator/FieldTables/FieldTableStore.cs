@@ -174,7 +174,7 @@ public class FieldTableStore
         { "Value", typeof(float) },
     };
 
-    public static Dictionary<string, Type> TableAdvancementEffect { get; } = new Dictionary<string, Type>()
+    public static Dictionary<string, Type> TableAdvancement { get; } = new Dictionary<string, Type>()
     {
         { "Attributes", typeof(PgAdvancementEffectAttribute[]) },
     };
@@ -706,8 +706,8 @@ public class FieldTableStore
         { typeof(PgDoT), new FixedFieldTable(TableDoT) },
         { typeof(PgSpecialValue), new FixedFieldTable(TableSpecialValue) },
         { typeof(PgAdvancementEffectAttribute), new FixedFieldTable(TableAdvancementEffectAttribute) },
-        { typeof(PgAdvancementEffect), new FixedFieldTable(TableAdvancementEffect) },
-        { typeof(PgAdvancementEffectAttributeCollection), new VariadicFieldTable(typeof(PgAdvancementEffect)) },
+        { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
+        { typeof(PgAdvancementEffectAttributeCollection), new VariadicFieldTable(typeof(PgAdvancement)) },
         { typeof(PgAdvancementTable), new FixedFieldTable(TableAdvancementTable) },
         { typeof(PgAI), new FixedFieldTable(TableAI) },
         { typeof(PgAIAbilitySet), new VariadicFieldTable(typeof(PgAIAbility)) },

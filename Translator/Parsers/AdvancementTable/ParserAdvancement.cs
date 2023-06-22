@@ -27,32 +27,19 @@ public class ParserAdvancement : Parser
         {
             string Key = Entry.Key;
             object Value = Entry.Value;
-
-            PgAttribute ParsedAttribute = null!;
-            float ParsedValue = 0;
-
-            if (Key == "MENTAL_DEFENSE_RATING")
-                continue;
-
-            Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, Key);
-
-            if (Result)
+            
+            switch (Key)
             {
-                if (Value is float FloatValue)
-                    ParsedValue = FloatValue;
-                else if (Value is int IntValue)
-                    ParsedValue = IntValue;
-                else
-                    Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown attribute value '{Value}'");
+                case "Attributes":
+                    Result = Inserter<PgAdvancementEffectAttribute>.AddKeylessArray(item.EffectAttributeList, Value);
+                    break;
+                default:
+                    Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                    break;
             }
 
-            if (Result)
-            {
-                PgAdvancementEffectAttribute NewAdvancementEffectAttribute = new PgAdvancementEffectAttribute() { Attribute_Key = ParsedAttribute.Key, RawValue = ParsedValue };
-
-                ParsingContext.AddSuplementaryObject(NewAdvancementEffectAttribute);
-                item.EffectAttributeList.Add(NewAdvancementEffectAttribute);
-            }
+            if (!Result)
+                break;
         }
 
         return Result;

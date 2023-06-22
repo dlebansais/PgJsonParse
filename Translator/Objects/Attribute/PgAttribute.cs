@@ -26,6 +26,7 @@
         public static PgAttribute BOOST_ANIMALPETHEAL_SENDER { get; } = new PgAttribute("BOOST_ANIMALPETHEAL_SENDER");
         public static PgAttribute MONSTER_COMBAT_XP_VALUE { get; } = new PgAttribute("MONSTER_COMBAT_XP_VALUE");
         public static PgAttribute MOD_VAULT_SIZE { get; } = new PgAttribute("MOD_VAULT_SIZE");
+        public static PgAttribute MENTAL_DEFENSE_RATING { get; } = new PgAttribute("MENTAL_DEFENSE_RATING");
 
         public string Label { get; set; } = string.Empty;
         public List<int> IconIdList { get; set; } = new List<int>();

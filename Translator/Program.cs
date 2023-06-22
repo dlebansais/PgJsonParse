@@ -62,6 +62,7 @@ public class Program
         AddHardCodedAttribute(PgAttribute.BOOST_ANIMALPETHEAL_SENDER);
         AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
         AddHardCodedAttribute(PgAttribute.MOD_VAULT_SIZE);
+        AddHardCodedAttribute(PgAttribute.MENTAL_DEFENSE_RATING);
 
         /*if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
             return -1;*/
