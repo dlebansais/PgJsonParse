@@ -212,6 +212,7 @@ internal class Preprocessor
         WriteOptions.WriteIndented = true;
         WriteOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         WriteOptions.NumberHandling = JsonNumberHandling.Strict;
+        WriteOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
         string CuratedContent = JsonSerializer.Serialize(objects, WriteOptions);
 
         using FileStream Stream = new(filePath, FileMode.Create, FileAccess.Write);
