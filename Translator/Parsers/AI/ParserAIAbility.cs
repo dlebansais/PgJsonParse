@@ -30,25 +30,25 @@ public class ParserAIAbility : Parser
 
             switch (Key)
             {
-                case "minLevel":
+                case "MinLevel":
                     Result = SetIntProperty((int valueInt) => item.RawMinLevel = valueInt, Value);
                     break;
-                case "maxLevel":
+                case "MaxLevel":
                     Result = SetIntProperty((int valueInt) => item.RawMaxLevel = valueInt, Value);
                     break;
-                case "minDistance":
+                case "MinDistance":
                     Result = SetIntProperty((int valueInt) => item.RawMinDistance = valueInt, Value);
                     break;
-                case "minRange":
+                case "MinRange":
                     Result = SetFloatProperty((float valueFloat) => item.RawMinRange = valueFloat, Value);
                     break;
-                case "maxRange":
+                case "MaxRange":
                     Result = SetIntProperty((int valueInt) => item.RawMaxRange = valueInt, Value);
                     break;
-                case "cue":
+                case "Cue":
                     Result = StringToEnumConversion<AbilityCue>.SetEnum((AbilityCue valueEnum) => item.Cue = valueEnum, Value);
                     break;
-                case "cueVal":
+                case "CueVal":
                     Result = SetIntProperty((int valueInt) => item.RawCueValue = valueInt, Value);
                     break;
                 default:
