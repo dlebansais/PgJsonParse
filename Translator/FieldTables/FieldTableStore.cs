@@ -182,7 +182,7 @@ public class FieldTableStore
     public static Dictionary<string, Type> TableAdvancementTable { get; } = new Dictionary<string, Type>()
     {
         { "Name", typeof(string) },
-        { "Levels", typeof(PgAdvancementEffectAttributeCollection) },
+        { "Levels", typeof(PgAdvancementCollection) },
     };
 
     public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
@@ -705,10 +705,10 @@ public class FieldTableStore
         { typeof(PgAbilityRequirement), new FixedFieldTable(TableAbilityRequirement) },
         { typeof(PgDoT), new FixedFieldTable(TableDoT) },
         { typeof(PgSpecialValue), new FixedFieldTable(TableSpecialValue) },
-        { typeof(PgAdvancementEffectAttribute), new FixedFieldTable(TableAdvancementEffectAttribute) },
-        { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
-        { typeof(PgAdvancementEffectAttributeCollection), new VariadicFieldTable(typeof(PgAdvancement)) },
         { typeof(PgAdvancementTable), new FixedFieldTable(TableAdvancementTable) },
+        { typeof(PgAdvancementCollection), new VariadicFieldTable(typeof(PgAdvancement)) },
+        { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
+        { typeof(PgAdvancementEffectAttribute), new FixedFieldTable(TableAdvancementEffectAttribute) },
         { typeof(PgAI), new FixedFieldTable(TableAI) },
         { typeof(PgAIAbilitySet), new VariadicFieldTable(typeof(PgAIAbility)) },
         { typeof(PgAIAbility), new FixedFieldTable(TableAIAbility) },

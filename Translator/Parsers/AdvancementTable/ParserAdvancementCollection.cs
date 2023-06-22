@@ -4,22 +4,22 @@ using System.Collections.Generic;
 using PgJsonReader;
 using PgObjects;
 
-public class ParserAdvancementEffectAttributeCollection : Parser
+public class ParserAdvancementCollection : Parser
 {
     public override object CreateItem()
     {
-        return new PgAdvancementEffectAttributeCollection();
+        return new PgAdvancementCollection();
     }
 
     public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
-        if (item is not PgAdvancementEffectAttributeCollection AsPgAdvancementEffectAttributeCollection)
+        if (item is not PgAdvancementCollection AsPgAdvancementCollection)
             return Program.ReportFailure("Unexpected failure");
 
-        return FinishItem(AsPgAdvancementEffectAttributeCollection, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
+        return FinishItem(AsPgAdvancementCollection, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
     }
 
-    private bool FinishItem(PgAdvancementEffectAttributeCollection item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    private bool FinishItem(PgAdvancementCollection item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
         bool Result = true;
 

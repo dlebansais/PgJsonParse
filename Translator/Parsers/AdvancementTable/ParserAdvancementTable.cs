@@ -24,7 +24,7 @@ public class ParserAdvancementTable : Parser
     private bool FinishItem(PgAdvancementTable item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
         bool Result = true;
-        PgAdvancementEffectAttributeCollection? Advancement = null;
+        PgAdvancementCollection? AdvancementCollection = null;
 
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
@@ -34,7 +34,7 @@ public class ParserAdvancementTable : Parser
             switch (Key)
             {
                 case "Levels":
-                    Result = Inserter<PgAdvancementEffectAttributeCollection>.SetItemProperty((PgAdvancementEffectAttributeCollection valueAdvancement) => Advancement = valueAdvancement, Value);
+                    Result = Inserter<PgAdvancementCollection>.SetItemProperty((PgAdvancementCollection valueAdvancementCollection) => AdvancementCollection = valueAdvancementCollection, Value);
                     break;
                 case "Name":
                     Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
@@ -48,9 +48,9 @@ public class ParserAdvancementTable : Parser
                 break;
         }
 
-        if (Advancement is not null)
+        if (AdvancementCollection is not null)
         {
-            Dictionary<int, PgAdvancement> LevelAdvancementTable = Advancement.GetLevelAdvancementTable();
+            Dictionary<int, PgAdvancement> LevelAdvancementTable = AdvancementCollection.GetLevelAdvancementTable();
 
             foreach (KeyValuePair<int, PgAdvancement> Entry in LevelAdvancementTable)
                 item.LevelTable.Add(Entry.Key, Entry.Value);
