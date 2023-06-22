@@ -230,7 +230,7 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TableDirectedGoal { get; } = new Dictionary<string, Type>()
     {
-        { "Id", typeof(int) },
+        //{ "Id", typeof(int) },
         { "Label", typeof(string) },
         { "Zone", typeof(string) },
         { "IsCategoryGate", typeof(bool) },
