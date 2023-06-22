@@ -22,7 +22,7 @@ internal class Preprocessor
         new StringDictionaryJsonConverter<Area, Area, AreaDictionary>(),
         new StringDictionaryJsonConverter<Attribute, Attribute, AttributeDictionary>(),
         new DirectedGoalDictionaryJsonConverter(),
-        new StringDictionaryJsonConverter<Effect, RawEffect, EffectDictionary>(),
+        new IntDictionaryJsonConverter<Effect, RawEffect, EffectDictionary>("effect"),
         new IntDictionaryJsonConverter<Item, Item, ItemDictionary>("item"),
         new SkillRequirementDictionaryJsonConverter(),
         new IntDictionaryJsonConverter<ItemUse, ItemUse, ItemUseDictionary>("item"),
@@ -209,7 +209,6 @@ internal class Preprocessor
     private static void SaveSerializedContent<T>(string filePath, T objects)
     {
         JsonSerializerOptions WriteOptions = new();
-        WriteOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
         WriteOptions.WriteIndented = true;
         WriteOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         WriteOptions.NumberHandling = JsonNumberHandling.Strict;

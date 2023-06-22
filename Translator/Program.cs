@@ -63,7 +63,9 @@ public class Program
         AddHardCodedAttribute(PgAttribute.MONSTER_COMBAT_XP_VALUE);
         AddHardCodedAttribute(PgAttribute.MOD_VAULT_SIZE);
 
-        if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
+        /*if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.KeylessArray))
+            return -1;*/
+        if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.EmbeddedObjects))
             return -1;
 
         if (!ParseFile(Version, "effects", typeof(PgEffect), FileType.EmbeddedObjects))
@@ -115,10 +117,10 @@ public class Program
         if (!ParseFile(Version, "skills", typeof(PgSkill), FileType.EmbeddedObjects))
             return -1;
 
-        if (!ParseFile(Version, "sources_abilities", typeof(PgSourceEntries), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "sources_abilities", typeof(PgSourceEntriesAbility), FileType.EmbeddedObjects))
             return -1;
 
-        if (!ParseFile(Version, "sources_recipes", typeof(PgSourceEntries), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "sources_recipes", typeof(PgSourceEntriesRecipe), FileType.EmbeddedObjects))
             return -1;
 
         if (!ParseFile(Version, "storagevaults", typeof(PgStorageVault), FileType.EmbeddedObjects))
@@ -263,7 +265,7 @@ public class Program
     {
         LastParsedFile = fileName;
 
-        string FullPath = $"{VersionPath}\\{fileName}.json";
+        string FullPath = $"{VersionPath}\\Curated\\{fileName}.json";
 
         if (!File.Exists(FullPath))
         {
@@ -472,7 +474,8 @@ public class Program
 
         if (reader.CurrentValue is string FieldName)
         {
-            if (!context.FieldTable.ContainsKey(FieldName, out FieldType))
+            FieldTable FieldTable = context.FieldTable;
+            if (!FieldTable.ContainsKey(FieldName, out FieldType))
                 return ReportFailure($"Missing key: {FieldName}");
         }
         else

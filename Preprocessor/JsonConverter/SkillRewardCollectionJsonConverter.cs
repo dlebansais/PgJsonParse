@@ -1,7 +1,6 @@
 ﻿namespace Preprocessor;
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -87,11 +86,16 @@ internal class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardCol
             else
                 Key = $"{Reward.Level}_{string.Join("_", Reward.Races)}";
 
+            int? Level = Reward.Level;
+            string[]? Races = Reward.Races;
             Reward.Level = null;
             Reward.Races = null;
 
             writer.WritePropertyName(Key);
             JsonSerializer.Serialize(writer, Reward, options);
+
+            Reward.Level = Level;
+            Reward.Races = Races;
         }
 
         writer.WriteEndObject();

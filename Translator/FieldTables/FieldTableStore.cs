@@ -168,133 +168,21 @@ public class FieldTableStore
         { "SkipIfZero", typeof(bool) },
     };
 
-    public static Dictionary<string, Type> TableAdvancement { get; } = new Dictionary<string, Type>()
+    public static Dictionary<string, Type> TableAdvancementEffectAttribute { get; } = new Dictionary<string, Type>()
     {
-        { "VULN_CRUSHING", typeof(float) },
-        { "VULN_SLASHING", typeof(float) },
-        { "VULN_NATURE", typeof(float) },
-        { "VULN_FIRE", typeof(float) },
-        { "VULN_COLD", typeof(float) },
-        { "VULN_PIERCING", typeof(float) },
-        { "VULN_PSYCHIC", typeof(float) },
-        { "VULN_TRAUMA", typeof(float) },
-        { "VULN_ELECTRICITY", typeof(float) },
-        { "VULN_POISON", typeof(float) },
-        { "VULN_ACID", typeof(float) },
-        { "VULN_DARKNESS", typeof(float) },
-        { "VULN_BURST", typeof(float) },
-        { "MITIGATION_CRUSHING", typeof(float) },
-        { "MITIGATION_SLASHING", typeof(float) },
-        { "MITIGATION_NATURE", typeof(float) },
-        { "MITIGATION_FIRE", typeof(float) },
-        { "MITIGATION_PIERCING", typeof(float) },
-        { "MITIGATION_TRAUMA_DIRECT", typeof(float) },
-        { "MITIGATION_TRAUMA_INDIRECT", typeof(float) },
-        { "MITIGATION_POISON", typeof(float) },
-        { "MITIGATION_POISON_DIRECT", typeof(float) },
-        { "MITIGATION_POISON_INDIRECT", typeof(float) },
-        { "MOD_FIRE_DIRECT", typeof(float) },
-        { "MOD_ELECTRICITY_DIRECT", typeof(float) },
-        { "MOD_DARKNESS_DIRECT", typeof(float) },
-        { "MOD_FIRE_INDIRECT", typeof(float) },
-        { "IGNORE_CHANCE_FEAR", typeof(float) },
-        { "IGNORE_CHANCE_MEZ", typeof(float) },
-        { "IGNORE_CHANCE_KNOCKBACK", typeof(float) },
-        { "MENTAL_DEFENSE_RATING", typeof(float) },
-        { "NONCOMBAT_REGEN_HEALTH_MOD", typeof(float) },
-        { "COMBAT_REGEN_HEALTH_MOD", typeof(float) },
-        { "COMBAT_REGEN_HEALTH_DELTA", typeof(float) },
-        { "NONCOMBAT_REGEN_ARMOR_MOD", typeof(float) },
-        { "NONCOMBAT_REGEN_ARMOR_DELTA", typeof(float) },
-        { "COMBAT_REGEN_ARMOR_MOD", typeof(float) },
-        //{ "NONCOMBAT_REGEN_POWER_MOD", typeof(float) },
-        //{ "COMBAT_REGEN_POWER_MOD", typeof(float) },
-        { "SPRINT_BOOST", typeof(float) },
-        { "TAUNT_MOD", typeof(float) },
-        { "EVASION_CHANCE", typeof(float) },
-        { "EVASION_CHANCE_PROJECTILE", typeof(float) },
-        { "EVASION_CHANCE_MELEE", typeof(float) },
-        { "MOD_CRITICAL_HIT_DAMAGE_RAGEATTACK", typeof(float) },
-        { "BOOST_WEREWOLFMETABOLISM_HEALTHREGEN", typeof(float) },
-        { "BOOST_WEREWOLFMETABOLISM_POWERREGEN", typeof(float) },
-        { "LOOT_BOOST_CHANCE_UNCOMMON", typeof(float) },
-        { "LOOT_BOOST_CHANCE_RARE", typeof(float) },
-        { "LOOT_BOOST_CHANCE_EXCEPTIONAL", typeof(float) },
-        { "LOOT_BOOST_CHANCE_EPIC", typeof(float) },
-        { "LOOT_BOOST_CHANCE_LEGENDARY", typeof(float) },
-        { "MAX_HEALTH", typeof(float) },
-        { "MAX_ARMOR", typeof(float) },
-        { "MAX_RAGE", typeof(float) },
-        { "MAX_POWER", typeof(float) },
-        { "MAX_BREATH", typeof(float) },
-        { "BOOST_UNIVERSAL_DIRECT", typeof(float) },
-        { "BOOST_ABILITY_RAGEATTACK", typeof(float) },
-        { "MOD_ABILITY_RAGEATTACK", typeof(float) },
-        { "MONSTER_COMBAT_XP_VALUE", typeof(float) },
-        { "COMBAT_REGEN_ARMOR_DELTA", typeof(float) },
-        { "COMBAT_REGEN_POWER_DELTA", typeof(float) },
-        { "MAX_INVENTORY_SIZE", typeof(int) },
-        { "MAX_METABOLISM", typeof(float) },
-        { "NPC_MOD_FAVORFROMGIFTS", typeof(float) },
-        { "NPC_MOD_FAVORFROMHANGOUTS", typeof(float) },
-        { "NPC_MOD_MAXSALESVALUE", typeof(float) },
-        { "NPC_MOD_TRAININGCOST", typeof(float) },
-        { "NUM_INVENTORY_FOLDERS", typeof(int) },
-        { "HIGH_CLEANLINESS_XP_EARNED_MOD", typeof(float) },
-        { "LOW_CLEANLINESS_XP_EARNED_MOD", typeof(float) },
-        { "SHOW_CLEANLINESS_INDICATORS", typeof(float) },
-        { "HIGH_COMMUNITY_XP_EARNED_MOD", typeof(float) },
-        { "LOW_COMMUNITY_XP_EARNED_MOD", typeof(float) },
-        { "SHOW_COMMUNITY_INDICATORS", typeof(float) },
-        { "HIGH_PEACEABLENESS_XP_EARNED_MOD", typeof(float) },
-        { "LOW_PEACEABLENESS_XP_EARNED_MOD", typeof(float) },
-        { "SHOW_PEACEABLENESS_INDICATORS", typeof(float) },
-        { "STAFF_ARMOR_AUTOHEAL", typeof(float) },
-        { "MAX_MAP_PINS_PER_AREA", typeof(float) },
-        { "MAX_MAP_PIN_ICONS", typeof(float) },
-        { "WORKORDER_COIN_REWARD_MOD", typeof(float) },
-        { "MAX_ACTIVE_WORKORDERS", typeof(float) },
-        { "PLAYER_ORDERS_MAX_ACTIVE", typeof(float) },
-        { "SHOP_INVENTORY_SIZE_DELTA", typeof(float) },
-        { "MAIL_SHOP_NUMFREE", typeof(float) },
-        { "SHOP_HIRING_MAX_PREPAY_DAYS", typeof(float) },
-        { "SHOP_LOG_DAYSKEPT", typeof(float) },
-        { "SHOP_HIRING_NUMFREE", typeof(float) },
-        { "MOD_CRITICAL_HIT_DAMAGE", typeof(float) },
-        { "MONSTER_CRIT_CHANCE", typeof(float) },
-        { "ACCURACY_BOOST", typeof(float) },
-        { "BOOST_POISON_INDIRECT", typeof(float) },
-        { "MONSTER_MATCH_OWNER_SPEED", typeof(int) },
-        { "ARMOR_MITIGATION_MOD", typeof(float) },
-        { "AUTOHEAL_HEALTH_MOD", typeof(float) },
-        { "AUTOHEAL_ARMOR_MOD", typeof(float) },
-        { "ARMOR_MITIGATION_RATIO", typeof(float) },
-        { "SHOW_FAIRYENERGY_INDICATORS", typeof(int) },
-        { "BOOST_ABILITY_PET_SPECIALATTACK", typeof(int) },
-        { "BOOST_ABILITY_PET_SPECIALTRICK", typeof(int) },
-        { "BOOST_ABILITY_PET_BASICATTACK", typeof(int) },
-        { "BOOST_AUTOHEAL_HEALTH_SENDER", typeof(float) },
-        { "BOOST_AUTOHEAL_ARMOR_SENDER", typeof(float) },
-        { "BOOST_TRAUMA_INDIRECT", typeof(float) },
-        { "COMBAT_XP_EARNED_MOD", typeof(float) },
-        { "BOND_XP_EARNED_MOD", typeof(float) },
-        { "EVASION_CHANCE_BURST", typeof(float) },
-        { "BONUS_STABLE_SLOTS", typeof(int) },
-        { "MAX_BREEDING_ATTEMPTS", typeof(int) },
-        { "BOOST_ANIMALPETHEAL_SENDER", typeof(float) },
-        { "BOOST_ACID_INDIRECT", typeof(float) },
-        { "MAX_SADDLEBAG_VAULT_SIZE", typeof(int) },
-        { "MAX_MOUNT_ANXIETY", typeof(int) },
-        { "MOUNTED_ACCELERATION_LAND", typeof(float) },
-        { "MOUNTED_ACCELERATION_WATER_DEEP", typeof(float) },
-        { "MOUNTED_ACCELERATION_WATER_SHALLOW", typeof(float) },
-        { "MOUNTED_JUMP_BURST", typeof(float) },
-        { "MOUNTED_TOP_SPEED_LAND", typeof(float) },
-        { "MOUNTED_TURN_SPEED_LAND", typeof(float) },
-        { "MOUNTED_TURN_SPEED_WATER_DEEP", typeof(float) },
-        { "MOUNTED_TURN_SPEED_WATER_SHALLOW", typeof(float) },
-        { "MOUNT_RESILIENCE", typeof(int) },
-        { "MOD_VAULT_SIZE", typeof(float) },
+        { "Attribute", typeof(string) },
+        { "Value", typeof(float) },
+    };
+
+    public static Dictionary<string, Type> TableAdvancementEffect { get; } = new Dictionary<string, Type>()
+    {
+        { "Attributes", typeof(PgAdvancementEffectAttribute[]) },
+    };
+
+    public static Dictionary<string, Type> TableAdvancementTable { get; } = new Dictionary<string, Type>()
+    {
+        { "Name", typeof(string) },
+        { "Levels", typeof(PgAdvancementEffectAttributeCollection) },
     };
 
     public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
@@ -314,13 +202,13 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TableAIAbility { get; } = new Dictionary<string, Type>()
     {
-        { "minLevel", typeof(int) },
-        { "maxLevel", typeof(int) },
-        { "minDistance", typeof(int) },
-        { "minRange", typeof(float) },
-        { "maxRange", typeof(int) },
-        { "cue", typeof(string) },
-        { "cueVal", typeof(int) },
+        { "MinLevel", typeof(int) },
+        { "MaxLevel", typeof(int) },
+        { "MinDistance", typeof(int) },
+        { "MinRange", typeof(float) },
+        { "MaxRange", typeof(int) },
+        { "Cue", typeof(string) },
+        { "CueVal", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableArea { get; } = new Dictionary<string, Type>()
@@ -355,7 +243,7 @@ public class FieldTableStore
     public static Dictionary<string, Type> TableEffect { get; } = new Dictionary<string, Type>()
     {
         { "Name", typeof(string) },
-        { "Desc", typeof(string) },
+        { "Description", typeof(string) },
         { "IconId", typeof(int) },
         { "DisplayMode", typeof(string) },
         { "SpewText", typeof(string) },
@@ -698,10 +586,10 @@ public class FieldTableStore
         { "Combat", typeof(bool) },
         { "TSysCompatibleCombatSkills", typeof(string[]) },
         { "MaxBonusLevels", typeof(int) },
-        { "InteractionFlagLevelCaps", typeof(PgLevelCapInteractionList) },
-        { "AdvancementHints", typeof(PgAdvancementHint) },
-        { "Rewards", typeof(PgRewardList) },
-        { "Reports", typeof(PgReportList) },
+        { "InteractionFlagLevelCaps", typeof(PgLevelCapInteraction[]) },
+        { "AdvancementHints", typeof(PgAdvancementHint[]) },
+        { "Rewards", typeof(PgReward[]) },
+        { "Reports", typeof(PgReport[]) },
         { "Name", typeof(string) },
         { "Parents", typeof(string[]) },
         { "SkipBonusLevelsIfSkillUnlearned", typeof(bool) },
@@ -714,17 +602,39 @@ public class FieldTableStore
         { "SkillLevelDisparityApplies", typeof(bool) },
     };
 
+    public static Dictionary<string, Type> TableLevelCapInteraction { get; } = new Dictionary<string, Type>()
+    {
+        { "Skill", typeof(string) },
+        { "Level", typeof(int) },
+        { "SkillCap", typeof(int) },
+        { "IsPerformanceSkill", typeof(bool) },
+    };
+
+    public static Dictionary<string, Type> TableAdvancementHint { get; } = new Dictionary<string, Type>()
+    {
+        { "Hint", typeof(string) },
+        { "Level", typeof(int) },
+    };
+
     public static Dictionary<string, Type> TableReward { get; } = new Dictionary<string, Type>()
     {
         { "Ability", typeof(StringOrStringArray) },
         { "BonusToSkill", typeof(string) },
         { "Recipe", typeof(string) },
         { "Notes", typeof(string) },
+        { "Level", typeof(int) },
+        { "Races", typeof(string[]) },
+    };
+
+    public static Dictionary<string, Type> TableReport { get; } = new Dictionary<string, Type>()
+    {
+        { "Report", typeof(string) },
+        { "Level", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableSourceEntries { get; } = new Dictionary<string, Type>()
     {
-        { "entries", typeof(PgSource[]) },
+        { "Entries", typeof(PgSource[]) },
     };
 
     public static Dictionary<string, Type> TableSource { get; } = new Dictionary<string, Type>()
@@ -733,12 +643,12 @@ public class FieldTableStore
         { "EffectName", typeof(string) },
         { "EffectTypeId", typeof(string) },
 */
-        { "skill", typeof(string) },
-        { "type", typeof(string) },
-        { "itemTypeId", typeof(int) },
-        { "npc", typeof(string) },
-        { "questId", typeof(int) },
-        { "hangOutId", typeof(int) },
+        { "Skill", typeof(string) },
+        { "Type", typeof(string) },
+        { "ItemTypeId", typeof(int) },
+        { "Npc", typeof(string) },
+        { "QuestId", typeof(int) },
+        { "HangOutId", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableStorageVault { get; } = new Dictionary<string, Type>()
@@ -795,8 +705,10 @@ public class FieldTableStore
         { typeof(PgAbilityRequirement), new FixedFieldTable(TableAbilityRequirement) },
         { typeof(PgDoT), new FixedFieldTable(TableDoT) },
         { typeof(PgSpecialValue), new FixedFieldTable(TableSpecialValue) },
-        { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
-        { typeof(PgAdvancementTable), new VariadicFieldTable(typeof(PgAdvancement)) },
+        { typeof(PgAdvancementEffectAttribute), new FixedFieldTable(TableAdvancementEffectAttribute) },
+        { typeof(PgAdvancementEffect), new FixedFieldTable(TableAdvancementEffect) },
+        { typeof(PgAdvancementEffectAttributeCollection), new VariadicFieldTable(typeof(PgAdvancementEffect)) },
+        { typeof(PgAdvancementTable), new FixedFieldTable(TableAdvancementTable) },
         { typeof(PgAI), new FixedFieldTable(TableAI) },
         { typeof(PgAIAbilitySet), new VariadicFieldTable(typeof(PgAIAbility)) },
         { typeof(PgAIAbility), new FixedFieldTable(TableAIAbility) },
@@ -829,13 +741,17 @@ public class FieldTableStore
         { typeof(PgRecipeItem), new FixedFieldTable(TableRecipeItem) },
         { typeof(PgRecipeCost), new FixedFieldTable(TableRecipeCost) },
         { typeof(PgSkill), new FixedFieldTable(TableSkill) },
-        { typeof(PgLevelCapInteractionList), new VariadicFieldTable(typeof(int)) },
-        { typeof(PgAdvancementHint), new VariadicFieldTable(typeof(string)) },
-        { typeof(PgRewardList), new VariadicFieldTable(typeof(PgReward)) },
+        //{ typeof(PgLevelCapInteractionList), new VariadicFieldTable(typeof(int)) },
+        //{ typeof(PgAdvancementHint), new VariadicFieldTable(typeof(string)) },
+        { typeof(PgLevelCapInteraction), new FixedFieldTable(TableLevelCapInteraction) },
+        { typeof(PgAdvancementHint), new FixedFieldTable(TableAdvancementHint) },
+        //{ typeof(PgRewardList), new VariadicFieldTable(typeof(PgReward)) },
         { typeof(PgReward), new FixedFieldTable(TableReward) },
-        { typeof(PgReportList), new VariadicFieldTable(typeof(string)) },
+        //{ typeof(PgReportList), new VariadicFieldTable(typeof(string)) },
+        { typeof(PgReport), new FixedFieldTable(TableReport) },
         { typeof(PgSource), new FixedFieldTable(TableSource) },
-        { typeof(PgSourceEntries), new FixedFieldTable(TableSourceEntries) },
+        { typeof(PgSourceEntriesAbility), new FixedFieldTable(TableSourceEntries) },
+        { typeof(PgSourceEntriesRecipe), new FixedFieldTable(TableSourceEntries) },
         { typeof(PgStorageVault), new FixedFieldTable(TableStorageVault) },
         { typeof(PgStorageEventList), new FixedFieldTable(TableStorageEventList) },
         { typeof(PgStorageFavorLevel), new FixedFieldTable(TableStorageFavorLevel) },

@@ -5,30 +5,30 @@ using System.Collections.Generic;
 using PgJsonReader;
 using PgObjects;
 
-public class ParserSourceEntries : Parser
+public class ParserSourceEntriesAbility : Parser
 {
-    public static bool Parse(Action<PgSourceEntries> setter, object value, string parsedFile, string parsedKey, ErrorControl errorControl = ErrorControl.Normal)
+    public static bool Parse(Action<PgSourceEntriesAbility> setter, object value, string parsedFile, string parsedKey, ErrorControl errorControl = ErrorControl.Normal)
     {
         if (!(value is string ValueKey))
             return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
 
-        return Inserter<PgSourceEntries>.SetItemByKey(setter, ValueKey, errorControl);
+        return Inserter<PgSourceEntriesAbility>.SetItemByKey(setter, ValueKey, errorControl);
     }
 
     public override object CreateItem()
     {
-        return new PgSourceEntries();
+        return new PgSourceEntriesAbility();
     }
 
     public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
-        if (item is not PgSourceEntries AsPgSourceEntries)
+        if (item is not PgSourceEntriesAbility AsPgSourceEntriesAbility)
             return Program.ReportFailure("Unexpected failure");
 
-        return FinishItem(AsPgSourceEntries, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
+        return FinishItem(AsPgSourceEntriesAbility, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
     }
 
-    private bool FinishItem(PgSourceEntries item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    private bool FinishItem(PgSourceEntriesAbility item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
         bool Result = true;
 
