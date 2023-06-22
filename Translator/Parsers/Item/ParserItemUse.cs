@@ -55,7 +55,7 @@ public class ParserItemUse : Parser
             if (!(Item is int ObjectId))
                 return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be an int");
 
-            string Key = $"recipe_{ObjectId}";
+            string Key = ObjectId.ToString();
             PgRecipe ParsedRecipe = null!;
             if (!Inserter<PgRecipe>.SetItemByKey((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, Key))
                 return false;

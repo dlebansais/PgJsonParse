@@ -31,7 +31,7 @@ public class ParserRecipeItem : Parser
             switch (Key)
             {
                 case "ItemCode":
-                    Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => item.Item_Key = valueItem.Key, $"item_{Value}");
+                    Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => item.Item_Key = valueItem.Key, Value.ToString());
                     break;
                 case "StackSize":
                     Result = SetIntProperty((int valueInt) => item.RawStackSize = valueInt, Value);

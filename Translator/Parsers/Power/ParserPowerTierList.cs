@@ -26,7 +26,7 @@ public class ParserPowerTierList : Parser
             string Key = Entry.Key;
             object Value = Entry.Value;
 
-            if (!Key.StartsWith("id_") || !int.TryParse(Key.Substring(3), out int Level))
+            if (!int.TryParse(Key, out int Level))
                 return Program.ReportFailure($"Invalid power tier key '{Key}'");
 
             if (!(Value is ParsingContext Context))

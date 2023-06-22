@@ -34,7 +34,13 @@ public static class Inserter<T>
         Dictionary<string, ParsingContext> KeyTable = table[LinkType];
 
         if (!KeyTable.ContainsKey(ValueKey))
+        {
+            if (errorControl != ErrorControl.IgnoreIfNotFound)
+            {
+            }
+
             return Program.ReportFailure($"Key '{ValueKey}' is not a known key", errorControl);
+        }
 
         if (!(KeyTable[ValueKey].Item is T AsLink))
             return Program.ReportFailure($"Key '{ValueKey}' was found but for the wrong object type");
