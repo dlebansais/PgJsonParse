@@ -17,7 +17,7 @@
         NonStackingDebuff,
         StackingDebuffLimit,
         MaxStack,
-        Combo1,
+        //Combo1,
         Combo2,
         Combo3,
         Combo4,

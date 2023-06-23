@@ -44,10 +44,10 @@ public class ParserReward : Parser
                     Result = SetStringProperty((string valueString) => item.Notes = Tools.CleanedUpString(valueString), Value);
                     break;
                 case "Level":
-                    Result = SetIntProperty((int valueInt) => item.SetLevel(valueInt), Value);
+                    Result = SetIntProperty((int valueInt) => item.RawRewardLevel = valueInt, Value);
                     break;
                 case "Races":
-                    Result = ParseRaces(item, Value, parsedFile, parsedKey);
+                    Result = StringToEnumConversion<Race>.TryParseList(Value, item.RaceRestrictionList);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -93,26 +93,6 @@ public class ParserReward : Parser
         return true;
     }
 
-    private bool ParseRaces(PgReward item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is List<object> ArrayStrings))
-            return Program.ReportFailure($"Value '{value}' was expected to be a list");
-
-        string[] Races = new string[ArrayStrings.Count];
-
-        for (int i = 0; i < Races.Length; i++)
-        {
-            if (!(ArrayStrings[i] is string ValueString))
-                return Program.ReportFailure($"Value '{ArrayStrings[i]}' was expected to be a string");
-
-            Races[i] = ValueString;
-        }
-
-        item.SetRaces(Races);
-
-        return true;
-    }
-
     public static int CurrencyToIcon(Currency currency)
     {
         int IconId = 0;
@@ -123,10 +103,10 @@ public class ParserReward : Parser
         switch (currency)
         {
             case Currency.Gold:
-                ItemName = "item_14109";
+                ItemName = "14109";
                 break;
             case Currency.LiveEventCredits:
-                ItemName = "item_14076";
+                ItemName = "14076";
                 break;
         }
 

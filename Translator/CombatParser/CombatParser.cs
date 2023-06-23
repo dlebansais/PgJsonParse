@@ -226,11 +226,11 @@ public class CombatParser
         {
             PgEffect Item = (PgEffect)ParsingContext.ObjectKeyTable[typeof(PgEffect)][EffectKey].Item;
 
-            if (Item.Key.StartsWith("effect_60006"))
+            if (Item.Key.StartsWith("60006"))
             {
             }
 
-            if (Item.Key.Length <= 12 || Item.Key[Item.Key.Length - 3] != '0')
+            if (Item.Key.Length <= 5 || Item.Key[Item.Key.Length - 3] != '0')
                 continue;
 
             Debug.Assert(Item.AbilityKeywordList.Count > 0);
@@ -465,9 +465,9 @@ public class CombatParser
         matchingEffectList = null;
 
         string Key = power.Key;
-        Debug.Assert(Key.Length >= 9);
+        Debug.Assert(Key.Length >= 3);
 
-        if (Key == "power_23205")
+        if (Key == "24154")
         {
         }
 
@@ -561,7 +561,7 @@ public class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "power_23205")
+        if (power.Key == "23205")
         {
         }
 
@@ -573,7 +573,7 @@ public class CombatParser
 
             string Key = Item.Key;
 
-            if (Key.Length > 12)
+            if (Key.Length > 6)
                 continue;
 
             if (Item.AbilityKeywordList.Count != 1)
@@ -622,7 +622,7 @@ public class CombatParser
                 foreach (int Id in SimpleEffect.IconIdList)
                 {
                     int IconId = Id;
-                    if (power.Key == "power_23205" && Id == 3402)
+                    if (power.Key == "23205" && Id == 3402)
                         IconId = 3042;
 
                     if (!PowerIconList.Contains(IconId))
@@ -1263,7 +1263,7 @@ public class CombatParser
             // case CombatKeyword.MaxOccurence:
             case CombatKeyword.ChanceToConsume:
             // case CombatKeyword.AddHealthRegen:
-            case CombatKeyword.Combo1:
+            //case CombatKeyword.Combo1:
             case CombatKeyword.ComboFinalStepBurst:
             case CombatKeyword.Combo2:
             case CombatKeyword.ComboFinalStepDamage:
@@ -1653,7 +1653,7 @@ public class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "power_28683")
+            if (Entry.Key.Key == "28683")
             {
             }
 
@@ -3376,7 +3376,7 @@ public class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "power_23205")
+            if (ItemPower.Key == "23205")
             {
             }
 
@@ -3990,7 +3990,7 @@ public class CombatParser
         new Sentence("(This buff does not stack with itself)", CombatKeyword.NonStackingDebuff),
         new Sentence("(Stacking up to %f times)", CombatKeyword.StackingDebuffLimit),
         new Sentence("(This effect does not stack with itself)", CombatKeyword.NonStackingDebuff),
-        new Sentence("Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", CombatKeyword.Combo1),
+//        new Sentence("Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", CombatKeyword.Combo1),
         new Sentence("Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", CombatKeyword.Combo2),
         new Sentence("Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", CombatKeyword.Combo3),
         new Sentence("Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", CombatKeyword.Combo4),
