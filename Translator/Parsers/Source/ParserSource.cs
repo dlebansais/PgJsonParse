@@ -17,10 +17,10 @@ public class ParserSource : Parser
         if (item != null)
             return Program.ReportFailure("Unexpected failure");
 
-        if (!contentTable.ContainsKey("type"))
+        if (!contentTable.ContainsKey("Type"))
             return Program.ReportFailure(parsedFile, parsedKey, "Source has no type");
 
-        if (!(contentTable["type"] is string TypeString))
+        if (!(contentTable["Type"] is string TypeString))
             return Program.ReportFailure("Source type was expected to be a string");
 
         bool Result;
@@ -73,9 +73,9 @@ public class ParserSource : Parser
 
             switch (Key)
             {
-                case "type":
+                case "Type":
                     break;
-                case "skill":
+                case "Skill":
                     Result = ParserSkill.Parse((PgSkill valueSkill) => NewSource.Skill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
                     break;
                 default:
@@ -108,10 +108,10 @@ public class ParserSource : Parser
 
             switch (Key)
             {
-                case "type":
+                case "Type":
                     break;
-                case "itemTypeId":
-                    Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item_Key = valueItem.Key, $"item_{Value}");
+                case "ItemTypeId":
+                    Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item_Key = valueItem.Key, Value.ToString());
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -143,9 +143,9 @@ public class ParserSource : Parser
 
             switch (Key)
             {
-                case "type":
+                case "Type":
                     break;
-                case "npc":
+                case "Npc":
                     Result = Inserter<PgSource>.SetNpc((PgNpcLocation location) => NewSource.Npc = location, Value, parsedFile, parsedKey);
                     break;
                 default:
@@ -235,10 +235,10 @@ public class ParserSource : Parser
 
             switch (Key)
             {
-                case "type":
+                case "Type":
                     break;
-                case "questId":
-                    Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = valueQuest.Key, $"quest_{Value}");
+                case "QuestId":
+                    Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = valueQuest.Key, Value.ToString());
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -270,9 +270,9 @@ public class ParserSource : Parser
 
             switch (Key)
             {
-                case "type":
+                case "Type":
                     break;
-                case "npc":
+                case "Npc":
                     Result = Inserter<PgSource>.SetNpc((PgNpcLocation location) => NewSource.Npc = location, Value, parsedFile, parsedKey);
                     break;
                 default:
@@ -305,12 +305,12 @@ public class ParserSource : Parser
 
             switch (Key)
             {
-                case "type":
+                case "Type":
                     break;
-                case "npc":
+                case "Npc":
                     Result = Inserter<PgSource>.SetNpc((PgNpcLocation location) => NewSource.Npc = location, Value, parsedFile, parsedKey);
                     break;
-                case "hangOutId":
+                case "HangOutId":
                     Result = SetIntProperty((int valueInt) => NewSource.RawHangOut = valueInt, Value);
                     break;
                 default:

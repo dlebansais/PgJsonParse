@@ -39,7 +39,7 @@ public class ParserSourceEntriesAbility : Parser
 
             switch (Key)
             {
-                case "entries":
+                case "Entries":
                     Result = Inserter<PgSource>.AddKeylessArray(item.EntryList, Value);
                     break;
                 default:

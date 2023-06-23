@@ -1019,28 +1019,20 @@ public class ParserRecipe : Parser
 
     public static bool UpdateSource()
     {
-        Dictionary<string, ParsingContext> SourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSourceEntries)];
+        Dictionary<string, ParsingContext> RecipeSourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSourceEntriesRecipe)];
         Dictionary<string, ParsingContext> RecipeParsingTable = ParsingContext.ObjectKeyTable[typeof(PgRecipe)];
 
-        foreach (KeyValuePair<string, ParsingContext> Entry in SourceParsingTable)
+        foreach (KeyValuePair<string, ParsingContext> Entry in RecipeSourceParsingTable)
         {
             PgSourceEntries RecipeSource = (PgSourceEntries)Entry.Value.Item;
             string Key = RecipeSource.Key;
 
-            if (Key.StartsWith("recipe_"))
-            {
-                if (!RecipeParsingTable.ContainsKey(Key))
-                    return Program.ReportFailure($"Source for '{Key}' but no such object");
+            if (!RecipeParsingTable.ContainsKey(Key))
+                return Program.ReportFailure($"Source for '{Key}' but no such object");
 
-                PgRecipe Recipe = (PgRecipe)RecipeParsingTable[Key].Item;
-                foreach (PgSource SourceEntry in RecipeSource.EntryList)
-                    Recipe.SourceList.Add(SourceEntry);
-            }
-            else if (!Key.StartsWith("ability_"))
-            {
-                Debug.WriteLine($"Unexpected recipe source key '{Key}'");
-                return false;
-            }
+            PgRecipe Recipe = (PgRecipe)RecipeParsingTable[Key].Item;
+            foreach (PgSource SourceEntry in RecipeSource.EntryList)
+                Recipe.SourceList.Add(SourceEntry);
         }
 
         return true;
