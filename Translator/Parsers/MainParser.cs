@@ -57,7 +57,6 @@ public static class MainParser
         { typeof(PgSkill), new ParserSkill() },
         { typeof(PgLevelCapInteraction), new ParserLevelCapInteraction() },
         { typeof(PgAdvancementHint), new ParserAdvancementHint() },
-        { typeof(PgRewardList), new ParserRewardList() },
         { typeof(PgReward), new ParserReward() },
         { typeof(PgReport), new ParserReport() },
         { typeof(PgSourceEntriesAbility), new ParserSourceEntriesAbility() },
