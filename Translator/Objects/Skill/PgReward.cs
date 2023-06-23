@@ -11,5 +11,18 @@
         public string? BonusLevelSkill_Key { get; set; }
         public string? Recipe_Key { get; set; }
         public string Notes { get; set; } = string.Empty;
+
+        public void SetLevel(int level)
+        {
+            Level = level;
+        }
+
+        public void SetRaces(string[] races)
+        {
+            Races = races;
+        }
+
+        private int Level;
+        private string[] Races = new string[0];
     }
 }

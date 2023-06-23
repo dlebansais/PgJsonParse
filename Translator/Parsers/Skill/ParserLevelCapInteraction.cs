@@ -4,39 +4,75 @@ using System.Collections.Generic;
 using PgJsonReader;
 using PgObjects;
 
-public class ParserLevelCapInteractionList : Parser
+public class ParserLevelCapInteraction : Parser
 {
     public override object CreateItem()
     {
-        return new PgLevelCapInteractionList();
+        return new PgLevelCapInteraction();
     }
 
     public override bool FinishItem(ref object? item, string objectKey, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
-        if (item is not PgLevelCapInteractionList AsPgLevelCapInteractionList)
+        if (item is not PgLevelCapInteraction AsPgLevelCapInteraction)
             return Program.ReportFailure("Unexpected failure");
 
-        return FinishItem(AsPgLevelCapInteractionList, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
+        return FinishItem(AsPgLevelCapInteraction, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
     }
 
-    private bool FinishItem(PgLevelCapInteractionList item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
+    private bool FinishItem(PgLevelCapInteraction item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
+        bool Result = true;
+        string? SkillName = null;
+        int? Level = null;
+        int? OtherLevel = null;
+        bool IsPerformanceSkill = false;
+
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
             string Key = Entry.Key;
             object Value = Entry.Value;
 
-            if (!(Value is int EntryLevel))
-                return Program.ReportFailure($"Invalid level cap interaction '{Value}'");
+            switch (Key)
+            {
+                case "Skill":
+                    Result = SetStringProperty((string valueString) => SkillName = valueString, Value);
+                    break;
+                case "Level":
+                    Result = SetIntProperty((int valueInt) => Level = valueInt, Value);
+                    break;
+                case "SkillCap":
+                    Result = SetIntProperty((int valueInt) => OtherLevel = valueInt, Value);
+                    break;
+                case "IsPerformanceSkill":
+                    Result = SetBoolProperty((bool valueBool) => IsPerformanceSkill = valueBool, Value);
+                    break;
+                default:
+                    Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                    break;
+            }
 
-            if (!ParseInteraction(item, Key, EntryLevel, parsedFile, parsedKey))
-                return false;
+            if (!Result)
+                break;
         }
 
-        return true;
+        if (Result && SkillName is not null && Level is not null && OtherLevel is not null)
+        {
+            if (SkillName == "Dance")
+                SkillName = "Performance_Dance";
+            else if (SkillName == "ArmorSmithing")
+                SkillName = "Armorsmithing";
+            else if (IsPerformanceSkill)
+                SkillName = $"Performance_{SkillName}";
+
+            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.Skill_Key = valueSkill.Key, SkillName);
+            item.RawLevel = Level;
+            item.RawRangeUnlock = OtherLevel - Level;
+        }
+
+        return Result;
     }
 
-    private bool ParseInteraction(PgLevelCapInteractionList item, string interaction, int level, string parsedFile, string parsedKey)
+    private bool ParseInteraction(PgLevelCapInteraction item, string interaction, int level, string parsedFile, string parsedKey)
     {
         if (interaction.Length > 0 && char.IsDigit(interaction[interaction.Length - 1]))
         {
@@ -82,7 +118,7 @@ public class ParserLevelCapInteractionList : Parser
         NewInteraction.Skill_Key = ParsedSkill.Key;
 
         ParsingContext.AddSuplementaryObject(NewInteraction);
-        item.List.Add(NewInteraction);
+        //item.List.Add(NewInteraction);
         return true;
     }
 }

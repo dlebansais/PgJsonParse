@@ -155,6 +155,9 @@ public class ParserSkill : Parser
         if (!(value is string TableString))
             return Program.ReportFailure($"Value '{value}' was expected to be a string");
 
+        if (TableString == "null")
+            return true;
+
         Dictionary<string, ParsingContext> Table = ParsingContext.ObjectKeyTable[typeof(PgAdvancementTable)];
 
         foreach (KeyValuePair<string, ParsingContext> Entry in Table)
@@ -198,12 +201,12 @@ public class ParserSkill : Parser
 
     private bool ParseInteractionFlagLevelCaps(PgSkill item, object value, string parsedFile, string parsedKey)
     {
-        PgLevelCapInteractionList ParsedLevelCapInteractionList = null!;
-        if (!Inserter<PgLevelCapInteractionList>.SetItemProperty((PgLevelCapInteractionList valueLevelCapInteractionList) => ParsedLevelCapInteractionList = valueLevelCapInteractionList, value))
-            return false;
-
-        foreach (PgLevelCapInteraction Item in ParsedLevelCapInteractionList.List)
+        foreach (object Context in (System.Collections.IEnumerable)value)
         {
+            PgLevelCapInteraction Item = null!;
+            if (!Inserter<PgLevelCapInteraction>.SetItemProperty((PgLevelCapInteraction valueLevelCapInteraction) => Item = valueLevelCapInteraction, Context))
+                return false;
+
             int Level = Item.Level;
             string? SkillKey = Item.Skill_Key;
 
@@ -308,12 +311,12 @@ public class ParserSkill : Parser
 
     private bool ParseRewards(PgSkill item, object value, string parsedFile, string parsedKey)
     {
-        PgRewardList ParsedRewardList = null!;
-        if (!Inserter<PgRewardList>.SetItemProperty((PgRewardList valueRewardList) => ParsedRewardList = valueRewardList, value))
-            return false;
-
-        foreach (PgReward Reward in ParsedRewardList.List)
+        foreach (object Context in (System.Collections.IEnumerable)value)
         {
+            PgReward Reward = null!;
+            if (!Inserter<PgReward>.SetItemProperty((PgReward valueReward) => Reward = valueReward, Context))
+                return false;
+
             int Level = Reward.RewardLevel;
             List<Race> RaceRestrictionList = Reward.RaceRestrictionList;
             string[]? AbilityKeys = Reward.Ability_Keys;
@@ -359,12 +362,14 @@ public class ParserSkill : Parser
 
     private bool ParseReports(PgSkill item, object value, string parsedFile, string parsedKey)
     {
-        PgReportList ParsedPeportList = null!;
-        if (!Inserter<PgReportList>.SetItemProperty((PgReportList valueReportList) => ParsedPeportList = valueReportList, value))
-            return false;
+        foreach (object Context in (System.Collections.IEnumerable)value)
+        {
+            PgReport Report = null!;
+            if (!Inserter<PgReport>.SetItemProperty((PgReport valueReport) => Report = valueReport, Context))
+                return false;
 
-        foreach (PgReport Report in ParsedPeportList.List)
             item.ReportList.Add(Report);
+        }
 
         return true;
     }

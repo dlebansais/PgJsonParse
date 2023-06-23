@@ -43,6 +43,12 @@ public class ParserReward : Parser
                 case "Notes":
                     Result = SetStringProperty((string valueString) => item.Notes = Tools.CleanedUpString(valueString), Value);
                     break;
+                case "Level":
+                    Result = SetIntProperty((int valueInt) => item.SetLevel(valueInt), Value);
+                    break;
+                case "Races":
+                    Result = ParseRaces(item, Value, parsedFile, parsedKey);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;
@@ -83,6 +89,26 @@ public class ParserReward : Parser
         }
         else
             return Program.ReportFailure($"Expected string or string[] for Ability but got {value.GetType().Name}");
+
+        return true;
+    }
+
+    private bool ParseRaces(PgReward item, object value, string parsedFile, string parsedKey)
+    {
+        if (!(value is List<object> ArrayStrings))
+            return Program.ReportFailure($"Value '{value}' was expected to be a list");
+
+        string[] Races = new string[ArrayStrings.Count];
+
+        for (int i = 0; i < Races.Length; i++)
+        {
+            if (!(ArrayStrings[i] is string ValueString))
+                return Program.ReportFailure($"Value '{ArrayStrings[i]}' was expected to be a string");
+
+            Races[i] = ValueString;
+        }
+
+        item.SetRaces(Races);
 
         return true;
     }
