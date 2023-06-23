@@ -49,58 +49,70 @@ internal class Preprocessor
     {
         List<JsonFile> JsonFileList = new()
         {
-            new JsonFile("abilities", true, PreprocessDictionary<AbilityDictionary>),
-            new JsonFile("advancementtables", true, PreprocessDictionary<AdvancementTableDictionary>),
-            new JsonFile("ai", true, PreprocessDictionary<AIDictionary>),
-            new JsonFile("areas", true, PreprocessDictionary<AreaDictionary>),
-            new JsonFile("attributes", true, PreprocessDictionary<AttributeDictionary>),
-            new JsonFile("directedgoals", true, PreprocessDictionary<DirectedGoalDictionary>),
-            new JsonFile("effects", true, PreprocessDictionary<EffectDictionary>),
-            new JsonFile("items", true, PreprocessDictionary<ItemDictionary>),
-            new JsonFile("itemuses", true, PreprocessDictionary<ItemUseDictionary>),
-            new JsonFile("lorebookinfo", true, PreprocessSingle<LoreBookInfo>),
-            new JsonFile("lorebooks", true, PreprocessDictionary<LoreBookDictionary>),
-            new JsonFile("npcs", false, PreprocessDictionary<NpcDictionary>),
-            new JsonFile("playertitles", true, PreprocessDictionary<PlayerTitleDictionary>),
-            new JsonFile("quests", true, PreprocessDictionary<QuestDictionary>),
-            new JsonFile("recipes", true, PreprocessDictionary<RecipeDictionary>),
-            new JsonFile("skills", true, PreprocessDictionary<SkillDictionary>),
-            new JsonFile("sources_abilities", true, PreprocessDictionary<SourceAbilityDictionary>),
-            new JsonFile("sources_recipes", true, PreprocessDictionary<SourceRecipeDictionary>),
-            new JsonFile("storagevaults", true, PreprocessDictionary<StorageVaultDictionary>),
-            new JsonFile("tsysclientinfo", true, PreprocessDictionary<PowerDictionary>),
-            new JsonFile("xptables", true, PreprocessDictionary<XpTableDictionary>),
+            new JsonFile("abilities", true, PreprocessDictionary<AbilityDictionary>, SaveSerializedContent<AbilityDictionary>),
+            new JsonFile("advancementtables", true, PreprocessDictionary<AdvancementTableDictionary>, SaveSerializedContent<AdvancementTableDictionary>),
+            new JsonFile("ai", true, PreprocessDictionary<AIDictionary>, SaveSerializedContent<AIDictionary>),
+            new JsonFile("areas", true, PreprocessDictionary<AreaDictionary>, SaveSerializedContent<AreaDictionary>),
+            new JsonFile("attributes", true, PreprocessDictionary<AttributeDictionary>, SaveSerializedContent<AttributeDictionary>),
+            new JsonFile("directedgoals", true, PreprocessDictionary<DirectedGoalDictionary>, SaveSerializedContent<DirectedGoalDictionary>),
+            new JsonFile("effects", true, PreprocessDictionary<EffectDictionary>, SaveSerializedContent<EffectDictionary>),
+            new JsonFile("items", true, PreprocessDictionary<ItemDictionary>, SaveSerializedContent<ItemDictionary>),
+            new JsonFile("itemuses", true, PreprocessDictionary<ItemUseDictionary>, SaveSerializedContent<ItemUseDictionary>),
+            new JsonFile("lorebookinfo", true, PreprocessSingle<LoreBookInfo>, SaveSerializedContent<LoreBookInfo>),
+            new JsonFile("lorebooks", true, PreprocessDictionary<LoreBookDictionary>, SaveSerializedContent<LoreBookDictionary>),
+            new JsonFile("npcs", false, PreprocessDictionary<NpcDictionary>, SaveSerializedContent<NpcDictionary>),
+            new JsonFile("playertitles", true, PreprocessDictionary<PlayerTitleDictionary>, SaveSerializedContent<PlayerTitleDictionary>),
+            new JsonFile("quests", true, PreprocessDictionary<QuestDictionary>, SaveSerializedContent<QuestDictionary>),
+            new JsonFile("recipes", true, PreprocessDictionary<RecipeDictionary>, SaveSerializedContent<RecipeDictionary>),
+            new JsonFile("skills", true, PreprocessDictionary<SkillDictionary>, SaveSerializedContent<SkillDictionary>),
+            new JsonFile("sources_abilities", true, PreprocessDictionary<SourceAbilityDictionary>, SaveSerializedContent<SourceAbilityDictionary>),
+            new JsonFile("sources_recipes", true, PreprocessDictionary<SourceRecipeDictionary>, SaveSerializedContent<SourceRecipeDictionary>),
+            new JsonFile("storagevaults", true, PreprocessDictionary<StorageVaultDictionary>, SaveSerializedContent<StorageVaultDictionary>),
+            new JsonFile("tsysclientinfo", true, PreprocessDictionary<PowerDictionary>, SaveSerializedContent<PowerDictionary>),
+            new JsonFile("xptables", true, PreprocessDictionary<XpTableDictionary>, SaveSerializedContent<XpTableDictionary>),
         };
 
+        string DestinationDirectory = @"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\387\Curated";
+
+        if (!Directory.Exists(DestinationDirectory))
+            Directory.CreateDirectory(DestinationDirectory);
+
         foreach (JsonFile File in JsonFileList)
-            if (!File.PreprocessingMethod(File.FileName, File.IsPretty))
+        {
+            (bool Success, object Result) = File.PreprocessingMethod(File.FileName, File.IsPretty);
+            if (!Success)
                 return false;
+
+            string DestinationFilePath = $"{DestinationDirectory}\\{File.FileName}.json";
+            File.SerializingMethod(DestinationFilePath, Result);
+        }
 
         Debug.WriteLine("Done");
         return true;
     }
 
-    private bool PreprocessSingle<T>(string fileName, bool isPretty = true)
+    private (bool, object) PreprocessSingle<T>(string fileName, bool isPretty)
+        where T: class
     {
-        if (Preprocess<T>(fileName, isPretty, out _))
+        if (Preprocess(fileName, isPretty, out T SingleObject))
         {
             Debug.WriteLine(" OK");
-            return true;
+            return (true, SingleObject);
         }
 
-        return false;
+        return (false, null!);
     }
 
-    private bool PreprocessDictionary<T>(string fileName, bool isPretty = true)
+    private (bool, object) PreprocessDictionary<T>(string fileName, bool isPretty)
         where T : ICollection
     {
         if (Preprocess(fileName, isPretty, out T ObjectCollection))
         { 
             Debug.WriteLine($" OK ({ObjectCollection.Count})");
-            return true;
+            return (true, ObjectCollection);
         }
 
-        return false;
+        return (false, null!);
     }
 
     private bool Preprocess<T>(string fileName, bool isPretty, out T result)
@@ -128,17 +140,7 @@ internal class Preprocessor
             return false;
         }
         else
-        {
-            string DestinationDirectory = @"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\387\Curated";
-
-            if (!Directory.Exists(DestinationDirectory))
-                Directory.CreateDirectory(DestinationDirectory);
-
-            string DestinationFilePath = $"{DestinationDirectory}\\{fileName}.json";
-            SaveSerializedContent(DestinationFilePath, result);
-
             return true;
-        }
     }
 
     private string GetReadContent(string filePath, bool isPretty)
@@ -224,14 +226,19 @@ internal class Preprocessor
         return WriteContent;
     }
 
-    private void SaveSerializedContent<T>(string filePath, T objects)
+    private void SaveSerializedContent<T>(string filePath, object content)
+    {
+        SaveSerializedContent<T>(filePath, (T)content);
+    }
+
+    private void SaveSerializedContent<T>(string filePath, T content)
     {
         JsonSerializerOptions WriteOptions = new();
         WriteOptions.WriteIndented = true;
         WriteOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         WriteOptions.NumberHandling = JsonNumberHandling.Strict;
         WriteOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-        string CuratedContent = JsonSerializer.Serialize(objects, WriteOptions);
+        string CuratedContent = JsonSerializer.Serialize(content, WriteOptions);
 
         using FileStream Stream = new(filePath, FileMode.Create, FileAccess.Write);
         using StreamWriter Writer = new(Stream, Encoding.UTF8);
