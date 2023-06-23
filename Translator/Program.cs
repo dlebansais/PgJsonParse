@@ -87,22 +87,6 @@ public class Program
         if (!ParseFile(Version, "npcs", typeof(PgNpc), FileType.EmbeddedObjects))
             return -1;
 
-        /*AddHardCodedNpc(PgNpc.NPC_Ultashk);
-        AddHardCodedNpc(PgNpc.NPC_GoblinDoorGuard);
-        AddHardCodedNpc(PgNpc.NPC_Glortok);
-        AddHardCodedNpc(PgNpc.BeeHiveA);
-        AddHardCodedNpc(PgNpc.BeeHiveB);
-        AddHardCodedNpc(PgNpc.BeeHiveC);
-        AddHardCodedNpc(PgNpc.BeeHiveD);
-        AddHardCodedNpc(PgNpc.BeeHiveE);
-        AddHardCodedNpc(PgNpc.BeeHiveF);
-        AddHardCodedNpc(PgNpc.BeeHiveG);
-        AddHardCodedNpc(PgNpc.BeeHiveH);
-        AddHardCodedNpc(PgNpc.BeeHiveI);
-        AddHardCodedNpc(PgNpc.BeeHiveJ);
-        AddHardCodedNpc(PgNpc.BeeHiveK);
-        AddHardCodedNpc(PgNpc.BeeHiveL);*/
-
         if (!ParseFile(Version, "playertitles", typeof(PgPlayerTitle), FileType.EmbeddedObjects))
             return -1;
 
@@ -663,10 +647,9 @@ public class Program
         foreach (object Item in objectList)
             if (Item is PgObject Reference)
             {
-                string ItemKey = Reference.Key;
+                string ItemKey = GetItemKey(Reference);
 
-                if (Reference is PgStorageVault)
-                    ItemKey = $"Vault_{ItemKey}";
+                Debug.Assert(!ObjectTable.ContainsKey(ItemKey));
 
                 if (!ObjectTable.ContainsKey(ItemKey))
                     ObjectTable.Add(ItemKey, Reference);
@@ -1087,21 +1070,27 @@ public class Program
         bool IsFound = false;
         string SourceKey = source.SourceKey;
 
-        foreach (PgAbility Item in abilityList)
-            if (Item.Key == SourceKey)
-            {
-                Npc.SourceAbilityList.Add(source);
-                IsFound = true;
-                break;
-            }
+        if (source.IsAbility)
+        {
+            foreach (PgAbility Item in abilityList)
+                if (Item.Key == SourceKey)
+                {
+                    Npc.SourceAbilityList.Add(source);
+                    IsFound = true;
+                    break;
+                }
+        }
 
-        foreach (PgRecipe Item in recipeList)
-            if (Item.Key == SourceKey)
-            {
-                Npc.SourceRecipeList.Add(source);
-                IsFound = true;
-                break;
-            }
+        if (source.IsRecipe)
+        {
+            foreach (PgRecipe Item in recipeList)
+                if (Item.Key == SourceKey)
+                {
+                    Npc.SourceRecipeList.Add(source);
+                    IsFound = true;
+                    break;
+                }
+        }
 
         Debug.Assert(IsFound);
     }

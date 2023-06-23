@@ -53,6 +53,8 @@ public class ParserSourceEntriesAbility : Parser
 
         if (Result)
         {
+            foreach (PgSource Source in item.EntryList)
+                Source.IsAbility = true;
         }
 
         return Result;

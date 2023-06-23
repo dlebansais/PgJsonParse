@@ -53,6 +53,8 @@ public class ParserSourceEntriesRecipe : Parser
 
         if (Result)
         {
+            foreach (PgSource Source in item.EntryList)
+                Source.IsRecipe = true;
         }
 
         return Result;

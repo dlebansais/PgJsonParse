@@ -240,6 +240,15 @@ internal class Preprocessor
         WriteOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
         string CuratedContent = JsonSerializer.Serialize(content, WriteOptions);
 
+        string Indent = string.Empty;
+        while (CuratedContent.Contains($"\r\n{Indent}  "))
+        {
+            CuratedContent = CuratedContent.Replace($"\r\n{Indent}  ", $"\r\n{Indent}\t");
+            Indent += "\t";
+        }
+
+        CuratedContent = CuratedContent.Replace("\r\n", "\n");
+
         using FileStream Stream = new(filePath, FileMode.Create, FileAccess.Write);
         using StreamWriter Writer = new(Stream, Encoding.UTF8);
         Writer.Write(CuratedContent);
