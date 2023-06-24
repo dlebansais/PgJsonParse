@@ -13,7 +13,7 @@
 
         public void SetAttribute(PgAttribute attribute)
         {
-            Attribute_Key = Parser.GetItemKey(attribute);
+            Attribute_Key = PgObject.GetItemKey(attribute);
             AttributeRef = attribute;
         }
     }

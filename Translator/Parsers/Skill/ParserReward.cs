@@ -35,10 +35,10 @@ public class ParserReward : Parser
                     Result = ParseAbility(item, Value, parsedFile, parsedKey);
                     break;
                 case "BonusToSkill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.BonusLevelSkill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.BonusLevelSkill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "Recipe":
-                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.Recipe_Key = Parser.GetItemKey(valueRecipe), Value);
+                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.Recipe_Key = PgObject.GetItemKey(valueRecipe), Value);
                     break;
                 case "Notes":
                     Result = SetStringProperty((string valueString) => item.Notes = Tools.CleanedUpString(valueString), Value);

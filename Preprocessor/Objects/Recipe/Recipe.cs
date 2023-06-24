@@ -17,12 +17,12 @@ internal class Recipe
         ItemMenuKeywordReq = rawRecipe.ItemMenuKeywordReq;
         ItemMenuLabel = rawRecipe.ItemMenuLabel;
         Keywords = rawRecipe.Keywords;
-        LoopParticle = rawRecipe.LoopParticle;
+        LoopParticle = RecipeParticle.Parse(rawRecipe.LoopParticle);
         MaxUses = rawRecipe.MaxUses;
         Name = rawRecipe.Name;
         NumResultItems = rawRecipe.NumResultItems;
         OtherRequirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawRecipe.OtherRequirements, out IsOtherRequirementsSingle);
-        Particle = rawRecipe.Particle;
+        Particle = RecipeParticle.Parse(rawRecipe.Particle);
         PrereqRecipe = rawRecipe.PrereqRecipe;
         ProtoResultItems = rawRecipe.ProtoResultItems;
         RequiredAttributeNonZero = rawRecipe.RequiredAttributeNonZero;
@@ -60,12 +60,12 @@ internal class Recipe
     public string? ItemMenuKeywordReq { get; set; }
     public string? ItemMenuLabel { get; set; }
     public string[]? Keywords { get; set; }
-    public string? LoopParticle { get; set; }
+    public RecipeParticle? LoopParticle { get; set; }
     public int? MaxUses { get; set; }
     public string? Name { get; set; }
     public int? NumResultItems { get; set; }
     public Requirement[]? OtherRequirements { get; set; }
-    public string? Particle { get; set; }
+    public RecipeParticle? Particle { get; set; }
     public string? PrereqRecipe { get; set; }
     public RecipeItem[]? ProtoResultItems { get; set; }
     public string? RequiredAttributeNonZero { get; set; }
@@ -106,12 +106,12 @@ internal class Recipe
         Result.ItemMenuKeywordReq = ItemMenuKeywordReq;
         Result.ItemMenuLabel = ItemMenuLabel;
         Result.Keywords = Keywords;
-        Result.LoopParticle = LoopParticle;
+        Result.LoopParticle = RecipeParticle.ToString(LoopParticle);
         Result.MaxUses = MaxUses;
         Result.Name = Name;
         Result.NumResultItems = NumResultItems;
         Result.OtherRequirements = Preprocessor.FromSingleOrMultiple(OtherRequirements, IsOtherRequirementsSingle);
-        Result.Particle = Particle;
+        Result.Particle = RecipeParticle.ToString(Particle);
         Result.PrereqRecipe = PrereqRecipe;
         Result.ProtoResultItems = ProtoResultItems;
         Result.RequiredAttributeNonZero = RequiredAttributeNonZero;

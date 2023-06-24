@@ -51,7 +51,7 @@ public class ParserRecipe : Parser
                     Result = Inserter<PgRecipeItem>.AddKeylessArray(item.ResultItemList, Value);
                     break;
                 case "Skill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "SkillLevelReq":
                     Result = SetIntProperty((int valueInt) => item.RawSkillLevelReq = valueInt, Value);
@@ -60,7 +60,7 @@ public class ParserRecipe : Parser
                     Result = ParseResultEffects(item, Value, parsedFile, parsedKey);
                     break;
                 case "SortSkill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.SortSkill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.SortSkill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "Keywords":
                     Result = StringToEnumConversion<RecipeKeyword>.TryParseList(Value, item.KeywordList);
@@ -96,7 +96,7 @@ public class ParserRecipe : Parser
                     Result = SetColorProperty((uint valueColor) => item.DyeColor = valueColor, Value);
                     break;
                 case "RewardSkill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.RewardSkill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.RewardSkill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "RewardSkillXp":
                     Result = SetIntProperty((int valueInt) => item.RawRewardSkillXp = valueInt, Value);
@@ -114,7 +114,7 @@ public class ParserRecipe : Parser
                     Result = SetIntProperty((int valueInt) => item.RawRewardSkillXpFirstTime = valueInt, Value);
                     break;
                 case "SharesResetTimerWith":
-                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.SharesResetTimerWith_Key = Parser.GetItemKey(valueRecipe), Value);
+                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.SharesResetTimerWith_Key = PgObject.GetItemKey(valueRecipe), Value);
                     break;
                 case "ItemMenuLabel":
                     Result = SetStringProperty((string valueString) => item.ItemMenuLabel = valueString, Value);
@@ -132,7 +132,7 @@ public class ParserRecipe : Parser
                     Result = SetIntProperty((int valueInt) => item.RawItemMenuCategoryLevel = valueInt, Value);
                     break;
                 case "PrereqRecipe":
-                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.PrereqRecipe_Key = Parser.GetItemKey(valueRecipe), Value);
+                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.PrereqRecipe_Key = PgObject.GetItemKey(valueRecipe), Value);
                     break;
                 case "ValidationIngredientKeywords":
                     Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.ValidationIngredientKeywordList);
@@ -144,13 +144,13 @@ public class ParserRecipe : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetRewardAllowBonusXp(valueBool), Value);
                     break;
                 case "RequiredAttributeNonZero":
-                    Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.RequiredAttributeNonZero_Key = Parser.GetItemKey(valueAttribute), Value);
+                    Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.RequiredAttributeNonZero_Key = PgObject.GetItemKey(valueAttribute), Value);
                     break;
                 case "LoopParticle":
-                    Result = ParseRecipeLoopParticle(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgRecipeParticle>.SetItemProperty((PgRecipeParticle valueRecipeParticle) => item.LoopParticle = valueRecipeParticle, Value);
                     break;
                 case "Particle":
-                    Result = ParseRecipeParticle(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgRecipeParticle>.SetItemProperty((PgRecipeParticle valueRecipeParticle) => item.Particle = valueRecipeParticle, Value);
                     break;
                 case "MaxUses":
                     Result = SetIntProperty((int valueInt) => item.RawMaxUses = valueInt, Value);
@@ -385,7 +385,7 @@ public class ParserRecipe : Parser
 
         PgRecipeResultExtractAugment RecipeResultEffect = new PgRecipeResultExtractAugment();
         RecipeResultEffect.Augment = Augment;
-        RecipeResultEffect.Skill_Key = Parser.GetItemKey(ParsedSkill);
+        RecipeResultEffect.Skill_Key = PgObject.GetItemKey(ParsedSkill);
         RecipeResultEffect.RawMinLevel = MinLevel;
         RecipeResultEffect.RawMaxLevel = MaxLevel;
 
@@ -518,7 +518,7 @@ public class ParserRecipe : Parser
             return false;
 
         PgRecipeResultCraftSimpleTSysItem RecipeResultEffect = new PgRecipeResultCraftSimpleTSysItem();
-        RecipeResultEffect.Item_Key = Parser.GetItemKey(ParsedItem);
+        RecipeResultEffect.Item_Key = PgObject.GetItemKey(ParsedItem);
 
         recipeResult = RecipeResultEffect;
         return true;
@@ -706,7 +706,7 @@ public class ParserRecipe : Parser
             return false;
 
         PgRecipeResultGiveTSysItem RecipeResultEffect = new PgRecipeResultGiveTSysItem();
-        RecipeResultEffect.Item_Key = Parser.GetItemKey(ParsedItem);
+        RecipeResultEffect.Item_Key = PgObject.GetItemKey(ParsedItem);
 
         recipeResult = RecipeResultEffect;
         return true;
@@ -811,7 +811,7 @@ public class ParserRecipe : Parser
             return false;
 
         PgRecipeResultCreateMiningSurvey RecipeResultEffect = new PgRecipeResultCreateMiningSurvey();
-        RecipeResultEffect.Item_Key = Parser.GetItemKey(ParsedItem);
+        RecipeResultEffect.Item_Key = PgObject.GetItemKey(ParsedItem);
 
         recipeResult = RecipeResultEffect;
         return true;
@@ -927,93 +927,6 @@ public class ParserRecipe : Parser
         RecipeResultEffect.RawRaiseEnergy = RaiseEnergy;
 
         recipeResult = RecipeResultEffect;
-        return true;
-    }
-
-    private bool ParseRecipeLoopParticle(PgRecipe item, object value, string parsedFile, string parsedKey)
-    {
-        if (ParseRecipeParticleString(value, parsedFile, parsedKey, out PgRecipeParticle Particle))
-        {
-            item.LoopParticle = Particle;
-            return true;
-        }
-        else
-            return false;
-    }
-
-    private bool ParseRecipeParticle(PgRecipe item, object value, string parsedFile, string parsedKey)
-    {
-        if (ParseRecipeParticleString(value, parsedFile, parsedKey, out PgRecipeParticle Particle))
-        {
-            item.Particle = Particle;
-            return true;
-        }
-        else
-            return false;
-    }
-
-    private bool ParseRecipeParticleString(object value, string parsedFile, string parsedKey, out PgRecipeParticle recipeParticle)
-    {
-        recipeParticle = null!;
-        RecipeParticle Particle;
-
-        if (!(value is string ValueString))
-            return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-        int StartIndex = ValueString.IndexOf('(');
-        if (StartIndex >= 0)
-        {
-            if (StartIndex > 0 && ValueString.EndsWith(")"))
-            {
-                string ParticleString = ValueString.Substring(0, StartIndex);
-                if (!StringToEnumConversion<RecipeParticle>.TryParse(ParticleString, out Particle))
-                    return false;
-
-                string ColorString = ValueString.Substring(StartIndex + 1, ValueString.Length - 2 - StartIndex);
-                string[] Split = ColorString.Split(';');
-                uint Color0 = 0;
-                uint Color1 = 0;
-                uint LightColor = 0;
-
-                for (int i = 0; i < Split.Length; i++)
-                {
-                    ColorString = Split[i];
-
-                    if (ColorString.StartsWith("Color="))
-                    {
-                        string[] MainColorSplit = ColorString.Substring(6).Split(',');
-
-                        if (MainColorSplit.Length != 2 || !Tools.TryParseColor(MainColorSplit[0].Substring(1), out Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out Color1))
-                            return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad main color");
-                    }
-                    else if (ColorString.StartsWith("LightColor="))
-                    {
-                        string LightColorString = ColorString.Substring(12);
-
-                        if (!Tools.TryParseColor(LightColorString, out LightColor))
-                            return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad light color");
-                    }
-                    else
-                        return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' bad main color");
-                }
-
-                if (Split.Length >= 1 && Split.Length <= 2)
-                {
-                    recipeParticle = new PgRecipeParticle() { Particle = Particle, RawColor0 = Color0, RawColor1 = Color1, RawLightColor = LightColor };
-                    return true;
-                }
-                else
-                    return Program.ReportFailure($"failed to parse recipe particle '{ValueString}' too many colors");
-            }
-            else
-                return Program.ReportFailure($"failed to parse recipe particle '{ValueString}'");
-        }
-
-        if (!StringToEnumConversion<RecipeParticle>.TryParse(ValueString, out Particle))
-            return false;
-
-        recipeParticle = new PgRecipeParticle() { Particle = Particle };
-
         return true;
     }
 

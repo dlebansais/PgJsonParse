@@ -151,7 +151,7 @@ public class ParserQuest : Parser
                     Result = SetIntProperty((int valueInt) => item.RawLevel = valueInt, Value);
                     break;
                 case "WorkOrderSkill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.WorkOrderSkill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.WorkOrderSkill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "DisplayedLocation":
                     Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.DisplayedLocation = valueEnum, Value);
@@ -277,7 +277,7 @@ public class ParserQuest : Parser
             if (!(KeyTable[ValueKey].Item is PgRecipe AsLink))
                 return Program.ReportFailure($"Key '{Item}' was found but for the wrong object type");
 
-            PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = Parser.GetItemKey(AsLink) };
+            PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = PgObject.GetItemKey(AsLink) };
             ParsingContext.AddSuplementaryObject(NewReward);
             item.QuestRewardList.Add(NewReward);
         }
@@ -292,7 +292,7 @@ public class ParserQuest : Parser
         if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, value))
             return false;
 
-        PgQuestRewardAbility NewReward = new PgQuestRewardAbility() { Ability_Key = Parser.GetItemKey(ParsedAbility) };
+        PgQuestRewardAbility NewReward = new PgQuestRewardAbility() { Ability_Key = PgObject.GetItemKey(ParsedAbility) };
         ParsingContext.AddSuplementaryObject(NewReward);
         item.QuestRewardList.Add(NewReward);
 
@@ -362,7 +362,7 @@ public class ParserQuest : Parser
                 Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, effectString);
                 if (Result)
                 {
-                    PgQuestRewardEffect NewReward = new PgQuestRewardEffect() { Effect_Key = Parser.GetItemKey(ParsedEffect) };
+                    PgQuestRewardEffect NewReward = new PgQuestRewardEffect() { Effect_Key = PgObject.GetItemKey(ParsedEffect) };
                     ParsingContext.AddSuplementaryObject(NewReward);
                     item.QuestRewardList.Add(NewReward);
                 }
@@ -387,7 +387,7 @@ public class ParserQuest : Parser
 
     private static void AddRewardEffectLoreBookKnown(PgQuest item, PgLoreBook valueLoreBook)
     {
-        PgQuestRewardLoreBook NewReward = new PgQuestRewardLoreBook() { LoreBook_Key = Parser.GetItemKey(valueLoreBook) };
+        PgQuestRewardLoreBook NewReward = new PgQuestRewardLoreBook() { LoreBook_Key = PgObject.GetItemKey(valueLoreBook) };
         ParsingContext.AddSuplementaryObject(NewReward);
         item.QuestRewardList.Add(NewReward);
     }
@@ -406,7 +406,7 @@ public class ParserQuest : Parser
         if (!Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, effectParameter))
             return false;
 
-        PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = Parser.GetItemKey(ParsedRecipe) };
+        PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = PgObject.GetItemKey(ParsedRecipe) };
         ParsingContext.AddSuplementaryObject(NewReward);
         item.QuestRewardList.Add(NewReward);
         return true;
@@ -414,7 +414,7 @@ public class ParserQuest : Parser
 
     private static void AddRewardEffectPlayerTitle(PgQuest item, PgPlayerTitle valuePlayerTitle)
     {
-        PgQuestRewardPlayerTitle NewReward = new PgQuestRewardPlayerTitle() { PlayerTitle_Key = Parser.GetItemKey(valuePlayerTitle) };
+        PgQuestRewardPlayerTitle NewReward = new PgQuestRewardPlayerTitle() { PlayerTitle_Key = PgObject.GetItemKey(valuePlayerTitle) };
         ParsingContext.AddSuplementaryObject(NewReward);
         item.QuestRewardList.Add(NewReward);
     }
@@ -444,7 +444,7 @@ public class ParserQuest : Parser
         if (!int.TryParse(Split[1], out int XpValue))
             return Program.ReportFailure(parsedFile, parsedKey, $"Skill XP reward '{effectParameter}': int expected");
 
-        PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill_Key = Parser.GetItemKey(ParsedSkill), RawXp = XpValue };
+        PgQuestRewardSkillXp NewReward = new PgQuestRewardSkillXp() { Skill_Key = PgObject.GetItemKey(ParsedSkill), RawXp = XpValue };
 
         ParsingContext.AddSuplementaryObject(NewReward);
         item.QuestRewardList.Add(NewReward);
@@ -491,7 +491,7 @@ public class ParserQuest : Parser
             return Program.ReportFailure(parsedFile, parsedKey, $"Raise to level reward '{effectParameter}': int expected");
 
         PgQuestRewardSkillLevel NewReward = new PgQuestRewardSkillLevel();
-        NewReward.Skill_Key = Parser.GetItemKey(ParsedSkill);
+        NewReward.Skill_Key = PgObject.GetItemKey(ParsedSkill);
         NewReward.RawLevel = LevelValue;
 
         ParsingContext.AddSuplementaryObject(NewReward);
@@ -593,7 +593,7 @@ public class ParserQuest : Parser
             if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => ParsedAbility = valueAbility, EffectParameter))
                 return false;
 
-            PgQuestPreGiveEffectLearnAbility NewEffect = new PgQuestPreGiveEffectLearnAbility() { Ability_Key = Parser.GetItemKey(ParsedAbility) };
+            PgQuestPreGiveEffectLearnAbility NewEffect = new PgQuestPreGiveEffectLearnAbility() { Ability_Key = PgObject.GetItemKey(ParsedAbility) };
 
             preGiveEffect = NewEffect;
         }
@@ -619,7 +619,7 @@ public class ParserQuest : Parser
                         if (!StringToEnumConversion<QuestGroup>.TryParse(EffectParameter[1], out ParsedQuestGroup))
                             return false;
 
-                        preGiveEffect = new PgQuestPreGiveEffectItem() { Description = "Create Ilmari War Cache Map", Item_Key = Parser.GetItemKey(ParsedItem), QuestGroup = ParsedQuestGroup };
+                        preGiveEffect = new PgQuestPreGiveEffectItem() { Description = "Create Ilmari War Cache Map", Item_Key = PgObject.GetItemKey(ParsedItem), QuestGroup = ParsedQuestGroup };
                     }
                     else
                         return Program.ReportFailure(parsedFile, parsedKey, $"Pre-Give effect '{Description}' has wrong format");

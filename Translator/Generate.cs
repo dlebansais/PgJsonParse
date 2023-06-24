@@ -1566,7 +1566,7 @@ public class Generate
             return GetCollectionValueString(type, AsCollection, objectList);
         else if (value is PgFavorSlotPair AsFavorSlotPair)
             return $"new PgFavorSlotPair() {{ Favor = Favor.{AsFavorSlotPair.Favor}, SlotCount = {AsFavorSlotPair.SlotCount} }}";
-        else if (value is PgRecipeParticle AsPgRecipeParticle)
+        /*else if (value is PgRecipeParticle AsPgRecipeParticle)
         {
             string RawColor0String = AsPgRecipeParticle.RawColor0 is not null ? $", RawColor0 = {AsPgRecipeParticle.Color0}" : string.Empty;
             string RawColor1String = AsPgRecipeParticle.RawColor1 is not null ? $", RawColor1 = {AsPgRecipeParticle.Color1}" : string.Empty;
@@ -1578,7 +1578,7 @@ public class Generate
             string RawAoEColorString = AsPgEffectParticle.RawAoEColor is not null ? $", RawAoEColor = {AsPgEffectParticle.RawAoEColor}" : string.Empty;
             string RawAoERangeString = AsPgEffectParticle.RawAoERange is not null ? $", RawAoERange = {AsPgEffectParticle.RawAoERange}" : string.Empty;
             return $"new PgEffectParticle() {{ Particle = EffectParticle.{AsPgEffectParticle.Particle}{RawAoEColorString}{RawAoERangeString} }}";
-        }
+        }*/
         else
             throw new ArgumentException();
     }

@@ -5066,7 +5066,6 @@
             { SelfPreParticle.ConfusingDouble, "Confusing Double" },
             { SelfPreParticle.ChannelHealPre, "Channel Heal Pre" },
             { SelfPreParticle.CorruptHatePreHands, "Corrupt Hate Pre Hands" },
-            //{ SelfPreParticle.FishingRod, "Fishing Rod" },
             { SelfPreParticle.ElectricBuildup, "Electric Buildup" },
             { SelfPreParticle.DelugePreParticles, "Deluge Pre Particles" },
             { SelfPreParticle.TsunamiPreParticles, "Tsunami Pre Particles" },
@@ -5110,10 +5109,8 @@
             { SelfParticle.StormEnchant, "Storm Enchant" },
             { SelfParticle.TempestParticles, "Tempest Particles" },
             { SelfParticle.WolfSeeRed, "Wolf-SeeRed" },
-            //{ SelfParticle.AcidExplosion, "Acid Explosion" },
             { SelfParticle.HasteExplosion, "Haste Explosion" },
             { SelfParticle.HealingMist, "Healing Mist" },
-            //{ SelfParticle.FreezingMist, "Freezing Mist" },
         };
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()

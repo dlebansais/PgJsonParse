@@ -47,6 +47,11 @@ internal class Fixer
 
     private static void FixAttributes(AttributeDictionary dictionary)
     {
+        AddNonClientAttributes(dictionary);
+    }
+
+    private static void AddNonClientAttributes(AttributeDictionary dictionary)
+    {
         List<string> AttributeKeyList = new()
         {
             "COCKATRICEDEBUFF_COST_DELTA",

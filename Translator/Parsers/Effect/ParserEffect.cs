@@ -47,7 +47,7 @@ public class ParserEffect : Parser
                     Result = SetStringProperty((string valueString) => item.SpewText = valueString, Value);
                     break;
                 case "Particle":
-                    Result = ParseEffectParticle(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgEffectParticle>.SetItemProperty((PgEffectParticle valueEffectParticle) => item.Particle = valueEffectParticle, Value);
                     break;
                 case "StackingType":
                     Result = StringToEnumConversion<EffectStackingType>.SetEnum((EffectStackingType valueEnum) => item.StackingType = valueEnum, Value);
@@ -110,77 +110,5 @@ public class ParserEffect : Parser
             Debug.Assert(Effect.ObjectIconId != 0);
             Debug.Assert(Effect.ObjectName.Length > 0);
         }
-    }
-
-    private bool ParseEffectParticle(PgEffect item, object value, string parsedFile, string parsedKey)
-    {
-        if (ParseEffectParticleString(value, parsedFile, parsedKey, out PgEffectParticle Particle))
-        {
-            item.Particle = Particle;
-            return true;
-        }
-        else
-            return false;
-    }
-
-    private bool ParseEffectParticleString(object value, string parsedFile, string parsedKey, out PgEffectParticle effectParticle)
-    {
-        effectParticle = null!;
-        EffectParticle Particle;
-        int? AoERange = null;
-        uint? AoEColor = null;
-
-        if (!(value is string ValueString))
-            return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-        int StartIndex = ValueString.IndexOf('(');
-        if (StartIndex >= 0)
-        {
-            if (StartIndex > 0 && ValueString.EndsWith(")"))
-            {
-                string ParticleString = ValueString.Substring(0, StartIndex);
-                if (!StringToEnumConversion<EffectParticle>.TryParse(ParticleString, out Particle))
-                    return false;
-
-                string ColorStrings = ValueString.Substring(StartIndex + 1, ValueString.Length - 2 - StartIndex);
-                string[] Split = ColorStrings.Split(';');
-
-                for (int i = 0; i < Split.Length; i++)
-                {
-                    string RangeOrColorString = Split[i];
-
-                    if (RangeOrColorString.StartsWith("AoeColor="))
-                    {
-                        string ColorString = RangeOrColorString.Substring(9);
-                        if (ColorString.StartsWith("#"))
-                            ColorString = ColorString.Substring(1);
-
-                        if (!Tools.TryParseColor(ColorString, out uint AoEColorInt))
-                            return Program.ReportFailure($"failed to parse effect particle '{ValueString}' bad aoe color");
-
-                        AoEColor = AoEColorInt;
-                    }
-                    else if (RangeOrColorString.StartsWith("AoeRange="))
-                    {
-                        string ColorString = RangeOrColorString.Substring(9);
-
-                        if (!int.TryParse(ColorString, out int AoERangeInt))
-                            return Program.ReportFailure($"failed to parse effect particle '{ValueString}' bad aoe range");
-
-                        AoERange = AoERangeInt;
-                    }
-                    else
-                        return Program.ReportFailure($"failed to parse effect particle '{ValueString}' bad syntax");
-                }
-            }
-            else
-                return Program.ReportFailure($"failed to parse effect particle '{ValueString}'");
-        }
-        else if (!StringToEnumConversion<EffectParticle>.TryParse(ValueString, out Particle))
-            return false;
-
-        effectParticle = new PgEffectParticle() { Particle = Particle, RawAoERange = AoERange, RawAoEColor = AoEColor };
-
-        return true;
     }
 }

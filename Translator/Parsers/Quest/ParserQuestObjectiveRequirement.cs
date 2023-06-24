@@ -293,7 +293,7 @@ public class ParserQuestObjectiveRequirement : Parser
                     case "T":
                         break;
                     case "Skill":
-                        Result = ParserSkill.Parse((PgSkill valueSkill) => NewItem.Skill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => NewItem.Skill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

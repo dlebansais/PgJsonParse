@@ -85,17 +85,8 @@
         public PgAbilityPvX? PvP { get; set; }
         public float ResetTime { get { return RawResetTime.HasValue ? RawResetTime.Value : 0; } }
         public float? RawResetTime { get; set; }
-        public SelfParticle SelfParticle { get; set; }
-        public uint SelfParticleColor0 { get { return RawSelfParticleColor0.HasValue ? RawSelfParticleColor0.Value : 0; } }
-        public uint? RawSelfParticleColor0 { get; set; }
-        public uint SelfParticleColor1{ get { return RawSelfParticleColor1.HasValue ? RawSelfParticleColor1.Value : 0; } }
-        public uint? RawSelfParticleColor1 { get; set; }
-        public uint SelfPreParticleColor0 { get { return RawSelfPreParticleColor0.HasValue ? RawSelfPreParticleColor0.Value : 0; } }
-        public uint? RawSelfPreParticleColor0 { get; set; }
-        public uint SelfPreParticleColor1 { get { return RawSelfPreParticleColor1.HasValue ? RawSelfPreParticleColor1.Value : 0; } }
-        public uint? RawSelfPreParticleColor1 { get; set; }
-        public uint SelfPreParticleAoEColor0 { get { return RawSelfPreParticleAoEColor0.HasValue ? RawSelfPreParticleAoEColor0.Value : 0; } }
-        public uint? RawSelfPreParticleAoEColor0 { get; set; }
+        public PgSelfParticle SelfParticle { get; set; } = null!;
+        public PgSelfPreParticle SelfPreParticle { get; set; } = null!;
         public uint AbilityTargetParticleColor0 { get { return RawAbilityTargetParticleColor0.HasValue ? RawAbilityTargetParticleColor0.Value : 0; } }
         public uint? RawAbilityTargetParticleColor0 { get; set; }
         public uint AbilityTargetParticleColor1 { get { return RawAbilityTargetParticleColor1.HasValue ? RawAbilityTargetParticleColor1.Value : 0; } }
@@ -110,7 +101,7 @@
         public int? RawSpecialTargetingTypeReq { get; set; }
         public AbilityTarget Target { get; set; }
         public TargetEffectKeyword TargetEffectKeywordReq { get; set; }
-        public AbilityTargetParticle TargetParticle { get; set; }
+        public PgTargetParticle? TargetParticle { get; set; } = null!;
         public string? UpgradeOf_Key { get; set; }
         public const int WorksInCombatNotNull = 1 << 14;
         public const int WorksInCombatIsTrue = 1 << 15;
@@ -146,7 +137,6 @@
         public bool WorksWhileMounted { get { return (BoolValues & (WorksWhileMountedNotNull + WorksWhileMountedIsTrue)) == (WorksWhileMountedNotNull + WorksWhileMountedIsTrue); } }
         public bool? RawWorksWhileMounted { get { return ((BoolValues & WorksWhileMountedNotNull) != 0) ? (BoolValues & WorksWhileMountedIsTrue) != 0 : null; } }
         public void SetWorksWhileMounted(bool value) { BoolValues |= (BoolValues & ~(WorksWhileMountedNotNull + WorksWhileMountedIsTrue)) | ((value ? WorksWhileMountedIsTrue : 0) + WorksWhileMountedNotNull); }
-        public SelfPreParticle SelfPreParticle { get; set; }
         public const int IsCosmeticPetNotNull = 1 << 24;
         public const int IsCosmeticPetIsTrue = 1 << 25;
         public bool IsCosmeticPet { get { return (BoolValues & (IsCosmeticPetNotNull + IsCosmeticPetIsTrue)) == (IsCosmeticPetNotNull + IsCosmeticPetIsTrue); } }

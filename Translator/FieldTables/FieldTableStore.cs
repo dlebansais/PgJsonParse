@@ -45,9 +45,8 @@ public class FieldTableStore
         { "Prerequisite", typeof(string) },
         { "Projectile", typeof(string) },
         { "PvE", typeof(PgAbilityPvX) },
-        // { "PvP", typeof(PgAbilityPvX) },
         { "ResetTime", typeof(float) },
-        { "SelfParticle", typeof(string) },
+        { "SelfParticle", typeof(PgSelfParticle) },
         { "AmmoDescription", typeof(string) },
         { "SharesResetTimerWith", typeof(string) },
         { "Skill", typeof(string) },
@@ -57,7 +56,7 @@ public class FieldTableStore
         { "SpecialTargetingTypeReq", typeof(int) },
         { "Target", typeof(string) },
         { "TargetEffectKeywordReq", typeof(string) },
-        { "TargetParticle", typeof(string) },
+        { "TargetParticle", typeof(PgTargetParticle) },
         { "UpgradeOf", typeof(string) },
         { "WorksInCombat", typeof(bool) },
         { "WorksUnderwater", typeof(bool) },
@@ -68,7 +67,7 @@ public class FieldTableStore
         { "AmmoStickChance", typeof(float) },
         { "TargetTypeTagReq", typeof(string) },
         { "WorksWhileMounted", typeof(bool) },
-        { "SelfPreParticle", typeof(string) },
+        { "SelfPreParticle", typeof(PgSelfPreParticle) },
         { "IsCosmeticPet", typeof(bool) },
         { "WorksWhileStunned", typeof(bool) },
         { "AbilityGroupName", typeof(string) },
@@ -76,6 +75,29 @@ public class FieldTableStore
         { "InventoryKeywordReqErrorMessage", typeof(string) },
         { "InventoryKeywordReqs", typeof(string[]) },
         { "AoEIsCenteredOnCaster", typeof(bool) },
+    };
+
+    public static Dictionary<string, Type> TableSelfParticle { get; } = new Dictionary<string, Type>()
+    {
+        { "ParticleName", typeof(string) },
+        { "PrimaryColor", typeof(string) },
+        { "SecondaryColor", typeof(string) },
+    };
+
+    public static Dictionary<string, Type> TableSelfPreParticle { get; } = new Dictionary<string, Type>()
+    {
+        { "AoEColor", typeof(string) },
+        { "AoERange", typeof(int) },
+        { "ParticleName", typeof(string) },
+        { "PrimaryColor", typeof(string) },
+        { "SecondaryColor", typeof(string) },
+    };
+
+    public static Dictionary<string, Type> TableTargetParticle { get; } = new Dictionary<string, Type>()
+    {
+        { "ParticleName", typeof(string) },
+        { "PrimaryColor", typeof(string) },
+        { "SecondaryColor", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableAbilityAmmo { get; } = new Dictionary<string, Type>()
@@ -247,12 +269,19 @@ public class FieldTableStore
         { "IconId", typeof(int) },
         { "DisplayMode", typeof(string) },
         { "SpewText", typeof(string) },
-        { "Particle", typeof(string) },
+        { "Particle", typeof(PgEffectParticle) },
         { "StackingType", typeof(string) },
         { "StackingPriority", typeof(int) },
         { "Duration", typeof(int) },
         { "Keywords", typeof(string[]) },
         { "AbilityKeywords", typeof(string[]) },
+    };
+
+    public static Dictionary<string, Type> TableEffectParticle { get; } = new Dictionary<string, Type>()
+    {
+        { "AoEColor", typeof(string) },
+        { "AoERange", typeof(int) },
+        { "ParticleName", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableItem { get; } = new Dictionary<string, Type>()
@@ -553,8 +582,8 @@ public class FieldTableStore
         { "ProtoResultItems", typeof(PgRecipeItem[]) },
         { "RewardAllowBonusXp", typeof(bool) },
         { "RequiredAttributeNonZero", typeof(string) },
-        { "LoopParticle", typeof(string) },
-        { "Particle", typeof(string) },
+        { "LoopParticle", typeof(PgRecipeParticle) },
+        { "Particle", typeof(PgRecipeParticle) },
         { "MaxUses", typeof(int) },
     };
 
@@ -574,6 +603,14 @@ public class FieldTableStore
     {
         { "Currency", typeof(string) },
         { "Price", typeof(float) },
+    };
+
+    public static Dictionary<string, Type> TableRecipeParticle { get; } = new Dictionary<string, Type>()
+    {
+        { "ParticleName", typeof(string) },
+        { "PrimaryColor", typeof(string) },
+        { "SecondaryColor", typeof(string) },
+        { "LightColor", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableSkill { get; } = new Dictionary<string, Type>()
@@ -703,6 +740,9 @@ public class FieldTableStore
         { typeof(PgAbilityAmmo), new FixedFieldTable(TableAbilityAmmo) },
         { typeof(PgAbilityPvX), new FixedFieldTable(TableAbilityPvX) },
         { typeof(PgAbilityRequirement), new FixedFieldTable(TableAbilityRequirement) },
+        { typeof(PgSelfParticle), new FixedFieldTable(TableSelfParticle) },
+        { typeof(PgSelfPreParticle), new FixedFieldTable(TableSelfPreParticle) },
+        { typeof(PgTargetParticle), new FixedFieldTable(TableTargetParticle) },
         { typeof(PgDoT), new FixedFieldTable(TableDoT) },
         { typeof(PgSpecialValue), new FixedFieldTable(TableSpecialValue) },
         { typeof(PgAdvancementTable), new FixedFieldTable(TableAdvancementTable) },
@@ -716,6 +756,7 @@ public class FieldTableStore
         { typeof(PgAttribute), new FixedFieldTable(TableAttribute) },
         { typeof(PgDirectedGoal), new FixedFieldTable(TableDirectedGoal) },
         { typeof(PgEffect), new FixedFieldTable(TableEffect) },
+        { typeof(PgEffectParticle), new FixedFieldTable(TableEffectParticle) },
         { typeof(PgItem), new FixedFieldTable(TableItem) },
         { typeof(PgItemSkillLink), new VariadicFieldTable(typeof(int)) },
         { typeof(PgItemBehavior), new FixedFieldTable(TableItemBehavior) },
@@ -740,6 +781,7 @@ public class FieldTableStore
         { typeof(PgRecipe), new FixedFieldTable(TableRecipe) },
         { typeof(PgRecipeItem), new FixedFieldTable(TableRecipeItem) },
         { typeof(PgRecipeCost), new FixedFieldTable(TableRecipeCost) },
+        { typeof(PgRecipeParticle), new FixedFieldTable(TableRecipeParticle) },
         { typeof(PgSkill), new FixedFieldTable(TableSkill) },
         //{ typeof(PgLevelCapInteractionList), new VariadicFieldTable(typeof(int)) },
         //{ typeof(PgAdvancementHint), new VariadicFieldTable(typeof(string)) },

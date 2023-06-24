@@ -44,7 +44,7 @@ public class ParserPower : Parser
                     Result = StringToEnumConversion<ItemSlot>.TryParseList(Value, item.SlotList);
                     break;
                 case "Skill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "IsUnavailable":
                     Result = SetBoolProperty((bool valueBool) => item.RawIsUnavailable = valueBool, Value);

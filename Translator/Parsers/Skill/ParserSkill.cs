@@ -397,7 +397,7 @@ public class ParserSkill : Parser
             string PowerKey = Entry.Key;
             PgPower Power = (PgPower)Entry.Value.Item;
 
-            if (Power.Skill_Key != Parser.GetItemKey(skill))
+            if (Power.Skill_Key != PgObject.GetItemKey(skill))
                 continue;
             if (Power.IsUnavailable)
                 continue;
@@ -514,7 +514,7 @@ public class ParserSkill : Parser
                 break;
 
             PgRecipe Recipe = (PgRecipe)Entry.Value.Item;
-            if (Recipe.Skill_Key == Parser.GetItemKey(skill) && Recipe.IconId != 0)
+            if (Recipe.Skill_Key == PgObject.GetItemKey(skill) && Recipe.IconId != 0)
                 iconId = Recipe.IconId;
         }
     }

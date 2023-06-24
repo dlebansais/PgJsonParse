@@ -62,7 +62,7 @@ public class ParserStorageVault : Parser
                     Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.RequiredItemKeywordList);
                     break;
                 case "SlotAttribute":
-                    Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.SlotAttribute_Key = Parser.GetItemKey(valueAttribute), Value);
+                    Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.SlotAttribute_Key = PgObject.GetItemKey(valueAttribute), Value);
                     break;
                 case "EventLevels":
                     Result = Inserter<PgStorageEventList>.SetItemProperty((PgStorageEventList valueStorageEventLevel) => item.EventLevels = valueStorageEventLevel, Value);

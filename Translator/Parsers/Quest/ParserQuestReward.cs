@@ -107,7 +107,7 @@ public class ParserQuestReward : Parser
                     case "T":
                         break;
                     case "Skill":
-                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = Parser.GetItemKey(valueSkill), Value);
+                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = PgObject.GetItemKey(valueSkill), Value);
                         break;
                     case "Xp":
                         Result = SetIntProperty((int valueInt) => NewItem.RawXp = valueInt, Value);
@@ -153,7 +153,7 @@ public class ParserQuestReward : Parser
                     case "T":
                         break;
                     case "Recipe":
-                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = Parser.GetItemKey(valueRecipe), Value);
+                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = PgObject.GetItemKey(valueRecipe), Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
@@ -374,7 +374,7 @@ public class ParserQuestReward : Parser
                     case "T":
                         break;
                     case "Ability":
-                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => NewItem.Ability_Key = Parser.GetItemKey(valueAbility), Value);
+                        Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => NewItem.Ability_Key = PgObject.GetItemKey(valueAbility), Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

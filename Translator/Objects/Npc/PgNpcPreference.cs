@@ -20,7 +20,7 @@
 
         public void SetSkillRequirement(PgSkill skill)
         {
-            SkillRequirement_Key = Parser.GetItemKey(skill);
+            SkillRequirement_Key = PgObject.GetItemKey(skill);
             SkillRequirementRef = skill;
         }
 

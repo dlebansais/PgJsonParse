@@ -411,7 +411,7 @@ public class ParserAbilityRequirement : Parser
                     case "T":
                         break;
                     case "Recipe":
-                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = Parser.GetItemKey(valueRecipe), Value);
+                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = PgObject.GetItemKey(valueRecipe), Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -577,7 +577,7 @@ public class ParserAbilityRequirement : Parser
                     case "T":
                         break;
                     case "Item":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -1194,7 +1194,7 @@ public class ParserAbilityRequirement : Parser
                     case "T":
                         break;
                     case "Recipe":
-                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = Parser.GetItemKey(valueRecipe), Value);
+                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Recipe_Key = PgObject.GetItemKey(valueRecipe), Value);
                         break;
                     case "MaxTimesUsed":
                         Result = SetIntProperty((int valueInt) => NewItem.RawMaxTimesUsed = valueInt, Value);

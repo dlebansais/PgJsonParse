@@ -11,7 +11,7 @@ internal class Effect
         IconId = rawEffect.IconId;
         Keywords = rawEffect.Keywords;
         Name = rawEffect.Name;
-        Particle = rawEffect.Particle;
+        Particle = EffectParticle.Parse(rawEffect.Particle);
         SpewText = rawEffect.SpewText;
         StackingPriority = rawEffect.StackingPriority;
         StackingType = rawEffect.StackingType;
@@ -24,7 +24,7 @@ internal class Effect
     public int? IconId { get; set; }
     public string[]? Keywords { get; set; }
     public string? Name { get; set; }
-    public string? Particle { get; set; }
+    public EffectParticle? Particle { get; set; }
     public string? SpewText { get; set; }
     public int? StackingPriority { get; set; }
     public string? StackingType { get; set; }
@@ -40,7 +40,7 @@ internal class Effect
         Result.IconId = IconId;
         Result.Keywords = Keywords;
         Result.Name = Name;
-        Result.Particle = Particle;
+        Result.Particle = EffectParticle.ToString(Particle);
         Result.SpewText = SpewText;
         Result.StackingPriority = StackingPriority;
         Result.StackingType = StackingType;

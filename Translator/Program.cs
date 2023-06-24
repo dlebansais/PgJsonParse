@@ -632,7 +632,7 @@ public class Program
         foreach (object Item in objectList)
             if (Item is PgObject Reference)
             {
-                string ItemKey = Parser.GetItemKey(Reference);
+                string ItemKey = PgObject.GetItemKey(Reference);
 
                 Debug.Assert(!ObjectTable.ContainsKey(ItemKey));
 
@@ -643,7 +643,7 @@ public class Program
         foreach (KeyValuePair<string, PgObject> Entry in ObjectTable)
         {
             PgObject Reference = Entry.Value;
-            string LinkKey = Parser.GetItemKey(Reference);
+            string LinkKey = PgObject.GetItemKey(Reference);
 
             FindLinks(LinkKey, Reference, ObjectTable);
         }
@@ -771,7 +771,7 @@ public class Program
             if (objectTable.ContainsKey(referenceKey))
             {
                 PgObject Reference = objectTable[referenceKey];
-                string ItemKey = Parser.GetItemKey(Reference);
+                string ItemKey = PgObject.GetItemKey(Reference);
 
                 if (ItemKey != linkKey && !Reference.LinkList.Contains(linkKey))
                     Reference.LinkList.Add(linkKey);
@@ -974,7 +974,7 @@ public class Program
 
         PgNpc? Npc = null;
         foreach (PgNpc Item in npcList)
-            if (Parser.GetItemKey(Item) == Npc_Key)
+            if (PgObject.GetItemKey(Item) == Npc_Key)
             {
                 Npc = Item;
                 break;

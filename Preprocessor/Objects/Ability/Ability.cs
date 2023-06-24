@@ -48,12 +48,15 @@ internal class Ability
         PetTypeTagReq = rawAbility.PetTypeTagReq;
         PetTypeTagReqMax = rawAbility.PetTypeTagReqMax;
         Prerequisite = rawAbility.Prerequisite;
-        Projectile = rawAbility.Projectile;
+
+        IsProjectileNone = rawAbility.Projectile == "0";
+        Projectile = IsProjectileNone ? null : rawAbility.Projectile;
+
         PvE = rawAbility.PvE is null ? null : new PvEAbility(rawAbility.PvE);
         Rank = rawAbility.Rank is null ? null : int.Parse(rawAbility.Rank);
         ResetTime = rawAbility.ResetTime;
-        SelfParticle = rawAbility.SelfParticle;
-        SelfPreParticle = rawAbility.SelfPreParticle;
+        SelfParticle = AbilityParticle.Parse(rawAbility.SelfParticle);
+        SelfPreParticle = AbilityParticle.Parse(rawAbility.SelfPreParticle);
         SharesResetTimerWith = rawAbility.SharesResetTimerWith;
         Skill = rawAbility.Skill;
         SpecialCasterRequirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawAbility.SpecialCasterRequirements, out SpecialCasterRequirementsIsSingle);
@@ -62,7 +65,7 @@ internal class Ability
         SpecialTargetingTypeReq = rawAbility.SpecialTargetingTypeReq;
         Target = rawAbility.Target;
         TargetEffectKeywordReq = rawAbility.TargetEffectKeywordReq;
-        TargetParticle = rawAbility.TargetParticle;
+        TargetParticle = AbilityParticle.Parse(rawAbility.TargetParticle);
         TargetTypeTagReq = rawAbility.TargetTypeTagReq;
         UpgradeOf = rawAbility.UpgradeOf;
         WorksInCombat = rawAbility.WorksInCombat;
@@ -120,8 +123,8 @@ internal class Ability
     public PvEAbility? PvE { get; set; }
     public int? Rank { get; set; }
     public decimal ResetTime { get; set; }
-    public string? SelfParticle { get; set; }
-    public string? SelfPreParticle { get; set; }
+    public AbilityParticle? SelfParticle { get; set; }
+    public AbilityParticle? SelfPreParticle { get; set; }
     public string? SharesResetTimerWith { get; set; }
     public string? Skill { get; set; }
     public Requirement[]? SpecialCasterRequirements { get; set; }
@@ -130,7 +133,7 @@ internal class Ability
     public int? SpecialTargetingTypeReq { get; set; }
     public string? Target { get; set; }
     public string? TargetEffectKeywordReq { get; set; }
-    public string? TargetParticle { get; set; }
+    public AbilityParticle? TargetParticle { get; set; }
     public string? TargetTypeTagReq { get; set; }
     public string? UpgradeOf { get; set; }
     public bool? WorksInCombat { get; set; }
@@ -187,12 +190,14 @@ internal class Ability
         Result.PetTypeTagReq = PetTypeTagReq;
         Result.PetTypeTagReqMax = PetTypeTagReqMax;
         Result.Prerequisite = Prerequisite;
-        Result.Projectile = Projectile;
+
+        Result.Projectile = IsProjectileNone ? "0" : Projectile;
+
         Result.PvE = PvE is null ? null : PvE.ToRawPvEAbility();
         Result.Rank = Rank is null ? null : Rank.ToString();
         Result.ResetTime = ResetTime;
-        Result.SelfParticle = SelfParticle;
-        Result.SelfPreParticle = SelfPreParticle;
+        Result.SelfParticle = AbilityParticle.ToString(SelfParticle);
+        Result.SelfPreParticle = AbilityParticle.ToString(SelfPreParticle);
         Result.SharesResetTimerWith = SharesResetTimerWith;
         Result.Skill = Skill;
         Result.SpecialCasterRequirements = Preprocessor.FromSingleOrMultiple(SpecialCasterRequirements, SpecialCasterRequirementsIsSingle);
@@ -201,7 +206,7 @@ internal class Ability
         Result.SpecialTargetingTypeReq = SpecialTargetingTypeReq;
         Result.Target = Target;
         Result.TargetEffectKeywordReq = TargetEffectKeywordReq;
-        Result.TargetParticle = TargetParticle;
+        Result.TargetParticle = AbilityParticle.ToString(TargetParticle);
         Result.TargetTypeTagReq = TargetTypeTagReq;
         Result.UpgradeOf = UpgradeOf;
         Result.WorksInCombat = WorksInCombat;
@@ -214,4 +219,5 @@ internal class Ability
     }
 
     private readonly bool SpecialCasterRequirementsIsSingle;
+    private readonly bool IsProjectileNone;
 }

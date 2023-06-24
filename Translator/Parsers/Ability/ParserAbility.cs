@@ -34,7 +34,7 @@ public class ParserAbility : Parser
             switch (Key)
             {
                 case "AbilityGroup":
-                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.AbilityGroup_Key = Parser.GetItemKey(valueAbility), Value);
+                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.AbilityGroup_Key = PgObject.GetItemKey(valueAbility), Value);
                     break;
                 case "Animation":
                     Result = StringToEnumConversion<AbilityAnimation>.SetEnum((AbilityAnimation valueEnum) => item.Animation = valueEnum, Value);
@@ -46,7 +46,7 @@ public class ParserAbility : Parser
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaDelayLoopTimeList, Value);
                     break;
                 case "AttributesThatDeltaPowerCost":
-                    Result = ParseCostDeltaAttribute(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaPowerCostList, Value);
                     break;
                 case "AttributesThatDeltaResetTime":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaResetTimeList, Value);
@@ -133,32 +133,28 @@ public class ParserAbility : Parser
                     Result = SetIntProperty((int valueInt) => item.RawPetTypeTagReqMax = valueInt, Value);
                     break;
                 case "Prerequisite":
-                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Prerequisite_Key = Parser.GetItemKey(valueAbility), Value);
+                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Prerequisite_Key = PgObject.GetItemKey(valueAbility), Value);
                     break;
                 case "Projectile":
-                    if (Value is not string AsString || AsString != "0")
-                        Result = StringToEnumConversion<AbilityProjectile>.SetEnum((AbilityProjectile valueEnum) => item.Projectile = valueEnum, Value);
+                    Result = StringToEnumConversion<AbilityProjectile>.SetEnum((AbilityProjectile valueEnum) => item.Projectile = valueEnum, Value);
                     break;
                 case "PvE":
                     Result = Inserter<PgAbilityPvX>.SetItemProperty((PgAbilityPvX valueAbilityPvX) => item.PvE = valueAbilityPvX, Value);
                     break;
-                /*case "PvP":
-                    Result = Inserter<PgAbilityPvX>.SetItemProperty((PgAbilityPvX valueAbilityPvX) => item.PvP = valueAbilityPvX, Value);
-                    break;*/
                 case "ResetTime":
                     Result = SetFloatProperty((float valueFloat) => item.RawResetTime = valueFloat, Value);
                     break;
                 case "SelfParticle":
-                    Result = ParseSelfParticle(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgSelfParticle>.SetItemProperty((PgSelfParticle valueParticle) => item.SelfParticle = valueParticle, Value);
                     break;
                 case "AmmoDescription":
                     Result = SetStringProperty((string valueString) => item.AmmoDescription = valueString, Value);
                     break;
                 case "SharesResetTimerWith":
-                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.SharesResetTimerWith_Key = Parser.GetItemKey(valueAbility), Value);
+                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.SharesResetTimerWith_Key = PgObject.GetItemKey(valueAbility), Value);
                     break;
                 case "Skill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "SpecialCasterRequirements":
                     Result = Inserter<PgAbilityRequirement>.AddKeylessArray(item.SpecialCasterRequirementList, Value);
@@ -179,10 +175,10 @@ public class ParserAbility : Parser
                     Result = StringToEnumConversion<TargetEffectKeyword>.SetEnum((TargetEffectKeyword valueEnum) => item.TargetEffectKeywordReq = valueEnum, Value);
                     break;
                 case "TargetParticle":
-                    Result = ParseTargetParticle(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgTargetParticle>.SetItemProperty((PgTargetParticle valueParticle) => item.TargetParticle = valueParticle, Value);
                     break;
                 case "UpgradeOf":
-                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.UpgradeOf_Key = Parser.GetItemKey(valueAbility), Value);
+                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.UpgradeOf_Key = PgObject.GetItemKey(valueAbility), Value);
                     break;
                 case "WorksInCombat":
                     Result = SetBoolProperty((bool valueBool) => item.SetWorksInCombat(valueBool), Value);
@@ -212,7 +208,7 @@ public class ParserAbility : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetWorksWhileMounted(valueBool), Value);
                     break;
                 case "SelfPreParticle":
-                    Result = ParseSelfPreParticle(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgSelfPreParticle>.SetItemProperty((PgSelfPreParticle valueParticle) => item.SelfPreParticle = valueParticle, Value);
                     break;
                 case "IsCosmeticPet":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsCosmeticPet(valueBool), Value);
@@ -255,24 +251,6 @@ public class ParserAbility : Parser
         return Result;
     }
 
-    private bool ParseCostDeltaAttribute(PgAbility item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is List<object> ArrayKey))
-            return Program.ReportFailure($"Value '{value}' was expected to be a list");
-
-        List<object> ValueCopy = new List<object>();
-        foreach (object Item in ArrayKey)
-        {
-            if (!(Item is string ValueKey))
-                return Program.ReportFailure($"Value '{Item}' was expected to be a string");
-
-            ValueCopy.Add(ValueKey);
-        }
-
-        bool Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaPowerCostList, ValueCopy);
-        return Result;
-    }
-
     private bool ParseCosts(PgAbility item, object value, string parsedFile, string parsedKey)
     {
         PgRecipeCostCollection CostList = new PgRecipeCostCollection();
@@ -295,166 +273,10 @@ public class ParserAbility : Parser
         string AnatomySkillName = AsString.Substring(12);
         AnatomySkillName = $"Anatomy_{AnatomySkillName}";
 
-        if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.TargetTypeTagReq_Key = Parser.GetItemKey(valueSkill), AnatomySkillName))
+        if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.TargetTypeTagReq_Key = PgObject.GetItemKey(valueSkill), AnatomySkillName))
             return false;
 
         return true;
-    }
-
-    private bool ParseSelfParticle(PgAbility item, object value, string parsedFile, string parsedKey)
-    {
-        if (value is not string AsString)
-            return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-        bool Result;
-
-        int StartIndex = AsString.IndexOf('(');
-        int EndIndex = AsString.IndexOf(')');
-        if (StartIndex > 0 && EndIndex > StartIndex + 1 && EndIndex + 1 == AsString.Length)
-        {
-            string Prefix = AsString.Substring(0, StartIndex);
-            Result = StringToEnumConversion<SelfParticle>.SetEnum((SelfParticle valueEnum) => item.SelfParticle = valueEnum, Prefix);
-            if (!Result)
-                return Program.ReportFailure($"SelfParticle {AsString} not parsed");
-
-            string MainColorString = AsString.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
-            if (!MainColorString.StartsWith("Color="))
-                return Program.ReportFailure($"Failed to parse SelfParticle '{AsString}' bad main color");
-
-            string[] MainColorSplit = MainColorString.Substring(6).Split(',');
-
-            if (MainColorSplit.Length == 1)
-            {
-                if (!Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0))
-                    return Program.ReportFailure($"Failed to parse SelfParticle '{MainColorString}' bad main color");
-
-                item.RawSelfParticleColor0 = Color0;
-            }
-            else if (MainColorSplit.Length == 2)
-            {
-                if (!Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
-                    return Program.ReportFailure($"Failed to parse SelfParticle '{MainColorString}' bad main color");
-
-                item.RawSelfParticleColor0 = Color0;
-                item.RawSelfParticleColor1 = Color1;
-            }
-            else
-                return Program.ReportFailure($"Failed to parse SelfParticle '{MainColorString}' bad main color");
-        }
-        else
-            Result = StringToEnumConversion<SelfParticle>.SetEnum((SelfParticle valueEnum) => item.SelfParticle = valueEnum, AsString);
-
-        return Result;
-    }
-
-    private bool ParseTargetParticle(PgAbility item, object value, string parsedFile, string parsedKey)
-    {
-        if (value is not string AsString)
-            return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-        bool Result;
-
-        int StartIndex = AsString.IndexOf('(');
-        int EndIndex = AsString.IndexOf(')');
-        if (StartIndex > 0 && EndIndex > StartIndex + 1 && EndIndex + 1 == AsString.Length)
-        {
-            string Prefix = AsString.Substring(0, StartIndex);
-            Result = StringToEnumConversion<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, Prefix);
-            if (!Result)
-                return Program.ReportFailure($"AbilityTargetParticle {AsString} not parsed");
-
-            string MainColorString = AsString.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
-            if (!MainColorString.StartsWith("Color="))
-                return Program.ReportFailure($"Failed to parse AbilityTargetParticle '{AsString}' bad main color");
-
-            string[] MainColorSplit = MainColorString.Substring(6).Split(',');
-
-            if (MainColorSplit.Length == 1)
-            {
-                if (!Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0))
-                    return Program.ReportFailure($"Failed to parse AbilityTargetParticle '{MainColorString}' bad main color");
-
-                item.RawAbilityTargetParticleColor0 = Color0;
-            }
-            else if (MainColorSplit.Length == 2)
-            {
-                if (!Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
-                    return Program.ReportFailure($"Failed to parse AbilityTargetParticle '{MainColorString}' bad main color");
-
-                item.RawAbilityTargetParticleColor0 = Color0;
-                item.RawAbilityTargetParticleColor1 = Color1;
-            }
-            else
-                return Program.ReportFailure($"Failed to parse AbilityTargetParticle '{MainColorString}' bad main color");
-        }
-        else
-            Result = StringToEnumConversion<AbilityTargetParticle>.SetEnum((AbilityTargetParticle valueEnum) => item.TargetParticle = valueEnum, AsString);
-
-        return Result;
-    }
-
-    private bool ParseSelfPreParticle(PgAbility item, object value, string parsedFile, string parsedKey)
-    {
-        if (value is not string AsString)
-            return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-        bool Result;
-
-        int StartIndex = AsString.IndexOf('(');
-        int EndIndex = AsString.IndexOf(')');
-        if (StartIndex > 0 && EndIndex > StartIndex + 1 && EndIndex + 1 == AsString.Length)
-        {
-            string Prefix = AsString.Substring(0, StartIndex);
-            Result = StringToEnumConversion<SelfPreParticle>.SetEnum((SelfPreParticle valueEnum) => item.SelfPreParticle = valueEnum, Prefix);
-            if (!Result)
-                return Program.ReportFailure($"SelfPreParticle {AsString} not parsed");
-
-            string MainColorOrAoERangeString = AsString.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
-            if (MainColorOrAoERangeString.StartsWith("Color="))
-            {
-                string[] MainColorSplit = MainColorOrAoERangeString.Substring(6).Split(',');
-
-                if (MainColorSplit.Length != 2 || !Tools.TryParseColor(MainColorSplit[0].Substring(1), out uint Color0) || !Tools.TryParseColor(MainColorSplit[1].Substring(1), out uint Color1))
-                    return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorOrAoERangeString}' bad main color");
-
-                item.RawSelfPreParticleColor0 = Color0;
-                item.RawSelfPreParticleColor1 = Color1;
-            }
-            else if (MainColorOrAoERangeString.StartsWith("AoeRange="))
-            {
-                string[] AoERangeSplit = MainColorOrAoERangeString.Substring(9).Split(';');
-
-                if (AoERangeSplit.Length < 1 || AoERangeSplit.Length > 2)
-                    return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorOrAoERangeString}' bad AoE range syntax");
-
-                string AoERangeString = AoERangeSplit[0];
-                if (!Tools.TryParseSingle(AoERangeString, out float AoERange))
-                    return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorOrAoERangeString}' bad AoE range");
-
-                item.RawAoERange = AoERange;
-
-                if (AoERangeSplit.Length == 2)
-                {
-                    if (!AoERangeSplit[1].StartsWith("AoeColor="))
-                        return Program.ReportFailure($"failed to parse SelfPreParticle '{MainColorOrAoERangeString}' bad AoE range color");
-
-                    string AoEColorString = AoERangeSplit[1].Substring(9);
-                    if (AoEColorString.StartsWith("#"))
-                        AoEColorString = AoEColorString.Substring(1);
-
-                    if (!Tools.TryParseColor(AoEColorString, out uint AoEColor))
-                        return Program.ReportFailure($"failed to parse SelfPreParticle '{AoEColorString}' bad AoE range color");
-
-                    item.RawSelfPreParticleAoEColor0 = AoEColor;
-                }
-            }
-            else
-                return Program.ReportFailure($"failed to parse SelfPreParticle '{AsString}' bad main color or AoE range");
-        }
-        else
-            Result = StringToEnumConversion<SelfPreParticle>.SetEnum((SelfPreParticle valueEnum) => item.SelfPreParticle = valueEnum, AsString);
-
-        return Result;
     }
 
     public static void UpdateIconsAndNames()

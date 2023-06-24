@@ -38,10 +38,10 @@ public class ParserItem : Parser
                     Result = ParseBestowRecipeList(item, Value, parsedFile, parsedKey);
                     break;
                 case "BestowAbility":
-                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.BestowAbility_Key = Parser.GetItemKey(valueAbility), Value);
+                    Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.BestowAbility_Key = PgObject.GetItemKey(valueAbility), Value);
                     break;
                 case "BestowQuest":
-                    Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.BestowQuest_Key = Parser.GetItemKey(valueQuest), Value);
+                    Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.BestowQuest_Key = PgObject.GetItemKey(valueQuest), Value);
                     break;
                 case "AllowPrefix":
                     Result = SetBoolProperty((bool valueBool) => item.SetAllowPrefix(valueBool), Value);
@@ -92,7 +92,7 @@ public class ParserItem : Parser
                     Result = ParseKeywordList(item, Value, KeywordTable, KeywordValueList, parsedFile, parsedKey);
                     break;
                 case "MacGuffinQuestName":
-                    Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.MacGuffinQuest_Key = Parser.GetItemKey(valueQuest), Value);
+                    Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.MacGuffinQuest_Key = PgObject.GetItemKey(valueQuest), Value);
                     break;
                 case "MaxCarryable":
                     Result = SetIntProperty((int valueInt) => item.RawMaxCarryable = valueInt, Value);
@@ -137,10 +137,10 @@ public class ParserItem : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetIsSkillReqsDefaults(valueBool), Value);
                     break;
                 case "BestowTitle":
-                    Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.BestowTitle_Key = Parser.GetItemKey(valuePlayerTitle), Value.ToString());
+                    Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.BestowTitle_Key = PgObject.GetItemKey(valuePlayerTitle), Value.ToString());
                     break;
                 case "BestowLoreBook":
-                    Result = Inserter<PgLoreBook>.SetItemByKey((PgLoreBook valueLoreBook) => item.BestowLoreBook_Key = Parser.GetItemKey(valueLoreBook), Value.ToString());
+                    Result = Inserter<PgLoreBook>.SetItemByKey((PgLoreBook valueLoreBook) => item.BestowLoreBook_Key = PgObject.GetItemKey(valueLoreBook), Value.ToString());
                     break;
                 case "Lint_VendorNpc":
                     Result = StringToEnumConversion<WorkOrderSign>.SetEnum((WorkOrderSign valueEnum) => item.LintVendorNpc = valueEnum, Value);
@@ -359,7 +359,7 @@ public class ParserItem : Parser
         if (ParsedEffectFormat != FloatFormat.Standard)
             return false;
 
-        itemEffect = new PgItemEffectAttribute() { Attribute_Key = Parser.GetItemKey(ParsedAttribute), AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Label = ParsedAttribute.Label };
+        itemEffect = new PgItemEffectAttribute() { Attribute_Key = PgObject.GetItemKey(ParsedAttribute), AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Label = ParsedAttribute.Label };
         return true;
     }
 

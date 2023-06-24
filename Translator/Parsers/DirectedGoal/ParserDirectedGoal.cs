@@ -82,6 +82,6 @@ public class ParserDirectedGoal : Parser
         if (!(value is int AsInt))
             return Program.ReportFailure(parsedFile, parsedKey, "Int value expected for a Category Gate ID");
 
-        return Inserter<PgDirectedGoal>.SetItemByKey((PgDirectedGoal valueDirectedGoal) => item.CategoryGate_Key = Parser.GetItemKey(valueDirectedGoal), AsInt.ToString());
+        return Inserter<PgDirectedGoal>.SetItemByKey((PgDirectedGoal valueDirectedGoal) => item.CategoryGate_Key = PgObject.GetItemKey(valueDirectedGoal), AsInt.ToString());
     }
 }

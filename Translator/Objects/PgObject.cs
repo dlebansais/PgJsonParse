@@ -1,6 +1,8 @@
 ﻿namespace PgObjects
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Reflection;
 
     public abstract class PgObject
     {
@@ -23,5 +25,75 @@
 
         public abstract int ObjectIconId { get; }
         public abstract string ObjectName { get; }
+
+        public static string GetItemKey(PgObject item)
+        {
+            string Prefix = null!;
+
+            switch (item)
+            {
+                case PgAbility AsAbility:
+                    Prefix = "A";
+                    break;
+
+                case PgAttribute AsAttribute:
+                    Prefix = "T";
+                    break;
+
+                case PgDirectedGoal AsDirectedGoal:
+                    Prefix = "D";
+                    break;
+
+                case PgEffect AsEffect:
+                    Prefix = "E";
+                    break;
+
+                case PgItem AsItem:
+                    Prefix = "I";
+                    break;
+
+                case PgLoreBook AsLoreBook:
+                    Prefix = "L";
+                    break;
+
+                case PgNpc AsNpc:
+                    Prefix = "N";
+                    break;
+
+                case PgPlayerTitle AsPlayerTitle:
+                    Prefix = "P";
+                    break;
+
+                case PgPower AsPower:
+                    Prefix = "W";
+                    break;
+
+                case PgQuest AsQuest:
+                    Prefix = "Q";
+                    break;
+
+                case PgRecipe AsRecipe:
+                    Prefix = "R";
+                    break;
+
+                case PgSkill AsSkill:
+                    Prefix = "S";
+                    break;
+
+                case PgStorageVault AsStorageVault:
+                    Prefix = "V";
+                    break;
+            }
+
+            Debug.Assert(Prefix != null);
+
+            PropertyInfo KeyProperty = item.GetType().GetProperty("Key");
+            string Key = (string)KeyProperty.GetValue(item);
+
+            if (Key.Length > 0)
+                return $"{Prefix}{Key}";
+            else
+                return string.Empty;
+        }
     }
 }
