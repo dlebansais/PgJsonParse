@@ -266,10 +266,7 @@ public class ParserAbility : Parser
             if (!(Item is string ValueKey))
                 return Program.ReportFailure($"Value '{Item}' was expected to be a string");
 
-            if (ValueKey != "COCKATRICEDEBUFF_COST_DELTA" && ValueKey != "LAMIADEBUFF_COST_DELTA")
-                ValueCopy.Add(ValueKey);
-            else
-                ValueCopy.Add(ValueKey);
+            ValueCopy.Add(ValueKey);
         }
 
         bool Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaPowerCostList, ValueCopy);

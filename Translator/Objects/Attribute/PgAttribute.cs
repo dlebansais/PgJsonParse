@@ -15,19 +15,6 @@
             ValidLabel = hardcodedLabel;
         }
 
-        public static PgAttribute COCKATRICEDEBUFF_COST_DELTA { get; } = new PgAttribute("COCKATRICEDEBUFF_COST_DELTA");
-        public static PgAttribute LAMIADEBUFF_COST_DELTA { get; } = new PgAttribute("LAMIADEBUFF_COST_DELTA");
-        public static PgAttribute MONSTER_MATCH_OWNER_SPEED { get; } = new PgAttribute("MONSTER_MATCH_OWNER_SPEED");
-        public static PgAttribute ARMOR_MITIGATION_RATIO { get; } = new PgAttribute("ARMOR_MITIGATION_RATIO");
-        public static PgAttribute SHOW_CLEANLINESS_INDICATORS { get; } = new PgAttribute("SHOW_CLEANLINESS_INDICATORS");
-        public static PgAttribute SHOW_COMMUNITY_INDICATORS { get; } = new PgAttribute("SHOW_COMMUNITY_INDICATORS");
-        public static PgAttribute SHOW_PEACEABLENESS_INDICATORS { get; } = new PgAttribute("SHOW_PEACEABLENESS_INDICATORS");
-        public static PgAttribute SHOW_FAIRYENERGY_INDICATORS { get; } = new PgAttribute("SHOW_FAIRYENERGY_INDICATORS");
-        public static PgAttribute BOOST_ANIMALPETHEAL_SENDER { get; } = new PgAttribute("BOOST_ANIMALPETHEAL_SENDER");
-        public static PgAttribute MONSTER_COMBAT_XP_VALUE { get; } = new PgAttribute("MONSTER_COMBAT_XP_VALUE");
-        public static PgAttribute MOD_VAULT_SIZE { get; } = new PgAttribute("MOD_VAULT_SIZE");
-        public static PgAttribute MENTAL_DEFENSE_RATING { get; } = new PgAttribute("MENTAL_DEFENSE_RATING");
-
         public string Label { get; set; } = string.Empty;
         public List<int> IconIdList { get; set; } = new List<int>();
         public string Tooltip { get; set; } = string.Empty;

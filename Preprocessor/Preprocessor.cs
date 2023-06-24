@@ -49,27 +49,27 @@ internal class Preprocessor
     {
         List<JsonFile> JsonFileList = new()
         {
-            new JsonFile("abilities", true, PreprocessDictionary<AbilityDictionary>, SaveSerializedContent<AbilityDictionary>),
-            new JsonFile("advancementtables", true, PreprocessDictionary<AdvancementTableDictionary>, SaveSerializedContent<AdvancementTableDictionary>),
-            new JsonFile("ai", true, PreprocessDictionary<AIDictionary>, SaveSerializedContent<AIDictionary>),
-            new JsonFile("areas", true, PreprocessDictionary<AreaDictionary>, SaveSerializedContent<AreaDictionary>),
-            new JsonFile("attributes", true, PreprocessDictionary<AttributeDictionary>, SaveSerializedContent<AttributeDictionary>),
-            new JsonFile("directedgoals", true, PreprocessDictionary<DirectedGoalDictionary>, SaveSerializedContent<DirectedGoalDictionary>),
-            new JsonFile("effects", true, PreprocessDictionary<EffectDictionary>, SaveSerializedContent<EffectDictionary>),
-            new JsonFile("items", true, PreprocessDictionary<ItemDictionary>, SaveSerializedContent<ItemDictionary>),
-            new JsonFile("itemuses", true, PreprocessDictionary<ItemUseDictionary>, SaveSerializedContent<ItemUseDictionary>),
-            new JsonFile("lorebookinfo", true, PreprocessSingle<LoreBookInfo>, SaveSerializedContent<LoreBookInfo>),
-            new JsonFile("lorebooks", true, PreprocessDictionary<LoreBookDictionary>, SaveSerializedContent<LoreBookDictionary>),
-            new JsonFile("npcs", false, PreprocessDictionary<NpcDictionary>, SaveSerializedContent<NpcDictionary>),
-            new JsonFile("playertitles", true, PreprocessDictionary<PlayerTitleDictionary>, SaveSerializedContent<PlayerTitleDictionary>),
-            new JsonFile("quests", true, PreprocessDictionary<QuestDictionary>, SaveSerializedContent<QuestDictionary>),
-            new JsonFile("recipes", true, PreprocessDictionary<RecipeDictionary>, SaveSerializedContent<RecipeDictionary>),
-            new JsonFile("skills", true, PreprocessDictionary<SkillDictionary>, SaveSerializedContent<SkillDictionary>),
-            new JsonFile("sources_abilities", true, PreprocessDictionary<SourceAbilityDictionary>, SaveSerializedContent<SourceAbilityDictionary>),
-            new JsonFile("sources_recipes", true, PreprocessDictionary<SourceRecipeDictionary>, SaveSerializedContent<SourceRecipeDictionary>),
-            new JsonFile("storagevaults", true, PreprocessDictionary<StorageVaultDictionary>, SaveSerializedContent<StorageVaultDictionary>),
-            new JsonFile("tsysclientinfo", true, PreprocessDictionary<PowerDictionary>, SaveSerializedContent<PowerDictionary>),
-            new JsonFile("xptables", true, PreprocessDictionary<XpTableDictionary>, SaveSerializedContent<XpTableDictionary>),
+            new JsonFile("abilities", true, PreprocessDictionary<AbilityDictionary>, Fixer.FixAbilities, SaveSerializedContent<AbilityDictionary>),
+            new JsonFile("advancementtables", true, PreprocessDictionary<AdvancementTableDictionary>, Fixer.FixAdvancementTables, SaveSerializedContent<AdvancementTableDictionary>),
+            new JsonFile("ai", true, PreprocessDictionary<AIDictionary>, Fixer.FixAI, SaveSerializedContent<AIDictionary>),
+            new JsonFile("areas", true, PreprocessDictionary<AreaDictionary>, Fixer.FixAreas, SaveSerializedContent<AreaDictionary>),
+            new JsonFile("attributes", true, PreprocessDictionary<AttributeDictionary>, Fixer.FixAttributes, SaveSerializedContent<AttributeDictionary>),
+            new JsonFile("directedgoals", true, PreprocessDictionary<DirectedGoalDictionary>, Fixer.FixDirectedGoals, SaveSerializedContent<DirectedGoalDictionary>),
+            new JsonFile("effects", true, PreprocessDictionary<EffectDictionary>, Fixer.FixEffects, SaveSerializedContent<EffectDictionary>),
+            new JsonFile("items", true, PreprocessDictionary<ItemDictionary>, Fixer.FixItems, SaveSerializedContent<ItemDictionary>),
+            new JsonFile("itemuses", true, PreprocessDictionary<ItemUseDictionary>, Fixer.FixItemUses, SaveSerializedContent<ItemUseDictionary>),
+            new JsonFile("lorebookinfo", true, PreprocessSingle<LoreBookInfo>, Fixer.FixLoreBookInfo, SaveSerializedContent<LoreBookInfo>),
+            new JsonFile("lorebooks", true, PreprocessDictionary<LoreBookDictionary>, Fixer.FixLoreBooks, SaveSerializedContent<LoreBookDictionary>),
+            new JsonFile("npcs", false, PreprocessDictionary<NpcDictionary>, Fixer.FixNpcs, SaveSerializedContent<NpcDictionary>),
+            new JsonFile("playertitles", true, PreprocessDictionary<PlayerTitleDictionary>, Fixer.FixPlayerTitles, SaveSerializedContent<PlayerTitleDictionary>),
+            new JsonFile("quests", true, PreprocessDictionary<QuestDictionary>, Fixer.FixQuests, SaveSerializedContent<QuestDictionary>),
+            new JsonFile("recipes", true, PreprocessDictionary<RecipeDictionary>, Fixer.FixRecipes, SaveSerializedContent<RecipeDictionary>),
+            new JsonFile("skills", true, PreprocessDictionary<SkillDictionary>, Fixer.FixSkills, SaveSerializedContent<SkillDictionary>),
+            new JsonFile("sources_abilities", true, PreprocessDictionary<SourceAbilityDictionary>, Fixer.FixSourceAbilities, SaveSerializedContent<SourceAbilityDictionary>),
+            new JsonFile("sources_recipes", true, PreprocessDictionary<SourceRecipeDictionary>, Fixer.FixSourceRecipes, SaveSerializedContent<SourceRecipeDictionary>),
+            new JsonFile("storagevaults", true, PreprocessDictionary<StorageVaultDictionary>, Fixer.FixStorageVaults, SaveSerializedContent<StorageVaultDictionary>),
+            new JsonFile("tsysclientinfo", true, PreprocessDictionary<PowerDictionary>, Fixer.FixPowers, SaveSerializedContent<PowerDictionary>),
+            new JsonFile("xptables", true, PreprocessDictionary<XpTableDictionary>, Fixer.FixXpTables, SaveSerializedContent<XpTableDictionary>),
         };
 
         string DestinationDirectory = @"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\387\Curated";
@@ -82,6 +82,8 @@ internal class Preprocessor
             (bool Success, object Result) = File.PreprocessingMethod(File.FileName, File.IsPretty);
             if (!Success)
                 return false;
+
+            File.FixingMethod(Result);
 
             string DestinationFilePath = $"{DestinationDirectory}\\{File.FileName}.json";
             File.SerializingMethod(DestinationFilePath, Result);
