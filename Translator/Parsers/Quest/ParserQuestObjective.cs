@@ -421,7 +421,7 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "ItemName":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "Requirements":
                         Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
@@ -594,7 +594,7 @@ public class ParserQuestObjective : Parser
                         Result = Inserter<PgQuestObjectiveDeliver>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                         break;
                     case "ItemName":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "NumToDeliver":
                         Result = SetIntProperty((int valueInt) => NewItem.RawNumToDeliver = valueInt, Value);
@@ -668,7 +668,7 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "ItemName":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "Description":
                     case "GroupId":
@@ -790,7 +790,7 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "ItemName":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "Requirements":
                         Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
@@ -1012,7 +1012,7 @@ public class ParserQuestObjective : Parser
         if (ValueString.StartsWith("Genetics_"))
         {
             string AnatomySkillName = "Anatomy_" + ValueString.Substring(9);
-            if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.AnatomySkill_Key = valueSkill.Key, AnatomySkillName))
+            if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.AnatomySkill_Key = Parser.GetItemKey(valueSkill), AnatomySkillName))
                 return false;
         }
         else
@@ -1113,7 +1113,7 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "ItemName":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "Requirements":
                         Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
@@ -1231,12 +1231,12 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "Target":
-                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Target_Key = valueRecipe.Key, Value, ErrorControl.IgnoreIfNotFound);
+                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => NewItem.Target_Key = Parser.GetItemKey(valueRecipe), Value, ErrorControl.IgnoreIfNotFound);
                         if (!Result)
                             Result = StringToEnumConversion<RecipeKeyword>.SetEnum((RecipeKeyword valueEnum) => NewItem.TargetKeyword = valueEnum, Value);
                         break;
                     case "Skill":
-                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = valueSkill.Key, Value);
+                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = Parser.GetItemKey(valueSkill), Value);
                         break;
                     case "ResultItemKeyword":
                         Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.ResultItemKeyword = valueEnum, Value);
@@ -1402,7 +1402,7 @@ public class ParserQuestObjective : Parser
                         Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                         break;
                     case "AnatomyType":
-                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill_Key = valueSkill.Key, $"Anatomy_{Value}");
+                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill_Key = Parser.GetItemKey(valueSkill), $"Anatomy_{Value}");
                         break;
                     case "Description":
                     case "GroupId":
@@ -1459,7 +1459,7 @@ public class ParserQuestObjective : Parser
                         Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                         break;
                     case "AnatomyType":
-                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill_Key = valueSkill.Key, $"Anatomy_{Value}");
+                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.AnatomySkill_Key = Parser.GetItemKey(valueSkill), $"Anatomy_{Value}");
                         break;
                     case "Description":
                     case "Number":
@@ -1631,7 +1631,7 @@ public class ParserQuestObjective : Parser
                         Result = Inserter<PgQuestObjectiveDeliver>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                         break;
                     case "ItemName":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "Description":
                     case "GroupId":
@@ -1921,7 +1921,7 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "ItemName":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "MonsterTypeTag":
                         Result = StringToEnumConversion<MonsterTypeTag>.SetEnum((MonsterTypeTag valueEnum) => NewItem.MonsterTypeTag = valueEnum, Value);
@@ -2038,7 +2038,7 @@ public class ParserQuestObjective : Parser
                         Result = Inserter<PgQuestObjectiveScriptedReceiveItem>.SetNpc((PgNpcLocation npcLocation) => NewItem.DeliverNpc = npcLocation, Value, parsedFile, parsedKey);
                         break;
                     case "Item":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "Description":
                     case "Number":
@@ -2150,7 +2150,7 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "Target":
-                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.TargetQuest_Key = valueQuest.Key, Value);
+                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.TargetQuest_Key = Parser.GetItemKey(valueQuest), Value);
                         break;
                     case "Description":
                     case "IsHiddenUntilEarlierObjectivesComplete":
@@ -2315,7 +2315,7 @@ public class ParserQuestObjective : Parser
                         Result = StringToEnumConversion<FishConfig>.SetEnum((FishConfig valueEnum) => NewItem.FishConfig = valueEnum, Value);
                         break;
                     case "ItemName":
-                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = valueItem.Key, Value);
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = Parser.GetItemKey(valueItem), Value);
                         break;
                     case "Description":
                     case "GroupId":

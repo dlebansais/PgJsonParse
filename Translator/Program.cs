@@ -647,7 +647,7 @@ public class Program
         foreach (object Item in objectList)
             if (Item is PgObject Reference)
             {
-                string ItemKey = GetItemKey(Reference);
+                string ItemKey = Parser.GetItemKey(Reference);
 
                 Debug.Assert(!ObjectTable.ContainsKey(ItemKey));
 
@@ -658,7 +658,7 @@ public class Program
         foreach (KeyValuePair<string, PgObject> Entry in ObjectTable)
         {
             PgObject Reference = Entry.Value;
-            string LinkKey = GetItemKey(Reference);
+            string LinkKey = Parser.GetItemKey(Reference);
 
             FindLinks(LinkKey, Reference, ObjectTable);
         }
@@ -778,75 +778,6 @@ public class Program
         }
     }
 
-    private static string GetItemKey(PgObject item)
-    {
-        string Prefix = null!;
-
-        switch (item)
-        {
-            case PgAbility AsAbility:
-                Prefix = "A";
-                break;
-
-            case PgAttribute AsAttribute:
-                Prefix = "T";
-                break;
-
-            case PgDirectedGoal AsDirectedGoal:
-                Prefix = "D";
-                break;
-
-            case PgEffect AsEffect:
-                Prefix = "E";
-                break;
-
-            case PgItem AsItem:
-                Prefix = "I";
-                break;
-
-            case PgLoreBook AsLoreBook:
-                Prefix = "L";
-                break;
-
-            case PgNpc AsNpc:
-                Prefix = "N";
-                break;
-
-            case PgPlayerTitle AsPlayerTitle:
-                Prefix = "P";
-                break;
-
-            case PgPower AsPower:
-                Prefix = "W";
-                break;
-
-            case PgQuest AsQuest:
-                Prefix = "Q";
-                break;
-
-            case PgRecipe AsRecipe:
-                Prefix = "R";
-                break;
-
-            case PgSkill AsSkill:
-                Prefix = "S";
-                break;
-
-            case PgStorageVault AsStorageVault:
-                Prefix = "V";
-                break;
-        }
-
-        Debug.Assert(Prefix != null);
-
-        PropertyInfo KeyProperty = item.GetType().GetProperty("Key");
-        string Key = (string)KeyProperty.GetValue(item);
-
-        Debug.Assert(Key.Length > 0);
-
-        return $"{Prefix}{Key}";
-    }
-
     private static void AddLinkKey(string linkKey, string referenceKey, Dictionary<string, PgObject> objectTable)
     {
         if (referenceKey.Length > 0 && referenceKey != "AnySkill")
@@ -855,7 +786,7 @@ public class Program
             if (objectTable.ContainsKey(referenceKey))
             {
                 PgObject Reference = objectTable[referenceKey];
-                string ItemKey = GetItemKey(Reference);
+                string ItemKey = Parser.GetItemKey(Reference);
 
                 if (ItemKey != linkKey && !Reference.LinkList.Contains(linkKey))
                     Reference.LinkList.Add(linkKey);
@@ -1058,7 +989,7 @@ public class Program
 
         PgNpc? Npc = null;
         foreach (PgNpc Item in npcList)
-            if (Item.Key == Npc_Key)
+            if (Parser.GetItemKey(Item) == Npc_Key)
             {
                 Npc = Item;
                 break;

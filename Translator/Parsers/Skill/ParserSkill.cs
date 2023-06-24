@@ -397,7 +397,7 @@ public class ParserSkill : Parser
             string PowerKey = Entry.Key;
             PgPower Power = (PgPower)Entry.Value.Item;
 
-            if (Power.Skill_Key != skill.Key)
+            if (Power.Skill_Key != Parser.GetItemKey(skill))
                 continue;
             if (Power.IsUnavailable)
                 continue;
@@ -421,7 +421,7 @@ public class ParserSkill : Parser
         {
             string AbilityKey = Entry.Key;
             PgAbility Ability = (PgAbility)Entry.Value.Item;
-            string Skill_Key = Ability.Skill_Key ?? throw new NullReferenceException();
+            string Skill_Key = CombatParser.FromSkillKey(Ability.Skill_Key ?? throw new NullReferenceException());
             PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
             if (AbilitySkill != skill)
@@ -486,7 +486,7 @@ public class ParserSkill : Parser
                 break;
 
             PgAbility Ability = (PgAbility)Entry.Value.Item;
-            string Skill_Key = Ability.Skill_Key ?? throw new NullReferenceException();
+            string Skill_Key = CombatParser.FromSkillKey(Ability.Skill_Key ?? throw new NullReferenceException());
             PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
             if (AbilitySkill == skill && Ability.IconId != 0)
@@ -514,7 +514,7 @@ public class ParserSkill : Parser
                 break;
 
             PgRecipe Recipe = (PgRecipe)Entry.Value.Item;
-            if (Recipe.Skill_Key == skill.Key && Recipe.IconId != 0)
+            if (Recipe.Skill_Key == Parser.GetItemKey(skill) && Recipe.IconId != 0)
                 iconId = Recipe.IconId;
         }
     }

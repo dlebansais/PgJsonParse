@@ -76,7 +76,7 @@ public class ParserSource : Parser
                 case "Type":
                     break;
                 case "Skill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => NewSource.Skill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => NewSource.Skill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -111,7 +111,7 @@ public class ParserSource : Parser
                 case "Type":
                     break;
                 case "ItemTypeId":
-                    Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item_Key = valueItem.Key, Value.ToString());
+                    Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item_Key = Parser.GetItemKey(valueItem), Value.ToString());
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -238,7 +238,7 @@ public class ParserSource : Parser
                 case "Type":
                     break;
                 case "QuestId":
-                    Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = valueQuest.Key, Value.ToString());
+                    Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = Parser.GetItemKey(valueQuest), Value.ToString());
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

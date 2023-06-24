@@ -436,7 +436,7 @@ public class ParserQuestRequirement : Parser
                         Result = SetIntProperty((int valueInt) => NewItem.RawSkillLevel = valueInt, Value);
                         break;
                     case "Skill":
-                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = valueSkill.Key, Value);
+                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = Parser.GetItemKey(valueSkill), Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
@@ -651,7 +651,7 @@ public class ParserQuestRequirement : Parser
                     case "T":
                         break;
                     case "Quest":
-                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.Quest_Key = valueQuest.Key, Value);
+                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.Quest_Key = Parser.GetItemKey(valueQuest), Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

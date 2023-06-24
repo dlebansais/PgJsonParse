@@ -51,7 +51,7 @@ public class ParserRecipe : Parser
                     Result = Inserter<PgRecipeItem>.AddKeylessArray(item.ResultItemList, Value);
                     break;
                 case "Skill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "SkillLevelReq":
                     Result = SetIntProperty((int valueInt) => item.RawSkillLevelReq = valueInt, Value);
@@ -60,7 +60,7 @@ public class ParserRecipe : Parser
                     Result = ParseResultEffects(item, Value, parsedFile, parsedKey);
                     break;
                 case "SortSkill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.SortSkill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.SortSkill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "Keywords":
                     Result = StringToEnumConversion<RecipeKeyword>.TryParseList(Value, item.KeywordList);
@@ -96,7 +96,7 @@ public class ParserRecipe : Parser
                     Result = SetColorProperty((uint valueColor) => item.DyeColor = valueColor, Value);
                     break;
                 case "RewardSkill":
-                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.RewardSkill_Key = valueSkill.Key, Value, parsedFile, parsedKey);
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.RewardSkill_Key = Parser.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
                 case "RewardSkillXp":
                     Result = SetIntProperty((int valueInt) => item.RawRewardSkillXp = valueInt, Value);
@@ -114,7 +114,7 @@ public class ParserRecipe : Parser
                     Result = SetIntProperty((int valueInt) => item.RawRewardSkillXpFirstTime = valueInt, Value);
                     break;
                 case "SharesResetTimerWith":
-                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.SharesResetTimerWith_Key = valueRecipe.Key, Value);
+                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.SharesResetTimerWith_Key = Parser.GetItemKey(valueRecipe), Value);
                     break;
                 case "ItemMenuLabel":
                     Result = SetStringProperty((string valueString) => item.ItemMenuLabel = valueString, Value);
@@ -132,7 +132,7 @@ public class ParserRecipe : Parser
                     Result = SetIntProperty((int valueInt) => item.RawItemMenuCategoryLevel = valueInt, Value);
                     break;
                 case "PrereqRecipe":
-                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.PrereqRecipe_Key = valueRecipe.Key, Value);
+                    Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => item.PrereqRecipe_Key = Parser.GetItemKey(valueRecipe), Value);
                     break;
                 case "ValidationIngredientKeywords":
                     Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.ValidationIngredientKeywordList);
@@ -144,7 +144,7 @@ public class ParserRecipe : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetRewardAllowBonusXp(valueBool), Value);
                     break;
                 case "RequiredAttributeNonZero":
-                    Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.RequiredAttributeNonZero_Key = valueAttribute.Key, Value);
+                    Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.RequiredAttributeNonZero_Key = Parser.GetItemKey(valueAttribute), Value);
                     break;
                 case "LoopParticle":
                     Result = ParseRecipeLoopParticle(item, Value, parsedFile, parsedKey);
@@ -385,7 +385,7 @@ public class ParserRecipe : Parser
 
         PgRecipeResultExtractAugment RecipeResultEffect = new PgRecipeResultExtractAugment();
         RecipeResultEffect.Augment = Augment;
-        RecipeResultEffect.Skill_Key = ParsedSkill.Key;
+        RecipeResultEffect.Skill_Key = Parser.GetItemKey(ParsedSkill);
         RecipeResultEffect.RawMinLevel = MinLevel;
         RecipeResultEffect.RawMaxLevel = MaxLevel;
 
@@ -518,7 +518,7 @@ public class ParserRecipe : Parser
             return false;
 
         PgRecipeResultCraftSimpleTSysItem RecipeResultEffect = new PgRecipeResultCraftSimpleTSysItem();
-        RecipeResultEffect.Item_Key = ParsedItem.Key;
+        RecipeResultEffect.Item_Key = Parser.GetItemKey(ParsedItem);
 
         recipeResult = RecipeResultEffect;
         return true;
@@ -706,7 +706,7 @@ public class ParserRecipe : Parser
             return false;
 
         PgRecipeResultGiveTSysItem RecipeResultEffect = new PgRecipeResultGiveTSysItem();
-        RecipeResultEffect.Item_Key = ParsedItem.Key;
+        RecipeResultEffect.Item_Key = Parser.GetItemKey(ParsedItem);
 
         recipeResult = RecipeResultEffect;
         return true;
@@ -811,7 +811,7 @@ public class ParserRecipe : Parser
             return false;
 
         PgRecipeResultCreateMiningSurvey RecipeResultEffect = new PgRecipeResultCreateMiningSurvey();
-        RecipeResultEffect.Item_Key = ParsedItem.Key;
+        RecipeResultEffect.Item_Key = Parser.GetItemKey(ParsedItem);
 
         recipeResult = RecipeResultEffect;
         return true;

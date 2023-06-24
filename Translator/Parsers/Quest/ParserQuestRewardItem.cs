@@ -31,7 +31,7 @@ public class ParserQuestRewardItem : Parser
             switch (Key)
             {
                 case "Item":
-                    Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => item.Item_Key = valueItem.Key, Value);
+                    Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => item.Item_Key = Parser.GetItemKey(valueItem), Value);
                     break;
                 case "StackSize":
                     Result = SetIntProperty((int valueInt) => item.RawStackSize = valueInt, Value);

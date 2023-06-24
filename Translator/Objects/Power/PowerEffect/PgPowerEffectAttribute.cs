@@ -1,5 +1,7 @@
 ﻿namespace PgObjects
 {
+    using Translator;
+
     public class PgPowerEffectAttribute : PgPowerEffect
     {
         public string? Attribute_Key { get; set; }
@@ -11,7 +13,7 @@
 
         public void SetAttribute(PgAttribute attribute)
         {
-            Attribute_Key = attribute.Key;
+            Attribute_Key = Parser.GetItemKey(attribute);
             AttributeRef = attribute;
         }
     }

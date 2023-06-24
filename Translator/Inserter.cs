@@ -241,7 +241,7 @@ public static class Inserter<T>
         NpcLocation.NpcId = npcId;
 
         if (Inserter<PgNpc>.SetItemByKey((PgNpc valueNpc) => ParsedNpc = valueNpc, npcId, ErrorControl.IgnoreIfNotFound))
-            NpcLocation.Npc_Key = ParsedNpc.Key;
+            NpcLocation.Npc_Key = Parser.GetItemKey(ParsedNpc);
         else if (StringToEnumConversion<SpecialNpc>.TryParse(npcId, out NpcEnum, ErrorControl.IgnoreIfNotFound))
             NpcLocation.NpcEnum = NpcEnum;
         else if (npcId.ToUpper().StartsWith("NPC_"))

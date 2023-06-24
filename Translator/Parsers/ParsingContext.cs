@@ -236,7 +236,7 @@ public class ParsingContext
         if (key is not null)
         {
             foreach (ParsingContext Context in ContextList)
-                if (Context.Item is PgAbility AsAbility && AsAbility.Key == key)
+                if (Context.Item is PgAbility AsAbility && Parser.GetItemKey(AsAbility) == key)
                     return AsAbility;
         }
 
@@ -248,7 +248,7 @@ public class ParsingContext
         if (key is not null)
         {
             foreach (ParsingContext Context in ContextList)
-                if (Context.Item is PgItem AsItem && AsItem.Key == key)
+                if (Context.Item is PgItem AsItem && Parser.GetItemKey(AsItem) == key)
                     return AsItem;
         }
 
@@ -260,7 +260,7 @@ public class ParsingContext
         if (key is not null)
         {
             foreach (ParsingContext Context in ContextList)
-                if (Context.Item is PgRecipe AsRecipe && AsRecipe.Key == key)
+                if (Context.Item is PgRecipe AsRecipe && Parser.GetItemKey(AsRecipe) == key)
                     return AsRecipe;
         }
 
@@ -272,7 +272,7 @@ public class ParsingContext
         if (key is not null)
         {
             foreach (ParsingContext Context in ContextList)
-                if (Context.Item is PgSkill AsSkill && AsSkill.Key == key)
+                if (Context.Item is PgSkill AsSkill && Parser.GetItemKey(AsSkill) == key)
                     return AsSkill;
         }
 

@@ -94,6 +94,14 @@ public class CombatParser
             CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList, existingPowerKeyToCompleteEffectTable, existingEffectKeyToCompleteEffectTable);
     }
 
+    public static string FromSkillKey(string? key)
+    {
+        if (key == null || key == string.Empty)
+            return string.Empty;
+        else
+            return key.Substring(1);
+    }
+
     private void InitValidAbilityList(Dictionary<string, PgSkill> skillTable)
     {
         ValidAbilityList = new List<PgAbility>();
@@ -101,7 +109,7 @@ public class CombatParser
         foreach (string Key in AbilityObjectKeyList)
         {
             PgAbility Ability = (PgAbility)ParsingContext.ObjectKeyTable[typeof(PgAbility)][Key].Item;
-            string Skill_Key = Ability.Skill_Key ?? throw new NullReferenceException();
+            string Skill_Key = FromSkillKey(Ability.Skill_Key ?? throw new NullReferenceException());
             PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
             if (!Generate.IsCombatSkill(AbilitySkill, skillTable) && AbilitySkill.Key != "Crossbow")
@@ -145,20 +153,22 @@ public class CombatParser
         if (!IsSlotCompatible(validSlotList, power))
             return;
 
-        if (power.Skill_Key == "SpiritFox")
+        string Skill_Key = FromSkillKey(power.Skill_Key);
+
+        if (Skill_Key == "SpiritFox")
         {
         }
 
-        Debug.Assert(power.Skill_Key != null &&
-                     (power.Skill_Key.Length == 0 ||
-                     IsSkillInList(skillList, power.Skill_Key) ||
-                     power.Skill_Key == "Gourmand" ||
-                     power.Skill_Key == PgSkill.AnySkill.Key ||
-                     power.Skill_Key == "Endurance" ||
-                     power.Skill_Key == "ArmorPatching" ||
-                     power.Skill_Key == "ShamanicInfusion"));
+        Debug.Assert(Skill_Key != null &&
+                     (Skill_Key.Length == 0 ||
+                     IsSkillInList(skillList, Skill_Key) ||
+                     Skill_Key == "Gourmand" ||
+                     Skill_Key == PgSkill.AnySkill.Key ||
+                     Skill_Key == "Endurance" ||
+                     Skill_Key == "ArmorPatching" ||
+                     Skill_Key == "ShamanicInfusion"));
 
-        if (power.Skill_Key != null && (power.Skill_Key.Length == 0 || power.Skill_Key == "Gourmand"))
+        if (Skill_Key != null && (Skill_Key.Length == 0 || Skill_Key == "Gourmand"))
             return;
         if (power.IsUnavailable)
             return;
@@ -646,16 +656,18 @@ public class CombatParser
             AbilityKeywordList.Contains(AbilityKeyword.SignatureSupport))
             EffectIconList.Add(108);
 
-        if (AbilityKeywordList.Contains(AbilityKeyword.Sword) && power.Skill_Key == "Sword")
+        string Skill_Key = FromSkillKey(power.Skill_Key);
+
+        if (AbilityKeywordList.Contains(AbilityKeyword.Sword) && Skill_Key == "Sword")
             EffectIconList.Add(108);
 
-        if (AbilityKeywordList.Contains(AbilityKeyword.FireSpell) && power.Skill_Key == "FireMagic")
+        if (AbilityKeywordList.Contains(AbilityKeyword.FireSpell) && Skill_Key == "FireMagic")
             EffectIconList.Add(108);
 
-        if (AbilityKeywordList.Contains(AbilityKeyword.Unarmed) && power.Skill_Key == "Unarmed")
+        if (AbilityKeywordList.Contains(AbilityKeyword.Unarmed) && Skill_Key == "Unarmed")
             EffectIconList.Add(108);
 
-        if (AbilityKeywordList.Contains(AbilityKeyword.Knife) && power.Skill_Key == "Knife")
+        if (AbilityKeywordList.Contains(AbilityKeyword.Knife) && Skill_Key == "Knife")
             EffectIconList.Add(108);
 
         if (AbilityKeywordList.Contains(AbilityKeyword.Melee))
@@ -952,7 +964,7 @@ public class CombatParser
 
         foreach (PgAbility Item in ValidAbilityList)
         {
-            string Skill_Key = Item.Skill_Key ?? throw new NullReferenceException();
+            string Skill_Key = FromSkillKey(Item.Skill_Key ?? throw new NullReferenceException());
             PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
             if (!IsSkillInList(skillList, AbilitySkill.Key))

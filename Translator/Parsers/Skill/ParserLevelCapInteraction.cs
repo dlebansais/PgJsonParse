@@ -64,7 +64,7 @@ public class ParserLevelCapInteraction : Parser
             else if (IsPerformanceSkill)
                 SkillName = $"Performance_{SkillName}";
 
-            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.Skill_Key = valueSkill.Key, SkillName);
+            Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.Skill_Key = Parser.GetItemKey(valueSkill), SkillName);
             item.RawLevel = Level;
             item.RawRangeUnlock = OtherLevel - Level;
         }
@@ -115,7 +115,7 @@ public class ParserLevelCapInteraction : Parser
         PgLevelCapInteraction NewInteraction = new PgLevelCapInteraction();
         NewInteraction.RawLevel = level;
         NewInteraction.RawRangeUnlock = OtherLevel - level;
-        NewInteraction.Skill_Key = ParsedSkill.Key;
+        NewInteraction.Skill_Key = Parser.GetItemKey(ParsedSkill);
 
         ParsingContext.AddSuplementaryObject(NewInteraction);
         //item.List.Add(NewInteraction);

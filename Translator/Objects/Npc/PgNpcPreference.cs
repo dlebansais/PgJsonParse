@@ -1,6 +1,7 @@
 ﻿namespace PgObjects
 {
     using System.Collections.Generic;
+    using Translator;
 
     public class PgNpcPreference
     {
@@ -19,7 +20,7 @@
 
         public void SetSkillRequirement(PgSkill skill)
         {
-            SkillRequirement_Key = skill.Key;
+            SkillRequirement_Key = Parser.GetItemKey(skill);
             SkillRequirementRef = skill;
         }
 

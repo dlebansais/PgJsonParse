@@ -154,7 +154,7 @@ public class ParserPowerTier : Parser
             else if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, AttributeSkill))
                 return false;
 
-            NewPowerEffectAttribute = new PgPowerEffectAttribute() { AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill_Key = ParsedSkill.Key };
+            NewPowerEffectAttribute = new PgPowerEffectAttribute() { AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill_Key = Parser.GetItemKey(ParsedSkill) };
         }
         else
             NewPowerEffectAttribute = new PgPowerEffectAttribute() { AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };

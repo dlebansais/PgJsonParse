@@ -59,7 +59,7 @@ public class ParserAdvancementEffectAttribute : Parser
             Result = Program.ReportFailure(parsedFile, parsedKey, "Invalid advancement effect attribute");
         else
         {
-            item.Attribute_Key = ParsedAttribute.Key;
+            item.Attribute_Key = Parser.GetItemKey(ParsedAttribute);
             item.RawValue = ParsedValue;
         }
 

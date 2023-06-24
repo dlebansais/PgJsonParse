@@ -1262,7 +1262,7 @@ public class Generate
 
         foreach (object Item in objectList)
             if (Item is PgPower AsPower)
-                if (AsPower.Skill_Key == skillKey)
+                if (CombatParser.FromSkillKey(AsPower.Skill_Key) == skillKey)
                 {
                     foreach (ItemSlot Slot in AsPower.SlotList)
                     {
