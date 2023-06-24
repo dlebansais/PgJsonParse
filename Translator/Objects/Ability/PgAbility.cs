@@ -127,7 +127,7 @@
         public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
         public string DigitStrippedName { get; set; } = string.Empty;
         public Dictionary<CombatKeyword, string> AssociatedEffectKeyTable { get; set; } = new Dictionary<CombatKeyword, string>();
-        public string? TargetTypeTagReq_Key { get; set; }
+        public string? TargetTypeTagRequirement_Key { get; set; }
         public const int WorksWhileMountedNotNull = 1 << 22;
         public const int WorksWhileMountedIsTrue = 1 << 23;
         public bool WorksWhileMounted { get { return (BoolValues & (WorksWhileMountedNotNull + WorksWhileMountedIsTrue)) == (WorksWhileMountedNotNull + WorksWhileMountedIsTrue); } }

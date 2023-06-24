@@ -1,6 +1,6 @@
 ﻿namespace PgObjects
 {
-    public enum SelfParticle
+    public enum AbilitySelfParticle
     {
         Internal_None,
         ElectricityBurst,

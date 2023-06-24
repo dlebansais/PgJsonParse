@@ -261,9 +261,9 @@ public class EnumStringMap
         { XpTableEnum.CookingUnused, "Cooking-unused" },
     };
 
-    public static readonly Dictionary<SelfParticle, string> SelfParticleTable = new Dictionary<SelfParticle, string>()
+    public static readonly Dictionary<AbilitySelfParticle, string> AbilitySelfParticleTable = new Dictionary<AbilitySelfParticle, string>()
     {
-        { SelfParticle.WolfSeeRed, "Wolf-SeeRed" },
+        { AbilitySelfParticle.WolfSeeRed, "Wolf-SeeRed" },
     };
 
     public static Dictionary<Type, IDictionary> Tables { get; } = new Dictionary<Type, IDictionary>()
@@ -280,7 +280,7 @@ public class EnumStringMap
         { typeof(RecipeAction), RecipeActionTable },
         { typeof(RecipeEffect), RecipeEffectTable },
         { typeof(RecipeItemKey), RecipeItemKeyTable },
-        { typeof(SelfParticle), SelfParticleTable },
+        { typeof(AbilitySelfParticle), AbilitySelfParticleTable },
         { typeof(XpTableEnum), XpTableEnumTable },
     };
 }

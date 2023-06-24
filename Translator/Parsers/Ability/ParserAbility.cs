@@ -201,8 +201,8 @@ public class ParserAbility : Parser
                 case "AmmoStickChance":
                     Result = SetFloatProperty((float valueFloat) => item.RawAmmoStickChance = valueFloat, Value);
                     break;
-                case "TargetTypeTagReq":
-                    Result = ParseTargetTypeTagReq(item, Value, parsedFile, parsedKey);
+                case "TargetTypeTagRequirement":
+                    Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.TargetTypeTagRequirement_Key = PgObject.GetItemKey(valueSkill), Value);
                     break;
                 case "WorksWhileMounted":
                     Result = SetBoolProperty((bool valueBool) => item.SetWorksWhileMounted(valueBool), Value);
@@ -261,20 +261,6 @@ public class ParserAbility : Parser
             return Program.ReportFailure(parsedFile, parsedKey, $"Only one cost expected");
         else if (CostList.Count == 1)
             item.Cost = CostList[0];
-
-        return true;
-    }
-
-    private bool ParseTargetTypeTagReq(PgAbility item, object value, string parsedFile, string parsedKey)
-    {
-        if (value is not string AsString || !AsString.StartsWith("AnatomyType_"))
-            return false;
-
-        string AnatomySkillName = AsString.Substring(12);
-        AnatomySkillName = $"Anatomy_{AnatomySkillName}";
-
-        if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.TargetTypeTagReq_Key = PgObject.GetItemKey(valueSkill), AnatomySkillName))
-            return false;
 
         return true;
     }

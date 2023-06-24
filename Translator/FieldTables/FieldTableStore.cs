@@ -65,7 +65,7 @@ public class FieldTableStore
         { "AmmoKeywords", typeof(PgAbilityAmmo[]) },
         { "AmmoConsumeChance", typeof(float) },
         { "AmmoStickChance", typeof(float) },
-        { "TargetTypeTagReq", typeof(string) },
+        { "TargetTypeTagRequirement", typeof(string) },
         { "WorksWhileMounted", typeof(bool) },
         { "SelfPreParticle", typeof(PgSelfPreParticle) },
         { "IsCosmeticPet", typeof(bool) },

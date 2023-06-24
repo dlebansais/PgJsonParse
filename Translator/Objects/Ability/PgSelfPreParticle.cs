@@ -2,6 +2,6 @@
 {
     public class PgSelfPreParticle : PgAbilityParticle
     {
-        public SelfPreParticle Particle { get; set; }
+        public AbilitySelfPreParticle Particle { get; set; }
     }
 }

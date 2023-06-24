@@ -38,7 +38,7 @@ public class ParserSelfParticle : Parser
                     Result = SetIntProperty((int valueInt) => item.RawAoERange = valueInt, Value);
                     break;
                 case "ParticleName":
-                    Result = StringToEnumConversion<SelfParticle>.SetEnum((SelfParticle valueEnum) => item.Particle = valueEnum, Value);
+                    Result = StringToEnumConversion<AbilitySelfParticle>.SetEnum((AbilitySelfParticle valueEnum) => item.Particle = valueEnum, Value);
                     break;
                 case "PrimaryColor":
                     Result = ParseColor(item, Value, (uint valueColor) => item.RawPrimaryColor = valueColor, parsedFile, parsedKey);

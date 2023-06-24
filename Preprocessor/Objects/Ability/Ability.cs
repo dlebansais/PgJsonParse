@@ -1,4 +1,6 @@
-﻿namespace Preprocessor;
+﻿using System;
+
+namespace Preprocessor;
 
 internal class Ability
 {
@@ -66,13 +68,24 @@ internal class Ability
         Target = rawAbility.Target;
         TargetEffectKeywordReq = rawAbility.TargetEffectKeywordReq;
         TargetParticle = AbilityParticle.Parse(rawAbility.TargetParticle);
-        TargetTypeTagReq = rawAbility.TargetTypeTagReq;
+        TargetTypeTagRequirement = ToTargetTypeTagReq(rawAbility.TargetTypeTagReq);
         UpgradeOf = rawAbility.UpgradeOf;
         WorksInCombat = rawAbility.WorksInCombat;
         WorksUnderwater = rawAbility.WorksUnderwater;
         WorksWhileFalling = rawAbility.WorksWhileFalling;
         WorksWhileMounted = rawAbility.WorksWhileMounted;
         WorksWhileStunned = rawAbility.WorksWhileStunned;
+    }
+
+    private string? ToTargetTypeTagReq(string? rawContent)
+    {
+        if (rawContent is null)
+            return null;
+
+        if (rawContent.StartsWith("AnatomyType_"))
+            return $"Anatomy_{rawContent.Substring(12)}";
+        else
+            throw new InvalidCastException();
     }
 
     public string? AbilityGroup { get; set; }
@@ -134,7 +147,7 @@ internal class Ability
     public string? Target { get; set; }
     public string? TargetEffectKeywordReq { get; set; }
     public AbilityParticle? TargetParticle { get; set; }
-    public string? TargetTypeTagReq { get; set; }
+    public string? TargetTypeTagRequirement { get; set; }
     public string? UpgradeOf { get; set; }
     public bool? WorksInCombat { get; set; }
     public bool? WorksUnderwater { get; set; }
@@ -207,7 +220,7 @@ internal class Ability
         Result.Target = Target;
         Result.TargetEffectKeywordReq = TargetEffectKeywordReq;
         Result.TargetParticle = AbilityParticle.ToString(TargetParticle);
-        Result.TargetTypeTagReq = TargetTypeTagReq;
+        Result.TargetTypeTagReq = ToRawTargetTypeTagReq(TargetTypeTagRequirement);
         Result.UpgradeOf = UpgradeOf;
         Result.WorksInCombat = WorksInCombat;
         Result.WorksUnderwater = WorksUnderwater;
@@ -216,6 +229,17 @@ internal class Ability
         Result.WorksWhileStunned = WorksWhileStunned;
 
         return Result;
+    }
+
+    private string? ToRawTargetTypeTagReq(string? content)
+    {
+        if (content is null)
+            return null;
+
+        if (content.StartsWith("Anatomy_"))
+            return $"AnatomyType_{content.Substring(8)}";
+        else
+            throw new InvalidCastException();
     }
 
     private readonly bool SpecialCasterRequirementsIsSingle;
