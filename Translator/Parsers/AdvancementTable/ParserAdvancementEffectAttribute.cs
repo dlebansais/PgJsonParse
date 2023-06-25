@@ -33,18 +33,10 @@ public class ParserAdvancementEffectAttribute : Parser
             switch (Key)
             {
                 case "Attribute":
-                    /*if (Value is string AttributeKey && AttributeKey == "MENTAL_DEFENSE_RATING")
-                        return true;*/
-
                     Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, Value);
                     break;
                 case "Value":
-                    if (Value is float FloatValue)
-                        ParsedValue = FloatValue;
-                    else if (Value is int IntValue)
-                        ParsedValue = IntValue;
-                    else
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown attribute value '{Value}'");
+                    Result = SetFloatProperty((float valueFloat) => ParsedValue = valueFloat, Value);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
