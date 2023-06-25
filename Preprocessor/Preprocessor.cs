@@ -23,7 +23,7 @@ internal class Preprocessor
         new StringDictionaryJsonConverter<Attribute, Attribute, AttributeDictionary>(),
         new DirectedGoalDictionaryJsonConverter(),
         new IntDictionaryJsonConverter<Effect, RawEffect, EffectDictionary>("effect"),
-        new IntDictionaryJsonConverter<Item, Item, ItemDictionary>("item"),
+        new IntDictionaryJsonConverter<Item, RawItem, ItemDictionary>("item"),
         new SkillRequirementDictionaryJsonConverter(),
         new IntDictionaryJsonConverter<ItemUse, ItemUse, ItemUseDictionary>("item"),
         new StringDictionaryJsonConverter<LoreBookCategory, RawLoreBookCategory, LoreBookCategoryDictionary>(),

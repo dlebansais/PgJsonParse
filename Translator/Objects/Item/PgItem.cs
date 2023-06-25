@@ -37,7 +37,7 @@
         public uint? RawDyeColor { get; set; }
         public string EquipAppearance { get; set; } = string.Empty;
         public ItemSlot EquipSlot { get; set; }
-        public string FoodDesc { get; set; } = string.Empty;
+        public string FoodDescription { get; set; } = string.Empty;
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get; set; }
         public string InternalName { get; set; } = string.Empty;
@@ -70,8 +70,8 @@
         public void SetHasGlow(bool value) { BoolValues |= (BoolValues & ~(HasGlowNotNull + HasGlowIsTrue)) | ((value ? HasGlowIsTrue : 0) + HasGlowNotNull); }
         public float Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public float? RawValue { get; set; }
-        public int NumUses { get { return RawNumUses.HasValue ? RawNumUses.Value : 0; } }
-        public int? RawNumUses { get; set; }
+        public int NumberOfUses { get { return RawNumberOfUses.HasValue ? RawNumberOfUses.Value : 0; } }
+        public int? RawNumberOfUses { get; set; }
         public const int DestroyWhenUsedUpNotNull = 1 << 10;
         public const int DestroyWhenUsedUpIsTrue = 1 << 11;
         public bool DestroyWhenUsedUp { get { return (BoolValues & (DestroyWhenUsedUpNotNull + DestroyWhenUsedUpIsTrue)) == (DestroyWhenUsedUpNotNull + DestroyWhenUsedUpIsTrue); } }

@@ -61,7 +61,7 @@ public class ParserItem : Parser
                 case "DroppedAppearance":
                     Result = ParseDroppedAppearance(item, Value, parsedFile, parsedKey);
                     break;
-                case "EffectDescs":
+                case "EffectDescriptions":
                     Result = ParseEffectDescriptionList(item.EffectDescriptionList, Value, parsedFile, parsedKey);
                     break;
                 case "DyeColor":
@@ -73,8 +73,8 @@ public class ParserItem : Parser
                 case "EquipSlot":
                     Result = StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.EquipSlot = valueEnum, Value);
                     break;
-                case "FoodDesc":
-                    Result = SetStringProperty((string valueString) => item.FoodDesc = valueString, Value); // TODO: parse
+                case "FoodDescription":
+                    Result = SetStringProperty((string valueString) => item.FoodDescription = valueString, Value); // TODO: parse
                     break;
                 case "IconId":
                     Result = SetIconIdProperty((int valueInt) => item.RawIconId = valueInt, Value);
@@ -109,7 +109,7 @@ public class ParserItem : Parser
                 case "RequiredAppearance":
                     Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => item.RequiredAppearance = valueEnum, Value);
                     break;
-                case "SkillReqs":
+                case "SkillRequirements":
                     Result = ParseSkillRequirements(item, Value, SkillRequirementTable, parsedFile, parsedKey);
                     break;
                 case "StockDye":
@@ -121,8 +121,8 @@ public class ParserItem : Parser
                 case "Value":
                     Result = SetFloatProperty((float valueFloat) => item.RawValue = valueFloat, Value);
                     break;
-                case "NumUses":
-                    Result = SetIntProperty((int valueInt) => item.RawNumUses = valueInt, Value);
+                case "NumberOfUses":
+                    Result = SetIntProperty((int valueInt) => item.RawNumberOfUses = valueInt, Value);
                     break;
                 case "DestroyWhenUsedUp":
                     Result = SetBoolProperty((bool valueBool) => item.SetDestroyWhenUsedUp(valueBool), Value);
@@ -133,7 +133,7 @@ public class ParserItem : Parser
                 case "DynamicCraftingSummary":
                     Result = SetStringProperty((string valueString) => item.DynamicCraftingSummary = valueString, Value);
                     break;
-                case "IsSkillReqsDefaults":
+                case "IsSkillRequirementsDefaults":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsSkillReqsDefaults(valueBool), Value);
                     break;
                 case "BestowTitle":

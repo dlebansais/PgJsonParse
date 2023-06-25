@@ -56,7 +56,7 @@ public class ParserEffect : Parser
                     Result = SetIntProperty((int valueInt) => item.RawStackingPriority = valueInt, Value);
                     break;
                 case "Duration":
-                    ParseDuration(item, Value, parsedFile, parsedKey);
+                    Result = SetIntProperty((int valueInt) => item.RawDuration = valueInt, Value);
                     break;
                 case "Keywords":
                     Result = StringToEnumConversion<EffectKeyword>.TryParseList(Value, item.KeywordList);
@@ -74,20 +74,6 @@ public class ParserEffect : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseDuration(PgEffect item, object value, string parsedFile, string parsedKey)
-    {
-        int ValueInt;
-
-        if (value is int AsIntDirect)
-            ValueInt = AsIntDirect;
-        else if (value is string AsString && int.TryParse(AsString, out int AsInt))
-            ValueInt = AsInt;
-        else
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value {value} was expected to be an int");
-
-        return SetIntProperty((int valueInt) => item.RawDuration = valueInt, ValueInt);
     }
 
     public static void UpdateIconsAndNames()

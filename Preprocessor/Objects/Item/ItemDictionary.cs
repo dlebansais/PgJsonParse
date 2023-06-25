@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class ItemDictionary : Dictionary<int, Item>, IDictionaryValueBuilder<Item, Item>
+internal class ItemDictionary : Dictionary<int, Item>, IDictionaryValueBuilder<Item, RawItem>
 {
-    public Item FromRaw(Item item) => item;
-    public Item ToRaw(Item item) => item;
+    public Item FromRaw(RawItem rawItem) => new(rawItem);
+    public RawItem ToRaw(Item item) => item.ToRawItem();
 }
