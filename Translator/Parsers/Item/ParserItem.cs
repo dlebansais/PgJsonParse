@@ -35,7 +35,7 @@ public class ParserItem : Parser
             switch (Key)
             {
                 case "BestowRecipes":
-                    Result = ParseBestowRecipeList(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgRecipe>.AddPgObjectArrayByInternalName<PgRecipe>(item.BestowRecipeList, Value);
                     break;
                 case "BestowAbility":
                     Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.BestowAbility_Key = PgObject.GetItemKey(valueAbility), Value);
@@ -59,7 +59,7 @@ public class ParserItem : Parser
                     Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                     break;
                 case "DroppedAppearance":
-                    Result = ParseDroppedAppearance(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgDroppedAppearance>.SetItemProperty((PgDroppedAppearance valueDroppedAppearance) => item.DroppedAppearance = valueDroppedAppearance, Value);
                     break;
                 case "EffectDescriptions":
                     Result = ParseEffectDescriptionList(item.EffectDescriptionList, Value, parsedFile, parsedKey);
@@ -167,129 +167,6 @@ public class ParserItem : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseBestowRecipeList(PgItem item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is List<object> ObjectList))
-            return Program.ReportFailure($"Value '{value}' was expected to be a list");
-
-        item.BestowRecipeList = new PgRecipeCollection();
-
-        foreach (object Item in ObjectList)
-        {
-            if (!(Item is string RecipeInternalName))
-                return Program.ReportFailure($"Value '{Item}' was expected to be a string");
-
-            PgRecipe ParsedRecipe = null!;
-            if (!Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, RecipeInternalName))
-                return false;
-
-            item.BestowRecipeList.Add(ParsedRecipe.Key);
-        }
-
-        return true;
-    }
-
-    private bool ParseDroppedAppearance(PgItem item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueString))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        string AppearanceString;
-
-        int index = ValueString.IndexOf('(');
-        if (index > 0)
-        {
-            if (index >= ValueString.Length - 2 || !ValueString.EndsWith(")"))
-                return Program.ReportFailure(parsedFile, parsedKey, $"'{value}' is an invalid dropped appareance");
-
-            AppearanceString = ValueString.Substring(0, index);
-
-            string[] Details = ValueString.Substring(index + 1, ValueString.Length - index - 2).Split(';');
-            if (!ParseDroppedAppearanceDetails(item, Details, parsedFile, parsedKey))
-                return false;
-        }
-        else
-            AppearanceString = ValueString;
-
-        return StringToEnumConversion<ItemDroppedAppearance>.SetEnum((ItemDroppedAppearance valueEnum) => item.DroppedAppearance = valueEnum, AppearanceString);
-    }
-
-    private bool ParseDroppedAppearanceDetails(PgItem item, string[] details, string parsedFile, string parsedKey)
-    {
-        bool Result = true;
-
-        foreach (string Detail in details)
-        {
-            string[] Splitted = Detail.Split('=');
-            if (Splitted.Length != 2)
-                return Program.ReportFailure(parsedFile, parsedKey, $"Invalid pair in dropped appaearance detail '{Detail}'");
-
-            string DetailKey = Splitted[0].Trim();
-            string DetailValue = Splitted[1].Trim();
-
-            if (string.IsNullOrEmpty(DetailKey) || string.IsNullOrEmpty(DetailValue))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Empty key or value in dropped appaearance detail '{Detail}'");
-
-            switch (DetailKey)
-            {
-                case "Skin":
-                    if (DetailValue.StartsWith("^"))
-                        Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceSkin = valueEnum, DetailValue.Substring(1));
-                    else
-                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown key in dropped appaearance detail '{Detail}'");
-                    break;
-                case "^Skin":
-                    Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceSkin = valueEnum, DetailValue);
-                    break;
-                case "^Cork":
-                    Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceCork = valueEnum, DetailValue);
-                    break;
-                case "^Food":
-                    Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearanceFood = valueEnum, DetailValue);
-                    break;
-                case "^Plate":
-                    Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.ItemAppearancePlate = valueEnum, DetailValue);
-                    break;
-                case "Color":
-                    Result = ParseDroppedAppearanceColor(item, DetailValue, parsedFile, parsedKey);
-                    break;
-                case "Skin_Color":
-                    Result = ParseDroppedAppearanceSkinColor(item, DetailValue, parsedFile, parsedKey);
-                    break;
-                default:
-                    Result = Program.ReportFailure(parsedFile, parsedKey, $"Unknown key in dropped appaearance detail '{Detail}'");
-                    break;
-            }
-
-            if (!Result)
-                break;
-        }
-
-        return Result;
-    }
-
-    private bool ParseDroppedAppearanceColor(PgItem item, string detailValue, string parsedFile, string parsedKey)
-    {
-        if (Tools.TryParseColor(detailValue, out uint ParsedColor))
-        {
-            item.RawItemAppearanceColor = ParsedColor;
-            return true;
-        }
-        else
-            return Program.ReportFailure(parsedFile, parsedKey, $"Unknown color in dropped appaearance detail '{detailValue}'");
-    }
-
-    private bool ParseDroppedAppearanceSkinColor(PgItem item, string detailValue, string parsedFile, string parsedKey)
-    {
-        if (Tools.TryParseColor(detailValue, out uint ParsedColor))
-        {
-            item.RawItemAppearanceSkinColor = ParsedColor;
-            return true;
-        }
-        else
-            return Program.ReportFailure(parsedFile, parsedKey, $"Unknown color in dropped appaearance detail '{detailValue}'");
     }
 
     public static bool ParseEffectDescriptionList(PgItemEffectCollection effectDescriptionList, object value, string parsedFile, string parsedKey)

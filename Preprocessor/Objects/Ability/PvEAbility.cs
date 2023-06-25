@@ -51,7 +51,7 @@ internal class PvEAbility
         TempTauntDelta = fromRawPvEAbility.TempTauntDelta;
     }
 
-    public static SelfPreEffect[]? ParseSelfPreEffects(string[]? content)
+    private static SelfPreEffect[]? ParseSelfPreEffects(string[]? content)
     {
         if (content is null)
             return null;
@@ -63,7 +63,7 @@ internal class PvEAbility
         return Result;
     }
 
-    public static SelfPreEffect ParseSelfPreEffect(string content)
+    private static SelfPreEffect ParseSelfPreEffect(string content)
     {
         // Search for an expression between parentheses.
         string ParameterPattern = @"\(([^)]+)\)";
@@ -170,7 +170,7 @@ internal class PvEAbility
         return Result;
     }
 
-    public static string[]? SelfPreEffectsToStrings(SelfPreEffect[]? selfPreEffectArray)
+    private static string[]? SelfPreEffectsToStrings(SelfPreEffect[]? selfPreEffectArray)
     {
         if (selfPreEffectArray is null)
             return null;
@@ -182,7 +182,7 @@ internal class PvEAbility
         return Result;
     }
 
-    public static string SelfPreEffectToString(SelfPreEffect selfPreEffect)
+    private static string SelfPreEffectToString(SelfPreEffect selfPreEffect)
     {
         switch (selfPreEffect.Name)
         {

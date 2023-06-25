@@ -43,19 +43,19 @@ internal class AbilityParticle : Particle
         string ParticleColorString = AoESplit[AoESplit.Length - 1];
 
         if (ParticleColorString.StartsWith(AoeColorHeader))
-            Result.AoEColor = ParseColor(ParticleColorString, AoeColorHeader);
+            Result.AoEColor = ParseColor(ParticleColorString, AoeColorHeader, out _);
         else if (!ParticleColorString.StartsWith(AoeRangeHeader))
         {
             string[] ColorSplit = ParticleColorString.Split(',');
 
             if (ColorSplit.Length == 1)
             {
-                Result.PrimaryColor = ParseColor(ColorSplit[0], ColorHeader);
+                Result.PrimaryColor = ParseColor(ColorSplit[0], ColorHeader, out _);
             }
             else if (ColorSplit.Length == 2)
             {
-                Result.PrimaryColor = ParseColor(ColorSplit[0], ColorHeader);
-                Result.SecondaryColor = ParseColor(ColorSplit[1], string.Empty);
+                Result.PrimaryColor = ParseColor(ColorSplit[0], ColorHeader, out _);
+                Result.SecondaryColor = ParseColor(ColorSplit[1], string.Empty, out _);
             }
             else
                 throw new InvalidCastException();

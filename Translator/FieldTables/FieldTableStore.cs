@@ -301,7 +301,7 @@ public class FieldTableStore
         { "CraftPoints", typeof(int) },
         { "CraftingTargetLevel", typeof(int) },
         { "Description", typeof(string) },
-        { "DroppedAppearance", typeof(string) },
+        { "DroppedAppearance", typeof(PgDroppedAppearance) },
         { "EffectDescriptions", typeof(string[]) },
         { "DyeColor", typeof(string) },
         { "EquipAppearance", typeof(string) },
@@ -343,6 +343,17 @@ public class FieldTableStore
         { "MetabolismCost", typeof(int) },
         { "UseDelay", typeof(float) },
         { "MinStackSizeNeeded", typeof(int) },
+    };
+
+    public static Dictionary<string, Type> TableDroppedAppearance { get; } = new Dictionary<string, Type>()
+    {
+        { "Appearance", typeof(string) },
+        { "Skin", typeof(string) },
+        { "Cork", typeof(string) },
+        { "Food", typeof(string) },
+        { "Plate", typeof(string) },
+        { "Color", typeof(string) },
+        { "SkinColor", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableItemUse { get; } = new Dictionary<string, Type>()
@@ -754,7 +765,6 @@ public class FieldTableStore
         { typeof(PgDoT), new FixedFieldTable(TableDoT) },
         { typeof(PgSpecialValue), new FixedFieldTable(TableSpecialValue) },
         { typeof(PgAdvancementTable), new FixedFieldTable(TableAdvancementTable) },
-        //{ typeof(PgAdvancementCollection), new VariadicFieldTable(typeof(PgAdvancement)) },
         { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
         { typeof(PgAdvancementEffectAttribute), new FixedFieldTable(TableAdvancementEffectAttribute) },
         { typeof(PgAI), new FixedFieldTable(TableAI) },
@@ -768,6 +778,7 @@ public class FieldTableStore
         { typeof(PgItem), new FixedFieldTable(TableItem) },
         { typeof(PgItemSkillLink), new VariadicFieldTable(typeof(int)) },
         { typeof(PgItemBehavior), new FixedFieldTable(TableItemBehavior) },
+        { typeof(PgDroppedAppearance), new FixedFieldTable(TableDroppedAppearance) },
         { typeof(PgItemUse), new FixedFieldTable(TableItemUse) },
         { typeof(PgLoreBookInfo), new VariadicFieldTable(typeof(PgLoreBookInfoCategory)) },
         { typeof(PgLoreBookInfoCategory), new FixedFieldTable(TableLoreBookInfoCategory) },
@@ -782,8 +793,6 @@ public class FieldTableStore
         { typeof(PgQuestRequirement), new FixedFieldTable(TableQuestRequirement) },
         { typeof(PgQuestObjective), new FixedFieldTable(TableQuestObjective) },
         { typeof(PgQuestObjectiveRequirement), new FixedFieldTable(TableQuestObjectiveRequirement) },
-        //{ typeof(PgQuestRewardSkillXp), new VariadicFieldTable(typeof(int)) },
-        //{ typeof(PgQuestRewardCurrency), new VariadicFieldTable(typeof(int)) },
         { typeof(PgQuestRewardItem), new FixedFieldTable(TableQuestRewardItem) },
         { typeof(PgQuestReward), new FixedFieldTable(TableQuestReward) },
         { typeof(PgRecipe), new FixedFieldTable(TableRecipe) },

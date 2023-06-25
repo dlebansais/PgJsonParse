@@ -41,20 +41,20 @@ internal class RecipeParticle : Particle
             string FirstColor = ColorSplit[0];
 
             if (FirstColor.StartsWith(LightColorHeader))
-                Result.LightColor = ParseColor(FirstColor, LightColorHeader);
+                Result.LightColor = ParseColor(FirstColor, LightColorHeader, out _);
             else
-                Result.PrimaryColor = ParseColor(FirstColor, ColorHeader);
+                Result.PrimaryColor = ParseColor(FirstColor, ColorHeader, out _);
         }
         else if (ColorSplit.Length == 2)
         {
-            Result.PrimaryColor = ParseColor(ColorSplit[0], ColorHeader);
-            Result.SecondaryColor = ParseColor(ColorSplit[1], string.Empty);
+            Result.PrimaryColor = ParseColor(ColorSplit[0], ColorHeader, out _);
+            Result.SecondaryColor = ParseColor(ColorSplit[1], string.Empty, out _);
         }
         else
             throw new InvalidCastException();
 
         if (LightSplit.Length == 2)
-            Result.LightColor = ParseColor(LightSplit[1], LightColorHeader);
+            Result.LightColor = ParseColor(LightSplit[1], LightColorHeader, out _);
 
         return Result;
     }

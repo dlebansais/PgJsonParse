@@ -23,15 +23,7 @@
         public int CraftingTargetLevel { get { return RawCraftingTargetLevel.HasValue ? RawCraftingTargetLevel.Value : 0; } }
         public int? RawCraftingTargetLevel { get; set; }
         public string Description { get; set; } = string.Empty;
-        public ItemDroppedAppearance DroppedAppearance { get; set; }
-        public AppearanceSkin ItemAppearanceSkin { get; set; }
-        public AppearanceSkin ItemAppearanceCork { get; set; }
-        public AppearanceSkin ItemAppearanceFood { get; set; }
-        public AppearanceSkin ItemAppearancePlate { get; set; }
-        public uint ItemAppearanceColor { get { return RawItemAppearanceColor.HasValue ? RawItemAppearanceColor.Value : 0; } }
-        public uint? RawItemAppearanceColor { get; set; }
-        public uint ItemAppearanceSkinColor { get { return RawItemAppearanceSkinColor.HasValue ? RawItemAppearanceSkinColor.Value : 0; } }
-        public uint? RawItemAppearanceSkinColor { get; set; }
+        public PgDroppedAppearance DroppedAppearance { get; set; } = null!;
         public PgItemEffectCollection EffectDescriptionList { get; set; } = new PgItemEffectCollection();
         public uint DyeColor { get { return RawDyeColor.HasValue ? RawDyeColor.Value : 0; } }
         public uint? RawDyeColor { get; set; }

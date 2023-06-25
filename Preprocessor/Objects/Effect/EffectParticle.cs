@@ -40,7 +40,7 @@ internal class EffectParticle : Particle
             string ParticleColorString = AoESplit[1];
 
             if (ParticleColorString.StartsWith(AoeColorHeader))
-                Result.AoEColor = ParseColor(ParticleColorString, AoeColorHeader);
+                Result.AoEColor = ParseColor(ParticleColorString, AoeColorHeader, out _);
         }
         else
             throw new InvalidCastException();
