@@ -1,5 +1,8 @@
 ﻿namespace Preprocessor;
 
+using System;
+using System.Text.RegularExpressions;
+
 internal class PvEAbility
 {
     public PvEAbility(RawPvEAbility fromRawPvEAbility)
@@ -42,10 +45,53 @@ internal class PvEAbility
             HasSelfEffectOnCrit = false;
         }
 
-        SelfPreEffects = fromRawPvEAbility.SelfPreEffects;
+        SelfPreEffects = ParseSelfPreEffects(fromRawPvEAbility.SelfPreEffects);
         SpecialValues = fromRawPvEAbility.SpecialValues;
         TauntDelta = fromRawPvEAbility.TauntDelta;
         TempTauntDelta = fromRawPvEAbility.TempTauntDelta;
+    }
+
+    public static SelfPreEffect[]? ParseSelfPreEffects(string[]? content)
+    {
+        if (content is null)
+            return null;
+
+        SelfPreEffect[] Result = new SelfPreEffect[content.Length];
+        for (int i = 0; i < Result.Length; i++)
+            Result[i] = ParseSelfPreEffect(content[i]);
+
+        return Result;
+    }
+
+    public static SelfPreEffect ParseSelfPreEffect(string content)
+    {
+        // Search for an expression between parentheses.
+        string ParameterPattern = @"\(([^)]+)\)";
+        Match ParameterMatch = Regex.Match(content, ParameterPattern, RegexOptions.IgnoreCase);
+        if (!ParameterMatch.Success)
+            return new SelfPreEffect { Name = content };
+
+        string Name = content.Substring(0, ParameterMatch.Index);
+        string InsideParameterString = content.Substring(ParameterMatch.Index + 1, content.Length - ParameterMatch.Index - 2);
+
+        SelfPreEffect Result = new() { Name = Name };
+
+        switch (Name)
+        {
+            case "EnhanceZombie":
+                Result.Enhancement = InsideParameterString;
+                break;
+            case "ConfigGalvanize":
+                if (InsideParameterString[0] != ',')
+                    throw new InvalidCastException();
+
+                Result.Value = int.Parse(InsideParameterString.Substring(1));
+                break;
+            default:
+                throw new InvalidCastException();
+        }
+
+        return Result;
     }
 
     public decimal? Accuracy { get; set; }
@@ -75,7 +121,7 @@ internal class PvEAbility
     public int? RageMultiplier { get; set; }
     public int Range { get; set; }
     public string[]? SelfEffectsOnCrit { get; set; }
-    public string[]? SelfPreEffects { get; set; }
+    public SelfPreEffect[]? SelfPreEffects { get; set; }
     public SpecialValue[]? SpecialValues { get; set; }
     public int? TauntDelta { get; set; }
     public int? TempTauntDelta { get; set; }
@@ -116,12 +162,37 @@ internal class PvEAbility
         else
             Result.SelfEffectsOnCrit = SelfEffectsOnCrit;
 
-        Result.SelfPreEffects = SelfPreEffects;
+        Result.SelfPreEffects = SelfPreEffectsToStrings(SelfPreEffects);
         Result.SpecialValues = SpecialValues;
         Result.TauntDelta = TauntDelta;
         Result.TempTauntDelta = TempTauntDelta;
 
         return Result;
+    }
+
+    public static string[]? SelfPreEffectsToStrings(SelfPreEffect[]? selfPreEffectArray)
+    {
+        if (selfPreEffectArray is null)
+            return null;
+
+        string[] Result = new string[selfPreEffectArray.Length];
+        for (int i = 0; i < Result.Length; i++)
+            Result[i] = SelfPreEffectToString(selfPreEffectArray[i]);
+
+        return Result;
+    }
+
+    public static string SelfPreEffectToString(SelfPreEffect selfPreEffect)
+    {
+        switch (selfPreEffect.Name)
+        {
+            case "EnhanceZombie":
+                return $"{selfPreEffect.Name}({selfPreEffect.Enhancement})";
+            case "ConfigGalvanize":
+                return $"{selfPreEffect.Name}(,{selfPreEffect.Value})";
+            default:
+                return selfPreEffect.Name ?? throw new NullReferenceException();
+        }
     }
 
     private readonly bool HasSelfEffectOnCrit;

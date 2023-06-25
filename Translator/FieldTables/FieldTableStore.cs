@@ -115,10 +115,9 @@ public class FieldTableStore
         { "ArmorSpecificDamage", typeof(int) },
         { "Range", typeof(int) },
         { "PowerCost", typeof(int) },
-        // { "MetabolismCost", typeof(int) },
         { "ArmorMitigationRatio", typeof(int) },
         { "AoE", typeof(int) },
-        { "SelfPreEffects", typeof(string[]) },
+        { "SelfPreEffects", typeof(PgSelfPreEffect[]) },
         { "RageBoost", typeof(int) },
         { "RageMultiplier", typeof(float) },
         { "Accuracy", typeof(float) },
@@ -141,6 +140,13 @@ public class FieldTableStore
         { "DoTs", typeof(PgDoT[]) },
         { "CritDamageMod", typeof(float) },
         { "SelfEffectsOnCrit", typeof(string[]) },
+    };
+
+    public static Dictionary<string, Type> TableSelfPreEffect { get; } = new Dictionary<string, Type>()
+    {
+        { "Enhancement", typeof(string) },
+        { "Name", typeof(string) },
+        { "Value", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableAbilityRequirement { get; } = new Dictionary<string, Type>()
@@ -740,6 +746,7 @@ public class FieldTableStore
         { typeof(PgAbility), new FixedFieldTable(TableAbility) },
         { typeof(PgAbilityAmmo), new FixedFieldTable(TableAbilityAmmo) },
         { typeof(PgAbilityPvX), new FixedFieldTable(TableAbilityPvX) },
+        { typeof(PgSelfPreEffect), new FixedFieldTable(TableSelfPreEffect) },
         { typeof(PgAbilityRequirement), new FixedFieldTable(TableAbilityRequirement) },
         { typeof(PgSelfParticle), new FixedFieldTable(TableSelfParticle) },
         { typeof(PgSelfPreParticle), new FixedFieldTable(TableSelfPreParticle) },

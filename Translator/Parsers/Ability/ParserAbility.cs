@@ -25,7 +25,6 @@ public class ParserAbility : Parser
     private bool FinishItem(PgAbility item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
         bool Result = true;
-        string DigitStrippedName = string.Empty;
 
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
@@ -92,7 +91,7 @@ public class ParserAbility : Parser
                     Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                     break;
                 case "DigitStrippedName":
-                    Result = SetStringProperty((string valueString) => DigitStrippedName = valueString, Value);
+                    Result = SetStringProperty((string valueString) => item.DigitStrippedName = valueString, Value);
                     break;
                 case "EffectKeywordsIndicatingEnabled":
                     Result = StringToEnumConversion<AbilityIndicatingEnabled>.SetEnum((AbilityIndicatingEnabled valueEnum) => item.EffectKeywordsIndicatingEnabled = valueEnum, Value);
@@ -248,12 +247,6 @@ public class ParserAbility : Parser
         {
             if (item.PvE == null)
                 return Program.ReportFailure(parsedFile, parsedKey, $"PvE info missing");
-
-            item.DigitStrippedName = CuteDigitStrippedName(item);
-
-            if (DigitStrippedName != item.DigitStrippedName)
-            {
-            }
         }
 
         return Result;
@@ -310,67 +303,4 @@ public class ParserAbility : Parser
 
         return true;
     }
-
-    private static string CuteDigitStrippedName(PgAbility ability)
-    {
-        string DigitStrippedName = GetDigitStrippedName(ability);
-        int Index;
-
-        Index = 0;
-        while (Index < DigitStrippedName.Length)
-            if (char.IsDigit(DigitStrippedName[Index]))
-                DigitStrippedName = DigitStrippedName.Substring(0, Index) + DigitStrippedName.Substring(Index + 1);
-            else
-                Index++;
-
-        if (IdenticalNameTable.ContainsKey(DigitStrippedName))
-            DigitStrippedName = IdenticalNameTable[DigitStrippedName];
-
-        Index = 0;
-        while (Index < DigitStrippedName.Length)
-        {
-            if (char.IsUpper(DigitStrippedName[Index]) && Index > 0)
-            {
-                DigitStrippedName = DigitStrippedName.Substring(0, Index) + " " + DigitStrippedName.Substring(Index);
-                Index++;
-            }
-
-            Index++;
-        }
-
-        return DigitStrippedName;
-    }
-
-    private static string GetDigitStrippedName(PgAbility ability)
-    {
-        string DigitStrippedName = ability.InternalName;
-        string LineIndexString = string.Empty;
-
-        while (DigitStrippedName.Length > 0 && char.IsDigit(DigitStrippedName[DigitStrippedName.Length - 1]))
-        {
-            LineIndexString = DigitStrippedName.Substring(DigitStrippedName.Length - 1) + LineIndexString;
-            DigitStrippedName = DigitStrippedName.Substring(0, DigitStrippedName.Length - 1);
-        }
-
-        return DigitStrippedName;
-    }
-
-    private static readonly Dictionary<string, string> IdenticalNameTable = new Dictionary<string, string>()
-    {
-        { "StabledPetLiving", "StabledPet" },
-        { "TameRat", "TameRat" },
-        { "TameCat", "TameRat" },
-        { "TameBear", "TameRat" },
-        { "TameBee", "TameRat" },
-        { "BasicShotB", "BasicShot" },
-        { "AimedShotB", "AimedShot" },
-        { "BlitzShotB", "BlitzShot" },
-        { "ToxinBombB", "MycotoxinFormula" },
-        { "ToxinBombC", "AcidBomb" },
-        { "FireWallB", "FireWall" },
-        { "IceVeinsB", "IceVeins" },
-        { "SliceB", "DuelistsSlash" },
-        { "WerewolfPounceB", "PouncingRend" },
-        { "WerewolfPounceBB", "PouncingRend" },
-    };
 }

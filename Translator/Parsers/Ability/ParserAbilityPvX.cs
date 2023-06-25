@@ -48,9 +48,6 @@ public class ParserAbilityPvX : Parser
                 case "PowerCost":
                     Result = SetIntProperty((int valueInt) => item.RawPowerCost = valueInt, Value);
                     break;
-                /*case "MetabolismCost":
-                    Result = SetIntProperty((int valueInt) => item.RawMetabolismCost = valueInt, Value);
-                    break;*/
                 case "ArmorMitigationRatio":
                     Result = SetIntProperty((int valueInt) => item.RawArmorMitigationRatio = valueInt, Value);
                     break;
@@ -58,7 +55,7 @@ public class ParserAbilityPvX : Parser
                     Result = SetIntProperty((int valueInt) => item.RawAoE = valueInt, Value);
                     break;
                 case "SelfPreEffects":
-                    Result = ParseSelfPreEffects(item, Value);
+                    Result = Inserter<PgSelfPreEffect>.AddKeylessArray(item.SelfPreEffectList, Value);
                     break;
                 case "RageBoost":
                     Result = SetIntProperty((int valueInt) => item.RawRageBoost = valueInt, Value);
@@ -137,67 +134,5 @@ public class ParserAbilityPvX : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseSelfPreEffects(PgAbilityPvX item, object value)
-    {
-        if (!(value is List<object> StringArray))
-            return Program.ReportFailure($"Value {value} was expected to be a list");
-
-        foreach (object StringItem in StringArray)
-        {
-            if (!(StringItem is string SelfPreEffectString))
-                return Program.ReportFailure($"Value {StringItem} was expected to be a string");
-
-            if (!ParseSelfPreEffect(item, SelfPreEffectString, out PgSelfPreEffect selfPreEffect))
-                return false;
-
-            ParsingContext.AddSuplementaryObject(selfPreEffect);
-            item.SelfPreEffectList.Add(selfPreEffect);
-        }
-
-        return true;
-    }
-
-    private bool ParseSelfPreEffect(PgAbilityPvX item, string value, out PgSelfPreEffect selfPreEffect)
-    {
-        selfPreEffect = null!;
-
-        int StartIndex = value.IndexOf('(');
-        int EndIndex = value.IndexOf(')');
-        if (StartIndex > 0 && EndIndex > StartIndex + 1 && EndIndex + 1 == value.Length)
-        {
-            string Prefix = value.Substring(0, StartIndex);
-            if (Prefix == "EnhanceZombie")
-            {
-                string Enhancement = value.Substring(StartIndex + 1, EndIndex - StartIndex - 1);
-                if (!StringToEnumConversion<PreEffect>.TryParse(Enhancement, out PreEffect enumValue))
-                    return false;
-
-                selfPreEffect = new PgSelfPreEffectEnhanceZombie() { Value = enumValue };
-            }
-            else if (Prefix == "ConfigGalvanize")
-            {
-                if (value[StartIndex + 1] != ',')
-                    return Program.ReportFailure($"Symbol ',' was expected");
-
-                string Enhancement = value.Substring(StartIndex + 2, EndIndex - StartIndex - 2);
-                if (!int.TryParse(Enhancement, out int Value))
-                    return Program.ReportFailure($"Value {Enhancement} was expected to be an int");
-
-                selfPreEffect = new PgSelfPreEffectConfigGalvanize() { RawValue = Value };
-            }
-            else
-                return Program.ReportFailure($"Invalid SelfPreEffect format {Prefix}");
-        }
-        else
-        {
-            if (!StringToEnumConversion<PreEffect>.TryParse(value, out PreEffect enumValue))
-                return false;
-
-            selfPreEffect = new PgSelfPreEffectSimple() { Value = enumValue };
-        }
-
-        return true;
     }
 }
