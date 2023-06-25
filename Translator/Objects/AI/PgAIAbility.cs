@@ -7,8 +7,6 @@
         public int? RawMinLevel { get; set; }
         public int MaxLevel { get { return RawMaxLevel.HasValue ? RawMaxLevel.Value : 0; } }
         public int? RawMaxLevel { get; set; }
-        public int MinDistance { get { return RawMinDistance.HasValue ? RawMinDistance.Value : 0; } }
-        public int? RawMinDistance { get; set; }
         public float MinRange { get { return RawMinRange.HasValue ? RawMinRange.Value : 0; } }
         public float? RawMinRange { get; set; }
         public int MaxRange { get { return RawMaxRange.HasValue ? RawMaxRange.Value : 0; } }

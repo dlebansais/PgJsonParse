@@ -197,21 +197,22 @@ public class FieldTableStore
         { "SkipIfZero", typeof(bool) },
     };
 
-    public static Dictionary<string, Type> TableAdvancementEffectAttribute { get; } = new Dictionary<string, Type>()
+    public static Dictionary<string, Type> TableAdvancementTable { get; } = new Dictionary<string, Type>()
     {
-        { "Attribute", typeof(string) },
-        { "Value", typeof(float) },
+        { "Name", typeof(string) },
+        { "Levels", typeof(PgAdvancement[]) },
     };
 
     public static Dictionary<string, Type> TableAdvancement { get; } = new Dictionary<string, Type>()
     {
         { "Attributes", typeof(PgAdvancementEffectAttribute[]) },
+        { "Level", typeof(int) },
     };
 
-    public static Dictionary<string, Type> TableAdvancementTable { get; } = new Dictionary<string, Type>()
+    public static Dictionary<string, Type> TableAdvancementEffectAttribute { get; } = new Dictionary<string, Type>()
     {
-        { "Name", typeof(string) },
-        { "Levels", typeof(PgAdvancementCollection) },
+        { "Attribute", typeof(string) },
+        { "Value", typeof(float) },
     };
 
     public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
@@ -233,7 +234,6 @@ public class FieldTableStore
     {
         { "MinLevel", typeof(int) },
         { "MaxLevel", typeof(int) },
-        { "MinDistance", typeof(int) },
         { "MinRange", typeof(float) },
         { "MaxRange", typeof(int) },
         { "Cue", typeof(string) },
@@ -754,7 +754,7 @@ public class FieldTableStore
         { typeof(PgDoT), new FixedFieldTable(TableDoT) },
         { typeof(PgSpecialValue), new FixedFieldTable(TableSpecialValue) },
         { typeof(PgAdvancementTable), new FixedFieldTable(TableAdvancementTable) },
-        { typeof(PgAdvancementCollection), new VariadicFieldTable(typeof(PgAdvancement)) },
+        //{ typeof(PgAdvancementCollection), new VariadicFieldTable(typeof(PgAdvancement)) },
         { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
         { typeof(PgAdvancementEffectAttribute), new FixedFieldTable(TableAdvancementEffectAttribute) },
         { typeof(PgAI), new FixedFieldTable(TableAI) },

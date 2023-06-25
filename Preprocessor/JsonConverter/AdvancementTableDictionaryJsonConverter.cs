@@ -24,17 +24,17 @@ internal class AdvancementTableDictionaryJsonConverter : JsonConverter<Advanceme
             string Key = reader.GetString() ?? throw new InvalidCastException();
             reader.Read();
 
-            AdvancementDictionary? Table = new();
+            AdvancementCollection? Advancements = new();
             Exception? Exception1 = null;
 
             try
             {
-                ReadAdvancementDictionary(Table, ref reader, options);
+                ReadAdvancementDictionary(Advancements, ref reader, options);
             }
             catch (Exception Exception)
             {
                 Exception1 = Exception;
-                Table = null;
+                Advancements = null;
             }
 
             string[] SplittedKey = Key.Split('_');
@@ -43,8 +43,8 @@ internal class AdvancementTableDictionaryJsonConverter : JsonConverter<Advanceme
                 for (int i = 2; i < SplittedKey.Length; i++)
                     Name += $"_{SplittedKey[i]}";
 
-                if (Table is not null)
-                    dictionary.Add(AdvancementTableKey, new AdvancementTable(Name, Table));
+                if (Advancements is not null)
+                    dictionary.Add(AdvancementTableKey, new AdvancementTable(Name, Advancements));
                 else
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
@@ -60,7 +60,7 @@ internal class AdvancementTableDictionaryJsonConverter : JsonConverter<Advanceme
         }
     }
 
-    private void ReadAdvancementDictionary(AdvancementDictionary dictionary, ref Utf8JsonReader reader, JsonSerializerOptions options)
+    private void ReadAdvancementDictionary(AdvancementCollection advancements, ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
@@ -83,7 +83,7 @@ internal class AdvancementTableDictionaryJsonConverter : JsonConverter<Advanceme
             if (Key.StartsWith("Level_") && int.TryParse(Key.Substring(6), out int AdvancementKey))
             {
                 if (Collection is not null)
-                    dictionary.Add(AdvancementKey, new Advancement(Collection));
+                    advancements.Add(new Advancement(Collection, AdvancementKey));
                 else
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
@@ -137,13 +137,10 @@ internal class AdvancementTableDictionaryJsonConverter : JsonConverter<Advanceme
     {
         writer.WriteStartObject();
 
-        foreach (KeyValuePair<int, Advancement> Entry in value.Levels)
+        foreach (Advancement Advancement in value.Levels)
         {
-            string Key = Entry.Key < 10 ? $"Level_0{Entry.Key}" : $"Level_{Entry.Key}";
-            Advancement Advancement = Entry.Value;
-
+            string Key = Advancement.Level < 10 ? $"Level_0{Advancement.Level}" : $"Level_{Advancement.Level}";
             writer.WritePropertyName(Key);
-
             WriteAdvancementEffectAttributeCollection(writer, Advancement.Attributes, options);
         }
 

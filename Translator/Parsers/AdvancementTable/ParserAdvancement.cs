@@ -33,6 +33,9 @@ public class ParserAdvancement : Parser
                 case "Attributes":
                     Result = Inserter<PgAdvancementEffectAttribute>.AddKeylessArray(item.EffectAttributeList, Value);
                     break;
+                case "Level":
+                    Result = SetIntProperty((int valueInt) => item.SetLevel(valueInt), Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

@@ -36,9 +36,6 @@ public class ParserAIAbility : Parser
                 case "MaxLevel":
                     Result = SetIntProperty((int valueInt) => item.RawMaxLevel = valueInt, Value);
                     break;
-                case "MinDistance":
-                    Result = SetIntProperty((int valueInt) => item.RawMinDistance = valueInt, Value);
-                    break;
                 case "MinRange":
                     Result = SetFloatProperty((float valueFloat) => item.RawMinRange = valueFloat, Value);
                     break;

@@ -2,12 +2,12 @@
 
 internal class AdvancementTable
 {
-    public AdvancementTable(string name, AdvancementDictionary levels)
+    public AdvancementTable(string name, AdvancementCollection levels)
     {
         Name = name;
         Levels = levels;
     }
 
-    public AdvancementDictionary Levels { get; set; }
+    public AdvancementCollection Levels { get; set; }
     public string Name { get; set; }
 }
