@@ -37,6 +37,7 @@ public static class MainParser
         { typeof(PgItemSkillLink), new ParserItemSkillLink() },
         { typeof(PgItemBehavior), new ParserItemBehavior() },
         { typeof(PgDroppedAppearance), new ParserDroppedAppearance() },
+        { typeof(PgItemEffect), new ParserItemEffect() },
         { typeof(PgItemUse), new ParserItemUse() },
         { typeof(PgLoreBookInfo), new ParserLoreBookInfo() },
         { typeof(PgLoreBookInfoCategory), new ParserLoreBookInfoCategory() },

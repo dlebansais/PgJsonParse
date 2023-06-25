@@ -302,7 +302,7 @@ public class FieldTableStore
         { "CraftingTargetLevel", typeof(int) },
         { "Description", typeof(string) },
         { "DroppedAppearance", typeof(PgDroppedAppearance) },
-        { "EffectDescriptions", typeof(string[]) },
+        { "EffectDescriptions", typeof(PgItemEffect[]) },
         { "DyeColor", typeof(string) },
         { "EquipAppearance", typeof(string) },
         { "EquipSlot", typeof(string) },
@@ -354,6 +354,13 @@ public class FieldTableStore
         { "Plate", typeof(string) },
         { "Color", typeof(string) },
         { "SkinColor", typeof(string) },
+    };
+
+    public static Dictionary<string, Type> TableItemEffect { get; } = new Dictionary<string, Type>()
+    {
+        { "Description", typeof(string) },
+        { "AttributeName", typeof(string) },
+        { "AttributeEffect", typeof(float) },
     };
 
     public static Dictionary<string, Type> TableItemUse { get; } = new Dictionary<string, Type>()
@@ -779,6 +786,7 @@ public class FieldTableStore
         { typeof(PgItemSkillLink), new VariadicFieldTable(typeof(int)) },
         { typeof(PgItemBehavior), new FixedFieldTable(TableItemBehavior) },
         { typeof(PgDroppedAppearance), new FixedFieldTable(TableDroppedAppearance) },
+        { typeof(PgItemEffect), new FixedFieldTable(TableItemEffect) },
         { typeof(PgItemUse), new FixedFieldTable(TableItemUse) },
         { typeof(PgLoreBookInfo), new VariadicFieldTable(typeof(PgLoreBookInfoCategory)) },
         { typeof(PgLoreBookInfoCategory), new FixedFieldTable(TableLoreBookInfoCategory) },

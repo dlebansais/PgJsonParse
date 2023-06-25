@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 internal class Item
@@ -24,7 +25,7 @@ internal class Item
         DroppedAppearance = ParseDroppedAppearance(rawItem.DroppedAppearance);
         DyeColor = rawItem.DyeColor;
         DynamicCraftingSummary = rawItem.DynamicCraftingSummary;
-        EffectDescriptions = rawItem.EffectDescs;
+        EffectDescriptions = ParseEffectDescriptions(rawItem.EffectDescs);
         EquipAppearance = rawItem.EquipAppearance;
         EquipSlot = rawItem.EquipSlot;
         FoodDescription = rawItem.FoodDesc;
@@ -113,6 +114,56 @@ internal class Item
         return Result;
     }
 
+    private static ItemEffect[]? ParseEffectDescriptions(string[]? content)
+    {
+        if (content is null)
+            return null;
+
+        ItemEffect[] Result = new ItemEffect[content.Length];
+
+        for (int i = 0; i < content.Length; i++)
+            Result[i] = ParseEffectDescription(content[i]);
+
+        return Result;
+    }
+
+    private static ItemEffect ParseEffectDescription(string content)
+    {
+        if (content.StartsWith("{") && content.EndsWith("}"))
+        {
+            string EffectString = content.Substring(1, content.Length - 2);
+            return ParseAttributeEffectDescription(EffectString);
+        }
+        else if (content.Contains("{") || content.Contains("}"))
+            throw new InvalidCastException();
+        else
+            return new ItemEffect { Description = content };
+    }
+
+    private static ItemEffect ParseAttributeEffectDescription(string effectString)
+    {
+        string[] Split = effectString.Split('{');
+        if (Split.Length != 2)
+            throw new InvalidCastException();
+
+        string AttributeName = Split[0];
+        string AttributeEffectString = Split[1];
+
+        if (!AttributeName.EndsWith("}"))
+            throw new InvalidCastException();
+
+        AttributeName = AttributeName.Substring(0, AttributeName.Length - 1);
+        if (AttributeName.Contains("{") || AttributeName.Contains("}"))
+            throw new InvalidCastException();
+
+        if (AttributeName.Length == 0 || AttributeEffectString.Length == 0)
+            throw new InvalidCastException();
+
+        decimal AttributeEffect = decimal.Parse(AttributeEffectString, CultureInfo.InvariantCulture);
+
+        return new ItemEffect() { AttributeName = AttributeName, AttributeEffect = AttributeEffect };
+    }
+
     public bool? AllowPrefix { get; set; }
     public bool? AllowSuffix { get; set; }
     public bool? AttuneOnPickup { get; set; }
@@ -129,7 +180,7 @@ internal class Item
     public DroppedAppearance? DroppedAppearance { get; set; }
     public string? DyeColor { get; set; }
     public string? DynamicCraftingSummary { get; set; }
-    public string[]? EffectDescriptions { get; set; }
+    public ItemEffect[]? EffectDescriptions { get; set; }
     public string? EquipAppearance { get; set; }
     public string? EquipSlot { get; set; }
     public string? FoodDescription { get; set; }
@@ -173,7 +224,7 @@ internal class Item
         Result.DroppedAppearance = DroppedAppearanceToStrings(DroppedAppearance);
         Result.DyeColor = DyeColor;
         Result.DynamicCraftingSummary = DynamicCraftingSummary;
-        Result.EffectDescs = EffectDescriptions;
+        Result.EffectDescs = EffectDescriptionsToString(EffectDescriptions);
         Result.EquipAppearance = EquipAppearance;
         Result.EquipSlot = EquipSlot;
         Result.FoodDesc = FoodDescription;
@@ -235,5 +286,26 @@ internal class Item
         string? Result = Parameter == string.Empty ? droppedAppearance.Appearance : $"{droppedAppearance.Appearance}({Parameter})";
 
         return Result;
+    }
+
+    private static string[]? EffectDescriptionsToString(ItemEffect[]? effectDescriptions)
+    {
+        if (effectDescriptions is null)
+            return null;
+
+        string[] Result = new string[effectDescriptions.Length];
+
+        for (int i = 0; i < effectDescriptions.Length; i++)
+            Result[i] = EffectDescriptionToString(effectDescriptions[i]);
+
+        return Result;
+    }
+
+    private static string EffectDescriptionToString(ItemEffect effectDescription)
+    {
+        if (effectDescription.Description is not null)
+            return effectDescription.Description;
+        else
+            return $"{{{effectDescription.AttributeName}}}{{{effectDescription.AttributeEffect?.ToString(CultureInfo.InvariantCulture)}}}";
     }
 }

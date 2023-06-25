@@ -62,10 +62,10 @@ public class ParserItem : Parser
                     Result = Inserter<PgDroppedAppearance>.SetItemProperty((PgDroppedAppearance valueDroppedAppearance) => item.DroppedAppearance = valueDroppedAppearance, Value);
                     break;
                 case "EffectDescriptions":
-                    Result = ParseEffectDescriptionList(item.EffectDescriptionList, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgItemEffect>.AddKeylessArray(item.EffectDescriptionList, Value);
                     break;
                 case "DyeColor":
-                    Result = ParseDyeColor(item, Value, parsedFile, parsedKey);
+                    Result = SetColorProperty((uint valueColor) => item.RawDyeColor = valueColor, Value);
                     break;
                 case "EquipAppearance":
                     Result = SetStringProperty((string valueString) => item.EquipAppearance = valueString, Value); // TODO: parse
@@ -167,91 +167,6 @@ public class ParserItem : Parser
         }
 
         return Result;
-    }
-
-    public static bool ParseEffectDescriptionList(PgItemEffectCollection effectDescriptionList, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is List<object> ObjectList))
-            return Program.ReportFailure($"Value '{value}' was expected to be a list");
-
-        foreach (object Item in ObjectList)
-        {
-            if (!(Item is string EffectDescription))
-                return Program.ReportFailure($"Value '{Item}' was expected to be a string");
-
-            if (!ParseEffectDescription(effectDescriptionList, EffectDescription, parsedFile, parsedKey))
-                return false;
-        }
-
-        return true;
-    }
-
-    private static bool ParseEffectDescription(PgItemEffectCollection effectDescriptionList, string effectDescription, string parsedFile, string parsedKey)
-    {
-        PgItemEffect ItemEffect;
-        if (effectDescription.StartsWith("{") && effectDescription.EndsWith("}"))
-        {
-            string EffectString = effectDescription.Substring(1, effectDescription.Length - 2);
-            if (!ParseItemEffectAttribute(EffectString, parsedFile, parsedKey, out ItemEffect))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Invalid attribute format '{EffectString}'");
-        }
-        else if (effectDescription.Contains("{") || effectDescription.Contains("}"))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Invalid attribute format '{effectDescription}'");
-        else
-            ItemEffect = new PgItemEffectSimple() { Description = effectDescription };
-
-        ParsingContext.AddSuplementaryObject(ItemEffect);
-        effectDescriptionList.Add(ItemEffect);
-        return true;
-    }
-
-    private static bool ParseItemEffectAttribute(string effectString, string parsedFile, string parsedKey, out PgItemEffect itemEffect)
-    {
-        itemEffect = null!;
-
-        string[] Split = effectString.Split('{');
-        if (Split.Length != 2)
-            return false;
-
-        string AttributeName = Split[0];
-        string AttributeEffect = Split[1];
-
-        if (!AttributeName.EndsWith("}"))
-            return false;
-
-        AttributeName = AttributeName.Substring(0, AttributeName.Length - 1);
-        if (AttributeName.Contains("{") || AttributeName.Contains("}"))
-            return false;
-
-        if (AttributeName.Length == 0 || AttributeEffect.Length == 0)
-            return false;
-
-        PgAttribute ParsedAttribute = null!;
-        if (!Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, AttributeName))
-            return false;
-
-        if (!Tools.TryParseFloat(AttributeEffect, out float ParsedEffect, out FloatFormat ParsedEffectFormat))
-            return false;
-
-        if (ParsedEffectFormat != FloatFormat.Standard)
-            return false;
-
-        itemEffect = new PgItemEffectAttribute() { Attribute_Key = PgObject.GetItemKey(ParsedAttribute), AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Label = ParsedAttribute.Label };
-        return true;
-    }
-
-    private bool ParseDyeColor(PgItem item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueString))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        if (Tools.TryParseColor(ValueString, out uint NewColor))
-        {
-            item.RawDyeColor = NewColor;
-            return true;
-        }
-        else
-            return Program.ReportFailure(parsedFile, parsedKey, $"Invalid dye color format '{ValueString}'");
     }
 
     private bool ParseKeywordList(PgItem item, object value, Dictionary<ItemKeyword, List<float>> keywordTable, List<string> keywordValueList, string parsedFile, string parsedKey)
