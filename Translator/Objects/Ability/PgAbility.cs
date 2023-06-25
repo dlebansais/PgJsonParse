@@ -70,7 +70,7 @@
         public bool IsHarmless { get { return (BoolValues & (IsHarmlessNotNull + IsHarmlessIsTrue)) == (IsHarmlessNotNull + IsHarmlessIsTrue); } }
         public bool? RawIsHarmless { get { return ((BoolValues & IsHarmlessNotNull) != 0) ? (BoolValues & IsHarmlessIsTrue) != 0 : null; } }
         public void SetIsHarmless(bool value) { BoolValues |= (BoolValues & ~(IsHarmlessNotNull + IsHarmlessIsTrue)) | ((value ? IsHarmlessIsTrue : 0) + IsHarmlessNotNull); }
-        public string ItemKeywordReqErrorMessage { get; set; } = string.Empty;
+        public string ItemKeywordRequirementErrorMessage { get; set; } = string.Empty;
         public List<AbilityItemKeyword> ItemKeywordReqList { get; set; } = new List<AbilityItemKeyword>();
         public List<AbilityKeyword> KeywordList { get; set; } = new List<AbilityKeyword>();
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }

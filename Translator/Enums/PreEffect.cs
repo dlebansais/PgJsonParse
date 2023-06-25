@@ -3,6 +3,8 @@
     public enum PreEffect
     {
         Internal_None,
+        EnhanceZombie,
+        ConfigGalvanize,
         CastigateUndeadDmgMod20,
         CastigateUndeadDmgMod40,
         CastigateUndeadDmgMod60,

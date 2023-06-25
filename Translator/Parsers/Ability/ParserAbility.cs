@@ -115,7 +115,7 @@ public class ParserAbility : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetIsHarmless(valueBool), Value);
                     break;
                 case "ItemKeywordRequirementErrorMessage":
-                    Result = SetStringProperty((string valueString) => item.ItemKeywordReqErrorMessage = valueString, Value);
+                    Result = SetStringProperty((string valueString) => item.ItemKeywordRequirementErrorMessage = valueString, Value);
                     break;
                 case "ItemKeywordRequirements":
                     Result = StringToEnumConversion<AbilityItemKeyword>.TryParseList(Value, item.ItemKeywordReqList);
