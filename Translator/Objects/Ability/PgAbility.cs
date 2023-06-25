@@ -8,11 +8,11 @@
         public int BoolValues { get; set; }
         public string AbilityGroupName { get; set; } = string.Empty;
         public AbilityAnimation Animation { get; set; }
-        public const int AoEIsCenteredOnCasterNotNull = 1 << 28;
-        public const int AoEIsCenteredOnCasterIsTrue = 1 << 29;
-        public bool AoEIsCenteredOnCaster { get { return (BoolValues & (AoEIsCenteredOnCasterNotNull + AoEIsCenteredOnCasterIsTrue)) == (AoEIsCenteredOnCasterNotNull + AoEIsCenteredOnCasterIsTrue); } }
-        public bool? RawAoEIsCenteredOnCaster { get { return ((BoolValues & AoEIsCenteredOnCasterNotNull) != 0) ? (BoolValues & AoEIsCenteredOnCasterIsTrue) != 0 : null; } }
-        public void SetAoEIsCenteredOnCaster(bool value) { BoolValues |= (BoolValues & ~(AoEIsCenteredOnCasterNotNull + AoEIsCenteredOnCasterIsTrue)) | ((value ? AoEIsCenteredOnCasterIsTrue : 0) + AoEIsCenteredOnCasterNotNull); }
+        public const int IsAoECenteredOnCasterNotNull = 1 << 28;
+        public const int IsAoECenteredOnCasterIsTrue = 1 << 29;
+        public bool IsAoECenteredOnCaster { get { return (BoolValues & (IsAoECenteredOnCasterNotNull + IsAoECenteredOnCasterIsTrue)) == (IsAoECenteredOnCasterNotNull + IsAoECenteredOnCasterIsTrue); } }
+        public bool? RawIsAoECenteredOnCaster { get { return ((BoolValues & IsAoECenteredOnCasterNotNull) != 0) ? (BoolValues & IsAoECenteredOnCasterIsTrue) != 0 : null; } }
+        public void SetIsAoECenteredOnCaster(bool value) { BoolValues |= (BoolValues & ~(IsAoECenteredOnCasterNotNull + IsAoECenteredOnCasterIsTrue)) | ((value ? IsAoECenteredOnCasterIsTrue : 0) + IsAoECenteredOnCasterNotNull); }
         public float AoERange { get { return RawAoERange.HasValue ? RawAoERange.Value : 0; } }
         public float? RawAoERange { get; set; }
         public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();
@@ -59,11 +59,11 @@
         public bool IgnoreEffectErrors { get { return (BoolValues & (IgnoreEffectErrorsNotNull + IgnoreEffectErrorsIsTrue)) == (IgnoreEffectErrorsNotNull + IgnoreEffectErrorsIsTrue); } }
         public bool? RawIgnoreEffectErrors { get { return ((BoolValues & IgnoreEffectErrorsNotNull) != 0) ? (BoolValues & IgnoreEffectErrorsIsTrue) != 0 : null; } }
         public void SetIgnoreEffectErrors(bool value) { BoolValues |= (BoolValues & ~(IgnoreEffectErrorsNotNull + IgnoreEffectErrorsIsTrue)) | ((value ? IgnoreEffectErrorsIsTrue : 0) + IgnoreEffectErrorsNotNull); }
-        public const int InternalAbilityNotNull = 1 << 10;
-        public const int InternalAbilityIsTrue = 1 << 11;
-        public bool InternalAbility { get { return (BoolValues & (InternalAbilityNotNull + InternalAbilityIsTrue)) == (InternalAbilityNotNull + InternalAbilityIsTrue); } }
-        public bool? RawInternalAbility { get { return ((BoolValues & InternalAbilityNotNull) != 0) ? (BoolValues & InternalAbilityIsTrue) != 0 : null; } }
-        public void SetInternalAbility(bool value) { BoolValues |= (BoolValues & ~(InternalAbilityNotNull + InternalAbilityIsTrue)) | ((value ? InternalAbilityIsTrue : 0) + InternalAbilityNotNull); }
+        public const int IsInternalAbilityNotNull = 1 << 10;
+        public const int IsInternalAbilityIsTrue = 1 << 11;
+        public bool IsInternalAbility { get { return (BoolValues & (IsInternalAbilityNotNull + IsInternalAbilityIsTrue)) == (IsInternalAbilityNotNull + IsInternalAbilityIsTrue); } }
+        public bool? RawIsInternalAbility { get { return ((BoolValues & IsInternalAbilityNotNull) != 0) ? (BoolValues & IsInternalAbilityIsTrue) != 0 : null; } }
+        public void SetIsInternalAbility(bool value) { BoolValues |= (BoolValues & ~(IsInternalAbilityNotNull + IsInternalAbilityIsTrue)) | ((value ? IsInternalAbilityIsTrue : 0) + IsInternalAbilityNotNull); }
         public string InternalName { get; set; } = string.Empty;
         public const int IsHarmlessNotNull = 1 << 12;
         public const int IsHarmlessIsTrue = 1 << 13;
@@ -76,9 +76,9 @@
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
         public int? RawLevel { get; set; }
         public string Name { get; set; } = string.Empty;
-        public AbilityPetType PetTypeTagReq { get; set; }
-        public int PetTypeTagReqMax { get { return RawPetTypeTagReqMax.HasValue ? RawPetTypeTagReqMax.Value : 0; } }
-        public int? RawPetTypeTagReqMax { get; set; }
+        public AbilityPetType PetTypeTagRequirement { get; set; }
+        public int PetTypeTagRequirementMax { get { return RawPetTypeTagRequirementMax.HasValue ? RawPetTypeTagRequirementMax.Value : 0; } }
+        public int? RawPetTypeTagRequirementMax { get; set; }
         public string? Prerequisite_Key { get; set; }
         public AbilityProjectile Projectile { get; set; }
         public PgAbilityPvX PvE { get; set; } = null!;
@@ -93,10 +93,10 @@
         public PgAbilityRequirementCollection SpecialCasterRequirementList { get; set; } = new PgAbilityRequirementCollection();
         public string SpecialCasterRequirementsErrorMessage { get; set; } = string.Empty;
         public string SpecialInfo { get; set; } = string.Empty;
-        public int SpecialTargetingTypeReq { get { return RawSpecialTargetingTypeReq.HasValue ? RawSpecialTargetingTypeReq.Value : 0; } }
-        public int? RawSpecialTargetingTypeReq { get; set; }
+        public int SpecialTargetingTypeRequirement { get { return RawSpecialTargetingTypeRequirement.HasValue ? RawSpecialTargetingTypeRequirement.Value : 0; } }
+        public int? RawSpecialTargetingTypeRequirement { get; set; }
         public AbilityTarget Target { get; set; }
-        public TargetEffectKeyword TargetEffectKeywordReq { get; set; }
+        public TargetEffectKeyword TargetEffectKeywordRequirement { get; set; }
         public PgTargetParticle? TargetParticle { get; set; } = null!;
         public string? UpgradeOf_Key { get; set; }
         public const int WorksInCombatNotNull = 1 << 14;
@@ -145,7 +145,7 @@
         public void SetWorksWhileStunned(bool value) { BoolValues |= (BoolValues & ~(WorksWhileStunnedNotNull + WorksWhileStunnedIsTrue)) | ((value ? WorksWhileStunnedIsTrue : 0) + WorksWhileStunnedNotNull); }
         public int Rank { get { return RawRank.HasValue ? RawRank.Value : 0; } }
         public int? RawRank { get; set; }
-        public string InventoryKeywordReqErrorMessage { get; set; } = string.Empty;
+        public string InventoryKeywordRequirementErrorMessage { get; set; } = string.Empty;
         public List<AbilityItemKeyword> InventoryKeywordReqList { get; set; } = new List<AbilityItemKeyword>();
 
         public int FriendlyIconId { get; set; }

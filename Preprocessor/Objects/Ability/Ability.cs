@@ -1,6 +1,8 @@
-﻿using System;
+﻿namespace Preprocessor;
 
-namespace Preprocessor;
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 internal class Ability
 {
@@ -13,7 +15,6 @@ internal class Ability
         AmmoKeywords = rawAbility.AmmoKeywords;
         AmmoStickChance = rawAbility.AmmoStickChance;
         Animation = rawAbility.Animation;
-        AoEIsCenteredOnCaster = rawAbility.AoEIsCenteredOnCaster;
         AttributesThatDeltaDelayLoopTime = rawAbility.AttributesThatDeltaDelayLoopTime;
         AttributesThatDeltaPowerCost = rawAbility.AttributesThatDeltaPowerCost;
         AttributesThatDeltaResetTime = rawAbility.AttributesThatDeltaResetTime;
@@ -32,23 +33,25 @@ internal class Ability
         DelayLoopMessage = rawAbility.DelayLoopMessage;
         DelayLoopTime = rawAbility.DelayLoopTime;
         Description = rawAbility.Description;
+        DigitStrippedName = ToDigitStrippedName(rawAbility.InternalName);
         EffectKeywordsIndicatingEnabled = rawAbility.EffectKeywordsIndicatingEnabled;
         ExtraKeywordsForTooltips = rawAbility.ExtraKeywordsForTooltips;
         IconID = rawAbility.IconID;
         IgnoreEffectErrors = rawAbility.IgnoreEffectErrors;
-        InternalAbility = rawAbility.InternalAbility;
         InternalName = rawAbility.InternalName;
-        InventoryKeywordReqErrorMessage = rawAbility.InventoryKeywordReqErrorMessage;
-        InventoryKeywordReqs = rawAbility.InventoryKeywordReqs;
+        InventoryKeywordRequirementErrorMessage = rawAbility.InventoryKeywordReqErrorMessage;
+        InventoryKeywordRequirements = rawAbility.InventoryKeywordReqs;
+        IsAoECenteredOnCaster = rawAbility.AoEIsCenteredOnCaster;
         IsCosmeticPet = rawAbility.IsCosmeticPet;
         IsHarmless = rawAbility.IsHarmless;
-        ItemKeywordReqErrorMessage = rawAbility.ItemKeywordReqErrorMessage;
-        ItemKeywordReqs = rawAbility.ItemKeywordReqs;
+        IsInternalAbility = rawAbility.InternalAbility;
+        ItemKeywordRequirementErrorMessage = rawAbility.ItemKeywordReqErrorMessage;
+        ItemKeywordRequirements = rawAbility.ItemKeywordReqs;
         Keywords = rawAbility.Keywords;
         Level = rawAbility.Level;
         Name = rawAbility.Name;
-        PetTypeTagReq = rawAbility.PetTypeTagReq;
-        PetTypeTagReqMax = rawAbility.PetTypeTagReqMax;
+        PetTypeTagRequirement = rawAbility.PetTypeTagReq;
+        PetTypeTagRequirementMax = rawAbility.PetTypeTagReqMax;
         Prerequisite = rawAbility.Prerequisite;
 
         IsProjectileNone = rawAbility.Projectile == "0";
@@ -64,9 +67,9 @@ internal class Ability
         SpecialCasterRequirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawAbility.SpecialCasterRequirements, out SpecialCasterRequirementsIsSingle);
         SpecialCasterRequirementsErrorMessage = rawAbility.SpecialCasterRequirementsErrorMessage;
         SpecialInfo = rawAbility.SpecialInfo;
-        SpecialTargetingTypeReq = rawAbility.SpecialTargetingTypeReq;
+        SpecialTargetingTypeRequirement = rawAbility.SpecialTargetingTypeReq;
         Target = rawAbility.Target;
-        TargetEffectKeywordReq = rawAbility.TargetEffectKeywordReq;
+        TargetEffectKeywordRequirement = rawAbility.TargetEffectKeywordReq;
         TargetParticle = AbilityParticle.Parse(rawAbility.TargetParticle);
         TargetTypeTagRequirement = ToTargetTypeTagReq(rawAbility.TargetTypeTagReq);
         UpgradeOf = rawAbility.UpgradeOf;
@@ -88,6 +91,45 @@ internal class Ability
             throw new InvalidCastException();
     }
 
+    private static string? ToDigitStrippedName(string? internalName)
+    {
+        if (internalName is null)
+            return null;
+
+        string Result = internalName;
+
+        // Remove all digits.
+        Result = Regex.Replace(Result, @"[\d]", string.Empty);
+
+        // Update names that are subcategories.
+        if (IdenticalAbilityNameTable.ContainsKey(Result))
+            Result = IdenticalAbilityNameTable[Result];
+
+        // Insert a whitespace before any upper case letter, except the first one.
+        Result = Regex.Replace(Result, @"\B[A-Z]", m => " " + m.ToString());
+
+        return Result;
+    }
+
+    private static readonly Dictionary<string, string> IdenticalAbilityNameTable = new Dictionary<string, string>()
+    {
+        { "StabledPetLiving", "StabledPet" },
+        { "TameRat", "TameAnimal" },
+        { "TameCat", "TameAnimal" },
+        { "TameBear", "TameAnimal" },
+        { "TameBee", "TameAnimal" },
+        { "BasicShotB", "BasicShot" },
+        { "AimedShotB", "AimedShot" },
+        { "BlitzShotB", "BlitzShot" },
+        { "ToxinBombB", "MycotoxinFormula" },
+        { "ToxinBombC", "AcidBomb" },
+        { "FireWallB", "FireWall" },
+        { "IceVeinsB", "IceVeins" },
+        { "SliceB", "DuelistsSlash" },
+        { "WerewolfPounceB", "PouncingRend" },
+        { "WerewolfPounceBB", "PouncingRend" },
+    };
+
     public string? AbilityGroup { get; set; }
     public string? AbilityGroupName { get; set; }
     public decimal? AmmoConsumeChance { get; set; }
@@ -95,7 +137,6 @@ internal class Ability
     public Ammo[]? AmmoKeywords { get; set; }
     public decimal? AmmoStickChance { get; set; }
     public string? Animation { get; set; }
-    public bool? AoEIsCenteredOnCaster { get; set; }
     public string[]? AttributesThatDeltaDelayLoopTime { get; set; }
     public string[]? AttributesThatDeltaPowerCost { get; set; }
     public string[]? AttributesThatDeltaResetTime { get; set; }
@@ -114,23 +155,25 @@ internal class Ability
     public string? DelayLoopMessage { get; set; }
     public int? DelayLoopTime { get; set; }
     public string? Description { get; set; }
+    public string? DigitStrippedName { get; set; }
     public string[]? EffectKeywordsIndicatingEnabled { get; set; }
     public string[]? ExtraKeywordsForTooltips { get; set; }
     public int IconID { get; set; }
     public bool? IgnoreEffectErrors { get; set; }
-    public bool? InternalAbility { get; set; }
     public string? InternalName { get; set; }
-    public string? InventoryKeywordReqErrorMessage { get; set; }
-    public string[]? InventoryKeywordReqs { get; set; }
+    public string? InventoryKeywordRequirementErrorMessage { get; set; }
+    public string[]? InventoryKeywordRequirements { get; set; }
+    public bool? IsAoECenteredOnCaster { get; set; }
     public bool? IsCosmeticPet { get; set; }
     public bool? IsHarmless { get; set; }
-    public string? ItemKeywordReqErrorMessage { get; set; }
-    public string[]? ItemKeywordReqs { get; set; }
+    public bool? IsInternalAbility { get; set; }
+    public string? ItemKeywordRequirementErrorMessage { get; set; }
+    public string[]? ItemKeywordRequirements { get; set; }
     public string[]? Keywords { get; set; }
     public int Level { get; set; }
     public string? Name { get; set; }
-    public string? PetTypeTagReq { get; set; }
-    public int? PetTypeTagReqMax { get; set; }
+    public string? PetTypeTagRequirement { get; set; }
+    public int? PetTypeTagRequirementMax { get; set; }
     public string? Prerequisite { get; set; }
     public string? Projectile { get; set; }
     public PvEAbility? PvE { get; set; }
@@ -143,9 +186,9 @@ internal class Ability
     public Requirement[]? SpecialCasterRequirements { get; set; }
     public string? SpecialCasterRequirementsErrorMessage { get; set; }
     public string? SpecialInfo { get; set; }
-    public int? SpecialTargetingTypeReq { get; set; }
+    public int? SpecialTargetingTypeRequirement { get; set; }
     public string? Target { get; set; }
-    public string? TargetEffectKeywordReq { get; set; }
+    public string? TargetEffectKeywordRequirement { get; set; }
     public AbilityParticle? TargetParticle { get; set; }
     public string? TargetTypeTagRequirement { get; set; }
     public string? UpgradeOf { get; set; }
@@ -166,7 +209,7 @@ internal class Ability
         Result.AmmoKeywords = AmmoKeywords;
         Result.AmmoStickChance = AmmoStickChance;
         Result.Animation = Animation;
-        Result.AoEIsCenteredOnCaster = AoEIsCenteredOnCaster;
+        Result.AoEIsCenteredOnCaster = IsAoECenteredOnCaster;
         Result.AttributesThatDeltaDelayLoopTime = AttributesThatDeltaDelayLoopTime;
         Result.AttributesThatDeltaPowerCost = AttributesThatDeltaPowerCost;
         Result.AttributesThatDeltaResetTime = AttributesThatDeltaResetTime;
@@ -189,19 +232,19 @@ internal class Ability
         Result.ExtraKeywordsForTooltips = ExtraKeywordsForTooltips;
         Result.IconID = IconID;
         Result.IgnoreEffectErrors = IgnoreEffectErrors;
-        Result.InternalAbility = InternalAbility;
+        Result.InternalAbility = IsInternalAbility;
         Result.InternalName = InternalName;
-        Result.InventoryKeywordReqErrorMessage = InventoryKeywordReqErrorMessage;
-        Result.InventoryKeywordReqs = InventoryKeywordReqs;
+        Result.InventoryKeywordReqErrorMessage = InventoryKeywordRequirementErrorMessage;
+        Result.InventoryKeywordReqs = InventoryKeywordRequirements;
         Result.IsCosmeticPet = IsCosmeticPet;
         Result.IsHarmless = IsHarmless;
-        Result.ItemKeywordReqErrorMessage = ItemKeywordReqErrorMessage;
-        Result.ItemKeywordReqs = ItemKeywordReqs;
+        Result.ItemKeywordReqErrorMessage = ItemKeywordRequirementErrorMessage;
+        Result.ItemKeywordReqs = ItemKeywordRequirements;
         Result.Keywords = Keywords;
         Result.Level = Level;
         Result.Name = Name;
-        Result.PetTypeTagReq = PetTypeTagReq;
-        Result.PetTypeTagReqMax = PetTypeTagReqMax;
+        Result.PetTypeTagReq = PetTypeTagRequirement;
+        Result.PetTypeTagReqMax = PetTypeTagRequirementMax;
         Result.Prerequisite = Prerequisite;
 
         Result.Projectile = IsProjectileNone ? "0" : Projectile;
@@ -216,9 +259,9 @@ internal class Ability
         Result.SpecialCasterRequirements = Preprocessor.FromSingleOrMultiple(SpecialCasterRequirements, SpecialCasterRequirementsIsSingle);
         Result.SpecialCasterRequirementsErrorMessage = SpecialCasterRequirementsErrorMessage;
         Result.SpecialInfo = SpecialInfo;
-        Result.SpecialTargetingTypeReq = SpecialTargetingTypeReq;
+        Result.SpecialTargetingTypeReq = SpecialTargetingTypeRequirement;
         Result.Target = Target;
-        Result.TargetEffectKeywordReq = TargetEffectKeywordReq;
+        Result.TargetEffectKeywordReq = TargetEffectKeywordRequirement;
         Result.TargetParticle = AbilityParticle.ToString(TargetParticle);
         Result.TargetTypeTagReq = ToRawTargetTypeTagReq(TargetTypeTagRequirement);
         Result.UpgradeOf = UpgradeOf;

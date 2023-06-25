@@ -25,6 +25,7 @@ public class ParserAbility : Parser
     private bool FinishItem(PgAbility item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
         bool Result = true;
+        string DigitStrippedName = string.Empty;
 
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
@@ -90,6 +91,9 @@ public class ParserAbility : Parser
                 case "Description":
                     Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                     break;
+                case "DigitStrippedName":
+                    Result = SetStringProperty((string valueString) => DigitStrippedName = valueString, Value);
+                    break;
                 case "EffectKeywordsIndicatingEnabled":
                     Result = StringToEnumConversion<AbilityIndicatingEnabled>.SetEnum((AbilityIndicatingEnabled valueEnum) => item.EffectKeywordsIndicatingEnabled = valueEnum, Value);
                     break;
@@ -102,8 +106,8 @@ public class ParserAbility : Parser
                 case "IgnoreEffectErrors":
                     Result = SetBoolProperty((bool valueBool) => item.SetIgnoreEffectErrors(valueBool), Value);
                     break;
-                case "InternalAbility":
-                    Result = SetBoolProperty((bool valueBool) => item.SetInternalAbility(valueBool), Value);
+                case "IsInternalAbility":
+                    Result = SetBoolProperty((bool valueBool) => item.SetIsInternalAbility(valueBool), Value);
                     break;
                 case "InternalName":
                     Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
@@ -111,10 +115,10 @@ public class ParserAbility : Parser
                 case "IsHarmless":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsHarmless(valueBool), Value);
                     break;
-                case "ItemKeywordReqErrorMessage":
+                case "ItemKeywordRequirementErrorMessage":
                     Result = SetStringProperty((string valueString) => item.ItemKeywordReqErrorMessage = valueString, Value);
                     break;
-                case "ItemKeywordReqs":
+                case "ItemKeywordRequirements":
                     Result = StringToEnumConversion<AbilityItemKeyword>.TryParseList(Value, item.ItemKeywordReqList);
                     break;
                 case "Keywords":
@@ -126,11 +130,11 @@ public class ParserAbility : Parser
                 case "Name":
                     Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
                     break;
-                case "PetTypeTagReq":
-                    Result = StringToEnumConversion<AbilityPetType>.SetEnum((AbilityPetType valueEnum) => item.PetTypeTagReq = valueEnum, Value);
+                case "PetTypeTagRequirement":
+                    Result = StringToEnumConversion<AbilityPetType>.SetEnum((AbilityPetType valueEnum) => item.PetTypeTagRequirement = valueEnum, Value);
                     break;
-                case "PetTypeTagReqMax":
-                    Result = SetIntProperty((int valueInt) => item.RawPetTypeTagReqMax = valueInt, Value);
+                case "PetTypeTagRequirementMax":
+                    Result = SetIntProperty((int valueInt) => item.RawPetTypeTagRequirementMax = valueInt, Value);
                     break;
                 case "Prerequisite":
                     Result = Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Prerequisite_Key = PgObject.GetItemKey(valueAbility), Value);
@@ -165,14 +169,14 @@ public class ParserAbility : Parser
                 case "SpecialInfo":
                     Result = SetStringProperty((string valueString) => item.SpecialInfo = valueString, Value);
                     break;
-                case "SpecialTargetingTypeReq":
-                    Result = SetIntProperty((int valueInt) => item.RawSpecialTargetingTypeReq = valueInt, Value);
+                case "SpecialTargetingTypeRequirement":
+                    Result = SetIntProperty((int valueInt) => item.RawSpecialTargetingTypeRequirement = valueInt, Value);
                     break;
                 case "Target":
                     Result = StringToEnumConversion<AbilityTarget>.SetEnum((AbilityTarget valueEnum) => item.Target = valueEnum, Value);
                     break;
-                case "TargetEffectKeywordReq":
-                    Result = StringToEnumConversion<TargetEffectKeyword>.SetEnum((TargetEffectKeyword valueEnum) => item.TargetEffectKeywordReq = valueEnum, Value);
+                case "TargetEffectKeywordRequirement":
+                    Result = StringToEnumConversion<TargetEffectKeyword>.SetEnum((TargetEffectKeyword valueEnum) => item.TargetEffectKeywordRequirement = valueEnum, Value);
                     break;
                 case "TargetParticle":
                     Result = Inserter<PgTargetParticle>.SetItemProperty((PgTargetParticle valueParticle) => item.TargetParticle = valueParticle, Value);
@@ -222,14 +226,14 @@ public class ParserAbility : Parser
                 case "Rank":
                     Result = SetIntProperty((int valueInt) => item.RawRank = valueInt, Value);
                     break;
-                case "InventoryKeywordReqErrorMessage":
-                    Result = SetStringProperty((string valueString) => item.InventoryKeywordReqErrorMessage = valueString, Value);
+                case "InventoryKeywordRequirementErrorMessage":
+                    Result = SetStringProperty((string valueString) => item.InventoryKeywordRequirementErrorMessage = valueString, Value);
                     break;
-                case "InventoryKeywordReqs":
+                case "InventoryKeywordRequirements":
                     Result = StringToEnumConversion<AbilityItemKeyword>.TryParseList(Value, item.InventoryKeywordReqList);
                     break;
-                case "AoEIsCenteredOnCaster":
-                    Result = SetBoolProperty((bool valueBool) => item.SetAoEIsCenteredOnCaster(valueBool), Value);
+                case "IsAoECenteredOnCaster":
+                    Result = SetBoolProperty((bool valueBool) => item.SetIsAoECenteredOnCaster(valueBool), Value);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -246,6 +250,10 @@ public class ParserAbility : Parser
                 return Program.ReportFailure(parsedFile, parsedKey, $"PvE info missing");
 
             item.DigitStrippedName = CuteDigitStrippedName(item);
+
+            if (DigitStrippedName != item.DigitStrippedName)
+            {
+            }
         }
 
         return Result;
