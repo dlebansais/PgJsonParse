@@ -23,9 +23,6 @@ public class ParserItem : Parser
     private bool FinishItem(PgItem item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
         bool Result = true;
-        Dictionary<ItemKeyword, List<float>> KeywordTable = new Dictionary<ItemKeyword, List<float>>();
-        List<string> KeywordValueList = new List<string>();
-        Dictionary<string, int> SkillRequirementTable = new Dictionary<string, int>();
 
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
@@ -111,7 +108,7 @@ public class ParserItem : Parser
                     Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => item.RequiredAppearance = valueEnum, Value);
                     break;
                 case "SkillRequirements":
-                    Result = ParseSkillRequirements(item, Value, SkillRequirementTable, parsedFile, parsedKey);
+                    Result = Inserter<PgItemSkillLink>.SetItemProperty((PgItemSkillLink valueItemSkillLink) => item.SkillRequirementTable = valueItemSkillLink.SkillTable, Value);
                     break;
                 case "StockDye":
                     Result = ParseStockDye(item, Value, parsedFile, parsedKey);
@@ -164,36 +161,11 @@ public class ParserItem : Parser
         if (Result)
         {
             foreach (PgItemKeywordValues KeywordValues in item.KeywordValuesList)
-            {
-                ItemKeyword Keyword = KeywordValues.Keyword;
-                if (StringToEnumConversion<RecipeItemKey>.TryParse(Keyword.ToString(), out RecipeItemKey ParsedKey, ErrorControl.IgnoreIfNotFound))
+                if (StringToEnumConversion<RecipeItemKey>.TryParse(KeywordValues.Keyword.ToString(), out RecipeItemKey ParsedKey, ErrorControl.IgnoreIfNotFound))
                     item.RecipeItemKeyList.Add(ParsedKey);
-            }
-
-            item.SkillRequirementTable = SkillRequirementTable;
         }
 
         return Result;
-    }
-
-    private bool ParseSkillRequirements(PgItem item, object value, Dictionary<string, int> skillRequirementTable, string parsedFile, string parsedKey)
-    {
-        List<PgItemSkillLink> SkillRequirementList = new List<PgItemSkillLink>();
-        if (!Inserter<PgItemSkillLink>.AddKeylessArray(SkillRequirementList, value))
-            return false;
-
-        foreach (PgItemSkillLink Item in SkillRequirementList)
-            foreach (KeyValuePair<string, int> Entry in Item.SkillTable)
-            {
-                string SkillKey = Entry.Key;
-
-                if (skillRequirementTable.ContainsKey(SkillKey))
-                    return Program.ReportFailure($"Skill already added as requirement '{SkillKey}'");
-
-                skillRequirementTable.Add(SkillKey, Entry.Value);
-            }
-
-        return true;
     }
 
     private bool ParseStockDye(PgItem item, object value, string parsedFile, string parsedKey)
