@@ -101,12 +101,12 @@ internal class Item
                     Result.Plate = Value;
                     break;
                 case "Color":
-                    Result.Color = Particle.ParseColor(Value, string.Empty, out string? ColorAsName, out _, out _);
-                    Result.SetColorAsName(ColorAsName);
+                    Result.Color = RgbColor.Parse(Value, string.Empty, out ColorFormat ColorFormat);
+                    Result.SetColorFormat(ColorFormat);
                     break;
                 case "Skin_Color":
-                    Result.SkinColor = Particle.ParseColor(Value, string.Empty, out string? SkinColorAsName, out _, out _);
-                    Result.SetSkinColorAsName(SkinColorAsName);
+                    Result.SkinColor = RgbColor.Parse(Value, string.Empty, out ColorFormat SkinColorFormat);
+                    Result.SetSkinColorFormat(SkinColorFormat);
                     break;
                 default:
                     throw new InvalidCastException();
@@ -253,9 +253,8 @@ internal class Item
             if (!StockDyeSplit[i].StartsWith(ColorHeader))
                 throw new InvalidCastException();
 
-            string Color = Particle.ParseColor(StockDyeString.Substring(ColorHeader.Length), string.Empty, out string? ColorAsName, out _, out bool ColorHasAlpha);
-            Result.SetColorAsName(i - 1, ColorAsName);
-            Result.SetColorHasAlpha(i - 1, ColorHasAlpha);
+            string Color = RgbColor.Parse(StockDyeString.Substring(ColorHeader.Length), string.Empty, out ColorFormat ColorFormat);
+            Result.SetColorFormat(i - 1, ColorFormat);
 
             switch (i)
             {
@@ -378,8 +377,8 @@ internal class Item
         string CorkString = droppedAppearance.Cork is null ? string.Empty : $"^Cork={droppedAppearance.Cork}";
         string FoodString = droppedAppearance.Food is null ? string.Empty : $"^Food={droppedAppearance.Food}";
         string PlateString = droppedAppearance.Plate is null ? string.Empty : $"^Plate={droppedAppearance.Plate}";
-        string ColorString = droppedAppearance.Color is null ? string.Empty : (droppedAppearance.GetColorAsName() is string ColorAsName ? $"Color={ColorAsName}" : $"Color=#{droppedAppearance.Color}");
-        string SkinColorString = droppedAppearance.SkinColor is null ? string.Empty : (droppedAppearance.GetSkinColorAsName() is string SkinColorAsName ? $"Skin_Color={SkinColorAsName}" : $"Skin_Color={droppedAppearance.SkinColor}");
+        string ColorString = droppedAppearance.Color is null ? string.Empty : $"Color={droppedAppearance.GetColorFormat()}";
+        string SkinColorString = droppedAppearance.SkinColor is null ? string.Empty : $"Skin_Color={droppedAppearance.GetSkinColorFormat()}";
 
         string[] StringParameters = new string[]
         {
@@ -467,28 +466,7 @@ internal class Item
         if (stockDye is null)
             return hasStockDye ? string.Empty : null;
 
-        string Result = string.Empty;
-
-        if (stockDye.GetColorAsName(0) is string ColorAsName1)
-            Result += $";Color1={ColorAsName1}";
-        else if (stockDye.GetColorHasAlpha(0))
-            Result += $";Color1={stockDye.Color1}FF";
-        else
-            Result += $";Color1={stockDye.Color1}";
-
-        if (stockDye.GetColorAsName(1) is string ColorAsName2)
-            Result += $";Color2={ColorAsName2}";
-        else if (stockDye.GetColorHasAlpha(1))
-            Result += $";Color2={stockDye.Color2}FF";
-        else
-            Result += $";Color2={stockDye.Color2}";
-
-        if (stockDye.GetColorAsName(2) is string ColorAsName3)
-            Result += $";Color3={ColorAsName3}";
-        else if (stockDye.GetColorHasAlpha(2))
-            Result += $";Color3={stockDye.Color3}FF";
-        else
-            Result += $";Color3={stockDye.Color3}";
+        string Result = $";Color1={stockDye.GetColorFormat(0)};Color2={stockDye.GetColorFormat(1)};Color3={stockDye.GetColorFormat(2)}";
 
         if (stockDye.IsGlowEnabled)
             Result += ";GlowEnabled=y";

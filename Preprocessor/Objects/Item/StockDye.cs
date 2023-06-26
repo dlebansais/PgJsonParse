@@ -7,26 +7,15 @@ internal class StockDye
     public string? Color3 { get; set; }
     public bool IsGlowEnabled { get; set; }
 
-    public void SetColorAsName(int index, string? colorAsName)
+    public void SetColorFormat(int index, ColorFormat colorFormat)
     {
-        ColorAsName[index] = colorAsName;
+        ColorFormats[index] = colorFormat;
     }
 
-    public string? GetColorAsName(int index)
+    public ColorFormat? GetColorFormat(int index)
     {
-        return ColorAsName[index];
+        return ColorFormats[index];
     }
 
-    public void SetColorHasAlpha(int index, bool colorHasAlpha)
-    {
-        ColorHasAlpha[index] = colorHasAlpha;
-    }
-
-    public bool GetColorHasAlpha(int index)
-    {
-        return ColorHasAlpha[index];
-    }
-
-    private string?[] ColorAsName = new string?[3];
-    private bool[] ColorHasAlpha = new bool[3];
+    private ColorFormat?[] ColorFormats = new ColorFormat?[3];
 }

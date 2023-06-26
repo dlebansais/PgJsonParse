@@ -3,7 +3,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-internal class EffectParticle : Particle
+internal class EffectParticle
 {
     public string? AoEColor { get; set; }
     public int? AoERange { get; set; }
@@ -40,7 +40,7 @@ internal class EffectParticle : Particle
             string ParticleColorString = AoESplit[1];
 
             if (ParticleColorString.StartsWith(AoeColorHeader))
-                Result.AoEColor = ParseColor(ParticleColorString, AoeColorHeader, out _, out _, out _);
+                Result.AoEColor = RgbColor.Parse(ParticleColorString, AoeColorHeader, out _);
         }
         else
             throw new InvalidCastException();

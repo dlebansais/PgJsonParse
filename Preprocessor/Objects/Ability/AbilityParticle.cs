@@ -3,7 +3,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-internal class AbilityParticle : Particle
+internal class AbilityParticle
 {
     public string? AoEColor { get; set; }
     public int? AoERange { get; set; }
@@ -43,19 +43,19 @@ internal class AbilityParticle : Particle
         string ParticleColorString = AoESplit[AoESplit.Length - 1];
 
         if (ParticleColorString.StartsWith(AoeColorHeader))
-            Result.AoEColor = ParseColor(ParticleColorString, AoeColorHeader, out _, out _, out _);
+            Result.AoEColor = RgbColor.Parse(ParticleColorString, AoeColorHeader, out _);
         else if (!ParticleColorString.StartsWith(AoeRangeHeader))
         {
             string[] ColorSplit = ParticleColorString.Split(',');
 
             if (ColorSplit.Length == 1)
             {
-                Result.PrimaryColor = ParseColor(ColorSplit[0], ColorHeader, out _, out _, out _);
+                Result.PrimaryColor = RgbColor.Parse(ColorSplit[0], ColorHeader, out _);
             }
             else if (ColorSplit.Length == 2)
             {
-                Result.PrimaryColor = ParseColor(ColorSplit[0], ColorHeader, out _, out _, out _);
-                Result.SecondaryColor = ParseColor(ColorSplit[1], string.Empty, out _, out _, out _);
+                Result.PrimaryColor = RgbColor.Parse(ColorSplit[0], ColorHeader, out _);
+                Result.SecondaryColor = RgbColor.Parse(ColorSplit[1], string.Empty, out _);
             }
             else
                 throw new InvalidCastException();

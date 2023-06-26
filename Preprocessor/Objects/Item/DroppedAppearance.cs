@@ -20,27 +20,27 @@ internal class DroppedAppearance
         return IsSkinInverted;
     }
 
-    public void SetColorAsName(string? colorAsName)
+    public void SetColorFormat(ColorFormat colorFormat)
     {
-        ColorAsName = colorAsName;
+        ColorFormat = colorFormat;
     }
 
-    public string? GetColorAsName()
+    public ColorFormat GetColorFormat()
     {
-        return ColorAsName;
+        return ColorFormat;
     }
 
-    public void SetSkinColorAsName(string? colorAsName)
+    public void SetSkinColorFormat(ColorFormat skinColorFormat)
     {
-        SkinColorAsName = colorAsName;
+        SkinColorFormat = skinColorFormat;
     }
 
-    public string? GetSkinColorAsName()
+    public ColorFormat GetSkinColorFormat()
     {
-        return SkinColorAsName;
+        return SkinColorFormat;
     }
 
     private bool IsSkinInverted;
-    private string? ColorAsName;
-    private string? SkinColorAsName;
+    private ColorFormat ColorFormat = new ColorFormat(string.Empty, default, default, default, default);
+    private ColorFormat SkinColorFormat = new ColorFormat(string.Empty, default, default, default, default);
 }
