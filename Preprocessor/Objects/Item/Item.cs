@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 internal class Item
@@ -47,7 +45,7 @@ internal class Item
         NumberOfUses = rawItem.NumUses;
         RequiredAppearance = rawItem.RequiredAppearance;
         SkillRequirements = rawItem.SkillReqs;
-        StockDye = rawItem.StockDye;
+        StockDye = ParseStockDye(rawItem.StockDye, out HasStockDye);
         TSysProfile = rawItem.TSysProfile;
         Value = rawItem.Value;
 
@@ -103,11 +101,11 @@ internal class Item
                     Result.Plate = Value;
                     break;
                 case "Color":
-                    Result.Color = Particle.ParseColor(Value, string.Empty, out string? ColorAsName);
+                    Result.Color = Particle.ParseColor(Value, string.Empty, out string? ColorAsName, out _, out _);
                     Result.SetColorAsName(ColorAsName);
                     break;
                 case "Skin_Color":
-                    Result.SkinColor = Particle.ParseColor($"#{Value}", string.Empty, out string? SkinColorAsName);
+                    Result.SkinColor = Particle.ParseColor(Value, string.Empty, out string? SkinColorAsName, out _, out _);
                     Result.SetSkinColorAsName(SkinColorAsName);
                     break;
                 default:
@@ -226,6 +224,64 @@ internal class Item
             ValueList.Add(KeywordValue.Value);
     }
 
+    private static StockDye? ParseStockDye(string? content, out bool hasStockDye)
+    {
+        if (content is null)
+        {
+            hasStockDye = false;
+            return null;
+        }
+
+        string[] StockDyeSplit = content.Split(';');
+        if (StockDyeSplit.Length <= 1)
+        {
+            hasStockDye = true;
+            return null;
+        }
+
+        if (StockDyeSplit.Length < 4 || StockDyeSplit.Length > 5)
+            throw new InvalidCastException();
+
+        StockDye Result = new();
+        hasStockDye = true;
+
+        for (int i = 1; i < 4; i++)
+        {
+            string ColorHeader = $"Color{i}=";
+            string StockDyeString = StockDyeSplit[i];
+
+            if (!StockDyeSplit[i].StartsWith(ColorHeader))
+                throw new InvalidCastException();
+
+            string Color = Particle.ParseColor(StockDyeString.Substring(ColorHeader.Length), string.Empty, out string? ColorAsName, out _, out bool ColorHasAlpha);
+            Result.SetColorAsName(i - 1, ColorAsName);
+            Result.SetColorHasAlpha(i - 1, ColorHasAlpha);
+
+            switch (i)
+            {
+                case 1:
+                    Result.Color1 = Color;
+                    break;
+                case 2:
+                    Result.Color2 = Color;
+                    break;
+                case 3:
+                    Result.Color3 = Color;
+                    break;
+            }
+        }
+
+        if (StockDyeSplit.Length == 5)
+        {
+            if (StockDyeSplit[4] == "GlowEnabled=y")
+                Result.IsGlowEnabled = true;
+            else
+                throw new InvalidCastException();
+        }
+
+        return Result;
+    }
+
     public bool? AllowPrefix { get; set; }
     public bool? AllowSuffix { get; set; }
     public bool? AttuneOnPickup { get; set; }
@@ -262,7 +318,7 @@ internal class Item
     public int? NumberOfUses { get; set; }
     public string? RequiredAppearance { get; set; }
     public SkillRequirementDictionary? SkillRequirements { get; set; }
-    public string? StockDye { get; set; }
+    public StockDye? StockDye { get; set; }
     public string? TSysProfile { get; set; }
     public decimal? Value { get; set; }
 
@@ -306,7 +362,7 @@ internal class Item
         Result.NumUses = NumberOfUses;
         Result.RequiredAppearance = RequiredAppearance;
         Result.SkillReqs = SkillRequirements;
-        Result.StockDye = StockDye;
+        Result.StockDye = StockDyeToStrings(StockDye, HasStockDye);
         Result.TSysProfile = TSysProfile;
         Result.Value = Value;
 
@@ -406,5 +462,40 @@ internal class Item
         return rawKeywords;
     }
 
+    private static string? StockDyeToStrings(StockDye? stockDye, bool hasStockDye)
+    {
+        if (stockDye is null)
+            return hasStockDye ? string.Empty : null;
+
+        string Result = string.Empty;
+
+        if (stockDye.GetColorAsName(0) is string ColorAsName1)
+            Result += $";Color1={ColorAsName1}";
+        else if (stockDye.GetColorHasAlpha(0))
+            Result += $";Color1={stockDye.Color1}FF";
+        else
+            Result += $";Color1={stockDye.Color1}";
+
+        if (stockDye.GetColorAsName(1) is string ColorAsName2)
+            Result += $";Color2={ColorAsName2}";
+        else if (stockDye.GetColorHasAlpha(1))
+            Result += $";Color2={stockDye.Color2}FF";
+        else
+            Result += $";Color2={stockDye.Color2}";
+
+        if (stockDye.GetColorAsName(2) is string ColorAsName3)
+            Result += $";Color3={ColorAsName3}";
+        else if (stockDye.GetColorHasAlpha(2))
+            Result += $";Color3={stockDye.Color3}FF";
+        else
+            Result += $";Color3={stockDye.Color3}";
+
+        if (stockDye.IsGlowEnabled)
+            Result += ";GlowEnabled=y";
+
+        return Result;
+    }
+
     private string[]? RawKeywords;
+    private bool HasStockDye;
 }

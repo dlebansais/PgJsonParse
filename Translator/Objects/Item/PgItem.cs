@@ -54,12 +54,7 @@
         public string Name { get; set; } = string.Empty;
         public Appearance RequiredAppearance { get; set; }
         public Dictionary<string, int> SkillRequirementTable { get; set; } = new Dictionary<string, int>();
-        public PgItemDyeCollection StockDyeList { get; set; } = new PgItemDyeCollection();
-        public const int HasGlowNotNull = 1 << 8;
-        public const int HasGlowIsTrue = 1 << 9;
-        public bool HasGlow { get { return (BoolValues & (HasGlowNotNull + HasGlowIsTrue)) == (HasGlowNotNull + HasGlowIsTrue); } }
-        public bool? RawHasGlow { get { return ((BoolValues & HasGlowNotNull) != 0) ? (BoolValues & HasGlowIsTrue) != 0 : null; } }
-        public void SetHasGlow(bool value) { BoolValues |= (BoolValues & ~(HasGlowNotNull + HasGlowIsTrue)) | ((value ? HasGlowIsTrue : 0) + HasGlowNotNull); }
+        public PgStockDye StockDye { get; set; } = null!;
         public float Value { get { return RawValue.HasValue ? RawValue.Value : 0; } }
         public float? RawValue { get; set; }
         public int NumberOfUses { get { return RawNumberOfUses.HasValue ? RawNumberOfUses.Value : 0; } }

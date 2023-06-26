@@ -87,7 +87,6 @@ public class ParserItem : Parser
                     break;
                 case "Keywords":
                     Result = Inserter<PgItemKeywordValues>.AddKeylessArray(item.KeywordValuesList, Value);
-                    //Result = ParseKeywordList(item, Value, KeywordTable, KeywordValueList, parsedFile, parsedKey);
                     break;
                 case "MacGuffinQuestName":
                     Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.MacGuffinQuest_Key = PgObject.GetItemKey(valueQuest), Value);
@@ -111,7 +110,7 @@ public class ParserItem : Parser
                     Result = Inserter<PgItemSkillLink>.SetItemProperty((PgItemSkillLink valueItemSkillLink) => item.SkillRequirementTable = valueItemSkillLink.SkillTable, Value);
                     break;
                 case "StockDye":
-                    Result = ParseStockDye(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgStockDye>.SetItemProperty((PgStockDye valueStockDye) => item.StockDye = valueStockDye, Value);
                     break;
                 case "TSysProfile":
                     Result = StringToEnumConversion<Profile>.SetEnum((Profile valueEnum) => item.TSysProfile = valueEnum, Value);
@@ -166,106 +165,5 @@ public class ParserItem : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseStockDye(PgItem item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string RawStockDye))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        string[] Split = RawStockDye.Split(';');
-        switch (Split.Length)
-        {
-            case 1:
-                return true;
-            case 4:
-                return ParseStockDyeFourColors(item, Split, parsedFile, parsedKey);
-            case 5:
-                return ParseStockDyeFourColorsAndGlow(item, Split, parsedFile, parsedKey);
-            default:
-                return Program.ReportFailure(parsedFile, parsedKey, $"'{value}' is an invalid stock dye");
-        }
-    }
-
-    private bool ParseStockDyeFourColors(PgItem item, string[] split, string parsedFile, string parsedKey)
-    {
-        if (split[0].Length != 0)
-            return Program.ReportFailure(parsedFile, parsedKey, "First stock dye color must be empty");
-
-        uint[] ParsedColors = new uint[3];
-        string[] ParsedColorName = new string[3];
-
-        int i;
-        for (i = 1; i < split.Length; i++)
-        {
-            string ColorPrefix = $"Color{i}=";
-            if (!split[i].StartsWith(ColorPrefix))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Stock dye color must start with {ColorPrefix}");
-
-            string ColorString = split[i].Substring(ColorPrefix.Length);
-
-            if (!Tools.TryParseColor(ColorString, out uint ParsedColor))
-                return Program.ReportFailure(parsedFile, parsedKey, $"{ColorString} is an invalid color");
-
-            ParsedColors[i - 1] = ParsedColor;
-            ParsedColorName[i - 1] = ColorString;
-        }
-
-        for (int n = 0; n < ParsedColors.Length; n++)
-        {
-            PgItemDye NewDye = new PgItemDye() { Color = ParsedColors[n], Name = ParsedColorName[n] };
-            ParsingContext.AddSuplementaryObject(NewDye);
-
-            item.StockDyeList.Add(NewDye);
-        }
-
-        return true;
-    }
-
-    private bool ParseStockDyeFourColorsAndGlow(PgItem item, string[] split, string parsedFile, string parsedKey)
-    {
-        if (split[0].Length != 0)
-            return Program.ReportFailure(parsedFile, parsedKey, "First stock dye color must be empty");
-
-        uint[] ParsedColors = new uint[3];
-        string[] ParsedColorName = new string[3];
-
-        int i;
-        for (i = 1; i < split.Length && i < ParsedColors.Length + 1; i++)
-        {
-            string ColorPrefix = $"Color{i}=";
-            if (!split[i].StartsWith(ColorPrefix))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Stock dye color must start with {ColorPrefix}");
-
-            string ColorString = split[i].Substring(ColorPrefix.Length);
-
-            if (!Tools.TryParseColor(ColorString, out uint ParsedColor))
-                return Program.ReportFailure(parsedFile, parsedKey, $"{ColorString} is an invalid color");
-
-            ParsedColors[i - 1] = ParsedColor;
-            ParsedColorName[i - 1] = ColorString;
-        }
-
-        string GlowPattern = "GlowEnabled=";
-        string GlowContent = split[4];
-
-        if (!GlowContent.StartsWith(GlowPattern))
-            return Program.ReportFailure(parsedFile, parsedKey, "Glow pattern expected");
-
-        GlowContent = GlowContent.Substring(GlowPattern.Length);
-        if (GlowContent != "y")
-            return Program.ReportFailure(parsedFile, parsedKey, "Valid glow expected");
-
-        item.SetHasGlow(true);
-
-        for (int n = 0; n < ParsedColors.Length; n++)
-        {
-            PgItemDye NewDye = new PgItemDye() { Color = ParsedColors[n], Name = ParsedColorName[n] };
-            ParsingContext.AddSuplementaryObject(NewDye);
-
-            item.StockDyeList.Add(NewDye);
-        }
-
-        return true;
     }
 }

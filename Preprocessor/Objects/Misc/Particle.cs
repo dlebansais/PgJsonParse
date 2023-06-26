@@ -6,9 +6,11 @@ using System.Text.RegularExpressions;
 
 internal abstract class Particle
 {
-    public static string ParseColor(string content, string header, out string? colorAsName)
+    public static string ParseColor(string content, string header, out string? colorAsName, out bool hasSharp, out bool hasAlpha)
     {
         colorAsName = null;
+        hasSharp = false;
+        hasAlpha = false;
 
         if (header == string.Empty || content.StartsWith(header))
         {
@@ -25,13 +27,23 @@ internal abstract class Particle
                 return HexValue;
             }
 
-            // Search for the #RRGGBB pattern.
-            string ColorPattern = @$"^#(?:[0-9a-fA-F]{{3}}){{1,2}}$";
+            if (ColorContent.Length > 0 && ColorContent[0] == '#')
+            {
+                ColorContent = ColorContent.Substring(1);
+                hasSharp = true;
+            }
+
+            if (ColorContent.Length == 8 && ColorContent.EndsWith("FF"))
+            {
+                ColorContent = ColorContent.Substring(0, 6);
+                hasAlpha = true;
+            }
+
+            // Search for the RRGGBB pattern.
+            string ColorPattern = @$"(?:[0-9a-fA-F]{{3}}){{1,2}}$";
             Match ColorMatch = Regex.Match(ColorContent, ColorPattern, RegexOptions.IgnoreCase);
             if (ColorMatch.Success)
-            {
-                return ColorMatch.Value.Substring(1);
-            }
+                return ColorMatch.Value;
         }
 
         throw new InvalidCastException();

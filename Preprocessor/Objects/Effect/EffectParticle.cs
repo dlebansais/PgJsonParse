@@ -9,7 +9,7 @@ internal class EffectParticle : Particle
     public int? AoERange { get; set; }
     public string? ParticleName { get; set; }
 
-    private const string AoeColorHeader = "AoeColor=";
+    private const string AoeColorHeader = "AoeColor=#";
     private const string AoeRangeHeader = "AoeRange=";
 
     public static EffectParticle? Parse(string? content)
@@ -40,7 +40,7 @@ internal class EffectParticle : Particle
             string ParticleColorString = AoESplit[1];
 
             if (ParticleColorString.StartsWith(AoeColorHeader))
-                Result.AoEColor = ParseColor(ParticleColorString, AoeColorHeader, out _);
+                Result.AoEColor = ParseColor(ParticleColorString, AoeColorHeader, out _, out _, out _);
         }
         else
             throw new InvalidCastException();
@@ -59,6 +59,6 @@ internal class EffectParticle : Particle
         if (particle.AoEColor is null)
             return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange})";
         else
-            return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange};{AoeColorHeader}#{particle.AoEColor})";
+            return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange};{AoeColorHeader}{particle.AoEColor})";
     }
 }

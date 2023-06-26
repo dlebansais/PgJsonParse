@@ -40,6 +40,7 @@ public static class MainParser
         { typeof(PgItemKeywordValues), new ParserItemKeywordValues() },
         { typeof(PgItemEffect), new ParserItemEffect() },
         { typeof(PgItemUse), new ParserItemUse() },
+        { typeof(PgStockDye), new ParserStockDye() },
         { typeof(PgLoreBookInfo), new ParserLoreBookInfo() },
         { typeof(PgLoreBookInfoCategory), new ParserLoreBookInfoCategory() },
         { typeof(PgLoreBook), new ParserLoreBook() },

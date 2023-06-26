@@ -319,7 +319,7 @@ public class FieldTableStore
         { "Name", typeof(string) },
         { "RequiredAppearance", typeof(string) },
         { "SkillRequirements", typeof(PgItemSkillLink) },
-        { "StockDye", typeof(string) },
+        { "StockDye", typeof(PgStockDye) },
         { "TSysProfile", typeof(string) },
         { "Value", typeof(float) },
         { "NumberOfUses", typeof(int) },
@@ -372,6 +372,14 @@ public class FieldTableStore
     public static Dictionary<string, Type> TableItemUse { get; } = new Dictionary<string, Type>()
     {
         { "RecipesThatUseItem", typeof(int[]) },
+    };
+
+    public static Dictionary<string, Type> TableStockDye { get; } = new Dictionary<string, Type>()
+    {
+        { "Color1", typeof(string) },
+        { "Color2", typeof(string) },
+        { "Color3", typeof(string) },
+        { "IsGlowEnabled", typeof(bool) },
     };
 
     public static Dictionary<string, Type> TableLoreBookInfoCategory { get; } = new Dictionary<string, Type>()
@@ -795,6 +803,7 @@ public class FieldTableStore
         { typeof(PgItemKeywordValues), new FixedFieldTable(TableItemKeywordValues) },
         { typeof(PgItemEffect), new FixedFieldTable(TableItemEffect) },
         { typeof(PgItemUse), new FixedFieldTable(TableItemUse) },
+        { typeof(PgStockDye), new FixedFieldTable(TableStockDye) },
         { typeof(PgLoreBookInfo), new VariadicFieldTable(typeof(PgLoreBookInfoCategory)) },
         { typeof(PgLoreBookInfoCategory), new FixedFieldTable(TableLoreBookInfoCategory) },
         { typeof(PgLoreBook), new FixedFieldTable(TableLoreBook) },
