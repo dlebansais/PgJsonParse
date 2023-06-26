@@ -80,7 +80,7 @@
         public string? BestowTitle_Key { get; set; }
         public string? BestowLoreBook_Key { get; set; }
         public WorkOrderSign LintVendorNpc { get; set; }
-        public Dictionary<ItemKeyword, List<float>> KeywordTable { get; set; } = new Dictionary<ItemKeyword, List<float>>();
+        public List<PgItemKeywordValues> KeywordValuesList { get; set; } = new();
         public string MountedAppearance { get; set; } = string.Empty;
         public const int AttuneOnPickupNotNull = 1 << 14;
         public const int AttuneOnPickupIsTrue = 1 << 15;

@@ -947,9 +947,9 @@ public class Generate
         foreach (object Item in objectList)
             if (Item is PgItem AsItem)
             {
-                foreach (KeyValuePair<ItemKeyword, List<float>> Entry in AsItem.KeywordTable)
+                foreach (PgItemKeywordValues KeywordValues in AsItem.KeywordValuesList)
                 {
-                    ItemKeyword Keyword = Entry.Key;
+                    ItemKeyword Keyword = KeywordValues.Keyword;
 
                     if (!ItemTable.ContainsKey(Keyword))
                     {
@@ -982,7 +982,7 @@ public class Generate
         foreach (object Item in objectList)
             if (Item is PgItem AsItem)
             {
-                List<RecipeItemKey> RecipeItemKeyList = new List<RecipeItemKey>(AsItem.RecipeItemKeyList);
+                List<RecipeItemKey> GeneratedRecipeItemKeyList = new(AsItem.RecipeItemKeyList);
 
                 ItemSlot Slot = AsItem.EquipSlot;
                 if (Slot != ItemSlot.Internal_None)
@@ -1023,10 +1023,10 @@ public class Generate
                             break;
                     }
 
-                    RecipeItemKeyList.Add(SlotRecipeKey);
+                    GeneratedRecipeItemKeyList.Add(SlotRecipeKey);
                 }
 
-                foreach (RecipeItemKey Keyword in RecipeItemKeyList)
+                foreach (RecipeItemKey Keyword in GeneratedRecipeItemKeyList)
                 {
                     bool Ignore = false;
 
@@ -1399,7 +1399,15 @@ public class Generate
         foreach (object Item in objectList)
             if (Item is PgItem AsItem)
             {
-                if (AsItem.KeywordTable.ContainsKey(ItemKeyword.Edible) || AsItem.RecipeItemKeyList.Contains(RecipeItemKey.Edible))
+                bool ContainsEdible = false;
+                foreach (PgItemKeywordValues KeywordValues in AsItem.KeywordValuesList)
+                {
+                    ItemKeyword Keyword = KeywordValues.Keyword;
+                    if (Keyword == ItemKeyword.Edible)
+                        ContainsEdible = true;
+                }
+
+                if (ContainsEdible)
                     if (!FoodItemsTable.ContainsKey(AsItem.Name))
                         FoodItemsTable.Add(AsItem.Name, AsItem.Key);
             }

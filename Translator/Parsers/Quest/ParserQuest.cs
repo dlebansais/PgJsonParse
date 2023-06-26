@@ -886,7 +886,16 @@ public class ParserQuest : Parser
         foreach (KeyValuePair<string, ParsingContext> Entry in ItemParsingTable)
         {
             PgItem Item = (PgItem)Entry.Value.Item;
-            if (Item.KeywordTable.ContainsKey(keyword))
+
+            bool IsFound = false;
+            foreach (PgItemKeywordValues KeywordValues in Item.KeywordValuesList)
+            {
+                ItemKeyword Keyword = KeywordValues.Keyword;
+                if (Keyword == keyword)
+                    IsFound = true;
+            }
+
+            if (IsFound)
             {
                 iconId = Item.IconId;
                 break;

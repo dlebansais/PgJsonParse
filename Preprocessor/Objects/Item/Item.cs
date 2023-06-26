@@ -1,8 +1,10 @@
 ﻿namespace Preprocessor;
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 internal class Item
@@ -34,7 +36,7 @@ internal class Item
         IsCrafted = rawItem.IsCrafted;
         IsSkillRequirementsDefaults = rawItem.IsSkillReqsDefaults;
         IsTemporary = rawItem.IsTemporary;
-        Keywords = rawItem.Keywords;
+        Keywords = ParseKeywords(rawItem.Keywords);
         Lint_VendorNpc = rawItem.Lint_VendorNpc;
         MacGuffinQuestName = rawItem.MacGuffinQuestName;
         MaxCarryable = rawItem.MaxCarryable;
@@ -48,6 +50,8 @@ internal class Item
         StockDye = rawItem.StockDye;
         TSysProfile = rawItem.TSysProfile;
         Value = rawItem.Value;
+
+        RawKeywords = rawItem.Keywords;
     }
 
     private static DroppedAppearance? ParseDroppedAppearance(string? content)
@@ -164,6 +168,64 @@ internal class Item
         return new ItemEffect() { AttributeName = AttributeName, AttributeEffect = AttributeEffect };
     }
 
+    private static KeywordValues[]? ParseKeywords(string[]? content)
+    {
+        if (content is null)
+            return null;
+
+        Dictionary<string, List<decimal>> KeywordTable = new();
+
+        for (int i = 0; i < content.Length; i++)
+            ParseKeyword(content[i], KeywordTable);
+
+        List<KeywordValues> Result = new();
+        foreach (KeyValuePair<string, List<decimal>> Entry in KeywordTable)
+        {
+            KeywordValues NewKeywordValues = new() { Keyword = Entry.Key };
+            if (Entry.Value.Count > 0)
+                NewKeywordValues.Values = Entry.Value.ToArray();
+
+            Result.Add(NewKeywordValues);
+        }
+
+        return Result.ToArray();
+    }
+
+    private static void ParseKeyword(string content, Dictionary<string, List<decimal>> keywordTable)
+    {
+        string KeyString;
+        string ValueString;
+        decimal? KeywordValue;
+
+        string[] Pairs = content.Split('=');
+        if (Pairs.Length == 1)
+        {
+            KeyString = content.Trim();
+            KeywordValue = null;
+        }
+        else if (Pairs.Length == 2)
+        {
+            KeyString = Pairs[0].Trim();
+            ValueString = Pairs[1].Trim();
+
+            KeywordValue = decimal.Parse(ValueString, CultureInfo.InvariantCulture);
+        }
+        else
+            throw new InvalidCastException();
+
+        List<decimal> ValueList;
+        if (keywordTable.ContainsKey(KeyString))
+            ValueList = keywordTable[KeyString];
+        else
+        {
+            ValueList = new List<decimal>();
+            keywordTable.Add(KeyString, ValueList);
+        }
+
+        if (KeywordValue is not null)
+            ValueList.Add(KeywordValue.Value);
+    }
+
     public bool? AllowPrefix { get; set; }
     public bool? AllowSuffix { get; set; }
     public bool? AttuneOnPickup { get; set; }
@@ -189,7 +251,7 @@ internal class Item
     public bool? IsCrafted { get; set; }
     public bool? IsSkillRequirementsDefaults { get; set; }
     public bool? IsTemporary { get; set; }
-    public string[]? Keywords { get; set; }
+    public KeywordValues[]? Keywords { get; set; }
     public string? Lint_VendorNpc { get; set; }
     public string? MacGuffinQuestName { get; set; }
     public int? MaxCarryable { get; set; }
@@ -233,7 +295,7 @@ internal class Item
         Result.IsCrafted = IsCrafted;
         Result.IsSkillReqsDefaults = IsSkillRequirementsDefaults;
         Result.IsTemporary = IsTemporary;
-        Result.Keywords = Keywords;
+        Result.Keywords = KeywordsToString(Keywords, RawKeywords);
         Result.Lint_VendorNpc = Lint_VendorNpc;
         Result.MacGuffinQuestName = MacGuffinQuestName;
         Result.MaxCarryable = MaxCarryable;
@@ -308,4 +370,41 @@ internal class Item
         else
             return $"{{{effectDescription.AttributeName}}}{{{effectDescription.AttributeEffect?.ToString(CultureInfo.InvariantCulture)}}}";
     }
+
+    private static string[]? KeywordsToString(KeywordValues[]? keywordValuesArray, string[]? rawKeywords)
+    {
+        if (keywordValuesArray is null)
+            return null;
+
+        List<string> Result = new();
+
+        foreach (KeywordValues KeywordValues in keywordValuesArray)
+            if (KeywordValues.Keyword is string Keyword)
+            {
+                if (KeywordValues.Values is decimal[] Values)
+                {
+                    foreach (decimal Value in Values)
+                        Result.Add($"{Keyword}={Value.ToString(CultureInfo.InvariantCulture)}");
+                }
+                else
+                    Result.Add(Keyword);
+            }
+
+        string[] ConvertedResult = Result.ToArray();
+        KeywordValues[]? ConfirmKeywordValuesArray = ParseKeywords(ConvertedResult);
+
+        if (ConfirmKeywordValuesArray is null || rawKeywords is null)
+            throw new NullReferenceException();
+
+        if (keywordValuesArray.Length != ConfirmKeywordValuesArray.Length)
+            throw new InvalidCastException();
+
+        for (int i = 0; i < keywordValuesArray.Length; i++)
+            if (!keywordValuesArray[i].Equals(ConfirmKeywordValuesArray[i]))
+                throw new InvalidCastException();
+
+        return rawKeywords;
+    }
+
+    private string[]? RawKeywords;
 }

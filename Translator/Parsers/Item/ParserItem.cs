@@ -89,7 +89,8 @@ public class ParserItem : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetIsCrafted(valueBool), Value);
                     break;
                 case "Keywords":
-                    Result = ParseKeywordList(item, Value, KeywordTable, KeywordValueList, parsedFile, parsedKey);
+                    Result = Inserter<PgItemKeywordValues>.AddKeylessArray(item.KeywordValuesList, Value);
+                    //Result = ParseKeywordList(item, Value, KeywordTable, KeywordValueList, parsedFile, parsedKey);
                     break;
                 case "MacGuffinQuestName":
                     Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => item.MacGuffinQuest_Key = PgObject.GetItemKey(valueQuest), Value);
@@ -162,96 +163,17 @@ public class ParserItem : Parser
 
         if (Result)
         {
-            item.KeywordTable = KeywordTable;
+            foreach (PgItemKeywordValues KeywordValues in item.KeywordValuesList)
+            {
+                ItemKeyword Keyword = KeywordValues.Keyword;
+                if (StringToEnumConversion<RecipeItemKey>.TryParse(Keyword.ToString(), out RecipeItemKey ParsedKey, ErrorControl.IgnoreIfNotFound))
+                    item.RecipeItemKeyList.Add(ParsedKey);
+            }
+
             item.SkillRequirementTable = SkillRequirementTable;
         }
 
         return Result;
-    }
-
-    private bool ParseKeywordList(PgItem item, object value, Dictionary<ItemKeyword, List<float>> keywordTable, List<string> keywordValueList, string parsedFile, string parsedKey)
-    {
-        if (!(value is List<object> ObjectList))
-            return Program.ReportFailure($"Value '{value}' was expected to be a list");
-
-        foreach (object Item in ObjectList)
-        {
-            if (!(Item is string KeywordString))
-                return Program.ReportFailure($"Value '{Item}' was expected to be a string");
-
-            if (!ParseKeyword(item, KeywordString, keywordTable, keywordValueList, parsedFile, parsedKey))
-                return Program.ReportFailure($"Invalid item keyword format '{KeywordString}'");
-        }
-
-        return true;
-    }
-
-    private bool ParseKeyword(PgItem item, string keywordString, Dictionary<ItemKeyword, List<float>> keywordTable, List<string> keywordValueList, string parsedFile, string parsedKey)
-    {
-        string KeyString;
-        string ValueString;
-        float Value;
-        FloatFormat ValueFormat;
-
-        string[] Pairs = keywordString.Split('=');
-        if (Pairs.Length == 1)
-        {
-            KeyString = keywordString.Trim();
-            Value = float.NaN;
-        }
-        else if (Pairs.Length == 2)
-        {
-            KeyString = Pairs[0].Trim();
-            ValueString = Pairs[1].Trim();
-
-            if (!Tools.TryParseFloat(ValueString, out Value, out ValueFormat))
-                return false;
-        }
-        else
-            return false;
-
-        if (!StringToEnumConversion<ItemKeyword>.TryParse(KeyString, out ItemKeyword Key))
-            return false;
-
-        List<float> ValueList;
-        if (keywordTable.ContainsKey(Key))
-            ValueList = keywordTable[Key];
-        else
-        {
-            ValueList = new List<float>();
-            keywordTable.Add(Key, ValueList);
-
-            if (StringToEnumConversion<RecipeItemKey>.TryParse(KeyString, out RecipeItemKey ParsedKey, ErrorControl.IgnoreIfNotFound))
-                item.RecipeItemKeyList.Add(ParsedKey);
-        }
-
-        if (!float.IsNaN(Value))
-            ValueList.Add(Value);
-
-        int Index = -1;
-        for (int i = 0; i < keywordValueList.Count; i++)
-        {
-            string[] Splitted = keywordValueList[i].Split(',');
-            if (Splitted.Length > 0 && int.TryParse(Splitted[0], out int KeywordIndex) && KeywordIndex == (int)Key)
-            {
-                Index = i;
-                break;
-            }
-        }
-
-        if (Index < 0)
-        {
-            Index = keywordValueList.Count;
-            keywordValueList.Add(string.Empty);
-        }
-
-        string Line = ((int)Key).ToString();
-        foreach (float f in ValueList)
-            Line += "," + Tools.SingleToString(f);
-
-        keywordValueList[Index] = Line;
-
-        return true;
     }
 
     private bool ParseSkillRequirements(PgItem item, object value, Dictionary<string, int> skillRequirementTable, string parsedFile, string parsedKey)

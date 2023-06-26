@@ -311,7 +311,7 @@ public class FieldTableStore
         { "InternalName", typeof(string) },
         { "IsTemporary", typeof(bool) },
         { "IsCrafted", typeof(bool) },
-        { "Keywords", typeof(string[]) },
+        { "Keywords", typeof(PgItemKeywordValues[]) },
         { "MacGuffinQuestName", typeof(string) },
         { "MaxCarryable", typeof(int) },
         { "MaxOnVendor", typeof(int) },
@@ -354,6 +354,12 @@ public class FieldTableStore
         { "Plate", typeof(string) },
         { "Color", typeof(string) },
         { "SkinColor", typeof(string) },
+    };
+
+    public static Dictionary<string, Type> TableItemKeywordValues { get; } = new Dictionary<string, Type>()
+    {
+        { "Keyword", typeof(string) },
+        { "Values", typeof(float[]) },
     };
 
     public static Dictionary<string, Type> TableItemEffect { get; } = new Dictionary<string, Type>()
@@ -786,6 +792,7 @@ public class FieldTableStore
         { typeof(PgItemSkillLink), new VariadicFieldTable(typeof(int)) },
         { typeof(PgItemBehavior), new FixedFieldTable(TableItemBehavior) },
         { typeof(PgDroppedAppearance), new FixedFieldTable(TableDroppedAppearance) },
+        { typeof(PgItemKeywordValues), new FixedFieldTable(TableItemKeywordValues) },
         { typeof(PgItemEffect), new FixedFieldTable(TableItemEffect) },
         { typeof(PgItemUse), new FixedFieldTable(TableItemUse) },
         { typeof(PgLoreBookInfo), new VariadicFieldTable(typeof(PgLoreBookInfoCategory)) },
