@@ -7,6 +7,8 @@
         public string Title { get; set; } = string.Empty;
         public string Tooltip { get; set; } = string.Empty;
         public List<TitleKeyword> KeywordList { get; set; } = new List<TitleKeyword>();
+        public uint Color { get { return RawColor.HasValue ? RawColor.Value : 0; } }
+        public uint? RawColor { get; set; }
 
         public override int ObjectIconId { get { return PlayerTitleIconId; } }
         public override string ObjectName { get { return Title; } }

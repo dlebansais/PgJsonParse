@@ -29,7 +29,7 @@ internal class Preprocessor
         new StringDictionaryJsonConverter<LoreBookCategory, RawLoreBookCategory, LoreBookCategoryDictionary>(),
         new IntDictionaryJsonConverter<LoreBook, LoreBook, LoreBookDictionary>("Book"),
         new StringDictionaryJsonConverter<Npc, RawNpc, NpcDictionary>(),
-        new IntDictionaryJsonConverter<PlayerTitle, PlayerTitle, PlayerTitleDictionary>("Title"),
+        new IntDictionaryJsonConverter<PlayerTitle, RawPlayerTitle, PlayerTitleDictionary>("Title"),
         new IntDictionaryJsonConverter<Quest, Quest, QuestDictionary>("quest"),
         new IntDictionaryJsonConverter<Recipe, RawRecipe, RecipeDictionary>("recipe"),
         new StringDictionaryJsonConverter<Skill, Skill, SkillDictionary>(),

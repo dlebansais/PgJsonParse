@@ -1,6 +1,7 @@
 ﻿namespace Translator;
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using PgJsonReader;
 using PgObjects;
 
@@ -31,7 +32,10 @@ public class ParserPlayerTitle : Parser
             switch (Key)
             {
                 case "Title":
-                    Result = ParseTitle(item, Value, parsedFile, parsedKey);
+                    Result = SetStringProperty((string valueString) => item.Title = valueString, Value);
+                    break;
+                case "Color":
+                    Result = SetColorProperty((uint valueColor) => item.RawColor = valueColor, Value);
                     break;
                 case "Tooltip":
                     Result = SetStringProperty((string valueString) => item.Tooltip = valueString, Value);
@@ -49,27 +53,6 @@ public class ParserPlayerTitle : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseTitle(PgPlayerTitle item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueTitle))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        item.Title = StripStringTags(ValueTitle);
-        return true;
-    }
-
-    private string StripStringTags(string s)
-    {
-        int TagStartIndex, TagEndIndex;
-
-        while ((TagStartIndex = s.IndexOf('<')) >= 0 && (TagEndIndex = s.IndexOf('>', TagStartIndex)) >= 0)
-        {
-            s = s.Substring(0, TagStartIndex) + s.Substring(TagEndIndex + 1);
-        }
-
-        return s;
     }
 
     public static readonly Dictionary<string, string> TitleToKeyMap = new Dictionary<string, string>()

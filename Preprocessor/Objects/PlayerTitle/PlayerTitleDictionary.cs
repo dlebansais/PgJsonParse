@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class PlayerTitleDictionary : Dictionary<int, PlayerTitle>, IDictionaryValueBuilder<PlayerTitle, PlayerTitle>
+internal class PlayerTitleDictionary : Dictionary<int, PlayerTitle>, IDictionaryValueBuilder<PlayerTitle, RawPlayerTitle>
 {
-    public PlayerTitle FromRaw(PlayerTitle playerTitle) => playerTitle;
-    public PlayerTitle ToRaw(PlayerTitle playerTitle) => playerTitle;
+    public PlayerTitle FromRaw(RawPlayerTitle rawPlayerTitle) => new(rawPlayerTitle);
+    public RawPlayerTitle ToRaw(PlayerTitle npc) => npc.ToRawPlayerTitle();
 }

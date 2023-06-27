@@ -424,6 +424,7 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TablePlayerTitle { get; } = new Dictionary<string, Type>()
     {
+        { "Color", typeof(string) },
         { "Title", typeof(string) },
         { "Tooltip", typeof(string) },
         { "Keywords", typeof(string[]) },
