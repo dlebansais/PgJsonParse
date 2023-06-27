@@ -30,17 +30,32 @@ public class ParserNpcPreference : Parser
 
             switch (Key)
             {
-                case "Keywords":
-                    Result = ParseKeywords(item, Value, parsedFile, parsedKey);
+                case "ItemKeywords":
+                    Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.ItemKeywordList);
                     break;
                 case "Pref":
                     Result = SetFloatProperty((float valueFloat) => item.RawPreference = valueFloat, Value);
                     break;
+                case "MinValueRequirement":
+                    Result = SetIntProperty((int valueInt) => item.RawMinValueRequirement = valueInt, Value);
+                    break;
                 case "Favor":
-                    Result = ParseFavor(item, Value, parsedFile, parsedKey);
+                    Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => item.PreferenceFavor = valueEnum, Value);
                     break;
                 case "Desire":
-                    Result = ParseDesire(item, Value, parsedFile, parsedKey);
+                    Result = StringToEnumConversion<Desire>.SetEnum((Desire valueEnum) => item.PreferenceDesire = valueEnum, Value);
+                    break;
+                case "SkillRequirement":
+                    Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.SkillRequirement_Key = PgObject.GetItemKey(valueSkill), Value);
+                    break;
+                case "SlotRequirement":
+                    Result = StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.SlotRequirement = valueEnum, Value);
+                    break;
+                case "MinRarityRequirement":
+                    Result = StringToEnumConversion<RecipeItemKey>.SetEnum((RecipeItemKey valueEnum) => item.MinRarityRequirement = valueEnum, $"MinRarity_{Value}");
+                    break;
+                case "RarityRequirement":
+                    Result = StringToEnumConversion<RecipeItemKey>.SetEnum((RecipeItemKey valueEnum) => item.RarityRequirement = valueEnum, $"Rarity_{Value}");
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -79,118 +94,4 @@ public class ParserNpcPreference : Parser
         { Desire.Dislike, -1.0F },
         { Desire.Hate, -3.0F },
     };
-
-    private bool ParseKeywords(PgNpcPreference item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is List<object> ArrayKeyword))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a list");
-
-        foreach (object Item in ArrayKeyword)
-        {
-            if (!(Item is string ValueKeyword))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Value '{Item}' was expected to be a string");
-
-            if (!ParseKeyword(item, ValueKeyword, parsedFile, parsedKey))
-                return Program.ReportFailure(parsedFile, parsedKey, $"Key '{Item}' was found but for the wrong object type");
-        }
-
-        return true;
-    }
-
-    private bool ParseKeyword(PgNpcPreference item, string valueKeyword, string parsedFile, string parsedKey)
-    {
-        if (valueKeyword.StartsWith("MinValue:"))
-            return ParseKeywordAsMinValue(item, valueKeyword.Substring(9), parsedFile, parsedKey);
-        else if (valueKeyword.StartsWith("SkillPrereq:"))
-            return ParseKeywordAsSkillRequirement(item, valueKeyword.Substring(12), parsedFile, parsedKey);
-        else if (valueKeyword.StartsWith("EquipmentSlot:"))
-            return ParseKeywordAsEquipmentSlot(item, valueKeyword.Substring(14), parsedFile, parsedKey);
-        else if (valueKeyword.StartsWith("MinRarity:"))
-            return ParseKeywordAsMinRarity(item, valueKeyword.Substring(10), parsedFile, parsedKey);
-        else if (valueKeyword.StartsWith("Rarity:"))
-            return ParseKeywordAsRarity(item, valueKeyword.Substring(7), parsedFile, parsedKey);
-        else if (StringToEnumConversion<ItemKeyword>.TryParse(valueKeyword, out ItemKeyword ParsedItemKeyword))
-        {
-            item.ItemKeywordList.Add(ParsedItemKeyword);
-            return true;
-        }
-        else
-            return false;
-    }
-
-    private bool ParseKeywordAsMinValue(PgNpcPreference item, string value, string parsedFile, string parsedKey)
-    {
-        if (int.TryParse(value, out int AsInt))
-            return SetIntProperty((int valueInt) => item.RawMinValueRequirement = valueInt, AsInt);
-        else
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be an int");
-    }
-
-    private bool ParseKeywordAsSkillRequirement(PgNpcPreference item, string value, string parsedFile, string parsedKey)
-    {
-        return Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.SetSkillRequirement(valueSkill), value);
-    }
-
-    private bool ParseKeywordAsEquipmentSlot(PgNpcPreference item, string value, string parsedFile, string parsedKey)
-    {
-        return StringToEnumConversion<ItemSlot>.SetEnum((ItemSlot valueEnum) => item.SlotRequirement = valueEnum, value);
-    }
-
-    private bool ParseKeywordAsMinRarity(PgNpcPreference item, string value, string parsedFile, string parsedKey)
-    {
-        if (value == "Uncommon")
-            item.MinRarityRequirement = RecipeItemKey.MinRarity_Uncommon;
-        else if (value == "Rare")
-            item.MinRarityRequirement = RecipeItemKey.MinRarity_Rare;
-        else
-            return Program.ReportFailure(parsedFile, parsedKey, $"Invalid minimum rarity '{value}'");
-
-        StringToEnumConversion<RecipeItemKey>.SetCustomParsedEnum(item.MinRarityRequirement);
-        return true;
-    }
-
-    private bool ParseKeywordAsRarity(PgNpcPreference item, string value, string parsedFile, string parsedKey)
-    {
-        if (value == "Uncommon")
-            item.RarityRequirement = RecipeItemKey.Rarity_Uncommon;
-        else if (value == "Common")
-            item.RarityRequirement = RecipeItemKey.Rarity_Common;
-        else
-            return Program.ReportFailure(parsedFile, parsedKey, $"Invalid rarity '{value}'");
-
-        StringToEnumConversion<RecipeItemKey>.SetCustomParsedEnum(item.RarityRequirement);
-        return true;
-    }
-
-    private bool ParseFavor(PgNpcPreference item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string FavorString))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        Favor ParsedFavor;
-
-        if (FavorString == "Error")
-            ParsedFavor = Favor.Internal_None;
-        else if (!StringToEnumConversion<Favor>.TryParse(FavorString, out ParsedFavor))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Unknown favor level '{FavorString}'");
-
-        item.PreferenceFavor = ParsedFavor;
-        return true;
-    }
-
-    private bool ParseDesire(PgNpcPreference item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string DesireString))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        Desire ParsedDesire;
-
-        if (DesireString == "Error")
-            ParsedDesire = Desire.Internal_None;
-        else if (!StringToEnumConversion<Desire>.TryParse(DesireString, out ParsedDesire))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Unknown favor level '{DesireString}'");
-
-        item.PreferenceDesire = ParsedDesire;
-        return true;
-    }
 }

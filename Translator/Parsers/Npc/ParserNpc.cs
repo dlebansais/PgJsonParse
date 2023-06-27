@@ -1,6 +1,5 @@
 ﻿namespace Translator;
 
-using System;
 using System.Collections.Generic;
 using PgJsonReader;
 using PgObjects;
@@ -35,7 +34,7 @@ public class ParserNpc : Parser
                     Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
                     break;
                 case "AreaName":
-                    Result = ParseAreaName(item, Value, parsedFile, parsedKey);
+                    Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.AreaName = valueEnum, Value);
                     break;
                 case "AreaFriendlyName":
                     Result = SetStringProperty((string valueString) => item.AreaFriendlyName = valueString, Value);
@@ -61,17 +60,5 @@ public class ParserNpc : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseAreaName(PgNpc item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueKey))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        if (!ValueKey.StartsWith("Area"))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Invalid area name '{ValueKey}'");
-
-        string ValueAreaName = ValueKey.Substring(4);
-        return StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.AreaName = valueEnum, ValueAreaName);
     }
 }

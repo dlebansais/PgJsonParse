@@ -1,28 +1,41 @@
 ﻿namespace Preprocessor;
 
+using System;
+
 internal class Npc
 {
     public Npc(RawNpc rawNpc)
     {
         AreaFriendlyName = rawNpc.AreaFriendlyName;
-        AreaName = rawNpc.AreaName;
+        AreaName = ParseAreaName(rawNpc.AreaName);
         Name = rawNpc.Name;
+        Preferences = ParsePreferences(rawNpc.Preferences);
+    }
 
-        if (rawNpc.Preferences is null)
-            Preferences = null;
-        else
-        {
-            Preferences = new NpcPreference[rawNpc.Preferences.Length];
+    private const string AreaHeader = "Area";
 
-            for (int i = 0; i < rawNpc.Preferences.Length; i++)
-                Preferences[i] = new NpcPreference()
-                {
-                    Desire = rawNpc.Preferences[i].Desire,
-                    Favor = rawNpc.Preferences[i].Favor,
-                    Keywords = rawNpc.Preferences[i].Keywords,
-                    Pref = rawNpc.Preferences[i].Pref,
-                };
-        }
+    private static string? ParseAreaName(string? content)
+    {
+        if (content is null)
+            return null;
+
+        if (!content.StartsWith(AreaHeader))
+            throw new InvalidCastException();
+
+        return content.Substring(AreaHeader.Length);
+    }
+
+    private static NpcPreference[]? ParsePreferences(RawNpcPreference[]? content)
+    {
+        if (content is null)
+            return null;
+
+        NpcPreference[] Result = new NpcPreference[content.Length];
+
+        for (int i = 0; i < content.Length; i++)
+            Result[i] = new NpcPreference(content[i]);
+
+        return Result;
     }
 
     public string? AreaFriendlyName { get; set; }
@@ -35,24 +48,30 @@ internal class Npc
         RawNpc Result = new();
 
         Result.AreaFriendlyName = AreaFriendlyName;
-        Result.AreaName = AreaName;
+        Result.AreaName = ToRawAreaName(AreaName);
         Result.Name = Name;
+        Result.Preferences = ToRawNpcPreferences(Preferences);
 
-        if (Preferences is null)
-            Result.Preferences = null;
-        else
-        {
-            Result.Preferences = new RawNpcPreference[Preferences.Length];
+        return Result;
+    }
 
-            for (int i = 0; i < Preferences.Length; i++)
-                Result.Preferences[i] = new RawNpcPreference()
-                {
-                    Desire = Preferences[i].Desire,
-                    Favor = Preferences[i].Favor,
-                    Keywords = Preferences[i].Keywords,
-                    Pref = Preferences[i].Pref,
-                };
-        }
+    private static string? ToRawAreaName(string? areaName)
+    {
+        if (areaName is null)
+            return null;
+
+        return $"{AreaHeader}{areaName}";
+    }
+
+    private static RawNpcPreference[]? ToRawNpcPreferences(NpcPreference[]? npcPreferenceArray)
+    {
+        if (npcPreferenceArray is null)
+            return null;
+
+        RawNpcPreference[] Result = new RawNpcPreference[npcPreferenceArray.Length];
+
+        for (int i = 0; i < npcPreferenceArray.Length; i++)
+            Result[i] = npcPreferenceArray[i].ToRawNpcPreference();
 
         return Result;
     }

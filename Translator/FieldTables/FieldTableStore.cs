@@ -411,10 +411,15 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TableNpcPreference { get; } = new Dictionary<string, Type>()
     {
-        { "Keywords", typeof(string[]) },
+        { "ItemKeywords", typeof(string[]) },
         { "Pref", typeof(float) },
+        { "MinValueRequirement", typeof(int) },
         { "Favor", typeof(string) },
         { "Desire", typeof(string) },
+        { "SkillRequirement", typeof(string) },
+        { "SlotRequirement", typeof(string) },
+        { "MinRarityRequirement", typeof(string) },
+        { "RarityRequirement", typeof(string) },
     };
 
     public static Dictionary<string, Type> TablePlayerTitle { get; } = new Dictionary<string, Type>()
