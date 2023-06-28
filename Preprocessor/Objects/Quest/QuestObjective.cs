@@ -1,7 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System.Collections.Generic;
-
 internal class QuestObjective
 {
     public QuestObjective(RawQuestObjective rawQuestObjective)
@@ -30,7 +28,7 @@ internal class QuestObjective
         ResultItemKeyword = rawQuestObjective.ResultItemKeyword;
         Skill = rawQuestObjective.Skill;
         StringParam = rawQuestObjective.StringParam;
-        Target = rawQuestObjective.Target;
+        Target = Preprocessor.ToSingleOrMultiple<string>(rawQuestObjective.Target, out IsSingleTarget);
         Type = rawQuestObjective.Type;
     }
 
@@ -58,7 +56,7 @@ internal class QuestObjective
     public string? ResultItemKeyword { get; set; }
     public string? Skill { get; set; }
     public string? StringParam { get; set; }
-    public object? Target { get; set; }
+    public string[]? Target { get; set; }
     public string? Type { get; set; }
 
     public RawQuestObjective ToRawQuestObjective()
@@ -89,11 +87,12 @@ internal class QuestObjective
         Result.ResultItemKeyword = ResultItemKeyword;
         Result.Skill = Skill;
         Result.StringParam = StringParam;
-        Result.Target = Target;
+        Result.Target = Preprocessor.FromSingleOrMultiple(Target, IsSingleTarget);
         Result.Type = Type;
 
         return Result;
     }
 
     private bool IsSingleRequirements;
+    private bool IsSingleTarget;
 }

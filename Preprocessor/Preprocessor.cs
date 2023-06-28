@@ -291,11 +291,20 @@ internal class Preprocessor
 
     public static bool ToSingleItem<T>(object element, out T[] result)
     {
-        if (element is JsonElement AsSingle && AsSingle.ValueKind == JsonValueKind.Object)
+        if (element is JsonElement AsSingle)
         {
-            result = new T[1];
-            result[0] = AsSingle.Deserialize<T>() ?? throw new InvalidCastException();
-            return true;
+            if (AsSingle.ValueKind == JsonValueKind.Object)
+            {
+                result = new T[1];
+                result[0] = AsSingle.Deserialize<T>() ?? throw new InvalidCastException();
+                return true;
+            }
+            else if (AsSingle.ValueKind == JsonValueKind.String && typeof(T) == typeof(string) && AsSingle.GetString() is T AsString)
+            {
+                result = new T[1];
+                result[0] = AsString;
+                return true;
+            }
         }
 
         result = null!;
