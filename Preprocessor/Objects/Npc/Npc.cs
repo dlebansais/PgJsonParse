@@ -1,6 +1,7 @@
 ﻿namespace Preprocessor;
 
 using System;
+using System.Collections.Generic;
 
 internal class Npc
 {
@@ -9,7 +10,7 @@ internal class Npc
         AreaFriendlyName = rawNpc.AreaFriendlyName;
         AreaName = ParseAreaName(rawNpc.AreaName);
         Name = rawNpc.Name;
-        Preferences = ParsePreferences(rawNpc.Preferences);
+        (UnsortedPreferences, Preferences) = ParsePreferences(rawNpc.Preferences);
     }
 
     private const string AreaHeader = "Area";
@@ -25,17 +26,38 @@ internal class Npc
         return content.Substring(AreaHeader.Length);
     }
 
-    private static NpcPreference[]? ParsePreferences(RawNpcPreference[]? content)
+    private static (NpcPreference[]?, NpcPreference[]?) ParsePreferences(RawNpcPreference[]? content)
     {
-        if (content is null)
-            return null;
+        List<NpcPreference> UnsortedPreferences = new();
 
-        NpcPreference[] Result = new NpcPreference[content.Length];
+        if (content is null)
+            return (null, null);
 
         for (int i = 0; i < content.Length; i++)
-            Result[i] = new NpcPreference(content[i]);
+            UnsortedPreferences.Add(new NpcPreference(content[i]));
 
-        return Result;
+        List<NpcPreference> Preferences = new(UnsortedPreferences);
+        Preferences.Sort(SortByDesire);
+
+        return (UnsortedPreferences.ToArray(), Preferences.ToArray());
+    }
+
+    private static int SortByDesire(NpcPreference p1, NpcPreference p2)
+    {
+        if (p1.Desire is string Desire1 && p2.Desire is string Desire2)
+        {
+            Dictionary<string, int> DesirePreferenceTable = new()
+            {
+                { "Love", 2 },
+                { "Like", 1 },
+                { "Dislike", -1 },
+                { "Hate", -2 },
+            };
+
+            return DesirePreferenceTable[Desire2] - DesirePreferenceTable[Desire1];
+        }
+        else
+            return 0;
     }
 
     public string? AreaFriendlyName { get; set; }
@@ -50,7 +72,7 @@ internal class Npc
         Result.AreaFriendlyName = AreaFriendlyName;
         Result.AreaName = ToRawAreaName(AreaName);
         Result.Name = Name;
-        Result.Preferences = ToRawNpcPreferences(Preferences);
+        Result.Preferences = ToRawNpcPreferences(UnsortedPreferences);
 
         return Result;
     }
@@ -75,4 +97,6 @@ internal class Npc
 
         return Result;
     }
+
+    private NpcPreference[]? UnsortedPreferences;
 }

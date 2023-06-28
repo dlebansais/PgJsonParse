@@ -33,7 +33,7 @@ public class ParserNpcPreference : Parser
                 case "ItemKeywords":
                     Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.ItemKeywordList);
                     break;
-                case "Pref":
+                case "PreferenceMultiplier":
                     Result = SetFloatProperty((float valueFloat) => item.RawPreference = valueFloat, Value);
                     break;
                 case "MinValueRequirement":

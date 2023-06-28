@@ -1,7 +1,212 @@
 ﻿namespace Preprocessor;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
 internal class Quest
 {
+    public Quest(RawQuest rawQuest)
+    {
+        Description = rawQuest.Description;
+        DisplayedLocation = rawQuest.DisplayedLocation;
+        FavorNpc = rawQuest.FavorNpc;
+        FollowUpQuests = rawQuest.FollowUpQuests;
+        GroupingName = rawQuest.GroupingName;
+        InternalName = rawQuest.InternalName;
+        IsAutoPreface = rawQuest.IsAutoPreface;
+        IsAutoWrapUp = rawQuest.IsAutoWrapUp;
+        IsCancellable = rawQuest.IsCancellable;
+        IsGuildQuest = rawQuest.IsGuildQuest;
+        Keywords = rawQuest.Keywords;
+        Level = rawQuest.Level;
+        MidwayGiveItems = rawQuest.MidwayGiveItems;
+        MidwayText = rawQuest.MidwayText;
+        Name = rawQuest.Name;
+        NumExpectedParticipants = rawQuest.NumExpectedParticipants;
+        Objectives = rawQuest.Objectives;
+        PreGiveEffects = rawQuest.PreGiveEffects;
+        PreGiveItems = rawQuest.PreGiveItems;
+        PreGiveRecipes = rawQuest.PreGiveRecipes;
+        PrefaceText = rawQuest.PrefaceText;
+        PrerequisiteFavorLevel = rawQuest.PrerequisiteFavorLevel;
+        QuestNpc = rawQuest.QuestNpc;
+        Requirements = rawQuest.Requirements;
+        RequirementsToSustain = rawQuest.RequirementsToSustain;
+        ReuseTime_Days = rawQuest.ReuseTime_Days;
+        ReuseTime_Hours = rawQuest.ReuseTime_Hours;
+        ReuseTime_Minutes = rawQuest.ReuseTime_Minutes;
+        Rewards_Items = rawQuest.Rewards_Items;
+        SuccessText = rawQuest.SuccessText;
+        TSysLevel = rawQuest.TSysLevel;
+        Version = rawQuest.Version;
+        WorkOrderSkill = rawQuest.WorkOrderSkill;
+
+        MergeSpecificRewards(rawQuest.Rewards, rawQuest.Reward_Favor, rawQuest.Rewards_Favor, rawQuest.Rewards_NamedLootProfile, rawQuest.Rewards_Effects);
+    }
+
+    private void MergeSpecificRewards(QuestReward[]? rawRewards, int? rawRewardFavor, int? rawRewardsFavor, string? rawRewardNamedLootProfile, string[]? rawRewardEffects)
+    {
+        List<QuestReward> RewardList = new();
+
+        if (rawRewards is not null)
+            RewardList.AddRange(rawRewards.ToList());
+
+        if (rawRewardFavor is not null)
+        {
+            HasRewardFavor = true;
+
+            if (rawRewardFavor == 0)
+                HasRewardFavorZero = true;
+            else
+                RewardList.Add(new QuestReward() { T = "Favor", Favor = rawRewardFavor });
+        }
+
+        if (rawRewardsFavor is not null)
+        {
+            HasRewardsFavor = true;
+            RewardList.Add(new QuestReward() { T = "Favor", Favor = rawRewardsFavor });
+        }
+
+        if (rawRewardNamedLootProfile is not null)
+        {
+            HasRewardNamedLootProfile = true;
+            RewardList.Add(new QuestReward() { T = "NamedLootProfile", NamedLootProfile = rawRewardNamedLootProfile });
+        }
+
+        if (rawRewardEffects is not null)
+        {
+            RewardEffectCount = rawRewardEffects.Length;
+
+            List<QuestReward> RewardEffectList = new();
+            foreach (string RewardEffect in rawRewardEffects)
+            {
+                QuestReward NewQuestReward = ParseRewardEffect(RewardEffect);
+                RewardEffectList.Insert(0, NewQuestReward);
+            }
+
+            RewardList.AddRange(RewardEffectList);
+        }
+
+        if (RewardList.Count > 0)
+            Rewards = RewardList.ToArray();
+        else
+            Rewards = null;
+    }
+
+    private static QuestReward ParseRewardEffect(string rewardEffect)
+    {
+        string EffectName;
+        string EffectParameter;
+
+        // Search for an expression between parentheses.
+        string ParameterPattern = @"\(([^)]+)\)";
+        Match ParameterMatch = Regex.Match(rewardEffect, ParameterPattern, RegexOptions.IgnoreCase);
+        if (ParameterMatch.Success)
+        {
+            EffectName = rewardEffect.Substring(0, ParameterMatch.Index);
+            EffectParameter = ParameterMatch.Value.Substring(1, ParameterMatch.Value.Length - 2);
+        }
+        else
+        {
+            EffectName = rewardEffect;
+            EffectParameter = string.Empty;
+        }
+
+        switch (EffectName)
+        {
+            case "SetInteractionFlag":
+                return new QuestReward() { T = "InteractionFlag", InteractionFlag = EffectParameter };
+            case "EnsureLoreBookKnown":
+                return new QuestReward() { T = "LoreBook", LoreBook = EffectParameter };
+            case "BestowTitle":
+                return ParseRewardEffectBestowTitle(EffectParameter);
+            case "BestowRecipe":
+                return new QuestReward() { T = "Recipe", Recipe = EffectParameter };
+            case "LearnAbility":
+                return new QuestReward() { T = "Ability", Ability = EffectParameter };
+            case "AdvanceScriptedQuestObjective":
+                return ParseRewardEffectAdvanceScriptedQuestObjective(EffectParameter);
+            case "GiveXP":
+                return ParseRewardEffectGiveXP(EffectParameter);
+            case "DeltaNpcFavor":
+                return ParseRewardEffectDeltaNpcFavor(EffectParameter);
+            case "RaiseSkillToLevel":
+                return ParseRewardEffectRaiseSkillToLevel(EffectParameter);
+            case "DispelFaeBombSporeBuff":
+                return new QuestReward() { T = EffectName };
+            default:
+                return new QuestReward() { T = "Effect", Effect = EffectName };
+        }
+    }
+
+    private static QuestReward ParseRewardEffectBestowTitle(string title)
+    {
+        int TitleKey = TitleToKeyMap[title];
+        return new QuestReward() { T = "Title", Title = TitleKey };
+    }
+
+    private static QuestReward ParseRewardEffectAdvanceScriptedQuestObjective(string questObjective)
+    {
+        string[] Patterns = new string[]
+        {
+            "_Complete",
+            "_Done",
+        };
+
+        string Npc;
+
+        foreach (string Pattern in Patterns)
+            if (questObjective.EndsWith(Pattern))
+            {
+                Npc = questObjective.Substring(0, questObjective.Length - Pattern.Length);
+
+                QuestReward NewQuestReward = new QuestReward() { T = "ScriptedQuestObjective", Npc = Npc };
+                NewQuestReward.SetObjectiveCompleteOrDone(Pattern);
+
+                return NewQuestReward;
+            }
+
+        throw new InvalidCastException();
+    }
+
+    private static QuestReward ParseRewardEffectGiveXP(string xpReward)
+    {
+        string[] XpSplitted = xpReward.Split(',');
+        if (XpSplitted.Length != 2)
+            throw new InvalidCastException();
+
+        string Skill = XpSplitted[0].Trim();
+        int Xp = int.Parse(XpSplitted[1]);
+
+        return new QuestReward() { T = "SkillXp", Skill = Skill, Xp = Xp };
+    }
+
+    private static QuestReward ParseRewardEffectDeltaNpcFavor(string npcFavor)
+    {
+        string[] FavorSplitted = npcFavor.Split(',');
+        if (FavorSplitted.Length != 2)
+            throw new InvalidCastException();
+
+        string Npc = FavorSplitted[0].Trim();
+        int Favor = int.Parse(FavorSplitted[1]);
+
+        return new QuestReward() { T = "Favor", Npc = Npc, Favor = Favor };
+    }
+
+    private static QuestReward ParseRewardEffectRaiseSkillToLevel(string levelReward)
+    {
+        string[] LevelSplitted = levelReward.Split(',');
+        if (LevelSplitted.Length != 2)
+            throw new InvalidCastException();
+
+        string Skill = LevelSplitted[0].Trim();
+        int Level = int.Parse(LevelSplitted[1]);
+
+        return new QuestReward() { T = "SkillLevel", Skill = Skill, Level = Level };
+    }
+
     public string? Description { get; set; }
     public string? DisplayedLocation { get; set; }
     public string? FavorNpc { get; set; }
@@ -30,14 +235,173 @@ internal class Quest
     public int? ReuseTime_Days { get; set; }
     public int? ReuseTime_Hours { get; set; }
     public int? ReuseTime_Minutes { get; set; }
-    public int? Reward_Favor { get; set; }
     public QuestReward[]? Rewards { get; set; }
-    public string[]? Rewards_Effects { get; set; }
-    public int? Rewards_Favor { get; set; }
     public QuestRewardItem[]? Rewards_Items { get; set; }
-    public string? Rewards_NamedLootProfile { get; set; }
     public string? SuccessText { get; set; }
     public int? TSysLevel { get; set; }
     public int? Version { get; set; }
     public string? WorkOrderSkill { get; set; }
+
+    public RawQuest ToRawQuest()
+    {
+        RawQuest Result = new();
+
+        Result.Description = Description;
+        Result.DisplayedLocation = DisplayedLocation;
+        Result.FavorNpc = FavorNpc;
+        Result.FollowUpQuests = FollowUpQuests;
+        Result.GroupingName = GroupingName;
+        Result.InternalName = InternalName;
+        Result.IsAutoPreface = IsAutoPreface;
+        Result.IsAutoWrapUp = IsAutoWrapUp;
+        Result.IsCancellable = IsCancellable;
+        Result.IsGuildQuest = IsGuildQuest;
+        Result.Keywords = Keywords;
+        Result.Level = Level;
+        Result.MidwayGiveItems = MidwayGiveItems;
+        Result.MidwayText = MidwayText;
+        Result.Name = Name;
+        Result.NumExpectedParticipants = NumExpectedParticipants;
+        Result.Objectives = Objectives;
+        Result.PreGiveEffects = PreGiveEffects;
+        Result.PreGiveItems = PreGiveItems;
+        Result.PreGiveRecipes = PreGiveRecipes;
+        Result.PrefaceText = PrefaceText;
+        Result.PrerequisiteFavorLevel = PrerequisiteFavorLevel;
+        Result.QuestNpc = QuestNpc;
+        Result.Requirements = Requirements;
+        Result.RequirementsToSustain = RequirementsToSustain;
+        Result.ReuseTime_Days = ReuseTime_Days;
+        Result.ReuseTime_Hours = ReuseTime_Hours;
+        Result.ReuseTime_Minutes = ReuseTime_Minutes;
+        Result.Rewards_Items = Rewards_Items;
+        Result.SuccessText = SuccessText;
+        Result.TSysLevel = TSysLevel;
+        Result.Version = Version;
+        Result.WorkOrderSkill = WorkOrderSkill;
+
+        (Result.Rewards, Result.Reward_Favor, Result.Rewards_Favor, Result.Rewards_NamedLootProfile, Result.Rewards_Effects) = SplitSpecificRewards();
+
+        return Result;
+    }
+
+    private (QuestReward[]?, int?, int?, string?, string[]?) SplitSpecificRewards()
+    {
+        if (Rewards is null)
+        {
+            if (HasRewardFavorZero)
+                return (null, 0, null, null, null);
+            else
+                return (null, null, null, null, null);
+        }
+
+        int RewardIndex = Rewards.Length - 1;
+
+        string[]? RawRewardEffects;
+        if (RewardEffectCount > 0)
+        {
+            RawRewardEffects = new string[RewardEffectCount];
+
+            for (int i = 0; i < RewardEffectCount; i++)
+                RawRewardEffects[i] = ToRawRewardEffect(Rewards[RewardIndex--]);
+        }
+        else
+            RawRewardEffects = null;
+
+        string? RawRewardNamedLootProfile;
+        if (HasRewardNamedLootProfile)
+            RawRewardNamedLootProfile = Rewards[RewardIndex--].NamedLootProfile;
+        else
+            RawRewardNamedLootProfile = null;
+
+        int? RawRewardsFavor;
+        if (HasRewardsFavor)
+            RawRewardsFavor = Rewards[RewardIndex--].Favor;
+        else
+            RawRewardsFavor = null;
+
+        int? RawRewardFavor;
+        if (HasRewardFavor)
+        {
+            if (HasRewardFavorZero)
+                RawRewardFavor = 0;
+            else
+                RawRewardFavor = Rewards[RewardIndex--].Favor;
+        }
+        else
+            RawRewardFavor = null;
+
+        QuestReward[]? RawRewards;
+        if (RewardIndex >= 0)
+        {
+            RawRewards = new QuestReward[RewardIndex + 1];
+            for (int i = 0; i <=  RewardIndex; i++)
+                RawRewards[i] = Rewards[i];
+        }
+        else
+            RawRewards = null;
+
+        return (RawRewards, RawRewardFavor, RawRewardsFavor, RawRewardNamedLootProfile, RawRewardEffects);
+    }
+
+    private static string ToRawRewardEffect(QuestReward reward)
+    {
+        switch (reward.T)
+        {
+            case "InteractionFlag":
+                return $"SetInteractionFlag({reward.InteractionFlag})";
+            case "LoreBook":
+                return $"EnsureLoreBookKnown({reward.LoreBook})";
+            case "Title":
+                return $"BestowTitle({RewardToBestowedTitle(reward.Title ?? throw new NullReferenceException())})";
+            case "Recipe":
+                return $"BestowRecipe({reward.Recipe})";
+            case "Ability":
+                return $"LearnAbility({reward.Ability})";
+            case "ScriptedQuestObjective":
+                return $"AdvanceScriptedQuestObjective({reward.Npc}{reward.GetObjectiveCompleteOrDone()})";
+            case "SkillXp":
+                return $"GiveXP({reward.Skill},{reward.Xp})";
+            case "Favor":
+                return $"DeltaNpcFavor({reward.Npc},{reward.Favor})";
+            case "SkillLevel":
+                return $"RaiseSkillToLevel({reward.Skill},{reward.Level})";
+            case "DispelFaeBombSporeBuff":
+                return reward.T ?? throw new NullReferenceException();
+            default:
+                return $"{reward.Effect}";
+        }
+    }
+
+    private static string RewardToBestowedTitle(int title)
+    {
+        Dictionary<int, string> KeyToTitleMap = TitleToKeyMap.ToDictionary(x => x.Value, x => x.Key);
+        return KeyToTitleMap[title];
+    }
+
+    private static readonly Dictionary<string, int> TitleToKeyMap = new Dictionary<string, int>()
+    {
+        { "Event_Halloween_CultistOfZhiaLian", 5009 },
+        { "Event_Halloween_SeniorCultistOfZhiaLian", 5010 },
+        { "IncredibleGoblinKissAss", 5012 },
+        { "GuideEvent_CivilServant", 5210 },
+        { "GuideEvent_IKnowBunFu", 5211 },
+        { "GuideEvent_SaviorOfTheGoats", 5208 },
+        { "GuideEvent_AntiSaviorOfTheGoats", 5216 },
+        { "Event_Halloween_HeartBeater", 5015 },
+        { "Event_Halloween_Riiiiiiiiiii", 5017 },
+        { "GuideEvent_TurkeyWrangler", 5212 },
+        { "GuideEvent_ALittleFruity", 5219 },
+        { "Warsmith", 5018 },
+        { "GuideEvent_LikeABoss", 5222 },
+        { "Event_TurkeyKiller", 5223 },
+        { "GuideEvent_EggsellentHunter", 5209 },
+        { "Event_Halloween_NotAfraidOfLungs", 5024 },
+    };
+
+    private bool HasRewardFavor;
+    private bool HasRewardFavorZero;
+    private bool HasRewardsFavor;
+    private bool HasRewardNamedLootProfile;
+    private int RewardEffectCount;
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -13,8 +13,8 @@
     <Product />
     <Description>PG json preprocessor</Description>
     <Copyright>Copyright © 2023 David Le Bansais</Copyright>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.0.4848</AssemblyVersion>
+    <FileVersion>1.1.0.1</FileVersion>
     <RepositoryUrl>https://github.com/dlebansais/PgJsonParse</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>Preprocessor</RootNamespace>

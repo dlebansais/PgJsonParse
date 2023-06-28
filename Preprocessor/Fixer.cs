@@ -4,39 +4,7 @@ using System.Collections.Generic;
 
 internal class Fixer
 {
-    public static void FixAbilities(object objectCollection)
-    {
-        FixAbilities((AbilityDictionary)objectCollection);
-    }
-
-    private static void FixAbilities(AbilityDictionary dictionary)
-    {
-    }
-
-    public static void FixAdvancementTables(object objectCollection)
-    {
-        FixAdvancementTables((AdvancementTableDictionary)objectCollection);
-    }
-
-    private static void FixAdvancementTables(AdvancementTableDictionary dictionary)
-    {
-    }
-
-    public static void FixAI(object objectCollection)
-    {
-        FixAI((AIDictionary)objectCollection);
-    }
-
-    private static void FixAI(AIDictionary dictionary)
-    {
-    }
-
-    public static void FixAreas(object objectCollection)
-    {
-        FixAreas((AreaDictionary)objectCollection);
-    }
-
-    private static void FixAreas(AreaDictionary dictionary)
+    public static void NoFix(object objectCollection)
     {
     }
 
@@ -70,87 +38,6 @@ internal class Fixer
 
         foreach (string Key in AttributeKeyList)
             dictionary.Add(Key, new Attribute() { DisplayRule = "Never", DisplayType = "AsBuffDelta" });
-    }
-
-    public static void FixDirectedGoals(object objectCollection)
-    {
-        FixDirectedGoals((DirectedGoalDictionary)objectCollection);
-    }
-
-    private static void FixDirectedGoals(DirectedGoalDictionary dictionary)
-    {
-    }
-
-    public static void FixEffects(object objectCollection)
-    {
-        FixEffects((EffectDictionary)objectCollection);
-    }
-
-    private static void FixEffects(EffectDictionary dictionary)
-    {
-    }
-
-    public static void FixItems(object objectCollection)
-    {
-        FixItems((ItemDictionary)objectCollection);
-    }
-
-    private static void FixItems(ItemDictionary dictionary)
-    {
-    }
-
-    public static void FixItemUses(object objectCollection)
-    {
-        FixItemUses((ItemUseDictionary)objectCollection);
-    }
-
-    private static void FixItemUses(ItemUseDictionary dictionary)
-    {
-    }
-
-    public static void FixLoreBookInfo(object item)
-    {
-        FixItemUses((LoreBookInfo)item);
-    }
-
-    private static void FixItemUses(LoreBookInfo item)
-    {
-    }
-
-    public static void FixLoreBooks(object objectCollection)
-    {
-        FixLoreBooks((LoreBookDictionary)objectCollection);
-    }
-
-    private static void FixLoreBooks(LoreBookDictionary dictionary)
-    {
-    }
-
-    public static void FixNpcs(object objectCollection)
-    {
-        FixNpcs((NpcDictionary)objectCollection);
-    }
-
-    private static void FixNpcs(NpcDictionary dictionary)
-    {
-    }
-
-    public static void FixPlayerTitles(object objectCollection)
-    {
-        FixPlayerTitles((PlayerTitleDictionary)objectCollection);
-    }
-
-    private static void FixPlayerTitles(PlayerTitleDictionary dictionary)
-    {
-    }
-
-    public static void FixQuests(object objectCollection)
-    {
-        FixQuests((QuestDictionary)objectCollection);
-    }
-
-    private static void FixQuests(QuestDictionary dictionary)
-    {
     }
 
     public static void FixRecipes(object objectCollection)

@@ -63,18 +63,9 @@ public class ParserQuest : Parser
                 case "Objectives":
                     Result = Inserter<PgQuestObjective>.AddKeylessArray(item.QuestObjectiveList, Value);
                     break;
-/*                    case "Rewards_XP":
-                    Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
-                    break;*/
-/*                    case "Rewards_Currency":
-                    Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
-                    break;*/
                 case "Rewards_Items":
                     Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
                     break;
-/*                    case "Reward_CombatXP":
-                    Result = ParseRewardCombatXp(item, Value, parsedFile, parsedKey);
-                    break;*/
                 case "QuestNpc":
                     Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => item.QuestNpc = npcLocation, Value, parsedFile, parsedKey);
                     break;
@@ -93,20 +84,8 @@ public class ParserQuest : Parser
                 case "PrerequisiteFavorLevel":
                     Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => item.PrerequisiteFavorLevel = valueEnum, Value);
                     break;
-                case "Rewards_Favor":
-                    Result = ParseRewardFavor(item, Value, parsedFile, parsedKey);
-                    break;
-/*                    case "Rewards_Recipes":
-                    Result = ParseRewardRecipes(item, Value, parsedFile, parsedKey);
-                    break;*/
-/*                    case "Rewards_Ability":
-                    Result = ParseRewardAbility(item, Value, parsedFile, parsedKey);
-                    break;*/
                 case "Requirements":
                     Result = Inserter<PgQuestRequirement>.AddKeylessArray(item.QuestRequirementList, Value);
-                    break;
-                case "Reward_Favor":
-                    Result = ParseRewardFavor(item, Value, parsedFile, parsedKey);
                     break;
                 case "Rewards":
                     Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestRewardList, Value);
@@ -116,12 +95,6 @@ public class ParserQuest : Parser
                     break;
                 case "TSysLevel":
                     Result = SetIntProperty((int valueInt) => RawTSysLevel = valueInt, Value);
-                    break;
-                /*case "Reward_Gold":
-                    Result = ParseRewardCurrency(item, Value, parsedFile, parsedKey);
-                    break;*/
-                case "Rewards_NamedLootProfile":
-                    Result = ParseRewardNamedLootProfile(item, Value, parsedFile, parsedKey);
                     break;
                 case "PreGiveRecipes":
                     Result = Inserter<PgRecipe>.AddPgObjectArrayByInternalName<PgRecipe>(item.PreGiveRecipeList, Value);
@@ -187,102 +160,6 @@ public class ParserQuest : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseRewardCombatXp(PgQuest item, object value, string parsedFile, string parsedKey)
-    {
-        int ValueCombatXp;
-
-        if (value is int ValueInt)
-            ValueCombatXp = ValueInt;
-        else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
-            ValueCombatXp = ValueIntFromString;
-        else
-            return Program.ReportFailure($"Value {value} was expected to be an int");
-
-        PgQuestRewardCombatXp NewReward = new PgQuestRewardCombatXp() { RawXp = ValueCombatXp };
-        ParsingContext.AddSuplementaryObject(NewReward);
-        item.QuestRewardList.Add(NewReward);
-        return true;
-    }
-
-    private bool ParseRewardFavor(PgQuest item, object value, string parsedFile, string parsedKey)
-    {
-        int ValueFavor;
-
-        if (value is int ValueInt)
-            ValueFavor = ValueInt;
-        else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
-            ValueFavor = ValueIntFromString;
-        else
-            return Program.ReportFailure($"Value {value} was expected to be an int");
-
-        if (ValueFavor != 0)
-        {
-            PgQuestRewardFavor NewReward = new PgQuestRewardFavor() { RawFavor = ValueFavor };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-        }
-
-        return true;
-    }
-
-    private bool ParseRewardCurrency(PgQuest item, object value, string parsedFile, string parsedKey)
-    {
-        int ValueCurrency;
-
-        if (value is int ValueInt)
-            ValueCurrency = ValueInt;
-        else if (value is string ValueString && int.TryParse(ValueString, out int ValueIntFromString))
-            ValueCurrency = ValueIntFromString;
-        else
-            return Program.ReportFailure($"Value {value} was expected to be an int");
-
-        PgQuestRewardCurrency NewReward = new PgQuestRewardCurrency() { Currency = Currency.Gold, RawAmount = ValueCurrency };
-        ParsingContext.AddSuplementaryObject(NewReward);
-        item.QuestRewardList.Add(NewReward);
-        return true;
-    }
-
-    private bool ParseRewardNamedLootProfile(PgQuest item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueString))
-            return Program.ReportFailure($"Value {value} was expected to be a string");
-
-        NamedLootProfile ParsedNamedLootProfile = NamedLootProfile.Internal_None;
-        if (!StringToEnumConversion<NamedLootProfile>.SetEnum((NamedLootProfile valueEnum) => ParsedNamedLootProfile = valueEnum, ValueString))
-            return false;
-
-        PgQuestRewardNamedLootProfile NewReward = new PgQuestRewardNamedLootProfile() { NamedLootProfile = ParsedNamedLootProfile };
-        ParsingContext.AddSuplementaryObject(NewReward);
-        item.QuestRewardList.Add(NewReward);
-        return true;
-    }
-
-    private bool ParseRewardRecipes(PgQuest item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is List<object> ArrayKey))
-            return Program.ReportFailure($"Value '{value}' was expected to be a list");
-
-        Dictionary<string, ParsingContext> KeyTable = ParsingContext.ObjectInternalNameTable[typeof(PgRecipe)];
-
-        foreach (object Item in ArrayKey)
-        {
-            if (!(Item is string ValueKey))
-                return Program.ReportFailure($"Value '{Item}' was expected to be a string");
-
-            if (!KeyTable.ContainsKey(ValueKey))
-                return Program.ReportFailure($"Key '{Item}' is not a known Internal Name");
-
-            if (!(KeyTable[ValueKey].Item is PgRecipe AsLink))
-                return Program.ReportFailure($"Key '{Item}' was found but for the wrong object type");
-
-            PgQuestRewardRecipe NewReward = new PgQuestRewardRecipe() { Recipe_Key = PgObject.GetItemKey(AsLink) };
-            ParsingContext.AddSuplementaryObject(NewReward);
-            item.QuestRewardList.Add(NewReward);
-        }
-
-        return true;
     }
 
     private bool ParseRewardAbility(PgQuest item, object value, string parsedFile, string parsedKey)
@@ -465,7 +342,7 @@ public class ParserQuest : Parser
         if (!int.TryParse(Split[1], out int FavorValue))
             return Program.ReportFailure(parsedFile, parsedKey, $"NPC favor reward '{effectParameter}': int expected");
 
-        if (!Inserter<PgQuestRewardFavor>.SetNpc((PgNpcLocation npcLocation) => NewReward.FavorNpcLocation = npcLocation, NpcName, parsedFile, parsedKey))
+        if (!Inserter<PgQuestRewardFavor>.SetNpc((PgNpcLocation npcLocation) => NewReward.FavorNpc = npcLocation, NpcName, parsedFile, parsedKey))
             return false;
 
         NewReward.RawFavor = FavorValue;

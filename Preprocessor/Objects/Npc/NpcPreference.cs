@@ -9,7 +9,7 @@ internal class NpcPreference
         Desire = rawNpcPreference.Desire;
         Favor = ParseFavor(rawNpcPreference.Favor, out IsFavorError);
         ParseKeywords(rawNpcPreference.Keywords);
-        Pref = rawNpcPreference.Pref;
+        PreferenceMultiplier = rawNpcPreference.Pref;
     }
 
     private const string ErrorText = "Error";
@@ -84,7 +84,7 @@ internal class NpcPreference
     public List<string>? ItemKeywords { get; set; }
     public string? MinRarityRequirement { get; set; }
     public int? MinValueRequirement { get; set; }
-    public decimal? Pref { get; set; }
+    public decimal? PreferenceMultiplier { get; set; }
     public string? RarityRequirement { get; set; }
     public string? SkillRequirement { get; set; }
     public string? SlotRequirement { get; set; }
@@ -96,7 +96,7 @@ internal class NpcPreference
         Result.Desire = Desire;
         Result.Favor = ToRawFavor(Favor, IsFavorError);
         Result.Keywords = ToRawKeywords();
-        Result.Pref = Pref;
+        Result.Pref = PreferenceMultiplier;
 
         return Result;
     }

@@ -11,4 +11,13 @@ public enum QuestRewardType
     Currency,
     Ability,
     WorkOrderCurrency,
+    Favor,
+    NamedLootProfile,
+    InteractionFlag,
+    LoreBook,
+    Title,
+    ScriptedQuestObjective,
+    SkillLevel,
+    DispelFaeBombSporeBuff,
+    Effect,
 }
