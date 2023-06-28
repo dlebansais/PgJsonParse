@@ -25,7 +25,7 @@ internal class Quest
         MidwayText = rawQuest.MidwayText;
         Name = rawQuest.Name;
         NumExpectedParticipants = rawQuest.NumExpectedParticipants;
-        Objectives = rawQuest.Objectives;
+        Objectives = ParseObjectives(rawQuest.Objectives);
         PreGiveEffects = ParsePreGiveEffects(rawQuest.PreGiveEffects);
         PreGiveItems = rawQuest.PreGiveItems;
         PreGiveRecipes = rawQuest.PreGiveRecipes;
@@ -44,6 +44,18 @@ internal class Quest
         WorkOrderSkill = rawQuest.WorkOrderSkill;
 
         MergeSpecificRewards(rawQuest.Rewards, rawQuest.Reward_Favor, rawQuest.Rewards_Favor, rawQuest.Rewards_NamedLootProfile, rawQuest.Rewards_Effects);
+    }
+
+    private static QuestObjective[]? ParseObjectives(RawQuestObjective[]? rawQuestObjectives)
+    {
+        if (rawQuestObjectives is null)
+            return null;
+
+        QuestObjective[] Result = new QuestObjective[rawQuestObjectives.Length];
+        for (int i = 0; i < rawQuestObjectives.Length; i++)
+            Result[i] = new QuestObjective(rawQuestObjectives[i]);
+
+        return Result;
     }
 
     private static QuestPreGive[]? ParsePreGiveEffects(string[]? content)
@@ -324,7 +336,7 @@ internal class Quest
         Result.MidwayText = MidwayText;
         Result.Name = Name;
         Result.NumExpectedParticipants = NumExpectedParticipants;
-        Result.Objectives = Objectives;
+        Result.Objectives = ToRawQuestObjectives(Objectives);
         Result.PreGiveEffects = ToRawPreGiveEffects(PreGiveEffects);
         Result.PreGiveItems = PreGiveItems;
         Result.PreGiveRecipes = PreGiveRecipes;
@@ -343,6 +355,18 @@ internal class Quest
         Result.WorkOrderSkill = WorkOrderSkill;
 
         (Result.Rewards, Result.Reward_Favor, Result.Rewards_Favor, Result.Rewards_NamedLootProfile, Result.Rewards_Effects) = SplitSpecificRewards();
+
+        return Result;
+    }
+
+    private static RawQuestObjective[]? ToRawQuestObjectives(QuestObjective[]? questObjectives)
+    {
+        if (questObjectives is null)
+            return null;
+
+        RawQuestObjective[] Result = new RawQuestObjective[questObjectives.Length];
+        for (int i = 0; i < questObjectives.Length; i++)
+            Result[i] = questObjectives[i].ToRawQuestObjective();
 
         return Result;
     }

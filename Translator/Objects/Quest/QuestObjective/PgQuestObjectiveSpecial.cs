@@ -9,6 +9,6 @@
         public string? AnatomySkill_Key { get; set; }
         public int MaxAmount { get { return RawMaxAmount.HasValue ? RawMaxAmount.Value : 0; } }
         public int? RawMaxAmount { get; set; }
-        public PgQuestObjectiveRequirement? QuestObjectiveRequirement { get; set; }
+        public PgQuestObjectiveRequirementCollection QuestObjectiveRequirementList { get; set; } = new PgQuestObjectiveRequirementCollection();
     }
 }

@@ -185,14 +185,7 @@ public class ParserQuestObjective : Parser
                         Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => RequirementKeyword = valueEnum, Value);
                         break;
                     case "Requirements":
-                        if (Value is List<object>)
-                        {
-                            Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
-                        }
-                        else
-                        {
-                            Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => Requirement = valueQuestRequirement, Value);
-                        }
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     case "Description":
                     case "GroupId":
@@ -307,7 +300,7 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "Requirements":
-                        Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     case "Description":
                     case "IsHiddenUntilEarlierObjectivesComplete":
@@ -969,7 +962,7 @@ public class ParserQuestObjective : Parser
                         Result = SetIntProperty((int valueInt) => NewItem.RawMaxAmount = valueInt, Value);
                         break;
                     case "Requirements":
-                        Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     case "Description":
                     case "GroupId":
@@ -1116,7 +1109,7 @@ public class ParserQuestObjective : Parser
                         Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
                         break;
                     case "Requirements":
-                        Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     case "BehaviorId":
                         Result = SetStringProperty((string valueString) => NewItem.BehaviorId = valueString, Value);
@@ -1177,7 +1170,7 @@ public class ParserQuestObjective : Parser
                         Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
                         break;
                     case "Requirements":
-                        Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     case "Description":
                     case "GroupId":
@@ -1302,7 +1295,7 @@ public class ParserQuestObjective : Parser
                         Result = ParseCommonFields(NewItem, Key, Value);
                         break;
                     case "Requirements":
-                        Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestObjectiveRequirement) => NewItem.QuestRequirement = valueQuestObjectiveRequirement, Value);
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
@@ -2101,7 +2094,7 @@ public class ParserQuestObjective : Parser
                         Result = ParseCommonFields(NewItem, Key, Value);
                         break;
                     case "Requirements":
-                        Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestRequirement) => NewItem.QuestObjectiveRequirement = valueQuestRequirement, Value);
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
@@ -2207,7 +2200,7 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "Requirements":
-                        Result = Inserter<PgQuestObjectiveRequirement>.SetItemProperty((PgQuestObjectiveRequirement valueQuestObjectiveRequirement) => NewItem.QuestRequirement = valueQuestObjectiveRequirement, Value);
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     case "GroupId":
                     case "Description":

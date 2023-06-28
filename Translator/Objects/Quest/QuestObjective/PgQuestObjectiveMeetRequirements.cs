@@ -2,6 +2,6 @@
 {
     public class PgQuestObjectiveMeetRequirements : PgQuestObjective
     {
-        public PgQuestObjectiveRequirement QuestRequirement { get; set; } = null!;
+        public PgQuestObjectiveRequirementCollection QuestObjectiveRequirementList { get; set; } = new PgQuestObjectiveRequirementCollection();
     }
 }

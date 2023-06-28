@@ -18,7 +18,7 @@ internal class RawQuest
     public string? MidwayText { get; set; }
     public string? Name { get; set; }
     public int? NumExpectedParticipants { get; set; }
-    public QuestObjective[]? Objectives { get; set; }
+    public RawQuestObjective[]? Objectives { get; set; }
     public string[]? PreGiveEffects { get; set; }
     public QuestRewardItem[]? PreGiveItems { get; set; }
     public string[]? PreGiveRecipes { get; set; }

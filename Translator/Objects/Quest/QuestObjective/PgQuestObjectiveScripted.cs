@@ -2,6 +2,6 @@
 {
     public class PgQuestObjectiveScripted : PgQuestObjective
     {
-        public PgQuestObjectiveRequirement? QuestObjectiveRequirement { get; set; }
+        public PgQuestObjectiveRequirementCollection QuestObjectiveRequirementList { get; set; } = new PgQuestObjectiveRequirementCollection();
     }
 }

@@ -3,6 +3,6 @@
     public class PgQuestObjectiveKillElite : PgQuestObjective
     {
         public QuestObjectiveTarget Target { get; set; }
-        public PgQuestObjectiveRequirement? QuestRequirement { get; set; }
+        public PgQuestObjectiveRequirementCollection QuestObjectiveRequirementList { get; set; } = new PgQuestObjectiveRequirementCollection();
     }
 }
