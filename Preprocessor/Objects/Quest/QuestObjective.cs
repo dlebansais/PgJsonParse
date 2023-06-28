@@ -27,7 +27,7 @@ internal class QuestObjective
         MinAmount = rawQuestObjective.MinAmount;
         MinFavorReceived = rawQuestObjective.MinFavorReceived;
         MonsterTypeTag = rawQuestObjective.MonsterTypeTag;
-        NumToDeliver = rawQuestObjective.NumToDeliver;
+        NumberToDeliver = ParseNumToDeliver(rawQuestObjective.NumToDeliver);
         Number = rawQuestObjective.Number;
         Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuestObjective.Requirements, out RequirementsFormat);
         ResultItemKeyword = rawQuestObjective.ResultItemKeyword;
@@ -81,6 +81,14 @@ internal class QuestObjective
         return NewRequirements.ToArray();
     }
 
+    private int? ParseNumToDeliver(string? content)
+    {
+        if (content is null)
+            return null;
+
+        return int.Parse(content);
+    }
+
     public string? AbilityKeyword { get; set; }
     public string? AllowedFishingZone { get; set; }
     public string? AnatomyType { get; set; }
@@ -99,8 +107,8 @@ internal class QuestObjective
     public string? MinAmount { get; set; }
     public string? MinFavorReceived { get; set; }
     public string? MonsterTypeTag { get; set; }
-    public string? NumToDeliver { get; set; }
     public int? Number { get; set; }
+    public int? NumberToDeliver { get; set; }
     public Requirement[]? Requirements { get; set; }
     public string? ResultItemKeyword { get; set; }
     public string? Skill { get; set; }
@@ -130,7 +138,7 @@ internal class QuestObjective
         Result.MinAmount = MinAmount;
         Result.MinFavorReceived = MinFavorReceived;
         Result.MonsterTypeTag = MonsterTypeTag;
-        Result.NumToDeliver = NumToDeliver;
+        Result.NumToDeliver = ToRawNumToDeliver(NumberToDeliver);
         Result.Number = Number;
         Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
         Result.ResultItemKeyword = ResultItemKeyword;
@@ -177,6 +185,14 @@ internal class QuestObjective
             return NewRequirements.ToArray();
         else
             return null;
+    }
+
+    private string? ToRawNumToDeliver(int? mumberToDeliver)
+    {
+        if (mumberToDeliver is null)
+            return null;
+
+        return mumberToDeliver.ToString();
     }
 
     private JsonArrayFormat RequirementsFormat;

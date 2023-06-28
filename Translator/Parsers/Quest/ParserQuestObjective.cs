@@ -52,8 +52,8 @@ public class ParserQuestObjective : Parser
         { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
         { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "Number" } },
         { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "Requirements", "ItemName", "GroupId", "Number", "InternalName" } },
-        { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", /*"InteractionFlag",*/ "GroupId", "Number" } },
-        { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "Number", "InternalName" } },
+        { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
+        { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumberToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "Number", "InternalName" } },
         { QuestObjectiveType.Have, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number", "InternalName" } },
         { QuestObjectiveType.Harvest, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "Number" } },
         { QuestObjectiveType.TipPlayer, new List<string>() { "Type", "Description", "MinAmount", "Number" } },
@@ -521,7 +521,7 @@ public class ParserQuestObjective : Parser
                     case "ItemName":
                         Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
                         break;
-                    case "NumToDeliver":
+                    case "NumberToDeliver":
                         Result = SetIntProperty((int valueInt) => NewItem.RawNumToDeliver = valueInt, Value);
                         break;
                     case "Description":
