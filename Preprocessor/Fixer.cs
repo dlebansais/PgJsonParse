@@ -41,35 +41,6 @@ internal class Fixer
             dictionary.Add(Key, new Attribute() { DisplayRule = "Never", DisplayType = "AsBuffDelta" });
     }
 
-    public static void FixQuests(object objectCollection)
-    {
-        FixQuests((QuestDictionary)objectCollection);
-    }
-
-    private static void FixQuests(QuestDictionary dictionary)
-    {
-        foreach (var Entry in dictionary)
-            if (Entry.Value.Objectives is QuestObjective[] Objectives)
-                foreach (QuestObjective Objective in Objectives)
-                    FixQuestObjective(Objective);
-    }
-
-    private static void FixQuestObjective(QuestObjective objective)
-    {
-        if (objective.Type is string TypeString && TypeString == "Kill" && objective.AbilityKeyword is not null)
-        {
-            List<Requirement> NewRequirements = new();
-
-            if (objective.Requirements is not null)
-                NewRequirements.AddRange(objective.Requirements);
-
-            NewRequirements.Add(new Requirement() { T = "UseAbility", AbilityKeyword = objective.AbilityKeyword });
-
-            objective.Requirements = NewRequirements.ToArray();
-            objective.AbilityKeyword = null;
-        }
-    }
-
     public static void FixRecipes(object objectCollection)
     {
         FixRecipes((RecipeDictionary)objectCollection);

@@ -1,5 +1,8 @@
 ﻿namespace Preprocessor;
 
+using System;
+using System.Collections.Generic;
+
 internal class QuestObjective
 {
     public QuestObjective(RawQuestObjective rawQuestObjective)
@@ -30,6 +33,21 @@ internal class QuestObjective
         StringParam = rawQuestObjective.StringParam;
         Target = Preprocessor.ToSingleOrMultiple<string>(rawQuestObjective.Target, out IsSingleTarget);
         Type = rawQuestObjective.Type;
+
+        if (Type is string TypeString && TypeString == "Kill" && AbilityKeyword is not null)
+        {
+            IsKillWithAbility = true;
+
+            List<Requirement> NewRequirements = new();
+
+            if (Requirements is not null)
+                NewRequirements.AddRange(Requirements);
+
+            NewRequirements.Add(new Requirement() { T = "UseAbility", AbilityKeyword = AbilityKeyword });
+
+            Requirements = NewRequirements.ToArray();
+            AbilityKeyword = null;
+        }
     }
 
     public string? AbilityKeyword { get; set; }
@@ -90,9 +108,28 @@ internal class QuestObjective
         Result.Target = Preprocessor.FromSingleOrMultiple(Target, IsSingleTarget);
         Result.Type = Type;
 
+        if (IsKillWithAbility)
+        {
+            List<Requirement> NewRequirements = new();
+
+            if (Requirements is not null)
+                NewRequirements.AddRange(Requirements);
+
+            Result.AbilityKeyword = NewRequirements[NewRequirements.Count - 1].AbilityKeyword;
+
+            if (NewRequirements.Count > 1)
+            {
+                NewRequirements.RemoveAt(NewRequirements.Count - 1);
+                Result.Requirements = NewRequirements.ToArray();
+            }
+            else
+                Result.Requirements = null;
+        }
+
         return Result;
     }
 
     private bool IsSingleRequirements;
     private bool IsSingleTarget;
+    private bool IsKillWithAbility;
 }
