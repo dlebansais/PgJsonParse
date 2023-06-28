@@ -31,6 +31,7 @@ public class ParserQuestReward : Parser
         { QuestRewardType.SkillLevel, FinishItemSkillLevel },
         { QuestRewardType.DispelFaeBombSporeBuff, FinishItemDispelFaeBombSporeBuff },
         { QuestRewardType.Effect, FinishItemEffect },
+        { QuestRewardType.Item, FinishItemItem },
     };
 
     private static Dictionary<QuestRewardType, List<string>> KnownFieldTable = new Dictionary<QuestRewardType, List<string>>()
@@ -52,6 +53,7 @@ public class ParserQuestReward : Parser
         { QuestRewardType.SkillLevel, new List<string>() { "T", "Skill", "Level" } },
         { QuestRewardType.DispelFaeBombSporeBuff, new List<string>() { "T" } },
         { QuestRewardType.Effect, new List<string>() { "T", "Effect" } },
+        { QuestRewardType.Item, new List<string>() { "T", "Item", "StackSize" } },
     };
 
     private static Dictionary<QuestRewardType, List<string>> HandledTable = new Dictionary<QuestRewardType, List<string>>();
@@ -832,6 +834,52 @@ public class ParserQuestReward : Parser
                         break;
                     case "Effect":
                         Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => NewItem.Effect_Key = PgObject.GetItemKey(valueEffect), Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRewardItem NewItem = new PgQuestRewardItem();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "Item":
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
+                        break;
+                    case "StackSize":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawStackSize = valueInt, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

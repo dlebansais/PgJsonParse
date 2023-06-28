@@ -459,7 +459,6 @@ public class FieldTableStore
         { "ReuseTime", typeof(PgQuestTime) },
         { "IsCancellable", typeof(bool) },
         { "Objectives", typeof(PgQuestObjective[]) },
-        { "Rewards_Items", typeof(PgQuestRewardItem[]) },
         { "QuestNpc", typeof(string) },
         { "FavorNpc", typeof(string) },
         { "PrefaceText", typeof(string) },
@@ -581,6 +580,8 @@ public class FieldTableStore
         { "Title", typeof(int) },
         { "Npc", typeof(string) },
         { "Effect", typeof(string) },
+        { "Item", typeof(string) },
+        { "StackSize", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableQuestPreGiveEffect { get; } = new Dictionary<string, Type>()

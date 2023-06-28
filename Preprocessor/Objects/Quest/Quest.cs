@@ -35,13 +35,12 @@ internal class Quest
         Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.Requirements, out RequirementsFormat);
         RequirementsToSustain = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.RequirementsToSustain, out RequirementsToSustainFormat);
         ReuseTime = ParseReuseTime(rawQuest.ReuseTime_Days, rawQuest.ReuseTime_Hours, rawQuest.ReuseTime_Minutes);
-        Rewards_Items = rawQuest.Rewards_Items;
         SuccessText = rawQuest.SuccessText;
         TSysLevel = rawQuest.TSysLevel;
         Version = rawQuest.Version;
         WorkOrderSkill = rawQuest.WorkOrderSkill;
 
-        MergeSpecificRewards(rawQuest.Rewards, rawQuest.Reward_Favor, rawQuest.Rewards_Favor, rawQuest.Rewards_NamedLootProfile, rawQuest.Rewards_Effects);
+        MergeSpecificRewards(rawQuest.Rewards, rawQuest.Reward_Favor, rawQuest.Rewards_Favor, rawQuest.Rewards_NamedLootProfile, rawQuest.Rewards_Effects, rawQuest.Rewards_Items);
     }
 
     private static QuestObjective[]? ParseObjectives(RawQuestObjective[]? rawQuestObjectives)
@@ -123,7 +122,7 @@ internal class Quest
         return new Time() { Days = rawDays, Hours = rawHours, Minutes = rawMinutes };
     }
 
-    private void MergeSpecificRewards(QuestReward[]? rawRewards, int? rawRewardFavor, int? rawRewardsFavor, string? rawRewardNamedLootProfile, string[]? rawRewardEffects)
+    private void MergeSpecificRewards(QuestReward[]? rawRewards, int? rawRewardFavor, int? rawRewardsFavor, string? rawRewardNamedLootProfile, string[]? rawRewardEffects, QuestRewardItem[]? rawRewardItems)
     {
         List<QuestReward> RewardList = new();
 
@@ -164,6 +163,20 @@ internal class Quest
             }
 
             RewardList.AddRange(RewardEffectList);
+        }
+
+        if (rawRewardItems is not null)
+        {
+            RewardItemCount = rawRewardItems.Length;
+
+            List<QuestReward> RewardItemList = new();
+            foreach (QuestRewardItem RewardItem in rawRewardItems)
+            {
+                QuestReward NewQuestReward = new() { T = "Item", Item = RewardItem.Item, StackSize = RewardItem.StackSize };
+                RewardItemList.Insert(0, NewQuestReward);
+            }
+
+            RewardList.AddRange(RewardItemList);
         }
 
         if (RewardList.Count > 0)
@@ -311,7 +324,6 @@ internal class Quest
     public Requirement[]? RequirementsToSustain { get; set; }
     public Time? ReuseTime { get; set; }
     public QuestReward[]? Rewards { get; set; }
-    public QuestRewardItem[]? Rewards_Items { get; set; }
     public string? SuccessText { get; set; }
     public int? TSysLevel { get; set; }
     public int? Version { get; set; }
@@ -347,13 +359,12 @@ internal class Quest
         Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
         Result.RequirementsToSustain = Preprocessor.FromSingleOrMultiple(RequirementsToSustain, RequirementsToSustainFormat);
         (Result.ReuseTime_Days, Result.ReuseTime_Hours, Result.ReuseTime_Minutes) = SplitReuseTime(ReuseTime);
-        Result.Rewards_Items = Rewards_Items;
         Result.SuccessText = SuccessText;
         Result.TSysLevel = TSysLevel;
         Result.Version = Version;
         Result.WorkOrderSkill = WorkOrderSkill;
 
-        (Result.Rewards, Result.Reward_Favor, Result.Rewards_Favor, Result.Rewards_NamedLootProfile, Result.Rewards_Effects) = SplitSpecificRewards();
+        (Result.Rewards, Result.Reward_Favor, Result.Rewards_Favor, Result.Rewards_NamedLootProfile, Result.Rewards_Effects, Result.Rewards_Items) = SplitSpecificRewards();
 
         return Result;
     }
@@ -414,17 +425,31 @@ internal class Quest
             return (time.Days, time.Hours, time.Minutes);
     }
 
-    private (QuestReward[]?, int?, int?, string?, string[]?) SplitSpecificRewards()
+    private (QuestReward[]?, int?, int?, string?, string[]?, QuestRewardItem[]?) SplitSpecificRewards()
     {
         if (Rewards is null)
         {
             if (HasRewardFavorZero)
-                return (null, 0, null, null, null);
+                return (null, 0, null, null, null, null);
             else
-                return (null, null, null, null, null);
+                return (null, null, null, null, null, null);
         }
 
         int RewardIndex = Rewards.Length - 1;
+
+        QuestRewardItem[]? RawRewardQuestItems;
+        if (RewardItemCount > 0)
+        {
+            RawRewardQuestItems = new QuestRewardItem[RewardItemCount];
+
+            for (int i = 0; i < RewardItemCount; i++)
+            {
+                RawRewardQuestItems[i] = new QuestRewardItem() { Item = Rewards[RewardIndex].Item, StackSize = Rewards[RewardIndex].StackSize };
+                RewardIndex--;
+            }
+        }
+        else
+            RawRewardQuestItems = null;
 
         string[]? RawRewardEffects;
         if (RewardEffectCount > 0)
@@ -470,7 +495,7 @@ internal class Quest
         else
             RawRewards = null;
 
-        return (RawRewards, RawRewardFavor, RawRewardsFavor, RawRewardNamedLootProfile, RawRewardEffects);
+        return (RawRewards, RawRewardFavor, RawRewardsFavor, RawRewardNamedLootProfile, RawRewardEffects, RawRewardQuestItems);
     }
 
     private static string ToRawRewardEffect(QuestReward reward)
@@ -535,4 +560,5 @@ internal class Quest
     private bool HasRewardsFavor;
     private bool HasRewardNamedLootProfile;
     private int RewardEffectCount;
+    private int RewardItemCount;
 }

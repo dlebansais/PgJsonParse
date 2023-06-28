@@ -20,4 +20,5 @@ public enum QuestRewardType
     SkillLevel,
     DispelFaeBombSporeBuff,
     Effect,
+    Item,
 }

@@ -9,12 +9,14 @@ internal class QuestReward
     public string? Effect { get; set; }
     public int? Favor { get; set; }
     public string? InteractionFlag { get; set; }
+    public string? Item { get; set; }
     public int? Level { get; set; }
     public string? LoreBook { get; set; }
     public string? NamedLootProfile { get; set; }
     public string? Npc { get; set; }
     public string? Recipe { get; set; }
     public string? Skill { get; set; }
+    public int? StackSize { get; set; }
     public string? T { get; set; }
     public int? Title { get; set; }
     public int? Xp { get; set; }
