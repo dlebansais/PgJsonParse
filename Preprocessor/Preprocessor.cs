@@ -62,7 +62,7 @@ internal class Preprocessor
             new JsonFile("lorebooks", true, PreprocessDictionary<LoreBookDictionary>, Fixer.NoFix, SaveSerializedContent<LoreBookDictionary>),
             new JsonFile("npcs", false, PreprocessDictionary<NpcDictionary>, Fixer.NoFix, SaveSerializedContent<NpcDictionary>),
             new JsonFile("playertitles", true, PreprocessDictionary<PlayerTitleDictionary>, Fixer.NoFix, SaveSerializedContent<PlayerTitleDictionary>),
-            new JsonFile("quests", true, PreprocessDictionary<QuestDictionary>, Fixer.NoFix, SaveSerializedContent<QuestDictionary>),
+            new JsonFile("quests", true, PreprocessDictionary<QuestDictionary>, Fixer.FixQuests, SaveSerializedContent<QuestDictionary>),
             new JsonFile("recipes", true, PreprocessDictionary<RecipeDictionary>, Fixer.FixRecipes, SaveSerializedContent<RecipeDictionary>),
             new JsonFile("skills", true, PreprocessDictionary<SkillDictionary>, Fixer.FixSkills, SaveSerializedContent<SkillDictionary>),
             new JsonFile("sources_abilities", true, PreprocessDictionary<SourceAbilityDictionary>, Fixer.FixSourceAbilities, SaveSerializedContent<SourceAbilityDictionary>),

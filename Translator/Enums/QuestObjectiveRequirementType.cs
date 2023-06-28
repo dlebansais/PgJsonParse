@@ -12,5 +12,6 @@
         EntityPhysicalState,
         EquipmentSlotEmpty,
         HangOutCompleted,
+        UseAbility,
     }
 }

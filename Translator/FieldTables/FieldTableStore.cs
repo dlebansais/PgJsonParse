@@ -556,6 +556,7 @@ public class FieldTableStore
         { "AllowedStates", typeof(string[]) },
         { "Slot", typeof(string) },
         { "HangOut", typeof(string) },
+        { "AbilityKeyword", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestRewardItem { get; } = new Dictionary<string, Type>()

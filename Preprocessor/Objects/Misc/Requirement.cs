@@ -2,6 +2,7 @@
 
 internal class Requirement
 {
+    public string? AbilityKeyword { get; set; }
     public string[]? AllowedStates { get; set; }
     public string? Appearance { get; set; }
     public string? AreaEvent { get; set; }

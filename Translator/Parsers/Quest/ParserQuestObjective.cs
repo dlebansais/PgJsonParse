@@ -48,7 +48,7 @@ public class ParserQuestObjective : Parser
 
     private static Dictionary<QuestObjectiveType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveType, List<string>>()
     {
-        { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "Description", "AbilityKeyword", "Requirements", "GroupId", "Number", "InternalName" } },
+        { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "Description", "Requirements", "GroupId", "Number", "InternalName" } },
         { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
         { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "Number" } },
         { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "Requirements", "ItemName", "GroupId", "Number", "InternalName" } },
@@ -160,8 +160,6 @@ public class ParserQuestObjective : Parser
         PgQuestObjectiveKill NewItem = new PgQuestObjectiveKill();
 
         bool Result = true;
-        AbilityKeyword RequirementKeyword = AbilityKeyword.Internal_None;
-        PgQuestObjectiveRequirement Requirement = null!;
 
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
@@ -180,9 +178,6 @@ public class ParserQuestObjective : Parser
                         break;
                     case "Target":
                         Result = ParseKillTarget(NewItem, Value, parsedFile, parsedKey);
-                        break;
-                    case "AbilityKeyword":
-                        Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => RequirementKeyword = valueEnum, Value);
                         break;
                     case "Requirements":
                         Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
@@ -207,17 +202,6 @@ public class ParserQuestObjective : Parser
         {
             if (NewItem.Description.Length == 0)
                 return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
-
-            if (RequirementKeyword != AbilityKeyword.Internal_None)
-            {
-                PgQuestObjectiveRequirementUseAbility NewRequirement = new PgQuestObjectiveRequirementUseAbility() { Keyword = RequirementKeyword };
-
-                ParsingContext.AddSuplementaryObject(NewRequirement);
-                NewItem.QuestObjectiveRequirementList.Add(NewRequirement);
-            }
-
-            if (Requirement != null)
-                NewItem.QuestObjectiveRequirementList.Add(Requirement);
 
             item = NewItem;
             return true;

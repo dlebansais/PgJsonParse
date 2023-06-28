@@ -1,5 +1,7 @@
 ﻿namespace Preprocessor;
 
+using System.Collections.Generic;
+
 internal class QuestObjective
 {
     public QuestObjective(RawQuestObjective rawQuestObjective)
@@ -30,10 +32,6 @@ internal class QuestObjective
         StringParam = rawQuestObjective.StringParam;
         Target = rawQuestObjective.Target;
         Type = rawQuestObjective.Type;
-
-        if (IsSingleRequirements)
-        {
-        }
     }
 
     public string? AbilityKeyword { get; set; }
@@ -66,10 +64,6 @@ internal class QuestObjective
     public RawQuestObjective ToRawQuestObjective()
     {
         RawQuestObjective Result = new();
-
-        if (IsSingleRequirements)
-        {
-        }
 
         Result.AbilityKeyword = AbilityKeyword;
         Result.AllowedFishingZone = AllowedFishingZone;
