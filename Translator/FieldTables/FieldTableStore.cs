@@ -468,16 +468,12 @@ public class FieldTableStore
         { "SuccessText", typeof(string) },
         { "MidwayText", typeof(string) },
         { "PrerequisiteFavorLevel", typeof(string) },
-        //{ "Rewards_Favor", typeof(int) },
         { "Requirements", typeof(PgQuestRequirement[]) },
-        //{ "Reward_Favor", typeof(int) },
         { "Rewards", typeof(PgQuestReward[]) },
         { "PreGiveItems", typeof(PgQuestRewardItem[]) },
         { "TSysLevel", typeof(int) },
-        //{ "Rewards_NamedLootProfile", typeof(string) },
         { "PreGiveRecipes", typeof(string[]) },
         { "Keywords", typeof(string[]) },
-        //{ "Rewards_Effects", typeof(string[]) },
         { "IsAutoPreface", typeof(bool) },
         { "IsAutoWrapUp", typeof(bool) },
         { "GroupingName", typeof(string) },
@@ -487,7 +483,7 @@ public class FieldTableStore
         { "WorkOrderSkill", typeof(string) },
         { "DisplayedLocation", typeof(string) },
         { "FollowUpQuests", typeof(string[]) },
-        { "PreGiveEffects", typeof(string[]) },
+        { "PreGiveEffects", typeof(PgQuestPreGiveEffect[]) },
         { "MidwayGiveItems", typeof(PgQuestRewardItem[]) },
     };
 
@@ -586,6 +582,16 @@ public class FieldTableStore
         { "Title", typeof(int) },
         { "Npc", typeof(string) },
         { "Effect", typeof(string) },
+    };
+
+    public static Dictionary<string, Type> TableQuestPreGiveEffect { get; } = new Dictionary<string, Type>()
+    {
+        { "T", typeof(string) },
+        { "Ability", typeof(string) },
+        { "Description", typeof(string) },
+        { "Item", typeof(string) },
+        { "QuestGroup", typeof(string) },
+        { "InteractionFlag", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableRecipe { get; } = new Dictionary<string, Type>()
@@ -826,18 +832,15 @@ public class FieldTableStore
         { typeof(PgQuestObjectiveRequirement), new FixedFieldTable(TableQuestObjectiveRequirement) },
         { typeof(PgQuestRewardItem), new FixedFieldTable(TableQuestRewardItem) },
         { typeof(PgQuestReward), new FixedFieldTable(TableQuestReward) },
+        { typeof(PgQuestPreGiveEffect), new FixedFieldTable(TableQuestPreGiveEffect) },
         { typeof(PgRecipe), new FixedFieldTable(TableRecipe) },
         { typeof(PgRecipeItem), new FixedFieldTable(TableRecipeItem) },
         { typeof(PgRecipeCost), new FixedFieldTable(TableRecipeCost) },
         { typeof(PgRecipeParticle), new FixedFieldTable(TableRecipeParticle) },
         { typeof(PgSkill), new FixedFieldTable(TableSkill) },
-        //{ typeof(PgLevelCapInteractionList), new VariadicFieldTable(typeof(int)) },
-        //{ typeof(PgAdvancementHint), new VariadicFieldTable(typeof(string)) },
         { typeof(PgLevelCapInteraction), new FixedFieldTable(TableLevelCapInteraction) },
         { typeof(PgAdvancementHint), new FixedFieldTable(TableAdvancementHint) },
-        //{ typeof(PgRewardList), new VariadicFieldTable(typeof(PgReward)) },
         { typeof(PgReward), new FixedFieldTable(TableReward) },
-        //{ typeof(PgReportList), new VariadicFieldTable(typeof(string)) },
         { typeof(PgReport), new FixedFieldTable(TableReport) },
         { typeof(PgSource), new FixedFieldTable(TableSource) },
         { typeof(PgSourceEntriesAbility), new FixedFieldTable(TableSourceEntries) },

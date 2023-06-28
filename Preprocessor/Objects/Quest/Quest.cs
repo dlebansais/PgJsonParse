@@ -26,7 +26,7 @@ internal class Quest
         Name = rawQuest.Name;
         NumExpectedParticipants = rawQuest.NumExpectedParticipants;
         Objectives = rawQuest.Objectives;
-        PreGiveEffects = rawQuest.PreGiveEffects;
+        PreGiveEffects = ParsePreGiveEffects(rawQuest.PreGiveEffects);
         PreGiveItems = rawQuest.PreGiveItems;
         PreGiveRecipes = rawQuest.PreGiveRecipes;
         PrefaceText = rawQuest.PrefaceText;
@@ -44,6 +44,68 @@ internal class Quest
         WorkOrderSkill = rawQuest.WorkOrderSkill;
 
         MergeSpecificRewards(rawQuest.Rewards, rawQuest.Reward_Favor, rawQuest.Rewards_Favor, rawQuest.Rewards_NamedLootProfile, rawQuest.Rewards_Effects);
+    }
+
+    private static QuestPreGive[]? ParsePreGiveEffects(string[]? content)
+    {
+        if (content is null)
+            return null;
+
+        QuestPreGive[] Result = new QuestPreGive[content.Length];
+        for (int i = 0; i < content.Length; i++)
+            Result[i] = ParsePreGiveEffect(content[i]);
+
+        return Result;
+    }
+
+    private static QuestPreGive ParsePreGiveEffect(string effect)
+    {
+        string EffectName;
+        string EffectParameter;
+
+        // Search for an expression between parentheses.
+        string ParameterPattern = @"\(([^)]+)\)";
+        Match ParameterMatch = Regex.Match(effect, ParameterPattern, RegexOptions.IgnoreCase);
+        if (ParameterMatch.Success)
+        {
+            EffectName = effect.Substring(0, ParameterMatch.Index);
+            EffectParameter = ParameterMatch.Value.Substring(1, ParameterMatch.Value.Length - 2);
+        }
+        else
+        {
+            EffectName = effect;
+            EffectParameter = string.Empty;
+        }
+
+        switch (EffectName)
+        {
+            case "DeleteWarCacheMapFog":
+                return new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Fog" };
+            case "DeleteWarCacheMapPins":
+                return new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Pins" };
+            case "CreateIlmariWarCacheMap":
+                return ParsePreGiveEffectCreateIlmariWarCacheMap(EffectParameter);
+            case "SetInteractionFlag":
+                return new QuestPreGive() { T = "SetInteractionFlag", InteractionFlag = EffectParameter };
+            case "ClearInteractionFlag":
+                return new QuestPreGive() { T = "ClearInteractionFlag", InteractionFlag = EffectParameter };
+            case "LearnAbility":
+                return new QuestPreGive() { T = "Ability", Ability = EffectParameter };
+            default:
+                throw new InvalidCastException();
+        }
+    }
+
+    private static QuestPreGive ParsePreGiveEffectCreateIlmariWarCacheMap(string effectParameter)
+    {
+        string[] ParameterSplitted = effectParameter.Split(',');
+        if (ParameterSplitted.Length != 2)
+            throw new InvalidCastException();
+
+        string Item = ParameterSplitted[0].Trim();
+        string QuestGroup = ParameterSplitted[1].Trim();
+
+        return new QuestPreGive() { T = "Item", Item = Item, QuestGroup = QuestGroup };
     }
 
     private void MergeSpecificRewards(QuestReward[]? rawRewards, int? rawRewardFavor, int? rawRewardsFavor, string? rawRewardNamedLootProfile, string[]? rawRewardEffects)
@@ -224,7 +286,7 @@ internal class Quest
     public string? Name { get; set; }
     public int? NumExpectedParticipants { get; set; }
     public QuestObjective[]? Objectives { get; set; }
-    public string[]? PreGiveEffects { get; set; }
+    public QuestPreGive[]? PreGiveEffects { get; set; }
     public QuestRewardItem[]? PreGiveItems { get; set; }
     public string[]? PreGiveRecipes { get; set; }
     public string? PrefaceText { get; set; }
@@ -263,7 +325,7 @@ internal class Quest
         Result.Name = Name;
         Result.NumExpectedParticipants = NumExpectedParticipants;
         Result.Objectives = Objectives;
-        Result.PreGiveEffects = PreGiveEffects;
+        Result.PreGiveEffects = ToRawPreGiveEffects(PreGiveEffects);
         Result.PreGiveItems = PreGiveItems;
         Result.PreGiveRecipes = PreGiveRecipes;
         Result.PrefaceText = PrefaceText;
@@ -283,6 +345,42 @@ internal class Quest
         (Result.Rewards, Result.Reward_Favor, Result.Rewards_Favor, Result.Rewards_NamedLootProfile, Result.Rewards_Effects) = SplitSpecificRewards();
 
         return Result;
+    }
+
+    private static string[]? ToRawPreGiveEffects(QuestPreGive[]? questPreGive)
+    {
+        if (questPreGive is null)
+            return null;
+
+        string[] Result = new string[questPreGive.Length];
+        for (int i = 0; i < questPreGive.Length; i++)
+            Result[i] = ToRawPreGiveEffect(questPreGive[i]);
+
+        return Result;
+    }
+
+    private static string ToRawPreGiveEffect(QuestPreGive effect)
+    {
+        switch (effect.T)
+        {
+            case "Effect":
+                if (effect.Description == "Delete War Cache Map Fog")
+                    return "DeleteWarCacheMapFog";
+                else if (effect.Description == "Delete War Cache Map Pins")
+                    return "DeleteWarCacheMapPins";
+                else
+                    throw new InvalidCastException();
+            case "Item":
+                return $"CreateIlmariWarCacheMap({effect.Item},{effect.QuestGroup})";
+            case "SetInteractionFlag":
+                return $"SetInteractionFlag({effect.InteractionFlag})";
+            case "ClearInteractionFlag":
+                return $"ClearInteractionFlag({effect.InteractionFlag})";
+            case "Ability":
+                return $"LearnAbility({effect.Ability})";
+            default:
+                throw new InvalidCastException();
+        }
     }
 
     private (QuestReward[]?, int?, int?, string?, string[]?) SplitSpecificRewards()
