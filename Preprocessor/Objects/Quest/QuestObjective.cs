@@ -29,7 +29,7 @@ internal class QuestObjective
         MonsterTypeTag = rawQuestObjective.MonsterTypeTag;
         NumToDeliver = rawQuestObjective.NumToDeliver;
         Number = rawQuestObjective.Number;
-        Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuestObjective.Requirements, out IsSingleRequirements);
+        Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuestObjective.Requirements, out RequirementsFormat);
         ResultItemKeyword = rawQuestObjective.ResultItemKeyword;
         Skill = rawQuestObjective.Skill;
         StringParam = rawQuestObjective.StringParam;
@@ -44,7 +44,7 @@ internal class QuestObjective
         }
 
         // For targets in a specific area, move the area to a requirement.
-        string[]? Targets = Preprocessor.ToSingleOrMultiple<string>(rawQuestObjective.Target, out IsSingleTarget);
+        string[]? Targets = Preprocessor.ToSingleOrMultiple<string>(rawQuestObjective.Target, out TargetFormat);
         if (Targets is not null)
         {
             if (Targets.Length == 1)
@@ -132,7 +132,7 @@ internal class QuestObjective
         Result.MonsterTypeTag = MonsterTypeTag;
         Result.NumToDeliver = NumToDeliver;
         Result.Number = Number;
-        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, IsSingleRequirements);
+        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
         Result.ResultItemKeyword = ResultItemKeyword;
         Result.Skill = Skill;
         Result.StringParam = StringParam;
@@ -159,7 +159,7 @@ internal class QuestObjective
         }
         else
             Targets = null;
-        Result.Target = Preprocessor.FromSingleOrMultiple(Targets, IsSingleTarget);
+        Result.Target = Preprocessor.FromSingleOrMultiple(Targets, TargetFormat);
 
         return Result;
     }
@@ -179,8 +179,8 @@ internal class QuestObjective
             return null;
     }
 
-    private bool IsSingleRequirements;
-    private bool IsSingleTarget;
+    private JsonArrayFormat RequirementsFormat;
+    private JsonArrayFormat TargetFormat;
     private Requirement? RequirementKillWithAbility;
     private Requirement? RequirementTargetInArea;
 }

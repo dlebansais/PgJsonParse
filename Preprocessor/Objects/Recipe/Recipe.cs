@@ -21,7 +21,7 @@ internal class Recipe
         MaxUses = rawRecipe.MaxUses;
         Name = rawRecipe.Name;
         NumResultItems = rawRecipe.NumResultItems;
-        OtherRequirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawRecipe.OtherRequirements, out IsOtherRequirementsSingle);
+        OtherRequirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawRecipe.OtherRequirements, out OtherRequirementsFormat);
         Particle = RecipeParticle.Parse(rawRecipe.Particle);
         PrereqRecipe = rawRecipe.PrereqRecipe;
         ProtoResultItems = rawRecipe.ProtoResultItems;
@@ -110,7 +110,7 @@ internal class Recipe
         Result.MaxUses = MaxUses;
         Result.Name = Name;
         Result.NumResultItems = NumResultItems;
-        Result.OtherRequirements = Preprocessor.FromSingleOrMultiple(OtherRequirements, IsOtherRequirementsSingle);
+        Result.OtherRequirements = Preprocessor.FromSingleOrMultiple(OtherRequirements, OtherRequirementsFormat);
         Result.Particle = RecipeParticle.ToString(Particle);
         Result.PrereqRecipe = PrereqRecipe;
         Result.ProtoResultItems = ProtoResultItems;
@@ -138,5 +138,5 @@ internal class Recipe
         return Result;
     }
 
-    private readonly bool IsOtherRequirementsSingle;
+    private readonly JsonArrayFormat OtherRequirementsFormat;
 }

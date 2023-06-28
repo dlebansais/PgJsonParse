@@ -126,7 +126,7 @@ internal class Preprocessor
 
         string ReadContent = GetReadContent(SourceFilePath, isPretty);
         result = GetDeserializedObjects<T>(ReadContent);
-        EnsureAlphabeticalOrder(typeof(T));
+        EnsureAlphabeticalOrder(typeof(T), new List<Type>());
         string WriteContent = GetWriteContent(result, isPretty);
 
         if (ReadContent != WriteContent)
@@ -177,7 +177,7 @@ internal class Preprocessor
         return Result;
     }
 
-    private void EnsureAlphabeticalOrder(Type type)
+    private void EnsureAlphabeticalOrder(Type type, List<Type> visitedTypes)
     {
         PropertyInfo[] Properties;
 
@@ -201,7 +201,11 @@ internal class Preprocessor
                 if (PropertyType.IsArray)
                     PropertyType = PropertyType.GetElementType();
 
-                EnsureAlphabeticalOrder(PropertyType);
+                if (!visitedTypes.Contains(PropertyType))
+                {
+                    visitedTypes.Add(PropertyType);
+                    EnsureAlphabeticalOrder(PropertyType, visitedTypes);
+                }
             }
         }
 
@@ -256,33 +260,59 @@ internal class Preprocessor
         Writer.Write(CuratedContent);
     }
 
-    public static object? FromSingleOrMultiple<T>(T[]? items, bool isSingle)
+    public static object? FromSingleOrMultiple<T>(T[]? items, JsonArrayFormat format)
     {
         if (items is null)
             return null;
-        else if (isSingle)
-            return items[0];
         else
-            return items;
+            switch (format)
+            {
+            case JsonArrayFormat.Null:
+                default:
+                    return null;
+                case JsonArrayFormat.SingleElement:
+                    return items[0];
+                case JsonArrayFormat.Normal:
+                    return items;
+                case JsonArrayFormat.NestedArray:
+                    T[][] NestedItems = new T[1][];
+                    NestedItems[0] = items;
+                    return NestedItems;
+                case JsonArrayFormat.MixedArray:
+                    T[] SecondArray = new T[items.Length - 1];
+                    for (int i = 0; i + 1 < items.Length; i++)
+                        SecondArray[i] = items[i + 1];
+                    return new object[2] { items[0]!, SecondArray };
+            }
     }
 
-    public static T[]? ToSingleOrMultiple<T>(object? element, out bool isSingle)
+    public static T[]? ToSingleOrMultiple<T>(object? element, out JsonArrayFormat format)
     {
         T[]? Result;
 
         if (element is null)
         {
-            isSingle = false;
+            format = JsonArrayFormat.Null;
             return null;
         }
         else if (ToSingleItem<T>(element, out Result))
         {
-            isSingle = true;
+            format = JsonArrayFormat.SingleElement;
+            return Result;
+        }
+        else if (ToMixedArray<T>(element, out Result))
+        {
+            format = JsonArrayFormat.MixedArray;
+            return Result;
+        }
+        else if (ToNestedArray<T>(element, out Result))
+        {
+            format = JsonArrayFormat.NestedArray;
             return Result;
         }
         else if (ToMultipleItems<T>(element, out Result))
         {
-            isSingle = false;
+            format = JsonArrayFormat.Normal;
             return Result;
         }
         else
@@ -322,6 +352,65 @@ internal class Preprocessor
                 result[i] = AsMultiple[i].Deserialize<T>() ?? throw new InvalidCastException();
 
             return true;
+        }
+
+        result = null!;
+        return false;
+    }
+
+    public static bool ToNestedArray<T>(object element, out T[] result)
+    {
+        if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
+        {
+            int ArrayLength = AsMultiple.GetArrayLength();
+            if (ArrayLength == 1)
+            {
+                var Enumerator = AsMultiple.EnumerateArray();
+                Enumerator.MoveNext();
+                JsonElement FirstElement = Enumerator.Current;
+
+                if (FirstElement.ValueKind == JsonValueKind.Array)
+                {
+                    ArrayLength = FirstElement.GetArrayLength();
+                    result = new T[ArrayLength];
+
+                    for (int i = 0; i < ArrayLength; i++)
+                        result[i] = FirstElement[i].Deserialize<T>() ?? throw new InvalidCastException();
+
+                    return true;
+                }
+            }
+        }
+
+        result = null!;
+        return false;
+    }
+
+    public static bool ToMixedArray<T>(object element, out T[] result)
+    {
+        if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
+        {
+            int ArrayLength = AsMultiple.GetArrayLength();
+            if (ArrayLength == 2)
+            {
+                var Enumerator = AsMultiple.EnumerateArray();
+                Enumerator.MoveNext();
+                JsonElement FirstElement = Enumerator.Current;
+                Enumerator.MoveNext();
+                JsonElement SecondElement = Enumerator.Current;
+
+                if (FirstElement.ValueKind == JsonValueKind.Object && SecondElement.ValueKind == JsonValueKind.Array)
+                {
+                    ArrayLength = SecondElement.GetArrayLength();
+                    result = new T[ArrayLength + 1];
+
+                    result[0] = FirstElement.Deserialize<T>() ?? throw new InvalidCastException();
+                    for (int i = 0; i < ArrayLength; i++)
+                        result[i + 1] = SecondElement[i].Deserialize<T>() ?? throw new InvalidCastException();
+
+                    return true;
+                }
+            }
         }
 
         result = null!;

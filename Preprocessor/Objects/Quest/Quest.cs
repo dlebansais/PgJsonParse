@@ -32,7 +32,7 @@ internal class Quest
         PrefaceText = rawQuest.PrefaceText;
         PrerequisiteFavorLevel = rawQuest.PrerequisiteFavorLevel;
         QuestNpc = rawQuest.QuestNpc;
-        Requirements = rawQuest.Requirements;
+        Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.Requirements, out RequirementsFormat);
         RequirementsToSustain = rawQuest.RequirementsToSustain;
         ReuseTime_Days = rawQuest.ReuseTime_Days;
         ReuseTime_Hours = rawQuest.ReuseTime_Hours;
@@ -304,7 +304,7 @@ internal class Quest
     public string? PrefaceText { get; set; }
     public string? PrerequisiteFavorLevel { get; set; }
     public string? QuestNpc { get; set; }
-    public object? Requirements { get; set; }
+    public Requirement[]? Requirements { get; set; }
     public object? RequirementsToSustain { get; set; }
     public int? ReuseTime_Days { get; set; }
     public int? ReuseTime_Hours { get; set; }
@@ -343,7 +343,7 @@ internal class Quest
         Result.PrefaceText = PrefaceText;
         Result.PrerequisiteFavorLevel = PrerequisiteFavorLevel;
         Result.QuestNpc = QuestNpc;
-        Result.Requirements = Requirements;
+        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
         Result.RequirementsToSustain = RequirementsToSustain;
         Result.ReuseTime_Days = ReuseTime_Days;
         Result.ReuseTime_Hours = ReuseTime_Hours;
@@ -521,6 +521,7 @@ internal class Quest
         { "Event_Halloween_NotAfraidOfLungs", 5024 },
     };
 
+    private JsonArrayFormat RequirementsFormat;
     private bool HasRewardFavor;
     private bool HasRewardFavorZero;
     private bool HasRewardsFavor;
