@@ -407,6 +407,17 @@ public class ParserQuestRequirement : Parser
                 return Result;
             }
         }
+        else
+        {
+            if (!AreaString.StartsWith("Area"))
+                return Program.ReportFailure(parsedFile, parsedKey, $"'{AreaString}' does not contain an area name");
+
+            string AreaName = AreaString.Substring(4);
+            if (!StringToEnumConversion<MapAreaName>.TryParse(AreaName, out areaName))
+                return false;
+
+            return true;
+        }
 
         return Program.ReportFailure(parsedFile, parsedKey, $"Unknown area '{AreaString}'");
     }

@@ -513,7 +513,7 @@ public class FieldTableStore
     public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()
     {
         { "Type", typeof(string) },
-        { "Target", typeof(StringOrStringArray) },
+        { "Target", typeof(string) },
         { "Description", typeof(string) },
         { "Number", typeof(int) },
         { "InteractionFlags", typeof(string[]) },

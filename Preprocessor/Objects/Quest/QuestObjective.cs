@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 internal class QuestObjective
 {
+    private const string AreaHeader = "Area:";
+
     public QuestObjective(RawQuestObjective rawQuestObjective)
     {
         AbilityKeyword = rawQuestObjective.AbilityKeyword;
@@ -31,23 +33,52 @@ internal class QuestObjective
         ResultItemKeyword = rawQuestObjective.ResultItemKeyword;
         Skill = rawQuestObjective.Skill;
         StringParam = rawQuestObjective.StringParam;
-        Target = Preprocessor.ToSingleOrMultiple<string>(rawQuestObjective.Target, out IsSingleTarget);
         Type = rawQuestObjective.Type;
 
+        // For kill objectives, move AbilityKeyword to a requirement.
         if (Type is string TypeString && TypeString == "Kill" && AbilityKeyword is not null)
         {
-            IsKillWithAbility = true;
-
-            List<Requirement> NewRequirements = new();
-
-            if (Requirements is not null)
-                NewRequirements.AddRange(Requirements);
-
-            NewRequirements.Add(new Requirement() { T = "UseAbility", AbilityKeyword = AbilityKeyword });
-
-            Requirements = NewRequirements.ToArray();
+            RequirementKillWithAbility = new Requirement() { T = "UseAbility", AbilityKeyword = AbilityKeyword };
+            Requirements = AddRequirement(Requirements, RequirementKillWithAbility);
             AbilityKeyword = null;
         }
+
+        // For targets in a specific area, move the area to a requirement.
+        string[]? Targets = Preprocessor.ToSingleOrMultiple<string>(rawQuestObjective.Target, out IsSingleTarget);
+        if (Targets is not null)
+        {
+            if (Targets.Length == 1)
+                Target = Targets[0];
+            else if (Targets.Length == 2)
+            {
+                Target = Targets[0].Trim();
+                string TargetArea = Targets[1].Trim();
+
+                if (TargetArea.StartsWith(AreaHeader))
+                {
+                    string AreaEvent = TargetArea.Substring(AreaHeader.Length);
+
+                    RequirementTargetInArea = new Requirement() { T = "AreaEventOff", AreaEvent = AreaEvent };
+                    Requirements = AddRequirement(Requirements, RequirementTargetInArea);
+                }
+                else
+                    throw new InvalidCastException();
+            }
+            else
+                throw new InvalidCastException();
+        }
+    }
+
+    private static Requirement[]? AddRequirement(Requirement[]? requirements, Requirement newRequirement)
+    {
+        List<Requirement> NewRequirements = new();
+
+        if (requirements is not null)
+            NewRequirements.AddRange(requirements);
+
+        NewRequirements.Add(newRequirement);
+
+        return NewRequirements.ToArray();
     }
 
     public string? AbilityKeyword { get; set; }
@@ -74,7 +105,7 @@ internal class QuestObjective
     public string? ResultItemKeyword { get; set; }
     public string? Skill { get; set; }
     public string? StringParam { get; set; }
-    public string[]? Target { get; set; }
+    public string? Target { get; set; }
     public string? Type { get; set; }
 
     public RawQuestObjective ToRawQuestObjective()
@@ -105,31 +136,51 @@ internal class QuestObjective
         Result.ResultItemKeyword = ResultItemKeyword;
         Result.Skill = Skill;
         Result.StringParam = StringParam;
-        Result.Target = Preprocessor.FromSingleOrMultiple(Target, IsSingleTarget);
         Result.Type = Type;
 
-        if (IsKillWithAbility)
+        if (RequirementKillWithAbility is not null)
         {
-            List<Requirement> NewRequirements = new();
+            Result.AbilityKeyword = RequirementKillWithAbility.AbilityKeyword;
+            Result.Requirements = RemoveRequirement(Result.Requirements, RequirementKillWithAbility);
+        }
 
-            if (Requirements is not null)
-                NewRequirements.AddRange(Requirements);
-
-            Result.AbilityKeyword = NewRequirements[NewRequirements.Count - 1].AbilityKeyword;
-
-            if (NewRequirements.Count > 1)
+        string[]? Targets;
+        if (Target is not null)
+        {
+            if (RequirementTargetInArea is not null)
             {
-                NewRequirements.RemoveAt(NewRequirements.Count - 1);
-                Result.Requirements = NewRequirements.ToArray();
+                string TargetArea = $"{AreaHeader}{RequirementTargetInArea.AreaEvent}";
+                Targets = new string[] { Target, TargetArea };
+
+                Result.Requirements = RemoveRequirement(Result.Requirements, RequirementTargetInArea);
             }
             else
-                Result.Requirements = null;
+                Targets = new string[] { Target };
         }
+        else
+            Targets = null;
+        Result.Target = Preprocessor.FromSingleOrMultiple(Targets, IsSingleTarget);
 
         return Result;
     }
 
+    private static Requirement[]? RemoveRequirement(object? requirements, Requirement removedRequirement)
+    {
+        List<Requirement> NewRequirements = new();
+
+        if (requirements is Requirement[] ExistingRequirements)
+            NewRequirements.AddRange(ExistingRequirements);
+
+        NewRequirements.Remove(removedRequirement);
+
+        if (NewRequirements.Count > 0)
+            return NewRequirements.ToArray();
+        else
+            return null;
+    }
+
     private bool IsSingleRequirements;
     private bool IsSingleTarget;
-    private bool IsKillWithAbility;
+    private Requirement? RequirementKillWithAbility;
+    private Requirement? RequirementTargetInArea;
 }
