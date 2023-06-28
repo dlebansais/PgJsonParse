@@ -16,19 +16,19 @@ internal class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardCol
         return Result;
     }
 
-    private void ReadTableDictionary(SkillRewardCollection dictionary, ref Utf8JsonReader reader, JsonSerializerOptions options)
+    private void ReadTableDictionary(SkillRewardCollection collection, ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
             string Key = reader.GetString() ?? throw new InvalidCastException();
             reader.Read();
 
-            SkillReward? Reward = null;
+            RawSkillReward? RawReward = null;
             Exception? Exception1 = null;
 
             try
             {
-                Reward = JsonSerializer.Deserialize<SkillReward>(ref reader, options);
+                RawReward = JsonSerializer.Deserialize<RawSkillReward>(ref reader, options);
             }
             catch (Exception Exception)
             {
@@ -47,11 +47,11 @@ internal class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardCol
                         Races[i - 1] = SplittedKey[i];
                 }
 
-                if (Reward is not null)
+                if (RawReward is not null)
                 {
-                    Reward.Level = Level;
-                    Reward.Races = Races;
-                    dictionary.Add(Reward);
+                    RawReward.Level = Level;
+                    RawReward.Races = Races;
+                    collection.Add(new SkillReward(RawReward));
                 }
                 else
                 {
@@ -79,23 +79,20 @@ internal class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardCol
 
         foreach (SkillReward Reward in value)
         {
+            RawSkillReward RawReward = Reward.ToRawSkillReward();
+
             string Key;
 
-            if (Reward.Races is null)
-                Key = Reward.Level.ToString();
+            if (RawReward.Races is null)
+                Key = RawReward.Level.ToString();
             else
-                Key = $"{Reward.Level}_{string.Join("_", Reward.Races)}";
+                Key = $"{RawReward.Level}_{string.Join("_", RawReward.Races)}";
 
-            int? Level = Reward.Level;
-            string[]? Races = Reward.Races;
-            Reward.Level = null;
-            Reward.Races = null;
+            RawReward.Level = null;
+            RawReward.Races = null;
 
             writer.WritePropertyName(Key);
-            JsonSerializer.Serialize(writer, Reward, options);
-
-            Reward.Level = Level;
-            Reward.Races = Races;
+            JsonSerializer.Serialize(writer, RawReward, options);
         }
 
         writer.WriteEndObject();

@@ -33,7 +33,7 @@ internal class Quest
         PrerequisiteFavorLevel = rawQuest.PrerequisiteFavorLevel;
         QuestNpc = rawQuest.QuestNpc;
         Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.Requirements, out RequirementsFormat);
-        RequirementsToSustain = rawQuest.RequirementsToSustain;
+        RequirementsToSustain = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.RequirementsToSustain, out RequirementsToSustainFormat);
         ReuseTime_Days = rawQuest.ReuseTime_Days;
         ReuseTime_Hours = rawQuest.ReuseTime_Hours;
         ReuseTime_Minutes = rawQuest.ReuseTime_Minutes;
@@ -305,7 +305,7 @@ internal class Quest
     public string? PrerequisiteFavorLevel { get; set; }
     public string? QuestNpc { get; set; }
     public Requirement[]? Requirements { get; set; }
-    public object? RequirementsToSustain { get; set; }
+    public Requirement[]? RequirementsToSustain { get; set; }
     public int? ReuseTime_Days { get; set; }
     public int? ReuseTime_Hours { get; set; }
     public int? ReuseTime_Minutes { get; set; }
@@ -344,7 +344,7 @@ internal class Quest
         Result.PrerequisiteFavorLevel = PrerequisiteFavorLevel;
         Result.QuestNpc = QuestNpc;
         Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
-        Result.RequirementsToSustain = RequirementsToSustain;
+        Result.RequirementsToSustain = Preprocessor.FromSingleOrMultiple(RequirementsToSustain, RequirementsToSustainFormat);
         Result.ReuseTime_Days = ReuseTime_Days;
         Result.ReuseTime_Hours = ReuseTime_Hours;
         Result.ReuseTime_Minutes = ReuseTime_Minutes;
@@ -522,6 +522,7 @@ internal class Quest
     };
 
     private JsonArrayFormat RequirementsFormat;
+    private JsonArrayFormat RequirementsToSustainFormat;
     private bool HasRewardFavor;
     private bool HasRewardFavorZero;
     private bool HasRewardsFavor;

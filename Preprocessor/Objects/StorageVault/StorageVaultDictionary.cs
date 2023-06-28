@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class StorageVaultDictionary : Dictionary<string, StorageVault>, IDictionaryValueBuilder<StorageVault, StorageVault>
+internal class StorageVaultDictionary : Dictionary<string, StorageVault>, IDictionaryValueBuilder<StorageVault, RawStorageVault>
 {
-    public StorageVault FromRaw(StorageVault storageVault) => storageVault;
-    public StorageVault ToRaw(StorageVault storageVault) => storageVault;
+    public StorageVault FromRaw(RawStorageVault rawStorageVault) => new StorageVault(rawStorageVault);
+    public RawStorageVault ToRaw(StorageVault storageVault) => storageVault.ToRawStorageVault();
 }

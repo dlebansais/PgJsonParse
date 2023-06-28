@@ -50,7 +50,7 @@ public class ParserStorageVault : Parser
                     Result = Inserter<PgStorageFavorLevel>.SetItemProperty((PgStorageFavorLevel valueStorageFavorLevel) => item.Levels = valueStorageFavorLevel, Value);
                     break;
                 case "Requirements":
-                    Result = Inserter<PgStorageRequirement>.SetItemProperty((PgStorageRequirement valueStorageRequirement) => item.Requirement = valueStorageRequirement, Value);
+                    Result = Inserter<PgStorageRequirement>.AddKeylessArray(item.RequirementList, Value);
                     break;
                 case "RequirementDescription":
                     Result = SetStringProperty((string valueString) => item.RequirementDescription = valueString, Value);

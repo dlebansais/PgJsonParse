@@ -48,7 +48,7 @@ public class ParserQuestObjective : Parser
 
     private static Dictionary<QuestObjectiveType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveType, List<string>>()
     {
-        { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "TargetArea", "Description", "Requirements", "GroupId", "Number", "InternalName" } },
+        { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "Description", "Requirements", "GroupId", "Number", "InternalName" } },
         { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
         { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "Number" } },
         { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "Requirements", "ItemName", "GroupId", "Number", "InternalName" } },

@@ -31,7 +31,7 @@ public class ParserReward : Parser
 
             switch (Key)
             {
-                case "Ability":
+                case "Abilities":
                     Result = ParseAbility(item, Value, parsedFile, parsedKey);
                     break;
                 case "BonusToSkill":

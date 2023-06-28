@@ -708,7 +708,7 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TableReward { get; } = new Dictionary<string, Type>()
     {
-        { "Ability", typeof(StringOrStringArray) },
+        { "Abilities", typeof(StringOrStringArray) },
         { "BonusToSkill", typeof(string) },
         { "Recipe", typeof(string) },
         { "Notes", typeof(string) },
@@ -749,7 +749,7 @@ public class FieldTableStore
         { "NumSlots", typeof(int) },
         { "HasAssociatedNpc", typeof(bool) },
         { "Levels", typeof(PgStorageFavorLevel) },
-        { "Requirements", typeof(PgStorageRequirement) },
+        { "Requirements", typeof(PgStorageRequirement[]) },
         { "RequirementDescription", typeof(string) },
         { "Grouping", typeof(string) },
         { "RequiredItemKeywords", typeof(string[]) },

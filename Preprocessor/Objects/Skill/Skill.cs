@@ -2,6 +2,32 @@
 
 internal class Skill
 {
+    public Skill(RawSkill rawSkill)
+    {
+        AdvancementHints = rawSkill.AdvancementHints;
+        AdvancementTable = rawSkill.AdvancementTable;
+        AuxCombat = rawSkill.AuxCombat;
+        Combat = rawSkill.Combat;
+        Description = rawSkill.Description;
+        GuestLevelCap = rawSkill.GuestLevelCap;
+        HideWhenZero = rawSkill.HideWhenZero;
+        Id = rawSkill.Id;
+        InteractionFlagLevelCaps = rawSkill.InteractionFlagLevelCaps;
+        IsFakeCombatSkill = rawSkill.IsFakeCombatSkill;
+        IsUmbrellaSkill = rawSkill.IsUmbrellaSkill;
+        MaxBonusLevels = rawSkill.MaxBonusLevels;
+        Name = rawSkill.Name;
+        Parents = rawSkill.Parents;
+        RecipeIngredientKeywords = rawSkill.RecipeIngredientKeywords;
+        Reports = rawSkill.Reports;
+        Rewards = rawSkill.Rewards;
+        SkillLevelDisparityApplies = rawSkill.SkillLevelDisparityApplies;
+        SkipBonusLevelsIfSkillUnlearned = rawSkill.SkipBonusLevelsIfSkillUnlearned;
+        TSysCompatibleCombatSkills = rawSkill.TSysCompatibleCombatSkills;
+        XpTable = rawSkill.XpTable;
+        _RecipeIngredientKeywords = rawSkill._RecipeIngredientKeywords;
+    }
+
     public SkillAdvancementHintCollection? AdvancementHints { get; set; }
     public string? AdvancementTable { get; set; }
     public bool? AuxCombat { get; set; }
@@ -24,4 +50,34 @@ internal class Skill
     public string[]? TSysCompatibleCombatSkills { get; set; }
     public string? XpTable { get; set; }
     public string[]? _RecipeIngredientKeywords { get; set; }
+
+    public RawSkill ToRawSkill()
+    {
+        RawSkill Result = new();
+
+        Result.AdvancementHints = AdvancementHints;
+        Result.AdvancementTable = AdvancementTable;
+        Result.AuxCombat = AuxCombat;
+        Result.Combat = Combat;
+        Result.Description = Description;
+        Result.GuestLevelCap = GuestLevelCap;
+        Result.HideWhenZero = HideWhenZero;
+        Result.Id = Id;
+        Result.InteractionFlagLevelCaps = InteractionFlagLevelCaps;
+        Result.IsFakeCombatSkill = IsFakeCombatSkill;
+        Result.IsUmbrellaSkill = IsUmbrellaSkill;
+        Result.MaxBonusLevels = MaxBonusLevels;
+        Result.Name = Name;
+        Result.Parents = Parents;
+        Result.RecipeIngredientKeywords = RecipeIngredientKeywords;
+        Result.Reports = Reports;
+        Result.Rewards = Rewards;
+        Result.SkillLevelDisparityApplies = SkillLevelDisparityApplies;
+        Result.SkipBonusLevelsIfSkillUnlearned = SkipBonusLevelsIfSkillUnlearned;
+        Result.TSysCompatibleCombatSkills = TSysCompatibleCombatSkills;
+        Result.XpTable = XpTable;
+        Result._RecipeIngredientKeywords = _RecipeIngredientKeywords;
+
+        return Result;
+    }
 }

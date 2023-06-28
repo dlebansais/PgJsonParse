@@ -14,7 +14,7 @@
         public bool? RawHasAssociatedNpc { get; set; }
         public PgNpcLocation? AssociatedNpc { get; set; }
         public PgStorageFavorLevel? Levels { get; set; }
-        public PgStorageRequirement? Requirement { get; set; }
+        public PgStorageRequirementCollection RequirementList { get; set; } = new();
         public string RequirementDescription { get; set; } = string.Empty;
         public MapAreaName Grouping { get; set; }
         public List<ItemKeyword> RequiredItemKeywordList { get; set; } = new List<ItemKeyword>();
