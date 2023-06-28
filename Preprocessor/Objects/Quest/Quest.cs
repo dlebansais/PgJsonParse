@@ -24,7 +24,7 @@ internal class Quest
         MidwayGiveItems = rawQuest.MidwayGiveItems;
         MidwayText = rawQuest.MidwayText;
         Name = rawQuest.Name;
-        NumExpectedParticipants = rawQuest.NumExpectedParticipants;
+        NumberOfExpectedParticipants = rawQuest.NumExpectedParticipants;
         Objectives = ParseObjectives(rawQuest.Objectives);
         PreGiveEffects = ParsePreGiveEffects(rawQuest.PreGiveEffects);
         PreGiveItems = rawQuest.PreGiveItems;
@@ -34,9 +34,7 @@ internal class Quest
         QuestNpc = rawQuest.QuestNpc;
         Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.Requirements, out RequirementsFormat);
         RequirementsToSustain = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.RequirementsToSustain, out RequirementsToSustainFormat);
-        ReuseTime_Days = rawQuest.ReuseTime_Days;
-        ReuseTime_Hours = rawQuest.ReuseTime_Hours;
-        ReuseTime_Minutes = rawQuest.ReuseTime_Minutes;
+        ReuseTime = ParseReuseTime(rawQuest.ReuseTime_Days, rawQuest.ReuseTime_Hours, rawQuest.ReuseTime_Minutes);
         Rewards_Items = rawQuest.Rewards_Items;
         SuccessText = rawQuest.SuccessText;
         TSysLevel = rawQuest.TSysLevel;
@@ -118,6 +116,11 @@ internal class Quest
         string QuestGroup = ParameterSplitted[1].Trim();
 
         return new QuestPreGive() { T = "Item", Item = Item, QuestGroup = QuestGroup };
+    }
+
+    private static Time ParseReuseTime(int? rawDays, int? rawHours, int? rawMinutes)
+    {
+        return new Time() { Days = rawDays, Hours = rawHours, Minutes = rawMinutes };
     }
 
     private void MergeSpecificRewards(QuestReward[]? rawRewards, int? rawRewardFavor, int? rawRewardsFavor, string? rawRewardNamedLootProfile, string[]? rawRewardEffects)
@@ -296,7 +299,7 @@ internal class Quest
     public QuestRewardItem[]? MidwayGiveItems { get; set; }
     public string? MidwayText { get; set; }
     public string? Name { get; set; }
-    public int? NumExpectedParticipants { get; set; }
+    public int? NumberOfExpectedParticipants { get; set; }
     public QuestObjective[]? Objectives { get; set; }
     public QuestPreGive[]? PreGiveEffects { get; set; }
     public QuestRewardItem[]? PreGiveItems { get; set; }
@@ -306,9 +309,7 @@ internal class Quest
     public string? QuestNpc { get; set; }
     public Requirement[]? Requirements { get; set; }
     public Requirement[]? RequirementsToSustain { get; set; }
-    public int? ReuseTime_Days { get; set; }
-    public int? ReuseTime_Hours { get; set; }
-    public int? ReuseTime_Minutes { get; set; }
+    public Time? ReuseTime { get; set; }
     public QuestReward[]? Rewards { get; set; }
     public QuestRewardItem[]? Rewards_Items { get; set; }
     public string? SuccessText { get; set; }
@@ -335,7 +336,7 @@ internal class Quest
         Result.MidwayGiveItems = MidwayGiveItems;
         Result.MidwayText = MidwayText;
         Result.Name = Name;
-        Result.NumExpectedParticipants = NumExpectedParticipants;
+        Result.NumExpectedParticipants = NumberOfExpectedParticipants;
         Result.Objectives = ToRawQuestObjectives(Objectives);
         Result.PreGiveEffects = ToRawPreGiveEffects(PreGiveEffects);
         Result.PreGiveItems = PreGiveItems;
@@ -345,9 +346,7 @@ internal class Quest
         Result.QuestNpc = QuestNpc;
         Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
         Result.RequirementsToSustain = Preprocessor.FromSingleOrMultiple(RequirementsToSustain, RequirementsToSustainFormat);
-        Result.ReuseTime_Days = ReuseTime_Days;
-        Result.ReuseTime_Hours = ReuseTime_Hours;
-        Result.ReuseTime_Minutes = ReuseTime_Minutes;
+        (Result.ReuseTime_Days, Result.ReuseTime_Hours, Result.ReuseTime_Minutes) = SplitReuseTime(ReuseTime);
         Result.Rewards_Items = Rewards_Items;
         Result.SuccessText = SuccessText;
         Result.TSysLevel = TSysLevel;
@@ -405,6 +404,14 @@ internal class Quest
             default:
                 throw new InvalidCastException();
         }
+    }
+
+    private static (int?, int?, int?) SplitReuseTime(Time? time)
+    {
+        if (time is null)
+            return (null, null, null);
+        else
+            return (time.Days, time.Hours, time.Minutes);
     }
 
     private (QuestReward[]?, int?, int?, string?, string[]?) SplitSpecificRewards()

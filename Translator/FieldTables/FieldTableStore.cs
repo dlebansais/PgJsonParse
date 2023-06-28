@@ -456,9 +456,7 @@ public class FieldTableStore
         { "Description", typeof(string) },
         { "Version", typeof(int) },
         { "RequirementsToSustain", typeof(PgQuestRequirement[]) },
-        { "ReuseTime_Minutes", typeof(int) },
-        { "ReuseTime_Hours", typeof(int) },
-        { "ReuseTime_Days", typeof(int) },
+        { "ReuseTime", typeof(PgQuestTime) },
         { "IsCancellable", typeof(bool) },
         { "Objectives", typeof(PgQuestObjective[]) },
         { "Rewards_Items", typeof(PgQuestRewardItem[]) },
@@ -478,7 +476,7 @@ public class FieldTableStore
         { "IsAutoWrapUp", typeof(bool) },
         { "GroupingName", typeof(string) },
         { "IsGuildQuest", typeof(bool) },
-        { "NumExpectedParticipants", typeof(int) },
+        { "NumberOfExpectedParticipants", typeof(int) },
         { "Level", typeof(int) },
         { "WorkOrderSkill", typeof(string) },
         { "DisplayedLocation", typeof(string) },
@@ -593,6 +591,13 @@ public class FieldTableStore
         { "Item", typeof(string) },
         { "QuestGroup", typeof(string) },
         { "InteractionFlag", typeof(string) },
+    };
+
+    public static Dictionary<string, Type> TableQuestTime { get; } = new Dictionary<string, Type>()
+    {
+        { "Days", typeof(int) },
+        { "Hours", typeof(int) },
+        { "Minutes", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableRecipe { get; } = new Dictionary<string, Type>()
@@ -834,6 +839,7 @@ public class FieldTableStore
         { typeof(PgQuestRewardItem), new FixedFieldTable(TableQuestRewardItem) },
         { typeof(PgQuestReward), new FixedFieldTable(TableQuestReward) },
         { typeof(PgQuestPreGiveEffect), new FixedFieldTable(TableQuestPreGiveEffect) },
+        { typeof(PgQuestTime), new FixedFieldTable(TableQuestTime) },
         { typeof(PgRecipe), new FixedFieldTable(TableRecipe) },
         { typeof(PgRecipeItem), new FixedFieldTable(TableRecipeItem) },
         { typeof(PgRecipeCost), new FixedFieldTable(TableRecipeCost) },

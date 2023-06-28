@@ -48,14 +48,8 @@ public class ParserQuest : Parser
                 case "RequirementsToSustain":
                     Result = Inserter<PgQuestRequirement>.AddKeylessArray(item.QuestRequirementToSustainList, Value);
                     break;
-                case "ReuseTime_Minutes":
-                    Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 1, Value);
-                    break;
-                case "ReuseTime_Hours":
-                    Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 60, Value);
-                    break;
-                case "ReuseTime_Days":
-                    Result = SetTimeProperty(() => item.RawReuseTime, (TimeSpan valueTime) => item.RawReuseTime = valueTime, 60 * 24, Value);
+                case "ReuseTime":
+                    Result = Inserter<PgQuestTime>.SetItemProperty((PgQuestTime valueQuestTime) => item.RawReuseTime = valueQuestTime.ToTime(), Value);
                     break;
                 case "IsCancellable":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsCancellable(valueBool), Value);
@@ -114,7 +108,7 @@ public class ParserQuest : Parser
                 case "IsGuildQuest":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsGuildQuest(valueBool), Value);
                     break;
-                case "NumExpectedParticipants":
+                case "NumberOfExpectedParticipants":
                     Result = SetIntProperty((int valueInt) => item.RawNumExpectedParticipants = valueInt, Value);
                     break;
                 case "Level":

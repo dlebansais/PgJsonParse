@@ -58,6 +58,7 @@ public static class MainParser
         { typeof(PgQuestRewardItem), new ParserQuestRewardItem() },
         { typeof(PgQuestReward), new ParserQuestReward() },
         { typeof(PgQuestPreGiveEffect), new ParserQuestPreGiveEffect() },
+        { typeof(PgQuestTime), new ParserQuestTime() },
         { typeof(PgRecipe), new ParserRecipe() },
         { typeof(PgRecipeItem), new ParserRecipeItem() },
         { typeof(PgRecipeCost), new ParserRecipeCost() },
