@@ -677,7 +677,7 @@ public class ParserQuestRequirement : Parser
                     case "T":
                         break;
                     case "Rule":
-                        Result = ParseRule(NewItem, Value, parsedFile, parsedKey);
+                        Result = SetStringProperty((string valueString) => NewItem.Rule = valueString, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
@@ -696,22 +696,6 @@ public class ParserQuestRequirement : Parser
         }
         else
             return false;
-    }
-
-    private static bool ParseRule(PgQuestRequirementRuntimeBehaviorRuleSet item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueString))
-            return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-        string Rule;
-
-        if (ValueString == "ChristmasQuests")
-            Rule = "During Christmas Quests";
-        else
-            Rule = ValueString;
-
-        item.Rule = Rule;
-        return true;
     }
 
     private static bool FinishItemIsLongtimeAnimal(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)

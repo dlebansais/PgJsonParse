@@ -38,7 +38,7 @@ internal class Requirement
         PetTypeTag = rawRequirement.PetTypeTag;
         Quest = rawRequirement.Quest;
         Recipe = rawRequirement.Recipe;
-        Rule = rawRequirement.Rule;
+        Rule = ParseRule(rawRequirement.Rule);
         Shape = rawRequirement.Shape;
         Skill = rawRequirement.Skill;
         Slot = rawRequirement.Slot;
@@ -49,6 +49,16 @@ internal class Requirement
 
         if (AreaEvent is not null)
             UpdateAreaEventRequirement(this, AreaEvent);
+    }
+
+    private static string? ParseRule(string? content)
+    {
+        if (content is null)
+            return null;
+        else if (content == "ChristmasQuests")
+            return "During Christmas Quests";
+        else
+            return content;
     }
 
     private static void UpdateAreaEventRequirement(Requirement requirement, string areaEvent)
@@ -191,7 +201,7 @@ internal class Requirement
         Result.PetTypeTag = PetTypeTag;
         Result.Quest = Quest;
         Result.Recipe = Recipe;
-        Result.Rule = Rule;
+        Result.Rule = ToRawRule(Rule);
         Result.Shape = Shape;
         Result.Skill = Skill;
         Result.Slot = Slot;
@@ -208,6 +218,16 @@ internal class Requirement
         RestoreAreaEventRequirement(Result, Daytime, EventQuest, AreaName, EventSkill);
 
         return Result;
+    }
+
+    private static string? ToRawRule(string? rule)
+    {
+        if (rule is null)
+            return null;
+        else if (rule == "During Christmas Quests")
+            return "ChristmasQuests";
+        else
+            return rule;
     }
 
     private static void RestoreAreaEventRequirement(RawRequirement requirement, bool? dayTime, string? eventQuest, string? areaName, string? eventSkill)
