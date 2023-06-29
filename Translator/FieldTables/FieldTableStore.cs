@@ -505,6 +505,9 @@ public class FieldTableStore
         { "Value", typeof(string) },
         { "Shape", typeof(string) },
         { "Appearance", typeof(string) },
+        { "AreaName", typeof(string) },
+        { "EventQuest", typeof(string) },
+        { "EventSkill", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()
@@ -544,7 +547,6 @@ public class FieldTableStore
         { "MaxHour", typeof(int) },
         { "Keyword", typeof(string) },
         { "Appearance", typeof(string) },
-        { "AreaEvent", typeof(string) },
         { "Skill", typeof(string) },
         { "MinCount", typeof(int) },
         { "MaxCount", typeof(int) },
@@ -553,6 +555,8 @@ public class FieldTableStore
         { "Slot", typeof(string) },
         { "HangOut", typeof(string) },
         { "AbilityKeyword", typeof(string) },
+        { "Daytime", typeof(bool) },
+        { "AreaName", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestRewardItem { get; } = new Dictionary<string, Type>()

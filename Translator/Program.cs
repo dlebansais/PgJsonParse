@@ -1613,7 +1613,7 @@ public class Program
             { MapAreaName.Tomb1, "Khyrulek's Crypt" },
             { MapAreaName.KurMountains, "Kur Mountains" },
             { MapAreaName.MyconianCave, "Myconian Caverns" },
-            { MapAreaName.AreaPovus, "Povus" },
+            { MapAreaName.Povus, "Povus" },
             { MapAreaName.Rahu, "Rahu" },
             { MapAreaName.RahuSewer, "Rahu Sewer" },
             { MapAreaName.RahuSewers, "Rahu Sewers" },
@@ -2018,7 +2018,7 @@ public class Program
             }
         },
         {
-            MapAreaName.AreaPovus, new Dictionary<string, QuestSpecifics>()
+            MapAreaName.Povus, new Dictionary<string, QuestSpecifics>()
             {
                 { "A Kick In The Whiskers", QuestSpecifics.None },
                 { "Auto-Clamp Safety Blanket", QuestSpecifics.None },

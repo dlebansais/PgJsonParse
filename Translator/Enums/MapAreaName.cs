@@ -32,7 +32,6 @@
         RahuSewers,
         FaeRealm,
         SacredGrotto,
-        AreaFaeRealm1,
         ANewLife,
         FaeRealm1Caves,
         Labyrinth1,
@@ -43,11 +42,7 @@
         Wintertide1,
         Wintertide2,
         WNSWintertide,
-        Daytime,
-        PovusNightlyQuest,
-        AreaPovus,
-        AreaSerbule,
-        AreaGazluk,
+        Povus,
         Staging,
     }
 }

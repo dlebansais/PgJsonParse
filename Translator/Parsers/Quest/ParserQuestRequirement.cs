@@ -39,11 +39,11 @@ public class ParserQuestRequirement : Parser
 
     private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
     {
-        { QuestRequirementType.MinFavorLevel, new List<string>() { "T", "Npc", "Level" /*, "Quest"*/ } },
+        { QuestRequirementType.MinFavorLevel, new List<string>() { "T", "Npc", "Level" } },
         { QuestRequirementType.Race, new List<string>() { "T", "AllowedRace", "DisallowedRace" } },
         { QuestRequirementType.QuestCompleted, new List<string>() { "T", "Quest" } },
         { QuestRequirementType.IsWarden, new List<string>() { "T" } },
-        { QuestRequirementType.AreaEventOn, new List<string>() { "T", "AreaEvent" } },
+        { QuestRequirementType.AreaEventOn, new List<string>() { "T", "AreaEvent", "AreaName", "EventQuest", "EventSkill" } },
         { QuestRequirementType.MinSkillLevel, new List<string>() { "T", "Level", "Skill" } },
         { QuestRequirementType.MoonPhase, new List<string>() { "T", "MoonPhase" } },
         { QuestRequirementType.HangOutCompleted, new List<string>() { "T", "HangOut" } },
@@ -56,7 +56,7 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.InteractionFlagUnset, new List<string>() { "T", "InteractionFlag" } },
         { QuestRequirementType.MinFavor, new List<string>() { "T", "Npc", "MinFavor" } },
         { QuestRequirementType.ScriptAtomicMatches, new List<string>() { "T", "AtomicVar", "Value" } },
-        { QuestRequirementType.AreaEventOff, new List<string>() { "T", "AreaEvent" } },
+        { QuestRequirementType.AreaEventOff, new List<string>() { "T", "EventQuest" } },
         { QuestRequirementType.QuestCompletedRecently, new List<string>() { "T", "Quest" } },
         { QuestRequirementType.GeneralShape, new List<string>() { "T", "Shape" } },
         { QuestRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
@@ -135,9 +135,6 @@ public class ParserQuestRequirement : Parser
                     case "Level":
                         Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => NewItem.FavorLevel = valueEnum, Value);
                         break;
-                    /*case "Quest":
-                        Result = Inserter<PgQuest>.SetItemByInternalName((PgQuest valueQuest) => NewItem.QuestList.Add(valueQuest), Value);
-                        break;*/
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
                         break;
@@ -325,8 +322,15 @@ public class ParserQuestRequirement : Parser
                 {
                     case "T":
                         break;
+                    case "AreaName":
+                        Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => NewItem.AreaName = valueEnum, Value);
+                        break;
+                    case "EventSkill":
+                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = PgObject.GetItemKey(valueSkill), Value);
+                        break;
                     case "AreaEvent":
-                        Result = ParseAreaEvent(NewItem, Value, parsedFile, parsedKey);
+                        break;
+                    case "EventQuest":
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
@@ -345,81 +349,6 @@ public class ParserQuestRequirement : Parser
         }
         else
             return false;
-    }
-
-    private static bool ParseAreaEvent(PgQuestRequirementAreaEventOn newItem, object value, string parsedFile, string parsedKey)
-    {
-        if (!ParseAreaEvent(value, parsedFile, parsedKey, out MapAreaName AreaName))
-            return false;
-
-        newItem.AreaName = AreaName;
-        return true;
-    }
-
-    private static bool ParseAreaEvent(PgQuestRequirementAreaEventOff newItem, object value, string parsedFile, string parsedKey)
-    {
-        if (!ParseAreaEvent(value, parsedFile, parsedKey, out MapAreaName AreaName))
-            return false;
-
-        newItem.AreaName = AreaName;
-        return true;
-    }
-
-    public static bool ParseAreaEvent(object value, string parsedFile, string parsedKey, out MapAreaName areaName)
-    {
-        areaName = MapAreaName.Internal_None;
-
-        if (!(value is string AreaString))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        if (AreaString == "Daytime")
-        {
-            areaName = MapAreaName.Daytime;
-            StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(areaName);
-            return true;
-        }
-
-        if (AreaString == "PovusNightlyQuest")
-        {
-            areaName = MapAreaName.PovusNightlyQuest;
-            StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(areaName);
-            return true;
-        }
-
-        int AreaIndex = AreaString.LastIndexOf('_');
-        if (AreaIndex > 0)
-        {
-            int KeyIndex = AreaString.LastIndexOf('_', AreaIndex - 1);
-            if (KeyIndex > 0)
-            {
-                string AreaName = AreaString.Substring(AreaIndex + 1);
-                string KeyName = AreaString.Substring(KeyIndex + 1, AreaIndex - KeyIndex - 1);
-                string QuestName = AreaString.Substring(0, KeyIndex);
-
-                if (AreaName == "Ilmari")
-                    AreaName = "Desert1";
-                else if (AreaName == "Kur")
-                    AreaName = "KurMountains";
-
-                MapAreaName ParsedAreaName = MapAreaName.Internal_None;
-                bool Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => ParsedAreaName = valueEnum, AreaName);
-                areaName = ParsedAreaName;
-                return Result;
-            }
-        }
-        else
-        {
-            if (!AreaString.StartsWith("Area"))
-                return Program.ReportFailure(parsedFile, parsedKey, $"'{AreaString}' does not contain an area name");
-
-            string AreaName = AreaString.Substring(4);
-            if (!StringToEnumConversion<MapAreaName>.TryParse(AreaName, out areaName))
-                return false;
-
-            return true;
-        }
-
-        return Program.ReportFailure(parsedFile, parsedKey, $"Unknown area '{AreaString}'");
     }
 
     private static bool FinishItemMinSkillLevel(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
@@ -981,8 +910,8 @@ public class ParserQuestRequirement : Parser
                 {
                     case "T":
                         break;
-                    case "AreaEvent":
-                        Result = ParseAreaEvent(NewItem, Value, parsedFile, parsedKey);
+                    case "EventQuest":
+                        Result = StringToEnumConversion<QuestKeyword>.SetEnum((QuestKeyword valueEnum) => NewItem.Quest = valueEnum, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

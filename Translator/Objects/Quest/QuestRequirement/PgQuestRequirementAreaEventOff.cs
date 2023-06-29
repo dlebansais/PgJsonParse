@@ -2,6 +2,6 @@
 {
     public class PgQuestRequirementAreaEventOff : PgQuestRequirement
     {
-        public MapAreaName AreaName { get; set; }
+        public QuestKeyword Quest { get; set; }
     }
 }

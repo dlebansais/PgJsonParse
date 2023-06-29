@@ -29,7 +29,7 @@ internal class QuestObjective
         MonsterTypeTag = rawQuestObjective.MonsterTypeTag;
         NumberToDeliver = ParseNumToDeliver(rawQuestObjective.NumToDeliver);
         Number = rawQuestObjective.Number;
-        Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuestObjective.Requirements, out RequirementsFormat);
+        Requirements = Preprocessor.ToSingleOrMultiple(rawQuestObjective.Requirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsFormat);
         ResultItemKeyword = rawQuestObjective.ResultItemKeyword;
         Skill = rawQuestObjective.Skill;
         StringParam = rawQuestObjective.StringParam;
@@ -38,13 +38,13 @@ internal class QuestObjective
         // For kill objectives, move AbilityKeyword to a requirement.
         if (Type is string TypeString && TypeString == "Kill" && AbilityKeyword is not null)
         {
-            RequirementKillWithAbility = new Requirement() { T = "UseAbility", AbilityKeyword = AbilityKeyword };
-            Requirements = AddRequirement(Requirements, RequirementKillWithAbility);
+            RequirementKillWithAbility = new Requirement(new RawRequirement() { T = "UseAbility", AbilityKeyword = AbilityKeyword });
+            Requirements = AddRequirement(Requirements, RequirementKillWithAbility, out RequirementIndexKillWithAbility);
             AbilityKeyword = null;
         }
 
         // For targets in a specific area, move the area to a requirement.
-        string[]? Targets = Preprocessor.ToSingleOrMultiple<string>(rawQuestObjective.Target, out TargetFormat);
+        string[]? Targets = Preprocessor.ToSingleOrMultiple(rawQuestObjective.Target, (string s) => s, out TargetFormat);
         if (Targets is not null)
         {
             if (Targets.Length == 1)
@@ -58,8 +58,8 @@ internal class QuestObjective
                 {
                     string AreaEvent = TargetArea.Substring(AreaHeader.Length);
 
-                    RequirementTargetInArea = new Requirement() { T = "AreaEventOff", AreaEvent = AreaEvent };
-                    Requirements = AddRequirement(Requirements, RequirementTargetInArea);
+                    RequirementTargetInArea = new Requirement(new RawRequirement() { T = "AreaEventOff", AreaEvent = AreaEvent });
+                    Requirements = AddRequirement(Requirements, RequirementTargetInArea, out RequirementIndexTargetInArea);
                 }
                 else
                     throw new InvalidCastException();
@@ -69,13 +69,14 @@ internal class QuestObjective
         }
     }
 
-    private static Requirement[]? AddRequirement(Requirement[]? requirements, Requirement newRequirement)
+    private static Requirement[]? AddRequirement(Requirement[]? requirements, Requirement newRequirement, out int index)
     {
         List<Requirement> NewRequirements = new();
 
         if (requirements is not null)
             NewRequirements.AddRange(requirements);
 
+        index = NewRequirements.Count;
         NewRequirements.Add(newRequirement);
 
         return NewRequirements.ToArray();
@@ -140,46 +141,48 @@ internal class QuestObjective
         Result.MonsterTypeTag = MonsterTypeTag;
         Result.NumToDeliver = ToRawNumToDeliver(NumberToDeliver);
         Result.Number = Number;
-        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
+        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
         Result.ResultItemKeyword = ResultItemKeyword;
         Result.Skill = Skill;
         Result.StringParam = StringParam;
         Result.Type = Type;
-
-        if (RequirementKillWithAbility is not null)
-        {
-            Result.AbilityKeyword = RequirementKillWithAbility.AbilityKeyword;
-            Result.Requirements = RemoveRequirement(Result.Requirements, RequirementKillWithAbility);
-        }
 
         string[]? Targets;
         if (Target is not null)
         {
             if (RequirementTargetInArea is not null)
             {
-                string TargetArea = $"{AreaHeader}{RequirementTargetInArea.AreaEvent}";
+                RawRequirement RawRequirementTargetInArea = RequirementTargetInArea.ToRawRequirement();
+                string TargetArea = $"{AreaHeader}{RawRequirementTargetInArea.AreaEvent}";
                 Targets = new string[] { Target, TargetArea };
 
-                Result.Requirements = RemoveRequirement(Result.Requirements, RequirementTargetInArea);
+                Result.Requirements = RemoveRequirement(Result.Requirements, RequirementIndexTargetInArea);
             }
             else
                 Targets = new string[] { Target };
         }
         else
             Targets = null;
-        Result.Target = Preprocessor.FromSingleOrMultiple(Targets, TargetFormat);
+        Result.Target = Preprocessor.FromSingleOrMultiple(Targets, (string s) => s, TargetFormat);
+
+        if (RequirementKillWithAbility is not null)
+        {
+            RawRequirement RawRequirementKillWithAbility = RequirementKillWithAbility.ToRawRequirement();
+            Result.AbilityKeyword = RawRequirementKillWithAbility.AbilityKeyword;
+            Result.Requirements = RemoveRequirement(Result.Requirements, RequirementIndexKillWithAbility);
+        }
 
         return Result;
     }
 
-    private static Requirement[]? RemoveRequirement(object? requirements, Requirement removedRequirement)
+    private static RawRequirement[]? RemoveRequirement(object? requirements, int index)
     {
-        List<Requirement> NewRequirements = new();
+        List<RawRequirement> NewRequirements = new();
 
-        if (requirements is Requirement[] ExistingRequirements)
+        if (requirements is RawRequirement[] ExistingRequirements)
             NewRequirements.AddRange(ExistingRequirements);
 
-        NewRequirements.Remove(removedRequirement);
+        NewRequirements.RemoveAt(index);
 
         if (NewRequirements.Count > 0)
             return NewRequirements.ToArray();
@@ -198,5 +201,7 @@ internal class QuestObjective
     private JsonArrayFormat RequirementsFormat;
     private JsonArrayFormat TargetFormat;
     private Requirement? RequirementKillWithAbility;
+    private int RequirementIndexKillWithAbility;
     private Requirement? RequirementTargetInArea;
+    private int RequirementIndexTargetInArea;
 }

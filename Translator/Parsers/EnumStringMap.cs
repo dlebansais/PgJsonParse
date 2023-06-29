@@ -145,9 +145,8 @@ public class EnumStringMap
         { MapAreaName.SacredGrotto, "Sacred Grotto" },
         { MapAreaName.ANewLife, "A New Life" },
         { MapAreaName.WNSWintertide, "WNS Wintertide" },
-        { MapAreaName.Daytime, "Daytime" },
-        { MapAreaName.PovusNightlyQuest, "PovusNightlyQuest" },
-        { MapAreaName.AreaPovus, "Povus" },
+        { MapAreaName.Povus, "Povus" },
+        { MapAreaName.Staging, "Staging" },
     };
 
     public static readonly Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTable = new Dictionary<QuestObjectiveTarget, string>()

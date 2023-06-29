@@ -31,7 +31,7 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.TimeOfDay, new List<string>() { "T", "MinHour", "MaxHour" } },
         { QuestObjectiveRequirementType.HasEffectKeyword, new List<string>() { "T", "Keyword" } },
         { QuestObjectiveRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
-        { QuestObjectiveRequirementType.AreaEventOff, new List<string>() { "T", "AreaEvent" } },
+        { QuestObjectiveRequirementType.AreaEventOff, new List<string>() { "T", "Daytime", "AreaName" } },
         { QuestObjectiveRequirementType.ActiveCombatSkill, new List<string>() { "T", "Skill" } },
         { QuestObjectiveRequirementType.PetCount, new List<string>() { "T", "MinCount", "MaxCount", "PetTypeTag" } },
         { QuestObjectiveRequirementType.EntityPhysicalState, new List<string>() { "T", "AllowedStates" } },
@@ -242,8 +242,11 @@ public class ParserQuestObjectiveRequirement : Parser
                 {
                     case "T":
                         break;
-                    case "AreaEvent":
-                        Result = ParseAreaEvent(NewItem, Value, parsedFile, parsedKey);
+                    case "Daytime":
+                        Result = SetBoolProperty((bool valueBool) => NewItem.RawDaytime = valueBool, Value);
+                        break;
+                    case "AreaName":
+                        Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => NewItem.AreaName = valueEnum, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
@@ -262,15 +265,6 @@ public class ParserQuestObjectiveRequirement : Parser
         }
         else
             return false;
-    }
-
-    private static bool ParseAreaEvent(PgQuestObjectiveRequirementAreaEventOff newItem, object value, string parsedFile, string parsedKey)
-    {
-        if (!ParserQuestRequirement.ParseAreaEvent(value, parsedFile, parsedKey, out MapAreaName AreaName))
-            return false;
-
-        newItem.AreaName = AreaName;
-        return true;
     }
 
     private static bool FinishItemActiveCombatSkill(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)

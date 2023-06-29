@@ -4,7 +4,7 @@ internal class SkillReward
 {
     public SkillReward(RawSkillReward rawSkillReward)
     {
-        Abilities = Preprocessor.ToSingleOrMultiple<string>(rawSkillReward.Ability, out AbilityFormat);
+        Abilities = Preprocessor.ToSingleOrMultiple(rawSkillReward.Ability, (string s) => s, out AbilityFormat);
         BonusToSkill = rawSkillReward.BonusToSkill;
         Level = rawSkillReward.Level;
         Notes = rawSkillReward.Notes;
@@ -23,7 +23,7 @@ internal class SkillReward
     {
         RawSkillReward Result = new();
 
-        Result.Ability = Preprocessor.FromSingleOrMultiple(Abilities, AbilityFormat);
+        Result.Ability = Preprocessor.FromSingleOrMultiple(Abilities, (string s) => s, AbilityFormat);
         Result.BonusToSkill = BonusToSkill;
         Result.Level = Level;
         Result.Notes = Notes;

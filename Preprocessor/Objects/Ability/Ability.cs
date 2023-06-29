@@ -64,7 +64,7 @@ internal class Ability
         SelfPreParticle = AbilityParticle.Parse(rawAbility.SelfPreParticle);
         SharesResetTimerWith = rawAbility.SharesResetTimerWith;
         Skill = rawAbility.Skill;
-        SpecialCasterRequirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawAbility.SpecialCasterRequirements, out SpecialCasterRequirementsFormat);
+        SpecialCasterRequirements = Preprocessor.ToSingleOrMultiple(rawAbility.SpecialCasterRequirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out SpecialCasterRequirementsFormat);
         SpecialCasterRequirementsErrorMessage = rawAbility.SpecialCasterRequirementsErrorMessage;
         SpecialInfo = rawAbility.SpecialInfo;
         SpecialTargetingTypeRequirement = rawAbility.SpecialTargetingTypeReq;
@@ -256,7 +256,7 @@ internal class Ability
         Result.SelfPreParticle = AbilityParticle.ToString(SelfPreParticle);
         Result.SharesResetTimerWith = SharesResetTimerWith;
         Result.Skill = Skill;
-        Result.SpecialCasterRequirements = Preprocessor.FromSingleOrMultiple(SpecialCasterRequirements, SpecialCasterRequirementsFormat);
+        Result.SpecialCasterRequirements = Preprocessor.FromSingleOrMultiple(SpecialCasterRequirements, (Requirement requirement) => requirement.ToRawRequirement(), SpecialCasterRequirementsFormat);
         Result.SpecialCasterRequirementsErrorMessage = SpecialCasterRequirementsErrorMessage;
         Result.SpecialInfo = SpecialInfo;
         Result.SpecialTargetingTypeReq = SpecialTargetingTypeRequirement;

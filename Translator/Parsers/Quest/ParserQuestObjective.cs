@@ -461,9 +461,6 @@ public class ParserQuestObjective : Parser
                     case "Target":
                         Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                         break;
-                    /*case "InteractionFlag":
-                        Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
-                        break;*/
                     case "Description":
                     case "GroupId":
                     case "Number":
@@ -483,9 +480,6 @@ public class ParserQuestObjective : Parser
         {
             if (NewItem.Description.Length == 0)
                 return Program.ReportFailure(parsedFile, parsedKey, "Missing description");
-
-            /*if (!contentTable.ContainsKey("InteractionFlag"))
-                return Program.ReportFailure(parsedFile, parsedKey, "Missing interaction flag");*/
 
             item = NewItem;
             return true;
@@ -888,7 +882,7 @@ public class ParserQuestObjective : Parser
                         Result = SetIntProperty((int valueInt) => NewItem.RawMinAmount = valueInt, Value);
                         break;
                     case "StringParam":
-                        Result = ParseStringParam(NewItem, Value, parsedFile, parsedKey);
+                        Result = SetStringProperty((string valueString) => NewItem.StringParam = valueString, Value);
                         break;
                     case "MaxAmount":
                         Result = SetIntProperty((int valueInt) => NewItem.RawMaxAmount = valueInt, Value);
@@ -927,23 +921,6 @@ public class ParserQuestObjective : Parser
         }
         else
             return false;
-    }
-
-    private static bool ParseStringParam(PgQuestObjectiveSpecial item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueString))
-            return Program.ReportFailure(parsedFile, parsedKey, $"{value} was expected to be string");
-
-        if (ValueString.StartsWith("Genetics_"))
-        {
-            string AnatomySkillName = "Anatomy_" + ValueString.Substring(9);
-            if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.AnatomySkill_Key = PgObject.GetItemKey(valueSkill), AnatomySkillName))
-                return false;
-        }
-        else
-            item.StringParam = ValueString;
-
-        return true;
     }
 
     private static bool FinishItemGiveGift(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)

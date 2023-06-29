@@ -260,78 +260,104 @@ internal class Preprocessor
         Writer.Write(CuratedContent);
     }
 
-    public static object? FromSingleOrMultiple<T>(T[]? items, JsonArrayFormat format)
+    public static object? FromSingleOrMultiple<T, TRaw>(T[]? items, Func<T, TRaw> converter, JsonArrayFormat format)
     {
         if (items is null)
             return null;
         else
             switch (format)
             {
-            case JsonArrayFormat.Null:
                 default:
-                    return null;
-                case JsonArrayFormat.SingleElement:
-                    return items[0];
+                case JsonArrayFormat.Null:
                 case JsonArrayFormat.Normal:
-                    return items;
+                    return FromMultiple(items, converter);
+                case JsonArrayFormat.SingleElement:
+                    return converter(items[0]);
                 case JsonArrayFormat.NestedArray:
-                    T[][] NestedItems = new T[1][];
-                    NestedItems[0] = items;
-                    return NestedItems;
+                    return FromNestedArray(items, converter);
                 case JsonArrayFormat.MixedArray:
-                    T[] SecondArray = new T[items.Length - 1];
-                    for (int i = 0; i + 1 < items.Length; i++)
-                        SecondArray[i] = items[i + 1];
-                    return new object[2] { items[0]!, SecondArray };
+                    return FromMixedArray(items, converter);
             }
     }
 
-    public static T[]? ToSingleOrMultiple<T>(object? element, out JsonArrayFormat format)
+    public static object? FromMultiple<T, TRaw>(T[] items, Func<T, TRaw> converter)
     {
-        T[]? Result;
+        if (items.Length == 0)
+            return null;
 
+        TRaw[] Result = new TRaw[items.Length];
+
+        for (int i = 0; i < Result.Length; i++)
+            Result[i] = converter(items[i]);
+
+        return Result;
+    }
+
+    public static object? FromNestedArray<T, TRaw>(T[] items, Func<T, TRaw> converter)
+    {
+        TRaw[][] Result = new TRaw[1][];
+        TRaw[] NestedResult = new TRaw[items.Length];
+
+        for (int i = 0; i < NestedResult.Length; i++)
+            NestedResult[i] = converter(items[i]);
+
+        Result[0] = NestedResult;
+
+        return Result;
+    }
+
+    public static object? FromMixedArray<T, TRaw>(T[] items, Func<T, TRaw> converter)
+    {
+        TRaw[] SecondArray = new TRaw[items.Length - 1];
+        for (int i = 0; i + 1 < items.Length; i++)
+            SecondArray[i] = converter(items[i + 1]);
+
+        return new object[2] { converter(items[0])!, SecondArray };
+    }
+
+    public static T[]? ToSingleOrMultiple<T, TRaw>(object? element, Func<TRaw, T> converter, out JsonArrayFormat format)
+    {
         if (element is null)
         {
             format = JsonArrayFormat.Null;
             return null;
         }
-        else if (ToSingleItem<T>(element, out Result))
-        {
-            format = JsonArrayFormat.SingleElement;
-            return Result;
-        }
-        else if (ToMixedArray<T>(element, out Result))
-        {
-            format = JsonArrayFormat.MixedArray;
-            return Result;
-        }
-        else if (ToNestedArray<T>(element, out Result))
-        {
-            format = JsonArrayFormat.NestedArray;
-            return Result;
-        }
-        else if (ToMultipleItems<T>(element, out Result))
-        {
-            format = JsonArrayFormat.Normal;
-            return Result;
-        }
         else
-            throw new InvalidCastException();
+        {
+            TRaw[] RawResult;
+
+            if (ToSingleItem(element, out RawResult))
+                format = JsonArrayFormat.SingleElement;
+            else if (ToMixedArray(element, out RawResult))
+                format = JsonArrayFormat.MixedArray;
+            else if (ToNestedArray(element, out RawResult))
+                format = JsonArrayFormat.NestedArray;
+            else if (ToMultipleItems(element, out RawResult))
+                format = JsonArrayFormat.Normal;
+            else
+                throw new InvalidCastException();
+
+            T[] Result = new T[RawResult.Length];
+            for (int i = 0; i < RawResult.Length; i++)
+                Result[i] = converter(RawResult[i]);
+
+            return Result;
+        }
     }
 
-    public static bool ToSingleItem<T>(object element, out T[] result)
+    public static bool ToSingleItem<TRaw>(object element, out TRaw[] result)
     {
         if (element is JsonElement AsSingle)
         {
             if (AsSingle.ValueKind == JsonValueKind.Object)
             {
-                result = new T[1];
-                result[0] = AsSingle.Deserialize<T>() ?? throw new InvalidCastException();
+                result = new TRaw[1];
+                result[0] = AsSingle.Deserialize<TRaw>() ?? throw new InvalidCastException();
                 return true;
             }
-            else if (AsSingle.ValueKind == JsonValueKind.String && typeof(T) == typeof(string) && AsSingle.GetString() is T AsString)
+            else if (AsSingle.ValueKind == JsonValueKind.String && typeof(TRaw) == typeof(string) && AsSingle.GetString() is TRaw AsString)
             {
-                result = new T[1];
+                result = new TRaw[1];
                 result[0] = AsString;
                 return true;
             }
@@ -341,15 +367,15 @@ internal class Preprocessor
         return false;
     }
 
-    public static bool ToMultipleItems<T>(object element, out T[] result)
+    public static bool ToMultipleItems<TRaw>(object element, out TRaw[] result)
     {
         if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
         {
             int ArrayLength = AsMultiple.GetArrayLength();
-            result = new T[ArrayLength];
+            result = new TRaw[ArrayLength];
 
             for (int i = 0; i < ArrayLength; i++)
-                result[i] = AsMultiple[i].Deserialize<T>() ?? throw new InvalidCastException();
+                result[i] = AsMultiple[i].Deserialize<TRaw>() ?? throw new InvalidCastException();
 
             return true;
         }
@@ -358,7 +384,7 @@ internal class Preprocessor
         return false;
     }
 
-    public static bool ToNestedArray<T>(object element, out T[] result)
+    public static bool ToNestedArray<TRaw>(object element, out TRaw[] result)
     {
         if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
         {
@@ -372,10 +398,10 @@ internal class Preprocessor
                 if (FirstElement.ValueKind == JsonValueKind.Array)
                 {
                     ArrayLength = FirstElement.GetArrayLength();
-                    result = new T[ArrayLength];
+                    result = new TRaw[ArrayLength];
 
                     for (int i = 0; i < ArrayLength; i++)
-                        result[i] = FirstElement[i].Deserialize<T>() ?? throw new InvalidCastException();
+                        result[i] = FirstElement[i].Deserialize<TRaw>() ?? throw new InvalidCastException();
 
                     return true;
                 }
@@ -386,7 +412,7 @@ internal class Preprocessor
         return false;
     }
 
-    public static bool ToMixedArray<T>(object element, out T[] result)
+    public static bool ToMixedArray<TRaw>(object element, out TRaw[] result)
     {
         if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
         {
@@ -402,11 +428,11 @@ internal class Preprocessor
                 if (FirstElement.ValueKind == JsonValueKind.Object && SecondElement.ValueKind == JsonValueKind.Array)
                 {
                     ArrayLength = SecondElement.GetArrayLength();
-                    result = new T[ArrayLength + 1];
+                    result = new TRaw[ArrayLength + 1];
 
-                    result[0] = FirstElement.Deserialize<T>() ?? throw new InvalidCastException();
+                    result[0] = FirstElement.Deserialize<TRaw>() ?? throw new InvalidCastException();
                     for (int i = 0; i < ArrayLength; i++)
-                        result[i + 1] = SecondElement[i].Deserialize<T>() ?? throw new InvalidCastException();
+                        result[i + 1] = SecondElement[i].Deserialize<TRaw>() ?? throw new InvalidCastException();
 
                     return true;
                 }

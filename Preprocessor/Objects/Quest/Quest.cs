@@ -32,8 +32,8 @@ internal class Quest
         PrefaceText = rawQuest.PrefaceText;
         PrerequisiteFavorLevel = rawQuest.PrerequisiteFavorLevel;
         QuestNpc = rawQuest.QuestNpc;
-        Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.Requirements, out RequirementsFormat);
-        RequirementsToSustain = Preprocessor.ToSingleOrMultiple<Requirement>(rawQuest.RequirementsToSustain, out RequirementsToSustainFormat);
+        Requirements = Preprocessor.ToSingleOrMultiple(rawQuest.Requirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsFormat);
+        RequirementsToSustain = Preprocessor.ToSingleOrMultiple(rawQuest.RequirementsToSustain, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsToSustainFormat);
         ReuseTime = ParseReuseTime(rawQuest.ReuseTime_Days, rawQuest.ReuseTime_Hours, rawQuest.ReuseTime_Minutes);
         SuccessText = rawQuest.SuccessText;
         TSysLevel = rawQuest.TSysLevel;
@@ -356,8 +356,8 @@ internal class Quest
         Result.PrefaceText = PrefaceText;
         Result.PrerequisiteFavorLevel = PrerequisiteFavorLevel;
         Result.QuestNpc = QuestNpc;
-        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
-        Result.RequirementsToSustain = Preprocessor.FromSingleOrMultiple(RequirementsToSustain, RequirementsToSustainFormat);
+        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
+        Result.RequirementsToSustain = Preprocessor.FromSingleOrMultiple(RequirementsToSustain, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsToSustainFormat);
         (Result.ReuseTime_Days, Result.ReuseTime_Hours, Result.ReuseTime_Minutes) = SplitReuseTime(ReuseTime);
         Result.SuccessText = SuccessText;
         Result.TSysLevel = TSysLevel;

@@ -767,7 +767,10 @@ public class ParserRecipe : Parser
         string MapAreaNameString = Splitted[0];
         string OtherString = Splitted[1];
 
-        if (!StringToEnumConversion<MapAreaName>.TryParse(MapAreaNameString, out MapAreaName Area))
+        if (!MapAreaNameString.StartsWith("Area"))
+            return Program.ReportFailure($"Invalid area name {MapAreaNameString}");
+
+        if (!StringToEnumConversion<MapAreaName>.TryParse(MapAreaNameString.Substring(4), out MapAreaName Area))
             return false;
 
         if (OtherString == " NewFairySpot")

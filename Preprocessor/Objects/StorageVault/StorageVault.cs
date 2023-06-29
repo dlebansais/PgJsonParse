@@ -14,7 +14,7 @@ internal class StorageVault
         NumSlots = rawStorageVault.NumSlots;
         RequiredItemKeywords = rawStorageVault.RequiredItemKeywords;
         RequirementDescription = rawStorageVault.RequirementDescription;
-        Requirements = Preprocessor.ToSingleOrMultiple<Requirement>(rawStorageVault.Requirements, out RequirementsFormat);
+        Requirements = Preprocessor.ToSingleOrMultiple(rawStorageVault.Requirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsFormat);
         SlotAttribute = rawStorageVault.SlotAttribute;
     }
 
@@ -45,7 +45,7 @@ internal class StorageVault
         Result.NumSlots = NumSlots;
         Result.RequiredItemKeywords = RequiredItemKeywords;
         Result.RequirementDescription = RequirementDescription;
-        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, RequirementsFormat);
+        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
         Result.SlotAttribute = SlotAttribute;
 
         return Result;

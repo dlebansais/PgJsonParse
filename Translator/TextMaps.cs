@@ -4042,7 +4042,6 @@
             { MapAreaName.RahuSewers, "Rahu Sewers" },
             { MapAreaName.FaeRealm, "Fae Realm" },
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
-            { MapAreaName.AreaFaeRealm1, "Fae Realm" },
             { MapAreaName.ANewLife, "A New Life" },
             { MapAreaName.FaeRealm1Caves, "Fae Realm1 Caves" },
             { MapAreaName.Labyrinth1, "Labyrinth #1" },
@@ -4053,11 +4052,7 @@
             { MapAreaName.Wintertide1, "Wintertide #1" },
             { MapAreaName.Wintertide2, "Wintertide #2" },
             { MapAreaName.WNSWintertide, "WNS Wintertide" },
-            { MapAreaName.Daytime, "Daytime" },
-            { MapAreaName.PovusNightlyQuest, "Povus (At Night)" },
-            { MapAreaName.AreaPovus, "Povus" },
-            { MapAreaName.AreaSerbule, "Serbule" },
-            { MapAreaName.AreaGazluk, "Gazluk" },
+            { MapAreaName.Povus, "Povus" },
             { MapAreaName.Staging, "Staging" },
         };
 
