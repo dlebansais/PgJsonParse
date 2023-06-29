@@ -473,4 +473,16 @@ internal class Preprocessor
         else
             throw new InvalidCastException();
     }
+
+    public static (int?, string?) ParseAsNumberOrString(object? element)
+    {
+        if (element is null)
+            return (null, null);
+        else if (element is JsonElement AsNumber && AsNumber.ValueKind == JsonValueKind.Number)
+            return (AsNumber.GetInt32(), null);
+        else if (element is JsonElement AsString && AsString.ValueKind == JsonValueKind.String)
+            return (null, AsString.GetString());
+        else
+            throw new InvalidCastException();
+    }
 }

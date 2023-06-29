@@ -169,7 +169,7 @@ public class FieldTableStore
         { "MoonPhase", typeof(string) },
         { "Distance", typeof(int) },
         { "EntityTypeTag", typeof(string) },
-        { "ErrorMsg", typeof(string) },
+        { "ErrorMessage", typeof(string) },
         { "AllowedStates", typeof(string[]) },
     };
 
@@ -490,7 +490,8 @@ public class FieldTableStore
         { "Quest", typeof(string) },
         { "Keyword", typeof(string) },
         { "Npc", typeof(string) },
-        { "Level", typeof(StringOrInteger) },
+        { "Level", typeof(int) },
+        { "FavorLevel", typeof(string) },
         { "Skill", typeof(string) },
         { "List", typeof(PgQuestRequirement[]) },
         { "Rule", typeof(string) },

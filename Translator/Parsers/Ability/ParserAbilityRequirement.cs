@@ -73,7 +73,7 @@ public class ParserAbilityRequirement : Parser
         { OtherRequirementType.Weather, new List<string>() { "T", "ClearSky" } },
         { OtherRequirementType.MoonPhase, new List<string>() { "T", "MoonPhase" } },
         { OtherRequirementType.EntityPhysicalState, new List<string>() { "T", "AllowedStates" } },
-        { OtherRequirementType.EntitiesNear, new List<string>() { "T", "Distance", "EntityTypeTag", "ErrorMsg", "MinCount" } },
+        { OtherRequirementType.EntitiesNear, new List<string>() { "T", "Distance", "EntityTypeTag", "ErrorMessage", "MinCount" } },
     };
 
     private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
@@ -1374,7 +1374,7 @@ public class ParserAbilityRequirement : Parser
                     case "EntityTypeTag":
                         Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => NewItem.EntityTypeTag = valueEnum, Value);
                         break;
-                    case "ErrorMsg":
+                    case "ErrorMessage":
                         Result = SetStringProperty((string valueString) => NewItem.ErrorMsg = valueString, Value);
                         break;
                     case "MinCount":

@@ -39,7 +39,7 @@ public class ParserQuestRequirement : Parser
 
     private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
     {
-        { QuestRequirementType.MinFavorLevel, new List<string>() { "T", "Npc", "Level" } },
+        { QuestRequirementType.MinFavorLevel, new List<string>() { "T", "Npc", "FavorLevel" } },
         { QuestRequirementType.Race, new List<string>() { "T", "AllowedRace", "DisallowedRace" } },
         { QuestRequirementType.QuestCompleted, new List<string>() { "T", "Quest" } },
         { QuestRequirementType.IsWarden, new List<string>() { "T" } },
@@ -132,7 +132,7 @@ public class ParserQuestRequirement : Parser
                     case "Npc":
                         Result = Inserter<PgQuest>.SetNpc((PgNpcLocation npcLocation) => NewItem.FavorNpc = npcLocation, Value, parsedFile, parsedKey);
                         break;
-                    case "Level":
+                    case "FavorLevel":
                         Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => NewItem.FavorLevel = valueEnum, Value);
                         break;
                     default:

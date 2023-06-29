@@ -1,6 +1,7 @@
-﻿using System;
+﻿namespace Preprocessor;
 
-namespace Preprocessor;
+using System;
+using System.Diagnostics;
 
 internal class Requirement
 {
@@ -19,12 +20,11 @@ internal class Requirement
         DisallowedStates = rawRequirement.DisallowedStates;
         Distance = rawRequirement.Distance;
         EntityTypeTag = rawRequirement.EntityTypeTag;
-        ErrorMsg = rawRequirement.ErrorMsg;
+        ErrorMessage = rawRequirement.ErrorMsg;
         HangOut = rawRequirement.HangOut;
         InteractionFlag = rawRequirement.InteractionFlag;
         Item = rawRequirement.Item;
         Keyword = rawRequirement.Keyword;
-        Level = rawRequirement.Level;
         List = Preprocessor.ToSingleOrMultiple(rawRequirement.List, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out ListFormat);
         MaxCount = rawRequirement.MaxCount;
         MaxHour = rawRequirement.MaxHour;
@@ -44,6 +44,8 @@ internal class Requirement
         Slot = rawRequirement.Slot;
         T = rawRequirement.T;
         Value = rawRequirement.Value;
+
+        (Level, FavorLevel) = Preprocessor.ParseAsNumberOrString(rawRequirement.Level);
 
         if (AreaEvent is not null)
             UpdateAreaEventRequirement(this, AreaEvent);
@@ -127,14 +129,15 @@ internal class Requirement
     public string[]? DisallowedStates { get; set; }
     public int? Distance { get; set; }
     public string? EntityTypeTag { get; set; }
-    public string? ErrorMsg { get; set; }
+    public string? ErrorMessage { get; set; }
     public string? EventQuest { get; set; }
     public string? EventSkill { get; set; }
+    public string? FavorLevel { get; set; }
     public string? HangOut { get; set; }
     public string? InteractionFlag { get; set; }
     public string? Item { get; set; }
     public string? Keyword { get; set; }
-    public object? Level { get; set; }
+    public int? Level { get; set; }
     public Requirement[]? List { get; set; }
     public int? MaxCount { get; set; }
     public int? MaxHour { get; set; }
@@ -170,12 +173,11 @@ internal class Requirement
         Result.DisallowedStates = DisallowedStates;
         Result.Distance = Distance;
         Result.EntityTypeTag = EntityTypeTag;
-        Result.ErrorMsg = ErrorMsg;
+        Result.ErrorMsg = ErrorMessage;
         Result.HangOut = HangOut;
         Result.InteractionFlag = InteractionFlag;
         Result.Item = Item;
         Result.Keyword = Keyword;
-        Result.Level = Level;
         Result.List = Preprocessor.FromSingleOrMultiple(List, (Requirement requirement) => requirement.ToRawRequirement(), ListFormat);
         Result.MaxCount = MaxCount;
         Result.MaxHour = MaxHour;
@@ -195,6 +197,13 @@ internal class Requirement
         Result.Slot = Slot;
         Result.T = T;
         Result.Value = Value;
+
+        if (FavorLevel is not null)
+            Result.Level = FavorLevel;
+        else if (Level is not null)
+            Result.Level = Level;
+        else
+            Result.Level = null;
 
         RestoreAreaEventRequirement(Result, Daytime, EventQuest, AreaName, EventSkill);
 
