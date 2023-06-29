@@ -53,7 +53,7 @@ public class ParserRecipe : Parser
                 case "Skill":
                     Result = ParserSkill.Parse((PgSkill valueSkill) => item.Skill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;
-                case "SkillLevelReq":
+                case "SkillLevelRequirement":
                     Result = SetIntProperty((int valueInt) => item.RawSkillLevelReq = valueInt, Value);
                     break;
                 case "ResultEffects":
@@ -83,7 +83,7 @@ public class ParserRecipe : Parser
                 case "Costs":
                     Result = Inserter<PgRecipeCost>.AddKeylessArray(item.CostList, Value);
                     break;
-                case "NumResultItems":
+                case "NumberOfResultItems":
                     Result = SetIntProperty((int valueInt) => item.RawNumResultItems = valueInt, Value);
                     break;
                 case "UsageAnimationEnd":
@@ -119,10 +119,10 @@ public class ParserRecipe : Parser
                 case "ItemMenuLabel":
                     Result = SetStringProperty((string valueString) => item.ItemMenuLabel = valueString, Value);
                     break;
-                case "ItemMenuKeywordReq":
+                case "ItemMenuKeywordRequirement":
                     Result = StringToEnumConversion<ItemKeyword>.SetEnum((ItemKeyword valueEnum) => item.RecipeItemKeyword = valueEnum, Value);
                     break;
-                case "IsItemMenuKeywordReqSufficient":
+                case "IsItemMenuKeywordRequirementSufficient":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsItemMenuKeywordReqSufficient(valueBool), Value);
                     break;
                 case "ItemMenuCategory":

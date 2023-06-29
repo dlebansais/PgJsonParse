@@ -11,16 +11,16 @@ internal class Recipe
         IconId = rawRecipe.IconId;
         Ingredients = rawRecipe.Ingredients;
         InternalName = rawRecipe.InternalName;
-        IsItemMenuKeywordReqSufficient = rawRecipe.IsItemMenuKeywordReqSufficient;
+        IsItemMenuKeywordRequirementSufficient = rawRecipe.IsItemMenuKeywordReqSufficient;
         ItemMenuCategory = rawRecipe.ItemMenuCategory;
         ItemMenuCategoryLevel = rawRecipe.ItemMenuCategoryLevel;
-        ItemMenuKeywordReq = rawRecipe.ItemMenuKeywordReq;
+        ItemMenuKeywordRequirement = rawRecipe.ItemMenuKeywordReq;
         ItemMenuLabel = rawRecipe.ItemMenuLabel;
         Keywords = rawRecipe.Keywords;
         LoopParticle = RecipeParticle.Parse(rawRecipe.LoopParticle);
         MaxUses = rawRecipe.MaxUses;
         Name = rawRecipe.Name;
-        NumResultItems = rawRecipe.NumResultItems;
+        NumberOfResultItems = rawRecipe.NumResultItems;
         OtherRequirements = Preprocessor.ToSingleOrMultiple(rawRecipe.OtherRequirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out OtherRequirementsFormat);
         Particle = RecipeParticle.Parse(rawRecipe.Particle);
         PrereqRecipe = rawRecipe.PrereqRecipe;
@@ -38,7 +38,7 @@ internal class Recipe
         RewardSkillXpFirstTime = rawRecipe.RewardSkillXpFirstTime;
         SharesResetTimerWith = rawRecipe.SharesResetTimerWith;
         Skill = rawRecipe.Skill;
-        SkillLevelReq = rawRecipe.SkillLevelReq;
+        SkillLevelRequirement = rawRecipe.SkillLevelReq;
         SortSkill = rawRecipe.SortSkill;
         UsageAnimation = rawRecipe.UsageAnimation;
         UsageAnimationEnd = rawRecipe.UsageAnimationEnd;
@@ -54,16 +54,16 @@ internal class Recipe
     public int IconId { get; set; }
     public RecipeItem[]? Ingredients { get; set; }
     public string? InternalName { get; set; }
-    public bool? IsItemMenuKeywordReqSufficient { get; set; }
+    public bool? IsItemMenuKeywordRequirementSufficient { get; set; }
     public string? ItemMenuCategory { get; set; }
     public int? ItemMenuCategoryLevel { get; set; }
-    public string? ItemMenuKeywordReq { get; set; }
+    public string? ItemMenuKeywordRequirement { get; set; }
     public string? ItemMenuLabel { get; set; }
     public string[]? Keywords { get; set; }
     public RecipeParticle? LoopParticle { get; set; }
     public int? MaxUses { get; set; }
     public string? Name { get; set; }
-    public int? NumResultItems { get; set; }
+    public int? NumberOfResultItems { get; set; }
     public Requirement[]? OtherRequirements { get; set; }
     public RecipeParticle? Particle { get; set; }
     public string? PrereqRecipe { get; set; }
@@ -81,7 +81,7 @@ internal class Recipe
     public int? RewardSkillXpFirstTime { get; set; }
     public string? SharesResetTimerWith { get; set; }
     public string? Skill { get; set; }
-    public int? SkillLevelReq { get; set; }
+    public int? SkillLevelRequirement { get; set; }
     public string? SortSkill { get; set; }
     public string? UsageAnimation { get; set; }
     public string? UsageAnimationEnd { get; set; }
@@ -100,16 +100,16 @@ internal class Recipe
         Result.IconId = IconId;
         Result.Ingredients = Ingredients;
         Result.InternalName = InternalName;
-        Result.IsItemMenuKeywordReqSufficient = IsItemMenuKeywordReqSufficient;
+        Result.IsItemMenuKeywordReqSufficient = IsItemMenuKeywordRequirementSufficient;
         Result.ItemMenuCategory = ItemMenuCategory;
         Result.ItemMenuCategoryLevel = ItemMenuCategoryLevel;
-        Result.ItemMenuKeywordReq = ItemMenuKeywordReq;
+        Result.ItemMenuKeywordReq = ItemMenuKeywordRequirement;
         Result.ItemMenuLabel = ItemMenuLabel;
         Result.Keywords = Keywords;
         Result.LoopParticle = RecipeParticle.ToString(LoopParticle);
         Result.MaxUses = MaxUses;
         Result.Name = Name;
-        Result.NumResultItems = NumResultItems;
+        Result.NumResultItems = NumberOfResultItems;
         Result.OtherRequirements = Preprocessor.FromSingleOrMultiple(OtherRequirements, (Requirement requirement) => requirement.ToRawRequirement(), OtherRequirementsFormat);
         Result.Particle = RecipeParticle.ToString(Particle);
         Result.PrereqRecipe = PrereqRecipe;
@@ -127,7 +127,7 @@ internal class Recipe
         Result.RewardSkillXpFirstTime = RewardSkillXpFirstTime;
         Result.SharesResetTimerWith = SharesResetTimerWith;
         Result.Skill = Skill;
-        Result.SkillLevelReq = SkillLevelReq;
+        Result.SkillLevelReq = SkillLevelRequirement;
         Result.SortSkill = SortSkill;
         Result.UsageAnimation = UsageAnimation;
         Result.UsageAnimationEnd = UsageAnimationEnd;
