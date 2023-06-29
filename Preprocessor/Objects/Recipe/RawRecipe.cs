@@ -7,7 +7,7 @@ internal class RawRecipe
     public string? Description { get; set; }
     public string? DyeColor { get; set; }
     public int IconId { get; set; }
-    public RecipeItem[]? Ingredients { get; set; }
+    public object? Ingredients { get; set; }
     public string? InternalName { get; set; }
     public bool? IsItemMenuKeywordReqSufficient { get; set; }
     public string? ItemMenuCategory { get; set; }
@@ -22,11 +22,11 @@ internal class RawRecipe
     public object? OtherRequirements { get; set; }
     public string? Particle { get; set; }
     public string? PrereqRecipe { get; set; }
-    public RecipeItem[]? ProtoResultItems { get; set; }
+    public object? ProtoResultItems { get; set; }
     public int? ResetTimeInSeconds { get; set; }
     public string? RequiredAttributeNonZero { get; set; }
     public string[]? ResultEffects { get; set; }
-    public RecipeItem[]? ResultItems { get; set; }
+    public object? ResultItems { get; set; }
     public bool? RewardAllowBonusXp { get; set; }
     public string? RewardSkill { get; set; }
     public int? RewardSkillXp { get; set; }

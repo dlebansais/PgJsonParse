@@ -656,7 +656,7 @@ public class FieldTableStore
         { "StackSize", typeof(int) },
         { "PercentChance", typeof(float) },
         { "ItemKeys", typeof(string[]) },
-        { "Desc", typeof(string) },
+        { "Description", typeof(string) },
         { "ChanceToConsume", typeof(float) },
         { "DurabilityConsumed", typeof(float) },
         { "AttuneToCrafter", typeof(bool) },

@@ -263,13 +263,14 @@ internal class Preprocessor
     public static object? FromSingleOrMultiple<T, TRaw>(T[]? items, Func<T, TRaw> converter, JsonArrayFormat format)
     {
         if (items is null)
-            return null;
+            return format == JsonArrayFormat.EmptyArray ? new TRaw[0] : null;
         else
             switch (format)
             {
                 default:
                 case JsonArrayFormat.Null:
                 case JsonArrayFormat.Normal:
+                case JsonArrayFormat.EmptyArray:
                     return FromMultiple(items, converter);
                 case JsonArrayFormat.SingleElement:
                     return converter(items[0]);
@@ -333,7 +334,13 @@ internal class Preprocessor
             else if (ToNestedArray(element, out RawResult))
                 format = JsonArrayFormat.NestedArray;
             else if (ToMultipleItems(element, out RawResult))
-                format = JsonArrayFormat.Normal;
+                if (RawResult.Length == 0)
+                {
+                    format = JsonArrayFormat.EmptyArray;
+                    return null;
+                }
+                else
+                    format = JsonArrayFormat.Normal;
             else
                 throw new InvalidCastException();
 

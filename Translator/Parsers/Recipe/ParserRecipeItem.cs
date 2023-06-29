@@ -42,7 +42,7 @@ public class ParserRecipeItem : Parser
                 case "ItemKeys":
                     Result = StringToEnumConversion<RecipeItemKey>.TryParseList(Value, item.ItemKeyList);
                     break;
-                case "Desc":
+                case "Description":
                     Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                     break;
                 case "ChanceToConsume":

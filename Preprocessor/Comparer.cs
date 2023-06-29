@@ -15,7 +15,7 @@ internal class Comparer
         {
             if (ReadLine != WriteLine)
             {
-              bool HasNextReadLine = true;
+                bool HasNextReadLine = true;
                 bool HasNextWriteLine = true;
                 int NextReadOffset = ReadOffset;
                 int NextWriteOffset = WriteOffset;

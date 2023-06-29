@@ -9,7 +9,7 @@ internal class Recipe
         Description = rawRecipe.Description;
         DyeColor = rawRecipe.DyeColor;
         IconId = rawRecipe.IconId;
-        Ingredients = rawRecipe.Ingredients;
+        Ingredients = Preprocessor.ToSingleOrMultiple(rawRecipe.Ingredients, (RawRecipeItem rawRecipeItem) => new RecipeItem(rawRecipeItem), out IngredientsFormat);
         InternalName = rawRecipe.InternalName;
         IsItemMenuKeywordRequirementSufficient = rawRecipe.IsItemMenuKeywordReqSufficient;
         ItemMenuCategory = rawRecipe.ItemMenuCategory;
@@ -24,11 +24,11 @@ internal class Recipe
         OtherRequirements = Preprocessor.ToSingleOrMultiple(rawRecipe.OtherRequirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out OtherRequirementsFormat);
         Particle = RecipeParticle.Parse(rawRecipe.Particle);
         PrereqRecipe = rawRecipe.PrereqRecipe;
-        ProtoResultItems = rawRecipe.ProtoResultItems;
+        ProtoResultItems = Preprocessor.ToSingleOrMultiple(rawRecipe.ProtoResultItems, (RawRecipeItem rawRecipeItem) => new RecipeItem(rawRecipeItem), out ProtoResultItemsFormat);
         RequiredAttributeNonZero = rawRecipe.RequiredAttributeNonZero;
         ResetTimeInSeconds = rawRecipe.ResetTimeInSeconds;
         ResultEffects = rawRecipe.ResultEffects;
-        ResultItems = rawRecipe.ResultItems;
+        ResultItems = Preprocessor.ToSingleOrMultiple(rawRecipe.ResultItems, (RawRecipeItem rawRecipeItem) => new RecipeItem(rawRecipeItem), out ResultItemsFormat);
         RewardAllowBonusXp = rawRecipe.RewardAllowBonusXp;
         RewardSkill = rawRecipe.RewardSkill;
         RewardSkillXp = rawRecipe.RewardSkillXp;
@@ -98,7 +98,7 @@ internal class Recipe
         Result.Description = Description;
         Result.DyeColor = DyeColor;
         Result.IconId = IconId;
-        Result.Ingredients = Ingredients;
+        Result.Ingredients = Preprocessor.FromSingleOrMultiple(Ingredients, (RecipeItem recipeItem) => recipeItem.ToRawRecipeItem(), IngredientsFormat);
         Result.InternalName = InternalName;
         Result.IsItemMenuKeywordReqSufficient = IsItemMenuKeywordRequirementSufficient;
         Result.ItemMenuCategory = ItemMenuCategory;
@@ -113,11 +113,11 @@ internal class Recipe
         Result.OtherRequirements = Preprocessor.FromSingleOrMultiple(OtherRequirements, (Requirement requirement) => requirement.ToRawRequirement(), OtherRequirementsFormat);
         Result.Particle = RecipeParticle.ToString(Particle);
         Result.PrereqRecipe = PrereqRecipe;
-        Result.ProtoResultItems = ProtoResultItems;
+        Result.ProtoResultItems = Preprocessor.FromSingleOrMultiple(ProtoResultItems, (RecipeItem recipeItem) => recipeItem.ToRawRecipeItem(), ProtoResultItemsFormat);
         Result.RequiredAttributeNonZero = RequiredAttributeNonZero;
         Result.ResetTimeInSeconds = ResetTimeInSeconds;
         Result.ResultEffects = ResultEffects;
-        Result.ResultItems = ResultItems;
+        Result.ResultItems = Preprocessor.FromSingleOrMultiple(ResultItems, (RecipeItem recipeItem) => recipeItem.ToRawRecipeItem(), ResultItemsFormat);
         Result.RewardAllowBonusXp = RewardAllowBonusXp;
         Result.RewardSkill = RewardSkill;
         Result.RewardSkillXp = RewardSkillXp;
@@ -138,5 +138,8 @@ internal class Recipe
         return Result;
     }
 
+    private readonly JsonArrayFormat IngredientsFormat;
     private readonly JsonArrayFormat OtherRequirementsFormat;
+    private readonly JsonArrayFormat ProtoResultItemsFormat;
+    private readonly JsonArrayFormat ResultItemsFormat;
 }
