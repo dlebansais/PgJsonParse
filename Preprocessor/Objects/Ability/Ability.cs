@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 internal class Ability
@@ -78,6 +79,13 @@ internal class Ability
         WorksWhileFalling = rawAbility.WorksWhileFalling;
         WorksWhileMounted = rawAbility.WorksWhileMounted;
         WorksWhileStunned = rawAbility.WorksWhileStunned;
+
+        if (InternalName == "SwordSlash" && Keywords is not null)
+        {
+            List<string> KeywordsList = Keywords.ToList();
+            KeywordsList.Remove("Lint_NotLearnable");
+            Keywords = KeywordsList.ToArray();
+        }
     }
 
     private string? ToTargetTypeTagReq(string? rawContent)
@@ -270,6 +278,13 @@ internal class Ability
         Result.WorksWhileFalling = WorksWhileFalling;
         Result.WorksWhileMounted = WorksWhileMounted;
         Result.WorksWhileStunned = WorksWhileStunned;
+
+        if (InternalName == "SwordSlash" && Result.Keywords is not null)
+        {
+            List<string> KeywordsList = Result.Keywords.ToList();
+            KeywordsList.Add("Lint_NotLearnable");
+            Result.Keywords = KeywordsList.ToArray();
+        }
 
         return Result;
     }

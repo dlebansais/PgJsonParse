@@ -336,7 +336,7 @@ public class ParserSkill : Parser
 
             if (AbilitySkill != skill)
                 continue;
-            if (Ability.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable) && Ability.Name != "Sword Slash")
+            if (Ability.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable))
                 continue;
 
             skill.AssociationListAbility.Add(AbilityKey);

@@ -57,12 +57,10 @@ public class ParserLevelCapInteraction : Parser
 
         if (Result && SkillName is not null && Level is not null && OtherLevel is not null)
         {
-            if (SkillName == "Dance")
-                SkillName = "Performance_Dance";
-            else if (SkillName == "ArmorSmithing")
-                SkillName = "Armorsmithing";
-            else if (IsPerformanceSkill)
+            if (IsPerformanceSkill)
                 SkillName = $"Performance_{SkillName}";
+            else if (SkillName == "Dance")
+                SkillName = "Performance_Dance";
 
             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.Skill_Key = PgObject.GetItemKey(valueSkill), SkillName);
             item.RawLevel = Level;
@@ -70,55 +68,5 @@ public class ParserLevelCapInteraction : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseInteraction(PgLevelCapInteraction item, string interaction, int level, string parsedFile, string parsedKey)
-    {
-        if (interaction.Length > 0 && char.IsDigit(interaction[interaction.Length - 1]))
-        {
-            int FirstDigitIndex = interaction.Length - 1;
-            while (FirstDigitIndex > 0 && char.IsDigit(interaction[FirstDigitIndex - 1]))
-                FirstDigitIndex--;
-
-            if (FirstDigitIndex > 0 && interaction[FirstDigitIndex - 1] != '_' && interaction[FirstDigitIndex - 1] != ' ')
-                interaction = interaction.Substring(0, FirstDigitIndex) + "_" + interaction.Substring(FirstDigitIndex);
-        }
-
-        string[] Split = interaction.Split('_');
-
-        if (Split.Length < 3 || Split[0] != "LevelCap")
-            return Program.ReportFailure($"Invalid level cap interaction '{interaction}'");
-
-        string MergedSkill = string.Empty;
-        int i;
-        for (i = 1; i + 1 < Split.Length; i++)
-        {
-            if (MergedSkill.Length > 0)
-                MergedSkill += "_";
-            MergedSkill += Split[i];
-        }
-
-        if (MergedSkill == "Dance")
-            MergedSkill = "Performance_Dance";
-
-        PgSkill ParsedSkill = null!;
-        if (!ParserSkill.Parse((PgSkill valueSkill) => ParsedSkill = valueSkill, MergedSkill, parsedFile, parsedKey))
-            return false;
-
-        int OtherLevel;
-        if (!int.TryParse(Split[i], out OtherLevel) || OtherLevel <= 0)
-            return Program.ReportFailure($"Invalid level cap interaction '{interaction}'");
-
-        if (OtherLevel != level + 10 && OtherLevel != level + 5)
-            return Program.ReportFailure("Inconsistent interaction level cap");
-
-        PgLevelCapInteraction NewInteraction = new PgLevelCapInteraction();
-        NewInteraction.RawLevel = level;
-        NewInteraction.RawRangeUnlock = OtherLevel - level;
-        NewInteraction.Skill_Key = PgObject.GetItemKey(ParsedSkill);
-
-        ParsingContext.AddSuplementaryObject(NewInteraction);
-        //item.List.Add(NewInteraction);
-        return true;
     }
 }

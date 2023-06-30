@@ -16,6 +16,17 @@ internal class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCa
         return Result;
     }
 
+    private SkillLevelCap CreateSkillLevelCap(int level, int skillCap, string skill, bool isPerformanceSkill)
+    {
+        SkillLevelCap Result = new();
+        Result.Level = level;
+        Result.SkillCap = skillCap;
+        Result.Skill = skill;
+        Result.IsPerformanceSkill = isPerformanceSkill;
+
+        return Result;
+    }
+
     private void ReadTableDictionary(SkillLevelCapCollection dictionary, ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
@@ -23,6 +34,7 @@ internal class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCa
             string Key = reader.GetString() ?? throw new InvalidCastException();
             reader.Read();
             int Level = reader.GetInt32();
+            SkillLevelCap LevelCap;
 
             string[] SplittedKey = Key.Split('_');
             if (SplittedKey.Length == 3 && SplittedKey[0] == "LevelCap" && SplittedKey[1].Trim() is string Skill && Skill != string.Empty && int.TryParse(SplittedKey[2], out int SkillCap))
@@ -30,27 +42,19 @@ internal class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCa
                 if (Skill == "ArmorSmithing")
                     Skill = "Armorsmithing";
 
-                SkillLevelCap LevelCap = new();
-                LevelCap.Level = Level;
-                LevelCap.SkillCap = SkillCap;
-                LevelCap.Skill = Skill;
-                LevelCap.IsPerformanceSkill = false;
-                dictionary.Add(LevelCap);
+                LevelCap = CreateSkillLevelCap(Level, SkillCap, Skill, isPerformanceSkill: Skill == "Dance");
             }
             else if (SplittedKey.Length == 3 && SplittedKey[0] == "LevelCap" && SplittedKey[1] == "Performance" && SplittedKey[2].Trim() is string PerformanceSkill && PerformanceSkill != string.Empty && int.TryParse(PerformanceSkill.Substring(PerformanceSkill.Length - 2), out int PerformanceSkillCap))
             {
-                SkillLevelCap LevelCap = new();
-                LevelCap.Level = Level;
-                LevelCap.SkillCap = PerformanceSkillCap;
-                LevelCap.Skill = PerformanceSkill.Substring(0, PerformanceSkill.Length - 2);
-                LevelCap.IsPerformanceSkill = true;
-                dictionary.Add(LevelCap);
+                LevelCap = CreateSkillLevelCap(Level, PerformanceSkillCap, PerformanceSkill.Substring(0, PerformanceSkill.Length - 2), isPerformanceSkill: true);
             }
             else
             {
                 Debug.WriteLine($"\r\nInvalid level cap key: {Key}");
                 throw new InvalidCastException();
             }
+
+            dictionary.Add(LevelCap);
         }
     }
 
@@ -67,7 +71,7 @@ internal class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCa
         {
             string Key;
 
-            if (SkillLevelCap.IsPerformanceSkill)
+            if (SkillLevelCap.IsPerformanceSkill && SkillLevelCap.Skill != "Dance")
                 Key = $"LevelCap_Performance_{SkillLevelCap.Skill}{SkillLevelCap.SkillCap}";
             else
             {

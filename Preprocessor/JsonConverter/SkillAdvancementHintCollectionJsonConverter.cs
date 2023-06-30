@@ -79,26 +79,16 @@ internal class SkillAdvancementHintCollectionJsonConverter : JsonConverter<Skill
         StartIndex += Pattern.Length;
 
         int EndIndex;
-        string? Area = null;
 
         EndIndex = hint.IndexOf(" in ", StartIndex);
-        if (EndIndex >= 0)
-            Area = hint.Substring(EndIndex + 4);
-        else
-        {
+        if (EndIndex < 0)
             EndIndex = hint.IndexOf(" outside of ", StartIndex);
-            if (EndIndex >= 0)
-                Area = hint.Substring(EndIndex + 12);
-        }
 
         if (EndIndex <= StartIndex)
         {
             Debug.WriteLine($"Bad advancement hint: {hint}");
             throw new InvalidCastException();
         }
-
-        if (Area is not null && Area.EndsWith("."))
-            Area = Area.Substring(0, Area.Length - 1);
 
         string NpcNameString = hint.Substring(StartIndex, EndIndex - StartIndex);
         string[] NpcNames = NpcNameString.Split(new string[] { " or " }, StringSplitOptions.None);
@@ -114,11 +104,7 @@ internal class SkillAdvancementHintCollectionJsonConverter : JsonConverter<Skill
         {
             string NpcName = NpcNames[i];
             NpcName = NpcName.Replace(" ", string.Empty);
-
-            if (Area is not null)
-                Result[i] = $"Area{Area}/NPC_{NpcName}";
-            else
-                Result[i] = $"NPC_{NpcName}";
+            Result[i] = $"NPC_{NpcName}";
         }
 
         return Result;
