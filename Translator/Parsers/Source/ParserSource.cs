@@ -168,57 +168,6 @@ public class ParserSource : Parser
 
     private bool ParseSourceEffect(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
-        /*
-        if (!contentTable.ContainsKey("EffectName"))
-            return Program.ReportFailure(parsedFile, parsedKey, "Source has no effect name");
-
-        if (!(contentTable["EffectName"] is string EffectNameString))
-            return Program.ReportFailure("Source effect name was expected to be a string");
-
-        if (EffectNameString == "Learn Ability")
-        {
-            item = new PgSourceLearnAbility();
-            return true;
-        }
-
-        PgRecipe ParsedRecipe = null!;
-
-        if (Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, EffectNameString, ErrorControl.IgnoreIfNotFound))
-        {
-            item = new PgSourceRecipe() { Recipe_Key = ParsedRecipe.Key };
-            return true;
-        }
-
-        if (Inserter<PgRecipe>.SetItemByName((PgRecipe valueRecipe) => ParsedRecipe = valueRecipe, EffectNameString, ErrorControl.IgnoreIfNotFound))
-        {
-            item = new PgSourceRecipe() { Recipe_Key = ParsedRecipe.Key };
-            return true;
-        }
-
-        PgEffect ParsedEffect = null!;
-
-        if (Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => ParsedEffect = valueEffect, EffectNameString, ErrorControl.IgnoreIfNotFound))
-        {
-            item = new PgSourceEffect() { Effect_Key = ParsedEffect.Key };
-            return true;
-        }
-
-        if (!contentTable.ContainsKey("EffectTypeId"))
-            return Program.ReportFailure($"Unknown effect name {EffectNameString}");
-
-        if (!(contentTable["EffectTypeId"] is string ValueString))
-            return Program.ReportFailure($"Effect type id was expected to be a string");
-
-        string EffectKey = $"effect_{ValueString}";
-
-        if (Inserter<PgEffect>.SetItemByKey((PgEffect valueEffect) => ParsedEffect = valueEffect, EffectKey, ErrorControl.IgnoreIfNotFound))
-        {
-            item = new PgSourceEffect() { Effect_Key = ParsedEffect.Key };
-            return true;
-        }
-
-        return Program.ReportFailure($"Unknown effect name {EffectNameString}");
-        */
         item = new PgSourceEffect() { Effect_Key = null };
         return true;
     }
