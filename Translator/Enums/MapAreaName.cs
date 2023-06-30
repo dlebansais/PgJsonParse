@@ -3,7 +3,6 @@
     public enum MapAreaName
     {
         Internal_None,
-        Any,
         Dungeons,
         Planes,
         Serbule,

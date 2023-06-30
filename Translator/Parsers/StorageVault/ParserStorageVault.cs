@@ -38,9 +38,9 @@ public class ParserStorageVault : Parser
                     Result = SetStringProperty((string valueString) => item.NpcFriendlyName = valueString, Value);
                     break;
                 case "Area":
-                    Result = ParseArea((MapAreaName valueEnum) => item.Area = valueEnum, Value, parsedFile, parsedKey);
+                    Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.Area = valueEnum, Value);
                     break;
-                case "NumSlots":
+                case "NumberOfSlots":
                     Result = SetIntProperty((int valueInt) => item.RawNumSlots = valueInt, Value);
                     break;
                 case "HasAssociatedNpc":
@@ -56,7 +56,7 @@ public class ParserStorageVault : Parser
                     Result = SetStringProperty((string valueString) => item.RequirementDescription = valueString, Value);
                     break;
                 case "Grouping":
-                    Result = ParseArea((MapAreaName valueEnum) => item.Grouping = valueEnum, Value, parsedFile, parsedKey);
+                    Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.Grouping = valueEnum, Value);
                     break;
                 case "RequiredItemKeywords":
                     Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.RequiredItemKeywordList);
@@ -83,30 +83,5 @@ public class ParserStorageVault : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseArea(Action<MapAreaName> setter, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueString))
-            return Program.ReportFailure($"Value {value} was expected to be a string");
-
-        MapAreaName Area;
-
-        if (ValueString == "*")
-        {
-            Area = MapAreaName.Any;
-            StringToEnumConversion<MapAreaName>.SetCustomParsedEnum(Area);
-        }
-        else if (ValueString.StartsWith("Area"))
-        {
-            string AreaString = ValueString.Substring(4);
-            if (!StringToEnumConversion<MapAreaName>.TryParse(AreaString, out Area))
-                return false;
-        }
-        else
-            return Program.ReportFailure($"Invalid area name {ValueString}");
-
-        setter(Area);
-        return true;
     }
 }

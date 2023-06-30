@@ -4014,7 +4014,6 @@
         public static Dictionary<MapAreaName, string> MapAreaNameTextMap { get; } = new Dictionary<MapAreaName, string>()
         {
             { MapAreaName.Internal_None, string.Empty },
-            { MapAreaName.Any, "Any" },
             { MapAreaName.Dungeons, "Dungeons" },
             { MapAreaName.Planes, "Existential Planes" },
             { MapAreaName.Serbule, "Serbule" },

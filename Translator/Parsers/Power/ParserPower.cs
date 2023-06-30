@@ -38,7 +38,7 @@ public class ParserPower : Parser
                     Result = SetStringProperty((string valueString) => item.Suffix = valueString, Value);
                     break;
                 case "Tiers":
-                    Result = ParseTiers(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgPowerTierList>.SetItemProperty((PgPowerTierList valuePowerTierList) => item.TierList = valuePowerTierList.TierList, Value);
                     break;
                 case "Slots":
                     Result = StringToEnumConversion<ItemSlot>.TryParseList(Value, item.SlotList);
@@ -59,19 +59,6 @@ public class ParserPower : Parser
         }
 
         return Result;
-    }
-
-    private static bool ParseTiers(PgPower item, object value, string parsedFile, string parsedKey)
-    {
-        PgPowerTierList PowerTierList = null!;
-        if (!Inserter<PgPowerTierList>.SetItemProperty((PgPowerTierList valuePowerTierList) => PowerTierList = valuePowerTierList, value))
-            return false;
-
-        if (PowerTierList.TierList.Count == 0)
-            return Program.ReportFailure(parsedFile, parsedKey, $"Power with no tiers");
-
-        item.TierList = PowerTierList.TierList;
-        return true;
     }
 
     public static void UpdateIconsAndNames()

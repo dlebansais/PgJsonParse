@@ -796,7 +796,7 @@ public class FieldTableStore
         { "ID", typeof(int) },
         { "NpcFriendlyName", typeof(string) },
         { "Area", typeof(string) },
-        { "NumSlots", typeof(int) },
+        { "NumberOfSlots", typeof(int) },
         { "HasAssociatedNpc", typeof(bool) },
         { "Levels", typeof(PgStorageFavorLevel) },
         { "Requirements", typeof(PgStorageRequirement[]) },

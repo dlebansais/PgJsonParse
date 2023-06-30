@@ -118,7 +118,6 @@ public class EnumStringMap
     public static readonly Dictionary<MapAreaName, string> MapAreaNameTable = new Dictionary<MapAreaName, string>()
     {
         { MapAreaName.Internal_None, "None" },
-        { MapAreaName.Any, "*" },
         { MapAreaName.Serbule, "Serbule" },
         { MapAreaName.Eltibule, "Eltibule" },
         { MapAreaName.Tomb1, "Khyrulek's Crypt" },
