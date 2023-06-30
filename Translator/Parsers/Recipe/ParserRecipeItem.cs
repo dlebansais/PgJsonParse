@@ -37,7 +37,7 @@ public class ParserRecipeItem : Parser
                     Result = SetIntProperty((int valueInt) => item.RawStackSize = valueInt, Value);
                     break;
                 case "PercentChance":
-                    Result = SetFloatProperty((float valueFloat) => item.RawPercentChance = valueFloat, Value);
+                    Result = SetIntProperty((int valueInt) => item.RawPercentChance = valueInt, Value);
                     break;
                 case "ItemKeys":
                     Result = StringToEnumConversion<RecipeItemKey>.TryParseList(Value, item.ItemKeyList);
@@ -46,10 +46,10 @@ public class ParserRecipeItem : Parser
                     Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
                     break;
                 case "ChanceToConsume":
-                    Result = SetFloatProperty((float valueFloat) => item.RawChanceToConsume = valueFloat, Value);
+                    Result = SetIntProperty((int valueInt) => item.RawChanceToConsume = valueInt, Value);
                     break;
                 case "DurabilityConsumed":
-                    Result = SetFloatProperty((float valueFloat) => item.RawDurabilityConsumed = valueFloat, Value);
+                    Result = SetIntProperty((int valueInt) => item.RawDurabilityConsumed = valueInt, Value);
                     break;
                 case "AttuneToCrafter":
                     Result = SetBoolProperty((bool valueBool) => item.RawAttuneToCrafter = valueBool, Value);
@@ -79,15 +79,6 @@ public class ParserRecipeItem : Parser
 
             if ((item.RawPercentChance.HasValue && item.RawChanceToConsume.HasValue) || (item.RawPercentChance.HasValue && item.RawDurabilityConsumed.HasValue) || (item.RawChanceToConsume.HasValue && item.RawDurabilityConsumed.HasValue))
                 return Program.ReportFailure(parsedFile, parsedKey, "Inconsistent percentage");
-
-            if (item.RawPercentChance.HasValue)
-                item.RawPercentChance = item.RawPercentChance.Value * 100;
-
-            if (item.RawChanceToConsume.HasValue)
-                item.RawChanceToConsume = item.RawChanceToConsume.Value * 100;
-
-            if (item.RawDurabilityConsumed.HasValue)
-                item.RawDurabilityConsumed = item.RawDurabilityConsumed.Value * 100;
         }
 
         return Result;

@@ -5,22 +5,30 @@ internal class RecipeItem
     public RecipeItem(RawRecipeItem rawRecipeItem)
     {
         AttuneToCrafter = rawRecipeItem.AttuneToCrafter;
-        ChanceToConsume = rawRecipeItem.ChanceToConsume;
+        ChanceToConsume = ParsePercentage(rawRecipeItem.ChanceToConsume);
         Description = rawRecipeItem.Desc;
-        DurabilityConsumed = rawRecipeItem.DurabilityConsumed;
+        DurabilityConsumed = ParsePercentage(rawRecipeItem.DurabilityConsumed);
         ItemCode = rawRecipeItem.ItemCode;
         ItemKeys = rawRecipeItem.ItemKeys;
-        PercentChance = rawRecipeItem.PercentChance;
+        PercentChance = ParsePercentage(rawRecipeItem.PercentChance);
         StackSize = rawRecipeItem.StackSize;
     }
 
+    private static int? ParsePercentage(decimal? content)
+    {
+        if (content is null)
+            return null;
+        else
+            return (int)(content * 100);
+    }
+
     public bool? AttuneToCrafter { get; set; }
-    public decimal? ChanceToConsume { get; set; }
+    public int? ChanceToConsume { get; set; }
     public string? Description { get; set; }
-    public decimal? DurabilityConsumed { get; set; }
+    public int? DurabilityConsumed { get; set; }
     public int? ItemCode { get; set; }
     public string[]? ItemKeys { get; set; }
-    public decimal? PercentChance { get; set; }
+    public int? PercentChance { get; set; }
     public int StackSize { get; set; }
 
     public RawRecipeItem ToRawRecipeItem()
@@ -28,14 +36,22 @@ internal class RecipeItem
         RawRecipeItem Result = new();
 
         Result.AttuneToCrafter = AttuneToCrafter;
-        Result.ChanceToConsume = ChanceToConsume;
+        Result.ChanceToConsume = ToRawPercentage(ChanceToConsume);
         Result.Desc = Description;
-        Result.DurabilityConsumed = DurabilityConsumed;
+        Result.DurabilityConsumed = ToRawPercentage(DurabilityConsumed);
         Result.ItemCode = ItemCode;
         Result.ItemKeys = ItemKeys;
-        Result.PercentChance = PercentChance;
+        Result.PercentChance = ToRawPercentage(PercentChance);
         Result.StackSize = StackSize;
 
         return Result;
+    }
+
+    private static decimal? ToRawPercentage(int? percentage)
+    {
+        if (percentage is null)
+            return null;
+        else
+            return ((decimal)percentage) / 100;
     }
 }

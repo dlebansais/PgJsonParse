@@ -24,7 +24,7 @@ internal class Recipe
         Ingredients = Preprocessor.ToSingleOrMultiple(rawRecipe.Ingredients, (RawRecipeItem rawRecipeItem) => new RecipeItem(rawRecipeItem), out IngredientsFormat);
         InternalName = rawRecipe.InternalName;
         IsItemMenuKeywordRequirementSufficient = rawRecipe.IsItemMenuKeywordReqSufficient;
-        ItemMenuCategory = rawRecipe.ItemMenuCategory;
+        ItemMenuCategory = ParseItemMenuCategory(rawRecipe.ItemMenuCategory);
         ItemMenuCategoryLevel = rawRecipe.ItemMenuCategoryLevel;
         ItemMenuKeywordRequirement = rawRecipe.ItemMenuKeywordReq;
         ItemMenuLabel = rawRecipe.ItemMenuLabel;
@@ -391,6 +391,21 @@ internal class Recipe
         return new RecipeResultEffect() { Type = effectName, Delta = Delta };
     }
 
+    private static string? ParseItemMenuCategory(string? content)
+    {
+        switch (content)
+        {
+            case null:
+                return null;
+            case "TSysExtract":
+                return "Extract";
+            case "TSysDistill":
+                return "Distill";
+            default:
+                return content;
+        }
+    }
+
     public string? ActionLabel { get; set; }
     public Cost[]? Costs { get; set; }
     public string? Description { get; set; }
@@ -445,7 +460,7 @@ internal class Recipe
         Result.Ingredients = Preprocessor.FromSingleOrMultiple(Ingredients, (RecipeItem recipeItem) => recipeItem.ToRawRecipeItem(), IngredientsFormat);
         Result.InternalName = InternalName;
         Result.IsItemMenuKeywordReqSufficient = IsItemMenuKeywordRequirementSufficient;
-        Result.ItemMenuCategory = ItemMenuCategory;
+        Result.ItemMenuCategory = ToRawItemMenuCategory(ItemMenuCategory);
         Result.ItemMenuCategoryLevel = ItemMenuCategoryLevel;
         Result.ItemMenuKeywordReq = ItemMenuKeywordRequirement;
         Result.ItemMenuLabel = ItemMenuLabel;
@@ -628,6 +643,21 @@ internal class Recipe
         }
 
         return $"{effect.Type}(Area{effect.Area}, {Other})";
+    }
+
+    private static string? ToRawItemMenuCategory(string? content)
+    {
+        switch (content)
+        {
+            case null:
+                return null;
+            case "Extract":
+                return "TSysExtract";
+            case "Distill":
+                return "TSysDistill";
+            default:
+                return content;
+        }
     }
 
     private readonly JsonArrayFormat IngredientsFormat;

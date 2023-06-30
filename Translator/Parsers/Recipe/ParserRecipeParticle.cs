@@ -35,13 +35,13 @@ public class ParserRecipeParticle : Parser
                     Result = StringToEnumConversion<RecipeParticle>.SetEnum((RecipeParticle valueEnum) => item.Particle = valueEnum, Value);
                     break;
                 case "PrimaryColor":
-                    Result = ParseColor(item, Value, (uint valueColor) => item.RawPrimaryColor = valueColor, parsedFile, parsedKey);
+                    Result = SetColorProperty((uint valueColor) => item.RawPrimaryColor = valueColor, Value);
                     break;
                 case "SecondaryColor":
-                    Result = ParseColor(item, Value, (uint valueColor) => item.RawSecondaryColor = valueColor, parsedFile, parsedKey);
+                    Result = SetColorProperty((uint valueColor) => item.RawSecondaryColor = valueColor, Value);
                     break;
                 case "LightColor":
-                    Result = ParseColor(item, Value, (uint valueColor) => item.RawLightColor = valueColor, parsedFile, parsedKey);
+                    Result = SetColorProperty((uint valueColor) => item.RawLightColor = valueColor, Value);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -57,18 +57,5 @@ public class ParserRecipeParticle : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseColor(PgRecipeParticle item, object value, Action<uint> setter, string parsedFile, string parsedKey)
-    {
-        if (value is not string AsString)
-            return Program.ReportFailure($"Value '{value}' was expected to be a string");
-
-        if (!Tools.TryParseColor(AsString, out uint Color))
-            return Program.ReportFailure($"Failed to parse '{AsString}' as a color");
-
-        setter(Color);
-
-        return true;
     }
 }
