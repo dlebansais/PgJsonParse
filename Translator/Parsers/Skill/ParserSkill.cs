@@ -284,20 +284,6 @@ public class ParserSkill : Parser
         return true;
     }
 
-    private bool ParseReports(PgSkill item, object value, string parsedFile, string parsedKey)
-    {
-        foreach (object Context in (System.Collections.IEnumerable)value)
-        {
-            PgReport Report = null!;
-            if (!Inserter<PgReport>.SetItemProperty((PgReport valueReport) => Report = valueReport, Context))
-                return false;
-
-            item.ReportList.Add(Report);
-        }
-
-        return true;
-    }
-
     public static void FillAssociationTables()
     {
         Dictionary<string, ParsingContext> SkillContextTable = ParsingContext.ObjectKeyTable[typeof(PgSkill)];
