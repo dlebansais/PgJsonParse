@@ -1,0 +1,29 @@
+﻿namespace PgObjects
+{
+    public enum RecipeResultEffectType
+    {
+        Internal_None,
+        Special,
+        AddItemTSysPower,
+        ExtractTSysPower,
+        RepairItemDurability,
+        CraftSimpleTSysItem,
+        ConsumeItemUses,
+        TSysCraftedEquipment,
+        CraftingEnhanceItem,
+        GiveTSysItem,
+        CreateMiningSurvey,
+        Tiered,
+        PermanentlyRaiseMaxTempestEnergy,
+        SpawnPremonition,
+        BrewItem,
+        PolymorphRabbitPermanent,
+        AddItemTSysPowerWax,
+        DeltaCurFairyEnergy,
+        Teleport,
+        AdjustRecipeReuseTime,
+        CraftingResetItem,
+        SendItemToSaddlebag,
+        TransmogItemAppearance,
+    }
+}

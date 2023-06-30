@@ -57,7 +57,7 @@ public class ParserRecipe : Parser
                     Result = SetIntProperty((int valueInt) => item.RawSkillLevelReq = valueInt, Value);
                     break;
                 case "ResultEffects":
-                    Result = ParseResultEffects(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgRecipeResultEffect>.AddKeylessArray(item.ResultEffectList, Value);
                     break;
                 case "SortSkill":
                     Result = ParserSkill.Parse((PgSkill valueSkill) => item.SortSkill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
@@ -867,7 +867,7 @@ public class ParserRecipe : Parser
 
     private bool ParsePolymorph(string buffName, string parsedFile, string parsedKey, string color, out PgRecipeResultEffect recipeResult)
     {
-        PgRecipeResultPolymorph RecipeResultEffect = new PgRecipeResultPolymorph() { Color = color };
+        PgRecipeResultPolymorph RecipeResultEffect = new PgRecipeResultPolymorph() { /*Color = color*/ };
 
         recipeResult = RecipeResultEffect;
         return true;
@@ -875,9 +875,9 @@ public class ParserRecipe : Parser
 
     private bool ParseSpawnMonster(string buffName, string parsedFile, string parsedKey, out PgRecipeResultEffect recipeResult)
     {
-        PgRecipeResultSpawnMonster RecipeResultEffect = new PgRecipeResultSpawnMonster();
+        //PgRecipeResultSpawnMonster RecipeResultEffect = new PgRecipeResultSpawnMonster();
 
-        recipeResult = RecipeResultEffect;
+        recipeResult = null!; /*RecipeResultEffect;*/
         return true;
     }
 

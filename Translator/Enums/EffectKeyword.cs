@@ -338,5 +338,6 @@
         Angling,
         AnglingMode,
         SuperBuffs,
+        Whittling,
     }
 }

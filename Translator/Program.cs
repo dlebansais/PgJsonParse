@@ -28,6 +28,9 @@ public class Program
             return -1;
         }
 
+        Version = 387;
+        Debug.WriteLine("REMOVE HACK!!!");
+
         VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
 
         if (!Directory.Exists(VersionPath))

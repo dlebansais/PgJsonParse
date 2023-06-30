@@ -63,6 +63,7 @@ public static class MainParser
         { typeof(PgRecipeItem), new ParserRecipeItem() },
         { typeof(PgRecipeCost), new ParserRecipeCost() },
         { typeof(PgRecipeParticle), new ParserRecipeParticle() },
+        { typeof(PgRecipeResultEffect), new ParserRecipeResultEffect() },
         { typeof(PgSkill), new ParserSkill() },
         { typeof(PgLevelCapInteraction), new ParserLevelCapInteraction() },
         { typeof(PgAdvancementHint), new ParserAdvancementHint() },

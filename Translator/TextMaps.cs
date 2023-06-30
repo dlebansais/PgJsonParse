@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 83;
+        public const int TotalEnumTypes = 84;
 
         static TextMaps()
         {
@@ -1783,6 +1783,7 @@
             { EffectKeyword.Angling, "Angling" },
             { EffectKeyword.AnglingMode, "Angling Mode" },
             { EffectKeyword.SuperBuffs, "Super Buffs" },
+            { EffectKeyword.Whittling, "Whittling" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -4769,19 +4770,6 @@
             { RecipeEffect.CreateGeologySurveyGreen_GeologySurveyKurMountains2, "Create Geology Survey (Green, Kur Mountains)" },
             { RecipeEffect.CreateGeologySurveyOrange_GeologySurveyKurMountains3, "Create Geology Survey (Orange, Kur Mountains)" },
             { RecipeEffect.CreateGeologySurveyWhite_GeologySurveyKurMountains4, "Create Geology Survey (White, Kur Mountains)" },
-            { RecipeEffect.CreateMiningSurvey1X_MiningSurveyKurMountains1X, "Create Motherlode Mining Survey (Simple, Kur Mountains)" },
-            { RecipeEffect.CreateMiningSurvey2X_MiningSurveyKurMountains2X, "Create Motherlode Mining Survey (Basic, Kur Mountains)" },
-            { RecipeEffect.CreateMiningSurvey3X_MiningSurveyKurMountains3X, "Create Motherlode Mining Survey (Good, Kur Mountains)" },
-            { RecipeEffect.CreateMiningSurvey1_MiningSurveySouthSerbule1, "Create Mining Survey (Simple, South Serbule)" },
-            { RecipeEffect.CreateMiningSurvey2_MiningSurveySouthSerbule2, "Create Mining Survey (Basic, South Serbule)" },
-            { RecipeEffect.CreateMiningSurvey3_MiningSurveyEltibule3, "Create Mining Survey (Good, Eltibule)" },
-            { RecipeEffect.CreateMiningSurvey4_MiningSurveyEltibule4, "Create Mining Survey (Expert's, Eltibule)" },
-            { RecipeEffect.CreateMiningSurvey5_MiningSurveyEltibule5, "Create Mining Survey (Master's, Eltibule)" },
-            { RecipeEffect.CreateMiningSurvey6_MiningSurveyEltibule6, "Create Mining Survey (Amazing, Eltibule)" },
-            { RecipeEffect.CreateMiningSurvey4X_MiningSurveyIlmari4X, "Create Motherlode Mining Survey (Expert's, Ilmari)" },
-            { RecipeEffect.CreateMiningSurvey5X_MiningSurveyIlmari5X, "Create Motherlode Mining Survey (Master's, Ilmari)" },
-            { RecipeEffect.CreateMiningSurvey6X_MiningSurveyIlmari6X, "Create Motherlode Mining Survey (Amazing, Ilmari)" },
-            { RecipeEffect.CreateMiningSurvey7X_MiningSurveyIlmari7X, "Create Motherlode Mining Survey (Astounding, Ilmari)" },
             { RecipeEffect.StorageCrateDruid12Items, "Druid Storage Crate, 12 Items" },
             { RecipeEffect.StorageCrateDruid20Items, "Druid Storage Crate, 20 Items" },
             { RecipeEffect.Augury1, "Augury 1" },
@@ -4822,16 +4810,12 @@
             { RecipeEffect.Calligraphy5D, "Calligraphy 5D" },
             { RecipeEffect.Particle_Psychic, "Particle (Psychic)" },
             { RecipeEffect.DispelSpawnPremonitionsOnDeath, "Dispel Spawn Premonitions On Death" },
-            //{ RecipeEffect.SpawnPremonition_All_3sec, "Spawn Premonition All 3sec" },
-            //{ RecipeEffect.SpawnPremonition_All_5sec, "Spawn Premonition All 5sec" },
             { RecipeEffect.SpawnPremonition_Undead_10sec, "Spawn Premonition Undead 10sec" },
             { RecipeEffect.ResearchFireMagic75, "Research Fire Magic, Level 75" },
             { RecipeEffect.ResearchFireMagic80, "Research Fire Magic, Level 80" },
             { RecipeEffect.ResearchIceMagic75, "Research Ice Magic, Level 75" },
             { RecipeEffect.ResearchIceMagic80, "Research Ice Magic, Level 80" },
             { RecipeEffect.TeleportToNearbyMushroomCircle, "Teleport To Nearby Mushroom Circle" },
-            { RecipeEffect.CreateMiningSurvey7X_MiningSurveyGazluk7X, "Create Motherlode Mining Survey (Astounding, Gazluk)" },
-            { RecipeEffect.CreateMiningSurvey8X_MiningSurveyGazluk8X, "Create Motherlode Mining Survey (Superb, Gazluk)" },
             { RecipeEffect.ShowWardenEvents, "Show Warden Events" },
             { RecipeEffect.Calligraphy10D, "Calligraphy 10D" },
             { RecipeEffect.CreateSunValeTreasureMapPoor, "Create Sun Vale Treasure Map (Poor)" },
@@ -4845,8 +4829,6 @@
             { RecipeEffect.StoragePortal2, "Storage Portal #2" },
             { RecipeEffect.StoragePortal3, "Storage Portal #3" },
             { RecipeEffect.SummonFairyLight, "Summon Fairy Light" },
-            { RecipeEffect.CreateMiningSurvey7Y_MiningSurveyPovus7Y, "Create Motherlode Mining Survey (Astounding, Povus)" },
-            { RecipeEffect.CreateMiningSurvey8Y_MiningSurveyPovus8Y, "Create Motherlode Mining Survey (Superb, Povus)" },
             { RecipeEffect.CreateNecroFuel, "Create Necro Fuel" },
             { RecipeEffect.DrinkNectar, "Drink Nectar" },
             { RecipeEffect.Particle_Action, "Particle (Action)" },
@@ -4868,6 +4850,7 @@
             { RecipeEffect.ResearchWeatherWitching70, "Weather Witching Research, Level 70" },
             { RecipeEffect.ResearchWeatherWitching75, "Weather Witching Research, Level 75" },
             { RecipeEffect.ResearchWeatherWitching80, "Weather Witching Research, Level 80" },
+            { RecipeEffect.SpawnPovusPaleomonster, "Spawn Povus Paleomonster" },
         };
 
         public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()
