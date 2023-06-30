@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 
 internal class Preprocessor
 {
-    private List<JsonConverter> JsonConverters = new()
+    private static List<JsonConverter> JsonConverters = new()
     {
         new IntDictionaryJsonConverter<Ability, RawAbility, AbilityDictionary>("ability"),
         new AdvancementTableDictionaryJsonConverter(),
@@ -45,39 +45,14 @@ internal class Preprocessor
         new IntDictionaryJsonConverter<XpTable, XpTable, XpTableDictionary>("Table"),
     };
 
-    public bool Preprocess()
+    public bool Preprocess(string versionPath, List<JsonFile> jsonFileList)
     {
-        List<JsonFile> JsonFileList = new()
-        {
-            new JsonFile("abilities", true, PreprocessDictionary<AbilityDictionary>, Fixer.NoFix, SaveSerializedContent<AbilityDictionary>),
-            new JsonFile("advancementtables", true, PreprocessDictionary<AdvancementTableDictionary>, Fixer.NoFix, SaveSerializedContent<AdvancementTableDictionary>),
-            new JsonFile("ai", true, PreprocessDictionary<AIDictionary>, Fixer.NoFix, SaveSerializedContent<AIDictionary>),
-            new JsonFile("areas", true, PreprocessDictionary<AreaDictionary>, Fixer.NoFix, SaveSerializedContent<AreaDictionary>),
-            new JsonFile("attributes", true, PreprocessDictionary<AttributeDictionary>, Fixer.FixAttributes, SaveSerializedContent<AttributeDictionary>),
-            new JsonFile("directedgoals", true, PreprocessDictionary<DirectedGoalDictionary>, Fixer.NoFix, SaveSerializedContent<DirectedGoalDictionary>),
-            new JsonFile("effects", true, PreprocessDictionary<EffectDictionary>, Fixer.NoFix, SaveSerializedContent<EffectDictionary>),
-            new JsonFile("items", true, PreprocessDictionary<ItemDictionary>, Fixer.NoFix, SaveSerializedContent<ItemDictionary>),
-            new JsonFile("itemuses", true, PreprocessDictionary<ItemUseDictionary>, Fixer.NoFix, SaveSerializedContent<ItemUseDictionary>),
-            new JsonFile("lorebookinfo", true, PreprocessSingle<LoreBookInfo>, Fixer.NoFix, SaveSerializedContent<LoreBookInfo>),
-            new JsonFile("lorebooks", true, PreprocessDictionary<LoreBookDictionary>, Fixer.NoFix, SaveSerializedContent<LoreBookDictionary>),
-            new JsonFile("npcs", false, PreprocessDictionary<NpcDictionary>, Fixer.NoFix, SaveSerializedContent<NpcDictionary>),
-            new JsonFile("playertitles", true, PreprocessDictionary<PlayerTitleDictionary>, Fixer.NoFix, SaveSerializedContent<PlayerTitleDictionary>),
-            new JsonFile("quests", true, PreprocessDictionary<QuestDictionary>, Fixer.NoFix, SaveSerializedContent<QuestDictionary>),
-            new JsonFile("recipes", true, PreprocessDictionary<RecipeDictionary>, Fixer.FixRecipes, SaveSerializedContent<RecipeDictionary>),
-            new JsonFile("skills", true, PreprocessDictionary<SkillDictionary>, Fixer.FixSkills, SaveSerializedContent<SkillDictionary>),
-            new JsonFile("sources_abilities", true, PreprocessDictionary<SourceAbilityDictionary>, Fixer.FixSourceAbilities, SaveSerializedContent<SourceAbilityDictionary>),
-            new JsonFile("sources_recipes", true, PreprocessDictionary<SourceRecipeDictionary>, Fixer.FixSourceRecipes, SaveSerializedContent<SourceRecipeDictionary>),
-            new JsonFile("storagevaults", true, PreprocessDictionary<StorageVaultDictionary>, Fixer.FixStorageVaults, SaveSerializedContent<StorageVaultDictionary>),
-            new JsonFile("tsysclientinfo", true, PreprocessDictionary<PowerDictionary>, Fixer.FixPowers, SaveSerializedContent<PowerDictionary>),
-            new JsonFile("xptables", true, PreprocessDictionary<XpTableDictionary>, Fixer.FixXpTables, SaveSerializedContent<XpTableDictionary>),
-        };
-
-        string DestinationDirectory = @"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\387\Curated";
+        string DestinationDirectory = @$"{versionPath}\Curated";
 
         if (!Directory.Exists(DestinationDirectory))
             Directory.CreateDirectory(DestinationDirectory);
 
-        foreach (JsonFile File in JsonFileList)
+        foreach (JsonFile File in jsonFileList)
         {
             (bool Success, object Result) = File.PreprocessingMethod(File.FileName, File.IsPretty);
             if (!Success)
@@ -93,7 +68,7 @@ internal class Preprocessor
         return true;
     }
 
-    private (bool, object) PreprocessSingle<T>(string fileName, bool isPretty)
+    public static (bool, object) PreprocessSingle<T>(string fileName, bool isPretty)
         where T: class
     {
         if (Preprocess(fileName, isPretty, out T SingleObject))
@@ -105,7 +80,7 @@ internal class Preprocessor
         return (false, null!);
     }
 
-    private (bool, object) PreprocessDictionary<T>(string fileName, bool isPretty)
+    public static (bool, object) PreprocessDictionary<T>(string fileName, bool isPretty)
         where T : ICollection
     {
         if (Preprocess(fileName, isPretty, out T ObjectCollection))
@@ -117,7 +92,7 @@ internal class Preprocessor
         return (false, null!);
     }
 
-    private bool Preprocess<T>(string fileName, bool isPretty, out T result)
+    private static bool Preprocess<T>(string fileName, bool isPretty, out T result)
     {
         Debug.Write($"Preprocessing {fileName}.json...");
 
@@ -145,7 +120,7 @@ internal class Preprocessor
             return true;
     }
 
-    private string GetReadContent(string filePath, bool isPretty)
+    private static string GetReadContent(string filePath, bool isPretty)
     {
         using FileStream Stream = new(filePath, FileMode.Open, FileAccess.Read);
         using StreamReader Reader = new(Stream, Encoding.UTF8);
@@ -168,7 +143,7 @@ internal class Preprocessor
         return ReadContent;
     }
 
-    private T GetDeserializedObjects<T>(string readContent)
+    private static T GetDeserializedObjects<T>(string readContent)
     {
         JsonSerializerOptions ReadOptions = new();
         JsonConverters.ForEach(ReadOptions.Converters.Add);
@@ -177,7 +152,7 @@ internal class Preprocessor
         return Result;
     }
 
-    private void EnsureAlphabeticalOrder(Type type, List<Type> visitedTypes)
+    private static void EnsureAlphabeticalOrder(Type type, List<Type> visitedTypes)
     {
         PropertyInfo[] Properties;
 
@@ -216,7 +191,7 @@ internal class Preprocessor
             Debug.Assert(SortedPropertyNames[i] == PropertyNames[i], $"Property {SortedPropertyNames[i]} in {type.Name} is not declared in order");
     }
 
-    private string GetWriteContent<T>(T objects, bool isPretty)
+    private static string GetWriteContent<T>(T objects, bool isPretty)
     {
         JsonSerializerOptions WriteOptions = new();
         JsonConverters.ForEach(WriteOptions.Converters.Add);
@@ -232,12 +207,12 @@ internal class Preprocessor
         return WriteContent;
     }
 
-    private void SaveSerializedContent<T>(string filePath, object content)
+    public static void SaveSerializedContent<T>(string filePath, object content)
     {
         SaveSerializedContent<T>(filePath, (T)content);
     }
 
-    private void SaveSerializedContent<T>(string filePath, T content)
+    private static void SaveSerializedContent<T>(string filePath, T content)
     {
         JsonSerializerOptions WriteOptions = new();
         WriteOptions.WriteIndented = true;
