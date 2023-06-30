@@ -59,8 +59,6 @@ public class ParserLevelCapInteraction : Parser
         {
             if (IsPerformanceSkill)
                 SkillName = $"Performance_{SkillName}";
-            else if (SkillName == "Dance")
-                SkillName = "Performance_Dance";
 
             Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => item.Skill_Key = PgObject.GetItemKey(valueSkill), SkillName);
             item.RawLevel = Level;

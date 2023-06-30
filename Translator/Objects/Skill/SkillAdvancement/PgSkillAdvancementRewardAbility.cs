@@ -1,7 +1,9 @@
 ﻿namespace PgObjects
 {
+    using System.Collections.Generic;
+
     public class PgSkillAdvancementRewardAbility : PgSkillAdvancement
     {
-        public string[]? Ability_Keys { get; set; }
+        public List<string> Ability_Keys { get; set; } = new();
     }
 }

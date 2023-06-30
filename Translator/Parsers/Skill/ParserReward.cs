@@ -32,7 +32,7 @@ public class ParserReward : Parser
             switch (Key)
             {
                 case "Abilities":
-                    Result = ParseAbility(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgAbility>.AddPgObjectArrayByInternalName<PgAbility>(item.Ability_Keys, Value);
                     break;
                 case "BonusToSkill":
                     Result = ParserSkill.Parse((PgSkill valueSkill) => item.BonusLevelSkill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
@@ -65,32 +65,6 @@ public class ParserReward : Parser
         }
 
         return Result;
-    }
-
-    private bool ParseAbility(PgReward item, object value, string parsedFile, string parsedKey)
-    {
-        if (value is string AsString)
-        {
-            if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Ability_Keys = new string[] { valueAbility.Key }, AsString))
-                return false;
-        }
-        else if (value is IList AsList)
-        {
-            item.Ability_Keys = new string[AsList.Count];
-
-            for (int i = 0; i < AsList.Count; i++)
-            {
-                item.Ability_Keys[i] = string.Empty;
-
-                if (AsList[i] is string AsStringItem)
-                    if (!Inserter<PgAbility>.SetItemByInternalName((PgAbility valueAbility) => item.Ability_Keys[i] = valueAbility.Key, AsStringItem))
-                        return false;
-            }
-        }
-        else
-            return Program.ReportFailure($"Expected string or string[] for Ability but got {value.GetType().Name}");
-
-        return true;
     }
 
     public static int CurrencyToIcon(Currency currency)
