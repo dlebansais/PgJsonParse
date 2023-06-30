@@ -24,7 +24,6 @@ public class ParserAdvancementTable : Parser
     private bool FinishItem(PgAdvancementTable item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
         bool Result = true;
-        List<PgAdvancement> Advancements = new();
 
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
@@ -34,7 +33,7 @@ public class ParserAdvancementTable : Parser
             switch (Key)
             {
                 case "Levels":
-                    Result = Inserter<PgAdvancement>.AddKeylessArray(Advancements, Value);
+                    Result = Inserter<PgAdvancement>.AddKeylessArray(item.AdvancementList, Value);
                     break;
                 case "Name":
                     Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
@@ -46,12 +45,6 @@ public class ParserAdvancementTable : Parser
 
             if (!Result)
                 break;
-        }
-
-        if (Advancements is not null)
-        {
-            foreach (PgAdvancement Advancement in Advancements)
-                item.LevelTable.Add(Advancement.GetLevel(), Advancement);
         }
 
         return true;

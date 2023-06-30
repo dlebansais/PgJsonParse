@@ -70,7 +70,7 @@ public class ParserSkill : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetIsCombatSkill(valueBool), Value);
                     break;
                 case "TSysCompatibleCombatSkills":
-                    Result = ParseCompatibleCombatSkills(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgSkill>.AddPgObjectArrayByKey<PgSkill>(item.CompatibleCombatSkillList, Value);
                     break;
                 case "MaxBonusLevels":
                     Result = SetIntProperty((int valueInt) => item.RawMaxBonusLevels = valueInt, Value);
@@ -125,6 +125,15 @@ public class ParserSkill : Parser
 
         if (Result)
         {
+            /*
+            int PreviousLevel = -1;
+            foreach (PgSkillAdvancement Advancement in item.SkillAdvancementList)
+            {
+                Debug.Assert(PreviousLevel < Advancement.Level);
+                PreviousLevel = Advancement.Level;
+            }
+            */
+
             item.SkillAdvancementList.Sort(SortSkillAdvancementByLevel);
         }
 
@@ -149,9 +158,6 @@ public class ParserSkill : Parser
         if (!(value is string TableString))
             return Program.ReportFailure($"Value '{value}' was expected to be a string");
 
-        if (TableString == "null")
-            return true;
-
         Dictionary<string, ParsingContext> Table = ParsingContext.ObjectKeyTable[typeof(PgAdvancementTable)];
 
         foreach (KeyValuePair<string, ParsingContext> Entry in Table)
@@ -163,10 +169,9 @@ public class ParserSkill : Parser
 
             if (AsAdvancementTable.InternalName == TableString)
             {
-                foreach (KeyValuePair<int, PgAdvancement> AdvancementEntry in AsAdvancementTable.LevelTable)
+                foreach (PgAdvancement Advancement in AsAdvancementTable.AdvancementList)
                 {
-                    int Level = AdvancementEntry.Key;
-                    PgAdvancement Advancement = AdvancementEntry.Value;
+                    int Level = Advancement.GetLevel();
 
                     foreach (PgAdvancementEffectAttribute EffectAttribute in Advancement.EffectAttributeList)
                     {
@@ -182,15 +187,6 @@ public class ParserSkill : Parser
         }
 
         return Program.ReportFailure($"Advancement table '{TableString}' not found");
-    }
-
-    private bool ParseCompatibleCombatSkills(PgSkill item, object value, string parsedFile, string parsedKey)
-    {
-        if (!Inserter<PgSkill>.AddPgObjectArrayByKey<PgSkill>(item.CompatibleCombatSkillList, value))
-            return false;
-
-        item.CompatibleCombatSkillList.Sort();
-        return true;
     }
 
     private bool ParseInteractionFlagLevelCaps(PgSkill item, object value, string parsedFile, string parsedKey)

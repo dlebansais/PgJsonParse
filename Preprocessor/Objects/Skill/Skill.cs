@@ -1,6 +1,8 @@
 ﻿namespace Preprocessor;
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 internal class Skill
 {
@@ -25,7 +27,6 @@ internal class Skill
         Rewards = rawSkill.Rewards;
         SkillLevelDisparityApplies = rawSkill.SkillLevelDisparityApplies;
         SkipBonusLevelsIfSkillUnlearned = rawSkill.SkipBonusLevelsIfSkillUnlearned;
-        TSysCompatibleCombatSkills = rawSkill.TSysCompatibleCombatSkills;
         XpTable = rawSkill.XpTable;
 
         if (rawSkill._RecipeIngredientKeywords is not null)
@@ -43,6 +44,15 @@ internal class Skill
         {
             IsNullAdvancementTable = true;
             AdvancementTable = null;
+        }
+
+        if (rawSkill.TSysCompatibleCombatSkills is not null)
+        {
+            UnsortedCombatSkills = rawSkill.TSysCompatibleCombatSkills;
+
+            List<string> CombatSkills = new(UnsortedCombatSkills);
+            CombatSkills.Sort();
+            TSysCompatibleCombatSkills = CombatSkills.ToArray();
         }
     }
 
@@ -90,7 +100,6 @@ internal class Skill
         Result.Rewards = Rewards;
         Result.SkillLevelDisparityApplies = SkillLevelDisparityApplies;
         Result.SkipBonusLevelsIfSkillUnlearned = SkipBonusLevelsIfSkillUnlearned;
-        Result.TSysCompatibleCombatSkills = TSysCompatibleCombatSkills;
         Result.XpTable = XpTable;
 
         if (Is_RecipeIngredientKeywords)
@@ -101,9 +110,15 @@ internal class Skill
         if (IsNullAdvancementTable)
             Result.AdvancementTable = "null";
 
+        if (UnsortedCombatSkills is not null)
+            Result.TSysCompatibleCombatSkills = UnsortedCombatSkills.ToArray();
+        else
+            Result.TSysCompatibleCombatSkills = TSysCompatibleCombatSkills;
+
         return Result;
     }
 
     private bool Is_RecipeIngredientKeywords;
     private bool IsNullAdvancementTable;
+    private string[]? UnsortedCombatSkills;
 }
