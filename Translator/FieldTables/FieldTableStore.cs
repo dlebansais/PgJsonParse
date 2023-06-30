@@ -442,8 +442,8 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TablePowerTier { get; } = new Dictionary<string, Type>()
     {
-        { "EffectDescs", typeof(string[]) },
-        { "SkillLevelPrereq", typeof(int) },
+        { "EffectDescriptions", typeof(string[]) },
+        { "SkillLevelPrerequirement", typeof(int) },
         { "MinLevel", typeof(int) },
         { "MaxLevel", typeof(int) },
         { "MinRarity", typeof(string) },

@@ -41,7 +41,7 @@ internal class Preprocessor
         new IntDictionaryJsonConverter<SourceRecipe, RawSourceRecipe, SourceRecipeDictionary>("recipe"),
         new StringDictionaryJsonConverter<StorageVault, RawStorageVault, StorageVaultDictionary>(),
         new IntDictionaryJsonConverter<Power, Power, PowerDictionary>("power"),
-        new IntDictionaryJsonConverter<PowerTier, PowerTier, PowerTierDictionary>("id"),
+        new IntDictionaryJsonConverter<PowerTier, RawPowerTier, PowerTierDictionary>("id"),
         new IntDictionaryJsonConverter<XpTable, XpTable, XpTableDictionary>("Table"),
     };
 

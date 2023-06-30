@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-internal class PowerTierDictionary : Dictionary<int, PowerTier>, IDictionaryValueBuilder<PowerTier, PowerTier>
+internal class PowerTierDictionary : Dictionary<int, PowerTier>, IDictionaryValueBuilder<PowerTier, RawPowerTier>
 {
-    public PowerTier FromRaw(PowerTier item) => item;
-    public PowerTier ToRaw(PowerTier item) => item;
+    public PowerTier FromRaw(RawPowerTier rawPowerTier) => new PowerTier(rawPowerTier);
+    public RawPowerTier ToRaw(PowerTier powerTier) => powerTier.ToRawPowerTier();
 }

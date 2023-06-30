@@ -30,10 +30,10 @@ public class ParserPowerTier : Parser
 
             switch (Key)
             {
-                case "EffectDescs":
+                case "EffectDescriptions":
                     Result = ParseEffectDescriptionList(item.EffectList, Value, parsedFile, parsedKey);
                     break;
-                case "SkillLevelPrereq":
+                case "SkillLevelPrerequirement":
                     Result = SetIntProperty((int valueInt) => item.RawSkillLevelPrereq = valueInt, Value);
                     break;
                 case "MinLevel":
@@ -43,7 +43,7 @@ public class ParserPowerTier : Parser
                     Result = SetIntProperty((int valueInt) => item.RawMaxLevel = valueInt, Value);
                     break;
                 case "MinRarity":
-                    Result = ParseKeywordAsMinRarity(item, Value, parsedFile, parsedKey);
+                    Result = StringToEnumConversion<RecipeItemKey>.SetEnum((RecipeItemKey valueEnum) => item.MinRarity = valueEnum, $"MinRarity_{Value}");
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -238,25 +238,5 @@ public class ParserPowerTier : Parser
             fixedEffect = null!;
             return false;
         }
-    }
-
-    private bool ParseKeywordAsMinRarity(PgPowerTier item, object value, string parsedFile, string parsedKey)
-    {
-        if (!(value is string ValueKeyword))
-            return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
-
-        if (ValueKeyword == "Uncommon")
-            item.MinRarity = RecipeItemKey.MinRarity_Uncommon;
-        else if (ValueKeyword == "Rare")
-            item.MinRarity = RecipeItemKey.MinRarity_Rare;
-        else if (ValueKeyword == "Exceptional")
-            item.MinRarity = RecipeItemKey.MinRarity_Exceptional;
-        else if (ValueKeyword == "Epic")
-            item.MinRarity = RecipeItemKey.MinRarity_Epic;
-        else
-            return Program.ReportFailure(parsedFile, parsedKey, $"Invalid minimum rarity '{value}'");
-
-        StringToEnumConversion<RecipeItemKey>.SetCustomParsedEnum(item.MinRarity);
-        return true;
     }
 }
