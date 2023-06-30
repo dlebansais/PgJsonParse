@@ -85,7 +85,7 @@ public class ParserSkill : Parser
                     Result = ParseRewards(item, Value, parsedFile, parsedKey);
                     break;
                 case "Reports":
-                    Result = ParseReports(item, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgReport>.AddKeylessArray(item.ReportList, Value);
                     break;
                 case "Name":
                     Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
@@ -221,8 +221,7 @@ public class ParserSkill : Parser
             {
                 int Level = Entry.Key;
                 string Hint = Entry.Value;
-                if (!ParseHints(Hint, parsedFile, parsedKey, out PgNpcLocationCollection NpcList))
-                    return false;
+                PgNpcLocationCollection NpcList = AdvancementHint.NpcList;
 
                 PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementHint() { RawLevel = Level, Hint = Hint, NpcList = NpcList };
 
@@ -230,71 +229,6 @@ public class ParserSkill : Parser
                 item.SkillAdvancementList.Add(NewSkillAdvancement);
             }
         }
-
-        return true;
-    }
-
-    private bool ParseHints(string hint, string parsedFile, string parsedKey, out PgNpcLocationCollection npcList)
-    {
-        npcList = new PgNpcLocationCollection();
-
-        if (hint.EndsWith("learn a new dance move."))
-        {
-            return true;
-        }
-
-        hint = hint.Replace(" during a Full Moon,", string.Empty);
-
-        string Pattern;
-        int StartIndex;
-
-        Pattern = "gain favor with ";
-        StartIndex = hint.IndexOf(Pattern);
-
-        if (StartIndex < 0)
-        {
-            Pattern = "speak with ";
-            StartIndex = hint.IndexOf(Pattern);
-        }
-
-        if (StartIndex < 0)
-        {
-            Pattern = "seek out ";
-            StartIndex = hint.IndexOf(Pattern);
-        }
-
-        if (StartIndex < 0)
-        {
-            if (hint.Contains(" equip "))
-                return true;
-
-            return Program.ReportFailure($"Advancement trigger not found in: {hint}");
-        }
-
-        StartIndex += Pattern.Length;
-
-        int EndIndex;
-
-        EndIndex = hint.IndexOf(" in ", StartIndex);
-        if (EndIndex < 0)
-            EndIndex = hint.IndexOf(" outside of ", StartIndex);
-        if (EndIndex <= StartIndex)
-            return Program.ReportFailure($"Bad advancement hint: {hint}");
-
-        string NpcNameString = hint.Substring(StartIndex, EndIndex - StartIndex);
-        string[] NpcNames = NpcNameString.Split(new string[] { " or " }, StringSplitOptions.None);
-
-        foreach (string NpcName in NpcNames)
-        {
-            PgNpcLocation ParsedNpc = null!;
-            if (!Inserter<PgSkill>.SetNpc((PgNpcLocation npcLocation) => ParsedNpc = npcLocation, $"NPC_{NpcName}", parsedFile, parsedKey))
-                return false;
-
-            npcList.Add(ParsedNpc);
-        }
-
-        if (npcList.Count == 0)
-            return Program.ReportFailure($"No NPC name in advancement hint: {hint}");
 
         return true;
     }

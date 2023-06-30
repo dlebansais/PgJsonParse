@@ -38,6 +38,9 @@ public class ParserAdvancementHint : Parser
                 case "Level":
                     Result = SetIntProperty((int valueInt) => EntryLevel = valueInt, Value);
                     break;
+                case "Npcs":
+                    Result = Inserter<PgQuest>.SetNpcList(item.NpcList, Value, parsedFile, parsedKey);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

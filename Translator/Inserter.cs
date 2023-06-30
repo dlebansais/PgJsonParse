@@ -197,6 +197,20 @@ public static class Inserter<T>
         return true;
     }
 
+    public static bool SetNpcList(PgNpcLocationCollection npcList, object value, string parsedFile, string parsedKey, ErrorControl errorControl = ErrorControl.Normal)
+    {
+        if (value is List<object> ArrayObject)
+        {
+            foreach (object Item in ArrayObject)
+                if (!SetNpc(npcList.Add, Item, parsedFile, parsedKey, errorControl))
+                    return false;
+
+            return true;
+        }
+        else
+            return Program.ReportFailure(parsedFile, parsedKey, $"'{value}' is not a list of NPC", errorControl);
+    }
+
     public static bool SetNpc(Action<PgNpcLocation> setter, object value, string parsedFile, string parsedKey, ErrorControl errorControl = ErrorControl.Normal)
     {
         if (!(value is string ValueName))
@@ -239,6 +253,7 @@ public static class Inserter<T>
 
         PgNpcLocation NpcLocation = new PgNpcLocation();
         NpcLocation.NpcId = npcId;
+        NpcLocation.NpcArea = areaName;
 
         if (Inserter<PgNpc>.SetItemByKey((PgNpc valueNpc) => ParsedNpc = valueNpc, npcId, ErrorControl.IgnoreIfNotFound))
             NpcLocation.Npc_Key = PgObject.GetItemKey(ParsedNpc);

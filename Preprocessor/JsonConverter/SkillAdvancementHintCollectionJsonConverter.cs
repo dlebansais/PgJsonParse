@@ -1,6 +1,7 @@
 ﻿namespace Preprocessor;
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -29,6 +30,8 @@ internal class SkillAdvancementHintCollectionJsonConverter : JsonConverter<Skill
                 SkillAdvancementHint AdvancementHint = new();
                 AdvancementHint.Level = Level;
                 AdvancementHint.Hint = Hint;
+                AdvancementHint.Npcs = ParseNpcs(Hint);
+
                 collection.Add(AdvancementHint);
             }
             else
@@ -37,6 +40,88 @@ internal class SkillAdvancementHintCollectionJsonConverter : JsonConverter<Skill
                 throw new InvalidCastException();
             }
         }
+    }
+
+    private static string[]? ParseNpcs(string hint)
+    {
+        if (hint.EndsWith("learn a new dance move."))
+            return null;
+
+        hint = hint.Replace(" during a Full Moon,", string.Empty);
+
+        string Pattern;
+        int StartIndex;
+
+        Pattern = "gain favor with ";
+        StartIndex = hint.IndexOf(Pattern);
+
+        if (StartIndex < 0)
+        {
+            Pattern = "speak with ";
+            StartIndex = hint.IndexOf(Pattern);
+        }
+
+        if (StartIndex < 0)
+        {
+            Pattern = "seek out ";
+            StartIndex = hint.IndexOf(Pattern);
+        }
+
+        if (StartIndex < 0)
+        {
+            if (hint.Contains(" equip "))
+                return null;
+
+            Debug.WriteLine($"Advancement trigger not found in: {hint}");
+            throw new InvalidCastException();
+        }
+
+        StartIndex += Pattern.Length;
+
+        int EndIndex;
+        string? Area = null;
+
+        EndIndex = hint.IndexOf(" in ", StartIndex);
+        if (EndIndex >= 0)
+            Area = hint.Substring(EndIndex + 4);
+        else
+        {
+            EndIndex = hint.IndexOf(" outside of ", StartIndex);
+            if (EndIndex >= 0)
+                Area = hint.Substring(EndIndex + 12);
+        }
+
+        if (EndIndex <= StartIndex)
+        {
+            Debug.WriteLine($"Bad advancement hint: {hint}");
+            throw new InvalidCastException();
+        }
+
+        if (Area is not null && Area.EndsWith("."))
+            Area = Area.Substring(0, Area.Length - 1);
+
+        string NpcNameString = hint.Substring(StartIndex, EndIndex - StartIndex);
+        string[] NpcNames = NpcNameString.Split(new string[] { " or " }, StringSplitOptions.None);
+
+        if (NpcNames.Length == 0)
+        {
+            Debug.WriteLine($"No NPC name in advancement hint: {hint}");
+            throw new InvalidCastException();
+        }
+
+        string[] Result = new string[NpcNames.Length];
+        for (int i = 0; i < Result.Length; i++)
+        {
+            string NpcName = NpcNames[i];
+            NpcName = NpcName.Replace(" ", string.Empty);
+
+            if (Area is not null)
+                Result[i] = $"Area{Area}/NPC_{NpcName}";
+            else
+                Result[i] = $"NPC_{NpcName}";
+        }
+
+        return Result;
     }
 
     public override void Write(Utf8JsonWriter writer, SkillAdvancementHintCollection value, JsonSerializerOptions options)

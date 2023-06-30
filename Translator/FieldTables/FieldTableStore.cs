@@ -753,6 +753,7 @@ public class FieldTableStore
     {
         { "Hint", typeof(string) },
         { "Level", typeof(int) },
+        { "Npcs", typeof(string[]) },
     };
 
     public static Dictionary<string, Type> TableReward { get; } = new Dictionary<string, Type>()
