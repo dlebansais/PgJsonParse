@@ -1,5 +1,7 @@
 ﻿namespace Preprocessor;
 
+using System;
+
 internal class Skill
 {
     public Skill(RawSkill rawSkill)
@@ -25,7 +27,17 @@ internal class Skill
         SkipBonusLevelsIfSkillUnlearned = rawSkill.SkipBonusLevelsIfSkillUnlearned;
         TSysCompatibleCombatSkills = rawSkill.TSysCompatibleCombatSkills;
         XpTable = rawSkill.XpTable;
-        _RecipeIngredientKeywords = rawSkill._RecipeIngredientKeywords;
+
+        if (rawSkill._RecipeIngredientKeywords is not null)
+        {
+            if (rawSkill.RecipeIngredientKeywords is not null)
+                throw new InvalidCastException();
+
+            Is_RecipeIngredientKeywords = true;
+            RecipeIngredientKeywords = rawSkill._RecipeIngredientKeywords;
+        }
+        else
+            RecipeIngredientKeywords = rawSkill.RecipeIngredientKeywords;
     }
 
     public SkillAdvancementHintCollection? AdvancementHints { get; set; }
@@ -49,7 +61,6 @@ internal class Skill
     public bool? SkipBonusLevelsIfSkillUnlearned { get; set; }
     public string[]? TSysCompatibleCombatSkills { get; set; }
     public string? XpTable { get; set; }
-    public string[]? _RecipeIngredientKeywords { get; set; }
 
     public RawSkill ToRawSkill()
     {
@@ -69,15 +80,20 @@ internal class Skill
         Result.MaxBonusLevels = MaxBonusLevels;
         Result.Name = Name;
         Result.Parents = Parents;
-        Result.RecipeIngredientKeywords = RecipeIngredientKeywords;
         Result.Reports = Reports;
         Result.Rewards = Rewards;
         Result.SkillLevelDisparityApplies = SkillLevelDisparityApplies;
         Result.SkipBonusLevelsIfSkillUnlearned = SkipBonusLevelsIfSkillUnlearned;
         Result.TSysCompatibleCombatSkills = TSysCompatibleCombatSkills;
         Result.XpTable = XpTable;
-        Result._RecipeIngredientKeywords = _RecipeIngredientKeywords;
+
+        if (Is_RecipeIngredientKeywords)
+            Result._RecipeIngredientKeywords = RecipeIngredientKeywords;
+        else
+            Result.RecipeIngredientKeywords = RecipeIngredientKeywords;
 
         return Result;
     }
+
+    private bool Is_RecipeIngredientKeywords;
 }

@@ -105,9 +105,6 @@ public class ParserSkill : Parser
                 case "RecipeIngredientKeywords":
                     Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.RecipeIngredientKeywordList);
                     break;
-                case "_RecipeIngredientKeywords":
-                    Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.RecipeIngredientKeywordList);
-                    break;
                 case "GuestLevelCap":
                     Result = SetIntProperty((int valueInt) => item.RawGuestLevelCap = valueInt, Value);
                     break;

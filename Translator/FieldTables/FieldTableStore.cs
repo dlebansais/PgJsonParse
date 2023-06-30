@@ -735,7 +735,6 @@ public class FieldTableStore
         { "SkipBonusLevelsIfSkillUnlearned", typeof(bool) },
         { "AuxCombat", typeof(bool) },
         { "RecipeIngredientKeywords", typeof(string[]) },
-        { "_RecipeIngredientKeywords", typeof(string[]) },
         { "GuestLevelCap", typeof(int) },
         { "IsFakeCombatSkill", typeof(bool) },
         { "IsUmbrellaSkill", typeof(bool) },
