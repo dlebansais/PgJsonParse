@@ -38,6 +38,12 @@ internal class Skill
         }
         else
             RecipeIngredientKeywords = rawSkill.RecipeIngredientKeywords;
+
+        if (AdvancementTable == "null")
+        {
+            IsNullAdvancementTable = true;
+            AdvancementTable = null;
+        }
     }
 
     public SkillAdvancementHintCollection? AdvancementHints { get; set; }
@@ -92,8 +98,12 @@ internal class Skill
         else
             Result.RecipeIngredientKeywords = RecipeIngredientKeywords;
 
+        if (IsNullAdvancementTable)
+            Result.AdvancementTable = "null";
+
         return Result;
     }
 
     private bool Is_RecipeIngredientKeywords;
+    private bool IsNullAdvancementTable;
 }

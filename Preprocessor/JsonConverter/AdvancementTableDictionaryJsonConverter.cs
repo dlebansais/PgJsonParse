@@ -97,6 +97,8 @@ internal class AdvancementTableDictionaryJsonConverter : JsonConverter<Advanceme
                 throw new InvalidCastException();
             }
         }
+
+        advancements.Sort(SortByLevel);
     }
 
     private void ReadAdvancementEffectAttributeCollection(AdvancementEffectAttributeCollection collection, ref Utf8JsonReader reader, JsonSerializerOptions options)
@@ -137,14 +139,33 @@ internal class AdvancementTableDictionaryJsonConverter : JsonConverter<Advanceme
     {
         writer.WriteStartObject();
 
-        foreach (Advancement Advancement in value.Levels)
+        List<Advancement> AdvancementList = new(value.Levels);
+        AdvancementList.Sort(SortByKey);
+
+        foreach (Advancement Advancement in AdvancementList)
         {
-            string Key = Advancement.Level < 10 ? $"Level_0{Advancement.Level}" : $"Level_{Advancement.Level}";
+            string Key = AdvancementToKey(Advancement);
+
             writer.WritePropertyName(Key);
             WriteAdvancementEffectAttributeCollection(writer, Advancement.Attributes, options);
         }
 
         writer.WriteEndObject();
+    }
+
+    private static string AdvancementToKey(Advancement advancement)
+    {
+        return advancement.Level < 10 ? $"Level_0{advancement.Level}" : $"Level_{advancement.Level}";
+    }
+
+    private static int SortByLevel(Advancement advancement1, Advancement advancement2)
+    {
+        return advancement1.Level - advancement2.Level;
+    }
+
+    private static int SortByKey(Advancement advancement1, Advancement advancement2)
+    {
+        return string.Compare(AdvancementToKey(advancement1), AdvancementToKey(advancement2), StringComparison.Ordinal);
     }
 
     private void WriteAdvancementEffectAttributeCollection(Utf8JsonWriter writer, AdvancementEffectAttributeCollection value, JsonSerializerOptions options)

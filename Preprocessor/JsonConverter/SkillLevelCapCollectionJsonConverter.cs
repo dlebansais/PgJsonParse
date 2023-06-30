@@ -27,6 +27,9 @@ internal class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCa
             string[] SplittedKey = Key.Split('_');
             if (SplittedKey.Length == 3 && SplittedKey[0] == "LevelCap" && SplittedKey[1].Trim() is string Skill && Skill != string.Empty && int.TryParse(SplittedKey[2], out int SkillCap))
             {
+                if (Skill == "ArmorSmithing")
+                    Skill = "Armorsmithing";
+
                 SkillLevelCap LevelCap = new();
                 LevelCap.Level = Level;
                 LevelCap.SkillCap = SkillCap;
@@ -67,7 +70,10 @@ internal class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCa
             if (SkillLevelCap.IsPerformanceSkill)
                 Key = $"LevelCap_Performance_{SkillLevelCap.Skill}{SkillLevelCap.SkillCap}";
             else
-                Key = $"LevelCap_{SkillLevelCap.Skill}_{SkillLevelCap.SkillCap}";
+            {
+                string? SkillName = SkillLevelCap.Skill == "Armorsmithing" ? "ArmorSmithing" : SkillLevelCap.Skill;
+                Key = $"LevelCap_{SkillName}_{SkillLevelCap.SkillCap}";
+            }
 
             int Level = SkillLevelCap.Level;
 

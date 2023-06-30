@@ -13,9 +13,6 @@ public class ParserSkill : Parser
         if (!(value is string ValueKey))
             return Program.ReportFailure(parsedFile, parsedKey, $"Value '{value}' was expected to be a string");
 
-        if (ValueKey == "ArmorSmithing")
-            ValueKey = "Armorsmithing";
-
         if (ValueKey == "Unknown")
         {
             setter(PgSkill.Unknown);
