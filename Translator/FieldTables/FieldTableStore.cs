@@ -442,11 +442,20 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TablePowerTier { get; } = new Dictionary<string, Type>()
     {
-        { "EffectDescriptions", typeof(string[]) },
+        { "EffectDescriptions", typeof(PgPowerEffect[]) },
         { "SkillLevelPrerequirement", typeof(int) },
         { "MinLevel", typeof(int) },
         { "MaxLevel", typeof(int) },
         { "MinRarity", typeof(string) },
+    };
+
+    public static Dictionary<string, Type> TablePowerEffect { get; } = new Dictionary<string, Type>()
+    {
+        { "Description", typeof(string) },
+        { "AttributeName", typeof(string) },
+        { "AttributeEffect", typeof(float) },
+        { "AttributeSkill", typeof(string) },
+        { "IconIds", typeof(int[]) },
     };
 
     public static Dictionary<string, Type> TableQuest { get; } = new Dictionary<string, Type>()
@@ -877,6 +886,7 @@ public class FieldTableStore
         { typeof(PgPower), new FixedFieldTable(TablePower) },
         { typeof(PgPowerTierList), new VariadicFieldTable(typeof(PgPowerTier)) },
         { typeof(PgPowerTier), new FixedFieldTable(TablePowerTier) },
+        { typeof(PgPowerEffect), new FixedFieldTable(TablePowerEffect) },
         { typeof(PgQuest), new FixedFieldTable(TableQuest) },
         { typeof(PgQuestRequirement), new FixedFieldTable(TableQuestRequirement) },
         { typeof(PgQuestObjective), new FixedFieldTable(TableQuestObjective) },

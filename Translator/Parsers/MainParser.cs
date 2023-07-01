@@ -50,6 +50,7 @@ public static class MainParser
         { typeof(PgPower), new ParserPower() },
         { typeof(PgPowerTierList), new ParserPowerTierList() },
         { typeof(PgPowerTier), new ParserPowerTier() },
+        { typeof(PgPowerEffect), new ParserPowerEffect() },
         { typeof(PgQuest), new ParserQuest() },
         { typeof(PgQuestRequirement), new ParserQuestRequirement() },
         { typeof(PgQuestObjective), new ParserQuestObjective() },

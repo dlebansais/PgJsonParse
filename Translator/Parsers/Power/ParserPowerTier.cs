@@ -31,7 +31,8 @@ public class ParserPowerTier : Parser
             switch (Key)
             {
                 case "EffectDescriptions":
-                    Result = ParseEffectDescriptionList(item.EffectList, Value, parsedFile, parsedKey);
+                    Result = Inserter<PgPowerEffect>.AddKeylessArray(item.EffectList, Value);
+                    //Result = ParseEffectDescriptionList(item.EffectList, Value, parsedFile, parsedKey);
                     break;
                 case "SkillLevelPrerequirement":
                     Result = SetIntProperty((int valueInt) => item.RawSkillLevelPrereq = valueInt, Value);
@@ -135,11 +136,13 @@ public class ParserPowerTier : Parser
             AttributeEffect = AttributeEffect.Substring(0, AttributeEffect.Length - 1);
         }
 
+        /*
         if (!Tools.TryParseFloat(AttributeEffect, out float ParsedEffect, out FloatFormat ParsedEffectFormat))
             return false;
 
         if (ParsedEffectFormat != FloatFormat.Standard)
             return false;
+        */
 
         PgPowerEffectAttribute NewPowerEffectAttribute;
 
@@ -154,10 +157,10 @@ public class ParserPowerTier : Parser
             else if (!Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => ParsedSkill = valueSkill, AttributeSkill))
                 return false;
 
-            NewPowerEffectAttribute = new PgPowerEffectAttribute() { AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat, Skill_Key = PgObject.GetItemKey(ParsedSkill) };
+            NewPowerEffectAttribute = new PgPowerEffectAttribute() { /*AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat,*/ Skill_Key = PgObject.GetItemKey(ParsedSkill) };
         }
         else
-            NewPowerEffectAttribute = new PgPowerEffectAttribute() { AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+            NewPowerEffectAttribute = new PgPowerEffectAttribute() { /*AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat*/ };
 
         NewPowerEffectAttribute.SetAttribute(ParsedAttribute);
         powerEffect = NewPowerEffectAttribute;
@@ -225,10 +228,10 @@ public class ParserPowerTier : Parser
 
         if (StartIndex == 0 &&
             EndIndex > startPattern.Length &&
-            Tools.TryParseFloat(description.Substring(startPattern.Length, EndIndex - startPattern.Length), out float ParsedEffect, out FloatFormat ParsedEffectFormat) &&
+            /*Tools.TryParseFloat(description.Substring(startPattern.Length, EndIndex - startPattern.Length), out float ParsedEffect, out FloatFormat ParsedEffectFormat) && */
             Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => ParsedAttribute = valueAttribute, attributeKey))
         {
-            PgPowerEffectAttribute NewPowerEffectAttribute = new PgPowerEffectAttribute() { Description = description, IconIdList = iconIdList, AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat };
+            PgPowerEffectAttribute NewPowerEffectAttribute = new PgPowerEffectAttribute() { Description = description, IconIdList = iconIdList, /*AttributeEffect = ParsedEffect, AttributeEffectFormat = ParsedEffectFormat*/ };
             NewPowerEffectAttribute.SetAttribute(ParsedAttribute);
             fixedEffect = NewPowerEffectAttribute;
             return true;

@@ -24,6 +24,7 @@
             return v.ToString(format, CultureInfo.InvariantCulture);
         }
 
+#if NOTUSED
         public static bool TryParseFloat(string s, out float value, out FloatFormat format)
         {
             Debug.Assert(TryParseSingle(s, out value));
@@ -49,6 +50,7 @@
             return false;
             */
         }
+#endif
         #endregion
 
         #region Byte
