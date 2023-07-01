@@ -24,67 +24,67 @@ public class Program
     {
         VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
 
-        if (!ParseFile(Version, "abilities", typeof(PgAbility), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "abilities", typeof(PgAbility)))
             return -1;
 
-        if (!ParseFile(Version, "advancementtables", typeof(PgAdvancementTable), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "advancementtables", typeof(PgAdvancementTable)))
             return -1;
 
-        if (!ParseFile(Version, "ai", typeof(PgAI), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "ai", typeof(PgAI)))
             return -1;
 
-        if (!ParseFile(Version, "areas", typeof(PgArea), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "areas", typeof(PgArea)))
             return -1;
 
-        if (!ParseFile(Version, "attributes", typeof(PgAttribute), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "attributes", typeof(PgAttribute)))
             return -1;
 
-        if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal)))
             return -1;
 
-        if (!ParseFile(Version, "effects", typeof(PgEffect), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "effects", typeof(PgEffect)))
             return -1;
 
-        if (!ParseFile(Version, "items", typeof(PgItem), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "items", typeof(PgItem)))
             return -1;
 
-        if (!ParseFile(Version, "itemuses", typeof(PgItemUse), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "itemuses", typeof(PgItemUse)))
             return -1;
 
-        if (!ParseFile(Version, "lorebookinfo", typeof(PgLoreBookInfo), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "lorebookinfo", typeof(PgLoreBookInfo)))
             return -1;
 
-        if (!ParseFile(Version, "lorebooks", typeof(PgLoreBook), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "lorebooks", typeof(PgLoreBook)))
             return -1;
 
-        if (!ParseFile(Version, "npcs", typeof(PgNpc), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "npcs", typeof(PgNpc)))
             return -1;
 
-        if (!ParseFile(Version, "playertitles", typeof(PgPlayerTitle), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "playertitles", typeof(PgPlayerTitle)))
             return -1;
 
-        if (!ParseFile(Version, "tsysclientinfo", typeof(PgPower), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "tsysclientinfo", typeof(PgPower)))
             return -1;
 
-        if (!ParseFile(Version, "quests", typeof(PgQuest), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "quests", typeof(PgQuest)))
             return -1;
 
-        if (!ParseFile(Version, "recipes", typeof(PgRecipe), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "recipes", typeof(PgRecipe)))
             return -1;
 
-        if (!ParseFile(Version, "skills", typeof(PgSkill), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "skills", typeof(PgSkill)))
             return -1;
 
-        if (!ParseFile(Version, "sources_abilities", typeof(PgSourceEntriesAbility), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "sources_abilities", typeof(PgSourceEntriesAbility)))
             return -1;
 
-        if (!ParseFile(Version, "sources_recipes", typeof(PgSourceEntriesRecipe), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "sources_recipes", typeof(PgSourceEntriesRecipe)))
             return -1;
 
-        if (!ParseFile(Version, "storagevaults", typeof(PgStorageVault), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "storagevaults", typeof(PgStorageVault)))
             return -1;
 
-        if (!ParseFile(Version, "xptables", typeof(PgXpTable), FileType.EmbeddedObjects))
+        if (!ParseFile(Version, "xptables", typeof(PgXpTable)))
             return -1;
 
         LastParsedFile = string.Empty;
@@ -219,7 +219,7 @@ public class Program
         Debug.WriteLine($"{text} (Line: {callingFileLineNumber})");
     }
 
-    private static bool ParseFile(int version, string fileName, Type itemType, FileType fileType)
+    private static bool ParseFile(int version, string fileName, Type itemType)
     {
         LastParsedFile = fileName;
 
@@ -246,7 +246,9 @@ public class Program
         if (!FieldTableStore.GetTable(itemType, out FieldTable MainItemTable))
             return ReportFailure($"Table doesn't contain type {itemType}");
 
-        if (!ParseFile(Reader, itemType, MainItemTable, fileType))
+        Reader.Read();
+
+        if (!ParseFileEmbeddedObjects(Reader, itemType, MainItemTable))
             return false;
 
         return true;

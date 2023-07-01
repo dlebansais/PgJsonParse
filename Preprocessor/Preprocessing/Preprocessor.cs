@@ -48,23 +48,29 @@ internal class Preprocessor
     public bool Preprocess(string versionPath, List<JsonFile> jsonFileList)
     {
         string DestinationDirectory = @$"{versionPath}\Curated";
-
         if (!Directory.Exists(DestinationDirectory))
             Directory.CreateDirectory(DestinationDirectory);
 
-        foreach (JsonFile File in jsonFileList)
+        bool PreprocessingDone = false;
+
+        foreach (JsonFile JsonFile in jsonFileList)
         {
-            (bool Success, object Result) = File.PreprocessingMethod(File.FileName, File.IsPretty);
-            if (!Success)
-                return false;
+            string DestinationFilePath = $"{DestinationDirectory}\\{JsonFile.FileName}.json";
+            if (!File.Exists(DestinationFilePath))
+            {
+                (bool Success, object Result) = JsonFile.PreprocessingMethod(JsonFile.FileName, JsonFile.IsPretty);
+                if (!Success)
+                    return false;
 
-            File.FixingMethod(Result);
-
-            string DestinationFilePath = $"{DestinationDirectory}\\{File.FileName}.json";
-            File.SerializingMethod(DestinationFilePath, Result);
+                JsonFile.FixingMethod(Result);
+                JsonFile.SerializingMethod(DestinationFilePath, Result);
+                PreprocessingDone = true;
+            }
         }
 
-        Debug.WriteLine("Done");
+        if (PreprocessingDone)
+            Debug.WriteLine("Done");
+
         return true;
     }
 
