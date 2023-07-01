@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using PgJsonReader;
 using PgObjects;
-
+/*
 public class ParserPowerTierList : Parser
 {
     public override object CreateItem()
@@ -53,3 +53,4 @@ public class ParserPowerTierList : Parser
             return 0;
     }
 }
+*/

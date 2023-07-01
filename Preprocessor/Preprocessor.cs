@@ -30,6 +30,7 @@ internal class Preprocessor
         new IntDictionaryJsonConverter<LoreBook, LoreBook, LoreBookDictionary>("Book"),
         new StringDictionaryJsonConverter<Npc, RawNpc, NpcDictionary>(),
         new IntDictionaryJsonConverter<PlayerTitle, RawPlayerTitle, PlayerTitleDictionary>("Title"),
+        new PowerTierCollectionJsonConverter(),
         new IntDictionaryJsonConverter<Quest, RawQuest, QuestDictionary>("quest"),
         new IntDictionaryJsonConverter<Recipe, RawRecipe, RecipeDictionary>("recipe"),
         new StringDictionaryJsonConverter<Skill, RawSkill, SkillDictionary>(),
@@ -41,7 +42,7 @@ internal class Preprocessor
         new IntDictionaryJsonConverter<SourceRecipe, RawSourceRecipe, SourceRecipeDictionary>("recipe"),
         new StringDictionaryJsonConverter<StorageVault, RawStorageVault, StorageVaultDictionary>(),
         new IntDictionaryJsonConverter<Power, RawPower, PowerDictionary>("power"),
-        new IntDictionaryJsonConverter<PowerTier, RawPowerTier, PowerTierDictionary>("id"),
+        //new IntDictionaryJsonConverter<PowerTier, RawPowerTier, PowerTierDictionary>("id"),
         new IntDictionaryJsonConverter<XpTable, XpTable, XpTableDictionary>("Table"),
     };
 

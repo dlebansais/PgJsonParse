@@ -38,7 +38,7 @@ public class ParserPower : Parser
                     Result = SetStringProperty((string valueString) => item.Suffix = valueString, Value);
                     break;
                 case "Tiers":
-                    Result = Inserter<PgPowerTierList>.SetItemProperty((PgPowerTierList valuePowerTierList) => item.TierList = valuePowerTierList.TierList, Value);
+                    Result = Inserter<PgPowerTier>.AddKeylessArray(item.TierList, Value);
                     break;
                 case "Slots":
                     Result = StringToEnumConversion<ItemSlot>.TryParseList(Value, item.SlotList);

@@ -46,6 +46,9 @@ public class ParserPowerTier : Parser
                 case "MinRarity":
                     Result = StringToEnumConversion<RecipeItemKey>.SetEnum((RecipeItemKey valueEnum) => item.MinRarity = valueEnum, $"MinRarity_{Value}");
                     break;
+                case "Tier":
+                    Result = SetIntProperty((int valueInt) => item.Level = valueInt, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

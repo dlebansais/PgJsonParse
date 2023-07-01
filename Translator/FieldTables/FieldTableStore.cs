@@ -434,7 +434,7 @@ public class FieldTableStore
     {
         { "Prefix", typeof(string) },
         { "Suffix", typeof(string) },
-        { "Tiers", typeof(PgPowerTierList) },
+        { "Tiers", typeof(PgPowerTier[]) },
         { "Slots", typeof(string[]) },
         { "Skill", typeof(string) },
         { "IsUnavailable", typeof(bool) },
@@ -447,6 +447,7 @@ public class FieldTableStore
         { "MinLevel", typeof(int) },
         { "MaxLevel", typeof(int) },
         { "MinRarity", typeof(string) },
+        { "Tier", typeof(int) },
     };
 
     public static Dictionary<string, Type> TablePowerEffect { get; } = new Dictionary<string, Type>()
@@ -884,7 +885,7 @@ public class FieldTableStore
         { typeof(PgNpcPreference), new FixedFieldTable(TableNpcPreference) },
         { typeof(PgPlayerTitle), new FixedFieldTable(TablePlayerTitle) },
         { typeof(PgPower), new FixedFieldTable(TablePower) },
-        { typeof(PgPowerTierList), new VariadicFieldTable(typeof(PgPowerTier)) },
+        //{ typeof(PgPowerTierList), new VariadicFieldTable(typeof(PgPowerTier)) },
         { typeof(PgPowerTier), new FixedFieldTable(TablePowerTier) },
         { typeof(PgPowerEffect), new FixedFieldTable(TablePowerEffect) },
         { typeof(PgQuest), new FixedFieldTable(TableQuest) },

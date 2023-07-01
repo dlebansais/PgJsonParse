@@ -48,7 +48,7 @@ public static class MainParser
         { typeof(PgNpcPreference), new ParserNpcPreference() },
         { typeof(PgPlayerTitle), new ParserPlayerTitle() },
         { typeof(PgPower), new ParserPower() },
-        { typeof(PgPowerTierList), new ParserPowerTierList() },
+        //{ typeof(PgPowerTierList), new ParserPowerTierList() },
         { typeof(PgPowerTier), new ParserPowerTier() },
         { typeof(PgPowerEffect), new ParserPowerEffect() },
         { typeof(PgQuest), new ParserQuest() },

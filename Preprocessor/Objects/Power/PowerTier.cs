@@ -9,13 +9,14 @@ internal class PowerTier
 {
     private const string IconTagStart = "<icon=";
 
-    public PowerTier(RawPowerTier rawPowerTier)
+    public PowerTier(int tier, RawPowerTier rawPowerTier)
     {
         EffectDescriptions = ParseEffectDescriptions(rawPowerTier.EffectDescs);
         MaxLevel = rawPowerTier.MaxLevel;
         MinLevel = rawPowerTier.MinLevel;
         MinRarity = rawPowerTier.MinRarity;
         SkillLevelPrerequirement = rawPowerTier.SkillLevelPrereq;
+        Tier = tier;
     }
 
     private PowerEffect[]? ParseEffectDescriptions(string[]? content)
@@ -143,6 +144,7 @@ internal class PowerTier
     public int? MinLevel { get; set; }
     public string? MinRarity { get; set; }
     public int? SkillLevelPrerequirement { get; set; }
+    public int? Tier { get; set; }
 
     public RawPowerTier ToRawPowerTier()
     {
