@@ -1,7 +1,6 @@
 ﻿namespace Preprocessor;
 
 using System.Collections.Generic;
-using System.Linq;
 
 internal class Fixer
 {
