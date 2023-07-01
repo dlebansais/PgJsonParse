@@ -21,6 +21,8 @@ public static class WebClientTool
 
         if (!ignoreCache && File.Exists(FileName))
         {
+            Debug.WriteLine($"Loading from cache {address}...");
+
             using (FileStream Stream = new FileStream(FileName, FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader Reader = new StreamReader(Stream))
@@ -35,6 +37,8 @@ public static class WebClientTool
         {
             if (!Directory.Exists(FilePath))
                 Directory.CreateDirectory(FilePath);
+
+            Debug.WriteLine($"Downloading {address}...");
 
             Task<Tuple<bool, string?>> DownloadTask = new Task<Tuple<bool, string?>>(() => { return ExecuteDownloadText(address, watch); });
             DownloadTask.Start();

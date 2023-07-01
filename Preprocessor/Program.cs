@@ -1,5 +1,6 @@
 ﻿namespace Preprocessor;
 
+using System;
 using System.Collections.Generic;
 using Downloader;
 
@@ -32,11 +33,12 @@ internal class Program
 
     static int Main(string[] args)
     {
-        int Version = 389;
-        string VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
+        string ApplicationDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        string ParserDirectory = Tools.SafeGetSubdirectory(ApplicationDataDirectory, "PgJsonParse", out _);
+        string VersionDirectory = Tools.SafeGetSubdirectory(ParserDirectory, "Versions", out _);
 
         Downloader Downloader = new();
-        if (!Downloader.Download(Version, VersionPath, JsonFileList))
+        if (!Downloader.Download(JsonFileList, VersionDirectory, out string VersionPath))
             return -1;
 
         Preprocessor Preprocessor = new();
