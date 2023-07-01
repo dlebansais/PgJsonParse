@@ -87,10 +87,10 @@
 
             Debug.Assert(Prefix != null);
 
-            PropertyInfo KeyProperty = item.GetType().GetProperty("Key");
-            string Key = (string)KeyProperty.GetValue(item);
+            PropertyInfo? KeyProperty = item.GetType()?.GetProperty("Key");
+            string? Key = KeyProperty?.GetValue(item) as string;
 
-            if (Key.Length > 0)
+            if (Key is not null && Key.Length > 0)
                 return $"{Prefix}{Key}";
             else
                 return string.Empty;
