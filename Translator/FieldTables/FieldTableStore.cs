@@ -259,7 +259,6 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TableDirectedGoal { get; } = new Dictionary<string, Type>()
     {
-        //{ "Id", typeof(int) },
         { "Label", typeof(string) },
         { "Zone", typeof(string) },
         { "IsCategoryGate", typeof(bool) },
@@ -885,7 +884,6 @@ public class FieldTableStore
         { typeof(PgNpcPreference), new FixedFieldTable(TableNpcPreference) },
         { typeof(PgPlayerTitle), new FixedFieldTable(TablePlayerTitle) },
         { typeof(PgPower), new FixedFieldTable(TablePower) },
-        //{ typeof(PgPowerTierList), new VariadicFieldTable(typeof(PgPowerTier)) },
         { typeof(PgPowerTier), new FixedFieldTable(TablePowerTier) },
         { typeof(PgPowerEffect), new FixedFieldTable(TablePowerEffect) },
         { typeof(PgQuest), new FixedFieldTable(TableQuest) },

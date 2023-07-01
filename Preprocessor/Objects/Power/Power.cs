@@ -28,8 +28,8 @@ internal class Power
     {
         if (tier1.Tier is not null && tier2.Tier is not null)
             return tier1.Tier.Value - tier2.Tier.Value;
-
-        return 0;
+        else
+            return 0;
     }
 
     public bool? IsUnavailable { get; set; }
