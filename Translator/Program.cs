@@ -93,6 +93,8 @@ public class Program
         if (!FieldTableStore.VerifyTablesCompletion())
             return -1;
 
+        Debug.WriteLine("Finalizing...");
+
         if (!ParsingContext.FinalizeParsing())
             return -1;
 
@@ -106,6 +108,8 @@ public class Program
 
         FinalizingResult &= ParserAbility.UpdateSource();
         FinalizingResult &= ParserRecipe.UpdateSource();
+
+        Debug.WriteLine("Updating icons and names...");
 
         ParserAbility.UpdateIconsAndNames();
         ParserAttribute.UpdateIconsAndNames();
@@ -124,6 +128,8 @@ public class Program
         FindNpcSales(ObjectList);
         FindNpcSources(ObjectList);
         FindLinks(ObjectList);
+
+        Debug.WriteLine("Running combat parser...");
 
         CombatParser CombatParser = new CombatParser();
         List<ItemSlot> ValidSlotList = new List<ItemSlot>()
@@ -150,27 +156,13 @@ public class Program
         if (!FinalizingResult)
             return -1;
 
+        Debug.WriteLine("Exporting tables...");
+
         ObjectList = ParsingContext.GetParsedObjectList();
         Generate.Write(Version, ObjectList);
         DownloadNewIcons(Version);
 
         return 0;
-    }
-
-    private static void AddHardCodedAttribute(PgAttribute staticAttribute)
-    {
-        Dictionary<string, ParsingContext> AttributeContextTable = ParsingContext.ObjectKeyTable[typeof(PgAttribute)];
-        ParsingContext Context = new ParsingContext(MainParser.Parsers[typeof(PgAttribute)], typeof(PgAttribute), staticAttribute, FieldTableStore.Tables[typeof(PgAttribute)], staticAttribute.Key);
-
-        AttributeContextTable.Add(staticAttribute.Key, Context);
-    }
-
-    private static void AddHardCodedNpc(PgNpc staticNpc)
-    {
-        Dictionary<string, ParsingContext> AttributeContextTable = ParsingContext.ObjectKeyTable[typeof(PgNpc)];
-        ParsingContext Context = new ParsingContext(MainParser.Parsers[typeof(PgNpc)], typeof(PgNpc), staticNpc, FieldTableStore.Tables[typeof(PgNpc)], staticNpc.Key);
-
-        AttributeContextTable.Add(staticNpc.Key, Context);
     }
 
     public static string VersionPath { get; set; } = string.Empty;
@@ -226,19 +218,7 @@ public class Program
         string FullPath = $"{VersionPath}\\Curated\\{fileName}.json";
 
         if (!File.Exists(FullPath))
-        {
-            string RequestUri = $"http://client.projectgorgon.com/v{version}/data/{fileName}.json";
-            Stopwatch Watch = new Stopwatch();
-            string FileContent = string.Empty;
-            WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string? content) => FileContent = content!, ignoreCache: false, out bool IsFound);
-
-            if (IsFound)
-            {
-                using FileStream WriteStream = new FileStream(FullPath, FileMode.Create, FileAccess.Write);
-                using StreamWriter Writer = new StreamWriter(WriteStream, Encoding.UTF8);
-                Writer.Write(FileContent);
-            }
-        }
+            return false;
 
         using FileStream Stream = new FileStream(FullPath, FileMode.Open, FileAccess.Read);
         JsonTextReader Reader = new JsonTextReader(Stream);
@@ -246,7 +226,7 @@ public class Program
         if (!FieldTableStore.GetTable(itemType, out FieldTable MainItemTable))
             return ReportFailure($"Table doesn't contain type {itemType}");
 
-        Reader.Read();
+        Debug.WriteLine($"Parsing {fileName}...");
 
         if (!ParseFileEmbeddedObjects(Reader, itemType, MainItemTable))
             return false;
@@ -254,28 +234,10 @@ public class Program
         return true;
     }
 
-    private static bool ParseFile(JsonTextReader reader, Type itemType, FieldTable rootItemTable, FileType fileType)
+    private static bool ParseFileEmbeddedObjects(JsonTextReader reader, Type itemType, FieldTable rootItemTable)
     {
         reader.Read();
 
-        switch (fileType)
-        {
-            case FileType.EmbeddedObjects:
-                return ParseFileEmbeddedObjects(reader, itemType, rootItemTable);
-
-            case FileType.KeylessArray:
-                return ParseFileKeylessArray(reader, itemType, rootItemTable);
-
-            case FileType.KeyedArray:
-                return ParseFileKeyedArray(reader, itemType, rootItemTable);
-
-            default:
-                return ReportFailure("Unsupported file format");
-        }
-    }
-
-    private static bool ParseFileEmbeddedObjects(JsonTextReader reader, Type itemType, FieldTable rootItemTable)
-    {
         if (reader.CurrentToken != Json.Token.ObjectStart)
             return ReportFailure("First token must open an object");
 
