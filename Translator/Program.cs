@@ -17,24 +17,12 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        const string RequestUri = "http://client.projectgorgon.com/fileversion.txt";
-        Stopwatch Watch = new Stopwatch();
-        string VersionContent = string.Empty;
-        WebClientTool.DownloadText(RequestUri, Watch, (bool isFound, string? content) => VersionContent = content!, ignoreCache: true, out bool IsFound);
+        return ParseCurated(389);
+    }
 
-        if (!int.TryParse(VersionContent, out int Version))
-        {
-            Debug.WriteLine($"Unable to parse {VersionContent} as a version number");
-            return -1;
-        }
-
+    private static int ParseCurated(int Version)
+    {
         VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
-
-        if (!Directory.Exists(VersionPath))
-        {
-            Debug.WriteLine($"{Version} is a new version");
-            Directory.CreateDirectory(VersionPath);
-        }
 
         if (!ParseFile(Version, "abilities", typeof(PgAbility), FileType.EmbeddedObjects))
             return -1;
