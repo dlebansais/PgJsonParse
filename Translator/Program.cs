@@ -1632,6 +1632,9 @@ public class Program
                 if (QuestNpc is not null && DisplayedLocation == MapAreaName.Internal_None)
                     DisplayedLocation = QuestNpc.NpcArea;
 
+                if (Quest.Name == "Orange Proof" || Quest.Name == "The Sewer Man")
+                    DisplayedLocation = MapAreaName.Internal_None;
+
                 if (DisplayedLocation == QuestAreaEntry.Key)
                 {
                     if (!QuestAreaListedTable.ContainsKey(DisplayedLocation))

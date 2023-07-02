@@ -13,7 +13,10 @@
 
         public TimeSpan? ToTime()
         {
-            return TimeSpan.FromDays(Days) + TimeSpan.FromHours(Hours) + TimeSpan.FromMinutes(Minutes);
+            if (Days == 0 && Hours == 0 && Minutes == 0)
+                return null;
+            else
+                return TimeSpan.FromDays(Days) + TimeSpan.FromHours(Hours) + TimeSpan.FromMinutes(Minutes);
         }
     }
 }

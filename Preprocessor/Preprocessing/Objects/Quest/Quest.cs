@@ -117,9 +117,12 @@ internal class Quest
         return new QuestPreGive() { T = "Item", Item = Item, QuestGroup = QuestGroup };
     }
 
-    private static Time ParseReuseTime(int? rawDays, int? rawHours, int? rawMinutes)
+    private static Time? ParseReuseTime(int? rawDays, int? rawHours, int? rawMinutes)
     {
-        return new Time() { Days = rawDays, Hours = rawHours, Minutes = rawMinutes };
+        if (rawDays == null && rawHours == null && rawMinutes == null)
+            return null;
+        else
+            return new Time() { Days = rawDays, Hours = rawHours, Minutes = rawMinutes };
     }
 
     private void MergeSpecificRewards(QuestReward[]? rawRewards, int? rawRewardFavor, int? rawRewardsFavor, string? rawRewardNamedLootProfile, string[]? rawRewardEffects, QuestRewardItem[]? rawRewardItems)
