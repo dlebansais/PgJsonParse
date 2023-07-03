@@ -344,5 +344,16 @@
         SpecialEventSaddlebag,
         DrunkNectar1,
         TornadoDebuff,
+        TSysSpiderPoisonBoost,
+        FlashingStrike_DarknessShield_7,
+        FillWithBileTSysBuff,
+        FillWithBileCorePoison,
+        FillWithBileNicePoison,
+        FillWithBileNiceAcid,
+        RotskinTSysNatureVuln,
+        OrcParry,
+        HeartThornIndirectDebuff,
+        TSysRabbitColdVuln,
+        LoveTapDebuffSlashing,
     }
 }

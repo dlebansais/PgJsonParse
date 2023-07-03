@@ -140,7 +140,7 @@
         Attack_Bard_BlastOfDespair,
         Attack_Bard_ThunderousNote,
         Attack_Bard_Disharmony,
-        PlayingDead,
+        //PlayingDead,
         Attack_IceMagic_FreezeSolid,
         Attack_Knife_Cut,
         Attack_Knife_FendingBlade,

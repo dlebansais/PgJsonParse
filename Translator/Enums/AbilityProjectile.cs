@@ -31,5 +31,6 @@
         Projectile_Sonic,
         Projectile_Fireball_Offhand,
         Projectile_WaterBall,
+        Projectile_Dagger,
     }
 }

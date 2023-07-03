@@ -73,6 +73,7 @@
         ShuffleTaunt,
         Ignored,
         BelowArmor,
+        BelowMaxRage,
         AboveRage,
         RestoreHealth,
 
@@ -169,7 +170,7 @@
         AddPhysicalReflection,
         AddElementalDamageResistance,
         AddDamageResistance,
-        Fear,
+        //Fear,
         FearSentient,
         SetVulnerable,
         ExtraTraumaDamage,

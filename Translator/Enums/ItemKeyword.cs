@@ -1234,5 +1234,9 @@
         FilletExtraLarge,
         FilletExtraLargeFresh,
         SuperBuffs,
+        Tonguefish,
+        Mukklo,
+        Redfish,
+        LakeSturgeon,
     }
 }

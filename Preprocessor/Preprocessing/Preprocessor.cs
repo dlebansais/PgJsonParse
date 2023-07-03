@@ -56,9 +56,10 @@ internal class Preprocessor
         foreach (JsonFile JsonFile in jsonFileList)
         {
             string DestinationFilePath = $"{DestinationDirectory}\\{JsonFile.FileName}.json";
+
             if (!File.Exists(DestinationFilePath))
             {
-                (bool Success, object Result) = JsonFile.PreprocessingMethod(JsonFile.FileName, JsonFile.IsPretty);
+                (bool Success, object Result) = JsonFile.PreprocessingMethod(versionPath, JsonFile.FileName, JsonFile.IsPretty);
                 if (!Success)
                     return false;
 
@@ -74,10 +75,10 @@ internal class Preprocessor
         return true;
     }
 
-    public static (bool, object) PreprocessSingle<T>(string fileName, bool isPretty)
+    public static (bool, object) PreprocessSingle<T>(string versionPath, string fileName, bool isPretty)
         where T: class
     {
-        if (Preprocess(fileName, isPretty, out T SingleObject))
+        if (Preprocess(versionPath, fileName, isPretty, out T SingleObject))
         {
             Debug.WriteLine(" OK");
             return (true, SingleObject);
@@ -86,10 +87,10 @@ internal class Preprocessor
         return (false, null!);
     }
 
-    public static (bool, object) PreprocessDictionary<T>(string fileName, bool isPretty)
+    public static (bool, object) PreprocessDictionary<T>(string versionPath, string fileName, bool isPretty)
         where T : ICollection
     {
-        if (Preprocess(fileName, isPretty, out T ObjectCollection))
+        if (Preprocess(versionPath, fileName, isPretty, out T ObjectCollection))
         { 
             Debug.WriteLine($" OK ({ObjectCollection.Count})");
             return (true, ObjectCollection);
@@ -98,12 +99,11 @@ internal class Preprocessor
         return (false, null!);
     }
 
-    private static bool Preprocess<T>(string fileName, bool isPretty, out T result)
+    private static bool Preprocess<T>(string versionPath, string fileName, bool isPretty, out T result)
     {
         Debug.Write($"Preprocessing {fileName}.json...");
 
-        string SourceDirectory = @"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\387";
-        string SourceFilePath = $"{SourceDirectory}\\{fileName}.json";
+        string SourceFilePath = $"{versionPath}\\{fileName}.json";
 
         string ReadContent = GetReadContent(SourceFilePath, isPretty);
         result = GetDeserializedObjects<T>(ReadContent);

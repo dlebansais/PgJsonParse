@@ -17,5 +17,6 @@
         PovusTownProper,
         PovusOrcLandsMain,
         PovusUpperLakesEast,
+        SunValeMainIslandNorth,
     }
 }

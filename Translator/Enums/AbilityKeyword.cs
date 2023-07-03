@@ -546,5 +546,8 @@
         Reel,
         Juke,
         Troll,
+        CorePoisonAttack,
+        NiceAcidAttack,
+        NicePoisonAttack,
     }
 }

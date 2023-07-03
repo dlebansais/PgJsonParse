@@ -151,7 +151,7 @@
             { AbilityAnimation.Attack_Bard_BlastOfDespair, "Blast Of Despair" },
             { AbilityAnimation.Attack_Bard_ThunderousNote, "Thunderous Note" },
             { AbilityAnimation.Attack_Bard_Disharmony, "Disharmony" },
-            { AbilityAnimation.PlayingDead, "Playing Dead" },
+            //{ AbilityAnimation.PlayingDead, "Playing Dead" },
             { AbilityAnimation.Attack_IceMagic_FreezeSolid, "Freeze Solid" },
             { AbilityAnimation.Attack_Knife_Cut, "Cut" },
             { AbilityAnimation.Attack_Knife_FendingBlade, "Fending Blade" },
@@ -233,6 +233,7 @@
             { AbilityCue.Perching, "Perching" },
             { AbilityCue.Opener, "Opener" },
             { AbilityCue.ServerRequested, "Server Requested" },
+            { AbilityCue.Slowed, "Slowed" },
         };
 
         public static Dictionary<AbilityIndicatingEnabled, string> AbilityIndicatingEnabledTextMap { get; } = new Dictionary<AbilityIndicatingEnabled, string>()
@@ -854,6 +855,9 @@
             { AbilityKeyword.Reel, "Reel" },
             { AbilityKeyword.Juke, "Juke" },
             { AbilityKeyword.Troll, "Troll" },
+            { AbilityKeyword.CorePoisonAttack, "Core Poison Attack" },
+            { AbilityKeyword.NiceAcidAttack, "Nice Acid Attack" },
+            { AbilityKeyword.NicePoisonAttack, "Nice Poison Attack" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -908,6 +912,7 @@
             { AbilityProjectile.Projectile_Sonic, "Projectile (Sonic)" },
             { AbilityProjectile.Projectile_Fireball_Offhand, "Projectile (Fireball Offhand)" },
             { AbilityProjectile.Projectile_WaterBall, "Projectile (Water Ball)" },
+            { AbilityProjectile.Projectile_Dagger, "Projectile (Dagger)" },
         };
 
         public static Dictionary<AbilitySelfPreParticle, string> AbilitySelfPreParticleTextMap { get; } = new Dictionary<AbilitySelfPreParticle, string>()
@@ -1058,6 +1063,7 @@
             { AllowedFishingZone.PovusTownProper, "Povus Town Proper" },
             { AllowedFishingZone.PovusOrcLandsMain, "Povus Orc Lands Main" },
             { AllowedFishingZone.PovusUpperLakesEast, "Povus Upper Lakes East" },
+            { AllowedFishingZone.SunValeMainIslandNorth, "Sun Vale Main Island North" },
         };
 
         public static Dictionary<AllowedState, string> AllowedStateTextMap { get; } = new Dictionary<AllowedState, string>()
@@ -1784,6 +1790,7 @@
             { EffectKeyword.AnglingMode, "Angling Mode" },
             { EffectKeyword.SuperBuffs, "Super Buffs" },
             { EffectKeyword.Whittling, "Whittling" },
+            { EffectKeyword.NatureDamage, "Nature Damage" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1962,6 +1969,9 @@
             { EffectParticle.Mutation_ExtraHeart, "Mutation Extra Heart" },
             { EffectParticle.HealingParticleQuick_Silent, "Healing Particle Quick (Silent)" },
             { EffectParticle.ShadowFeintOrigin, "Shadow Feint Origin" },
+            { EffectParticle.AnglingWebs, "Angling Webs" },
+            { EffectParticle.AnglingSoulSphere, "Angling Soul Sphere" },
+            { EffectParticle.AnglingPinkSmoke, "Angling Pink Smoke" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2308,6 +2318,17 @@
             { EffectStackingType.SpecialEventSaddlebag, "Special Event Saddlebag" },
             { EffectStackingType.DrunkNectar1, "Drunk Nectar #1" },
             { EffectStackingType.TornadoDebuff, "Tornado Debuff" },
+            { EffectStackingType.TSysSpiderPoisonBoost, "Spider Poison Boost" },
+            { EffectStackingType.FlashingStrike_DarknessShield_7, "Flashing Strike (Darkness Shield #7)" },
+            { EffectStackingType.FillWithBileTSysBuff, "Fill With Bile Buff" },
+            { EffectStackingType.FillWithBileCorePoison, "Fill With Bile CorePoison" },
+            { EffectStackingType.FillWithBileNicePoison, "Fill With Bile Nice Poison" },
+            { EffectStackingType.FillWithBileNiceAcid, "Fill With Bile Nice Acid" },
+            { EffectStackingType.RotskinTSysNatureVuln, "Rotskin Nature Vulnerability" },
+            { EffectStackingType.OrcParry, "Orc Parry" },
+            { EffectStackingType.HeartThornIndirectDebuff, "Heart Thorn Indirect Debuff" },
+            { EffectStackingType.TSysRabbitColdVuln, "Rabbit Cold Vulnerability" },
+            { EffectStackingType.LoveTapDebuffSlashing, "Love Tap Debuff Slashing" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -3870,6 +3891,10 @@
             { ItemKeyword.FilletExtraLarge, "Fillet Extra Large" },
             { ItemKeyword.FilletExtraLargeFresh, "Fillet Extra Large Fresh" },
             { ItemKeyword.SuperBuffs, "Super Buffs" },
+            { ItemKeyword.Tonguefish, "Tonguefish" },
+            { ItemKeyword.Mukklo, "Mukklo" },
+            { ItemKeyword.Redfish, "Redfish" },
+            { ItemKeyword.LakeSturgeon, "Lake Sturgeon" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()

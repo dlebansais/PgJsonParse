@@ -1632,7 +1632,7 @@ public class Program
                 if (QuestNpc is not null && DisplayedLocation == MapAreaName.Internal_None)
                     DisplayedLocation = QuestNpc.NpcArea;
 
-                if (Quest.Name == "Orange Proof" || Quest.Name == "The Sewer Man")
+                if (Quest.Name == "Orange Proof" || Quest.Name == "The Sewer Man" || Quest.Name == "Under The Hand Is An Orb")
                     DisplayedLocation = MapAreaName.Internal_None;
 
                 if (DisplayedLocation == QuestAreaEntry.Key)
@@ -2290,6 +2290,7 @@ public class Program
                 { "Analyzing Antler", QuestSpecifics.FaeOnly },
                 { "Analyzing Chitin", QuestSpecifics.FaeOnly },
                 { "Angling: The Overgrown Clownfish", QuestSpecifics.None },
+                { "Angling: Killer Starfish", QuestSpecifics.None },
                 { "Apple Juice", QuestSpecifics.None },
                 { "Bananas!", QuestSpecifics.None },
                 { "Blasted Vines", QuestSpecifics.None },

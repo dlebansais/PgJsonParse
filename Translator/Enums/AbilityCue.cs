@@ -8,5 +8,6 @@
         Perching,
         Opener,
         ServerRequested,
+        Slowed,
     }
 }

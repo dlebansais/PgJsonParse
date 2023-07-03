@@ -339,5 +339,6 @@
         AnglingMode,
         SuperBuffs,
         Whittling,
+        NatureDamage,
     }
 }

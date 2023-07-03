@@ -1223,6 +1223,7 @@ public class CombatParser
             case CombatKeyword.DamageBoost:
             case CombatKeyword.DebuffMitigation:
             case CombatKeyword.AddSprintSpeed:
+            case CombatKeyword.DealArmorDamage:
                 VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true);
                 break;
 
@@ -1308,6 +1309,7 @@ public class CombatParser
             case CombatKeyword.ApplyToAllies:
             case CombatKeyword.WhenTeleporting:
             case CombatKeyword.AddAccuracy:
+            case CombatKeyword.TargetUndead:
                 break;
 
             default:
@@ -2273,7 +2275,11 @@ public class CombatParser
 
         int IndexFound = 0;
         RemoveDecorativeText(ref modText, "have less than a third of their Armor", "have less than 33% of their Armor", out _, ref IndexFound);
+        RemoveDecorativeText(ref modText, "have less than a third of their Max Rage", "have less than 33% of their Max Rage", out _, ref IndexFound);
+        RemoveDecorativeText(ref modText, "has less than a third of their Max Rage", "have less than 33% of their Max Rage", out _, ref IndexFound);
         RemoveDecorativeText(ref effectText, "have less than a third of their Armor", "have less than 33% of their Armor", out _, ref IndexFound);
+        RemoveDecorativeText(ref effectText, "have less than a third of their Max Rage", "have less than 33% of their Max Rage", out _, ref IndexFound);
+        RemoveDecorativeText(ref effectText, "has less than a third of their Max Rage", "have less than 33% of their Max Rage", out _, ref IndexFound);
         RemoveDecorativeText(ref modText, "you take half damage from", "you take 50% damage from", out _, ref IndexFound);
         RemoveDecorativeText(ref modText, "and Paradox Trot boosts Sprint Speed +1", out _, ref IndexFound);
         RemoveDecorativeText(ref modText, "(so it can be used again more quickly)", out _, ref IndexFound);
@@ -3901,7 +3907,7 @@ public class CombatParser
         new Sentence("If it deal #D damage", CombatKeyword.IfDamageType),
         new Sentence("Gain %f Direct", CombatKeyword.DamageBoost),
         new Sentence("#D damage for your next attack", new List<CombatKeyword>() { CombatKeyword.IfDamageType, CombatKeyword.NextAttack }),
-        new Sentence("Briefly terrifies the target", CombatKeyword.Fear),
+        //new Sentence("Briefly terrifies the target", CombatKeyword.Fear),
         new Sentence("Cause all sentient targets to flee in terror", CombatKeyword.FearSentient),
         new Sentence("Trigger the target's Vulnerability", CombatKeyword.SetVulnerable),
         new Sentence("To Arthropods", CombatKeyword.TargetAnatomyArthropods),
@@ -3999,7 +4005,7 @@ public class CombatParser
         new Sentence("Cause your pet to bleed for %f #D damage", CombatKeyword.PetImmolation),
         new Sentence("(Debuff cannot stack with itself)", CombatKeyword.NonStackingDebuff),
         new Sentence("(This effect does not stack with itself.)", CombatKeyword.NonStackingDebuff),
-        new Sentence("(This buff does not stack with itself)", CombatKeyword.NonStackingDebuff),
+        //new Sentence("(This buff does not stack with itself)", CombatKeyword.NonStackingDebuff),
         new Sentence("(Stacking up to %f times)", CombatKeyword.StackingDebuffLimit),
         new Sentence("(This effect does not stack with itself)", CombatKeyword.NonStackingDebuff),
 //        new Sentence("Combo: Deer Bash+Any Melee+Any Melee+Deer Kick:", CombatKeyword.Combo1),
@@ -4161,7 +4167,8 @@ public class CombatParser
         new Sentence("Your Taunt is %f", CombatKeyword.AddTaunt),
         new Sentence("%f Taunt", CombatKeyword.AddTaunt),
         new Sentence("When you have %f or less of your Armor left", CombatKeyword.BelowArmor),
-        new Sentence("Have less than %f of their Armor", CombatKeyword.BelowArmor),
+        //new Sentence("Have less than %f of their Armor", CombatKeyword.BelowArmor),
+        new Sentence("Have less than %f of their Max Rage", CombatKeyword.BelowMaxRage),
         new Sentence("Restore %f Health, Armor, and Power", CombatKeyword.RestoreHealthArmorPower),
         new Sentence("%f Health/Armor healing", CombatKeyword.RestoreHealthArmor),
         new Sentence("Heal you for %f Health/Armor", new List<CombatKeyword>() { CombatKeyword.RestoreHealthArmor, CombatKeyword.TargetSelf }),
@@ -4225,12 +4232,13 @@ public class CombatParser
         new Sentence("Targets are Knock back", CombatKeyword.Knockback),
         new Sentence("Knock back targets", CombatKeyword.Knockback),
         new Sentence("Knock all targets back", CombatKeyword.Knockback),
+        new Sentence("Knock them back", CombatKeyword.Knockback),
         new Sentence("Knock the target backward", CombatKeyword.Knockback),
         new Sentence("Knock the enemy backward", CombatKeyword.Knockback),
         new Sentence("Knock the target back", CombatKeyword.Knockback),
         new Sentence("Knock target backward", CombatKeyword.Knockback),
         new Sentence("Knock targets backward", CombatKeyword.Knockback),
-        new Sentence("Knock them backward", CombatKeyword.Knockback),
+        //new Sentence("Knock them backward", CombatKeyword.Knockback),
         new Sentence("Reset the time on", CombatKeyword.ResetOtherAbilityTimer),
         new Sentence("Deal %f total damage against Demons", CombatKeyword.DamageBoostAgainstSpecie),
         new Sentence("Boost targets' mitigation %f", CombatKeyword.AddMitigation),

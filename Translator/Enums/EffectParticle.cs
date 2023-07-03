@@ -176,5 +176,8 @@
         Mutation_ExtraHeart,
         HealingParticleQuick_Silent,
         ShadowFeintOrigin,
+        AnglingWebs,
+        AnglingSoulSphere,
+        AnglingPinkSmoke,
     }
 }
