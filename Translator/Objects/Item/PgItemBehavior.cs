@@ -4,7 +4,7 @@
 
     public class PgItemBehavior
     {
-        public ItemUseVerb UseVerb { get; set; }
+        public string UseVerb { get; set; } = string.Empty;
         public List<ItemUseRequirement> UseRequirementList { get; set; } = new List<ItemUseRequirement>();
         public ItemUseAnimation UseAnimation { get; set; }
         public ItemUseAnimation UseDelayAnimation { get; set; }

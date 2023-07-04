@@ -31,7 +31,7 @@ public class ParserItemBehavior : Parser
             switch (Key)
             {
                 case "UseVerb":
-                    Result = StringToEnumConversion<ItemUseVerb>.SetEnum((ItemUseVerb valueEnum) => item.UseVerb = valueEnum, Value);
+                    Result = SetStringProperty((string valueString) => item.UseVerb = valueString, Value);
                     break;
                 case "UseRequirements":
                     Result = StringToEnumConversion<ItemUseRequirement>.TryParseList(Value, item.UseRequirementList);

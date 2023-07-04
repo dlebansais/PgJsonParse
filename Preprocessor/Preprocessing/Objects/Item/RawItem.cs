@@ -5,7 +5,7 @@ internal class RawItem
     public bool? AllowPrefix { get; set; }
     public bool? AllowSuffix { get; set; }
     public bool? AttuneOnPickup { get; set; }
-    public Behavior[]? Behaviors { get; set; }
+    public object? Behaviors { get; set; }
     public string? BestowAbility { get; set; }
     public int? BestowLoreBook { get; set; }
     public string? BestowQuest { get; set; }

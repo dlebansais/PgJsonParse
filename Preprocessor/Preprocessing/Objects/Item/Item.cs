@@ -12,7 +12,7 @@ internal class Item
         AllowPrefix = rawItem.AllowPrefix;
         AllowSuffix = rawItem.AllowSuffix;
         AttuneOnPickup = rawItem.AttuneOnPickup;
-        Behaviors = rawItem.Behaviors;
+        Behaviors = Preprocessor.ToSingleOrMultiple(rawItem.Behaviors, (RawBehavior rawBehavior) => new Behavior(rawBehavior), out BehaviorsFormat);
         BestowAbility = rawItem.BestowAbility;
         BestowLoreBook = rawItem.BestowLoreBook;
         BestowQuest = rawItem.BestowQuest;
@@ -328,7 +328,7 @@ internal class Item
         Result.AllowPrefix = AllowPrefix;
         Result.AllowSuffix = AllowSuffix;
         Result.AttuneOnPickup = AttuneOnPickup;
-        Result.Behaviors = Behaviors;
+        Result.Behaviors = Preprocessor.FromSingleOrMultiple(Behaviors, (Behavior behavior) => behavior.ToRawBehavior(), BehaviorsFormat);
         Result.BestowAbility = BestowAbility;
         Result.BestowLoreBook = BestowLoreBook;
         Result.BestowQuest = BestowQuest;
@@ -474,6 +474,7 @@ internal class Item
         return Result;
     }
 
+    private readonly JsonArrayFormat BehaviorsFormat;
     private string[]? RawKeywords;
     private bool HasStockDye;
 }

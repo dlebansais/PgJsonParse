@@ -9,7 +9,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using PgJsonReader;
 using PgObjects;
 
@@ -17,11 +16,13 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(389);
+        return ParseCurated(390);
     }
 
     private static int ParseCurated(int Version)
     {
+        Debug.WriteLine($"Parsing version {Version}");
+
         VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
 
         if (!ParseFile(Version, "abilities", typeof(PgAbility)))
@@ -1888,6 +1889,7 @@ public class Program
             {
                 { "A Nice Stool", QuestSpecifics.None },
                 { "A Stencil to Make Runes", QuestSpecifics.None },
+                { "Angling: Baby Slugs Need Help!", QuestSpecifics.None },
                 { "Carnelians for Urzab", QuestSpecifics.None },
                 { "Fresh Carrots", QuestSpecifics.None },
                 { "Geometric Rune Charts", QuestSpecifics.None },
@@ -2292,6 +2294,7 @@ public class Program
                 { "Analyzing Chitin", QuestSpecifics.FaeOnly },
                 { "Angling: Killer Starfish", QuestSpecifics.None },
                 { "Angling: The Overgrown Clownfish", QuestSpecifics.None },
+                { "Angling: Unnaturally Cold Waters", QuestSpecifics.None },
                 { "Angling: Vicious Eels", QuestSpecifics.None },
                 { "Apple Juice", QuestSpecifics.None },
                 { "Bananas!", QuestSpecifics.None },

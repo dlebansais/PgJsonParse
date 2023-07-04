@@ -21,7 +21,10 @@ internal class EffectParticle
         string ParameterPattern = @"\(([^)]+)\)";
         Match ParameterMatch = Regex.Match(content, ParameterPattern, RegexOptions.IgnoreCase);
         if (!ParameterMatch.Success)
-            return new EffectParticle { ParticleName = content };
+        {
+            string ParticleName = content == "OnFire-Green" ? "OnFireGreen" : content;
+            return new EffectParticle { ParticleName = ParticleName };
+        }
 
         EffectParticle Result = new();
         Result.ParticleName = content.Substring(0, ParameterMatch.Index);
@@ -54,7 +57,12 @@ internal class EffectParticle
             return null;
 
         if (particle.AoERange is null)
-            return particle.ParticleName;
+        {
+            if (particle.ParticleName == "OnFireGreen")
+                return "OnFire-Green";
+            else
+                return particle.ParticleName;
+        }
 
         if (particle.AoEColor is null)
             return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange})";

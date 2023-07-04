@@ -74,8 +74,12 @@ internal class NpcPreference
             if (ItemKeywords is null)
                 ItemKeywords = new List<string>();
 
+            string ItemKeyword = content.Trim();
+            if (ItemKeyword == "Crafted:y")
+                ItemKeyword = "CraftedYes";
+
             HeaderTable.Add(index, string.Empty);
-            ItemKeywords.Add(content.Trim());
+            ItemKeywords.Add(ItemKeyword);
         }
     }
 
@@ -141,7 +145,11 @@ internal class NpcPreference
             case RarityHeader:
                 return $"{RarityHeader}{RarityRequirement}";
             default:
-                return $"{ItemKeywords?[itemKeywordIndex++]}";
+                string? ItemKeyword = ItemKeywords?[itemKeywordIndex++];
+                if (ItemKeyword == "CraftedYes")
+                    ItemKeyword = "Crafted:y";
+
+                return $"{ItemKeyword}";
         }
     }
 

@@ -71,6 +71,7 @@
         public bool? RawIsHarmless { get { return ((BoolValues & IsHarmlessNotNull) != 0) ? (BoolValues & IsHarmlessIsTrue) != 0 : null; } }
         public void SetIsHarmless(bool value) { BoolValues |= (BoolValues & ~(IsHarmlessNotNull + IsHarmlessIsTrue)) | ((value ? IsHarmlessIsTrue : 0) + IsHarmlessNotNull); }
         public string ItemKeywordRequirementErrorMessage { get; set; } = string.Empty;
+        public Appearance FormRequirement { get; set; }
         public List<AbilityItemKeyword> ItemKeywordReqList { get; set; } = new List<AbilityItemKeyword>();
         public List<AbilityKeyword> KeywordList { get; set; } = new List<AbilityKeyword>();
         public int Level { get { return RawLevel.HasValue ? RawLevel.Value : 0; } }
@@ -126,7 +127,7 @@
         public float? RawAmmoStickChance { get; set; }
         public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
         public string DigitStrippedName { get; set; } = string.Empty;
-        public Dictionary<CombatKeyword, string> AssociatedEffectKeyTable { get; set; } = new Dictionary<CombatKeyword, string>();
+        public Dictionary<CombatKeyword, List<int>> AssociatedEffectKeyTable { get; set; } = new();
         public string? TargetTypeTagRequirement_Key { get; set; }
         public const int WorksWhileMountedNotNull = 1 << 22;
         public const int WorksWhileMountedIsTrue = 1 << 23;

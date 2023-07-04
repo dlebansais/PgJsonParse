@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 
 internal class Ability
 {
+    private const string FormHeader = "form:";
+
     public Ability(RawAbility rawAbility)
     {
         AbilityGroup = rawAbility.AbilityGroup;
@@ -47,7 +49,7 @@ internal class Ability
         IsHarmless = rawAbility.IsHarmless;
         IsInternalAbility = rawAbility.InternalAbility;
         ItemKeywordRequirementErrorMessage = rawAbility.ItemKeywordReqErrorMessage;
-        ItemKeywordRequirements = rawAbility.ItemKeywordReqs;
+        (FormRequirement, ItemKeywordRequirements) = ParseItemKeywordRequirements(rawAbility.ItemKeywordReqs);
         Keywords = rawAbility.Keywords;
         Level = rawAbility.Level;
         Name = rawAbility.Name;
@@ -72,7 +74,7 @@ internal class Ability
         Target = rawAbility.Target;
         TargetEffectKeywordRequirement = rawAbility.TargetEffectKeywordReq;
         TargetParticle = AbilityParticle.Parse(rawAbility.TargetParticle);
-        TargetTypeTagRequirement = ToTargetTypeTagReq(rawAbility.TargetTypeTagReq);
+        TargetTypeTagRequirement = ParseTargetTypeTagReq(rawAbility.TargetTypeTagReq);
         UpgradeOf = rawAbility.UpgradeOf;
         WorksInCombat = rawAbility.WorksInCombat;
         WorksUnderwater = rawAbility.WorksUnderwater;
@@ -80,6 +82,7 @@ internal class Ability
         WorksWhileMounted = rawAbility.WorksWhileMounted;
         WorksWhileStunned = rawAbility.WorksWhileStunned;
 
+        // Remove Lint_NotLearnable for an ability that we can actually learn.
         if (InternalName == "SwordSlash" && Keywords is not null)
         {
             List<string> KeywordsList = Keywords.ToList();
@@ -88,7 +91,7 @@ internal class Ability
         }
     }
 
-    private string? ToTargetTypeTagReq(string? rawContent)
+    private string? ParseTargetTypeTagReq(string? rawContent)
     {
         if (rawContent is null)
             return null;
@@ -97,6 +100,26 @@ internal class Ability
             return $"Anatomy_{rawContent.Substring(12)}";
         else
             throw new InvalidCastException();
+    }
+
+    private (string?, string[]?) ParseItemKeywordRequirements(string[]? rawContent)
+    {
+        if (rawContent is null)
+            return (null, null);
+
+        string FormRequirements = string.Empty;
+        List<string> OtherRequirements = new();
+
+        foreach (string ItemKeywordRequirement in rawContent)
+            if (ItemKeywordRequirement.StartsWith(FormHeader))
+                if (FormRequirements == string.Empty)
+                    FormRequirements = ItemKeywordRequirement.Substring(FormHeader.Length);
+                else
+                    throw new InvalidCastException();
+            else
+                OtherRequirements.Add(ItemKeywordRequirement);
+
+        return (FormRequirements != string.Empty ? FormRequirements : null, OtherRequirements.Count > 0 ? OtherRequirements.ToArray() : null);
     }
 
     private static string? ToDigitStrippedName(string? internalName)
@@ -166,6 +189,7 @@ internal class Ability
     public string? DigitStrippedName { get; set; }
     public string[]? EffectKeywordsIndicatingEnabled { get; set; }
     public string[]? ExtraKeywordsForTooltips { get; set; }
+    public string? FormRequirement { get; set; }
     public int IconID { get; set; }
     public bool? IgnoreEffectErrors { get; set; }
     public string? InternalName { get; set; }
@@ -247,7 +271,7 @@ internal class Ability
         Result.IsCosmeticPet = IsCosmeticPet;
         Result.IsHarmless = IsHarmless;
         Result.ItemKeywordReqErrorMessage = ItemKeywordRequirementErrorMessage;
-        Result.ItemKeywordReqs = ItemKeywordRequirements;
+        Result.ItemKeywordReqs = ToRawItemKeywordReqs(FormRequirement, ItemKeywordRequirements);
         Result.Keywords = Keywords;
         Result.Level = Level;
         Result.Name = Name;
@@ -289,15 +313,32 @@ internal class Ability
         return Result;
     }
 
-    private string? ToRawTargetTypeTagReq(string? content)
+    private string? ToRawTargetTypeTagReq(string? targetTypeTagRequirement)
     {
-        if (content is null)
+        if (targetTypeTagRequirement is null)
             return null;
 
-        if (content.StartsWith("Anatomy_"))
-            return $"AnatomyType_{content.Substring(8)}";
+        if (targetTypeTagRequirement.StartsWith("Anatomy_"))
+            return $"AnatomyType_{targetTypeTagRequirement.Substring(8)}";
         else
             throw new InvalidCastException();
+    }
+
+    private static string[]? ToRawItemKeywordReqs(string? formRequirement, string[]? itemKeywordRequirements)
+    {
+        if (formRequirement is null && itemKeywordRequirements is null)
+            return null;
+
+        List<string> Result = new();
+
+        if (formRequirement is not null)
+            Result.Add($"{FormHeader}{formRequirement}");
+
+        if (itemKeywordRequirements is not null)
+            foreach (string ItemKeywordRequirement in itemKeywordRequirements)
+                Result.Add(ItemKeywordRequirement);
+
+        return Result.ToArray();
     }
 
     private readonly JsonArrayFormat SpecialCasterRequirementsFormat;

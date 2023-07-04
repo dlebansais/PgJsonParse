@@ -117,6 +117,9 @@ public class ParserAbility : Parser
                 case "ItemKeywordRequirementErrorMessage":
                     Result = SetStringProperty((string valueString) => item.ItemKeywordRequirementErrorMessage = valueString, Value);
                     break;
+                case "FormRequirement":
+                    Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => item.FormRequirement = valueEnum, Value);
+                    break;
                 case "ItemKeywordRequirements":
                     Result = StringToEnumConversion<AbilityItemKeyword>.TryParseList(Value, item.ItemKeywordReqList);
                     break;

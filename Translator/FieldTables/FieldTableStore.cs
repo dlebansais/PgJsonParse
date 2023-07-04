@@ -37,6 +37,7 @@ public class FieldTableStore
         { "InternalName", typeof(string) },
         { "IsHarmless", typeof(bool) },
         { "ItemKeywordRequirementErrorMessage", typeof(string) },
+        { "FormRequirement", typeof(string) },
         { "ItemKeywordRequirements", typeof(string[]) },
         { "Keywords", typeof(string[]) },
         { "Level", typeof(int) },

@@ -14,7 +14,22 @@ internal class Effect
         Particle = EffectParticle.Parse(rawEffect.Particle);
         SpewText = rawEffect.SpewText;
         StackingPriority = rawEffect.StackingPriority;
-        StackingType = rawEffect.StackingType;
+        StackingType = ParseStackingType(rawEffect.StackingType);
+    }
+
+    private string? ParseStackingType(string? rawContent)
+    {
+        switch (rawContent)
+        {
+            case null:
+                return null;
+            case "Lamia's Gaze":
+                return "LamiasGaze";
+            case "1":
+                return "One";
+            default:
+                return rawContent;
+        }
     }
 
     public string[]? AbilityKeywords { get; set; }
@@ -43,9 +58,24 @@ internal class Effect
         Result.Particle = EffectParticle.ToString(Particle);
         Result.SpewText = SpewText;
         Result.StackingPriority = StackingPriority;
-        Result.StackingType = StackingType;
+        Result.StackingType = ToRawStackingType(StackingType);
 
         return Result;
+    }
+
+    private string? ToRawStackingType(string? rawContent)
+    {
+        switch (rawContent)
+        {
+            case null:
+                return null;
+            case "LamiasGaze":
+                return "Lamia's Gaze";
+            case "One":
+                return "1";
+            default:
+                return rawContent;
+        }
     }
 
     private readonly bool IsDurationNumber;

@@ -25,7 +25,7 @@ internal class Recipe
         IsItemMenuKeywordRequirementSufficient = rawRecipe.IsItemMenuKeywordReqSufficient;
         ItemMenuCategory = ParseItemMenuCategory(rawRecipe.ItemMenuCategory);
         ItemMenuCategoryLevel = rawRecipe.ItemMenuCategoryLevel;
-        ItemMenuKeywordRequirement = rawRecipe.ItemMenuKeywordReq;
+        ItemMenuKeywordRequirement = ParseItemMenuKeywordReq(rawRecipe.ItemMenuKeywordReq);
         ItemMenuLabel = rawRecipe.ItemMenuLabel;
         Keywords = rawRecipe.Keywords;
         LoopParticle = RecipeParticle.Parse(rawRecipe.LoopParticle);
@@ -405,6 +405,19 @@ internal class Recipe
         }
     }
 
+    private static string? ParseItemMenuKeywordReq(string? rawItemMenuKeywordReq)
+    {
+        switch (rawItemMenuKeywordReq)
+        {
+            case null:
+                return null;
+            case "MinRarity:Uncommon":
+                return "MinRarity_Uncommon";
+            default:
+                return rawItemMenuKeywordReq;
+        }
+    }
+
     public string? ActionLabel { get; set; }
     public Cost[]? Costs { get; set; }
     public string? Description { get; set; }
@@ -461,7 +474,7 @@ internal class Recipe
         Result.IsItemMenuKeywordReqSufficient = IsItemMenuKeywordRequirementSufficient;
         Result.ItemMenuCategory = ToRawItemMenuCategory(ItemMenuCategory);
         Result.ItemMenuCategoryLevel = ItemMenuCategoryLevel;
-        Result.ItemMenuKeywordReq = ItemMenuKeywordRequirement;
+        Result.ItemMenuKeywordReq = ToRawItemMenuKeywordReq(ItemMenuKeywordRequirement);
         Result.ItemMenuLabel = ItemMenuLabel;
         Result.Keywords = Keywords;
         Result.LoopParticle = RecipeParticle.ToString(LoopParticle);
@@ -562,11 +575,6 @@ internal class Recipe
         }
     }
 
-    private static string ToRawResultEffectWithTier(RecipeResultEffect effect)
-    {
-        return $"{effect.Type}{effect.Tier}";
-    }
-
     private static string ToRawCraftingEnhanceItem(RecipeResultEffect effect)
     {
         return $"{effect.Type}{effect.Enhancement}({effect.AddedQuantity?.ToString(CultureInfo.InvariantCulture)},{effect.ConsumedEnhancementPoints})";
@@ -656,6 +664,19 @@ internal class Recipe
                 return "TSysDistill";
             default:
                 return content;
+        }
+    }
+
+    private static string? ToRawItemMenuKeywordReq(string? itemMenuKeywordRequirement)
+    {
+        switch (itemMenuKeywordRequirement)
+        {
+            case null:
+                return null;
+            case "MinRarity_Uncommon":
+                return "MinRarity:Uncommon";
+            default:
+                return itemMenuKeywordRequirement;
         }
     }
 

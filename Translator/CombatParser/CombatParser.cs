@@ -426,7 +426,13 @@ public class CombatParser
     private void AddAssociatedEffect(PgAbility ability, CombatKeyword keyword, PgEffect effect)
     {
         if (!ability.AssociatedEffectKeyTable.ContainsKey(keyword))
-            ability.AssociatedEffectKeyTable.Add(keyword, effect.Key);
+            ability.AssociatedEffectKeyTable.Add(keyword, new List<int>());
+
+        List<int> KeyList = ability.AssociatedEffectKeyTable[keyword];
+        int KeyInt = int.Parse(effect.Key);
+
+        if (!KeyList.Contains(KeyInt))
+            KeyList.Add(KeyInt);
     }
 
     private void FindPowersWithMatchingEffect(Dictionary<string, Dictionary<string, List<PgEffect>>> allEffectTable, List<PgPower> powerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> powerToEffectTable, out List<PgPower> unmatchedPowerList, out List<PgEffect> unmatchedEffectList, out Dictionary<PgPower, List<PgEffect>> candidateEffectTable)
