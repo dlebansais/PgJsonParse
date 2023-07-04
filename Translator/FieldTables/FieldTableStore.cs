@@ -691,7 +691,7 @@ public class FieldTableStore
         { "AddedQuantity", typeof(float) },
         { "AdditionalEnchantments", typeof(int) },
         { "AdjustedReuseTime", typeof(PgQuestTime) },
-        { "Area", typeof(string) },
+        { "AreaName", typeof(string) },
         { "Augment", typeof(string) },
         { "Boost", typeof(string) },
         { "BoostLevel", typeof(int) },
@@ -805,7 +805,7 @@ public class FieldTableStore
     {
         { "ID", typeof(int) },
         { "NpcFriendlyName", typeof(string) },
-        { "Area", typeof(string) },
+        { "AreaName", typeof(string) },
         { "NumberOfSlots", typeof(int) },
         { "HasAssociatedNpc", typeof(bool) },
         { "Levels", typeof(PgStorageFavorLevel) },

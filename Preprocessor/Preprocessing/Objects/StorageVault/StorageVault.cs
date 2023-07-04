@@ -8,9 +8,9 @@ internal class StorageVault
 
     public StorageVault(RawStorageVault rawStorageVault)
     {
-        (IsAnyArea, Area) = ParseArea(rawStorageVault.Area);
+        (IsAnyArea, AreaName, OriginalAreaName) = ParseArea(rawStorageVault.Area);
         EventLevels = rawStorageVault.EventLevels;
-        (_, Grouping) = ParseArea(rawStorageVault.Grouping);
+        (_, Grouping, _) = ParseArea(rawStorageVault.Grouping);
         HasAssociatedNpc = rawStorageVault.HasAssociatedNpc;
         ID = rawStorageVault.ID;
         Levels = rawStorageVault.Levels;
@@ -22,20 +22,25 @@ internal class StorageVault
         SlotAttribute = rawStorageVault.SlotAttribute;
     }
 
-    private static (bool, string?) ParseArea(string? content)
+    private static (bool, string?, string?) ParseArea(string? content)
     {
         if (content is null)
-            return (false, null);
+            return (false, null, null);
 
         if (content == "*")
-            return (true, null);
+            return (true, null, null);
         else if (content.StartsWith(AreaHeader))
-            return (false, content.Substring(AreaHeader.Length));
+        {
+            string AreaName = content.Substring(AreaHeader.Length);
+            AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName)!;
+
+            return (false, AreaName, OriginalAreaName);
+        }
         else
             throw new InvalidCastException();
     }
 
-    public string? Area { get; set; }
+    public string? AreaName { get; set; }
     public StorageVaultEventLevel? EventLevels { get; set; }
     public string? Grouping { get; set; }
     public bool? HasAssociatedNpc { get; set; }
@@ -52,9 +57,9 @@ internal class StorageVault
     {
         RawStorageVault Result = new();
 
-        Result.Area = ToRawArea(IsAnyArea, Area);
+        Result.Area = ToRawArea(IsAnyArea, AreaName, OriginalAreaName);
         Result.EventLevels = EventLevels;
-        Result.Grouping = ToRawArea(isAnyArea: false, Grouping);
+        Result.Grouping = ToRawArea(isAnyArea: false, Grouping, originalAreaName: null);
         Result.HasAssociatedNpc = HasAssociatedNpc;
         Result.ID = ID;
         Result.Levels = Levels;
@@ -68,16 +73,17 @@ internal class StorageVault
         return Result;
     }
 
-    private static string? ToRawArea(bool isAnyArea, string? area)
+    private static string? ToRawArea(bool isAnyArea, string? areaName, string? originalAreaName)
     {
         if (isAnyArea)
             return "*";
-        else if (area is not null)
-            return $"{AreaHeader}{area}";
+        else if (areaName is not null)
+            return $"{AreaHeader}{Area.ToRawAreaName(areaName, originalAreaName)}";
         else
             return null;
     }
 
     private JsonArrayFormat RequirementsFormat;
     private bool IsAnyArea;
+    private string? OriginalAreaName;
 }

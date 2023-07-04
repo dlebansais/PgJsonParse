@@ -1,6 +1,5 @@
 ﻿namespace Translator;
 
-using System;
 using System.Collections.Generic;
 using PgJsonReader;
 using PgObjects;
@@ -37,7 +36,7 @@ public class ParserStorageVault : Parser
                 case "NpcFriendlyName":
                     Result = SetStringProperty((string valueString) => item.NpcFriendlyName = valueString, Value);
                     break;
-                case "Area":
+                case "AreaName":
                     Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.Area = valueEnum, Value);
                     break;
                 case "NumberOfSlots":

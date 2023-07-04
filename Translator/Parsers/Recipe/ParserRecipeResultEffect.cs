@@ -58,7 +58,7 @@ public class ParserRecipeResultEffect : Parser
         { RecipeResultEffectType.PolymorphRabbitPermanent, new List<string>() { "Type", "Color" } },
         { RecipeResultEffectType.AddItemTSysPowerWax, new List<string>() { "Type", "PowerWaxType", "PowerLevel", "MaxHitCount" } },
         { RecipeResultEffectType.DeltaCurFairyEnergy, new List<string>() { "Type", "Delta" } },
-        { RecipeResultEffectType.Teleport, new List<string>() { "Type", "Area", "Other" } },
+        { RecipeResultEffectType.Teleport, new List<string>() { "Type", "AreaName", "Other" } },
         { RecipeResultEffectType.AdjustRecipeReuseTime, new List<string>() { "Type", "AdjustedReuseTime", "MoonPhase" } },
         { RecipeResultEffectType.CraftingResetItem, new List<string>() { "Type" } },
         { RecipeResultEffectType.SendItemToSaddlebag, new List<string>() { "Type" } },
@@ -928,7 +928,7 @@ public class ParserRecipeResultEffect : Parser
                 {
                     case "Type":
                         break;
-                    case "Area":
+                    case "AreaName":
                         Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => NewItem.Area = valueEnum, Value);
                         break;
                     case "Other":

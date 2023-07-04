@@ -112,7 +112,8 @@ internal class Preprocessor
 
         if (ReadContent != WriteContent)
         {
-            Debug.WriteLine("\r\nERROR: Difference found");
+            Debug.WriteLine("");
+            Debug.WriteLine("ERROR: Difference found");
 
             if (isPretty)
             {

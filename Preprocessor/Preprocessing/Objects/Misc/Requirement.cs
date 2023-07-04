@@ -117,12 +117,9 @@ internal class Requirement
         requirement.EventSkill = eventSkill;
         requirement.EventQuest = eventQuest;
 
-        if (areaName == "Ilmari")
-            requirement.AreaName = "Desert1";
-        else if (areaName == "Kur")
-            requirement.AreaName = "KurMountains";
-        else
-            requirement.AreaName = areaName;
+        string? AreaName = Area.FromRawAreaName(areaName, out string? OriginalAreaName);
+        requirement.AreaName = AreaName;
+        requirement.OriginalAreaName = OriginalAreaName;
     }
 
     public string? AbilityKeyword { get; set; }
@@ -214,7 +211,7 @@ internal class Requirement
         else
             Result.Level = null;
 
-        RestoreAreaEventRequirement(Result, Daytime, EventQuest, AreaName, EventSkill);
+        RestoreAreaEventRequirement(Result, Daytime, EventQuest, AreaName, OriginalAreaName, EventSkill);
 
         return Result;
     }
@@ -229,7 +226,7 @@ internal class Requirement
             return rule;
     }
 
-    private static void RestoreAreaEventRequirement(RawRequirement requirement, bool? dayTime, string? eventQuest, string? areaName, string? eventSkill)
+    private static void RestoreAreaEventRequirement(RawRequirement requirement, bool? dayTime, string? eventQuest, string? areaName, string? originalAreaName, string? eventSkill)
     {
         if (dayTime is not null)
             requirement.AreaEvent = "Daytime";
@@ -240,14 +237,7 @@ internal class Requirement
             if (eventQuest is not null)
             {
                 string Skill = eventSkill is null ? string.Empty : $"_{eventSkill}";
-
-                string AreaSuffix;
-                if (areaName == "Desert1")
-                    AreaSuffix = "Ilmari";
-                else if (areaName == "KurMountains")
-                    AreaSuffix = "Kur";
-                else
-                    AreaSuffix = areaName;
+                string? AreaSuffix = Area.ToRawAreaName(areaName, originalAreaName);
 
                 requirement.AreaEvent = $"{requirement.AreaEvent}{Skill}_{eventQuest}_{AreaSuffix}";
             }
@@ -257,4 +247,5 @@ internal class Requirement
     }
 
     private JsonArrayFormat ListFormat;
+    private string? OriginalAreaName;
 }

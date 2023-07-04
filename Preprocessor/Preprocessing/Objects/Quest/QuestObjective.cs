@@ -66,6 +66,9 @@ internal class QuestObjective
             }
             else
                 throw new InvalidCastException();
+
+            if (Target == "*")
+                Target = "Any";
         }
     }
 
@@ -148,18 +151,21 @@ internal class QuestObjective
         Result.Type = Type;
 
         string[]? Targets;
-        if (Target is not null)
+        if (Target is string RawTarget)
         {
+            if (RawTarget == "Any")
+                RawTarget = "*";
+
             if (RequirementTargetInArea is not null)
             {
                 RawRequirement RawRequirementTargetInArea = RequirementTargetInArea.ToRawRequirement();
                 string TargetArea = $"{AreaHeader}{RawRequirementTargetInArea.AreaEvent}";
-                Targets = new string[] { Target, TargetArea };
+                Targets = new string[] { RawTarget, TargetArea };
 
                 Result.Requirements = RemoveRequirement(Result.Requirements, RequirementIndexTargetInArea);
             }
             else
-                Targets = new string[] { Target };
+                Targets = new string[] { RawTarget };
         }
         else
             Targets = null;

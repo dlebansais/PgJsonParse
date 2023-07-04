@@ -10,7 +10,7 @@ internal class Quest
     public Quest(RawQuest rawQuest)
     {
         Description = rawQuest.Description;
-        DisplayedLocation = rawQuest.DisplayedLocation;
+        DisplayedLocation = Area.FromRawAreaName(rawQuest.DisplayedLocation, out OriginalDisplayedLocation);
         FavorNpc = rawQuest.FavorNpc;
         FollowUpQuests = rawQuest.FollowUpQuests;
         GroupingName = rawQuest.GroupingName;
@@ -337,7 +337,7 @@ internal class Quest
         RawQuest Result = new();
 
         Result.Description = Description;
-        Result.DisplayedLocation = DisplayedLocation;
+        Result.DisplayedLocation = Area.ToRawAreaName(DisplayedLocation, OriginalDisplayedLocation);
         Result.FavorNpc = FavorNpc;
         Result.FollowUpQuests = FollowUpQuests;
         Result.GroupingName = GroupingName;
@@ -556,6 +556,7 @@ internal class Quest
         { "Event_Halloween_NotAfraidOfLungs", 5024 },
     };
 
+    private string? OriginalDisplayedLocation;
     private JsonArrayFormat RequirementsFormat;
     private JsonArrayFormat RequirementsToSustainFormat;
     private bool HasRewardFavor;

@@ -2,28 +2,32 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 internal class Npc
 {
     public Npc(RawNpc rawNpc)
     {
         AreaFriendlyName = rawNpc.AreaFriendlyName;
-        AreaName = ParseAreaName(rawNpc.AreaName);
+        (AreaName, OriginalAreaName) = ParseAreaName(rawNpc.AreaName);
         Name = rawNpc.Name;
         (UnsortedPreferences, Preferences) = ParsePreferences(rawNpc.Preferences);
     }
 
     private const string AreaHeader = "Area";
 
-    private static string? ParseAreaName(string? content)
+    private static (string?, string?) ParseAreaName(string? content)
     {
         if (content is null)
-            return null;
+            return (null, null);
 
         if (!content.StartsWith(AreaHeader))
             throw new InvalidCastException();
 
-        return content.Substring(AreaHeader.Length);
+        string? AreaName = content.Substring(AreaHeader.Length);
+        AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName);
+
+        return (AreaName, OriginalAreaName);
     }
 
     private static (NpcPreference[]?, NpcPreference[]?) ParsePreferences(RawNpcPreference[]? content)
@@ -70,19 +74,19 @@ internal class Npc
         RawNpc Result = new();
 
         Result.AreaFriendlyName = AreaFriendlyName;
-        Result.AreaName = ToRawAreaName(AreaName);
+        Result.AreaName = ToRawAreaName(AreaName, OriginalAreaName);
         Result.Name = Name;
         Result.Preferences = ToRawNpcPreferences(UnsortedPreferences);
 
         return Result;
     }
 
-    private static string? ToRawAreaName(string? areaName)
+    private static string? ToRawAreaName(string? areaName, string? originalAreaName)
     {
         if (areaName is null)
             return null;
 
-        return $"{AreaHeader}{areaName}";
+        return $"{AreaHeader}{Area.ToRawAreaName(areaName, originalAreaName)}";
     }
 
     private static RawNpcPreference[]? ToRawNpcPreferences(NpcPreference[]? npcPreferenceArray)
@@ -99,4 +103,5 @@ internal class Npc
     }
 
     private NpcPreference[]? UnsortedPreferences;
+    private string? OriginalAreaName;
 }

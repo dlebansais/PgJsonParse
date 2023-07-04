@@ -80,25 +80,25 @@ internal class Item
             switch (Key)
             {
                 case "^Skin":
-                    Result.Skin = Value;
+                    Result.Skin = ParseAppearance(Value);
                     break;
                 case "Skin":
                     if (Value.Length > 1 && Value[0] == '^')
                     {
-                        Result.Skin = Value.Substring(1);
+                        Result.Skin = ParseAppearance(Value.Substring(1));
                         Result.SetIsSkinInverted(true);
                     }
                     else
                         throw new InvalidCastException();
                     break;
                 case "^Cork":
-                    Result.Cork = Value;
+                    Result.Cork = ParseAppearance(Value);
                     break;
                 case "^Food":
-                    Result.Food = Value;
+                    Result.Food = ParseAppearance(Value);
                     break;
                 case "^Plate":
-                    Result.Plate = Value;
+                    Result.Plate = ParseAppearance(Value);
                     break;
                 case "Color":
                     Result.Color = RgbColor.Parse(Value, string.Empty, out ColorFormat ColorFormat);
@@ -114,6 +114,11 @@ internal class Item
         }
 
         return Result;
+    }
+
+    private static string ParseAppearance(string appearance)
+    {
+        return appearance.Replace("-", "_");
     }
 
     private static ItemEffect[]? ParseEffectDescriptions(string[]? content)
@@ -373,10 +378,14 @@ internal class Item
         if (droppedAppearance is null)
             return null;
 
-        string SkinString = droppedAppearance.Skin is null ? string.Empty : (droppedAppearance.GetIsSkinInverted() ? $"Skin=^{droppedAppearance.Skin}" : $"^Skin={droppedAppearance.Skin}");
-        string CorkString = droppedAppearance.Cork is null ? string.Empty : $"^Cork={droppedAppearance.Cork}";
-        string FoodString = droppedAppearance.Food is null ? string.Empty : $"^Food={droppedAppearance.Food}";
-        string PlateString = droppedAppearance.Plate is null ? string.Empty : $"^Plate={droppedAppearance.Plate}";
+        string? Skin = ToRawAppearance(droppedAppearance.Skin);
+        string? Cork = ToRawAppearance(droppedAppearance.Cork);
+        string? Food = ToRawAppearance(droppedAppearance.Food);
+        string? Plate = ToRawAppearance(droppedAppearance.Plate);
+        string SkinString = Skin is null ? string.Empty : (droppedAppearance.GetIsSkinInverted() ? $"Skin=^{Skin}" : $"^Skin={Skin}");
+        string CorkString = Cork is null ? string.Empty : $"^Cork={Cork}";
+        string FoodString = Food is null ? string.Empty : $"^Food={Food}";
+        string PlateString = Plate is null ? string.Empty : $"^Plate={Plate}";
         string ColorString = droppedAppearance.Color is null ? string.Empty : $"Color={droppedAppearance.GetColorFormat()}";
         string SkinColorString = droppedAppearance.SkinColor is null ? string.Empty : $"Skin_Color={droppedAppearance.GetSkinColorFormat()}";
 
@@ -403,6 +412,11 @@ internal class Item
         string? Result = Parameter == string.Empty ? droppedAppearance.Appearance : $"{droppedAppearance.Appearance}({Parameter})";
 
         return Result;
+    }
+
+    private static string? ToRawAppearance(string? appearance)
+    {
+        return appearance?.Replace("_", "-");
     }
 
     private static string[]? EffectDescriptionsToString(ItemEffect[]? effectDescriptions)

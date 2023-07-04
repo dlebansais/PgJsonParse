@@ -353,13 +353,14 @@ internal class Recipe
         if (Splitted.Length != 2)
             throw new InvalidCastException();
 
-        string Area = Splitted[0];
+        string AreaName = Splitted[0];
         string Other = Splitted[1];
 
-        if (!Area.StartsWith(AreaHeader))
+        if (!AreaName.StartsWith(AreaHeader))
             throw new InvalidCastException();
 
-        Area = Area.Substring(AreaHeader.Length);
+        AreaName = AreaName.Substring(AreaHeader.Length);
+        AreaName = Area.FromRawAreaName(AreaName, out _)!;
 
         if (Other == " NewFairySpot")
             Other = "New Fairy Spot";
@@ -370,7 +371,7 @@ internal class Recipe
         else
             throw new InvalidCastException();
 
-        return new RecipeResultEffect() { Type = effectName, Area = Area, Other = Other };
+        return new RecipeResultEffect() { Type = effectName, AreaName = AreaName, Other = Other };
     }
 
     private static RecipeResultEffect ParseCreateMiningSurvey(string effectName, string effectParameter)
@@ -649,7 +650,9 @@ internal class Recipe
                 break;
         }
 
-        return $"{effect.Type}(Area{effect.Area}, {Other})";
+        string? AreaName = Area.FromRawAreaName(effect.AreaName, out _);
+
+        return $"{effect.Type}(Area{AreaName}, {Other})";
     }
 
     private static string? ToRawItemMenuCategory(string? content)

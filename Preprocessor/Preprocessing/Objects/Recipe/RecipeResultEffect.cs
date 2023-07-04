@@ -5,7 +5,7 @@ internal class RecipeResultEffect
     public decimal? AddedQuantity { get; set; }
     public int? AdditionalEnchantments { get; set; }
     public Time? AdjustedReuseTime { get; set; }
-    public string? Area { get; set; }
+    public string? AreaName { get; set; }
     public string? Augment { get; set; }
     public string? Boost { get; set; }
     public int? BoostLevel { get; set; }

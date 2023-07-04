@@ -7,53 +7,6 @@ using PgObjects;
 
 public class EnumStringMap
 {
-    public static readonly Dictionary<AppearanceSkin, string> AppearanceSkinTable = new Dictionary<AppearanceSkin, string>()
-    {
-        { AppearanceSkin.Halloween_CofferItems, "Halloween-CofferItems" },
-        { AppearanceSkin.Medieval_Fruits, "Medieval-Fruits" },
-        { AppearanceSkin.Medieval_Vegetables, "Medieval-Vegetables" },
-        { AppearanceSkin.GF_Food, "GF-Food" },
-        { AppearanceSkin.GF_Dishes, "GF-Dishes" },
-    };
-
-    public static readonly Dictionary<MapAreaName, string> MapAreaNameTable = new Dictionary<MapAreaName, string>()
-    {
-        { MapAreaName.Internal_None, "None" },
-        { MapAreaName.Serbule, "Serbule" },
-        { MapAreaName.Eltibule, "Eltibule" },
-        { MapAreaName.Tomb1, "Khyrulek's Crypt" },
-        { MapAreaName.KurMountains, "Kur Mountains" },
-        { MapAreaName.NewbieIsland, "Anagoge Island" },
-        { MapAreaName.SerbuleCaves, "Serbule Caves" },
-        { MapAreaName.Rahu, "Rahu" },
-        { MapAreaName.Serbule2, "Serbule Hills" },
-        { MapAreaName.Desert1, "Ilmari Desert" },
-        { MapAreaName.SunVale, "Sun Vale" },
-        { MapAreaName.Cave1, "Hogan's Keep" },
-        { MapAreaName.GazlukCaves, "Gazluk Dungeons" },
-        { MapAreaName.Gazluk, "Gazluk Plateau" },
-        { MapAreaName.Cave2, "Wolf Cave" },
-        { MapAreaName.MyconianCave, "Myconian Caverns" },
-        { MapAreaName.GazlukKeep, "Gazluk Keep" },
-        { MapAreaName.Dungeons, "Dungeons" },
-        { MapAreaName.RanalonDen, "Ranalon Den" },
-        { MapAreaName.Casino, "Red Wing Casino" },
-        { MapAreaName.RahuCaves, "Rahu Caves" },
-        { MapAreaName.RahuSewer, "Rahu Sewer" },
-        { MapAreaName.RahuSewers, "Rahu Sewers" },
-        { MapAreaName.FaeRealm, "Fae Realm" },
-        { MapAreaName.SacredGrotto, "Sacred Grotto" },
-        { MapAreaName.ANewLife, "A New Life" },
-        { MapAreaName.WNSWintertide, "WNS Wintertide" },
-        { MapAreaName.Povus, "Povus" },
-        { MapAreaName.Staging, "Staging" },
-    };
-
-    public static readonly Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTable = new Dictionary<QuestObjectiveTarget, string>()
-    {
-        { QuestObjectiveTarget.Any, "*" },
-    };
-
     public static readonly Dictionary<RecipeAction, string> RecipeActionTable = new Dictionary<RecipeAction, string>()
     {
         { RecipeAction.DecomposeItem, "Decompose Item" },
@@ -150,9 +103,6 @@ public class EnumStringMap
 
     public static Dictionary<Type, IDictionary> Tables { get; } = new Dictionary<Type, IDictionary>()
     {
-        { typeof(AppearanceSkin), AppearanceSkinTable },
-        { typeof(MapAreaName), MapAreaNameTable },
-        { typeof(QuestObjectiveTarget), QuestObjectiveKillTargetTable },
         { typeof(RecipeAction), RecipeActionTable },
         { typeof(RecipeEffect), RecipeEffectTable },
         { typeof(RecipeItemKey), RecipeItemKeyTable },
