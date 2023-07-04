@@ -24,7 +24,10 @@ internal class AbilityParticle
         string ParameterPattern = @"\(([^)]+)\)";
         Match ParameterMatch = Regex.Match(content, ParameterPattern, RegexOptions.IgnoreCase);
         if (!ParameterMatch.Success)
-            return new AbilityParticle { ParticleName = content };
+        {
+            string ParticleName = content == "Wolf-SeeRed" ? "WolfSeeRed" : content;
+            return new AbilityParticle { ParticleName = ParticleName };
+        }
 
         AbilityParticle Result = new();
         Result.ParticleName = content.Substring(0, ParameterMatch.Index);
@@ -69,22 +72,24 @@ internal class AbilityParticle
         if (particle is null)
             return null;
 
+        string? ParticleName = particle.ParticleName == "WolfSeeRed" ? "Wolf-SeeRed" : particle.ParticleName;
+
         if (particle.AoERange is null)
         {
             if (particle.PrimaryColor is null)
-                return particle.ParticleName;
+                return ParticleName;
 
             if (particle.SecondaryColor is null)
-                return $"{particle.ParticleName}({ColorHeader}#{particle.PrimaryColor})";
+                return $"{ParticleName}({ColorHeader}#{particle.PrimaryColor})";
 
-            return $"{particle.ParticleName}({ColorHeader}#{particle.PrimaryColor},#{particle.SecondaryColor})";
+            return $"{ParticleName}({ColorHeader}#{particle.PrimaryColor},#{particle.SecondaryColor})";
         }
         else
         {
             if (particle.AoEColor is null)
-                return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange})";
+                return $"{ParticleName}({AoeRangeHeader}{particle.AoERange})";
             else
-                return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange};{AoeColorHeader}#{particle.AoEColor})";
+                return $"{ParticleName}({AoeRangeHeader}{particle.AoERange};{AoeColorHeader}#{particle.AoEColor})";
         }
     }
 }

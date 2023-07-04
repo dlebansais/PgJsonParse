@@ -42,7 +42,7 @@ internal class Preprocessor
         new IntDictionaryJsonConverter<SourceRecipe, RawSourceRecipe, SourceRecipeDictionary>("recipe"),
         new StringDictionaryJsonConverter<StorageVault, RawStorageVault, StorageVaultDictionary>(),
         new IntDictionaryJsonConverter<Power, RawPower, PowerDictionary>("power"),
-        new IntDictionaryJsonConverter<XpTable, XpTable, XpTableDictionary>("Table"),
+        new IntDictionaryJsonConverter<XpTable, RawXpTable, XpTableDictionary>("Table"),
     };
 
     public bool Preprocess(string versionPath, List<JsonFile> jsonFileList)
