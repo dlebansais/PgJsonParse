@@ -19,7 +19,7 @@
         public PgRecipeResultEffectCollection ResultEffectList { get; set; } = new PgRecipeResultEffectCollection();
         public string? SortSkill_Key { get; set; }
         public List<RecipeKeyword> KeywordList { get; set; } = new List<RecipeKeyword>();
-        public RecipeAction ActionLabel { get; set; }
+        public string ActionLabel { get; set; } = string.Empty;
         public float UsageDelay { get { return RawUsageDelay.HasValue ? RawUsageDelay.Value : 0; } }
         public float? RawUsageDelay { get; set; }
         public string UsageDelayMessage { get; set; } = string.Empty;

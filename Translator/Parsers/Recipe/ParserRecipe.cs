@@ -66,7 +66,7 @@ public class ParserRecipe : Parser
                     Result = StringToEnumConversion<RecipeKeyword>.TryParseList(Value, item.KeywordList);
                     break;
                 case "ActionLabel":
-                    Result = StringToEnumConversion<RecipeAction>.SetEnum((RecipeAction valueEnum) => item.ActionLabel = valueEnum, Value);
+                    Result = SetStringProperty((string valueString) => item.ActionLabel = valueString, Value);
                     break;
                 case "UsageDelay":
                     Result = SetFloatProperty((float valueFloat) => item.RawUsageDelay = valueFloat, Value);

@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 82;
+        public const int TotalEnumTypes = 81;
 
         static TextMaps()
         {
@@ -4432,6 +4432,7 @@
             { Race.Dwarf, "Dwarf" },
         };
 
+        /*
         public static Dictionary<RecipeAction, string> RecipeActionTextMap { get; } = new Dictionary<RecipeAction, string>()
         {
             { RecipeAction.Internal_None, string.Empty },
@@ -4491,7 +4492,7 @@
             //{ RecipeAction.BrownAle, "Brown Ale" },
             { RecipeAction.Reset, "Reset" },
             { RecipeAction.CutBait, "Cut Bait" },
-        };
+        };*/
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
         {

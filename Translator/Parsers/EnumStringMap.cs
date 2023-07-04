@@ -7,43 +7,6 @@ using PgObjects;
 
 public class EnumStringMap
 {
-    public static readonly Dictionary<RecipeAction, string> RecipeActionTable = new Dictionary<RecipeAction, string>()
-    {
-        { RecipeAction.DecomposeItem, "Decompose Item" },
-        { RecipeAction.RemoveAugment, "Remove Augment" },
-        { RecipeAction.DistillItem, "Distill Item" },
-        { RecipeAction.RepairItem, "Repair Item" },
-        { RecipeAction.CreateMap, "Create Map" },
-        { RecipeAction.StudySkull, "Study Skull" },
-        { RecipeAction.StudyEquipment, "Study Equipment" },
-        { RecipeAction.SayTheSooth, "Say the Sooth" },
-        { RecipeAction.MixDye, "Mix Dye" },
-        { RecipeAction.InfuseSpirits, "Infuse Spirits" },
-        { RecipeAction.CreateSpiritBelt, "Create Spirit Belt" },
-        { RecipeAction.ApplyAugment, "Apply Augment" },
-        { RecipeAction.Brew, "Brew" },
-        { RecipeAction.PrepareCask, "Prepare Cask" },
-        { RecipeAction.SortGrass, "Sort Grass" },
-        { RecipeAction.TapKeg, "Tap Keg" },
-        { RecipeAction.RendSpaceTime, "Rend Space-Time" },
-        { RecipeAction.PerformTheRitual, "Perform the Ritual" },
-        { RecipeAction.WaxShield, "Wax Shield" },
-        { RecipeAction.AttuneMind, "Attune Mind" },
-        { RecipeAction.CraftEnchantedKit, "Craft Enchanted Kit" },
-        { RecipeAction.CraftIceShield, "Craft Ice Shield" },
-        { RecipeAction.CraftIceSkinningKnife, "Craft Ice Skinning Knife" },
-        { RecipeAction.CraftIceButcherKnife, "Craft Ice Butcher Knife" },
-        { RecipeAction.CraftIceHandsaw, "Craft Ice Handsaw" },
-        { RecipeAction.OpenPortal, "Open Portal" },
-        { RecipeAction.DyeFur, "Dye Fur" },
-        { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
-        { RecipeAction.SendToSaddlebag, "Send to Saddlebag" },
-        { RecipeAction.ApplyGlamour, "Apply Glamour" },
-        { RecipeAction.PerformRitual, "Perform Ritual" },
-        { RecipeAction.DrinkNectar, "Drink Nectar" },
-        { RecipeAction.CutBait, "Cut Bait" },
-    };
-
     public static readonly Dictionary<RecipeEffect, string> RecipeEffectTable = new Dictionary<RecipeEffect, string>()
     {
         { RecipeEffect.CreateGeologySurveyRedwall_GeologySurveySerbule0, "CreateGeologySurveyRedwall(GeologySurveySerbule0)" },
@@ -103,7 +66,6 @@ public class EnumStringMap
 
     public static Dictionary<Type, IDictionary> Tables { get; } = new Dictionary<Type, IDictionary>()
     {
-        { typeof(RecipeAction), RecipeActionTable },
         { typeof(RecipeEffect), RecipeEffectTable },
         { typeof(RecipeItemKey), RecipeItemKeyTable },
         { typeof(AbilitySelfParticle), AbilitySelfParticleTable },
