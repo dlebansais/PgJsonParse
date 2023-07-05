@@ -9,16 +9,7 @@ public static class StringToEnumConversion<T>
     #region Single
     public static bool TryParse(string stringValue, out T enumValue, ErrorControl errorControl = ErrorControl.Normal)
     {
-        Dictionary<T, string>? stringMap = EnumStringMap.Tables.ContainsKey(typeof(T)) ? (Dictionary<T, string>)EnumStringMap.Tables[typeof(T)] : null;
-
-        return TryParse(stringValue, stringMap, default(T)!, default(T)!, out enumValue, errorControl);
-    }
-
-    public static bool TryParse(string stringValue, T defaultValue, T emptyValue, out T enumValue, ErrorControl errorControl = ErrorControl.Normal)
-    {
-        Dictionary<T, string>? stringMap = EnumStringMap.Tables.ContainsKey(typeof(T)) ? (Dictionary<T, string>)EnumStringMap.Tables[typeof(T)] : null;
-
-        return TryParse(stringValue, stringMap, defaultValue, emptyValue, out enumValue, errorControl);
+        return TryParse(stringValue, default(T)!, default(T)!, out enumValue, errorControl);
     }
 
     public static bool SetEnum(Action<T> setter, object value)
@@ -65,10 +56,8 @@ public static class StringToEnumConversion<T>
         return true;
     }
 
-    private static bool TryParse(string stringValue, Dictionary<T, string>? stringMap, T defaultValue, T emptyValue, out T enumValue, ErrorControl errorControl)
+    private static bool TryParse(string stringValue, T defaultValue, T emptyValue, out T enumValue, ErrorControl errorControl = ErrorControl.Normal)
     {
-        enumValue = defaultValue;
-
         bool[] ParsedEnums;
         if (!StringToEnumConversion.KnownParsedEnumtable.ContainsKey(typeof(T)))
         {
@@ -93,17 +82,6 @@ public static class StringToEnumConversion<T>
             ParsedEnums[EnumIndex] = true;
             return true;
         }
-
-        if (stringMap != null)
-            foreach (KeyValuePair<T, string> Entry in stringMap)
-                if (stringValue == Entry.Value)
-                {
-                    enumValue = Entry.Key;
-                    if (TryFindIndex(enumValue, out EnumIndex))
-                        ParsedEnums[EnumIndex] = true;
-
-                    return true;
-                }
 
         if (errorControl == ErrorControl.Normal)
         {
