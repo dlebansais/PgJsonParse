@@ -27,30 +27,14 @@ public class StringDictionaryJsonConverter<TElement, TRawElement, TDictionary> :
             string Key = reader.GetString() ?? throw new InvalidCastException();
             reader.Read();
 
-            TRawElement? RawElement = null;
-            Exception? DeserializingException = null;
-
-            if (Key == "AlcoholTolerance")
-            {
-
-            }
-
             try
             {
-                RawElement = JsonSerializer.Deserialize<TRawElement>(ref reader, options) ?? throw new InvalidCastException();
+                TRawElement RawElement = JsonSerializer.Deserialize<TRawElement>(ref reader, options) ?? throw new NullReferenceException();
+                dictionary.Add(Key, dictionary.FromRaw(RawElement));
             }
             catch (Exception Exception)
             {
-                DeserializingException = Exception;
-            }
-
-            if (RawElement is not null)
-                dictionary.Add(Key, dictionary.FromRaw(RawElement));
-            else
-            {
-                Debug.WriteLine($"\r\nKey: {Key}");
-                Debug.WriteLine(DeserializingException?.Message);
-                throw new InvalidCastException();
+                PreprocessorException.Rethrow(Key, Exception);
             }
         }
     }

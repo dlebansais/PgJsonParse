@@ -48,9 +48,6 @@ public class Preprocessor
     public bool Preprocess(string versionPath, List<JsonFile> jsonFileList)
     {
         string DestinationDirectory = @$"{versionPath}\Curated";
-        if (!Directory.Exists(DestinationDirectory))
-            Directory.CreateDirectory(DestinationDirectory);
-
         bool PreprocessingDone = false;
 
         foreach (JsonFile JsonFile in jsonFileList)
@@ -64,6 +61,10 @@ public class Preprocessor
                     return false;
 
                 JsonFile.FixingMethod(Result);
+
+                if (!Directory.Exists(DestinationDirectory))
+                    Directory.CreateDirectory(DestinationDirectory);
+
                 JsonFile.SerializingMethod(DestinationFilePath, Result);
                 PreprocessingDone = true;
             }

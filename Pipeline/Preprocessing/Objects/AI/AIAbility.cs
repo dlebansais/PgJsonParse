@@ -1,7 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System;
-
 public class AIAbility
 {
     public AIAbility(RawAIAbility rawAIAbility)
@@ -23,7 +21,7 @@ public class AIAbility
             IsMinDistance = true;
         }
         else
-            throw new InvalidCastException();
+            PreprocessorException.Throw(this);
     }
 
     public string? Cue { get; set; }

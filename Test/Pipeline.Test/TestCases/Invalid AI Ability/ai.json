@@ -1,0 +1,10 @@
+﻿{
+	"AcidAura": {
+		"Abilities": {
+			"AcidAuraBall1": {
+				"minDistance": 10,
+				"minRange": 10
+			}
+		}
+	}
+}
