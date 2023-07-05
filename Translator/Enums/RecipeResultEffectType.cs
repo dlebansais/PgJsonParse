@@ -13,6 +13,7 @@
         CraftingEnhanceItem,
         GiveTSysItem,
         CreateMiningSurvey,
+        CreateGeologySurvey,
         Tiered,
         PermanentlyRaiseMaxTempestEnergy,
         SpawnPremonition,

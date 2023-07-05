@@ -25,6 +25,7 @@ public class ParserRecipeResultEffect : Parser
         { RecipeResultEffectType.CraftingEnhanceItem, FinishItemCraftingEnhanceItem },
         { RecipeResultEffectType.GiveTSysItem, FinishItemGiveTSysItem },
         { RecipeResultEffectType.CreateMiningSurvey, FinishItemCreateMiningSurvey },
+        { RecipeResultEffectType.CreateGeologySurvey, FinishItemCreateGeologySurvey },
         { RecipeResultEffectType.Tiered, FinishItemTiered },
         { RecipeResultEffectType.PermanentlyRaiseMaxTempestEnergy, FinishItemPermanentlyRaiseMaxTempestEnergy },
         { RecipeResultEffectType.SpawnPremonition, FinishItemSpawnPremonition },
@@ -51,6 +52,7 @@ public class ParserRecipeResultEffect : Parser
         { RecipeResultEffectType.CraftingEnhanceItem, new List<string>() { "Type", "Enhancement", "AddedQuantity", "ConsumedEnhancementPoints" } },
         { RecipeResultEffectType.GiveTSysItem, new List<string>() { "Type", "Item" } },
         { RecipeResultEffectType.CreateMiningSurvey, new List<string>() { "Type", "Effect", "Item" } },
+        { RecipeResultEffectType.CreateGeologySurvey, new List<string>() { "Type", "Effect", "Item" } },
         { RecipeResultEffectType.Tiered, new List<string>() { "Type", "Keyword", "Tier" } },
         { RecipeResultEffectType.PermanentlyRaiseMaxTempestEnergy, new List<string>() { "Type", "Delta" } },
         { RecipeResultEffectType.SpawnPremonition, new List<string>() { "Type", "DurationInSeconds" } },
@@ -546,6 +548,51 @@ public class ParserRecipeResultEffect : Parser
     private static bool FinishItemCreateMiningSurvey(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgRecipeResultCreateMiningSurvey NewItem = new PgRecipeResultCreateMiningSurvey();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "Type":
+                        break;
+                    case "Effect":
+                        break;
+                    case "Item":
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemCreateGeologySurvey(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgRecipeResultCreateGeologySurvey NewItem = new PgRecipeResultCreateGeologySurvey();
 
         bool Result = true;
 

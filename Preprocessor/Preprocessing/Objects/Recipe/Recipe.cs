@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -11,6 +12,7 @@ internal class Recipe
     private const string CraftingEnhanceItem = "CraftingEnhanceItem";
     private const string PolymorphRabbitPermanent = "PolymorphRabbitPermanent";
     private const string CreateMiningSurvey = "CreateMiningSurvey";
+    private const string CreateGeologySurvey = "CreateGeologySurvey";
     private const string AreaHeader = "Area";
 
     public Recipe(RawRecipe rawRecipe)
@@ -101,6 +103,8 @@ internal class Recipe
             return ParsePolymorph(PolymorphRabbitPermanent, EffectName.Substring(PolymorphRabbitPermanent.Length));
         else if (EffectName.StartsWith(CreateMiningSurvey))
             return ParseCreateMiningSurvey(EffectName.Substring(CreateMiningSurvey.Length), EffectParameter);
+        else if (EffectName.StartsWith(CreateGeologySurvey))
+            return ParseCreateGeologySurvey(EffectName.Substring(CreateGeologySurvey.Length), EffectParameter);
 
         switch (EffectName)
         {
@@ -142,7 +146,10 @@ internal class Recipe
                 if (EffectParameter == string.Empty)
                     return new RecipeResultEffect() { Type = "Special", Effect = EffectName };
                 else
+                {
+                    Debug.WriteLine($"{EffectName}({EffectParameter})");
                     return new RecipeResultEffect() { Type = "Special", Effect = $"{EffectName}({EffectParameter})" };
+                }
         }
     }
 
@@ -379,6 +386,11 @@ internal class Recipe
         return new RecipeResultEffect() { Type = CreateMiningSurvey, Effect = effectName, Item = effectParameter };
     }
 
+    private static RecipeResultEffect ParseCreateGeologySurvey(string effectName, string effectParameter)
+    {
+        return new RecipeResultEffect() { Type = CreateGeologySurvey, Effect = effectName, Item = effectParameter };
+    }
+
     private static RecipeResultEffect ParseSpawnPremonition(string effectName, int durationInSeconds)
     {
         return new RecipeResultEffect() { Type = effectName, DurationInSeconds = durationInSeconds };
@@ -563,7 +575,9 @@ internal class Recipe
                 return $"{effect.Type}({effect.Delta})";
             case "Teleport":
                 return ToRawTeleport(effect);
-            case "CreateMiningSurvey":
+            case CreateMiningSurvey:
+                return $"{effect.Type}{effect.Effect}({effect.Item})";
+            case CreateGeologySurvey:
                 return $"{effect.Type}{effect.Effect}({effect.Item})";
             case "SpawnPremonition":
                 return $"{effect.Type}_All_{effect.DurationInSeconds}sec";
