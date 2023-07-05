@@ -5,7 +5,7 @@ internal class Effect
     public Effect(RawEffect rawEffect)
     {
         AbilityKeywords = rawEffect.AbilityKeywords;
-        Description = rawEffect.Desc;
+        Description = ParseDescription(rawEffect.Desc, out IsTypoFixed);
         DisplayMode = rawEffect.DisplayMode;
         Duration = Preprocessor.ToNumberOrString(rawEffect.Duration, out IsDurationNumber);
         IconId = rawEffect.IconId;
@@ -17,7 +17,25 @@ internal class Effect
         StackingType = ParseStackingType(rawEffect.StackingType);
     }
 
-    private string? ParseStackingType(string? rawContent)
+    private static string? ParseDescription(string? rawDescription, out bool isTypoFixed)
+    {
+        isTypoFixed = false;
+
+        if (rawDescription is null)
+            return null;
+
+        string Result = rawDescription;
+
+        if (rawDescription.Contains(" anf  "))
+        {
+            Result = Result.Replace(" anf  ", " and ");
+            isTypoFixed = true;
+        }
+
+        return Result;
+    }
+
+    private static string? ParseStackingType(string? rawContent)
     {
         switch (rawContent)
         {
@@ -49,7 +67,7 @@ internal class Effect
         RawEffect Result = new();
 
         Result.AbilityKeywords = AbilityKeywords;
-        Result.Desc = Description;
+        Result.Desc = ToRawDescription(Description, IsTypoFixed);
         Result.DisplayMode = DisplayMode;
         Result.Duration = Preprocessor.FromNumberOrString(Duration, IsDurationNumber);
         Result.IconId = IconId;
@@ -59,6 +77,19 @@ internal class Effect
         Result.SpewText = SpewText;
         Result.StackingPriority = StackingPriority;
         Result.StackingType = ToRawStackingType(StackingType);
+
+        return Result;
+    }
+
+    private static string? ToRawDescription(string? description, bool isTypoFixed)
+    {
+        if (description is null)
+            return null;
+
+        string Result = description;
+
+        if (isTypoFixed)
+            Result = Result.Replace(" and ", " anf  ");
 
         return Result;
     }
@@ -79,4 +110,5 @@ internal class Effect
     }
 
     private readonly bool IsDurationNumber;
+    private readonly bool IsTypoFixed;
 }

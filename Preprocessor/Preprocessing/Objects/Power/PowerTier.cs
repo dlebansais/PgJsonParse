@@ -60,10 +60,10 @@ internal class PowerTier
             string EffectString = content.Substring(1, content.Length - 2);
             return ParseAttributeEffectDescription(EffectString);
         }
-        else if (content.Contains("{") || content.Contains("}"))
-            throw new InvalidCastException();
-        else
+        else if (!content.Contains("{") && !content.Contains("}"))
             return ParseSimpleEffectDescription(content);
+        else
+            throw new InvalidCastException();
     }
 
     private PowerEffect ParseAttributeEffectDescription(string effectString)
@@ -127,6 +127,8 @@ internal class PowerTier
             content = content.Substring(MatchLength, content.Length - MatchLength);
         }
 
+        string Description = content;
+
         // Fix bat stability icon.
         if (content.StartsWith("Bat Stability provides +") && content.EndsWith("% Projectile Evasion for 10 seconds") && IconIdList.Contains(3553))
         {
@@ -134,9 +136,21 @@ internal class PowerTier
             IconIdList.Add(3547);
         }
 
-        int[]? IconIds = IconIdList.Count > 0 ? IconIdList.ToArray() : null;
+        // Fix Sic 'Em.
+        bool IsSicEmFixed;
+        if (Description.Contains("Sic Em"))
+        {
+            Description = Description.Replace("Sic Em", "Sic 'Em");
+            IsSicEmFixed = true;
+        }
+        else
+            IsSicEmFixed = false;
 
-        return new PowerEffect() { Description = content, IconIds = IconIds };
+        int[]? IconIds = IconIdList.Count > 0 ? IconIdList.ToArray() : null;
+        PowerEffect Result = new() { Description = Description, IconIds = IconIds };
+        Result.SetIsSicEmFixed(IsSicEmFixed);
+
+        return Result;
     }
 
     public PowerEffect[]? EffectDescriptions { get; set; }
@@ -159,7 +173,7 @@ internal class PowerTier
         return Result;
     }
 
-    private string[]? ToRawEffectDescriptions(PowerEffect[]? effectDescriptions)
+    private static string[]? ToRawEffectDescriptions(PowerEffect[]? effectDescriptions)
     {
         if (effectDescriptions is null)
             return null;
@@ -171,7 +185,7 @@ internal class PowerTier
         return Result.ToArray();
     }
 
-    private string ToRawEffectDescription(PowerEffect powerEffect)
+    private static string ToRawEffectDescription(PowerEffect powerEffect)
     {
         if (powerEffect.Description is not null)
             return ToRawSimpleEffectDescription(powerEffect);
@@ -179,11 +193,12 @@ internal class PowerTier
             return ToRawAttributeEffectDescription(powerEffect);
     }
 
-    private string ToRawSimpleEffectDescription(PowerEffect powerEffect)
+    private static string ToRawSimpleEffectDescription(PowerEffect powerEffect)
     {
         string Icons = string.Empty;
+        string Description = powerEffect.Description ?? throw new NullReferenceException();
 
-        if (powerEffect.Description is string Description && powerEffect.IconIds is not null)
+        if (powerEffect.IconIds is not null)
         {
             List<int> IconIdList = new(powerEffect.IconIds);
 
@@ -198,12 +213,16 @@ internal class PowerTier
                 Icons += $"{IconTagStart}{IconId}>";
         }
 
-        string Result = $"{Icons}{powerEffect.Description}";
+        // Restore Sic 'Em typo.
+        if (powerEffect.GetIsSicEmFixed())
+            Description = Description.Replace("Sic 'Em", "Sic Em");
+
+        string Result = $"{Icons}{Description}";
 
         return Result;
     }
 
-    private string ToRawAttributeEffectDescription(PowerEffect powerEffect)
+    private static string ToRawAttributeEffectDescription(PowerEffect powerEffect)
     {
         string Result = $"{{{powerEffect.AttributeName}}}{{{powerEffect.AttributeEffect?.ToString(CultureInfo.InvariantCulture)}}}";
 
