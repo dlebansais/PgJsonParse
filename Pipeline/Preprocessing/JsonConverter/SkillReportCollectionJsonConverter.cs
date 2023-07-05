@@ -20,9 +20,9 @@ public class SkillReportCollectionJsonConverter : JsonConverter<SkillReportColle
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
-            string Hint = reader.GetString() ?? throw new InvalidCastException();
+            string Hint = reader.GetString() ?? throw new NullReferenceException();
 
             if (int.TryParse(Key, out int Level))
             {
@@ -34,7 +34,7 @@ public class SkillReportCollectionJsonConverter : JsonConverter<SkillReportColle
             else
             {
                 Debug.WriteLine($"Invalid report key: {Key}");
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
         }
     }

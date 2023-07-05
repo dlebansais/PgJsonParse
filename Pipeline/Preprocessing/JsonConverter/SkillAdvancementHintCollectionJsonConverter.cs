@@ -20,9 +20,9 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
-            string Hint = reader.GetString() ?? throw new InvalidCastException();
+            string Hint = reader.GetString() ?? throw new NullReferenceException();
 
             if (int.TryParse(Key, out int Level))
             {
@@ -36,7 +36,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
             else
             {
                 Debug.WriteLine($"Invalid advancement hint key: {Key}");
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
         }
     }
@@ -72,7 +72,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
                 return null;
 
             Debug.WriteLine($"Advancement trigger not found in: {hint}");
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
         }
 
         StartIndex += Pattern.Length;
@@ -86,7 +86,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
         if (EndIndex <= StartIndex)
         {
             Debug.WriteLine($"Bad advancement hint: {hint}");
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
         }
 
         string NpcNameString = hint.Substring(StartIndex, EndIndex - StartIndex);
@@ -95,7 +95,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
         if (NpcNames.Length == 0)
         {
             Debug.WriteLine($"No NPC name in advancement hint: {hint}");
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
         }
 
         string[] Result = new string[NpcNames.Length];

@@ -93,13 +93,17 @@ public class Ability
 
     private string? ParseTargetTypeTagReq(string? rawContent)
     {
-        if (rawContent is null)
-            return null;
+        string? Result = null;
 
-        if (rawContent.StartsWith("AnatomyType_"))
-            return $"Anatomy_{rawContent.Substring(12)}";
-        else
-            throw new InvalidCastException();
+        if (rawContent is not null)
+        {
+            if (rawContent.StartsWith("AnatomyType_"))
+                Result = $"Anatomy_{rawContent.Substring(12)}";
+            else
+                PreprocessorException.Throw(this);
+        }
+
+        return Result;
     }
 
     private (string?, string[]?) ParseItemKeywordRequirements(string[]? rawContent)
@@ -115,7 +119,7 @@ public class Ability
                 if (FormRequirements == string.Empty)
                     FormRequirements = ItemKeywordRequirement.Substring(FormHeader.Length);
                 else
-                    throw new InvalidCastException();
+                    PreprocessorException.Throw(this);
             else
                 OtherRequirements.Add(ItemKeywordRequirement);
 
@@ -315,13 +319,17 @@ public class Ability
 
     private string? ToRawTargetTypeTagReq(string? targetTypeTagRequirement)
     {
-        if (targetTypeTagRequirement is null)
-            return null;
+        string? Result = null;
 
-        if (targetTypeTagRequirement.StartsWith("Anatomy_"))
-            return $"AnatomyType_{targetTypeTagRequirement.Substring(8)}";
-        else
-            throw new InvalidCastException();
+        if (targetTypeTagRequirement is not null)
+        {
+            if (targetTypeTagRequirement.StartsWith("Anatomy_"))
+                Result = $"AnatomyType_{targetTypeTagRequirement.Substring(8)}";
+            else
+                PreprocessorException.Throw(this);
+        }
+
+        return Result;
     }
 
     private static string[]? ToRawItemKeywordReqs(string? formRequirement, string[]? itemKeywordRequirements)

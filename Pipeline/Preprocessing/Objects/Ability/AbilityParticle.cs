@@ -36,7 +36,7 @@ public class AbilityParticle
 
         string[] AoESplit = InsideParameterString.Split(';');
         if (AoESplit.Length < 1 || AoESplit.Length > 2)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         string ParticleAoEString = AoESplit[0];
 
@@ -61,7 +61,7 @@ public class AbilityParticle
                 Result.SecondaryColor = RgbColor.Parse(ColorSplit[1], string.Empty, out _);
             }
             else
-                throw new InvalidCastException();
+                PreprocessorException.Throw();
         }
 
         return Result;

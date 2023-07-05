@@ -20,7 +20,7 @@ public class PowerTierCollectionJsonConverter : JsonConverter<PowerTierCollectio
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
 
             RawPowerTier? RawPowerTier = null;
@@ -41,7 +41,7 @@ public class PowerTierCollectionJsonConverter : JsonConverter<PowerTierCollectio
             {
                 Debug.WriteLine($"\r\nInvalid Tier: {Key}");
                 Debug.WriteLine(Exception1?.Message);
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
         }
     }

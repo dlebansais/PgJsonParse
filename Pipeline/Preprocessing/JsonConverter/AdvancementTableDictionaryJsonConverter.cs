@@ -21,7 +21,7 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
 
             AdvancementCollection? Advancements = new();
@@ -49,13 +49,13 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
                     Debug.WriteLine(Exception1?.Message);
-                    throw new InvalidCastException();
+                    PreprocessorException.Throw(this);
                 }
             }
             else
             {
                 Debug.WriteLine($"Invalid advancement table key: {Key}");
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
         }
     }
@@ -64,7 +64,7 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
 
             AdvancementEffectAttributeCollection? Collection = new();
@@ -88,13 +88,13 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
                     Debug.WriteLine(Exception1?.Message);
-                    throw new InvalidCastException();
+                    PreprocessorException.Throw(this);
                 }
             }
             else
             {
                 Debug.WriteLine($"Invalid advancement key: {Key}");
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
         }
 
@@ -105,7 +105,7 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Attribute = reader.GetString() ?? throw new InvalidCastException();
+            string Attribute = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
             decimal Value = reader.GetDecimal();
 

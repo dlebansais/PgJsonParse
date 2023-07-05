@@ -31,7 +31,7 @@ public class IntDictionaryJsonConverter<TElement, TRawElement, TDictionary> : Js
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
 
             TRawElement? RawElement = null;
@@ -39,7 +39,7 @@ public class IntDictionaryJsonConverter<TElement, TRawElement, TDictionary> : Js
 
             try
             {
-                RawElement = JsonSerializer.Deserialize<TRawElement>(ref reader, options) ?? throw new InvalidCastException();
+                RawElement = JsonSerializer.Deserialize<TRawElement>(ref reader, options) ?? throw new NullReferenceException();
             }
             catch (Exception Exception)
             {
@@ -58,13 +58,13 @@ public class IntDictionaryJsonConverter<TElement, TRawElement, TDictionary> : Js
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
                     Debug.WriteLine(DeserializingException?.Message);
-                    throw new InvalidCastException();
+                    PreprocessorException.Throw(this);
                 }
             }
             else
             {
                 Debug.WriteLine($"Invalid {Prefix} key: {Key}");
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
         }
     }

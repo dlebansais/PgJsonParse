@@ -32,7 +32,7 @@ public class Skill
         if (rawSkill._RecipeIngredientKeywords is not null)
         {
             if (rawSkill.RecipeIngredientKeywords is not null)
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
 
             Is_RecipeIngredientKeywords = true;
             RecipeIngredientKeywords = rawSkill._RecipeIngredientKeywords;

@@ -31,10 +31,9 @@ public class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCapC
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
             int Level = reader.GetInt32();
-            SkillLevelCap LevelCap;
 
             string[] SplittedKey = Key.Split('_');
             if (SplittedKey.Length == 3 && SplittedKey[0] == "LevelCap" && SplittedKey[1].Trim() is string Skill && Skill != string.Empty && int.TryParse(SplittedKey[2], out int SkillCap))
@@ -42,19 +41,19 @@ public class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCapC
                 if (Skill == "ArmorSmithing")
                     Skill = "Armorsmithing";
 
-                LevelCap = CreateSkillLevelCap(Level, SkillCap, Skill, isPerformanceSkill: Skill == "Dance");
+                SkillLevelCap LevelCap = CreateSkillLevelCap(Level, SkillCap, Skill, isPerformanceSkill: Skill == "Dance");
+                dictionary.Add(LevelCap);
             }
             else if (SplittedKey.Length == 3 && SplittedKey[0] == "LevelCap" && SplittedKey[1] == "Performance" && SplittedKey[2].Trim() is string PerformanceSkill && PerformanceSkill != string.Empty && int.TryParse(PerformanceSkill.Substring(PerformanceSkill.Length - 2), out int PerformanceSkillCap))
             {
-                LevelCap = CreateSkillLevelCap(Level, PerformanceSkillCap, PerformanceSkill.Substring(0, PerformanceSkill.Length - 2), isPerformanceSkill: true);
+                SkillLevelCap LevelCap = CreateSkillLevelCap(Level, PerformanceSkillCap, PerformanceSkill.Substring(0, PerformanceSkill.Length - 2), isPerformanceSkill: true);
+                dictionary.Add(LevelCap);
             }
             else
             {
                 Debug.WriteLine($"\r\nInvalid level cap key: {Key}");
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
-
-            dictionary.Add(LevelCap);
         }
     }
 

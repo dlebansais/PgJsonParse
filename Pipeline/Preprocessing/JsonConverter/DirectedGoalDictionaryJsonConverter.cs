@@ -27,7 +27,7 @@ public class DirectedGoalDictionaryJsonConverter : JsonConverter<DirectedGoalDic
 
             try
             {
-                RawDirectedGoal = JsonSerializer.Deserialize<RawDirectedGoal>(ref reader, options) ?? throw new InvalidCastException();
+                RawDirectedGoal = JsonSerializer.Deserialize<RawDirectedGoal>(ref reader, options) ?? throw new NullReferenceException();
                 Key = RawDirectedGoal.Id;
             }
             catch (Exception Exception)
@@ -41,7 +41,7 @@ public class DirectedGoalDictionaryJsonConverter : JsonConverter<DirectedGoalDic
             {
                 Debug.WriteLine($"\r\nKey: {Key}");
                 Debug.WriteLine(Exception1?.Message);
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
         }
     }

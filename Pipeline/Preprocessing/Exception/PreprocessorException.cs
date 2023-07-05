@@ -16,6 +16,11 @@ public class PreprocessorException : Exception
     {
     }
 
+    public static void Throw([CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
+    {
+        throw new PreprocessorException($"Aborting at {memberName}, line {lineNumber}");
+    }
+
     public static void Throw(object reference, [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
     {
         throw new PreprocessorException($"Aborting at {reference.GetType().Name}::{memberName}, line {lineNumber}");

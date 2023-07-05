@@ -24,7 +24,7 @@ public class StringDictionaryJsonConverter<TElement, TRawElement, TDictionary> :
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
 
             try

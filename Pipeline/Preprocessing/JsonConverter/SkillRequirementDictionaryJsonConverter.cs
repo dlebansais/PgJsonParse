@@ -20,7 +20,7 @@ public class SkillRequirementDictionaryJsonConverter : JsonConverter<SkillRequir
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
 
             reader.Read();
             int Value = reader.GetInt32();

@@ -70,26 +70,26 @@ public class PowerTier
     {
         string[] Split = effectString.Split('{');
         if (Split.Length < 2 || Split.Length > 3)
-            throw new InvalidCastException();
+            PreprocessorException.Throw(this);
 
         string AttributeName = Split[0];
         string AttributeEffectString = Split[1];
         string? AttributeSkill;
 
         if (!AttributeName.EndsWith("}"))
-            throw new InvalidCastException();
+            PreprocessorException.Throw(this);
 
         AttributeName = AttributeName.Substring(0, AttributeName.Length - 1);
         if (AttributeName.Contains("{") || AttributeName.Contains("}"))
-            throw new InvalidCastException();
+            PreprocessorException.Throw(this);
 
         if (AttributeName.Length == 0 || AttributeEffectString.Length == 0)
-            throw new InvalidCastException();
+            PreprocessorException.Throw(this);
 
         if (Split.Length == 3)
         {
             if (!AttributeEffectString.EndsWith("}"))
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
 
             AttributeEffectString = AttributeEffectString.Substring(0, AttributeEffectString.Length - 1);
             AttributeSkill = Split[2];

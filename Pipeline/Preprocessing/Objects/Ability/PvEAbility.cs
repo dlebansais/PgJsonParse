@@ -83,12 +83,13 @@ public class PvEAbility
                 break;
             case "ConfigGalvanize":
                 if (InsideParameterString[0] != ',')
-                    throw new InvalidCastException();
+                    PreprocessorException.Throw();
 
                 Result.Value = int.Parse(InsideParameterString.Substring(1));
                 break;
             default:
-                throw new InvalidCastException();
+                PreprocessorException.Throw();
+                break;
         }
 
         return Result;

@@ -72,7 +72,7 @@ public class Item
         {
             string[] KeyValue = Field.Split('=');
             if (KeyValue.Length != 2)
-                throw new InvalidCastException();
+                PreprocessorException.Throw();
 
             string Key = KeyValue[0].Trim();
             string Value = KeyValue[1].Trim();
@@ -89,7 +89,7 @@ public class Item
                         Result.SetIsSkinInverted(true);
                     }
                     else
-                        throw new InvalidCastException();
+                        PreprocessorException.Throw();
                     break;
                 case "^Cork":
                     Result.Cork = ParseAppearance(Value);
@@ -109,7 +109,8 @@ public class Item
                     Result.SetSkinColorFormat(SkinColorFormat);
                     break;
                 default:
-                    throw new InvalidCastException();
+                    PreprocessorException.Throw();
+                    break;
             }
         }
 
@@ -136,35 +137,37 @@ public class Item
 
     private static ItemEffect ParseEffectDescription(string content)
     {
+        ItemEffect Result = new ItemEffect { Description = content };
+
         if (content.StartsWith("{") && content.EndsWith("}"))
         {
             string EffectString = content.Substring(1, content.Length - 2);
-            return ParseAttributeEffectDescription(EffectString);
+            Result = ParseAttributeEffectDescription(EffectString);
         }
         else if (content.Contains("{") || content.Contains("}"))
-            throw new InvalidCastException();
-        else
-            return new ItemEffect { Description = content };
+            PreprocessorException.Throw();
+
+        return Result;
     }
 
     private static ItemEffect ParseAttributeEffectDescription(string effectString)
     {
         string[] Split = effectString.Split('{');
         if (Split.Length != 2)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         string AttributeName = Split[0];
         string AttributeEffectString = Split[1];
 
         if (!AttributeName.EndsWith("}"))
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         AttributeName = AttributeName.Substring(0, AttributeName.Length - 1);
         if (AttributeName.Contains("{") || AttributeName.Contains("}"))
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         if (AttributeName.Length == 0 || AttributeEffectString.Length == 0)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         decimal AttributeEffect = decimal.Parse(AttributeEffectString, CultureInfo.InvariantCulture);
 
@@ -196,25 +199,20 @@ public class Item
 
     private static void ParseKeyword(string content, Dictionary<string, List<decimal>> keywordTable)
     {
-        string KeyString;
         string ValueString;
-        decimal? KeywordValue;
-
+        string KeyString = content.Trim();
+        decimal? KeywordValue = null;
         string[] Pairs = content.Split('=');
-        if (Pairs.Length == 1)
-        {
-            KeyString = content.Trim();
-            KeywordValue = null;
-        }
-        else if (Pairs.Length == 2)
+        
+        if (Pairs.Length == 2)
         {
             KeyString = Pairs[0].Trim();
             ValueString = Pairs[1].Trim();
 
             KeywordValue = decimal.Parse(ValueString, CultureInfo.InvariantCulture);
         }
-        else
-            throw new InvalidCastException();
+        else if (Pairs.Length != 1)
+            PreprocessorException.Throw();
 
         List<decimal> ValueList;
         if (keywordTable.ContainsKey(KeyString))
@@ -245,7 +243,7 @@ public class Item
         }
 
         if (StockDyeSplit.Length < 4 || StockDyeSplit.Length > 5)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         StockDye Result = new();
         hasStockDye = true;
@@ -256,7 +254,7 @@ public class Item
             string StockDyeString = StockDyeSplit[i];
 
             if (!StockDyeSplit[i].StartsWith(ColorHeader))
-                throw new InvalidCastException();
+                PreprocessorException.Throw();
 
             string Color = RgbColor.Parse(StockDyeString.Substring(ColorHeader.Length), string.Empty, out ColorFormat ColorFormat);
             Result.SetColorFormat(i - 1, ColorFormat);
@@ -280,7 +278,7 @@ public class Item
             if (StockDyeSplit[4] == "GlowEnabled=y")
                 Result.IsGlowEnabled = true;
             else
-                throw new InvalidCastException();
+                PreprocessorException.Throw();
         }
 
         return Result;
@@ -466,11 +464,11 @@ public class Item
             throw new NullReferenceException();
 
         if (keywordValuesArray.Length != ConfirmKeywordValuesArray.Length)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         for (int i = 0; i < keywordValuesArray.Length; i++)
             if (!keywordValuesArray[i].Equals(ConfirmKeywordValuesArray[i]))
-                throw new InvalidCastException();
+                PreprocessorException.Throw();
 
         return rawKeywords;
     }

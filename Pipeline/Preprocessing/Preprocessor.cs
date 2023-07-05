@@ -155,7 +155,7 @@ public class Preprocessor
     {
         JsonSerializerOptions ReadOptions = new();
         JsonConverters.ForEach(ReadOptions.Converters.Add);
-        T Result = JsonSerializer.Deserialize<T>(readContent, ReadOptions) ?? throw new InvalidCastException();
+        T Result = JsonSerializer.Deserialize<T>(readContent, ReadOptions) ?? throw new NullReferenceException();
 
         return Result;
     }
@@ -301,38 +301,35 @@ public class Preprocessor
 
     public static T[]? ToSingleOrMultiple<T, TRaw>(object? element, Func<TRaw, T> converter, out JsonArrayFormat format)
     {
+        format = JsonArrayFormat.Null;
+
         if (element is null)
-        {
-            format = JsonArrayFormat.Null;
             return null;
-        }
-        else
-        {
-            TRaw[] RawResult;
 
-            if (ToSingleItem(element, out RawResult))
-                format = JsonArrayFormat.SingleElement;
-            else if (ToMixedArray(element, out RawResult))
-                format = JsonArrayFormat.MixedArray;
-            else if (ToNestedArray(element, out RawResult))
-                format = JsonArrayFormat.NestedArray;
-            else if (ToMultipleItems(element, out RawResult))
-                if (RawResult.Length == 0)
-                {
-                    format = JsonArrayFormat.EmptyArray;
-                    return null;
-                }
-                else
-                    format = JsonArrayFormat.Normal;
+        TRaw[] RawResult;
+
+        if (ToSingleItem(element, out RawResult))
+            format = JsonArrayFormat.SingleElement;
+        else if (ToMixedArray(element, out RawResult))
+            format = JsonArrayFormat.MixedArray;
+        else if (ToNestedArray(element, out RawResult))
+            format = JsonArrayFormat.NestedArray;
+        else if (ToMultipleItems(element, out RawResult))
+            if (RawResult.Length == 0)
+            {
+                format = JsonArrayFormat.EmptyArray;
+                return null;
+            }
             else
-                throw new InvalidCastException();
+                format = JsonArrayFormat.Normal;
+        else
+            PreprocessorException.Throw();
 
-            T[] Result = new T[RawResult.Length];
-            for (int i = 0; i < RawResult.Length; i++)
-                Result[i] = converter(RawResult[i]);
+        T[] Result = new T[RawResult.Length];
+        for (int i = 0; i < RawResult.Length; i++)
+            Result[i] = converter(RawResult[i]);
 
-            return Result;
-        }
+        return Result;
     }
 
     public static bool ToSingleItem<TRaw>(object element, out TRaw[] result)
@@ -342,7 +339,7 @@ public class Preprocessor
             if (AsSingle.ValueKind == JsonValueKind.Object)
             {
                 result = new TRaw[1];
-                result[0] = AsSingle.Deserialize<TRaw>() ?? throw new InvalidCastException();
+                result[0] = AsSingle.Deserialize<TRaw>() ?? throw new NullReferenceException();
                 return true;
             }
             else if (AsSingle.ValueKind == JsonValueKind.String && typeof(TRaw) == typeof(string) && AsSingle.GetString() is TRaw AsString)
@@ -365,7 +362,7 @@ public class Preprocessor
             result = new TRaw[ArrayLength];
 
             for (int i = 0; i < ArrayLength; i++)
-                result[i] = AsMultiple[i].Deserialize<TRaw>() ?? throw new InvalidCastException();
+                result[i] = AsMultiple[i].Deserialize<TRaw>() ?? throw new NullReferenceException();
 
             return true;
         }
@@ -391,7 +388,7 @@ public class Preprocessor
                     result = new TRaw[ArrayLength];
 
                     for (int i = 0; i < ArrayLength; i++)
-                        result[i] = FirstElement[i].Deserialize<TRaw>() ?? throw new InvalidCastException();
+                        result[i] = FirstElement[i].Deserialize<TRaw>() ?? throw new NullReferenceException();
 
                     return true;
                 }
@@ -420,9 +417,9 @@ public class Preprocessor
                     ArrayLength = SecondElement.GetArrayLength();
                     result = new TRaw[ArrayLength + 1];
 
-                    result[0] = FirstElement.Deserialize<TRaw>() ?? throw new InvalidCastException();
+                    result[0] = FirstElement.Deserialize<TRaw>() ?? throw new NullReferenceException();
                     for (int i = 0; i < ArrayLength; i++)
-                        result[i + 1] = SecondElement[i].Deserialize<TRaw>() ?? throw new InvalidCastException();
+                        result[i + 1] = SecondElement[i].Deserialize<TRaw>() ?? throw new NullReferenceException();
 
                     return true;
                 }
@@ -445,34 +442,42 @@ public class Preprocessor
 
     public static int? ToNumberOrString(object? element, out bool isNumber)
     {
-        if (element is null)
+        isNumber = false;
+        int? Result = null;
+
+        if (element is not null)
         {
-            isNumber = false;
-            return null;
+            if (element is JsonElement AsNumber && AsNumber.ValueKind == JsonValueKind.Number)
+            {
+                isNumber = true;
+                Result = AsNumber.GetInt32();
+            }
+            else if (element is JsonElement AsString && AsString.ValueKind == JsonValueKind.String)
+            {
+                isNumber = false;
+                Result = int.Parse(AsString.GetString());
+            }
+            else
+                PreprocessorException.Throw();
         }
-        else if (element is JsonElement AsNumber && AsNumber.ValueKind == JsonValueKind.Number)
-        {
-            isNumber = true;
-            return AsNumber.GetInt32();
-        }
-        else if (element is JsonElement AsString && AsString.ValueKind == JsonValueKind.String)
-        {
-            isNumber = false;
-            return int.Parse(AsString.GetString());
-        }
-        else
-            throw new InvalidCastException();
+
+        return Result;
     }
 
     public static (int?, string?) ParseAsNumberOrString(object? element)
     {
-        if (element is null)
-            return (null, null);
-        else if (element is JsonElement AsNumber && AsNumber.ValueKind == JsonValueKind.Number)
-            return (AsNumber.GetInt32(), null);
-        else if (element is JsonElement AsString && AsString.ValueKind == JsonValueKind.String)
-            return (null, AsString.GetString());
-        else
-            throw new InvalidCastException();
+        (int?, string?) Result = (null, null);
+
+        if (element is not null)
+        {
+            if (element is JsonElement AsNumber && AsNumber.ValueKind == JsonValueKind.Number)
+                Result = (AsNumber.GetInt32(), null);
+            else if (element is JsonElement AsString && AsString.ValueKind == JsonValueKind.String)
+                Result = (null, AsString.GetString());
+            else
+                PreprocessorException.Throw();
+        }
+
+        return Result;
     }
 }

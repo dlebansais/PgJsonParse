@@ -24,20 +24,26 @@ public class StorageVault
 
     private static (bool, string?, string?) ParseArea(string? content)
     {
-        if (content is null)
-            return (false, null, null);
+        (bool, string ?, string ?) Result = (false, null, null);
 
-        if (content == "*")
-            return (true, null, null);
-        else if (content.StartsWith(AreaHeader))
+        if (content is not null)
         {
-            string AreaName = content.Substring(AreaHeader.Length);
-            AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName)!;
+            if (content == "*")
+            {
+                Result = (true, null, null);
+            }
+            else if (content.StartsWith(AreaHeader))
+            {
+                string AreaName = content.Substring(AreaHeader.Length);
+                AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName)!;
 
-            return (false, AreaName, OriginalAreaName);
+                Result = (false, AreaName, OriginalAreaName);
+            }
+            else
+                PreprocessorException.Throw();
         }
-        else
-            throw new InvalidCastException();
+
+        return Result;
     }
 
     public string? AreaName { get; set; }

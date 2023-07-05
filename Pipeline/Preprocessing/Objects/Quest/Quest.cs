@@ -69,6 +69,8 @@ public class Quest
 
     private static QuestPreGive ParsePreGiveEffect(string effect)
     {
+        QuestPreGive Result = new();
+
         string EffectName;
         string EffectParameter;
 
@@ -89,27 +91,36 @@ public class Quest
         switch (EffectName)
         {
             case "DeleteWarCacheMapFog":
-                return new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Fog" };
+                Result = new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Fog" };
+                break;
             case "DeleteWarCacheMapPins":
-                return new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Pins" };
+                Result = new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Pins" };
+                break;
             case "CreateIlmariWarCacheMap":
-                return ParsePreGiveEffectCreateIlmariWarCacheMap(EffectParameter);
+                Result = ParsePreGiveEffectCreateIlmariWarCacheMap(EffectParameter);
+                break;
             case "SetInteractionFlag":
-                return new QuestPreGive() { T = "SetInteractionFlag", InteractionFlag = EffectParameter };
+                Result = new QuestPreGive() { T = "SetInteractionFlag", InteractionFlag = EffectParameter };
+                break;
             case "ClearInteractionFlag":
-                return new QuestPreGive() { T = "ClearInteractionFlag", InteractionFlag = EffectParameter };
+                Result = new QuestPreGive() { T = "ClearInteractionFlag", InteractionFlag = EffectParameter };
+                break;
             case "LearnAbility":
-                return new QuestPreGive() { T = "Ability", Ability = EffectParameter };
+                Result = new QuestPreGive() { T = "Ability", Ability = EffectParameter };
+                break;
             default:
-                throw new InvalidCastException();
+                PreprocessorException.Throw();
+                break;
         }
+
+        return Result;
     }
 
     private static QuestPreGive ParsePreGiveEffectCreateIlmariWarCacheMap(string effectParameter)
     {
         string[] ParameterSplitted = effectParameter.Split(',');
         if (ParameterSplitted.Length != 2)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         string Item = ParameterSplitted[0].Trim();
         string QuestGroup = ParameterSplitted[1].Trim();
@@ -248,27 +259,35 @@ public class Quest
             "_Done",
         };
 
+        QuestReward Result = new();
         string Npc;
+        bool IsPatternFound = false;
 
         foreach (string Pattern in Patterns)
             if (questObjective.EndsWith(Pattern))
             {
+                IsPatternFound = true;
+
                 Npc = questObjective.Substring(0, questObjective.Length - Pattern.Length);
 
                 QuestReward NewQuestReward = new QuestReward() { T = "ScriptedQuestObjective", Npc = Npc };
                 NewQuestReward.SetObjectiveCompleteOrDone(Pattern);
 
-                return NewQuestReward;
+                Result = NewQuestReward;
+                break;
             }
 
-        throw new InvalidCastException();
+        if (!IsPatternFound)
+            PreprocessorException.Throw();
+
+        return Result;
     }
 
     private static QuestReward ParseRewardEffectGiveXP(string xpReward)
     {
         string[] XpSplitted = xpReward.Split(',');
         if (XpSplitted.Length != 2)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         string Skill = XpSplitted[0].Trim();
         int Xp = int.Parse(XpSplitted[1]);
@@ -280,7 +299,7 @@ public class Quest
     {
         string[] FavorSplitted = npcFavor.Split(',');
         if (FavorSplitted.Length != 2)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         string Npc = FavorSplitted[0].Trim();
         int Favor = int.Parse(FavorSplitted[1]);
@@ -292,7 +311,7 @@ public class Quest
     {
         string[] LevelSplitted = levelReward.Split(',');
         if (LevelSplitted.Length != 2)
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         string Skill = LevelSplitted[0].Trim();
         int Level = int.Parse(LevelSplitted[1]);
@@ -398,26 +417,36 @@ public class Quest
 
     private static string ToRawPreGiveEffect(QuestPreGive effect)
     {
+        string Result = string.Empty;
+
         switch (effect.T)
         {
             case "Effect":
                 if (effect.Description == "Delete War Cache Map Fog")
-                    return "DeleteWarCacheMapFog";
+                    Result = "DeleteWarCacheMapFog";
                 else if (effect.Description == "Delete War Cache Map Pins")
-                    return "DeleteWarCacheMapPins";
+                    Result = "DeleteWarCacheMapPins";
                 else
-                    throw new InvalidCastException();
+                    PreprocessorException.Throw();
+                break;
             case "Item":
-                return $"CreateIlmariWarCacheMap({effect.Item},{effect.QuestGroup})";
+                Result = $"CreateIlmariWarCacheMap({effect.Item},{effect.QuestGroup})";
+                break;
             case "SetInteractionFlag":
-                return $"SetInteractionFlag({effect.InteractionFlag})";
+                Result = $"SetInteractionFlag({effect.InteractionFlag})";
+                break;
             case "ClearInteractionFlag":
-                return $"ClearInteractionFlag({effect.InteractionFlag})";
+                Result = $"ClearInteractionFlag({effect.InteractionFlag})";
+                break;
             case "Ability":
-                return $"LearnAbility({effect.Ability})";
+                Result = $"LearnAbility({effect.Ability})";
+                break;
             default:
-                throw new InvalidCastException();
+                PreprocessorException.Throw();
+                break;
         }
+
+        return Result;
     }
 
     private static (int?, int?, int?) SplitReuseTime(Time? time)

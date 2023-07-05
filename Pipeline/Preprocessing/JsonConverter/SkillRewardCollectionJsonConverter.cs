@@ -20,7 +20,7 @@ public class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardColle
     {
         while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
         {
-            string Key = reader.GetString() ?? throw new InvalidCastException();
+            string Key = reader.GetString() ?? throw new NullReferenceException();
             reader.Read();
 
             RawSkillReward? RawReward = null;
@@ -57,13 +57,13 @@ public class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardColle
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
                     Debug.WriteLine(Exception1?.Message);
-                    throw new InvalidCastException();
+                    PreprocessorException.Throw(this);
                 }
             }
             else
             {
                 Debug.WriteLine($"Invalid skill reward key: {Key}");
-                throw new InvalidCastException();
+                PreprocessorException.Throw(this);
             }
         }
     }

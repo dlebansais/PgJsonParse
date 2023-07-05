@@ -22,7 +22,7 @@ public class Npc
             return (null, null);
 
         if (!content.StartsWith(AreaHeader))
-            throw new InvalidCastException();
+            PreprocessorException.Throw();
 
         string? AreaName = content.Substring(AreaHeader.Length);
         AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName);
