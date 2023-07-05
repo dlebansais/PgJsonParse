@@ -10,33 +10,22 @@
     <Authors>David Le Bansais</Authors>
     <Company />
     <Product />
-    <Description>PG json reader</Description>
-    <Copyright>Copyright © 2019 David Le Bansais</Copyright>
+    <Description>PG JSON processing pipeline</Description>
+    <Copyright>Copyright © 2023 David Le Bansais</Copyright>
     <AssemblyVersion>1.1.0.4850</AssemblyVersion>
-    <FileVersion>1.1.0.4817</FileVersion>
+    <FileVersion>1.1.0.2</FileVersion>
     <RepositoryUrl>https://github.com/dlebansais/PgJsonParse</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <RootNamespace>PgJsonReader</RootNamespace>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>SA0001</NoWarn>
-  </PropertyGroup>
-
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+    <PackageReference Include="PolySharp" Version="1.13.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.507">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
 </Project>

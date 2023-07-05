@@ -17,7 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreBuild", "PreBuild\PreBuild.csproj", "{B190BCFF-A1CD-417D-88EB-D84A8182E29D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Preprocessor", "Preprocessor\Preprocessor.csproj", "{7E2FD78B-58E1-4E61-8DE5-3466C8472648}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Preprocessor", "Preprocessor\Preprocessor.csproj", "{7E2FD78B-58E1-4E61-8DE5-3466C8472648}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipeline", "Pipeline\Pipeline.csproj", "{BE90DB92-939C-4F63-B17D-386B26EE0E5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipeline.Test", "Test\Pipeline.Test\Pipeline.Test.csproj", "{E26AB454-E1F9-4B76-8337-E9460D49ADA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +44,12 @@ Global
 		{7E2FD78B-58E1-4E61-8DE5-3466C8472648}.Debug|x64.ActiveCfg = Debug|x64
 		{7E2FD78B-58E1-4E61-8DE5-3466C8472648}.Debug|x64.Build.0 = Debug|x64
 		{7E2FD78B-58E1-4E61-8DE5-3466C8472648}.Release|x64.ActiveCfg = Release|x64
+		{BE90DB92-939C-4F63-B17D-386B26EE0E5D}.Debug|x64.ActiveCfg = Debug|x64
+		{BE90DB92-939C-4F63-B17D-386B26EE0E5D}.Debug|x64.Build.0 = Debug|x64
+		{BE90DB92-939C-4F63-B17D-386B26EE0E5D}.Release|x64.ActiveCfg = Release|x64
+		{E26AB454-E1F9-4B76-8337-E9460D49ADA6}.Debug|x64.ActiveCfg = Debug|x64
+		{E26AB454-E1F9-4B76-8337-E9460D49ADA6}.Debug|x64.Build.0 = Debug|x64
+		{E26AB454-E1F9-4B76-8337-E9460D49ADA6}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
