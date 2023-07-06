@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Preprocessor;
+﻿namespace Preprocessor;
 
 public class Effect
 {
@@ -19,7 +17,7 @@ public class Effect
         StackingType = ParseStackingType(rawEffect.StackingType);
 
         // Fix Doe Eyes.
-        if (Description == "Restores 4 Armor" && AbilityKeywords?[0] == "DoeEyes")
+        if (Description == "Restores 4 Armor" && AbilityKeywords is not null && AbilityKeywords.Length > 0 && AbilityKeywords[0] == "DoeEyes")
             Description = "Restores 4 Power";
     }
 
@@ -85,9 +83,8 @@ public class Effect
         Result.StackingType = ToRawStackingType(StackingType);
 
         // Restore Doe Eyes.
-        if (Result.Desc == "Restores 4 Power")
-            if (Result.AbilityKeywords?[0] == "DoeEyes")
-                Result.Desc = "Restores 4 Armor";
+        if (Result.Desc == "Restores 4 Power" && Result.AbilityKeywords is not null && Result.AbilityKeywords.Length > 0 && Result.AbilityKeywords[0] == "DoeEyes")
+            Result.Desc = "Restores 4 Armor";
 
         return Result;
     }

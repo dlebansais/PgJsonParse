@@ -109,6 +109,7 @@ public class Item
                     Result.SkinColor = RgbColor.Parse(Value, string.Empty, out ColorFormat SkinColorFormat);
                     Result.SetSkinColorFormat(SkinColorFormat);
                     break;
+                case "Other":
                 default:
                     throw new PreprocessorException();
             }
@@ -264,18 +265,12 @@ public class Item
             string Color = RgbColor.Parse(StockDyeString.Substring(ColorHeader.Length), string.Empty, out ColorFormat ColorFormat);
             Result.SetColorFormat(i - 1, ColorFormat);
 
-            switch (i)
-            {
-                case 1:
-                    Result.Color1 = Color;
-                    break;
-                case 2:
-                    Result.Color2 = Color;
-                    break;
-                case 3:
-                    Result.Color3 = Color;
-                    break;
-            }
+            if (i == 1)
+                Result.Color1 = Color;
+            else if (i == 2)
+                Result.Color2 = Color;
+            else
+                Result.Color3 = Color;
         }
 
         if (StockDyeSplit.Length == 5)
@@ -440,7 +435,7 @@ public class Item
         if (effectDescription.Description is not null)
             return effectDescription.Description;
         else
-            return $"{{{effectDescription.AttributeName}}}{{{effectDescription.AttributeEffect?.ToString(CultureInfo.InvariantCulture)}}}";
+            return $"{{{effectDescription.AttributeName}}}{{{effectDescription.AttributeEffect!.Value.ToString(CultureInfo.InvariantCulture)}}}";
     }
 
     private static string[]? KeywordsToString(KeywordValues[]? keywordValuesArray, string[]? rawKeywords)

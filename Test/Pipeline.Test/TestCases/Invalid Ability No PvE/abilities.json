@@ -1,0 +1,25 @@
+﻿{
+	"ability_10001": {
+		"Animation": "Attack",
+		"AttributesThatDeltaResetTime": [
+			"ABILITY_RESETTIME_DELTA"
+		],
+		"CausesOfDeath": [
+			"AttackWildAnimal"
+		],
+		"DamageType": "Crushing",
+		"Description": "Crushing Damage",
+		"IconID": 2129,
+		"InternalName": "AnimalBite",
+		"Keywords": [
+			"Attack",
+			"Melee"
+		],
+		"Level": 0,
+		"Name": "Bite",
+		"ResetTime": 1.5,
+		"Skill": "Unknown",
+		"Target": "Enemy",
+		"TargetParticle": "Bite"
+	}
+}

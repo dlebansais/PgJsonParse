@@ -49,6 +49,16 @@ public class AbilityTest
     }
 
     [Test]
+    public void TestNoPvE()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Ability No PvE");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
     public void TestPvESelfPreEffect()
     {
         string VersionPath = TestTools.GetVersionPath("Invalid Ability PvE SelfPreEffect");

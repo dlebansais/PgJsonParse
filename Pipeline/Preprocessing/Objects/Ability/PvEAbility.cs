@@ -1,6 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -181,7 +180,7 @@ public class PvEAbility
                 Result = $"{selfPreEffect.Name}(,{selfPreEffect.Value})";
                 break;
             default:
-                Result = $"{selfPreEffect.Name}";
+                Result = selfPreEffect.Name;
                 break;
         }
 

@@ -14,15 +14,15 @@ public class Npc
         (UnsortedPreferences, Preferences) = ParsePreferences(rawNpc.Preferences);
     }
 
-    private static (string?, string?) ParseAreaName(string? content)
+    private static (string?, string?) ParseAreaName(string? rawAreaName)
     {
-        if (content is null)
+        if (rawAreaName is null)
             return (null, null);
 
-        if (!content.StartsWith(AreaHeader))
+        if (!rawAreaName.StartsWith(AreaHeader))
             throw new PreprocessorException();
 
-        string? AreaName = content.Substring(AreaHeader.Length);
+        string? AreaName = rawAreaName.Substring(AreaHeader.Length);
         AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName);
 
         return (AreaName, OriginalAreaName);

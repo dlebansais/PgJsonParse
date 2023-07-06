@@ -20,4 +20,34 @@ public class NpcTest
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
     }
+
+    [Test]
+    public void TestDesire()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Npc Desire");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
+    public void TestNoAreaName()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Npc No AreaName");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
+    public void TestPreferenceKeywords()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Npc Preference Keywords");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
 }

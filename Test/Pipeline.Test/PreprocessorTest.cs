@@ -61,6 +61,6 @@ public class PreprocessorTest
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
 
-        Assert.True(Success);
+        Assert.That(Success, Is.True);
     }
 }

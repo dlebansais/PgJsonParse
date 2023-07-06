@@ -2249,9 +2249,7 @@ public class CombatParser
 
     private void HackModAndEffectText(ref string modText, ref string effectText)
     {
-        if (modText == "Doe Eyes restores 3 power" && effectText == "Restores 3 Armor")
-            effectText = "Restores 3 Power";
-        else if (effectText.EndsWith("for 20 seconds or until you teleport"))
+        if (effectText.EndsWith("for 20 seconds or until you teleport"))
             effectText = effectText.Substring(0, effectText.Length - 22 - 15) + effectText.Substring(effectText.Length - 22);
         else if (effectText.EndsWith("for 20 seconds or until you Feint"))
             effectText = effectText.Substring(0, effectText.Length - 19 - 15) + effectText.Substring(effectText.Length - 19);

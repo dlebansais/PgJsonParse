@@ -13,9 +13,48 @@ public class EffectTest
     };
 
     [Test]
+    public void TestDescription()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Effect Description");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
+    public void TestDoeEyesEmptyKeywords()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Effect Doe Eyes Empty Keywords");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
+    public void TestDoeEyesNoKeywords()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Effect Doe Eyes No Keywords");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
     public void TestParticle()
     {
         string VersionPath = TestTools.GetVersionPath("Invalid Effect Particle");
+
+        Preprocessor Preprocessor = new();
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+    }
+
+    [Test]
+    public void TestParticleNotAoeColor()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Effect Particle Not Aoe Color");
 
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));

@@ -1,0 +1,11 @@
+﻿{
+	"effect_10003": {
+		"DisplayMode": "Effect",
+		"Duration": -2,
+		"IconId": 5622,
+		"Keywords": [
+			"Debuff"
+		],
+		"Name": "Sticky!"
+	}
+}

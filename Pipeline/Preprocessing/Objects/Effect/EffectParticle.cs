@@ -43,6 +43,8 @@ public class EffectParticle
 
             if (ParticleColorString.StartsWith(AoeColorHeader))
                 Result.AoEColor = RgbColor.Parse(ParticleColorString, AoeColorHeader, out _);
+            else
+                throw new PreprocessorException();
         }
         else
             throw new PreprocessorException();
@@ -63,9 +65,6 @@ public class EffectParticle
                 return particle.ParticleName;
         }
 
-        if (particle.AoEColor is null)
-            return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange})";
-        else
-            return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange};{AoeColorHeader}{particle.AoEColor})";
+        return $"{particle.ParticleName}({AoeRangeHeader}{particle.AoERange};{AoeColorHeader}{particle.AoEColor})";
     }
 }

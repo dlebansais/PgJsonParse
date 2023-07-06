@@ -1,6 +1,7 @@
 ﻿namespace Preprocessor;
 
 using System;
+using System.Diagnostics;
 
 public class KeywordValues : IEquatable<KeywordValues>
 {
@@ -9,20 +10,15 @@ public class KeywordValues : IEquatable<KeywordValues>
 
     public bool Equals(KeywordValues other)
     {
-        if (Keyword != other.Keyword)
-            return false;
+        Debug.Assert(Keyword == other.Keyword);
 
         if (Values is decimal[] ThisValues && other.Values is decimal[] OtherValues)
         {
-            if (ThisValues.Length != OtherValues.Length)
-                return false;
+            Debug.Assert(ThisValues.Length == OtherValues.Length);
 
             for (int j = 0; j < ThisValues.Length; j++)
-                if (ThisValues[j] != OtherValues[j])
-                    return false;
+                Debug.Assert(ThisValues[j] == OtherValues[j]);
         }
-        else if (Values is not null || other.Values is not null)
-            return false;
 
         return true;
     }
