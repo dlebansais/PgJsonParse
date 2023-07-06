@@ -57,13 +57,13 @@ public class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardColle
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
                     Debug.WriteLine(Exception1?.Message);
-                    PreprocessorException.Throw(this);
+                    throw new PreprocessorException(this);
                 }
             }
             else
             {
                 Debug.WriteLine($"Invalid skill reward key: {Key}");
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
     }

@@ -74,13 +74,12 @@ public class PvEAbility
                 break;
             case "ConfigGalvanize":
                 if (InsideParameterString[0] != ',')
-                    PreprocessorException.Throw();
+                    throw new PreprocessorException();
 
                 Result.Value = int.Parse(InsideParameterString.Substring(1));
                 break;
             default:
-                PreprocessorException.Throw();
-                break;
+                throw new PreprocessorException();
         }
 
         return Result;

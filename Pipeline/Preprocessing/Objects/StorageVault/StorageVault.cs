@@ -38,7 +38,7 @@ public class StorageVault
                 Result = (false, AreaName, OriginalAreaName);
             }
             else
-                PreprocessorException.Throw();
+                throw new PreprocessorException();
         }
 
         return Result;

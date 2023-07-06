@@ -52,7 +52,7 @@ public class SkillLevelCapCollectionJsonConverter : JsonConverter<SkillLevelCapC
             else
             {
                 Debug.WriteLine($"\r\nInvalid level cap key: {Key}");
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
     }

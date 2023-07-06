@@ -49,13 +49,13 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
                     Debug.WriteLine(Exception1?.Message);
-                    PreprocessorException.Throw(this);
+                    throw new PreprocessorException(this);
                 }
             }
             else
             {
                 Debug.WriteLine($"Invalid advancement table key: {Key}");
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
     }
@@ -88,13 +88,13 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
                     Debug.WriteLine(Exception1?.Message);
-                    PreprocessorException.Throw(this);
+                    throw new PreprocessorException(this);
                 }
             }
             else
             {
                 Debug.WriteLine($"Invalid advancement key: {Key}");
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
 

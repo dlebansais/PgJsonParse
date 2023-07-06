@@ -110,8 +110,7 @@ public class Quest
                 Result = new QuestPreGive() { T = "Ability", Ability = EffectParameter };
                 break;
             default:
-                PreprocessorException.Throw();
-                break;
+                throw new PreprocessorException();
         }
 
         return Result;
@@ -121,7 +120,7 @@ public class Quest
     {
         string[] ParameterSplitted = effectParameter.Split(',');
         if (ParameterSplitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string Item = ParameterSplitted[0].Trim();
         string QuestGroup = ParameterSplitted[1].Trim();
@@ -279,7 +278,7 @@ public class Quest
             }
 
         if (!IsPatternFound)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         return Result;
     }
@@ -288,7 +287,7 @@ public class Quest
     {
         string[] XpSplitted = xpReward.Split(',');
         if (XpSplitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string Skill = XpSplitted[0].Trim();
         int Xp = int.Parse(XpSplitted[1]);
@@ -300,7 +299,7 @@ public class Quest
     {
         string[] FavorSplitted = npcFavor.Split(',');
         if (FavorSplitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string Npc = FavorSplitted[0].Trim();
         int Favor = int.Parse(FavorSplitted[1]);
@@ -312,7 +311,7 @@ public class Quest
     {
         string[] LevelSplitted = levelReward.Split(',');
         if (LevelSplitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string Skill = LevelSplitted[0].Trim();
         int Level = int.Parse(LevelSplitted[1]);

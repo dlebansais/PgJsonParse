@@ -97,13 +97,13 @@ public class Requirement
             UpdateAreaEventRequirementQuest(requirement, EventName, EventSkill, EventQuest, AreaName);
         }
         else
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
     }
 
     private static void UpdateAreaEventRequirementArea(Requirement requirement, string areaEvent)
     {
         if (!areaEvent.StartsWith(AreaHeader))
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         requirement.AreaName = areaEvent.Substring(AreaHeader.Length);
         requirement.AreaEvent = null;

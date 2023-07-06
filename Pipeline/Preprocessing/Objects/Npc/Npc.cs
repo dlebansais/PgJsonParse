@@ -20,7 +20,7 @@ public class Npc
             return (null, null);
 
         if (!content.StartsWith(AreaHeader))
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string? AreaName = content.Substring(AreaHeader.Length);
         AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName);

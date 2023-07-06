@@ -41,7 +41,7 @@ public class DirectedGoalDictionaryJsonConverter : JsonConverter<DirectedGoalDic
             {
                 Debug.WriteLine($"\r\nKey: {Key}");
                 Debug.WriteLine(Exception1?.Message);
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
     }

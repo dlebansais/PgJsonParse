@@ -167,7 +167,7 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         decimal AddedQuantity = decimal.Parse(Splitted[0], CultureInfo.InvariantCulture);
         int ConsumedEnhancementPoint = int.Parse(Splitted[1]);
@@ -189,7 +189,7 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 4)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string Augment = Splitted[0];
         string Skill = Splitted[1];
@@ -204,7 +204,7 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 5)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         int RepairMinEfficiency = (int)(decimal.Parse(Splitted[0], CultureInfo.InvariantCulture) * 100);
         int RepairMaxEfficiency = (int)(decimal.Parse(Splitted[1], CultureInfo.InvariantCulture) * 100);
@@ -220,7 +220,7 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length > 3)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string CraftedItem = Splitted[0];
 
@@ -258,7 +258,7 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string Slot = Splitted[0];
         int Tier = int.Parse(Splitted[1]);
@@ -271,7 +271,7 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 3)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string PowerWaxType = Splitted[0];
         int PowerLevel = int.Parse(Splitted[1]);
@@ -285,14 +285,14 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 3)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         int BrewLine = int.Parse(Splitted[0]);
         int BrewStrength = int.Parse(Splitted[1]);
         string[] PartSplit = Splitted[2].Trim().Split('=');
 
         if (PartSplit.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string[] BrewParts = PartSplit[0].Trim().Split('+');
         string[] BrewResults = PartSplit[1].Trim().Split('+');
@@ -305,11 +305,11 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         int Seconds = -int.Parse(Splitted[0]);
         if ((Seconds % 60) != 0)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         int Minutes = Seconds / 60;
         int Hours = Minutes / 60;
@@ -335,7 +335,7 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string Keyword = Splitted[0];
         int ConsumedUses = int.Parse(Splitted[1]);
@@ -355,13 +355,13 @@ public class Recipe
         string[] Splitted = effectParameter.Split(',');
 
         if (Splitted.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string AreaName = Splitted[0];
         string Other = Splitted[1];
 
         if (!AreaName.StartsWith(AreaHeader))
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         AreaName = AreaName.Substring(AreaHeader.Length);
         AreaName = Area.FromRawAreaName(AreaName, out _)!;
@@ -373,7 +373,7 @@ public class Recipe
         else if (Other == " SpecialDestination")
             Other = "Special Destination";
         else
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         return new RecipeResultEffect() { Type = effectName, AreaName = AreaName, Other = Other };
     }

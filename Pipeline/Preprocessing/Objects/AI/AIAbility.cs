@@ -21,7 +21,7 @@ public class AIAbility
             IsMinDistance = true;
         }
         else
-            PreprocessorException.Throw(this);
+            throw new PreprocessorException(this);
     }
 
     public string? Cue { get; set; }

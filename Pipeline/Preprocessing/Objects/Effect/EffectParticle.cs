@@ -35,7 +35,7 @@ public class EffectParticle
         if (ParticleAoEString.StartsWith(AoeRangeHeader))
             Result.AoERange = int.Parse(ParticleAoEString.Substring(AoeRangeHeader.Length));
         else
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         if (AoESplit.Length == 2)
         {
@@ -45,7 +45,7 @@ public class EffectParticle
                 Result.AoEColor = RgbColor.Parse(ParticleColorString, AoeColorHeader, out _);
         }
         else
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         return Result;
     }

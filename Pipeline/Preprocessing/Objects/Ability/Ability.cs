@@ -102,7 +102,7 @@ public class Ability
             if (rawTargetTypeTagReq.StartsWith(AnatomyTypeHeader))
                 Result = $"{AnatomyHeader}{rawTargetTypeTagReq.Substring(AnatomyTypeHeader.Length)}";
             else
-                PreprocessorException.Throw();
+                throw new PreprocessorException();
         }
 
         return Result;
@@ -121,7 +121,7 @@ public class Ability
                 if (FormRequirements == string.Empty)
                     FormRequirements = ItemKeywordRequirement.Substring(FormHeader.Length);
                 else
-                    PreprocessorException.Throw();
+                    throw new PreprocessorException();
             else
                 OtherRequirements.Add(ItemKeywordRequirement);
 

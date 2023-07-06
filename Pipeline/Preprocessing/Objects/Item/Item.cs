@@ -73,7 +73,7 @@ public class Item
         {
             string[] KeyValue = Field.Split('=');
             if (KeyValue.Length != 2)
-                PreprocessorException.Throw();
+                throw new PreprocessorException();
 
             string Key = KeyValue[0].Trim();
             string Value = KeyValue[1].Trim();
@@ -90,7 +90,7 @@ public class Item
                         Result.SetIsSkinInverted(true);
                     }
                     else
-                        PreprocessorException.Throw();
+                        throw new PreprocessorException();
                     break;
                 case "^Cork":
                     Result.Cork = ParseAppearance(Value);
@@ -110,8 +110,7 @@ public class Item
                     Result.SetSkinColorFormat(SkinColorFormat);
                     break;
                 default:
-                    PreprocessorException.Throw();
-                    break;
+                    throw new PreprocessorException();
             }
         }
 
@@ -145,7 +144,7 @@ public class Item
             Result = ParseAttributeEffectDescription(EffectString);
         }
         else if (rawEffectDescription.Contains("{") || rawEffectDescription.Contains("}"))
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         return Result;
     }
@@ -154,21 +153,21 @@ public class Item
     {
         string[] Split = effectString.Split('{');
         if (Split.Length != 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string AttributeName = Split[0];
         string AttributeEffectString = Split[1];
 
         if (!AttributeName.EndsWith("}"))
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         AttributeName = AttributeName.Substring(0, AttributeName.Length - 1);
         Debug.Assert(!AttributeName.Contains("{"));
         if (AttributeName.Contains("}"))
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         if (AttributeName.Length == 0 || AttributeEffectString.Length == 0)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         decimal AttributeEffect = decimal.Parse(AttributeEffectString, CultureInfo.InvariantCulture);
 
@@ -218,7 +217,7 @@ public class Item
             KeywordValue = decimal.Parse(ValueString, CultureInfo.InvariantCulture);
         }
         else if (Pairs.Length != 1)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         List<decimal> ValueList;
         if (keywordTable.ContainsKey(KeyString))
@@ -249,7 +248,7 @@ public class Item
         }
 
         if (StockDyeSplit.Length < 4 || StockDyeSplit.Length > 5)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         StockDye Result = new();
         hasStockDye = true;
@@ -260,7 +259,7 @@ public class Item
             string StockDyeString = StockDyeSplit[i];
 
             if (!StockDyeSplit[i].StartsWith(ColorHeader))
-                PreprocessorException.Throw();
+                throw new PreprocessorException();
 
             string Color = RgbColor.Parse(StockDyeString.Substring(ColorHeader.Length), string.Empty, out ColorFormat ColorFormat);
             Result.SetColorFormat(i - 1, ColorFormat);
@@ -284,7 +283,7 @@ public class Item
             if (StockDyeSplit[4] == "GlowEnabled=y")
                 Result.IsGlowEnabled = true;
             else
-                PreprocessorException.Throw();
+                throw new PreprocessorException();
         }
 
         return Result;

@@ -58,13 +58,13 @@ public class IntDictionaryJsonConverter<TElement, TRawElement, TDictionary> : Js
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");
                     Debug.WriteLine(DeserializingException?.Message);
-                    PreprocessorException.Throw(this);
+                    throw new PreprocessorException(this);
                 }
             }
             else
             {
                 Debug.WriteLine($"Invalid {Prefix} key: {Key}");
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
     }

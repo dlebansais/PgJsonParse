@@ -8,7 +8,7 @@ public static class RgbColor
     public static string Parse(string content, string header, out ColorFormat format)
     {
         if (header != string.Empty && !content.StartsWith(header))
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         return ParseWithValidHeader(content, header, out format);
     }
@@ -66,7 +66,7 @@ public static class RgbColor
         }
 
         if (!ColorMatch.Success)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         format = new ColorFormat(ColorContent, null, HasSharp, HasAlpha, IsLowerCase);
         return format.NormalizedRGB;

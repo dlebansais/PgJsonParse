@@ -323,7 +323,7 @@ public class Preprocessor
             else
                 format = JsonArrayFormat.Normal;
         else
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         T[] Result = new T[RawResult.Length];
         for (int i = 0; i < RawResult.Length; i++)
@@ -458,7 +458,7 @@ public class Preprocessor
                 Result = int.Parse(AsString.GetString());
             }
             else
-                PreprocessorException.Throw();
+                throw new PreprocessorException();
         }
 
         return Result;
@@ -475,7 +475,7 @@ public class Preprocessor
             else if (element is JsonElement AsString && AsString.ValueKind == JsonValueKind.String)
                 Result = (null, AsString.GetString());
             else
-                PreprocessorException.Throw();
+                throw new PreprocessorException();
         }
 
         return Result;

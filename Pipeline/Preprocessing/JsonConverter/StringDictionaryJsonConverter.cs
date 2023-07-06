@@ -34,7 +34,7 @@ public class StringDictionaryJsonConverter<TElement, TRawElement, TDictionary> :
             }
             catch (Exception Exception)
             {
-                PreprocessorException.Rethrow(Key, Exception);
+                throw new PreprocessorException(Key, Exception);
             }
         }
     }

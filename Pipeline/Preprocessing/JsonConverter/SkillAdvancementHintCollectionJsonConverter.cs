@@ -36,7 +36,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
             else
             {
                 Debug.WriteLine($"Invalid advancement hint key: {Key}");
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
     }
@@ -72,7 +72,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
                 return null;
 
             Debug.WriteLine($"Advancement trigger not found in: {hint}");
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
         }
 
         StartIndex += Pattern.Length;
@@ -86,7 +86,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
         if (EndIndex <= StartIndex)
         {
             Debug.WriteLine($"Bad advancement hint: {hint}");
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
         }
 
         string NpcNameString = hint.Substring(StartIndex, EndIndex - StartIndex);
@@ -95,7 +95,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
         if (NpcNames.Length == 0)
         {
             Debug.WriteLine($"No NPC name in advancement hint: {hint}");
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
         }
 
         string[] Result = new string[NpcNames.Length];

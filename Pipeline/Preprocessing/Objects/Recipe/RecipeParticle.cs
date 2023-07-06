@@ -34,7 +34,7 @@ public class RecipeParticle
 
         Debug.Assert(LightSplit.Length >= 1);
         if (LightSplit.Length > 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string ParticleColorString = LightSplit[0];
         string[] ColorSplit = ParticleColorString.Split(',');
@@ -54,7 +54,7 @@ public class RecipeParticle
             Result.SecondaryColor = RgbColor.Parse(ColorSplit[1], string.Empty, out _);
         }
         else
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         if (LightSplit.Length == 2)
             Result.LightColor = RgbColor.Parse(LightSplit[1], LightColorHeader, out _);

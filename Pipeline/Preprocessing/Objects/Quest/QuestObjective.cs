@@ -62,10 +62,10 @@ public class QuestObjective
                     Requirements = AddRequirement(Requirements, RequirementTargetInArea, out RequirementIndexTargetInArea);
                 }
                 else
-                    PreprocessorException.Throw(this);
+                    throw new PreprocessorException(this);
             }
             else
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
 
             if (Target == "*")
                 Target = "Any";

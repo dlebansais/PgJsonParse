@@ -34,7 +34,7 @@ public class SkillReportCollectionJsonConverter : JsonConverter<SkillReportColle
             else
             {
                 Debug.WriteLine($"Invalid report key: {Key}");
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
     }

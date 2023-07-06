@@ -65,7 +65,7 @@ public class PowerTier
         else if (!rawEffectDesc.Contains("{") && !rawEffectDesc.Contains("}"))
             Result = ParseSimpleEffectDescription(rawEffectDesc);
         else
-            PreprocessorException.Throw(this);
+            throw new PreprocessorException(this);
 
         return Result;
     }
@@ -74,26 +74,26 @@ public class PowerTier
     {
         string[] Split = effectString.Split('{');
         if (Split.Length < 2 || Split.Length > 3)
-            PreprocessorException.Throw(this);
+            throw new PreprocessorException(this);
 
         string AttributeName = Split[0];
         string AttributeEffectString = Split[1];
         string? AttributeSkill;
 
         if (!AttributeName.EndsWith("}"))
-            PreprocessorException.Throw(this);
+            throw new PreprocessorException(this);
 
         AttributeName = AttributeName.Substring(0, AttributeName.Length - 1);
         if (AttributeName.Contains("{") || AttributeName.Contains("}"))
-            PreprocessorException.Throw(this);
+            throw new PreprocessorException(this);
 
         if (AttributeName.Length == 0 || AttributeEffectString.Length == 0)
-            PreprocessorException.Throw(this);
+            throw new PreprocessorException(this);
 
         if (Split.Length == 3)
         {
             if (!AttributeEffectString.EndsWith("}"))
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
 
             AttributeEffectString = AttributeEffectString.Substring(0, AttributeEffectString.Length - 1);
             AttributeSkill = Split[2];

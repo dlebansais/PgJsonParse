@@ -38,7 +38,7 @@ public class AbilityParticle
         Debug.Assert(AoESplit.Length >= 1);
         
         if (AoESplit.Length > 2)
-            PreprocessorException.Throw();
+            throw new PreprocessorException();
 
         string ParticleAoEString = AoESplit[0];
 
@@ -63,7 +63,7 @@ public class AbilityParticle
                 Result.SecondaryColor = RgbColor.Parse(ColorSplit[1], string.Empty, out _);
             }
             else
-                PreprocessorException.Throw();
+                throw new PreprocessorException();
         }
 
         return Result;

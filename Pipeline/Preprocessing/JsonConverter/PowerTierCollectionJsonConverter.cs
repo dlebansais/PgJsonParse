@@ -41,7 +41,7 @@ public class PowerTierCollectionJsonConverter : JsonConverter<PowerTierCollectio
             {
                 Debug.WriteLine($"\r\nInvalid Tier: {Key}");
                 Debug.WriteLine(Exception1?.Message);
-                PreprocessorException.Throw(this);
+                throw new PreprocessorException(this);
             }
         }
     }
