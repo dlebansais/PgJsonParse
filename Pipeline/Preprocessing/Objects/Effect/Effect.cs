@@ -1,4 +1,6 @@
-﻿namespace Preprocessor;
+﻿using System.Diagnostics;
+
+namespace Preprocessor;
 
 public class Effect
 {
@@ -17,9 +19,8 @@ public class Effect
         StackingType = ParseStackingType(rawEffect.StackingType);
 
         // Fix Doe Eyes.
-        if (Description == "Restores 4 Armor")
-            if (AbilityKeywords is not null && AbilityKeywords.Length == 1 && AbilityKeywords[0] == "DoeEyes")
-                Description = "Restores 4 Power";
+        if (Description == "Restores 4 Armor" && AbilityKeywords?[0] == "DoeEyes")
+            Description = "Restores 4 Power";
     }
 
     private static string? ParseDescription(string? rawDescription, out bool isTypoFixed)
@@ -85,7 +86,7 @@ public class Effect
 
         // Restore Doe Eyes.
         if (Result.Desc == "Restores 4 Power")
-            if (AbilityKeywords is not null && AbilityKeywords.Length == 1 && AbilityKeywords[0] == "DoeEyes")
+            if (Result.AbilityKeywords?[0] == "DoeEyes")
                 Result.Desc = "Restores 4 Armor";
 
         return Result;
@@ -93,13 +94,10 @@ public class Effect
 
     private static string? ToRawDescription(string? description, bool isTypoFixed)
     {
-        if (description is null)
-            return null;
-
-        string Result = description;
+        string? Result = description;
 
         if (isTypoFixed)
-            Result = Result.Replace(" and ", " anf  ");
+            Result = Result?.Replace(" and ", " anf  ");
 
         return Result;
     }

@@ -59,12 +59,7 @@ public class Area
     public static string? ToRawAreaName(string? areaName, string? originalAreaName)
     {
         if (areaName is not null && AreaTableReversed.ContainsKey(areaName) && (originalAreaName == "Ilmari Desert" || originalAreaName == "Kur Mountains" || originalAreaName == AreaTableReversed[areaName]))
-        {
-            if (originalAreaName is not null)
-                return originalAreaName;
-            else
-                return AreaTableReversed[areaName];
-        }
+            return originalAreaName;
         else
             return areaName;
     }
