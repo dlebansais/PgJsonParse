@@ -28,7 +28,6 @@ public class RawPvEAbility
     public decimal? RageCostMod { get; set; }
     public int? RageMultiplier { get; set; }
     public int Range { get; set; }
-    public string[]? SelfEffectOnCrit { get; set; }
     public string[]? SelfEffectsOnCrit { get; set; }
     public string[]? SelfPreEffects { get; set; }
     public SpecialValue[]? SpecialValues { get; set; }

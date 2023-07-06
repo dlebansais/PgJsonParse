@@ -35,18 +35,7 @@ public class PvEAbility
         RageCostMod = rawPvEAbility.RageCostMod;
         RageMultiplier = rawPvEAbility.RageMultiplier;
         Range = rawPvEAbility.Range;
-
-        if (rawPvEAbility.SelfEffectOnCrit is not null)
-        {
-            SelfEffectsOnCrit = rawPvEAbility.SelfEffectOnCrit;
-            HasSelfEffectOnCrit = true;
-        }
-        else
-        {
-            SelfEffectsOnCrit = rawPvEAbility.SelfEffectsOnCrit;
-            HasSelfEffectOnCrit = false;
-        }
-
+        SelfEffectsOnCrit = rawPvEAbility.SelfEffectsOnCrit;
         SelfPreEffects = ParseSelfPreEffects(rawPvEAbility.SelfPreEffects);
         SpecialValues = rawPvEAbility.SpecialValues;
         TauntDelta = rawPvEAbility.TauntDelta;
@@ -159,12 +148,7 @@ public class PvEAbility
         Result.RageCostMod = RageCostMod;
         Result.RageMultiplier = RageMultiplier;
         Result.Range = Range;
-
-        if (HasSelfEffectOnCrit)
-            Result.SelfEffectOnCrit = SelfEffectsOnCrit;
-        else
-            Result.SelfEffectsOnCrit = SelfEffectsOnCrit;
-
+        Result.SelfEffectsOnCrit = SelfEffectsOnCrit;
         Result.SelfPreEffects = SelfPreEffectsToStrings(SelfPreEffects);
         Result.SpecialValues = SpecialValues;
         Result.TauntDelta = TauntDelta;
@@ -206,6 +190,4 @@ public class PvEAbility
 
         return Result;
     }
-
-    private readonly bool HasSelfEffectOnCrit;
 }

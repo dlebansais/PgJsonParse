@@ -287,7 +287,7 @@ public class Ability
 
         Result.Projectile = IsProjectileNone ? "0" : Projectile;
 
-        Result.PvE = PvE is null ? null : PvE.ToRawPvEAbility();
+        Result.PvE = PvE?.ToRawPvEAbility();
         Result.Rank = Rank is null ? null : Rank.ToString();
         Result.ResetTime = ResetTime;
         Result.SelfParticle = AbilityParticle.ToString(SelfParticle);
