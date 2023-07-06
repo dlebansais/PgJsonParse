@@ -1,5 +1,6 @@
 ﻿namespace Preprocessor;
 
+using System;
 using System.Collections.Generic;
 
 public class NpcPreference
@@ -132,25 +133,35 @@ public class NpcPreference
 
     private string ToRawKeyword(int index, ref int itemKeywordIndex)
     {
+        string Result = string.Empty;
+
         switch (HeaderTable[index])
         {
             case MinValueHeader:
-                return $"{MinValueHeader}{MinValueRequirement}";
+                Result = $"{MinValueHeader}{MinValueRequirement}";
+                break;
             case SkillHeader:
-                return $"{SkillHeader}{SkillRequirement}";
+                Result = $"{SkillHeader}{SkillRequirement}";
+                break;
             case SlotHeader:
-                return $"{SlotHeader}{SlotRequirement}";
+                Result = $"{SlotHeader}{SlotRequirement}";
+                break;
             case MinRarityHeader:
-                return $"{MinRarityHeader}{MinRarityRequirement}";
+                Result = $"{MinRarityHeader}{MinRarityRequirement}";
+                break;
             case RarityHeader:
-                return $"{RarityHeader}{RarityRequirement}";
+                Result = $"{RarityHeader}{RarityRequirement}";
+                break;
             default:
-                string? ItemKeyword = ItemKeywords?[itemKeywordIndex++];
+                string ItemKeyword = ItemKeywords![itemKeywordIndex++];
                 if (ItemKeyword == "CraftedYes")
                     ItemKeyword = "Crafted:y";
 
-                return $"{ItemKeyword}";
+                Result = ItemKeyword;
+                break;
         }
+
+        return Result;
     }
 
     private Dictionary<int, string> HeaderTable = new Dictionary<int, string>();

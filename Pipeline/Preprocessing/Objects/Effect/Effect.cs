@@ -93,8 +93,8 @@ public class Effect
     {
         string? Result = description;
 
-        if (isTypoFixed)
-            Result = Result?.Replace(" and ", " anf  ");
+        if (Result is not null && isTypoFixed)
+            Result = Result.Replace(" and ", " anf  ");
 
         return Result;
     }

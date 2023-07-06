@@ -148,6 +148,9 @@ public class Preprocessor
         ReadContent = ReadContent.Replace("{ }", "{}");
         ReadContent = ReadContent.Replace("\"AdvancementTable\": null,", "\"AdvancementTable\": \"null\",");
 
+        if (isPretty)
+            ReadContent = ReadContent.Replace("\r\n", "\n");
+
         return ReadContent;
     }
 

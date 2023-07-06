@@ -13,7 +13,7 @@
     <Product />
     <Description>PG json translator</Description>
     <Copyright>Copyright © 2019 David Le Bansais</Copyright>
-    <AssemblyVersion>1.1.0.4854</AssemblyVersion>
+    <AssemblyVersion>1.1.0.4855</AssemblyVersion>
     <FileVersion>1.1.0.4846</FileVersion>
     <RepositoryUrl>https://github.com/dlebansais/PgJsonParse</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>

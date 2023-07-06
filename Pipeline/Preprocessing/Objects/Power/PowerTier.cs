@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -55,7 +56,7 @@ public class PowerTier
 
     private PowerEffect ParseEffectDescription(string rawEffectDesc)
     {
-        PowerEffect Result = new();
+        PowerEffect Result;
 
         if (rawEffectDesc.StartsWith("{") && rawEffectDesc.EndsWith("}"))
         {
@@ -84,7 +85,8 @@ public class PowerTier
             throw new PreprocessorException(this);
 
         AttributeName = AttributeName.Substring(0, AttributeName.Length - 1);
-        if (AttributeName.Contains("{") || AttributeName.Contains("}"))
+        Debug.Assert(!AttributeName.Contains("{"));
+        if (AttributeName.Contains("}"))
             throw new PreprocessorException(this);
 
         if (AttributeName.Length == 0 || AttributeEffectString.Length == 0)
@@ -162,7 +164,7 @@ public class PowerTier
     public int? MinLevel { get; set; }
     public string? MinRarity { get; set; }
     public int? SkillLevelPrerequirement { get; set; }
-    public int? Tier { get; set; }
+    public int Tier { get; set; }
 
     public RawPowerTier ToRawPowerTier()
     {
@@ -191,23 +193,22 @@ public class PowerTier
 
     private static string ToRawEffectDescription(PowerEffect powerEffect)
     {
-        if (powerEffect.Description is not null)
-            return ToRawSimpleEffectDescription(powerEffect);
+        if (powerEffect.Description is string Description)
+            return ToRawSimpleEffectDescription(powerEffect, Description);
         else
             return ToRawAttributeEffectDescription(powerEffect);
     }
 
-    private static string ToRawSimpleEffectDescription(PowerEffect powerEffect)
+    private static string ToRawSimpleEffectDescription(PowerEffect powerEffect, string description)
     {
         string Icons = string.Empty;
-        string Description = powerEffect.Description ?? throw new NullReferenceException();
 
         if (powerEffect.IconIds is not null)
         {
             List<int> IconIdList = new(powerEffect.IconIds);
 
             // Fix bat stability icon.
-            if (Description.StartsWith("Bat Stability provides +") && Description.EndsWith("% Projectile Evasion for 10 seconds") && IconIdList.Contains(3547))
+            if (description.StartsWith("Bat Stability provides +") && description.EndsWith("% Projectile Evasion for 10 seconds") && IconIdList.Contains(3547))
             {
                 IconIdList.Remove(3547);
                 IconIdList.Add(3553);
@@ -219,16 +220,16 @@ public class PowerTier
 
         // Restore Sic 'Em typo.
         if (powerEffect.GetIsSicEmFixed())
-            Description = Description.Replace("Sic 'Em", "Sic Em");
+            description = description.Replace("Sic 'Em", "Sic Em");
 
-        string Result = $"{Icons}{Description}";
+        string Result = $"{Icons}{description}";
 
         return Result;
     }
 
     private static string ToRawAttributeEffectDescription(PowerEffect powerEffect)
     {
-        string Result = $"{{{powerEffect.AttributeName}}}{{{powerEffect.AttributeEffect?.ToString(CultureInfo.InvariantCulture)}}}";
+        string Result = $"{{{powerEffect.AttributeName}}}{{{powerEffect.AttributeEffect!.Value.ToString(CultureInfo.InvariantCulture)}}}";
 
         if (powerEffect.AttributeSkill is not null)
             Result += $"{{{powerEffect.AttributeSkill}}}";

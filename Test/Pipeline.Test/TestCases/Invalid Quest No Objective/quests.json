@@ -1,0 +1,32 @@
+﻿{
+	"quest_1": {
+		"Description": "(No longer used or given out!)",
+		"InternalName": "KillSkeletons",
+		"IsCancellable": true,
+		"Name": "Kill Skeletons",
+		"ReuseTime_Minutes": 180,
+		"Rewards": [
+			{
+				"Skill": "Sword",
+				"T": "SkillXp",
+				"Xp": 100
+			},
+			{
+				"Skill": "Mycology",
+				"T": "SkillXp",
+				"Xp": 25
+			}
+		],
+		"Rewards_Items": [
+			{
+				"Item": "DiscoverWordOfPower1",
+				"StackSize": 1
+			},
+			{
+				"Item": "Potato",
+				"StackSize": 5
+			}
+		],
+		"Version": 3
+	}
+}

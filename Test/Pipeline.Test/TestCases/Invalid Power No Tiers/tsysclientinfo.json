@@ -1,0 +1,10 @@
+﻿{
+	"power_10001": {
+		"Skill": "Archery",
+		"Slots": [
+			"Head",
+			"OffHand"
+		],
+		"Suffix": "of Archery"
+	}
+}

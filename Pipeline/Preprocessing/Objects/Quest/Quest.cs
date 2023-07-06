@@ -1,6 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -70,7 +69,7 @@ public class Quest
 
     private static QuestPreGive ParsePreGiveEffect(string rawPreGiveEffect)
     {
-        QuestPreGive Result = new();
+        QuestPreGive Result;
 
         string EffectName;
         string EffectParameter;
@@ -146,11 +145,7 @@ public class Quest
         if (rawRewardFavor is not null)
         {
             HasRewardFavor = true;
-
-            if (rawRewardFavor == 0)
-                HasRewardFavorZero = true;
-            else
-                RewardList.Add(new QuestReward() { T = "Favor", Favor = rawRewardFavor });
+            RewardList.Add(new QuestReward() { T = "Favor", Favor = rawRewardFavor });
         }
 
         if (rawRewardsFavor is not null)
@@ -426,7 +421,7 @@ public class Quest
             case "Effect":
                 if (effect.Description == "Delete War Cache Map Fog")
                     Result = "DeleteWarCacheMapFog";
-                else if (effect.Description == "Delete War Cache Map Pins")
+                else
                     Result = "DeleteWarCacheMapPins";
                 break;
             case "Item":
@@ -459,12 +454,7 @@ public class Quest
     private (QuestReward[]?, int?, int?, string?, string[]?, QuestRewardItem[]?) SplitSpecificRewards()
     {
         if (Rewards is null)
-        {
-            if (HasRewardFavorZero)
-                return (null, 0, null, null, null, null);
-            else
-                return (null, null, null, null, null, null);
-        }
+            return (null, null, null, null, null, null);
 
         int RewardIndex = Rewards.Length - 1;
 
@@ -507,12 +497,7 @@ public class Quest
 
         int? RawRewardFavor;
         if (HasRewardFavor)
-        {
-            if (HasRewardFavorZero)
-                RawRewardFavor = 0;
-            else
-                RawRewardFavor = Rewards[RewardIndex--].Favor;
-        }
+            RawRewardFavor = Rewards[RewardIndex--].Favor;
         else
             RawRewardFavor = null;
 
@@ -538,7 +523,7 @@ public class Quest
             case "LoreBook":
                 return $"EnsureLoreBookKnown({reward.LoreBook})";
             case "Title":
-                return $"BestowTitle({RewardToBestowedTitle(reward.Title ?? throw new NullReferenceException())})";
+                return $"BestowTitle({RewardToBestowedTitle(reward.Title!.Value)})";
             case "Recipe":
                 return $"BestowRecipe({reward.Recipe})";
             case "Ability":
@@ -552,9 +537,9 @@ public class Quest
             case "SkillLevel":
                 return $"RaiseSkillToLevel({reward.Skill},{reward.Level})";
             case "DispelFaeBombSporeBuff":
-                return $"{reward.T}";
+                return reward.T;
             default:
-                return $"{reward.Effect}";
+                return reward.Effect!;
         }
     }
 
@@ -588,7 +573,6 @@ public class Quest
     private JsonArrayFormat RequirementsFormat;
     private JsonArrayFormat RequirementsToSustainFormat;
     private bool HasRewardFavor;
-    private bool HasRewardFavorZero;
     private bool HasRewardsFavor;
     private bool HasRewardNamedLootProfile;
     private int RewardEffectCount;

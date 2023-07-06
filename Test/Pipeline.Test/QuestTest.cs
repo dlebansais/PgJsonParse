@@ -83,4 +83,14 @@ public class QuestTest
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
     }
+
+    [Test]
+    public void TestNoObjective()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Quest No Objective");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
 }

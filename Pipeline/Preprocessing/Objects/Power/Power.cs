@@ -26,10 +26,7 @@ public class Power
 
     private static int SortByLevel(PowerTier tier1, PowerTier tier2)
     {
-        if (tier1.Tier is not null && tier2.Tier is not null)
-            return tier1.Tier.Value - tier2.Tier.Value;
-        else
-            return 0;
+        return tier1.Tier - tier2.Tier;
     }
 
     public bool? IsUnavailable { get; set; }

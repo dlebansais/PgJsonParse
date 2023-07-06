@@ -7,5 +7,5 @@ public class QuestPreGive
     public string? InteractionFlag { get; set; }
     public string? Item { get; set; }
     public string? QuestGroup { get; set; }
-    public string? T { get; set; }
+    public required string T { get; init; }
 }

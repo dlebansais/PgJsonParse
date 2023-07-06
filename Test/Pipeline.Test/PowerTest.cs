@@ -49,6 +49,15 @@ public class PowerTest
     }
 
     [Test]
+    public void TestEffectDescriptionNoClosingBraceSkill()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription No Closing Brace Skill");
+
+        Preprocessor Preprocessor = new();
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+    }
+
+    [Test]
     public void TestEffectDescriptionNoValue()
     {
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription No Value");
@@ -73,5 +82,25 @@ public class PowerTest
 
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+    }
+
+    [Test]
+    public void TestNoTiers()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Power No Tiers");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
+    public void TestNoEffectDescription()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Power No EffectDescription");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
     }
 }

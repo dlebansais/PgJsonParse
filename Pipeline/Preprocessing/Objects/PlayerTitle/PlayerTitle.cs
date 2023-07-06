@@ -24,8 +24,11 @@ public class PlayerTitle
         Match ColorTagMatch;
 
         ColorTagMatch = Regex.Match(rawTitle, ColorTagPattern);
-        if (ColorTagMatch.Success && rawTitle.EndsWith(ColorTagEnd))
+        if (ColorTagMatch.Success)
         {
+            if (!rawTitle.EndsWith(ColorTagEnd))
+                throw new PreprocessorException();
+
             string MatchValue = ColorTagMatch.Value;
             int MatchLength = ColorTagMatch.Length;
 

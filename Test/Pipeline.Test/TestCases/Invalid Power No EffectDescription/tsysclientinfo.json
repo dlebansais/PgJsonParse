@@ -1,0 +1,12 @@
+﻿{
+	"power_10001": {
+		"Tiers": {
+			"id_1": {
+				"MaxLevel": 30,
+				"MinLevel": 10,
+				"MinRarity": "Uncommon",
+				"SkillLevelPrereq": 10
+			}
+		}
+	}
+}
