@@ -15,6 +15,11 @@ public class Effect
         SpewText = rawEffect.SpewText;
         StackingPriority = rawEffect.StackingPriority;
         StackingType = ParseStackingType(rawEffect.StackingType);
+
+        // Fix Doe Eyes.
+        if (Description == "Restores 4 Armor")
+            if (AbilityKeywords is not null && AbilityKeywords.Length == 1 && AbilityKeywords[0] == "DoeEyes")
+                Description = "Restores 4 Power";
     }
 
     private static string? ParseDescription(string? rawDescription, out bool isTypoFixed)
@@ -35,9 +40,9 @@ public class Effect
         return Result;
     }
 
-    private static string? ParseStackingType(string? rawStackingType)
+    private static string? ParseStackingType(string? rawContent)
     {
-        switch (rawStackingType)
+        switch (rawContent)
         {
             case null:
                 return null;
@@ -46,7 +51,7 @@ public class Effect
             case "1":
                 return "One";
             default:
-                return rawStackingType;
+                return rawContent;
         }
     }
 
@@ -78,6 +83,11 @@ public class Effect
         Result.StackingPriority = StackingPriority;
         Result.StackingType = ToRawStackingType(StackingType);
 
+        // Restore Doe Eyes.
+        if (Result.Desc == "Restores 4 Power")
+            if (AbilityKeywords is not null && AbilityKeywords.Length == 1 && AbilityKeywords[0] == "DoeEyes")
+                Result.Desc = "Restores 4 Armor";
+
         return Result;
     }
 
@@ -94,9 +104,9 @@ public class Effect
         return Result;
     }
 
-    private string? ToRawStackingType(string? stackingType)
+    private string? ToRawStackingType(string? rawContent)
     {
-        switch (stackingType)
+        switch (rawContent)
         {
             case null:
                 return null;
@@ -105,7 +115,7 @@ public class Effect
             case "One":
                 return "1";
             default:
-                return stackingType;
+                return rawContent;
         }
     }
 

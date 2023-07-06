@@ -4172,7 +4172,7 @@ public class CombatParser
         new Sentence("Heal all targets for %f health", CombatKeyword.RestoreHealth),
         new Sentence("Heal %f armor", CombatKeyword.RestoreArmor),
         new Sentence("Restore %f armor", CombatKeyword.RestoreArmor),
-        new Sentence("Restore %f Power", CombatKeyword.RestorePower),
+        new Sentence("Restore %f power", CombatKeyword.RestorePower),
         new Sentence("Recover %f health", CombatKeyword.RestoreHealth),
         new Sentence("Recover %f power", CombatKeyword.RestorePower),
         new Sentence("Restoration %f", CombatKeyword.RestoreHealth),
