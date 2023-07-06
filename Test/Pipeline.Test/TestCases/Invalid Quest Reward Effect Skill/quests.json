@@ -1,0 +1,8 @@
+﻿{
+	"quest_14901": {
+		"Rewards_Effects": [
+			"RaiseSkillToLevel(Transmutation)",
+			"BestowRecipe(DistillRareMagicalItem1)"
+		]
+	}
+}

@@ -1,0 +1,10 @@
+﻿{
+	"Fishing": {
+		"_RecipeIngredientKeywords": [
+			"CookingIngredient"
+		],
+		"RecipeIngredientKeywords": [
+			"AlchemyIngredient"
+		]
+	}
+}

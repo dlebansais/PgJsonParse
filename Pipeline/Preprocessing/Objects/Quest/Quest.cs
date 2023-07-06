@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -48,26 +49,26 @@ public class Quest
         if (rawQuestObjectives is null)
             return null;
 
-        QuestObjective[] Result = new QuestObjective[rawQuestObjectives.Length];
-        for (int i = 0; i < rawQuestObjectives.Length; i++)
-            Result[i] = new QuestObjective(rawQuestObjectives[i]);
+        List<QuestObjective> Result = new();
+        foreach (RawQuestObjective RawQuestObjective in rawQuestObjectives)
+            Result.Add(new QuestObjective(RawQuestObjective));
 
-        return Result;
+        return Result.ToArray();
     }
 
-    private static QuestPreGive[]? ParsePreGiveEffects(string[]? content)
+    private static QuestPreGive[]? ParsePreGiveEffects(string[]? rawPreGiveEffects)
     {
-        if (content is null)
+        if (rawPreGiveEffects is null)
             return null;
 
-        QuestPreGive[] Result = new QuestPreGive[content.Length];
-        for (int i = 0; i < content.Length; i++)
-            Result[i] = ParsePreGiveEffect(content[i]);
+        List<QuestPreGive> Result = new();
+        foreach (string RawPreGiveEffect in rawPreGiveEffects)
+            Result.Add(ParsePreGiveEffect(RawPreGiveEffect));
 
-        return Result;
+        return Result.ToArray();
     }
 
-    private static QuestPreGive ParsePreGiveEffect(string effect)
+    private static QuestPreGive ParsePreGiveEffect(string rawPreGiveEffect)
     {
         QuestPreGive Result = new();
 
@@ -76,15 +77,15 @@ public class Quest
 
         // Search for an expression between parentheses.
         string ParameterPattern = @"\(([^)]+)\)";
-        Match ParameterMatch = Regex.Match(effect, ParameterPattern, RegexOptions.IgnoreCase);
+        Match ParameterMatch = Regex.Match(rawPreGiveEffect, ParameterPattern, RegexOptions.IgnoreCase);
         if (ParameterMatch.Success)
         {
-            EffectName = effect.Substring(0, ParameterMatch.Index);
+            EffectName = rawPreGiveEffect.Substring(0, ParameterMatch.Index);
             EffectParameter = ParameterMatch.Value.Substring(1, ParameterMatch.Value.Length - 2);
         }
         else
         {
-            EffectName = effect;
+            EffectName = rawPreGiveEffect;
             EffectParameter = string.Empty;
         }
 
@@ -130,7 +131,7 @@ public class Quest
 
     private static Time? ParseReuseTime(int? rawDays, int? rawHours, int? rawMinutes)
     {
-        if (rawDays == null && rawHours == null && rawMinutes == null)
+        if (rawDays is null && rawHours is null && rawMinutes is null)
             return null;
         else
             return new Time() { Days = rawDays, Hours = rawHours, Minutes = rawMinutes };
@@ -396,23 +397,25 @@ public class Quest
         if (questObjectives is null)
             return null;
 
-        RawQuestObjective[] Result = new RawQuestObjective[questObjectives.Length];
-        for (int i = 0; i < questObjectives.Length; i++)
-            Result[i] = questObjectives[i].ToRawQuestObjective();
+        List<RawQuestObjective> Result = new();
 
-        return Result;
+        foreach (QuestObjective QuestObjective in questObjectives)
+            Result.Add(QuestObjective.ToRawQuestObjective());
+
+        return Result.ToArray();
     }
 
-    private static string[]? ToRawPreGiveEffects(QuestPreGive[]? questPreGive)
+    private static string[]? ToRawPreGiveEffects(QuestPreGive[]? preGiveEffects)
     {
-        if (questPreGive is null)
+        if (preGiveEffects is null)
             return null;
 
-        string[] Result = new string[questPreGive.Length];
-        for (int i = 0; i < questPreGive.Length; i++)
-            Result[i] = ToRawPreGiveEffect(questPreGive[i]);
+        List<string> Result = new();
 
-        return Result;
+        foreach (QuestPreGive PreGiveEffect in preGiveEffects)
+            Result.Add(ToRawPreGiveEffect(PreGiveEffect));
+
+        return Result.ToArray();
     }
 
     private static string ToRawPreGiveEffect(QuestPreGive effect)
@@ -426,8 +429,6 @@ public class Quest
                     Result = "DeleteWarCacheMapFog";
                 else if (effect.Description == "Delete War Cache Map Pins")
                     Result = "DeleteWarCacheMapPins";
-                else
-                    PreprocessorException.Throw();
                 break;
             case "Item":
                 Result = $"CreateIlmariWarCacheMap({effect.Item},{effect.QuestGroup})";
@@ -441,10 +442,9 @@ public class Quest
             case "Ability":
                 Result = $"LearnAbility({effect.Ability})";
                 break;
-            default:
-                PreprocessorException.Throw();
-                break;
         }
+
+        Debug.Assert(Result != string.Empty);
 
         return Result;
     }
@@ -553,7 +553,7 @@ public class Quest
             case "SkillLevel":
                 return $"RaiseSkillToLevel({reward.Skill},{reward.Level})";
             case "DispelFaeBombSporeBuff":
-                return reward.T ?? throw new NullReferenceException();
+                return $"{reward.T}";
             default:
                 return $"{reward.Effect}";
         }

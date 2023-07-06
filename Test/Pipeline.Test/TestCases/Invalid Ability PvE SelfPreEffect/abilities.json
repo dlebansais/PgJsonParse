@@ -1,0 +1,9 @@
+﻿{
+	"ability_2225": {
+		"PvE": {
+			"SelfPreEffects": [
+				"Error(SuperZombie1)"
+			]
+		}
+	}
+}

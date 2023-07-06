@@ -19,62 +19,62 @@ public class NpcPreference
     private const string MinRarityHeader = "MinRarity:";
     private const string RarityHeader = "Rarity:";
 
-    private static string? ParseFavor(string? content, out bool isFavorError)
+    private static string? ParseFavor(string? rawFavor, out bool isFavorError)
     {
         isFavorError = false;
 
-        if (content == null)
+        if (rawFavor is null)
             return null;
 
-        if (content == ErrorText)
+        if (rawFavor == ErrorText)
         {
             isFavorError = true;
             return null;
         }
 
-        return content;
+        return rawFavor;
     }
 
-    private void ParseKeywords(string[]? content)
+    private void ParseKeywords(string[]? rawKeywords)
     {
-        if (content is not null)
-            for (int i = 0; i < content.Length; i++)
-                ParseKeyword(i, content[i]);
+        if (rawKeywords is not null)
+            for (int i = 0; i < rawKeywords.Length; i++)
+                ParseKeyword(i, rawKeywords[i]);
     }
 
-    private void ParseKeyword(int index, string content)
+    private void ParseKeyword(int index, string rawKeyword)
     {
-        if (content.StartsWith(MinValueHeader))
+        if (rawKeyword.StartsWith(MinValueHeader))
         {
             HeaderTable.Add(index, MinValueHeader);
-            MinValueRequirement = int.Parse(content.Substring(MinValueHeader.Length).Trim());
+            MinValueRequirement = int.Parse(rawKeyword.Substring(MinValueHeader.Length).Trim());
         }
-        else if (content.StartsWith(SkillHeader))
+        else if (rawKeyword.StartsWith(SkillHeader))
         {
             HeaderTable.Add(index, SkillHeader);
-            SkillRequirement = content.Substring(SkillHeader.Length).Trim();
+            SkillRequirement = rawKeyword.Substring(SkillHeader.Length).Trim();
         }
-        else if (content.StartsWith(SlotHeader))
+        else if (rawKeyword.StartsWith(SlotHeader))
         {
             HeaderTable.Add(index, SlotHeader);
-            SlotRequirement = content.Substring(SlotHeader.Length).Trim();
+            SlotRequirement = rawKeyword.Substring(SlotHeader.Length).Trim();
         }
-        else if (content.StartsWith(MinRarityHeader))
+        else if (rawKeyword.StartsWith(MinRarityHeader))
         {
             HeaderTable.Add(index, MinRarityHeader);
-            MinRarityRequirement = content.Substring(MinRarityHeader.Length).Trim();
+            MinRarityRequirement = rawKeyword.Substring(MinRarityHeader.Length).Trim();
         }
-        else if (content.StartsWith(RarityHeader))
+        else if (rawKeyword.StartsWith(RarityHeader))
         {
             HeaderTable.Add(index, RarityHeader);
-            RarityRequirement = content.Substring(RarityHeader.Length).Trim();
+            RarityRequirement = rawKeyword.Substring(RarityHeader.Length).Trim();
         }
         else
         {
             if (ItemKeywords is null)
                 ItemKeywords = new List<string>();
 
-            string ItemKeyword = content.Trim();
+            string ItemKeyword = rawKeyword.Trim();
             if (ItemKeyword == "Crafted:y")
                 ItemKeyword = "CraftedYes";
 

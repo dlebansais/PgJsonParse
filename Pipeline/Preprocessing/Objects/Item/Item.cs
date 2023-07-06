@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -12,7 +13,7 @@ public class Item
         AllowPrefix = rawItem.AllowPrefix;
         AllowSuffix = rawItem.AllowSuffix;
         AttuneOnPickup = rawItem.AttuneOnPickup;
-        Behaviors = Preprocessor.ToSingleOrMultiple(rawItem.Behaviors, (RawBehavior rawBehavior) => new Behavior(rawBehavior), out BehaviorsFormat);
+        Behaviors = Preprocessor.ToSingleOrMultiple(rawItem.Behaviors, (Behavior behavior) => behavior, out BehaviorsFormat);
         BestowAbility = rawItem.BestowAbility;
         BestowLoreBook = rawItem.BestowLoreBook;
         BestowQuest = rawItem.BestowQuest;
@@ -52,19 +53,19 @@ public class Item
         RawKeywords = rawItem.Keywords;
     }
 
-    private static DroppedAppearance? ParseDroppedAppearance(string? content)
+    private static DroppedAppearance? ParseDroppedAppearance(string? rawDroppedAppearance)
     {
-        if (content is null)
+        if (rawDroppedAppearance is null)
             return null;
 
         // Search for an expression between parentheses.
         string ParameterPattern = @"\(([^)]+)\)";
-        Match ParameterMatch = Regex.Match(content, ParameterPattern, RegexOptions.IgnoreCase);
+        Match ParameterMatch = Regex.Match(rawDroppedAppearance, ParameterPattern, RegexOptions.IgnoreCase);
         if (!ParameterMatch.Success)
-            return new DroppedAppearance { Appearance = content };
+            return new DroppedAppearance { Appearance = rawDroppedAppearance };
 
-        string Appearance = content.Substring(0, ParameterMatch.Index);
-        string InsideParameterString = content.Substring(ParameterMatch.Index + 1, content.Length - ParameterMatch.Index - 2);
+        string Appearance = rawDroppedAppearance.Substring(0, ParameterMatch.Index);
+        string InsideParameterString = rawDroppedAppearance.Substring(ParameterMatch.Index + 1, rawDroppedAppearance.Length - ParameterMatch.Index - 2);
 
         DroppedAppearance Result = new DroppedAppearance { Appearance = Appearance };
         string[] Fields = InsideParameterString.Split(';');
@@ -117,34 +118,33 @@ public class Item
         return Result;
     }
 
-    private static string ParseAppearance(string appearance)
+    private static string ParseAppearance(string rawAppearance)
     {
-        return appearance.Replace("-", "_");
+        return rawAppearance.Replace("-", "_");
     }
 
-    private static ItemEffect[]? ParseEffectDescriptions(string[]? content)
+    private static ItemEffect[]? ParseEffectDescriptions(string[]? rawEffectDescriptions)
     {
-        if (content is null)
+        if (rawEffectDescriptions is null)
             return null;
 
-        ItemEffect[] Result = new ItemEffect[content.Length];
+        List<ItemEffect> Result = new();
+        foreach (string RawEffectDescription in rawEffectDescriptions)
+            Result.Add(ParseEffectDescription(RawEffectDescription));
 
-        for (int i = 0; i < content.Length; i++)
-            Result[i] = ParseEffectDescription(content[i]);
-
-        return Result;
+        return Result.ToArray();
     }
 
-    private static ItemEffect ParseEffectDescription(string content)
+    private static ItemEffect ParseEffectDescription(string rawEffectDescription)
     {
-        ItemEffect Result = new ItemEffect { Description = content };
+        ItemEffect Result = new ItemEffect { Description = rawEffectDescription };
 
-        if (content.StartsWith("{") && content.EndsWith("}"))
+        if (rawEffectDescription.StartsWith("{") && rawEffectDescription.EndsWith("}"))
         {
-            string EffectString = content.Substring(1, content.Length - 2);
+            string EffectString = rawEffectDescription.Substring(1, rawEffectDescription.Length - 2);
             Result = ParseAttributeEffectDescription(EffectString);
         }
-        else if (content.Contains("{") || content.Contains("}"))
+        else if (rawEffectDescription.Contains("{") || rawEffectDescription.Contains("}"))
             PreprocessorException.Throw();
 
         return Result;
@@ -163,7 +163,8 @@ public class Item
             PreprocessorException.Throw();
 
         AttributeName = AttributeName.Substring(0, AttributeName.Length - 1);
-        if (AttributeName.Contains("{") || AttributeName.Contains("}"))
+        Debug.Assert(!AttributeName.Contains("{"));
+        if (AttributeName.Contains("}"))
             PreprocessorException.Throw();
 
         if (AttributeName.Length == 0 || AttributeEffectString.Length == 0)
@@ -174,15 +175,20 @@ public class Item
         return new ItemEffect() { AttributeName = AttributeName, AttributeEffect = AttributeEffect };
     }
 
-    private static KeywordValues[]? ParseKeywords(string[]? content)
+    private static KeywordValues[]? ParseKeywords(string[]? rawKeywords)
     {
-        if (content is null)
+        if (rawKeywords is null)
             return null;
+        else
+            return ParseKeywordsNotEmpty(rawKeywords);
+    }
 
+    private static KeywordValues[] ParseKeywordsNotEmpty(string[] rawKeywords)
+    {
         Dictionary<string, List<decimal>> KeywordTable = new();
 
-        for (int i = 0; i < content.Length; i++)
-            ParseKeyword(content[i], KeywordTable);
+        for (int i = 0; i < rawKeywords.Length; i++)
+            ParseKeyword(rawKeywords[i], KeywordTable);
 
         List<KeywordValues> Result = new();
         foreach (KeyValuePair<string, List<decimal>> Entry in KeywordTable)
@@ -197,12 +203,12 @@ public class Item
         return Result.ToArray();
     }
 
-    private static void ParseKeyword(string content, Dictionary<string, List<decimal>> keywordTable)
+    private static void ParseKeyword(string rawKeyword, Dictionary<string, List<decimal>> keywordTable)
     {
         string ValueString;
-        string KeyString = content.Trim();
+        string KeyString = rawKeyword.Trim();
         decimal? KeywordValue = null;
-        string[] Pairs = content.Split('=');
+        string[] Pairs = rawKeyword.Split('=');
         
         if (Pairs.Length == 2)
         {
@@ -227,15 +233,15 @@ public class Item
             ValueList.Add(KeywordValue.Value);
     }
 
-    private static StockDye? ParseStockDye(string? content, out bool hasStockDye)
+    private static StockDye? ParseStockDye(string? rawStockDye, out bool hasStockDye)
     {
-        if (content is null)
+        if (rawStockDye is null)
         {
             hasStockDye = false;
             return null;
         }
 
-        string[] StockDyeSplit = content.Split(';');
+        string[] StockDyeSplit = rawStockDye.Split(';');
         if (StockDyeSplit.Length <= 1)
         {
             hasStockDye = true;
@@ -331,7 +337,7 @@ public class Item
         Result.AllowPrefix = AllowPrefix;
         Result.AllowSuffix = AllowSuffix;
         Result.AttuneOnPickup = AttuneOnPickup;
-        Result.Behaviors = Preprocessor.FromSingleOrMultiple(Behaviors, (Behavior behavior) => behavior.ToRawBehavior(), BehaviorsFormat);
+        Result.Behaviors = Preprocessor.FromSingleOrMultiple(Behaviors, (Behavior behavior) => behavior, BehaviorsFormat);
         Result.BestowAbility = BestowAbility;
         Result.BestowLoreBook = BestowLoreBook;
         Result.BestowQuest = BestowQuest;
@@ -440,7 +446,7 @@ public class Item
 
     private static string[]? KeywordsToString(KeywordValues[]? keywordValuesArray, string[]? rawKeywords)
     {
-        if (keywordValuesArray is null)
+        if (keywordValuesArray is null || rawKeywords is null)
             return null;
 
         List<string> Result = new();
@@ -458,17 +464,12 @@ public class Item
             }
 
         string[] ConvertedResult = Result.ToArray();
-        KeywordValues[]? ConfirmKeywordValuesArray = ParseKeywords(ConvertedResult);
+        KeywordValues[] ConfirmKeywordValuesArray = ParseKeywordsNotEmpty(ConvertedResult);
 
-        if (ConfirmKeywordValuesArray is null || rawKeywords is null)
-            throw new NullReferenceException();
-
-        if (keywordValuesArray.Length != ConfirmKeywordValuesArray.Length)
-            PreprocessorException.Throw();
+        Debug.Assert(keywordValuesArray.Length == ConfirmKeywordValuesArray.Length);
 
         for (int i = 0; i < keywordValuesArray.Length; i++)
-            if (!keywordValuesArray[i].Equals(ConfirmKeywordValuesArray[i]))
-                PreprocessorException.Throw();
+            Debug.Assert(keywordValuesArray[i].Equals(ConfirmKeywordValuesArray[i]));
 
         return rawKeywords;
     }

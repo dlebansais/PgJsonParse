@@ -1,11 +1,11 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 public class Npc
 {
+    private const string AreaHeader = "Area";
+
     public Npc(RawNpc rawNpc)
     {
         AreaFriendlyName = rawNpc.AreaFriendlyName;
@@ -13,8 +13,6 @@ public class Npc
         Name = rawNpc.Name;
         (UnsortedPreferences, Preferences) = ParsePreferences(rawNpc.Preferences);
     }
-
-    private const string AreaHeader = "Area";
 
     private static (string?, string?) ParseAreaName(string? content)
     {

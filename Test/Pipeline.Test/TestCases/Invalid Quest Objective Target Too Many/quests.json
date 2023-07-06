@@ -1,0 +1,21 @@
+﻿{
+	"quest_26801": {
+		"Objectives": [
+			{
+				"Description": "Kill Ratkin in Povus",
+				"Number": 15,
+				"Target": [
+					"Ratkin",
+					"Area:AreaPovus",
+					"And More"
+				],
+				"Type": "Kill"
+			},
+			{
+				"Description": "Talk to Dachak",
+				"Number": 1,
+				"Type": "Scripted"
+			}
+		]
+	}
+}

@@ -1,0 +1,8 @@
+﻿{
+	"quest_45202": {
+		"Rewards_Effects": [
+			"GiveXP(Tailoring,1100)",
+			"DeltaNpcFavor(AreaCasino/LiveNpc_Orran)"
+		]
+	}
+}

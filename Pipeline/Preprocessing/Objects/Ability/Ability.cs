@@ -1,13 +1,15 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 public class Ability
 {
     private const string FormHeader = "form:";
+    private const string AnatomyTypeHeader = "AnatomyType_";
+    private const string AnatomyHeader = "Anatomy_";
 
     public Ability(RawAbility rawAbility)
     {
@@ -49,7 +51,7 @@ public class Ability
         IsHarmless = rawAbility.IsHarmless;
         IsInternalAbility = rawAbility.InternalAbility;
         ItemKeywordRequirementErrorMessage = rawAbility.ItemKeywordReqErrorMessage;
-        (FormRequirement, ItemKeywordRequirements) = ParseItemKeywordRequirements(rawAbility.ItemKeywordReqs);
+        (FormRequirement, ItemKeywordRequirements) = ParseItemKeywordReqs(rawAbility.ItemKeywordReqs);
         Keywords = rawAbility.Keywords;
         Level = rawAbility.Level;
         Name = rawAbility.Name;
@@ -91,35 +93,35 @@ public class Ability
         }
     }
 
-    private string? ParseTargetTypeTagReq(string? rawContent)
+    private static string? ParseTargetTypeTagReq(string? rawTargetTypeTagReq)
     {
         string? Result = null;
 
-        if (rawContent is not null)
+        if (rawTargetTypeTagReq is not null)
         {
-            if (rawContent.StartsWith("AnatomyType_"))
-                Result = $"Anatomy_{rawContent.Substring(12)}";
+            if (rawTargetTypeTagReq.StartsWith(AnatomyTypeHeader))
+                Result = $"{AnatomyHeader}{rawTargetTypeTagReq.Substring(AnatomyTypeHeader.Length)}";
             else
-                PreprocessorException.Throw(this);
+                PreprocessorException.Throw();
         }
 
         return Result;
     }
 
-    private (string?, string[]?) ParseItemKeywordRequirements(string[]? rawContent)
+    private static (string?, string[]?) ParseItemKeywordReqs(string[]? rawItemKeywordReqs)
     {
-        if (rawContent is null)
+        if (rawItemKeywordReqs is null)
             return (null, null);
 
         string FormRequirements = string.Empty;
         List<string> OtherRequirements = new();
 
-        foreach (string ItemKeywordRequirement in rawContent)
+        foreach (string ItemKeywordRequirement in rawItemKeywordReqs)
             if (ItemKeywordRequirement.StartsWith(FormHeader))
                 if (FormRequirements == string.Empty)
                     FormRequirements = ItemKeywordRequirement.Substring(FormHeader.Length);
                 else
-                    PreprocessorException.Throw(this);
+                    PreprocessorException.Throw();
             else
                 OtherRequirements.Add(ItemKeywordRequirement);
 
@@ -317,16 +319,15 @@ public class Ability
         return Result;
     }
 
-    private string? ToRawTargetTypeTagReq(string? targetTypeTagRequirement)
+    private static string? ToRawTargetTypeTagReq(string? targetTypeTagRequirement)
     {
         string? Result = null;
 
         if (targetTypeTagRequirement is not null)
         {
-            if (targetTypeTagRequirement.StartsWith("Anatomy_"))
-                Result = $"AnatomyType_{targetTypeTagRequirement.Substring(8)}";
-            else
-                PreprocessorException.Throw(this);
+            Debug.Assert(targetTypeTagRequirement.StartsWith(AnatomyHeader));
+
+            Result = $"{AnatomyTypeHeader}{targetTypeTagRequirement.Substring(AnatomyHeader.Length)}";
         }
 
         return Result;

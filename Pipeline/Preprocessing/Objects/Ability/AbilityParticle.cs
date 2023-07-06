@@ -1,6 +1,6 @@
 ﻿namespace Preprocessor;
 
-using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 public class AbilityParticle
@@ -35,7 +35,9 @@ public class AbilityParticle
         string InsideParameterString = content.Substring(ParameterMatch.Index + 1, content.Length - ParameterMatch.Index - 2);
 
         string[] AoESplit = InsideParameterString.Split(';');
-        if (AoESplit.Length < 1 || AoESplit.Length > 2)
+        Debug.Assert(AoESplit.Length >= 1);
+        
+        if (AoESplit.Length > 2)
             PreprocessorException.Throw();
 
         string ParticleAoEString = AoESplit[0];

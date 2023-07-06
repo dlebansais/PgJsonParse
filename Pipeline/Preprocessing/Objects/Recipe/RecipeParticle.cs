@@ -1,6 +1,7 @@
 ﻿namespace Preprocessor;
 
 using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 public class RecipeParticle
@@ -13,24 +14,26 @@ public class RecipeParticle
     private const string ColorHeader = "Color=";
     private const string LightColorHeader = "LightColor=";
 
-    public static RecipeParticle? Parse(string? content)
+    public static RecipeParticle? Parse(string? rawParticle)
     {
-        if (content is null)
+        if (rawParticle is null)
             return null;
 
         // Search for an expression between parentheses.
         string ParameterPattern = @"\(([^)]+)\)";
-        Match ParameterMatch = Regex.Match(content, ParameterPattern, RegexOptions.IgnoreCase);
+        Match ParameterMatch = Regex.Match(rawParticle, ParameterPattern, RegexOptions.IgnoreCase);
         if (!ParameterMatch.Success)
-            return new RecipeParticle { ParticleName = content };
+            return new RecipeParticle { ParticleName = rawParticle };
 
         RecipeParticle Result = new();
-        Result.ParticleName = content.Substring(0, ParameterMatch.Index);
+        Result.ParticleName = rawParticle.Substring(0, ParameterMatch.Index);
 
-        string InsideParameterString = content.Substring(ParameterMatch.Index + 1, content.Length - ParameterMatch.Index - 2);
+        string InsideParameterString = rawParticle.Substring(ParameterMatch.Index + 1, rawParticle.Length - ParameterMatch.Index - 2);
 
         string[] LightSplit = InsideParameterString.Split(';');
-        if (LightSplit.Length < 1 || LightSplit.Length > 2)
+
+        Debug.Assert(LightSplit.Length >= 1);
+        if (LightSplit.Length > 2)
             PreprocessorException.Throw();
 
         string ParticleColorString = LightSplit[0];

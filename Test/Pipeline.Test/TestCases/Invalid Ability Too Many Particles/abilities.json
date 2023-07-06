@@ -1,0 +1,5 @@
+﻿{
+	"ability_10001": {
+		"SelfPreParticle": "ChannelHealPre(AoeRange=20;AoeColor=#00FF00;Color=#00FF00)"
+	}
+}

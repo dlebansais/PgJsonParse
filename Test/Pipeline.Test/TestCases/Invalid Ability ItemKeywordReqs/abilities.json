@@ -1,0 +1,8 @@
+﻿{
+	"ability_1251": {
+		"ItemKeywordReqs": [
+			"form:Deer",
+			"form:Cow"
+		]
+	}
+}

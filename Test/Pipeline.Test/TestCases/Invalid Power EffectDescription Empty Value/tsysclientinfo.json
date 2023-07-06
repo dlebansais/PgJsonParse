@@ -1,0 +1,11 @@
+﻿{
+	"power_10001": {
+		"Tiers": {
+			"id_1": {
+				"EffectDescs": [
+					"{BOOST_SKILL_ARCHERY}{}"
+				]
+			}
+		}
+	}
+}

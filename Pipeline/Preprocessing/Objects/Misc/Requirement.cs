@@ -1,7 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System;
-
 public class Requirement
 {
     private const string AreaHeader = "Area";
@@ -226,12 +224,12 @@ public class Requirement
             return rule;
     }
 
-    private static void RestoreAreaEventRequirement(RawRequirement requirement, bool? dayTime, string? eventQuest, string? areaName, string? originalAreaName, string? eventSkill)
+    private static void RestoreAreaEventRequirement(RawRequirement rawRequirement, bool? dayTime, string? eventQuest, string? areaName, string? originalAreaName, string? eventSkill)
     {
         if (dayTime is not null)
-            requirement.AreaEvent = "Daytime";
+            rawRequirement.AreaEvent = "Daytime";
         else if (eventQuest == "PovusNightly")
-            requirement.AreaEvent = "PovusNightlyQuest";
+            rawRequirement.AreaEvent = "PovusNightlyQuest";
         else if (areaName is not null)
         {
             if (eventQuest is not null)
@@ -239,10 +237,10 @@ public class Requirement
                 string Skill = eventSkill is null ? string.Empty : $"_{eventSkill}";
                 string? AreaSuffix = Area.ToRawAreaName(areaName, originalAreaName);
 
-                requirement.AreaEvent = $"{requirement.AreaEvent}{Skill}_{eventQuest}_{AreaSuffix}";
+                rawRequirement.AreaEvent = $"{rawRequirement.AreaEvent}{Skill}_{eventQuest}_{AreaSuffix}";
             }
             else
-                requirement.AreaEvent = $"{AreaHeader}{areaName}";
+                rawRequirement.AreaEvent = $"{AreaHeader}{areaName}";
         }
     }
 

@@ -1,0 +1,10 @@
+﻿{
+	"recipe_9104": {
+		"ResultEffects": [
+			"GiveTeleportationXp",
+			"SaveCurrentMushroomCircle",
+			"TeleportToBoundMushroomCircle1",
+			"AdjustRecipeReuseTime(-86401,QuarterMoon)"
+		]
+	}
+}

@@ -50,8 +50,10 @@ public class PreprocessorTest
 
         string LastVersionPath = $"{VersionDirectory}\\{LastVersion}";
         string VersionPath = Tools.SafeGetSubdirectory(Environment.CurrentDirectory, "Temp", out _);
+        string CuratedVersionPath = $"{VersionPath}\\Curated";
 
-        Directory.Delete($"{VersionPath}\\Curated", recursive: true);
+        if (Directory.Exists(CuratedVersionPath))
+            Directory.Delete(CuratedVersionPath, recursive: true);
 
         foreach (string FileName in Directory.GetFiles(LastVersionPath, "*.json"))
             File.Copy(FileName, $"{VersionPath}\\{Path.GetFileName(FileName)}", overwrite: true);

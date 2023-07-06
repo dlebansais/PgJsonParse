@@ -1,0 +1,7 @@
+﻿{
+	"recipe_1133": {
+		"ResultEffects": [
+			"ConsumeItemUses(DrinkableRumBarrel)"
+		]
+	}
+}

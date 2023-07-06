@@ -68,10 +68,7 @@ public class Recipe
         List<RecipeResultEffect> ResultEffects = new();
 
         foreach (string Effect in effects)
-        {
-            RecipeResultEffect ResultEffect = ParseResultEffect(Effect);
-            ResultEffects.Add(ResultEffect);
-        }
+            ResultEffects.Add(ParseResultEffect(Effect));
 
         return ResultEffects.ToArray();
     }
@@ -403,9 +400,9 @@ public class Recipe
         return new RecipeResultEffect() { Type = effectName, Delta = Delta };
     }
 
-    private static string? ParseItemMenuCategory(string? content)
+    private static string? ParseItemMenuCategory(string? rawItemMenuCategory)
     {
-        switch (content)
+        switch (rawItemMenuCategory)
         {
             case null:
                 return null;
@@ -414,7 +411,7 @@ public class Recipe
             case "TSysDistill":
                 return "Distill";
             default:
-                return content;
+                return rawItemMenuCategory;
         }
     }
 
@@ -669,9 +666,9 @@ public class Recipe
         return $"{effect.Type}(Area{AreaName}, {Other})";
     }
 
-    private static string? ToRawItemMenuCategory(string? content)
+    private static string? ToRawItemMenuCategory(string? itemMenuCategory)
     {
-        switch (content)
+        switch (itemMenuCategory)
         {
             case null:
                 return null;
@@ -680,7 +677,7 @@ public class Recipe
             case "Distill":
                 return "TSysDistill";
             default:
-                return content;
+                return itemMenuCategory;
         }
     }
 

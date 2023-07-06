@@ -27,7 +27,7 @@ public static class TestTools
 
         string Curated = Path.Combine(Result, "Curated");
         if (System.IO.Directory.Exists(Curated))
-            System.IO.Directory.Delete(Curated);
+            System.IO.Directory.Delete(Curated, recursive: true);
 
         return Result;
     }

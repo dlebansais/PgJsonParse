@@ -35,9 +35,9 @@ public class Effect
         return Result;
     }
 
-    private static string? ParseStackingType(string? rawContent)
+    private static string? ParseStackingType(string? rawStackingType)
     {
-        switch (rawContent)
+        switch (rawStackingType)
         {
             case null:
                 return null;
@@ -46,7 +46,7 @@ public class Effect
             case "1":
                 return "One";
             default:
-                return rawContent;
+                return rawStackingType;
         }
     }
 
@@ -94,9 +94,9 @@ public class Effect
         return Result;
     }
 
-    private string? ToRawStackingType(string? rawContent)
+    private string? ToRawStackingType(string? stackingType)
     {
-        switch (rawContent)
+        switch (stackingType)
         {
             case null:
                 return null;
@@ -105,7 +105,7 @@ public class Effect
             case "One":
                 return "1";
             default:
-                return rawContent;
+                return stackingType;
         }
     }
 

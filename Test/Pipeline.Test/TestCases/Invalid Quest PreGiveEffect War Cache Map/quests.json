@@ -1,0 +1,9 @@
+﻿{
+	"quest_22601": {
+		"PreGiveEffects": [
+			"DeleteWarCacheMapFog",
+			"DeleteWarCacheMapPins",
+			"CreateIlmariWarCacheMap(MacGuffin_IlmariWarCacheMap_Scorp1)"
+		]
+	}
+}

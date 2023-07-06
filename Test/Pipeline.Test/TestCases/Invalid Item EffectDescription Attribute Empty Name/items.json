@@ -1,0 +1,10 @@
+﻿{
+	"item_40001": {
+		"EffectDescs": [
+			"{}{6}",
+			"{COMBAT_REFRESH_HEALTH_DELTA}{3}",
+			"{COMBAT_REFRESH_ARMOR_DELTA}{3}",
+			"{COMBAT_REFRESH_POWER_DELTA}{1}"
+		]
+	}
+}

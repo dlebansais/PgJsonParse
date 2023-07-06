@@ -19,13 +19,13 @@ public class PowerTier
         Tier = tier;
     }
 
-    private PowerEffect[]? ParseEffectDescriptions(string[]? content)
+    private PowerEffect[]? ParseEffectDescriptions(string[]? rawEffectDescs)
     {
-        if (content is null)
+        if (rawEffectDescs is null)
             return null;
 
         List<PowerEffect> Result = new();
-        foreach (string EffectDescription in content)
+        foreach (string EffectDescription in rawEffectDescs)
             Result.Add(ParseEffectDescription(EffectDescription));
 
         // Fix a power.
@@ -53,17 +53,21 @@ public class PowerTier
         return Result.ToArray();
     }
 
-    private PowerEffect ParseEffectDescription(string content)
+    private PowerEffect ParseEffectDescription(string rawEffectDesc)
     {
-        if (content.StartsWith("{") && content.EndsWith("}"))
+        PowerEffect Result = new();
+
+        if (rawEffectDesc.StartsWith("{") && rawEffectDesc.EndsWith("}"))
         {
-            string EffectString = content.Substring(1, content.Length - 2);
-            return ParseAttributeEffectDescription(EffectString);
+            string EffectString = rawEffectDesc.Substring(1, rawEffectDesc.Length - 2);
+            Result = ParseAttributeEffectDescription(EffectString);
         }
-        else if (!content.Contains("{") && !content.Contains("}"))
-            return ParseSimpleEffectDescription(content);
+        else if (!rawEffectDesc.Contains("{") && !rawEffectDesc.Contains("}"))
+            Result = ParseSimpleEffectDescription(rawEffectDesc);
         else
-            throw new InvalidCastException();
+            PreprocessorException.Throw(this);
+
+        return Result;
     }
 
     private PowerEffect ParseAttributeEffectDescription(string effectString)

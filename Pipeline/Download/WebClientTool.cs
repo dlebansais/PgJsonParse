@@ -72,7 +72,7 @@ public static class WebClientTool
             bool IsReadToEnd = Reader.EndOfStream;
             if (IsReadToEnd)
             {
-                if (watch != null)
+                if (watch is not null)
                     MinimalSleep(watch);
 
                 return new Tuple<bool, string?>(true, Content);

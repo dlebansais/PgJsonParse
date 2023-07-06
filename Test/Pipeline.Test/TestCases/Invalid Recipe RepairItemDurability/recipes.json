@@ -1,0 +1,7 @@
+﻿{
+	"recipe_10711": {
+		"ResultEffects": [
+			"RepairItemDurability(0.3,0.6,94,0)"
+		]
+	}
+}

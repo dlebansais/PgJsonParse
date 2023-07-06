@@ -1,0 +1,9 @@
+﻿{
+	"*AccountStorage_AnimalTown": {
+		"Area": "SunVale",
+		"HasAssociatedNpc": false,
+		"ID": 110,
+		"NpcFriendlyName": "Animal Town Transfer Chest",
+		"NumSlots": 0
+	}
+}

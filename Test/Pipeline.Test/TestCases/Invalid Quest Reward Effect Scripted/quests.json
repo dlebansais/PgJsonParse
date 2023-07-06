@@ -1,0 +1,8 @@
+﻿{
+	"quest_45311": {
+		"Rewards_Effects": [
+			"GiveXP(Rabbit,5000)",
+			"AdvanceScriptedQuestObjective(Lopsy_Finished)"
+		]
+	}
+}

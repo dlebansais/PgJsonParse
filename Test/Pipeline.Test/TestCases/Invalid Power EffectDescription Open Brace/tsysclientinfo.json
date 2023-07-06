@@ -1,0 +1,11 @@
+﻿{
+	"power_10003": {
+		"Tiers": {
+			"id_1": {
+				"EffectDescs": [
+					"<icon=3315><icon=3310>Blitz Shot and Aimed Shot heal you for 5 { health"
+				]
+			}
+		}
+	}
+}

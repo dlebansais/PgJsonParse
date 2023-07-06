@@ -1,78 +1,80 @@
 ﻿namespace Preprocessor;
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 public class PvEAbility
 {
-    public PvEAbility(RawPvEAbility fromRawPvEAbility)
+    public PvEAbility(RawPvEAbility rawPvEAbility)
     {
-        Accuracy = fromRawPvEAbility.Accuracy;
-        AoE = fromRawPvEAbility.AoE;
-        ArmorMitigationRatio = fromRawPvEAbility.ArmorMitigationRatio;
-        ArmorSpecificDamage = fromRawPvEAbility.ArmorSpecificDamage;
-        AttributesThatDeltaAccuracy = fromRawPvEAbility.AttributesThatDeltaAccuracy;
-        AttributesThatDeltaDamage = fromRawPvEAbility.AttributesThatDeltaDamage;
-        AttributesThatDeltaRage = fromRawPvEAbility.AttributesThatDeltaRage;
-        AttributesThatDeltaRange = fromRawPvEAbility.AttributesThatDeltaRange;
-        AttributesThatDeltaTaunt = fromRawPvEAbility.AttributesThatDeltaTaunt;
-        AttributesThatDeltaTempTaunt = fromRawPvEAbility.AttributesThatDeltaTempTaunt;
-        AttributesThatModBaseDamage = fromRawPvEAbility.AttributesThatModBaseDamage;
-        AttributesThatModCritDamage = fromRawPvEAbility.AttributesThatModCritDamage;
-        AttributesThatModDamage = fromRawPvEAbility.AttributesThatModDamage;
-        AttributesThatModRage = fromRawPvEAbility.AttributesThatModRage;
-        AttributesThatModTaunt = fromRawPvEAbility.AttributesThatModTaunt;
-        CritDamageMod = fromRawPvEAbility.CritDamageMod;
-        Damage = fromRawPvEAbility.Damage;
-        DoTs = fromRawPvEAbility.DoTs;
-        ExtraDamageIfTargetVulnerable = fromRawPvEAbility.ExtraDamageIfTargetVulnerable;
-        HealthSpecificDamage = fromRawPvEAbility.HealthSpecificDamage;
-        PowerCost = fromRawPvEAbility.PowerCost;
-        RageBoost = fromRawPvEAbility.RageBoost;
-        RageCost = fromRawPvEAbility.RageCost;
-        RageCostMod = fromRawPvEAbility.RageCostMod;
-        RageMultiplier = fromRawPvEAbility.RageMultiplier;
-        Range = fromRawPvEAbility.Range;
+        Accuracy = rawPvEAbility.Accuracy;
+        AoE = rawPvEAbility.AoE;
+        ArmorMitigationRatio = rawPvEAbility.ArmorMitigationRatio;
+        ArmorSpecificDamage = rawPvEAbility.ArmorSpecificDamage;
+        AttributesThatDeltaAccuracy = rawPvEAbility.AttributesThatDeltaAccuracy;
+        AttributesThatDeltaDamage = rawPvEAbility.AttributesThatDeltaDamage;
+        AttributesThatDeltaRage = rawPvEAbility.AttributesThatDeltaRage;
+        AttributesThatDeltaRange = rawPvEAbility.AttributesThatDeltaRange;
+        AttributesThatDeltaTaunt = rawPvEAbility.AttributesThatDeltaTaunt;
+        AttributesThatDeltaTempTaunt = rawPvEAbility.AttributesThatDeltaTempTaunt;
+        AttributesThatModBaseDamage = rawPvEAbility.AttributesThatModBaseDamage;
+        AttributesThatModCritDamage = rawPvEAbility.AttributesThatModCritDamage;
+        AttributesThatModDamage = rawPvEAbility.AttributesThatModDamage;
+        AttributesThatModRage = rawPvEAbility.AttributesThatModRage;
+        AttributesThatModTaunt = rawPvEAbility.AttributesThatModTaunt;
+        CritDamageMod = rawPvEAbility.CritDamageMod;
+        Damage = rawPvEAbility.Damage;
+        DoTs = rawPvEAbility.DoTs;
+        ExtraDamageIfTargetVulnerable = rawPvEAbility.ExtraDamageIfTargetVulnerable;
+        HealthSpecificDamage = rawPvEAbility.HealthSpecificDamage;
+        PowerCost = rawPvEAbility.PowerCost;
+        RageBoost = rawPvEAbility.RageBoost;
+        RageCost = rawPvEAbility.RageCost;
+        RageCostMod = rawPvEAbility.RageCostMod;
+        RageMultiplier = rawPvEAbility.RageMultiplier;
+        Range = rawPvEAbility.Range;
 
-        if (fromRawPvEAbility.SelfEffectOnCrit is not null)
+        if (rawPvEAbility.SelfEffectOnCrit is not null)
         {
-            SelfEffectsOnCrit = fromRawPvEAbility.SelfEffectOnCrit;
+            SelfEffectsOnCrit = rawPvEAbility.SelfEffectOnCrit;
             HasSelfEffectOnCrit = true;
         }
         else
         {
-            SelfEffectsOnCrit = fromRawPvEAbility.SelfEffectsOnCrit;
+            SelfEffectsOnCrit = rawPvEAbility.SelfEffectsOnCrit;
             HasSelfEffectOnCrit = false;
         }
 
-        SelfPreEffects = ParseSelfPreEffects(fromRawPvEAbility.SelfPreEffects);
-        SpecialValues = fromRawPvEAbility.SpecialValues;
-        TauntDelta = fromRawPvEAbility.TauntDelta;
-        TempTauntDelta = fromRawPvEAbility.TempTauntDelta;
+        SelfPreEffects = ParseSelfPreEffects(rawPvEAbility.SelfPreEffects);
+        SpecialValues = rawPvEAbility.SpecialValues;
+        TauntDelta = rawPvEAbility.TauntDelta;
+        TempTauntDelta = rawPvEAbility.TempTauntDelta;
     }
 
-    private static SelfPreEffect[]? ParseSelfPreEffects(string[]? content)
+    private static SelfPreEffect[]? ParseSelfPreEffects(string[]? rawSelfPreEffects)
     {
-        if (content is null)
+        if (rawSelfPreEffects is null)
             return null;
 
-        SelfPreEffect[] Result = new SelfPreEffect[content.Length];
-        for (int i = 0; i < Result.Length; i++)
-            Result[i] = ParseSelfPreEffect(content[i]);
+        List<SelfPreEffect> Result = new();
+        foreach (string SelfPreEffects in rawSelfPreEffects)
+            Result.Add(ParseSelfPreEffect(SelfPreEffects));
 
-        return Result;
+        return Result.ToArray();
     }
 
-    private static SelfPreEffect ParseSelfPreEffect(string content)
+    private static SelfPreEffect ParseSelfPreEffect(string rawSelfPreEffect)
     {
         // Search for an expression between parentheses.
         string ParameterPattern = @"\(([^)]+)\)";
-        Match ParameterMatch = Regex.Match(content, ParameterPattern, RegexOptions.IgnoreCase);
+        Match ParameterMatch = Regex.Match(rawSelfPreEffect, ParameterPattern, RegexOptions.IgnoreCase);
         if (!ParameterMatch.Success)
-            return new SelfPreEffect { Name = content };
+            return new SelfPreEffect { Name = rawSelfPreEffect };
 
-        string Name = content.Substring(0, ParameterMatch.Index);
-        string InsideParameterString = content.Substring(ParameterMatch.Index + 1, content.Length - ParameterMatch.Index - 2);
+        string Name = rawSelfPreEffect.Substring(0, ParameterMatch.Index);
+        string InsideParameterString = rawSelfPreEffect.Substring(ParameterMatch.Index + 1, rawSelfPreEffect.Length - ParameterMatch.Index - 2);
 
         SelfPreEffect Result = new() { Name = Name };
 
@@ -171,29 +173,38 @@ public class PvEAbility
         return Result;
     }
 
-    private static string[]? SelfPreEffectsToStrings(SelfPreEffect[]? selfPreEffectArray)
+    private static string[]? SelfPreEffectsToStrings(SelfPreEffect[]? selfPreEffects)
     {
-        if (selfPreEffectArray is null)
+        if (selfPreEffects is null)
             return null;
 
-        string[] Result = new string[selfPreEffectArray.Length];
-        for (int i = 0; i < Result.Length; i++)
-            Result[i] = SelfPreEffectToString(selfPreEffectArray[i]);
+        List<string> Result = new();
+        foreach (SelfPreEffect SelfPreEffect in selfPreEffects)
+            Result.Add(SelfPreEffectToString(SelfPreEffect));
 
-        return Result;
+        return Result.ToArray();
     }
 
     private static string SelfPreEffectToString(SelfPreEffect selfPreEffect)
     {
+        string Result;
+
         switch (selfPreEffect.Name)
         {
             case "EnhanceZombie":
-                return $"{selfPreEffect.Name}({selfPreEffect.Enhancement})";
+                Result = $"{selfPreEffect.Name}({selfPreEffect.Enhancement})";
+                break;
             case "ConfigGalvanize":
-                return $"{selfPreEffect.Name}(,{selfPreEffect.Value})";
+                Result = $"{selfPreEffect.Name}(,{selfPreEffect.Value})";
+                break;
             default:
-                return selfPreEffect.Name ?? throw new NullReferenceException();
+                Result = $"{selfPreEffect.Name}";
+                break;
         }
+
+        Debug.Assert(Result != string.Empty);
+
+        return Result;
     }
 
     private readonly bool HasSelfEffectOnCrit;

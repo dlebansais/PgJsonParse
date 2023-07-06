@@ -1,7 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System;
-
 public class StorageVault
 {
     private const string AreaHeader = "Area";
@@ -22,19 +20,19 @@ public class StorageVault
         SlotAttribute = rawStorageVault.SlotAttribute;
     }
 
-    private static (bool, string?, string?) ParseArea(string? content)
+    private static (bool, string?, string?) ParseArea(string? rawArea)
     {
         (bool, string ?, string ?) Result = (false, null, null);
 
-        if (content is not null)
+        if (rawArea is not null)
         {
-            if (content == "*")
+            if (rawArea == "*")
             {
                 Result = (true, null, null);
             }
-            else if (content.StartsWith(AreaHeader))
+            else if (rawArea.StartsWith(AreaHeader))
             {
-                string AreaName = content.Substring(AreaHeader.Length);
+                string AreaName = rawArea.Substring(AreaHeader.Length);
                 AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName)!;
 
                 Result = (false, AreaName, OriginalAreaName);

@@ -1,0 +1,18 @@
+﻿{
+	"quest_12902": {
+		"Requirements": [
+			{
+				"Level": "Despised",
+				"Npc": "AreaEltibule/NPC_SuspiciousCow",
+				"T": "MinFavorLevel"
+			},
+			{
+				"AreaEvent": "Dee_Eltibule",
+				"T": "AreaEventOn"
+			},
+			{
+				"T": "IsWarden"
+			}
+		]
+	}
+}

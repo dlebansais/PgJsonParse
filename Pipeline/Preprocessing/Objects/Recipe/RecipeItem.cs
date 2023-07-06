@@ -16,12 +16,12 @@ public class RecipeItem
         StackSize = rawRecipeItem.StackSize;
     }
 
-    private static int? ParsePercentage(decimal? content)
+    private static int? ParsePercentage(decimal? rawPercentage)
     {
-        if (content is null)
+        if (rawPercentage is null)
             return null;
         else
-            return (int)(content * 100);
+            return (int)(rawPercentage * 100);
     }
 
     private static string[]? ParseItemKeys(string[]? rawItemKeys)

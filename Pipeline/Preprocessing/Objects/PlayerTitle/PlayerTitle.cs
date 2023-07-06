@@ -14,22 +14,22 @@ public class PlayerTitle
     private const string ColorTagStart = "<color=";
     private const string ColorTagEnd = "</color>";
 
-    private static (string?, string?, ColorFormat?) ParseTitle(string? content)
+    private static (string?, string?, ColorFormat?) ParseTitle(string? rawTitle)
     {
-        if (content is null)
+        if (rawTitle is null)
             return (null, null, null);
 
         // Search for the <color=...> pattern.
         string ColorTagPattern = @$"{ColorTagStart}([a-zA-Z0-9#]+)>";
         Match ColorTagMatch;
 
-        ColorTagMatch = Regex.Match(content, ColorTagPattern);
-        if (ColorTagMatch.Success && content.EndsWith(ColorTagEnd))
+        ColorTagMatch = Regex.Match(rawTitle, ColorTagPattern);
+        if (ColorTagMatch.Success && rawTitle.EndsWith(ColorTagEnd))
         {
             string MatchValue = ColorTagMatch.Value;
             int MatchLength = ColorTagMatch.Length;
 
-            string Title = content.Substring(MatchLength, content.Length - MatchLength - ColorTagEnd.Length);
+            string Title = rawTitle.Substring(MatchLength, rawTitle.Length - MatchLength - ColorTagEnd.Length);
             string RawColor = MatchValue.Substring(ColorTagStart.Length, MatchValue.Length - ColorTagStart.Length - 1);
 
             string Color = RgbColor.Parse(RawColor, string.Empty, out ColorFormat ColorFormat);
@@ -37,7 +37,7 @@ public class PlayerTitle
             return (Title, Color, ColorFormat);
         }
 
-        return (content, null, null);
+        return (rawTitle, null, null);
     }
 
     public string? Color { get; set; }
