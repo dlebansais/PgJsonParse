@@ -46,7 +46,7 @@ public class RecipeParticle
             if (FirstColor.StartsWith(LightColorHeader))
                 Result.LightColor = RgbColor.Parse(FirstColor, LightColorHeader, out _);
             else
-                Result.PrimaryColor = RgbColor.Parse(FirstColor, ColorHeader, out _);
+                throw new PreprocessorException();
         }
         else if (ColorSplit.Length == 2)
         {
@@ -71,9 +71,6 @@ public class RecipeParticle
         {
             if (particle.PrimaryColor is null)
                 return particle.ParticleName;
-
-            if (particle.SecondaryColor is null)
-                return $"{particle.ParticleName}({ColorHeader}#{particle.PrimaryColor})";
 
             return $"{particle.ParticleName}({ColorHeader}#{particle.PrimaryColor},#{particle.SecondaryColor})";
         }

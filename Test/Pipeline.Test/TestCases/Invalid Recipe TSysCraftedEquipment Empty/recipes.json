@@ -1,0 +1,8 @@
+﻿{
+	"recipe_12002": {
+		"IconId": 10005,
+		"ResultEffects": [
+			"TSysCraftedEquipment( )"
+		]
+	}
+}

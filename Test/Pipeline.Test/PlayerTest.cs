@@ -18,14 +18,13 @@ public class PlayerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Player Title");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
-        Assert.That(Success, Is.True);
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
     }
 
     [Test]
     public void TestNoColor()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Player Title No Color");
+        string VersionPath = TestTools.GetVersionPath("Valid Player Title No Color");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);

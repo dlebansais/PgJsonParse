@@ -37,7 +37,7 @@ public class RecipeResultEffect
     public string? Skill { get; set; }
     public string? Slot { get; set; }
     public int? Tier { get; set; }
-    public string? Type { get; set; }
+    public required string Type { get; init; }
 
     public void SetColorFormat(ColorFormat colorFormat)
     {

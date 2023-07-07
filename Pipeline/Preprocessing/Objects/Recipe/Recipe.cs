@@ -140,13 +140,7 @@ public class Recipe
             case "TransmogItemAppearance":
                 return new RecipeResultEffect() { Type = EffectName };
             default:
-                if (EffectParameter == string.Empty)
-                    return new RecipeResultEffect() { Type = "Special", Effect = EffectName };
-                else
-                {
-                    Debug.WriteLine($"{EffectName}({EffectParameter})");
-                    return new RecipeResultEffect() { Type = "Special", Effect = $"{EffectName}({EffectParameter})" };
-                }
+                return new RecipeResultEffect() { Type = "Special", Effect = EffectName };
         }
     }
 
@@ -222,10 +216,12 @@ public class Recipe
         if (Splitted.Length > 3)
             throw new PreprocessorException();
 
-        string CraftedItem = Splitted[0];
+        string CraftedItem = Splitted[0].Trim();
+        if (CraftedItem == string.Empty)
+            throw new PreprocessorException();
 
         bool? IsCamouflaged = null;
-        if (CraftedItem.Length > 0 && CraftedItem[CraftedItem.Length - 1] == 'C')
+        if (CraftedItem[CraftedItem.Length - 1] == 'C')
         {
             IsCamouflaged = true;
             CraftedItem = CraftedItem.Substring(0, CraftedItem.Length - 1);
@@ -404,14 +400,12 @@ public class Recipe
     {
         switch (rawItemMenuCategory)
         {
-            case null:
-                return null;
             case "TSysExtract":
                 return "Extract";
             case "TSysDistill":
                 return "Distill";
             default:
-                return rawItemMenuCategory;
+                return null;
         }
     }
 
@@ -537,7 +531,7 @@ public class Recipe
 
     private static string ToRawResultEffect(RecipeResultEffect effect)
     {
-        string Type = effect.Type ?? throw new NullReferenceException();
+        string Type = effect.Type;
 
         if (Type.StartsWith(CraftingEnhanceItem))
             return ToRawCraftingEnhanceItem(effect);
@@ -581,15 +575,18 @@ public class Recipe
             case "PermanentlyRaiseMaxTempestEnergy":
                 return $"{effect.Type}({effect.Delta})";
             case "Special":
-                return $"{effect.Effect}";
+                Debug.Assert(effect.Effect is not null);
+                return effect.Effect!;
             default:
-                return $"{effect.Type}";
+                return effect.Type;
         }
     }
 
     private static string ToRawCraftingEnhanceItem(RecipeResultEffect effect)
     {
-        return $"{effect.Type}{effect.Enhancement}({effect.AddedQuantity?.ToString(CultureInfo.InvariantCulture)},{effect.ConsumedEnhancementPoints})";
+        Debug.Assert(effect.AddedQuantity is not null);
+
+        return $"{effect.Type}{effect.Enhancement}({effect.AddedQuantity!.Value.ToString(CultureInfo.InvariantCulture)},{effect.ConsumedEnhancementPoints})";
     }
 
     private static string ToRawPolymorph(RecipeResultEffect effect)
@@ -599,15 +596,22 @@ public class Recipe
 
     private static string ToRawRepairItemDurability(RecipeResultEffect effect)
     {
-        decimal RepairMinEfficiency = ((decimal)(effect.RepairMinEfficiency ?? throw new NullReferenceException())) / 100;
+        Debug.Assert(effect.RepairMinEfficiency is not null);
+        Debug.Assert(effect.RepairMaxEfficiency is not null);
+        Debug.Assert(effect.RepairCooldown is not null);
+
+        Time RepairCooldown = effect.RepairCooldown!;
+        Debug.Assert(RepairCooldown.Hours is not null);
+
+        decimal RepairMinEfficiency = ((decimal)effect.RepairMinEfficiency!.Value) / 100;
         string RepairMinEfficiencyString = RepairMinEfficiency.ToString(CultureInfo.InvariantCulture);
-        decimal RepairMaxEfficiency = ((decimal)(effect.RepairMaxEfficiency ?? throw new NullReferenceException())) / 100;
+        decimal RepairMaxEfficiency = ((decimal)effect.RepairMaxEfficiency!.Value) / 100;
         string RepairMaxEfficiencyString = RepairMaxEfficiency.ToString(CultureInfo.InvariantCulture);
 
         if (RepairMaxEfficiencyString == "1")
             RepairMaxEfficiencyString = "1.0";
 
-        return $"{effect.Type}({RepairMinEfficiencyString},{RepairMaxEfficiencyString},{effect.RepairCooldown?.Hours},{effect.MinLevel},{effect.MaxLevel})";
+        return $"{effect.Type}({RepairMinEfficiencyString},{RepairMaxEfficiencyString},{RepairCooldown.Hours},{effect.MinLevel},{effect.MaxLevel})";
     }
 
     private static string ToRawTSysCraftedEquipment(RecipeResultEffect effect)
@@ -635,29 +639,26 @@ public class Recipe
     {
         int Seconds = 0;
 
-        if (effect.AdjustedReuseTime is Time AdjustedReuseTime)
-        {
-            Seconds += AdjustedReuseTime.Hours is null ? 0 : AdjustedReuseTime.Hours.Value * 3600;
-            Seconds += AdjustedReuseTime.Minutes is null ? 0 : AdjustedReuseTime.Minutes.Value * 60;
-        }
+        Debug.Assert(effect.AdjustedReuseTime is not null);
+        Time AdjustedReuseTime = effect.AdjustedReuseTime!;
+
+        Seconds += AdjustedReuseTime.Hours is null ? 0 : AdjustedReuseTime.Hours.Value * 3600;
+        Seconds += AdjustedReuseTime.Minutes is null ? 0 : AdjustedReuseTime.Minutes.Value * 60;
 
         return $"{effect.Type}(-{Seconds},{effect.MoonPhase})";
     }
 
     private static string ToRawTeleport(RecipeResultEffect effect)
     {
-        string Other = string.Empty;
+        string Other;
 
         switch (effect.Other)
         {
-            case "New Fairy Spot":
-                Other = "NewFairySpot";
-                break;
             case "Landing Boat":
                 Other = "Landing_Boat";
                 break;
-            case "Special Destination":
-                Other = "SpecialDestination";
+            default: // Special Destination and New Fairy Spot
+                Other = effect.Other!.Replace(" ", string.Empty);
                 break;
         }
 
@@ -670,14 +671,12 @@ public class Recipe
     {
         switch (itemMenuCategory)
         {
-            case null:
-                return null;
             case "Extract":
                 return "TSysExtract";
             case "Distill":
                 return "TSysDistill";
             default:
-                return itemMenuCategory;
+                return null;
         }
     }
 

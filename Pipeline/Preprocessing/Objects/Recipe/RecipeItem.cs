@@ -21,7 +21,7 @@ public class RecipeItem
         if (rawPercentage is null)
             return null;
         else
-            return (int)(rawPercentage * 100);
+            return (int)(rawPercentage.Value * 100);
     }
 
     private static string[]? ParseItemKeys(string[]? rawItemKeys)

@@ -15,7 +15,7 @@ public class EffectTest
     [Test]
     public void TestDescription()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Effect Description");
+        string VersionPath = TestTools.GetVersionPath("Valid Effect No Description");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
@@ -25,7 +25,7 @@ public class EffectTest
     [Test]
     public void TestDoeEyesEmptyKeywords()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Effect Doe Eyes Empty Keywords");
+        string VersionPath = TestTools.GetVersionPath("Valid Effect Doe Eyes Empty Keywords");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
@@ -35,7 +35,7 @@ public class EffectTest
     [Test]
     public void TestDoeEyesNoKeywords()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Effect Doe Eyes No Keywords");
+        string VersionPath = TestTools.GetVersionPath("Valid Effect Doe Eyes No Keywords");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);

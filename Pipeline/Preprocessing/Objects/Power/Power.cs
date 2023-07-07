@@ -21,7 +21,7 @@ public class Power
             Tiers = TierList.ToArray();
         }
         else
-            Tiers = null;
+            throw new PreprocessorException(this);
     }
 
     private static int SortByLevel(PowerTier tier1, PowerTier tier2)
@@ -34,7 +34,7 @@ public class Power
     public string? Skill { get; set; }
     public string[]? Slots { get; set; }
     public string? Suffix { get; set; }
-    public PowerTier[]? Tiers { get; set; }
+    public PowerTier[] Tiers { get; set; }
 
     public RawPower ToRawPower()
     {
@@ -46,16 +46,11 @@ public class Power
         Result.Slots = Slots;
         Result.Suffix = Suffix;
 
-        if (UnsortedTiers is not null)
-        {
-            Result.Tiers = new();
-            Result.Tiers.AddRange(UnsortedTiers);
-        }
-        else
-            Result.Tiers = null;
+        Result.Tiers = new();
+        Result.Tiers.AddRange(UnsortedTiers);
 
         return Result;
     }
 
-    private PowerTier[]? UnsortedTiers;
+    private PowerTier[] UnsortedTiers;
 }

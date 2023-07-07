@@ -4,46 +4,41 @@ public class SourceRecipe
 {
     public SourceRecipe(RawSourceRecipe rawSourceRecipe)
     {
-        if (rawSourceRecipe.entries is null)
-            Entries = null;
-        else
+        if (rawSourceRecipe.entries is RawSourceRecipeEntry[] RawEntries)
         {
-            Entries = new SourceRecipeEntry[rawSourceRecipe.entries.Length];
+            Entries = new SourceRecipeEntry[RawEntries.Length];
             for (int i = 0; i < Entries.Length; i++)
                 Entries[i] = new SourceRecipeEntry()
                 {
-                    HangOutId = rawSourceRecipe.entries[i].hangOutId,
-                    ItemTypeId = rawSourceRecipe.entries[i].itemTypeId,
-                    Npc = rawSourceRecipe.entries[i].npc,
-                    QuestId = rawSourceRecipe.entries[i].questId,
-                    Skill = rawSourceRecipe.entries[i].skill,
-                    Type = rawSourceRecipe.entries[i].type,
+                    HangOutId = RawEntries[i].hangOutId,
+                    ItemTypeId = RawEntries[i].itemTypeId,
+                    Npc = RawEntries[i].npc,
+                    QuestId = RawEntries[i].questId,
+                    Skill = RawEntries[i].skill,
+                    Type = RawEntries[i].type,
                 };
         }
+        else
+            throw new PreprocessorException(this);
     }
 
-    public SourceRecipeEntry[]? Entries { get; set; }
+    public SourceRecipeEntry[] Entries { get; set; }
 
     public RawSourceRecipe ToRawSourceRecipe()
     {
         RawSourceRecipe Result = new();
 
-        if (Entries is null)
-            Result.entries = null;
-        else
-        {
-            Result.entries = new RawSourceRecipeEntry[Entries.Length];
-            for (int i = 0; i < Entries.Length; i++)
-                Result.entries[i] = new RawSourceRecipeEntry()
-                {
-                    hangOutId = Entries[i].HangOutId,
-                    itemTypeId = Entries[i].ItemTypeId,
-                    npc = Entries[i].Npc,
-                    questId = Entries[i].QuestId,
-                    skill = Entries[i].Skill,
-                    type = Entries[i].Type,
-                };
-        }
+        Result.entries = new RawSourceRecipeEntry[Entries.Length];
+        for (int i = 0; i < Entries.Length; i++)
+            Result.entries[i] = new RawSourceRecipeEntry()
+            {
+                hangOutId = Entries[i].HangOutId,
+                itemTypeId = Entries[i].ItemTypeId,
+                npc = Entries[i].Npc,
+                questId = Entries[i].QuestId,
+                skill = Entries[i].Skill,
+                type = Entries[i].Type,
+            };
 
         return Result;
     }

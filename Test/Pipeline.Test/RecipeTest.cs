@@ -155,4 +155,22 @@ public class RecipeTest
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
     }
+
+    [Test]
+    public void TestTSysCraftedEquipmentEmpty()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Recipe TSysCraftedEquipment Empty");
+
+        Preprocessor Preprocessor = new();
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+    }
+
+    [Test]
+    public void TestParticlePrimaryColor()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Recipe Particle Primary Color");
+
+        Preprocessor Preprocessor = new();
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+    }
 }

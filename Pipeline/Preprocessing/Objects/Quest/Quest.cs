@@ -90,12 +90,6 @@ public class Quest
 
         switch (EffectName)
         {
-            case "DeleteWarCacheMapFog":
-                Result = new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Fog" };
-                break;
-            case "DeleteWarCacheMapPins":
-                Result = new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Pins" };
-                break;
             case "CreateIlmariWarCacheMap":
                 Result = ParsePreGiveEffectCreateIlmariWarCacheMap(EffectParameter);
                 break;
@@ -107,6 +101,12 @@ public class Quest
                 break;
             case "LearnAbility":
                 Result = new QuestPreGive() { T = "Ability", Ability = EffectParameter };
+                break;
+            case "DeleteWarCacheMapFog":
+                Result = new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Fog" };
+                break;
+            case "DeleteWarCacheMapPins":
+                Result = new QuestPreGive() { T = "Effect", Description = "Delete War Cache Map Pins" };
                 break;
             default:
                 throw new PreprocessorException();
@@ -414,16 +414,10 @@ public class Quest
 
     private static string ToRawPreGiveEffect(QuestPreGive effect)
     {
-        string Result = string.Empty;
+        string Result;
 
         switch (effect.T)
         {
-            case "Effect":
-                if (effect.Description == "Delete War Cache Map Fog")
-                    Result = "DeleteWarCacheMapFog";
-                else
-                    Result = "DeleteWarCacheMapPins";
-                break;
             case "Item":
                 Result = $"CreateIlmariWarCacheMap({effect.Item},{effect.QuestGroup})";
                 break;
@@ -435,6 +429,9 @@ public class Quest
                 break;
             case "Ability":
                 Result = $"LearnAbility({effect.Ability})";
+                break;
+            default: // Effect
+                Result = effect.Description!.Replace(" ", string.Empty);
                 break;
         }
 

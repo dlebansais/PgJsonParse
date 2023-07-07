@@ -87,7 +87,17 @@ public class QuestTest
     [Test]
     public void TestNoObjective()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Quest No Objective");
+        string VersionPath = TestTools.GetVersionPath("Valid Quest No Objective");
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
+    public void TestObjectiveWithRequirement()
+    {
+        string VersionPath = TestTools.GetVersionPath("Valid Quest Objective With Requirement");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);

@@ -17,7 +17,7 @@ public class PlayerTitle
     private static (string?, string?, ColorFormat?) ParseTitle(string? rawTitle)
     {
         if (rawTitle is null)
-            return (null, null, null);
+            throw new PreprocessorException();
 
         // Search for the <color=...> pattern.
         string ColorTagPattern = @$"{ColorTagStart}([a-zA-Z0-9#]+)>";
@@ -61,9 +61,6 @@ public class PlayerTitle
 
     private static string? ToRawTitle(string? title, ColorFormat? colorFormat)
     {
-        if (title is null)
-            return null;
-
         if (colorFormat is null)
             return title;
 

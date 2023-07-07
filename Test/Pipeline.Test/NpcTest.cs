@@ -24,7 +24,7 @@ public class NpcTest
     [Test]
     public void TestDesire()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Npc Desire");
+        string VersionPath = TestTools.GetVersionPath("Valid Npc No Desire");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
@@ -34,7 +34,7 @@ public class NpcTest
     [Test]
     public void TestNoAreaName()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Npc No AreaName");
+        string VersionPath = TestTools.GetVersionPath("Valid Npc No AreaName");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
@@ -44,7 +44,7 @@ public class NpcTest
     [Test]
     public void TestPreferenceKeywords()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Npc Preference Keywords");
+        string VersionPath = TestTools.GetVersionPath("Valid Npc No Preference Keywords");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);

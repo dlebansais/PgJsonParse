@@ -1,0 +1,31 @@
+﻿{
+	"quest_24628": {
+		"Description": "Pennoc in Serbule told you to kill pigs. The killing blow must be a kick.",
+		"DisplayedLocation": "Serbule",
+		"FavorNpc": "AreaSerbule/NPC_Pennoc",
+		"InternalName": "EntertainMe_PigKicking",
+		"IsCancellable": true,
+		"Name": "Entertain Me: Pig Kicking",
+		"Objectives": [
+			{
+				"AbilityKeyword": "Kick",
+				"Description": "Kick Pigs To Death",
+				"Number": 12,
+				"Requirements": [
+					{
+						"Level": "Comfortable",
+						"Npc": "AreaSerbule/NPC_Azalak",
+						"T": "MinFavorLevel"
+					}
+				],
+				"Target": "Pig",
+				"Type": "Kill"
+			},
+			{
+				"Description": "Talk to Pennoc",
+				"Number": 1,
+				"Type": "Scripted"
+			}
+		]
+	}
+}

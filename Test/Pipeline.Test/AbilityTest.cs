@@ -51,7 +51,7 @@ public class AbilityTest
     [Test]
     public void TestNoPvE()
     {
-        string VersionPath = TestTools.GetVersionPath("Invalid Ability No PvE");
+        string VersionPath = TestTools.GetVersionPath("Valid Ability No PvE");
 
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
