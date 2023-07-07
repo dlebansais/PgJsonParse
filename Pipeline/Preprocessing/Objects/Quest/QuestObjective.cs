@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class QuestObjective
 {
@@ -162,7 +163,8 @@ public class QuestObjective
                 string TargetArea = $"{AreaHeader}{RawRequirementTargetInArea.AreaEvent}";
                 Targets = new string[] { RawTarget, TargetArea };
 
-                Result.Requirements = RemoveRequirement(Result.Requirements, RequirementIndexTargetInArea);
+                Debug.Assert(Result.Requirements is not null);
+                Result.Requirements = RemoveRequirement(Result.Requirements!, RequirementIndexTargetInArea);
             }
             else
                 Targets = new string[] { RawTarget };
@@ -175,19 +177,20 @@ public class QuestObjective
         {
             RawRequirement RawRequirementKillWithAbility = RequirementKillWithAbility.ToRawRequirement();
             Result.AbilityKeyword = RawRequirementKillWithAbility.AbilityKeyword;
-            Result.Requirements = RemoveRequirement(Result.Requirements, RequirementIndexKillWithAbility);
+
+            Debug.Assert(Result.Requirements is not null);
+            Result.Requirements = RemoveRequirement(Result.Requirements!, RequirementIndexKillWithAbility);
         }
 
         return Result;
     }
 
-    private static RawRequirement[]? RemoveRequirement(object? requirements, int index)
+    private static RawRequirement[]? RemoveRequirement(object requirements, int index)
     {
         List<RawRequirement> NewRequirements = new();
 
-        if (requirements is RawRequirement[] ExistingRequirements)
-            NewRequirements.AddRange(ExistingRequirements);
-
+        RawRequirement[] ExistingRequirements = (RawRequirement[])requirements;
+        NewRequirements.AddRange(ExistingRequirements);
         NewRequirements.RemoveAt(index);
 
         if (NewRequirements.Count > 0)

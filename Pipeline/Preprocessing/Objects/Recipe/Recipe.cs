@@ -642,7 +642,9 @@ public class Recipe
         Debug.Assert(effect.AdjustedReuseTime is not null);
         Time AdjustedReuseTime = effect.AdjustedReuseTime!;
 
-        Seconds += AdjustedReuseTime.Hours is null ? 0 : AdjustedReuseTime.Hours.Value * 3600;
+        Debug.Assert(AdjustedReuseTime.Hours is not null);
+
+        Seconds += AdjustedReuseTime.Hours!.Value * 3600;
         Seconds += AdjustedReuseTime.Minutes is null ? 0 : AdjustedReuseTime.Minutes.Value * 60;
 
         return $"{effect.Type}(-{Seconds},{effect.MoonPhase})";
