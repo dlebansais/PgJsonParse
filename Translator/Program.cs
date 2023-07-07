@@ -910,8 +910,6 @@ public class Program
                     break;
                 case PgSourceQuest AsSourceQuest:
                     break;
-                case PgSourceRecipe AsSourceRecipe:
-                    break;
                 case PgSourceTraining AsSourceTraining:
                     AddNpcSource(Source, AsSourceTraining.Npc, AbilityList, RecipeList, NpcList);
                     break;
