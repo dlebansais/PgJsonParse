@@ -63,4 +63,81 @@ public class PreprocessorTest
 
         Assert.That(Success, Is.True);
     }
+
+    [Test]
+    public void TestDestinationFileExists()
+    {
+        string ApplicationDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        string ParserDirectory = Tools.SafeGetSubdirectory(ApplicationDataDirectory, "PgJsonParse", out _);
+        string VersionDirectory = Tools.SafeGetSubdirectory(ParserDirectory, "Versions", out _);
+
+        int LastVersion = -1;
+        foreach (string Directory in Directory.GetDirectories(VersionDirectory))
+            if (int.TryParse(Path.GetFileName(Directory), out int Version) && LastVersion < Version)
+                LastVersion = Version;
+
+        Assert.That(LastVersion, Is.GreaterThan(0));
+
+        string LastVersionPath = $"{VersionDirectory}\\{LastVersion}";
+        string VersionPath = Tools.SafeGetSubdirectory(Environment.CurrentDirectory, "Temp", out _);
+        string CuratedVersionPath = $"{VersionPath}\\Curated";
+
+        if (!Directory.Exists(CuratedVersionPath))
+            Directory.CreateDirectory(CuratedVersionPath);
+
+        foreach (string FileName in Directory.GetFiles(LastVersionPath, "*.json"))
+        {
+            File.Copy(FileName, $"{VersionPath}\\{Path.GetFileName(FileName)}", overwrite: true);
+            File.Copy(FileName, $"{CuratedVersionPath}\\{Path.GetFileName(FileName)}", overwrite: true);
+        }
+
+        Preprocessor Preprocessor = new();
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+
+        Assert.That(Success, Is.True);
+    }
+
+    [Test]
+    public void TestFailure()
+    {
+        string VersionPath = TestTools.GetVersionPath("Preprocessing Failure");
+      
+        List<JsonFile> InvalidJsonFileList = new()
+        {
+            new JsonFile("abilities", true, Preprocessor.PreprocessDictionary<AbilityDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<AbilityDictionary>),
+        };
+
+        Preprocessor FailingPreprocessor = new();
+        bool Success = FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList);
+        Assert.That(Success, Is.False);
+    }
+
+    [Test]
+    public void TestFailureNotPretty()
+    {
+        string VersionPath = TestTools.GetVersionPath("Preprocessing Failure Not Pretty");
+
+        List<JsonFile> InvalidJsonFileList = new()
+        {
+            new JsonFile("npcs", false, Preprocessor.PreprocessDictionary<NpcDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<NpcDictionary>),
+        };
+
+        Preprocessor FailingPreprocessor = new();
+        bool Success = FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList);
+        Assert.That(Success, Is.False);
+    }
+
+    [Test]
+    public void TestBadlyMixedArray()
+    {
+        string VersionPath = TestTools.GetVersionPath("Preprocessing Badly Mixed Array");
+
+        List<JsonFile> InvalidJsonFileList = new()
+        {
+            new JsonFile("quests", true, Preprocessor.PreprocessDictionary<QuestDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<QuestDictionary>),
+        };
+
+        Preprocessor FailingPreprocessor = new();
+        Assert.Throws<PreprocessorException>(() => FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList));
+    }
 }

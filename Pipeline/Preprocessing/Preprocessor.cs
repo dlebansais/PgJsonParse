@@ -269,9 +269,6 @@ public class Preprocessor
 
     public static object? FromMultiple<T, TRaw>(T[] items, Func<T, TRaw> converter)
     {
-        if (items.Length == 0)
-            return null;
-
         TRaw[] Result = new TRaw[items.Length];
 
         for (int i = 0; i < Result.Length; i++)
@@ -303,6 +300,7 @@ public class Preprocessor
     }
 
     public static T[]? ToSingleOrMultiple<T, TRaw>(object? element, Func<TRaw, T> converter, out JsonArrayFormat format)
+        where TRaw : class
     {
         format = JsonArrayFormat.Null;
 
@@ -337,37 +335,61 @@ public class Preprocessor
 
     public static bool ToSingleItem<TRaw>(object element, out TRaw[] result)
     {
-        if (element is JsonElement AsSingle)
-        {
-            if (AsSingle.ValueKind == JsonValueKind.Object)
-            {
-                result = new TRaw[1];
-                result[0] = AsSingle.Deserialize<TRaw>() ?? throw new NullReferenceException();
-                return true;
-            }
-            else if (AsSingle.ValueKind == JsonValueKind.String && typeof(TRaw) == typeof(string) && AsSingle.GetString() is TRaw AsString)
-            {
-                result = new TRaw[1];
-                result[0] = AsString;
-                return true;
-            }
-        }
+        JsonElement AsSingle = (JsonElement)element;
 
-        result = null!;
-        return false;
+        if (AsSingle.ValueKind == JsonValueKind.Object)
+        {
+            result = new TRaw[1];
+            result[0] = AsSingle.Deserialize<TRaw>() ?? throw new NullReferenceException();
+            return true;
+        }
+        else if (AsSingle.ValueKind == JsonValueKind.String && typeof(TRaw) == typeof(string) && AsSingle.GetString() is TRaw AsString)
+        {
+            result = new TRaw[1];
+            result[0] = AsString;
+            return true;
+        }
+        else
+        {
+            result = null!;
+            return false;
+        }
     }
 
     public static bool ToMultipleItems<TRaw>(object element, out TRaw[] result)
+        where TRaw: class
     {
-        if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
+        JsonElement AsMultiple = (JsonElement)element;
+
+        if (AsMultiple.ValueKind == JsonValueKind.Array)
         {
             int ArrayLength = AsMultiple.GetArrayLength();
-            result = new TRaw[ArrayLength];
+            List<TRaw> ResultList = new();
 
             for (int i = 0; i < ArrayLength; i++)
-                result[i] = AsMultiple[i].Deserialize<TRaw>() ?? throw new NullReferenceException();
+            {
+                TRaw? Item;
 
-            return true;
+                try
+                {
+                    Item = AsMultiple[i].Deserialize<TRaw>();
+                }
+                catch
+                {
+                    Item = null;
+                }
+
+                if (Item is null)
+                    break;
+
+                ResultList.Add(Item);
+            }
+
+            if (ResultList.Count == ArrayLength)
+            {
+                result = ResultList.ToArray();
+                return true;
+            }
         }
 
         result = null!;
@@ -376,7 +398,9 @@ public class Preprocessor
 
     public static bool ToNestedArray<TRaw>(object element, out TRaw[] result)
     {
-        if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
+        JsonElement AsMultiple = (JsonElement)element;
+
+        if (AsMultiple.ValueKind == JsonValueKind.Array)
         {
             int ArrayLength = AsMultiple.GetArrayLength();
             if (ArrayLength == 1)
@@ -404,7 +428,9 @@ public class Preprocessor
 
     public static bool ToMixedArray<TRaw>(object element, out TRaw[] result)
     {
-        if (element is JsonElement AsMultiple && AsMultiple.ValueKind == JsonValueKind.Array)
+        JsonElement AsMultiple = (JsonElement)element;
+
+        if (AsMultiple.ValueKind == JsonValueKind.Array)
         {
             int ArrayLength = AsMultiple.GetArrayLength();
             if (ArrayLength == 2)

@@ -103,4 +103,13 @@ public class QuestTest
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
         Assert.That(Success, Is.True);
     }
+
+    [Test]
+    public void TestRequirement()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Quest Requirement");
+
+        Preprocessor Preprocessor = new();
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+    }
 }

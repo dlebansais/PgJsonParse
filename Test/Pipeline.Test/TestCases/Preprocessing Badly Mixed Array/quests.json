@@ -1,0 +1,21 @@
+﻿{
+	"quest_45156": {
+		"Requirements": [
+			[
+				{
+					"Rule": "ChristmasQuests",
+					"T": "RuntimeBehaviorRuleSet"
+				},
+				{
+					"InteractionFlag": "Event_Christmas_RiShinShrineQuest",
+					"T": "InteractionFlagUnset"
+				}
+			],
+			{
+				"Level": 1,
+				"Skill": "Druid",
+				"T": "MinSkillLevel"
+			}
+		]
+	}
+}

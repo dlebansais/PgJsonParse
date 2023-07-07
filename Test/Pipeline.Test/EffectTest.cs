@@ -68,4 +68,13 @@ public class EffectTest
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
     }
+
+    [Test]
+    public void TestDuration()
+    {
+        string VersionPath = TestTools.GetVersionPath("Invalid Effect Duration");
+
+        Preprocessor Preprocessor = new();
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+    }
 }

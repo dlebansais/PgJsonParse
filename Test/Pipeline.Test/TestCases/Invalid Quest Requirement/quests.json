@@ -1,0 +1,17 @@
+﻿{
+	"quest_10001": {
+		"Requirements": [
+			{
+				"Level": [
+					{
+						"Skill": "Sword",
+						"T": "SkillXp",
+						"Xp": 750
+					}
+				],
+				"Npc": "AreaSerbule/NPC_Joe",
+				"T": "MinFavorLevel"
+			}
+		]
+	}
+}

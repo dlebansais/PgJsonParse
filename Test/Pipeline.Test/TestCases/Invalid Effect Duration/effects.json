@@ -1,0 +1,18 @@
+﻿{
+	"effect_10010": {
+		"Desc": "Your inventory capacity is expanded by 25 slots for 3 hours. This effect does not stack with other inventory expansion potions from Orran and overrides all inventory Words of Power.",
+		"DisplayMode": "Effect",
+		"Duration": [
+			"Buff",
+			"OrranInv"
+		],
+		"IconId": 6333,
+		"Keywords": [
+			"Buff",
+			"OrranInv"
+		],
+		"Name": "Orran's Inventory Expander",
+		"StackingPriority": 101,
+		"StackingType": "WordOfPowerInventory"
+	},
+}
