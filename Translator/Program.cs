@@ -1976,6 +1976,9 @@ public class Program
             MapAreaName.Povus, new Dictionary<string, QuestSpecifics>()
             {
                 { "A Kick In The Whiskers", QuestSpecifics.None },
+                { "Angling: Ghost Bass", QuestSpecifics.None },
+                { "Angling: Old Dreadtooth", QuestSpecifics.None },
+                { "Angling: Too Many Frogs", QuestSpecifics.None },
                 { "Auto-Clamp Safety Blanket", QuestSpecifics.None },
                 { "Beautiful Beaker Bits", QuestSpecifics.None },
                 { "Better Hammer Wraps", QuestSpecifics.None },

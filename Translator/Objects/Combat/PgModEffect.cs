@@ -6,6 +6,7 @@
     {
         public string Key { get; set; } = string.Empty;
         public string EffectKey { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public List<AbilityKeyword> AbilityList { get; set; } = new List<AbilityKeyword>();
         public PgCombatEffectCollection StaticCombatEffectList { get; set; } = new PgCombatEffectCollection();
         public PgCombatEffectCollection DynamicCombatEffectList { get; set; } = new PgCombatEffectCollection();

@@ -62,6 +62,7 @@ public class CombatParser
         if (WriteFile)
         {
             WritePowerEffectJson("combateffects.json", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
+            WriteBuffEffectJson("buffeffects.json", StringKeyTable.Count, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList);
             WritePowerKeyToCompleteEffectFile("PowerKeyToCompleteEffect.cs", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList);
 
             for (int i = 0; i < StringKeyTable.Count + EffectKeyList.Count; i++)
@@ -1480,57 +1481,24 @@ public class CombatParser
 
                     int Tier = int.Parse(Splitted[1]);
 
-                    PowerTierToEffect NewPowerTierToEffect = new();
+                    PowerTierToEffect? NewPowerTierToEffect = ToPowerTierEffect(PgModEffect, hasTier: true, Tier);
 
-                    if (PgModEffect.EffectKey != string.Empty)
+                    if (NewPowerTierToEffect is not null)
                     {
-                        NewPowerTierToEffect.Tier = Tier;
-
-                        int EffectId = int.Parse(PgModEffect.EffectKey);
-                        NewPowerTierToEffect.Effect = EffectId;
-                    }
-
-                    if (PgModEffect.AbilityList.Count > 0)
-                    {
-                        NewPowerTierToEffect.Tier = Tier;
-
-                        List<string> AbilityKeywords = new();
-                        foreach (AbilityKeyword Keyword in PgModEffect.AbilityList)
-                            AbilityKeywords.Add(Keyword.ToString());
-
-                        NewPowerTierToEffect.AbilityKeywords = AbilityKeywords.ToArray();
-                    }
-
-                    if (PgModEffect.StaticCombatEffectList.Count > 0)
-                    {
-                        NewPowerTierToEffect.Tier = Tier;
-
-                        List<PowerTierCombatEffect> CombatEffects = new();
-                        foreach (PgCombatEffect CombatEffect in PgModEffect.StaticCombatEffectList)
+                        if (PgModEffect.SecondaryModEffect is not null)
                         {
-                            PowerTierCombatEffect NewPowerTierCombatEffect = ToPowerTierCombatEffect(CombatEffect);
-                            CombatEffects.Add(NewPowerTierCombatEffect);
+                            Debug.Assert(PgModEffect.SecondaryModEffect.EffectKey == string.Empty);
+                            Debug.Assert(PgModEffect.SecondaryModEffect.Description == string.Empty);
+
+                            PowerTierToEffect? SecondaryPowerTierToEffect = ToPowerTierEffect(PgModEffect.SecondaryModEffect, hasTier: false, 0);
+                            Debug.Assert(SecondaryPowerTierToEffect is not null);
+
+                            if (SecondaryPowerTierToEffect is not null)
+                                NewPowerTierToEffect.Xtra = SecondaryPowerTierToEffect;
                         }
 
-                        NewPowerTierToEffect.StaticCombatEffects = CombatEffects.ToArray();
-                    }
-
-                    if (PgModEffect.DynamicCombatEffectList.Count > 0)
-                    {
-                        NewPowerTierToEffect.Tier = Tier;
-
-                        List<PowerTierCombatEffect> CombatEffects = new();
-                        foreach (PgCombatEffect CombatEffect in PgModEffect.DynamicCombatEffectList)
-                        {
-                            PowerTierCombatEffect NewPowerTierCombatEffect = ToPowerTierCombatEffect(CombatEffect);
-                            CombatEffects.Add(NewPowerTierCombatEffect);
-                        }
-
-                        NewPowerTierToEffect.StaticCombatEffects = CombatEffects.ToArray();
-                    }
-
-                    if (NewPowerTierToEffect.Tier is not null)
                         Tiers.Add(NewPowerTierToEffect);
+                    }
                 }
             }
 
@@ -1556,6 +1524,117 @@ public class CombatParser
         sw.Write(Content);
     }
 
+    private void WriteBuffEffectJson(string fileName, int stringKeyTableCount, List<PgModEffect[]> powerKeyToCompleteEffectTable, List<string> effectKeyList)
+    {
+        Dictionary<int, PowerTierToEffect> PowerToEffectTable = new();
+
+        for (int i = 0; i < effectKeyList.Count; i++)
+        {
+            string[] StringKeyArray = new string[] { effectKeyList[i] };
+            PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[stringKeyTableCount + i];
+
+            Debug.Assert(StringKeyArray.Length == 1);
+            Debug.Assert(ModEffectArray.Length == 1);
+
+            string StringKey = StringKeyArray[0];
+            PgModEffect PgModEffect = ModEffectArray[0];
+
+            if (PgModEffect is not null)
+            {
+                Debug.Assert(PgModEffect.SecondaryModEffect is null);
+
+                int PowerId = int.Parse(StringKey);
+
+                PowerTierToEffect? NewPowerTierToEffect = ToPowerTierEffect(PgModEffect, hasTier: false, 0);
+
+                if (NewPowerTierToEffect is not null)
+                    PowerToEffectTable.Add(PowerId, NewPowerTierToEffect);
+            }
+        }
+
+        JsonSerializerOptions WriteOptions = new();
+        WriteOptions.WriteIndented = true;
+        WriteOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        WriteOptions.NumberHandling = JsonNumberHandling.Strict;
+        WriteOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+
+        string Content = JsonSerializer.Serialize(PowerToEffectTable, WriteOptions);
+        using FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+        using StreamWriter sw = new StreamWriter(fs);
+
+        sw.Write(Content);
+    }
+
+    private static PowerTierToEffect? ToPowerTierEffect(PgModEffect modEffect, bool hasTier, int tier)
+    {
+        PowerTierToEffect NewPowerTierToEffect = new();
+        bool WriteBuff = false;
+
+        if (hasTier && modEffect.EffectKey != string.Empty)
+        {
+            WriteBuff = true;
+
+            int EffectId = int.Parse(modEffect.EffectKey);
+            NewPowerTierToEffect.Effect = EffectId;
+        }
+
+        if (modEffect.Description != string.Empty)
+        {
+            WriteBuff = true;
+
+            NewPowerTierToEffect.Description = modEffect.Description;
+        }
+
+        if (modEffect.AbilityList.Count > 0)
+        {
+            WriteBuff = true;
+
+            List<string> AbilityKeywords = new();
+            foreach (AbilityKeyword Keyword in modEffect.AbilityList)
+                AbilityKeywords.Add(Keyword.ToString());
+
+            NewPowerTierToEffect.AbilityKeywords = AbilityKeywords.ToArray();
+        }
+
+        if (modEffect.StaticCombatEffectList.Count > 0)
+        {
+            WriteBuff = true;
+
+            List<PowerTierCombatEffect> CombatEffects = new();
+            foreach (PgCombatEffect CombatEffect in modEffect.StaticCombatEffectList)
+            {
+                PowerTierCombatEffect NewPowerTierCombatEffect = ToPowerTierCombatEffect(CombatEffect);
+                CombatEffects.Add(NewPowerTierCombatEffect);
+            }
+
+            NewPowerTierToEffect.StaticCombatEffects = CombatEffects.ToArray();
+        }
+
+        if (modEffect.DynamicCombatEffectList.Count > 0)
+        {
+            WriteBuff = true;
+
+            List<PowerTierCombatEffect> CombatEffects = new();
+            foreach (PgCombatEffect CombatEffect in modEffect.DynamicCombatEffectList)
+            {
+                PowerTierCombatEffect NewPowerTierCombatEffect = ToPowerTierCombatEffect(CombatEffect);
+                CombatEffects.Add(NewPowerTierCombatEffect);
+            }
+
+            NewPowerTierToEffect.StaticCombatEffects = CombatEffects.ToArray();
+        }
+
+        if (WriteBuff)
+        {
+            if (hasTier)
+                NewPowerTierToEffect.Tier = tier;
+
+            return NewPowerTierToEffect;
+        }
+        else
+            return null;
+    }
+
     private static PowerTierCombatEffect ToPowerTierCombatEffect(PgCombatEffect CombatEffect)
     {
         PowerTierCombatEffect NewPowerTierCombatEffect = new();
@@ -1564,7 +1643,20 @@ public class CombatParser
             NewPowerTierCombatEffect.Keyword = CombatEffect.Keyword.ToString();
 
         if (CombatEffect.DamageType != GameDamageType.Internal_None)
-            NewPowerTierCombatEffect.DamageType = CombatEffect.DamageType.ToString();
+        {
+            GameDamageType DamageType = CombatEffect.DamageType;
+            List<string> TextList = new();
+
+            foreach (GameDamageType EnumValue in typeof(GameDamageType).GetEnumValues())
+                if (EnumValue != GameDamageType.Internal_None && DamageType.HasFlag(EnumValue))
+                    TextList.Add(EnumValue.ToString());
+
+            if (TextList.Count > 1)
+            {
+            }
+
+            NewPowerTierCombatEffect.DamageTypes = TextList.ToArray();
+        }
 
         if (CombatEffect.CombatSkill != GameCombatSkill.Internal_None)
             NewPowerTierCombatEffect.CombatSkill = CombatEffect.CombatSkill.ToString();
@@ -2228,6 +2320,7 @@ public class CombatParser
         modEffect = new PgModEffect()
         {
             EffectKey = effect.Key,
+            Description = powerSimpleEffect.Description,
             AbilityList = ModAbilityList,
             StaticCombatEffectList = StaticCombatEffectList,
             DynamicCombatEffectList = DynamicCombatEffectList,
@@ -3651,6 +3744,7 @@ public class CombatParser
         modEffect = new PgModEffect()
         {
             EffectKey = EffectKey,
+            Description = powerSimpleEffect.Description,
             AbilityList = ModAbilityList,
             StaticCombatEffectList = ModCombatList,
             TargetAbilityList = ModTargetAbilityList,
@@ -3745,7 +3839,7 @@ public class CombatParser
 
             if (isSelected)
             {
-                PgModEffect NewModEffect = new PgModEffect() { EffectKey = Item.Key, AbilityList = ExtractedAbilityList, StaticCombatEffectList = ExtractedCombatEffectList };
+                PgModEffect NewModEffect = new PgModEffect() { EffectKey = Item.Key, Description = Item.Description, AbilityList = ExtractedAbilityList, StaticCombatEffectList = ExtractedCombatEffectList };
                 powerKeyToCompleteEffectTable.Add(new PgModEffect[] { NewModEffect });
                 effectKeyList.Add(Item.Key);
 
