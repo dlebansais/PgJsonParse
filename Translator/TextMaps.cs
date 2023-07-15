@@ -5283,7 +5283,7 @@
             { Deaths.ShieldBash, "Bashed with a shield" },
             { Deaths.CrushingDamage, "Crushed to death" },
             { Deaths.Wind, "Ravaged by unnatural winds" },
-            { Deaths.DiseasedBite, "" }, //TOTEST Virulent Bite (bat) "Bitten by diseased animal" ?
+            { Deaths.DiseasedBite, "Bitten by diseased animal" },
             { Deaths.Clubbed, "Clubbed on the head" },
             { Deaths.BonesShattered, "Bones Shattered" },
             { Deaths.HeartThorn, "Vines In Veins" },
