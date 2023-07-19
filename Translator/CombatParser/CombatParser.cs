@@ -61,6 +61,7 @@ public class CombatParser
 
         if (WriteFile)
         {
+            WritePowerCSV("combateffects.csv", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, objectList);
             WritePowerEffectJson("combateffects.json", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
             WriteBuffEffectJson("buffeffects.json", StringKeyTable.Count, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList);
             WritePowerKeyToCompleteEffectFile("PowerKeyToCompleteEffect.cs", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList);
@@ -1310,6 +1311,7 @@ public class CombatParser
             case CombatKeyword.WithinDistance:
             case CombatKeyword.Knockback:
             case CombatKeyword.DamageBoostToHealthAndArmor:
+            case CombatKeyword.IncreaseHealEfficiency:
                 VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
                 break;
 
@@ -1448,6 +1450,139 @@ public class CombatParser
     #endregion
 
     #region Write File
+    private void WritePowerCSV(string fileName, List<string[]> stringKeyTable, List<PgModEffect[]> powerKeyToCompleteEffectTable, List<object> objectList)
+    {
+        List<int> PowerList = new();
+        Dictionary<int, Dictionary<int, string>> PowerTiersTable = new();
+
+        for (int i = 0; i < stringKeyTable.Count; i++)
+        {
+            string[] StringKeyArray;
+            StringKeyArray = stringKeyTable[i];
+            PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+
+            Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+
+            for (int j = 0; j < StringKeyArray.Length; j++)
+            {
+                string StringKey = StringKeyArray[j];
+                PgModEffect PgModEffect = ModEffectArray[j];
+
+                if (PgModEffect is not null)
+                {
+                    string[] Splitted = StringKey.Split('_');
+                    Debug.Assert(Splitted.Length == 2);
+                    int TierPowerId = int.Parse(Splitted[0]);
+
+                    if (!PowerList.Contains(TierPowerId))
+                        PowerList.Add(TierPowerId);
+                }
+            }
+        }
+
+        Dictionary<int, PgPower> PowerKeyTable = new();
+
+        foreach (object Item in objectList)
+            if (Item is PgPower AsPower)
+            {
+                int Key = int.Parse(AsPower.Key);
+                PowerKeyTable.Add(Key, AsPower);
+            }
+
+        PowerList.Sort((int id1, int id2) => SortPowerBySkillAndSlot(id1, id2, PowerKeyTable));
+
+        foreach (int PowerId in PowerList)
+            PowerTiersTable.Add(PowerId, new Dictionary<int, string>());
+
+        for (int i = 0; i < stringKeyTable.Count; i++)
+        {
+            string[] StringKeyArray;
+            StringKeyArray = stringKeyTable[i];
+            PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+
+            for (int j = 0; j < StringKeyArray.Length; j++)
+            {
+                string StringKey = StringKeyArray[j];
+                PgModEffect PgModEffect = ModEffectArray[j];
+
+                if (PgModEffect is not null)
+                {
+                    string[] Splitted = StringKey.Split('_');
+                    Debug.Assert(Splitted.Length == 2);
+                    int TierPowerId = int.Parse(Splitted[0]);
+
+                    int Tier = int.Parse(Splitted[1]);
+                    string Description = PgModEffect.Description;
+                    Description = Description.Replace("\n", " ");
+                    Description = Description.Replace(";", ",");
+
+                    string Slots = string.Empty;
+                    PgPower Power = PowerKeyTable[TierPowerId];
+
+                    foreach (ItemSlot Slot in Power.SlotList)
+                    {
+                        if (Slots != string.Empty)
+                            Slots += ", ";
+
+                        Slots += Slot.ToString();
+                    }
+
+                    PowerTiersTable[TierPowerId].Add(Tier, $"{Description};{Slots}");
+                }
+            }
+        }
+
+        List<string> LineList = new()
+        {
+            "Verified;Power ID;Tier;Description"
+        };
+
+        for (int i = 0; i < PowerList.Count; i++)
+        {
+            LineList.Add(string.Empty);
+
+            foreach (KeyValuePair<int, string> Entry in PowerTiersTable[PowerList[i]])
+            {
+                string Line = $";{PowerList[i]};{Entry.Key};{Entry.Value}";
+                LineList.Add(Line);
+            }
+        }
+
+        using FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+        using StreamWriter sw = new StreamWriter(fs);
+
+        foreach (string Line in LineList)
+            sw.WriteLine(Line);
+    }
+
+    private static int SortPowerBySkillAndSlot(int id1, int id2, Dictionary<int, PgPower> powerKeyTable)
+    {
+        PgPower Power1 = powerKeyTable[id1];
+        PgPower Power2 = powerKeyTable[id2];
+
+        if (Power1.Skill_Key != Power2.Skill_Key)
+            return string.Compare(Power1.Skill_Key, Power2.Skill_Key);
+
+        List<int> SlotList1 = new();
+        foreach (ItemSlot Slot in Power1.SlotList)
+            SlotList1.Add((int)Slot);
+        SlotList1.Sort();
+
+        List<int> SlotList2 = new();
+        foreach (ItemSlot Slot in Power2.SlotList)
+            SlotList2.Add((int)Slot);
+        SlotList2.Sort();
+
+        for (int i = 0; i < SlotList1.Count && i < SlotList2.Count; i++)
+            if (SlotList1[i] != SlotList2[i])
+                return SlotList1[i] - SlotList2[i];
+
+        if (SlotList1.Count != SlotList2.Count)
+            return SlotList1.Count - SlotList2.Count;
+
+        return 0;
+    }
+
     private void WritePowerEffectJson(string fileName, List<string[]> stringKeyTable, List<PgModEffect[]> powerKeyToCompleteEffectTable)
     {
         Dictionary<int, PowerToEffect> PowerToEffectTable = new();
@@ -1507,6 +1642,13 @@ public class CombatParser
                 Debug.Assert(PowerId > 0);
 
                 PowerToEffect NewPowerToEffect = new() { Tiers = Tiers.ToArray() };
+
+                if (HardcodedEffectAllTiersTable.ContainsKey(PowerId))
+                {
+                    foreach (PowerTierToEffect PowerTierToEffect in NewPowerToEffect.Tiers)
+                        PowerTierToEffect.AdditionalEffects = HardcodedEffectAllTiersTable[PowerId];
+                }
+
                 PowerToEffectTable.Add(PowerId, NewPowerToEffect);
             }
         }
@@ -1523,6 +1665,91 @@ public class CombatParser
 
         sw.Write(Content);
     }
+
+    private static Dictionary<int, Dictionary<int, AdditionalEffect[]>> HardcodedEffectTable = new()
+    {
+    };
+
+    private static Dictionary<int, AdditionalEffect[]> HardcodedEffectAllTiersTable = new()
+    {
+        { 12013, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MonstrousRage.ToString(), Effect = 14312, Target = "Self" },
+            }
+        },
+        { 12014, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MonstrousRage.ToString(), Effect = 14316, Target = "Pet" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.UnnaturalWrath.ToString(), Effect = 14316, Target = "Pet" },
+            }
+        },
+        { 12021, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SicEm.ToString(), Effect = 14313, Target = "Self" },
+            }
+        },
+        { 12022, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SicEm.ToString(), Effect = 14314, Target = "Pet" },
+            }
+        },
+        { 12024, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SicEm.ToString(), Effect = 14309, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SicEm.ToString(), Effect = 14309, Target = "Pet" },
+            }
+        },
+        { 12025, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SicEm.ToString(), Effect = 14308, Target = "Pet" },
+            }
+        },
+        { 12051, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GetItOffMe.ToString(), Effect = 14315, Target = "Pet" },
+            }
+        },
+        { 12091, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FeedPet.ToString(), Effect = 14906, Target = "Pet" },
+            }
+        },
+        { 12105, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.UnnaturalWrath.ToString(), Effect = 14475, Target = "Pet" },
+            }
+        },
+        { 12106, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.UnnaturalWrath.ToString(), Effect = 14460, Target = "Pet" },
+            }
+        },
+        { 12121, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WildEndurance.ToString(), Effect = 14477, Target = "Pet" },
+            }
+        },
+        { 12122, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FeedPet.ToString(), Effect = 14479, Target = "Self" },
+            }
+        },
+        { 12141, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.NimbleLimbs.ToString(), Effect = 14480, Target = "Pet" },
+            }
+        },
+        { 12304, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SicEm.ToString(), Effect = 15913, Target = "Pet" },
+            }
+        },
+        { 12314, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.NimbleLimbs.ToString(), Effect = 15913, Target = "Pet" },
+            }
+        },
+    };
 
     private void WriteBuffEffectJson(string fileName, int stringKeyTableCount, List<PgModEffect[]> powerKeyToCompleteEffectTable, List<string> effectKeyList)
     {
@@ -1621,7 +1848,18 @@ public class CombatParser
                 CombatEffects.Add(NewPowerTierCombatEffect);
             }
 
-            NewPowerTierToEffect.StaticCombatEffects = CombatEffects.ToArray();
+            NewPowerTierToEffect.DynamicCombatEffects = CombatEffects.ToArray();
+        }
+
+        if (modEffect.TargetAbilityList.Count > 0)
+        {
+            WriteBuff = true;
+
+            List<string> TargetAbilityKeywords = new();
+            foreach (AbilityKeyword Keyword in modEffect.TargetAbilityList)
+                TargetAbilityKeywords.Add(Keyword.ToString());
+
+            NewPowerTierToEffect.TargetAbilityKeywords = TargetAbilityKeywords.ToArray();
         }
 
         if (WriteBuff)
@@ -1903,7 +2141,7 @@ public class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "28683")
+            if (Entry.Key.Key == "12319")
             {
             }
 
@@ -2242,10 +2480,21 @@ public class CombatParser
 
         // Hack for Animal Handling
         if ((ModAbilityList.Contains(AbilityKeyword.SicEm) || ModAbilityList.Contains(AbilityKeyword.CleverTrick)) &&
-            EffectAbilityList.Count == 0 &&
+            EffectAbilityList.Count == 0 && ModTargetAbilityList.Count == 0 &&
             (EffectTargetAbilityList.Contains(AbilityKeyword.SicEm) || EffectTargetAbilityList.Contains(AbilityKeyword.CleverTrick)))
         {
-            EffectTargetAbilityList.Clear();
+            foreach (AbilityKeyword Keyword in ModAbilityList)
+                ModTargetAbilityList.Add(Keyword);
+
+            ModAbilityList.Clear();
+        }
+
+        if (effect.AbilityKeywordList.Count == 1 && effect.AbilityKeywordList[0] == AbilityKeyword.StabledPet &&
+            EffectAbilityList.Count == 0 &&
+            EffectTargetAbilityList.Count == 0 &&
+            ModAbilityList.Count == 0)
+        {
+            ModAbilityList.Add(AbilityKeyword.StabledPet);
         }
 
         string ParsedEffectString = CombatEffectListToString(EffectCombatList, out extractedEffectKeywordList);
@@ -2535,9 +2784,10 @@ public class CombatParser
         //BasicTextReplace(ref modText, ref effectText, "Sic Em", "Sic 'Em");
         BasicTextReplace(ref modText, ref effectText, "physical (slashing, piercing, and crushing)", "Crushing, Slashing, or Piercing");
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Pet Healing");
-        BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet attack");
+        BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' basic attacks", "Pet base attack");
+        BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet base attack");
 
-        // BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
+        BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
         BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
         BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels Ice Armor", "Fire damage no longer dispels");
         BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
@@ -2666,6 +2916,17 @@ public class CombatParser
                     Item.Data.RawValue = EvasionValue.Value;
                     Item.Data.RawIsPercent = EvasionIsPercent;
                 }
+
+        // Hack for pet effect
+        if (extractedCombatEffectList.Count > 1 && extractedCombatEffectList[0].Keyword == CombatKeyword.PetImmolation)
+        {
+            for (int j = 1; j < extractedCombatEffectList.Count; j++)
+                if (extractedCombatEffectList[j].Keyword == CombatKeyword.DamageBoost)
+                {
+                    extractedCombatEffectList.Insert(j + 1, new PgCombatEffect() { Keyword = CombatKeyword.ApplyToPet, Data = new PgNumericValue() { } });
+                    break;
+                }
+        }
 
         bool IsRandom = false;
         int i = 0;
@@ -3169,7 +3430,7 @@ public class CombatParser
         string ModifiedText = text;
         Sentence? SelectedSentence = null;
 
-        if (text.Contains("When you trigger"))
+        if (text.Contains("Pet Healing"))
         {
         }
 
@@ -4225,6 +4486,8 @@ public class CombatParser
         new Sentence("Deal %f immediate #D damage", CombatKeyword.DamageBoost),
         new Sentence("Deal %f #D damage", CombatKeyword.DamageBoost),
         new Sentence("Critical hit deal %f damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits }),
+        new Sentence("Crit Damage %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits }),
+        new Sentence("When they critically hit", CombatKeyword.ApplyToCrits),
         new Sentence("Deal %f damage", CombatKeyword.DamageBoost),
         new Sentence("Deal %f more damage", CombatKeyword.DamageBoost),
         new Sentence("Plus %f more damage", CombatKeyword.DamageBoost),
@@ -4390,12 +4653,13 @@ public class CombatParser
         new Sentence("%f Health/Armor healing", CombatKeyword.RestoreHealthArmor),
         new Sentence("Heal you for %f Health/Armor", new List<CombatKeyword>() { CombatKeyword.RestoreHealthArmor, CombatKeyword.TargetSelf }),
         new Sentence("Heal you for %f Health", new List<CombatKeyword>() { CombatKeyword.RestoreHealth, CombatKeyword.TargetSelf }),
-        new Sentence("Heal your pet for %f Health/Armor", CombatKeyword.RestoreHealthArmorToPet),
+        new Sentence("Heal your pet for %f Health/Armor", new List<CombatKeyword>() { CombatKeyword.RestoreHealthArmor, CombatKeyword.ApplyToPet }),
         new Sentence("You regain %f Health", new List<CombatKeyword>() { CombatKeyword.RestoreHealth, CombatKeyword.TargetSelf }),
-        new Sentence("Restore %f Health/Armor to your pet", CombatKeyword.RestoreHealthArmorToPet),
+        new Sentence("Restore %f Health/Armor to your pet", new List<CombatKeyword>() { CombatKeyword.RestoreHealthArmor, CombatKeyword.ApplyToPet }),
         new Sentence("Restore %f Health/Armor", CombatKeyword.RestoreHealthArmor),
 
         new Sentence("Restore %f health (or Armor)", CombatKeyword.RestoreHealthArmor),
+        new Sentence("Pet Healing, if any, restore %f health", CombatKeyword.IncreaseHealEfficiency),
         new Sentence("Restore %f health", CombatKeyword.RestoreHealth),
         new Sentence("Boost the healing of your @ %f", CombatKeyword.RestoreHealth),
 
@@ -4466,7 +4730,7 @@ public class CombatParser
         new Sentence("Target to take %f less damage from attack", CombatKeyword.AddMitigation),
         new Sentence("Target to take %f less damage from #D attack", CombatKeyword.AddMitigation),
         new Sentence("Mitigate %f of all #D damage", CombatKeyword.AddMitigation),
-        new Sentence("Up to %f direct damage mitigation", new List<CombatKeyword>() { CombatKeyword.VariableMitigation, CombatKeyword.ApplyToPet }),
+        new Sentence("Up to %f direct damage mitigation", new List<CombatKeyword>() { CombatKeyword.VariableMitigation }),
         new Sentence("#D Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
 
         new Sentence("Mitigation vs all attack by Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
@@ -4479,7 +4743,7 @@ public class CombatParser
         new Sentence("Any physical (#D) attack that hit you are reduced by %f", CombatKeyword.AddMitigationInternal),
         new Sentence("Universal Indirect Mitigation %f", CombatKeyword.AddMitigationIndirect),
         new Sentence("Mitigate all damage over time by %f per tick", CombatKeyword.AddMitigationIndirect),
-        new Sentence("when armor is empty, up to %f when armor is full", new List<CombatKeyword>() { CombatKeyword.VariableMitigation, CombatKeyword.ApplyToPet }),
+        new Sentence("when armor is empty, up to %f when armor is full", new List<CombatKeyword>() { CombatKeyword.VariableMitigation }),
         new Sentence("Universal Direct Elite Mitigation %f", new List<CombatKeyword>() { CombatKeyword.AddMitigationDirect, CombatKeyword.TargetElite }),
         new Sentence("%f Mitigation from all Elite attack", new List<CombatKeyword>() { CombatKeyword.AddMitigationDirect, CombatKeyword.TargetElite }),
         new Sentence("Stacks up to %f times", CombatKeyword.MaxStack),
@@ -4652,6 +4916,8 @@ public class CombatParser
         new Sentence("When you trigger teleport", CombatKeyword.WhenTeleporting),
         new Sentence("b*u*t", CombatKeyword.But),
         new Sentence("However,", CombatKeyword.But),
+        new Sentence("Your next use", CombatKeyword.NextUse),
+        new Sentence("Pet base attack", CombatKeyword.ApplyToBasic),
     };
     #endregion
 }

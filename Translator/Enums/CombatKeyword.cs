@@ -76,6 +76,7 @@
         BelowMaxRage,
         AboveRage,
         RestoreHealth,
+        IncreaseHealEfficiency,
 
         // RestoreMaxHealth,
         RestoreArmor,
@@ -84,7 +85,7 @@
         RestoreHealthArmorPower,
 
         // RestoreAny,
-        RestoreHealthArmorToPet,
+        //RestoreHealthArmorToPet,
         RestoreBodyHeat,
         ZeroPowerCost,
         AddSprintSpeed,
@@ -212,5 +213,6 @@
         WhenTeleporting,
         But,
         ApplyToCrits,
+        ApplyToBasic,
     }
 }
