@@ -89,6 +89,7 @@
         RestoreBodyHeat,
         ZeroPowerCost,
         AddSprintSpeed,
+        AddSprintPowerCost,
         AddFlySpeed,
         AddSwimSpeed,
         AddOutOfCombatSpeed,

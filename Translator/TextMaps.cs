@@ -2322,6 +2322,7 @@
             { EffectStackingType.HeartThornIndirectDebuff, "Heart Thorn Indirect Debuff" },
             { EffectStackingType.TSysRabbitColdVuln, "Rabbit Cold Vulnerability" },
             { EffectStackingType.LoveTapDebuffSlashing, "Love Tap Debuff Slashing" },
+            { EffectStackingType.SprintCostPerSec, "Sprint Cost Per Second" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()

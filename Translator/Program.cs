@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(391);
+        return ParseCurated(392);
     }
 
     private static int ParseCurated(int Version)

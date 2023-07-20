@@ -18,8 +18,13 @@ public class Fixer
         AddNonClientAttributes(dictionary);
     }
 
+    public static bool NonClientAttributesExist = true;
+
     private static void AddNonClientAttributes(AttributeDictionary dictionary)
     {
+        if (NonClientAttributesExist)
+            return;
+
         List<string> AttributeKeyList = new()
         {
             "COCKATRICEDEBUFF_COST_DELTA",

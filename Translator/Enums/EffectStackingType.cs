@@ -355,5 +355,6 @@
         HeartThornIndirectDebuff,
         TSysRabbitColdVuln,
         LoveTapDebuffSlashing,
+        SprintCostPerSec,
     }
 }

@@ -489,7 +489,7 @@ public class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "24154")
+        if (Key == "13003")
         {
         }
 
@@ -583,7 +583,7 @@ public class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "23205")
+        if (power.Key == "13003")
         {
         }
 
@@ -644,8 +644,6 @@ public class CombatParser
                 foreach (int Id in SimpleEffect.IconIdList)
                 {
                     int IconId = Id;
-                    if (power.Key == "23205" && Id == 3402)
-                        IconId = 3042;
 
                     if (!PowerIconList.Contains(IconId))
                         PowerIconList.Add(IconId);
@@ -654,10 +652,17 @@ public class CombatParser
         }
 
         List<AbilityKeyword> AbilityKeywordList = new List<AbilityKeyword>();
-        foreach (PgEffect EffectItem in effectList)
-            foreach (AbilityKeyword Keyword in EffectItem.AbilityKeywordList)
-                if (!AbilityKeywordList.Contains(Keyword))
-                    AbilityKeywordList.Add(Keyword);
+
+        // Hack for this specific power
+        if (effectList.Count > 0 && effectList[0].Name.StartsWith("TSys_HammerCoreBoostsLookAtMyHammer_"))
+            AbilityKeywordList.Add(AbilityKeyword.LookAtMyHammer);
+        else
+        {
+            foreach (PgEffect EffectItem in effectList)
+                foreach (AbilityKeyword Keyword in EffectItem.AbilityKeywordList)
+                    if (!AbilityKeywordList.Contains(Keyword))
+                        AbilityKeywordList.Add(Keyword);
+        }
 
         if (AbilityKeywordList.Contains(AbilityKeyword.NiceAttack) ||
             AbilityKeywordList.Contains(AbilityKeyword.CoreAttack) ||
@@ -1672,6 +1677,11 @@ public class CombatParser
 
     private static Dictionary<int, AdditionalEffect[]> HardcodedEffectAllTiersTable = new()
     {
+        { 12012, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MonstrousRage.ToString(), Effect = 14311, Target = "Self" },
+            }
+        },
         { 12013, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MonstrousRage.ToString(), Effect = 14312, Target = "Self" },
@@ -1691,6 +1701,11 @@ public class CombatParser
         { 12022, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SicEm.ToString(), Effect = 14314, Target = "Pet" },
+            }
+        },
+        { 12023, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SicEm.ToString(), Effect = 14310, Target = "Pet" },
             }
         },
         { 12024, new AdditionalEffect[]
@@ -1747,6 +1762,11 @@ public class CombatParser
         { 12314, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.NimbleLimbs.ToString(), Effect = 15913, Target = "Pet" },
+            }
+        },
+        { 12317, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20451, Target = "Pet" },
             }
         },
     };
@@ -2489,12 +2509,21 @@ public class CombatParser
             ModAbilityList.Clear();
         }
 
+        // Hack for Animal Handling
         if (effect.AbilityKeywordList.Count == 1 && effect.AbilityKeywordList[0] == AbilityKeyword.StabledPet &&
             EffectAbilityList.Count == 0 &&
             EffectTargetAbilityList.Count == 0 &&
             ModAbilityList.Count == 0)
         {
             ModAbilityList.Add(AbilityKeyword.StabledPet);
+        }
+
+        // Hack for Look At My Hammer
+        if (EffectTargetAbilityList.Count == 1 && EffectTargetAbilityList[0] == AbilityKeyword.LookAtMyHammer &&
+            EffectCombatList.Count == 2 && EffectCombatList[0].Keyword == CombatKeyword.RestorePower && EffectCombatList[1].Keyword == CombatKeyword.EffectDuration &&
+            ModCombatList.Count == 1 && ModCombatList[0].Keyword == CombatKeyword.RestorePower)
+        {
+            ModCombatList.Add(new PgCombatEffect() { Keyword = CombatKeyword.EffectDuration, Data = new PgNumericValue() { RawValue = EffectCombatList[1].Data.RawValue, RawIsPercent = EffectCombatList[1].Data.RawIsPercent } });
         }
 
         string ParsedEffectString = CombatEffectListToString(EffectCombatList, out extractedEffectKeywordList);
@@ -2786,6 +2815,7 @@ public class CombatParser
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Pet Healing");
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' basic attacks", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet base attack");
+        BasicTextReplace(ref modText, ref effectText, "roots or slows", "slow or root");
 
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
         BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
@@ -3430,7 +3460,7 @@ public class CombatParser
         string ModifiedText = text;
         Sentence? SelectedSentence = null;
 
-        if (text.Contains("Pet Healing"))
+        if (text.Contains("Power cost to sprint in combat is reduced"))
         {
         }
 
@@ -4185,6 +4215,7 @@ public class CombatParser
                     IsEffectBoost = true;
                     break;
                 case CombatKeyword.AddPowerCost:
+                case CombatKeyword.AddSprintPowerCost:
                     isSelected = true;
                     if (Item.Data.RawValue.HasValue && Item.Data.Value > 0)
                         IsEffectDebuff = true;
@@ -4223,6 +4254,7 @@ public class CombatParser
             CombatKeyword.AddMitigation,
             CombatKeyword.RestoreHealth,
             CombatKeyword.AddPowerCost,
+            CombatKeyword.AddSprintPowerCost,
             CombatKeyword.RandomDamage,
             CombatKeyword.WithinDistance,
             CombatKeyword.ComboFinalStepBurst,
@@ -4602,6 +4634,8 @@ public class CombatParser
         new Sentence("Raise target's Max Rage by %f", CombatKeyword.IncreaseMaxRage),
         new Sentence("Increase target's Max Rage by%f", CombatKeyword.IncreaseMaxRage),
         new Sentence("Generate no Taunt", CombatKeyword.ZeroTaunt),
+        new Sentence("Sprint Power Cost %f", CombatKeyword.AddSprintPowerCost),
+        new Sentence("Power cost to sprint in combat is reduced %f", CombatKeyword.AddSprintPowerCost),
         new Sentence("Power Cost %f", CombatKeyword.AddPowerCost),
         new Sentence("Power Cost is %f", CombatKeyword.AddPowerCost),
         new Sentence("Reduce the Power cost of your @ %f", CombatKeyword.AddPowerCost),
@@ -4669,6 +4703,7 @@ public class CombatParser
         new Sentence("Restore %f power", CombatKeyword.RestorePower),
         new Sentence("Recover %f health", CombatKeyword.RestoreHealth),
         new Sentence("Recover %f power", CombatKeyword.RestorePower),
+        new Sentence("Power Restoration %f", CombatKeyword.RestorePower),
         new Sentence("Restoration %f", CombatKeyword.RestoreHealth),
         new Sentence("You regain %f power", CombatKeyword.RestorePower),
         new Sentence("Cost no Power to cast", CombatKeyword.ZeroPowerCost),
