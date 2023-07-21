@@ -1653,6 +1653,11 @@ public class CombatParser
                     foreach (PowerTierToEffect PowerTierToEffect in NewPowerToEffect.Tiers)
                         PowerTierToEffect.AdditionalEffects = HardcodedEffectAllTiersTable[PowerId];
                 }
+                else if (HardcodedEffectTable.ContainsKey(PowerId))
+                {
+                    for (int j = 0; j < NewPowerToEffect.Tiers.Length && j < HardcodedEffectTable[PowerId].Count; j++)
+                        NewPowerToEffect.Tiers[j].AdditionalEffects = HardcodedEffectTable[PowerId][j + 1];
+                }
 
                 PowerToEffectTable.Add(PowerId, NewPowerToEffect);
             }
@@ -1673,6 +1678,18 @@ public class CombatParser
 
     private static Dictionary<int, Dictionary<int, AdditionalEffect[]>> HardcodedEffectTable = new()
     {
+        { 12317, new Dictionary<int, AdditionalEffect[]>()
+            {
+                { 1, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20451, Target = "Pet" } } },
+                { 2, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20452, Target = "Pet" } } },
+                { 3, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20453, Target = "Pet" } } },
+                { 4, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20454, Target = "Pet" } } },
+                { 5, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20455, Target = "Pet" } } },
+                { 6, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20456, Target = "Pet" } } },
+                { 7, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20457, Target = "Pet" } } },
+                { 8, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20458, Target = "Pet" } } },
+            }
+        },
     };
 
     private static Dictionary<int, AdditionalEffect[]> HardcodedEffectAllTiersTable = new()
@@ -1724,9 +1741,14 @@ public class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GetItOffMe.ToString(), Effect = 14315, Target = "Pet" },
             }
         },
+        { 12053, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GetItOffMe.ToString(), Effect = 14909, Target = "Pet" },
+            }
+        },
         { 12091, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FeedPet.ToString(), Effect = 14906, Target = "Pet" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FeedPet.ToString(), Effect = 14918, Target = "Pet" },
             }
         },
         { 12105, new AdditionalEffect[]
@@ -1761,12 +1783,7 @@ public class CombatParser
         },
         { 12314, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.NimbleLimbs.ToString(), Effect = 15913, Target = "Pet" },
-            }
-        },
-        { 12317, new AdditionalEffect[]
-            {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20451, Target = "Pet" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.NimbleLimbs.ToString(), Effect = 15963, Target = "Pet" },
             }
         },
     };
@@ -2161,7 +2178,7 @@ public class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "12319")
+            if (Entry.Key.Key == "12011")
             {
             }
 
@@ -2563,6 +2580,7 @@ public class CombatParser
                 switch (Item.Keyword)
                 {
                     case CombatKeyword.DamageBoost:
+                    case CombatKeyword.AddRage:
                         break;
 
                     default:
@@ -2814,6 +2832,7 @@ public class CombatParser
         BasicTextReplace(ref modText, ref effectText, "physical (slashing, piercing, and crushing)", "Crushing, Slashing, or Piercing");
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Pet Healing");
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' basic attacks", "Pet base attack");
+        BasicTextReplace(ref modText, ref effectText, "pets' basic attacks", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "roots or slows", "slow or root");
 
