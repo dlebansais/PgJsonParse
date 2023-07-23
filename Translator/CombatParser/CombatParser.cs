@@ -489,7 +489,7 @@ public class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "13003")
+        if (Key == "23301")
         {
         }
 
@@ -705,6 +705,26 @@ public class CombatParser
                     KeywordMatch = true;
                     break;
                 }
+
+            Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
+            {
+                { AbilityPetType.SummonedSpider, AbilityKeyword.SummonedSpider },
+                { AbilityPetType.StabledPet, AbilityKeyword.StabledPet },
+                { AbilityPetType.SummonedColdSphere, AbilityKeyword.SummonedColdSphere },
+                { AbilityPetType.StunTrap, AbilityKeyword.StunTrap },
+                { AbilityPetType.PowerGlyph, AbilityKeyword.PowerGlyph },
+                { AbilityPetType.SummonedTornado, AbilityKeyword.SummonedTornado },
+            };
+
+            AbilityPetType PetType = AbilityItem.PetTypeTagRequirement;
+            if (PetTypeToKeywordTable.ContainsKey(PetType) && AbilityKeywordList.Contains(PetTypeToKeywordTable[PetType]))
+            {
+                if (PetType == AbilityPetType.StabledPet)
+                {
+                }
+
+                KeywordMatch = true;
+            }
 
             if (KeywordMatch)
             {
@@ -1356,14 +1376,14 @@ public class CombatParser
         if (HasNonSpecialValueEffect(combatEffectList, out _))
             return;
 
-        List<KeyValuePair<string, string>> VerificationTable = null!;
+        List<EffectVerificationEntry> VerificationTable = null!;
 
         if (expectTableWithEntries)
         {
             if (!EffectVerification.EffectVerificationTable.ContainsKey(combatKeyword))
             {
                 Debug.WriteLine($"ERROR Combat Keyword {combatKeyword}: no entries?");
-                EffectVerification.EffectVerificationTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
+                EffectVerification.EffectVerificationTable.Add(combatKeyword, new List<EffectVerificationEntry>());
             }
 
             VerificationTable = EffectVerification.EffectVerificationTable[combatKeyword];
@@ -1389,8 +1409,8 @@ public class CombatParser
                         string Label = SpecialValue.Label;
                         string Suffix = SpecialValue.Suffix;
 
-                        foreach (KeyValuePair<string, string> Entry in VerificationTable)
-                            if (Label == Entry.Key && Suffix == Entry.Value)
+                        foreach (EffectVerificationEntry Entry in VerificationTable)
+                            if (Label == Entry.Prefix && Suffix == Entry.Suffix)
                             {
                                 VerificationCount++;
                                 break;
@@ -1433,7 +1453,7 @@ public class CombatParser
                             SpecificUnverifiedTable.Add(new KeyValuePair<string, string>(Label, Suffix));
 
                             if (showCandidates)
-                                Debug.WriteLine($"new KeyValuePair<string, string>(\"{Label}\", \"{Suffix}\"),");
+                                Debug.WriteLine($"new EffectVerificationEntry() {{ Prefix = \"{Label}\", Suffix = \"{Suffix}\" }},");
                         }
                     }
 
@@ -1784,6 +1804,52 @@ public class CombatParser
         { 12314, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.NimbleLimbs.ToString(), Effect = 15963, Target = "Pet" },
+            }
+        },
+
+        { 23003, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PremeditatedDoom.ToString(), Effect = 14670, Target = "Self" },
+            }
+        },
+        { 23101, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WebTrap.ToString(), Effect = 15167, Target = "Self" },
+            }
+        },
+        { 23401, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SpiderAcid.ToString(), Effect = 15196, Target = "Self" },
+            }
+        },
+        { 23501, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SpiderFear.ToString(), Effect = 15167, Target = "Self" },
+            }
+        },
+        { 23251, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.InfiniteLegs.ToString(), Effect = 15051, Target = "Self" },
+            }
+        },
+        { 23254, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.InfiniteLegs.ToString(), Effect = 15057, Target = "Self" },
+            }
+        },
+        { 23554, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PremeditatedDoom.ToString(), Effect = 14667, Target = "Self" },
+            }
+        },
+        { 23603, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GrapplingWeb.ToString(), Effect = 14674, Target = "Self" },
+            }
+        },
+        { 23604, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GrapplingWeb.ToString(), Effect = 14673, Target = "Foe" },
             }
         },
     };
@@ -2178,7 +2244,7 @@ public class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "12011")
+            if (Entry.Key.Key == "23402")
             {
             }
 
@@ -2514,6 +2580,13 @@ public class CombatParser
 
         AnalyzeText(abilityNameList, nameToKeyword, ModText, true, out List<AbilityKeyword> ModAbilityList, out PgCombatEffectCollection ModCombatList, out List<AbilityKeyword> ModTargetAbilityList);
         AnalyzeText(abilityNameList, nameToKeyword, EffectText, IsMod, out List<AbilityKeyword> EffectAbilityList, out PgCombatEffectCollection EffectCombatList, out List<AbilityKeyword> EffectTargetAbilityList);
+
+        // Make mitigation more accurate
+        for (int i = 0; i < ModCombatList.Count && i < EffectCombatList.Count; i++)
+            if (ModCombatList[i].Keyword == CombatKeyword.AddMitigation && EffectCombatList[i].Keyword == CombatKeyword.AddMitigationDirect &&
+                ModCombatList[i].Data.RawValue.HasValue && EffectCombatList[i].Data.RawValue.HasValue && ModCombatList[i].Data.Value == EffectCombatList[i].Data.Value &&
+                ModCombatList[i].Data.RawIsPercent.HasValue && EffectCombatList[i].Data.RawIsPercent.HasValue && ModCombatList[i].Data.IsPercent == EffectCombatList[i].Data.IsPercent)
+                ModCombatList[i].Keyword = CombatKeyword.AddMitigationDirect;
 
         // Hack for Animal Handling
         if ((ModAbilityList.Contains(AbilityKeyword.SicEm) || ModAbilityList.Contains(AbilityKeyword.CleverTrick)) &&
@@ -3392,7 +3465,7 @@ public class CombatParser
                     MitigationKeyword = extractedCombatEffectList[i].Keyword;
                     MitigationDamageType = extractedCombatEffectList[i].DamageType;
                 }
-                else
+                else if (extractedCombatEffectList[i].DamageType == GameDamageType.Internal_None)
                 {
                     extractedCombatEffectList[i].Keyword = MitigationKeyword;
                     extractedCombatEffectList[i].DamageType = MitigationDamageType;
@@ -3479,7 +3552,7 @@ public class CombatParser
         string ModifiedText = text;
         Sentence? SelectedSentence = null;
 
-        if (text.Contains("Power cost to sprint in combat is reduced"))
+        if (text.Contains("While Spider skill is active,"))
         {
         }
 
@@ -4829,7 +4902,7 @@ public class CombatParser
         new Sentence("%f mitigation from #D attack", CombatKeyword.AddMitigation),
         new Sentence("Direct and Indirect #D mitigation %f", CombatKeyword.AddMitigation),
         new Sentence("Indirect #D mitigation %f", CombatKeyword.AddMitigationIndirect),
-        new Sentence("Direct #D mitigation %f", CombatKeyword.AddMitigation),
+        new Sentence("Direct #D mitigation %f", CombatKeyword.AddMitigationDirect),
         new Sentence("%f direct damage mitigation", CombatKeyword.AddMitigationDirect),
         new Sentence("Boost your direct damage mitigation %f", CombatKeyword.AddMitigationDirect),
         new Sentence("Cause all targets to suffer %f damage from direct #D attack", CombatKeyword.AddMitigation, SignInterpretation.Opposite),

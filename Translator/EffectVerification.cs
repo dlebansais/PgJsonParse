@@ -4,116 +4,120 @@
 
     public static class EffectVerification
     {
-        public static Dictionary<CombatKeyword, List<KeyValuePair<string, string>>> EffectVerificationTable { get; } = new Dictionary<CombatKeyword, List<KeyValuePair<string, string>>>()
+        public static Dictionary<CombatKeyword, List<EffectVerificationEntry>> EffectVerificationTable { get; } = new Dictionary<CombatKeyword, List<EffectVerificationEntry>>()
         {
             {
-                CombatKeyword.RestoreHealth, new List<KeyValuePair<string, string>>()
+                CombatKeyword.RestoreHealth, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Restore", "Health"),
-                    new KeyValuePair<string, string>("Restores", "Health"),
-                    new KeyValuePair<string, string>("Heal Target", "Health"),
-                    new KeyValuePair<string, string>("Restore", "Health (or Armor if Health is full) to nearby ally undead"),
-                    new KeyValuePair<string, string>("Nearby Firewalls Heal", string.Empty),
-                    new KeyValuePair<string, string>("Restore", "Health to yourself"),
-                    new KeyValuePair<string, string>("Restores", "Health to yourself"),
-                    new KeyValuePair<string, string>("Restores", "Health after a 10-second delay"),
-                    new KeyValuePair<string, string>("Restores", "Health to Target"),
-                    new KeyValuePair<string, string>("Restore", "Health to you and nearby allies"),
-                    new KeyValuePair<string, string>("Restores", "Health (or Armor if Health is full) to Pet"),
-                    new KeyValuePair<string, string>("Existing Zombie is Healed", "Health"),
-                    new KeyValuePair<string, string>("You heal", "per second when near your web trap"),
-                    new KeyValuePair<string, string>("Restore", "Health to least-healthy ally"),
-                    new KeyValuePair<string, string>("For 8 seconds, each time target attacks and damages you, heal", "Health"),
-                    new KeyValuePair<string, string>("Heal", "Health every 4 seconds"),
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health" },
+                    new EffectVerificationEntry() { Prefix = "Heal Target", Suffix = "Health" },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health (or Armor if Health is full) to nearby ally undead" },
+                    new EffectVerificationEntry() { Prefix = "Nearby Firewalls Heal", Suffix = string.Empty },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health to yourself" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health to yourself" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health after a 10-second delay" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health to Target" },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health to you and nearby allies" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health (or Armor if Health is full) to Pet" },
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie is Healed", Suffix = "Health" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health/Sec when near your Web Trap", AllowRecurrence = true },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health to least-healthy ally" },
+                    new EffectVerificationEntry() { Prefix = "For 8 seconds, each time target attacks and damages you, heal", Suffix = "Health" },
+                    new EffectVerificationEntry() { Prefix = "Heal", Suffix = "Health every 4 seconds" },
                 }
             },
             {
-                CombatKeyword.RestorePower, new List<KeyValuePair<string, string>>()
+                CombatKeyword.RestorePower, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Restores", "Power"),
-                    new KeyValuePair<string, string>("Restore", "Power"),
-                    new KeyValuePair<string, string>("You recover", "Power per second when near your web trap"),
-                    new KeyValuePair<string, string>("Recover", "Power when melee attacks deal damage to you"),
-                    new KeyValuePair<string, string>("Restores", "Power after a 12-second delay"),
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Power" },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Power" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Power Per Second when near your Web Trap", AllowRecurrence = true },
+                    new EffectVerificationEntry() { Prefix = "Recover", Suffix = "Power when melee attacks deal damage to you" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Power after a 12-second delay" },
                 }
             },
             {
-                CombatKeyword.RestoreArmor, new List<KeyValuePair<string, string>>()
+                CombatKeyword.RestoreArmor, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Restores", "Armor"),
-                    new KeyValuePair<string, string>("Restore", "Armor"),
-                    new KeyValuePair<string, string>("Restores", "Armor after a 6-second delay"),
-                    new KeyValuePair<string, string>("Restores", "Armor after a 10-second delay"),
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Armor" },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Armor" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Armor after a 6-second delay" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Armor after a 10-second delay" },
                 }
             },
             {
-                CombatKeyword.RestoreHealthArmor, new List<KeyValuePair<string, string>>()
+                CombatKeyword.RestoreHealthArmor, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Restore", "Health (or Armor if Health is full) to nearby ally undead"),
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health (or Armor if Health is full) to nearby ally undead" },
                 }
             },
             {
-                CombatKeyword.RestoreHealthArmorPower, new List<KeyValuePair<string, string>>()
+                CombatKeyword.RestoreHealthArmorPower, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Restore", "Armor every 3 seconds"),
-                    new KeyValuePair<string, string>("Restore", "Health every 4 seconds"),
-                    new KeyValuePair<string, string>("Restore", "Power every 8 seconds"),
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Armor every 3 seconds", AllowRecurrence = true },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health every 4 seconds", AllowRecurrence = true },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Power every 8 seconds", AllowRecurrence = true },
                 }
             },
             {
-                CombatKeyword.AddMaxHealth, new List<KeyValuePair<string, string>>()
+                CombatKeyword.AddMaxHealth, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Existing Zombie's Max Health", "for 60 seconds"),
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Max Health", Suffix = "for 60 seconds" },
                 }
             },
             {
-                CombatKeyword.DrainHealth, new List<KeyValuePair<string, string>>()
+                CombatKeyword.DrainHealth, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Reaps", "of the Health damage done (up to the max)"),
+                    new EffectVerificationEntry() { Prefix = "Reaps", Suffix = "of the Health damage done (up to the max)" },
                 }
             },
             {
-                CombatKeyword.DrainArmor, new List<KeyValuePair<string, string>>()
+                CombatKeyword.DrainArmor, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Reaps", "of the Armor damage done (up to the max)"),
+                    new EffectVerificationEntry() { Prefix = "Reaps", Suffix = "of the Armor damage done (up to the max)" },
                 }
             },
             {
-                CombatKeyword.DrainHealthMax, new List<KeyValuePair<string, string>>()
+                CombatKeyword.DrainHealthMax, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Max Health Reaped", string.Empty),
+                    new EffectVerificationEntry() { Prefix = "Max Health Reaped", Suffix = string.Empty },
                 }
             },
             {
-                CombatKeyword.DrainArmorMax, new List<KeyValuePair<string, string>>()
+                CombatKeyword.DrainArmorMax, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Max Armor Reaped", string.Empty),
+                    new EffectVerificationEntry() { Prefix = "Max Armor Reaped", Suffix = string.Empty },
                 }
             },
             {
-                CombatKeyword.DamageBoost, new List<KeyValuePair<string, string>>()
+                CombatKeyword.DamageBoost, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Deal", "Damage every 2 seconds"),
-                    new KeyValuePair<string, string>("Deal", "Trauma Damage every 2 seconds"),
-                    new KeyValuePair<string, string>("Existing Zombie's Direct Damage", "for 60 seconds"),
-                    new KeyValuePair<string, string>("Existing Zombie's Direct Damage", "for 5 minutes"),
-                    new KeyValuePair<string, string>("Existing Zombie's Damage Boosted", "for 60 seconds"),
-                    new KeyValuePair<string, string>("Minion Damage", "for 10 seconds"),
-                    new KeyValuePair<string, string>("Minion Damage Boost", "for 10 seconds"),
-                    new KeyValuePair<string, string>("All your attacks deal", "damage for 10 seconds"),
-                    new KeyValuePair<string, string>("For 8 seconds, each time target attacks and damages you, they suffer", "Trauma damage"),
+                    new EffectVerificationEntry() { Prefix = "Deal", Suffix = "Damage every 2 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Deal", Suffix = "Trauma Damage every 2 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Direct Damage", Suffix = "for 60 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Direct Damage", Suffix = "for 5 minutes" },
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Damage Boosted", Suffix = "for 60 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Minion Damage", Suffix = "for 10 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Minion Damage Boost", Suffix = "for 10 seconds" },
+                    new EffectVerificationEntry() { Prefix = "All your attacks deal", Suffix = "damage for 10 seconds" },
+                    new EffectVerificationEntry() { Prefix = "For 8 seconds, each time target attacks and damages you, they suffer", Suffix = "Trauma damage" },
+                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 10 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 12 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 15 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 18 seconds" },
                 }
             },
             {
-                CombatKeyword.DebuffMitigation, new List<KeyValuePair<string, string>>()
+                CombatKeyword.DebuffMitigation, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Target's mitigation reduced", "for 30 seconds"),
+                    new EffectVerificationEntry() { Prefix = "Target's mitigation reduced", Suffix = "for 30 seconds" },
                 }
             },
             {
-                CombatKeyword.AddSprintSpeed, new List<KeyValuePair<string, string>>()
+                CombatKeyword.AddSprintSpeed, new List<EffectVerificationEntry>()
                 {
-                    new KeyValuePair<string, string>("Sprint Speed", "(out of combat)"),
+                    new EffectVerificationEntry() { Prefix = "Sprint Speed", Suffix = "(out of combat)" },
                 }
             },
         };

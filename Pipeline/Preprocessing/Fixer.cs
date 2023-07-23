@@ -42,7 +42,7 @@ public class Fixer
         };
 
         foreach (string Key in AttributeKeyList)
-            dictionary.Add(Key, new Attribute() { DisplayRule = "Never", DisplayType = "AsBuffDelta" });
+            dictionary.Add(Key, new Attribute(new RawAttribute() { DisplayRule = "Never", DisplayType = "AsBuffDelta" }));
     }
 
     public static void FixRecipes(object objectCollection)

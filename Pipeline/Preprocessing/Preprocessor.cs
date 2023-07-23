@@ -20,7 +20,7 @@ public class Preprocessor
         new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
         new StringDictionaryJsonConverter<AIAbility, RawAIAbility, AIAbilityDictionary>(),
         new StringDictionaryJsonConverter<Area, Area, AreaDictionary>(),
-        new StringDictionaryJsonConverter<Attribute, Attribute, AttributeDictionary>(),
+        new StringDictionaryJsonConverter<Attribute, RawAttribute, AttributeDictionary>(),
         new DirectedGoalDictionaryJsonConverter(),
         new IntDictionaryJsonConverter<Effect, RawEffect, EffectDictionary>("effect"),
         new IntDictionaryJsonConverter<Item, RawItem, ItemDictionary>("item"),

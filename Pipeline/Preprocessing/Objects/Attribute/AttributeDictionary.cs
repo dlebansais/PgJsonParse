@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-public class AttributeDictionary : Dictionary<string, Attribute>, IDictionaryValueBuilder<Attribute, Attribute>
+public class AttributeDictionary : Dictionary<string, Attribute>, IDictionaryValueBuilder<Attribute, RawAttribute>
 {
-    public Attribute FromRaw(Attribute attribute) => attribute;
-    public Attribute ToRaw(Attribute attribute) => attribute;
+    public Attribute FromRaw(RawAttribute rawAttribute) => new Attribute(rawAttribute);
+    public RawAttribute ToRaw(Attribute attribute) => attribute.ToRawAttribute();
 }
