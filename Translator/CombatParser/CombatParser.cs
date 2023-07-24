@@ -1812,6 +1812,11 @@ public class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PremeditatedDoom.ToString(), Effect = 14670, Target = "Self" },
             }
         },
+        { 23005, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.InfiniteLegs.ToString(), Effect = 15051, Target = "Self" },
+            }
+        },
         { 23101, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WebTrap.ToString(), Effect = 15167, Target = "Self" },
@@ -1827,6 +1832,11 @@ public class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SpiderFear.ToString(), Effect = 15167, Target = "Self" },
             }
         },
+        { 23504, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SpiderFear.ToString(), Effect = 14673, Target = "Foe" },
+            }
+        },
         { 23251, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.InfiniteLegs.ToString(), Effect = 15051, Target = "Self" },
@@ -1837,9 +1847,19 @@ public class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.InfiniteLegs.ToString(), Effect = 15057, Target = "Self" },
             }
         },
+        { 23551, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PremeditatedDoom.ToString(), Effect = 14671, Target = "Self" },
+            }
+        },
         { 23554, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PremeditatedDoom.ToString(), Effect = 14667, Target = "Self" },
+            }
+        },
+        { 23602, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GrapplingWeb.ToString(), Effect = 15322, Target = "Foe" },
             }
         },
         { 23603, new AdditionalEffect[]
@@ -1849,7 +1869,7 @@ public class CombatParser
         },
         { 23604, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GrapplingWeb.ToString(), Effect = 14673, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GrapplingWeb.ToString(), Effect = 14675, Target = "Foe" },
             }
         },
     };
@@ -2244,7 +2264,7 @@ public class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "23402")
+            if (Entry.Key.Key == "23305")
             {
             }
 
@@ -2908,6 +2928,7 @@ public class CombatParser
         BasicTextReplace(ref modText, ref effectText, "pets' basic attacks", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "roots or slows", "slow or root");
+        BasicTextReplace(ref modText, ref effectText, "Incubated Spiders' Rage attacks", "Incubated Spiders Rage attacks");
 
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
         BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
@@ -3552,7 +3573,7 @@ public class CombatParser
         string ModifiedText = text;
         Sentence? SelectedSentence = null;
 
-        if (text.Contains("While Spider skill is active,"))
+        if (text.Contains("Incubated Spider"))
         {
         }
 
@@ -4601,7 +4622,7 @@ public class CombatParser
         new Sentence("%f damage from all attack", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }),
         new Sentence("Turning half of that into Trauma damage", CombatKeyword.ExtraTraumaDamage),
         new Sentence("#D attack Deal %f damage", CombatKeyword.DamageBoost),
-        new Sentence("Rage attack deal %f damage", CombatKeyword.AnimalPetRageAttackBoost),
+        new Sentence("Rage attack deal %f", CombatKeyword.AnimalPetRageAttackBoost),
         new Sentence("Pet's Rage Attack Damage %f", CombatKeyword.AnimalPetRageAttackBoost),
         new Sentence("Rage Attack Damage %f", CombatKeyword.AnimalPetRageAttackBoost),
         new Sentence("Deal up to %f damage", CombatKeyword.DamageBoost),

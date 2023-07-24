@@ -16,7 +16,7 @@
                     new EffectVerificationEntry() { Prefix = "Nearby Firewalls Heal", Suffix = string.Empty },
                     new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health to yourself" },
                     new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health to yourself" },
-                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health after a 10-second delay" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health/Armor after a 10-second delay" },
                     new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health to Target" },
                     new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health to you and nearby allies" },
                     new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health (or Armor if Health is full) to Pet" },
