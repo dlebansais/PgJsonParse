@@ -1710,10 +1710,55 @@ public class CombatParser
                 { 8, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CleverTrick.ToString(), Effect = 20458, Target = "Pet" } } },
             }
         },
+        { 10451, new Dictionary<int, AdditionalEffect[]>()
+            {
+                { 1, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14589, Target = "Self" } } },
+                { 2, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14590, Target = "Self" } } },
+                { 3, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14591, Target = "Self" } } },
+                { 4, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14592, Target = "Self" } } },
+                { 5, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14593, Target = "Self" } } },
+                { 6, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14594, Target = "Self" } } },
+                { 7, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14595, Target = "Self" } } },
+                { 8, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14596, Target = "Self" } } },
+                { 9, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14597, Target = "Self" } } },
+                { 10, new AdditionalEffect[1] { new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BowBash.ToString(), Effect = 14598, Target = "Self" } } },
+            }
+        },
     };
 
     private static Dictionary<int, AdditionalEffect[]> HardcodedEffectAllTiersTable = new()
     {
+        { 10124, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 14906, Target = "Self" },
+            }
+        },
+        { 10162, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BlitzShot.ToString(), Effect = 16635, Target = "Self" },
+            }
+        },
+        { 10308, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FireArrow.ToString(), Effect = 15368, Target = "Foe" },
+            }
+        },
+        { 10401, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SnareArrow.ToString(), Effect = 16638, Target = "Self" },
+            }
+        },
+        { 10501, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 15151, Target = "Foe" },
+            }
+        },
+        { 10502, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16626, Target = "Foe" },
+            }
+        },
+
         { 12012, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MonstrousRage.ToString(), Effect = 14311, Target = "Self" },
@@ -2264,7 +2309,7 @@ public class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "23305")
+            if (Entry.Key.Key == "10008")
             {
             }
 
@@ -4031,7 +4076,7 @@ public class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "23205")
+            if (ItemPower.Key == "10008")
             {
             }
 
@@ -4694,6 +4739,7 @@ public class CombatParser
         new Sentence("Boost your direct and indirect #D damage %f", CombatKeyword.DamageBoost),
         new Sentence("Indirect #D Damage %f", CombatKeyword.DealIndirectDamage),
         new Sentence("Indirect #D %f per tick", CombatKeyword.DealIndirectDamage),
+        new Sentence("Indirect #D %f (per tick)", CombatKeyword.DealIndirectDamage),
         new Sentence("%f indirect damage per tick", CombatKeyword.DealIndirectDamage),
         new Sentence("Direct and Indirect #D Damage %f", CombatKeyword.DamageBoost),
         new Sentence("Damage over Time %f per tick", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.DamageOverTime }),
@@ -4851,6 +4897,7 @@ public class CombatParser
         new Sentence("Dispel any Slow or Root", CombatKeyword.RemoveSlowRoot),
         new Sentence("Target is prone to random self-stuns", CombatKeyword.Concussion),
         new Sentence("Stun targets", CombatKeyword.Stun),
+        new Sentence("To Stunned targets", CombatKeyword.StunnedTarget),
         new Sentence("Stun incorporeal enemies", CombatKeyword.StunIncorporeal),
         new Sentence("Stun", CombatKeyword.Stun),
         new Sentence("Targets are Knock back", CombatKeyword.Knockback),

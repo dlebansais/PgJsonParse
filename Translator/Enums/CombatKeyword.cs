@@ -102,6 +102,7 @@
         ApplyToPetAndMaster,
         AddRange,
         Stun,
+        StunnedTarget,
         Concussion,
         StunIncorporeal,
         SelfStun,
