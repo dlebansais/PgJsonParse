@@ -250,6 +250,14 @@ public class ParserAbility : Parser
         {
             if (item.PvE == null)
                 return Program.ReportFailure(parsedFile, parsedKey, $"PvE info missing");
+            /*
+            if (item.DamageType == DamageType.Fire && item.RawLevel.HasValue && item.PvE.RawPowerCost.HasValue && !string.IsNullOrEmpty(item.Skill_Key))
+            {
+                if (item.PvE.RawRageMultiplier.HasValue)
+                    Debug.WriteLine($"{item.Skill_Key?.Substring(1)} - {item.Name} Multiplier={item.PvE.RageMultiplier}");
+                else
+                    Debug.WriteLine($"{item.Skill_Key?.Substring(1)} - {item.Name}");
+            }*/
         }
 
         return Result;

@@ -489,7 +489,7 @@ public class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "23301")
+        if (Key == "1086")
         {
         }
 
@@ -1319,6 +1319,7 @@ public class CombatParser
             case CombatKeyword.ComboFinalStepDamage:
             case CombatKeyword.Combo3:
             case CombatKeyword.Combo4:
+            case CombatKeyword.Fear:
             case CombatKeyword.Stun:
             case CombatKeyword.Combo5:
             case CombatKeyword.Combo6:
@@ -1728,9 +1729,103 @@ public class CombatParser
 
     private static Dictionary<int, AdditionalEffect[]> HardcodedEffectAllTiersTable = new()
     {
+        #region Sword
+        { 1021, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManyCuts.ToString(), Effect = 15311, Target = "Foe" },
+            }
+        },
+        { 1061, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WindStrike.ToString(), Effect = 15132, Target = "Self" },
+            }
+        },
+        { 1063, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WindStrike.ToString(), Effect = 16510, Target = "Self" },
+            }
+        },
+        { 1064, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FinishingBlow.ToString(), Effect = 14753, Target = "Self" },
+            }
+        },
+        { 1065, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WindStrike.ToString(), Effect = 14754, Target = "Self" },
+            }
+        },
+        { 1082, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FlashingStrike.ToString(), Effect = 14755, Target = "Self" },
+            }
+        },
+        { 1081, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Decapitate.ToString(), Effect = 14058, Target = "Foe" },
+            }
+        },
+        { 1086, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FinishingBlow.ToString(), Effect = 15400, Target = "Foe" },
+            }
+        },
+        { 1202, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Decapitate.ToString(), Effect = 15360, Target = "Self" },
+            }
+        },
+        { 1354, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PrecisionPierce.ToString(), Effect = 16509, Target = "Self" },
+            }
+        },
+        { 1502, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DebilitatingBlow.ToString(), Effect = 16502, Target = "Self" },
+            }
+        },
+        { 1503, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DebilitatingBlow.ToString(), Effect = 15399, Target = "Foe" },
+            }
+        },
+        #endregion
+
+        #region Archery
+        { 10042, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16633, Target = "Foe" },
+            }
+        },
+        { 10043, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16631, Target = "Self" },
+            }
+        },
+        { 10044, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16632, Target = "Self" },
+            }
+        },
+        { 10082, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MultiShot.ToString(), Effect = 14906, Target = "Self" },
+            }
+        },
+        { 10122, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 16634, Target = "Self" },
+            }
+        },
         { 10124, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 14906, Target = "Self" },
+            }
+        },
+        { 10125, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 16629, Target = "Foe" },
             }
         },
         { 10162, new AdditionalEffect[]
@@ -1738,14 +1833,34 @@ public class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BlitzShot.ToString(), Effect = 16635, Target = "Self" },
             }
         },
+        { 10306, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PoisonArrow.ToString(), Effect = 16636, Target = "Foe" },
+            }
+        },
         { 10308, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FireArrow.ToString(), Effect = 15368, Target = "Foe" },
             }
         },
+        { 10309, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PoisonArrow.ToString(), Effect = 14363, Target = "Foe" },
+            }
+        },
         { 10401, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SnareArrow.ToString(), Effect = 16638, Target = "Self" },
+            }
+        },
+        { 10403, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SnareArrow.ToString(), Effect = 16637, Target = "Foe" },
+            }
+        },
+        { 10456, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HeavyMultiShot.ToString(), Effect = 14621, Target = "Self" },
             }
         },
         { 10501, new AdditionalEffect[]
@@ -1758,7 +1873,34 @@ public class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16626, Target = "Foe" },
             }
         },
+        { 10503, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16627, Target = "Foe" },
+            }
+        },
+        { 10504, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16871, Target = "Foe" },
+            }
+        },
+        { 10508, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.RestorativeArrow.ToString(), Effect = 16628, Target = "Self" },
+            }
+        },
+        { 10552, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HookShot.ToString(), Effect = 16646, Target = "Foe" },
+            }
+        },
+        { 10554, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HookShot.ToString(), Effect = 16648, Target = "Foe" },
+            }
+        },
+        #endregion
 
+        #region Animal Handling
         { 12012, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MonstrousRage.ToString(), Effect = 14311, Target = "Self" },
@@ -1851,7 +1993,9 @@ public class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.NimbleLimbs.ToString(), Effect = 15963, Target = "Pet" },
             }
         },
+        #endregion
 
+        #region Spider
         { 23003, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PremeditatedDoom.ToString(), Effect = 14670, Target = "Self" },
@@ -1917,6 +2061,7 @@ public class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.GrapplingWeb.ToString(), Effect = 14675, Target = "Foe" },
             }
         },
+        #endregion
     };
 
     private void WriteBuffEffectJson(string fileName, int stringKeyTableCount, List<PgModEffect[]> powerKeyToCompleteEffectTable, List<string> effectKeyList)
@@ -2309,7 +2454,7 @@ public class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "10008")
+            if (Entry.Key.Key == "1081")
             {
             }
 
@@ -2679,6 +2824,16 @@ public class CombatParser
             ModCombatList.Count == 1 && ModCombatList[0].Keyword == CombatKeyword.RestorePower)
         {
             ModCombatList.Add(new PgCombatEffect() { Keyword = CombatKeyword.EffectDuration, Data = new PgNumericValue() { RawValue = EffectCombatList[1].Data.RawValue, RawIsPercent = EffectCombatList[1].Data.RawIsPercent } });
+        }
+
+        // Hack for Parry
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.OnlyParry &&
+            EffectCombatList.Count == 1 && EffectCombatList[0].Keyword == CombatKeyword.WithinDistance &&
+            ModCombatList.Count == 2 && ModCombatList[0].Keyword == CombatKeyword.WithinDistance)
+        {
+            PgCombatEffect CombatEffect = ModCombatList[1];
+            ModCombatList.RemoveAt(1);
+            ModCombatList.Insert(0, CombatEffect);
         }
 
         string ParsedEffectString = CombatEffectListToString(EffectCombatList, out extractedEffectKeywordList);
@@ -3114,6 +3269,22 @@ public class CombatParser
                     extractedCombatEffectList.Insert(j + 1, new PgCombatEffect() { Keyword = CombatKeyword.ApplyToPet, Data = new PgNumericValue() { } });
                     break;
                 }
+        }
+
+        // Hack for Flashing Strike
+        if (extractedAbilityList.Contains(AbilityKeyword.FlashingStrike))
+        {
+            bool IsTargetUndead = false;
+            foreach (PgCombatEffect CombatEffect in extractedCombatEffectList)
+                if (CombatEffect.Keyword == CombatKeyword.TargetUndead)
+                    IsTargetUndead = true;
+
+            if (IsTargetUndead)
+            {
+                foreach (PgCombatEffect CombatEffect in extractedCombatEffectList)
+                    if (CombatEffect.Keyword == CombatKeyword.DamageBoost && CombatEffect.DamageType == GameDamageType.Internal_None)
+                        CombatEffect.DamageType = GameDamageType.Nature;
+            }
         }
 
         bool IsRandom = false;
@@ -3665,7 +3836,7 @@ public class CombatParser
 
     private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref PgNumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence? selectedSentence)
     {
-        if (sentence.Format == "Restore %f health (or Armor)")
+        if (sentence.Format == "Mitigate %f damage from #D attacks")
         {
         }
 
@@ -3909,6 +4080,30 @@ public class CombatParser
         return -1;
     }
 
+    private void CreateDamageTypePermutations(Dictionary<int, string> FoundTextMap, List<int> FoundTextKey, int startIndex, string previousPermutation, Dictionary<string, int> PossibleTextMap, int Value)
+    {
+        if (startIndex + 2 < FoundTextMap.Count)
+        {
+            for (int i = startIndex; i < FoundTextMap.Count; i++)
+            {
+                string NewPermutation = startIndex > 0 ? $"{previousPermutation}, {FoundTextMap[FoundTextKey[i]]}" : FoundTextMap[FoundTextKey[i]];
+                CreateDamageTypePermutations(FoundTextMap, FoundTextKey, startIndex + 1, NewPermutation, PossibleTextMap, Value);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 2; i++)
+                for (int j = 0; j < 2; j++)
+                    if (j != i)
+                    {
+                        string KeyAnd = $"{previousPermutation}, {FoundTextMap[FoundTextKey[startIndex + i]]}, and {FoundTextMap[FoundTextKey[startIndex + j]]}";
+                        PossibleTextMap.Add(KeyAnd, Value);
+                        string KeyOr = $"{previousPermutation}, {FoundTextMap[FoundTextKey[startIndex + i]]}, or {FoundTextMap[FoundTextKey[startIndex + j]]}";
+                        PossibleTextMap.Add(KeyOr, Value);
+                    }
+        }
+    }
+
     private int FindPattern(string patternString, Dictionary<int, string> textMap, string text, string pattern, int startIndex, out int value, out int patternLength)
     {
         int DamageTypeIndex = pattern.IndexOf(patternString.ToLowerInvariant());
@@ -3974,15 +4169,17 @@ public class CombatParser
 
             List<int> FoundTextKey = new List<int>(FoundTextMap.Keys);
             Dictionary<string, int> PossibleTextMap = new Dictionary<string, int>();
-            int Value;
+
+            int Value = 0;
+            for (int i = 0; i < FoundTextMap.Count; i++)
+                Value |= FoundTextKey[i];
 
             switch (FoundTextMap.Count)
             {
+                default:
+                    CreateDamageTypePermutations(FoundTextMap, FoundTextKey, 0, string.Empty, PossibleTextMap, Value);
+                    break;
                 case 3:
-                    Value = 0;
-                    for (int i = 0; i < 3; i++)
-                        Value |= FoundTextKey[i];
-
                     for (int i = 0; i < 3; i++)
                         for (int j = 0; j < 3; j++)
                             if (j != i)
@@ -3999,10 +4196,6 @@ public class CombatParser
 
                     break;
                 case 2:
-                    Value = 0;
-                    for (int i = 0; i < 2; i++)
-                        Value |= FoundTextKey[i];
-
                     for (int i = 0; i < 2; i++)
                         for (int j = 0; j < 2; j++)
                             if (j != i)
@@ -4018,9 +4211,7 @@ public class CombatParser
                 case 0:
                     break;
 
-                default:
                 case 1:
-                    Value = FoundTextKey[0];
                     PossibleTextMap.Add(FoundTextMap[FoundTextKey[0]], Value);
                     break;
             }
@@ -4076,7 +4267,7 @@ public class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "10008")
+            if (ItemPower.Key == "1081")
             {
             }
 
@@ -4592,7 +4783,8 @@ public class CombatParser
         new Sentence("If it deal #D damage", CombatKeyword.IfDamageType),
         new Sentence("Gain %f Direct", CombatKeyword.DamageBoost),
         new Sentence("#D damage for your next attack", new List<CombatKeyword>() { CombatKeyword.IfDamageType, CombatKeyword.NextAttack }),
-        //new Sentence("Briefly terrifies the target", CombatKeyword.Fear),
+        new Sentence("Terrifies the target", CombatKeyword.Fear),
+        new Sentence("Terrifies target", CombatKeyword.Fear),
         new Sentence("Cause all sentient targets to flee in terror", CombatKeyword.FearSentient),
         new Sentence("Trigger the target's Vulnerability", CombatKeyword.SetVulnerable),
         new Sentence("To Arthropods", CombatKeyword.TargetAnatomyArthropods),
@@ -4653,6 +4845,7 @@ public class CombatParser
         new Sentence("Take %f damage from #D attack", CombatKeyword.AddVulnerability),
         new Sentence("#D Vulnerability %f", CombatKeyword.AddVulnerability),
         new Sentence("%f more damage from any #D attack", CombatKeyword.AddVulnerability),
+        new Sentence("Target's #D Vulnerability %f", CombatKeyword.AddVulnerability),
         new Sentence("Target's #D Vulnerability", CombatKeyword.AddVulnerability),
         new Sentence("Target's vulnerability to #D %f", CombatKeyword.AddVulnerability),
 
@@ -4673,6 +4866,7 @@ public class CombatParser
         new Sentence("Deal up to %f damage", CombatKeyword.DamageBoost),
         new Sentence("Add up to %f extra damage", CombatKeyword.DamageBoost),
         new Sentence("Deal %f Armor damage", CombatKeyword.DealArmorDamage),
+        new Sentence("Deal %f damage to Armor", CombatKeyword.DealArmorDamage),
         new Sentence("Deal %f immediate #D damage", CombatKeyword.DamageBoost),
         new Sentence("Deal %f #D damage", CombatKeyword.DamageBoost),
         new Sentence("Critical hit deal %f damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits }),
@@ -4842,6 +5036,7 @@ public class CombatParser
         new Sentence("%f Taunt", CombatKeyword.AddTaunt),
         new Sentence("When you have %f or less of your Armor left", CombatKeyword.BelowArmor),
         new Sentence("Have less than %f of their Max Rage", CombatKeyword.BelowMaxRage),
+        new Sentence("With less than %f of their Max Rage", CombatKeyword.BelowMaxRage),
         new Sentence("Restore %f Health, Armor, and Power", CombatKeyword.RestoreHealthArmorPower),
         new Sentence("%f Health/Armor healing", CombatKeyword.RestoreHealthArmor),
         new Sentence("Heal you for %f Health/Armor", new List<CombatKeyword>() { CombatKeyword.RestoreHealthArmor, CombatKeyword.TargetSelf }),
@@ -4925,6 +5120,7 @@ public class CombatParser
         new Sentence("Target to take %f less damage from attack", CombatKeyword.AddMitigation),
         new Sentence("Target to take %f less damage from #D attack", CombatKeyword.AddMitigation),
         new Sentence("Mitigate %f of all #D damage", CombatKeyword.AddMitigation),
+        new Sentence("Mitigate %f damage from #D attacks", CombatKeyword.AddMitigation),
         new Sentence("Up to %f direct damage mitigation", new List<CombatKeyword>() { CombatKeyword.VariableMitigation }),
         new Sentence("#D Mitigation vs Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
 
@@ -5060,6 +5256,7 @@ public class CombatParser
         new Sentence("%f health damage", CombatKeyword.DealDirectHealthDamage),
         new Sentence("%f #D health damage", CombatKeyword.DealDirectHealthDamage),
 
+        new Sentence("%f damage to Armor", CombatKeyword.DealArmorDamage),
         new Sentence("%f damage", CombatKeyword.DamageBoost),
         new Sentence("Damage %f", CombatKeyword.DamageBoost),
         new Sentence("%f armor damage", CombatKeyword.DealArmorDamage),

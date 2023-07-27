@@ -106,6 +106,8 @@
                     new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 12 seconds" },
                     new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 15 seconds" },
                     new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 18 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Undead targets suffer", Suffix = "indirect Nature damage" },
+                    new EffectVerificationEntry() { Prefix = "Target suffers", Suffix = "Psychic damage after a 4-second delay" },
                 }
             },
             {

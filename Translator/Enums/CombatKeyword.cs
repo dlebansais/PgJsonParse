@@ -173,7 +173,7 @@
         AddPhysicalReflection,
         AddElementalDamageResistance,
         AddDamageResistance,
-        //Fear,
+        Fear,
         FearSentient,
         SetVulnerable,
         ExtraTraumaDamage,
