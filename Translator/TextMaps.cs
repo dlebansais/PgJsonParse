@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 81;
+        public const int TotalEnumTypes = 80;
 
         static TextMaps()
         {
@@ -415,6 +415,7 @@
             { AbilityKeyword.BloodOfThePack, "Blood Of The Pack" },
             { AbilityKeyword.HowlMode, "Howl Mode" },
             { AbilityKeyword.ShadowFeintActivation, "Shadow Feint Activation" },
+            { AbilityKeyword.SummonFox, "Summon Fox" },
             { AbilityKeyword.FirstAid, "First Aid" },
             { AbilityKeyword.Pig, "Pig" },
             { AbilityKeyword.PigAttack, "Pig Attack" },
@@ -5153,19 +5154,6 @@
             { TitleKeyword.BehaviorBadge, "Behavior Badge" },
             { TitleKeyword.Lint_NotObtainable, "Not Obtainable" },
             { TitleKeyword.EventTitle, "Event Title" },
-        };
-
-        public static Dictionary<TooltipsExtraKeywords, string> TooltipsExtraKeywordsTextMap { get; } = new Dictionary<TooltipsExtraKeywords, string>()
-        {
-            { TooltipsExtraKeywords.Internal_None, string.Empty },
-            { TooltipsExtraKeywords.SongOfDiscordActivation, "Song of Discord Activation" },
-            { TooltipsExtraKeywords.SummonDeer, "Summon Deer" },
-            { TooltipsExtraKeywords.Minigolem, "Mini-golem" },
-            { TooltipsExtraKeywords.SummonedSpider, "Summoned Spider" },
-            { TooltipsExtraKeywords.SummonFox, "Summon Fox" },
-            { TooltipsExtraKeywords.ShadowFeintActivation, "Shadow Feint Activation" },
-            { TooltipsExtraKeywords.TriageActivation, "Triage Activation" },
-            { TooltipsExtraKeywords.CloudTrickActivation, "Cloud Trick Activation" },
         };
 
         public static Dictionary<WorkOrderSign, string> WorkOrderSignTextMap { get; } = new Dictionary<WorkOrderSign, string>()

@@ -179,7 +179,7 @@
         ExtraTraumaDamage,
         AddVulnerability,
         AddIndirectVulnerability,
-        //AddDirectVulnerability,
+        AddDirectVulnerability,
         DestroyedByDamageType,
         ChangeDamageType,
         IgnoreKnockback,

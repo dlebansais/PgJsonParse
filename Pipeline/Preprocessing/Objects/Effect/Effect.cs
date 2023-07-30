@@ -5,7 +5,7 @@ public class Effect
     public Effect(RawEffect rawEffect)
     {
         AbilityKeywords = rawEffect.AbilityKeywords;
-        Description = ParseDescription(rawEffect.Desc, out IsTypoFixed);
+        Description = ParseDescription(rawEffect.Desc, rawEffect.AbilityKeywords, rawEffect.Name, out EffectDescriptionFix);
         DisplayMode = rawEffect.DisplayMode;
         Duration = Preprocessor.ToNumberOrString(rawEffect.Duration, out IsDurationNumber);
         IconId = rawEffect.IconId;
@@ -15,26 +15,34 @@ public class Effect
         SpewText = rawEffect.SpewText;
         StackingPriority = rawEffect.StackingPriority;
         StackingType = ParseStackingType(rawEffect.StackingType);
-
-        // Fix Doe Eyes.
-        if (Description == "Restores 4 Armor" && AbilityKeywords is not null && AbilityKeywords.Length > 0 && AbilityKeywords[0] == "DoeEyes")
-            Description = "Restores 4 Power";
     }
 
-    private static string? ParseDescription(string? rawDescription, out bool isTypoFixed)
+    private static string? ParseDescription(string? rawDescription, string[]? rawAbilityKeywords, string? rawName, out EffectDescriptionFix effectDescriptionFix)
     {
-        isTypoFixed = false;
+        effectDescriptionFix = EffectDescriptionFix.None;
 
         if (rawDescription is null)
             return null;
 
-        string Result = rawDescription;
+        string Result;
 
         if (rawDescription.Contains(" anf  "))
         {
-            Result = Result.Replace(" anf  ", " and ");
-            isTypoFixed = true;
+            Result = rawDescription.Replace(" anf  ", " and ");
+            effectDescriptionFix = EffectDescriptionFix.TypoAnf;
         }
+        else if (rawDescription == "Restores 4 Armor" && rawAbilityKeywords is not null && rawAbilityKeywords.Length > 0 && rawAbilityKeywords[0] == "DoeEyes")
+        {
+            Result = "Restores 4 Power";
+            effectDescriptionFix = EffectDescriptionFix.DoeEyes;
+        }
+        else if (rawDescription.StartsWith("Self Destruct") && rawName is not null && rawName.StartsWith("TSys_BatChemGolemRageAcidTossBoost"))
+        {
+            Result = rawDescription.Replace("Self Destruct", "Rage Acid Toss");
+            effectDescriptionFix = EffectDescriptionFix.GolemAcidToss;
+        }
+        else
+            Result = rawDescription;
 
         return Result;
     }
@@ -71,7 +79,7 @@ public class Effect
         RawEffect Result = new();
 
         Result.AbilityKeywords = AbilityKeywords;
-        Result.Desc = ToRawDescription(Description, IsTypoFixed);
+        Result.Desc = ToRawDescription(Description, EffectDescriptionFix);
         Result.DisplayMode = DisplayMode;
         Result.Duration = Preprocessor.FromNumberOrString(Duration, IsDurationNumber);
         Result.IconId = IconId;
@@ -82,19 +90,28 @@ public class Effect
         Result.StackingPriority = StackingPriority;
         Result.StackingType = ToRawStackingType(StackingType);
 
-        // Restore Doe Eyes.
-        if (Result.Desc == "Restores 4 Power" && Result.AbilityKeywords is not null && Result.AbilityKeywords.Length > 0 && Result.AbilityKeywords[0] == "DoeEyes")
-            Result.Desc = "Restores 4 Armor";
-
         return Result;
     }
 
-    private static string? ToRawDescription(string? description, bool isTypoFixed)
+    private static string? ToRawDescription(string? description, EffectDescriptionFix effectDescriptionFix)
     {
-        string? Result = description;
+        string? Result;
 
-        if (Result is not null && isTypoFixed)
-            Result = Result.Replace(" and ", " anf  ");
+        switch (effectDescriptionFix)
+        {
+            default:
+                Result = description;
+                break;
+            case EffectDescriptionFix.TypoAnf:
+                Result = description?.Replace(" and ", " anf  ");
+                break;
+            case EffectDescriptionFix.DoeEyes:
+                Result = "Restores 4 Armor";
+                break;
+            case EffectDescriptionFix.GolemAcidToss:
+                Result = description?.Replace("Rage Acid Toss", "Self Destruct");
+                break;
+        }
 
         return Result;
     }
@@ -115,5 +132,5 @@ public class Effect
     }
 
     private readonly bool IsDurationNumber;
-    private readonly bool IsTypoFixed;
+    private readonly EffectDescriptionFix EffectDescriptionFix;
 }

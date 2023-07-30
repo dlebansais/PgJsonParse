@@ -113,6 +113,7 @@
         BloodOfThePack,
         HowlMode,
         ShadowFeintActivation,
+        SummonFox,
         FirstAid,
         Pig,
         PigAttack,

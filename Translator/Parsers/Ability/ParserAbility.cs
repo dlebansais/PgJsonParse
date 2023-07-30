@@ -97,7 +97,7 @@ public class ParserAbility : Parser
                     Result = StringToEnumConversion<AbilityIndicatingEnabled>.SetEnum((AbilityIndicatingEnabled valueEnum) => item.EffectKeywordsIndicatingEnabled = valueEnum, Value);
                     break;
                 case "ExtraKeywordsForTooltips":
-                    Result = StringToEnumConversion<TooltipsExtraKeywords>.SetEnum((TooltipsExtraKeywords valueEnum) => item.ExtraKeywordsForTooltips = valueEnum, Value);
+                    Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => item.ExtraKeywordsForTooltips = valueEnum, Value);
                     break;
                 case "IconID":
                     Result = SetIconIdProperty((int valueInt) => item.RawIconId = valueInt, Value);

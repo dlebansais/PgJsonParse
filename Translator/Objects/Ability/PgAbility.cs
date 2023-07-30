@@ -51,7 +51,7 @@
         public float? RawDelayLoopTime { get; set; }
         public string Description { get; set; } = string.Empty;
         public AbilityIndicatingEnabled EffectKeywordsIndicatingEnabled { get; set; }
-        public TooltipsExtraKeywords ExtraKeywordsForTooltips { get; set; }
+        public AbilityKeyword ExtraKeywordsForTooltips { get; set; }
         public int IconId { get { return RawIconId.HasValue ? RawIconId.Value : 0; } }
         public int? RawIconId { get; set; }
         public const int IgnoreEffectErrorsNotNull = 1 << 8;
