@@ -490,7 +490,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "7303")
+        if (Key == "7309")
         {
         }
 
@@ -2133,7 +2133,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "7301")
+            if (Entry.Key.Key == "7309")
             {
             }
 
@@ -2967,6 +2967,17 @@ public partial class CombatParser
                     if (CombatEffect.Keyword == CombatKeyword.DamageBoost && CombatEffect.DamageType == GameDamageType.Internal_None)
                         CombatEffect.DamageType = GameDamageType.Nature;
             }
+        }
+
+        // Hack for golem abilities
+        if (isGolemAbility && extractedAbilityList.Count == 1)
+        {
+            if (extractedAbilityList[0] == AbilityKeyword.HealingInjection)
+                extractedAbilityList[0] = AbilityKeyword.GolemHealingInjection;
+            else if (extractedAbilityList[0] == AbilityKeyword.HealingMist)
+                extractedAbilityList[0] = AbilityKeyword.GolemHealingMist;
+            else if (extractedAbilityList[0] == AbilityKeyword.HasteConcoction)
+                extractedAbilityList[0] = AbilityKeyword.GolemHasteConcoction;
         }
 
         bool IsRandom = false;
@@ -3976,7 +3987,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "7301")
+            if (ItemPower.Key == "7309")
             {
             }
 

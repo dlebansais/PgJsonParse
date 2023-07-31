@@ -175,6 +175,39 @@ public partial class CombatParser
         },
         #endregion
 
+        #region Battle Chemistry
+        { 7021, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ToxicIrritant.ToString(), Effect = 16699, Target = "Self" },
+            }
+        },
+        { 7206, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HealingInjection.ToString(), Effect = 14918, Target = "Self" },
+            }
+        },
+        { 7431, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Mutation_ExtraSkin.ToString(), Effect = 16772, Target = "Ally" },
+            }
+        },
+        { 7432, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Mutation_ExtraSkin.ToString(), Effect = 16773, Target = "Ally" },
+            }
+        },
+        { 7433, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Mutation_ExtraSkin.ToString(), Effect = 16774, Target = "Ally" },
+            }
+        },
+        { 7471, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Mutation_ExtraHeart.ToString(), Effect = 16775, Target = "Ally" },
+            }
+        },
+        #endregion
+
         #region Archery
         { 10042, new AdditionalEffect[]
             {
