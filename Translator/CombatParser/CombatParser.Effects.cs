@@ -102,6 +102,114 @@ public partial class CombatParser
         },
         #endregion
 
+        #region Archery
+        { 10042, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16633, Target = "Foe" },
+            }
+        },
+        { 10043, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16631, Target = "Self" },
+            }
+        },
+        { 10044, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16632, Target = "Self" },
+            }
+        },
+        { 10082, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MultiShot.ToString(), Effect = 14906, Target = "Self" },
+            }
+        },
+        { 10122, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 16634, Target = "Self" },
+            }
+        },
+        { 10124, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 14906, Target = "Self" },
+            }
+        },
+        { 10125, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 16629, Target = "Foe" },
+            }
+        },
+        { 10162, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BlitzShot.ToString(), Effect = 16635, Target = "Self" },
+            }
+        },
+        { 10306, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PoisonArrow.ToString(), Effect = 16636, Target = "Foe" },
+            }
+        },
+        { 10308, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FireArrow.ToString(), Effect = 15368, Target = "Foe" },
+            }
+        },
+        { 10309, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PoisonArrow.ToString(), Effect = 14363, Target = "Foe" },
+            }
+        },
+        { 10401, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SnareArrow.ToString(), Effect = 16638, Target = "Self" },
+            }
+        },
+        { 10403, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SnareArrow.ToString(), Effect = 16637, Target = "Foe" },
+            }
+        },
+        { 10456, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HeavyMultiShot.ToString(), Effect = 14621, Target = "Self" },
+            }
+        },
+        { 10501, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 15151, Target = "Foe" },
+            }
+        },
+        { 10502, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16626, Target = "Foe" },
+            }
+        },
+        { 10503, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16627, Target = "Foe" },
+            }
+        },
+        { 10504, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16871, Target = "Foe" },
+            }
+        },
+        { 10508, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.RestorativeArrow.ToString(), Effect = 16628, Target = "Self" },
+            }
+        },
+        { 10552, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HookShot.ToString(), Effect = 16646, Target = "Foe" },
+            }
+        },
+        { 10554, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HookShot.ToString(), Effect = 16648, Target = "Foe" },
+            }
+        },
+        #endregion
+
         #region Bard
         { 17045, new AdditionalEffect[]
             {
@@ -208,110 +316,85 @@ public partial class CombatParser
         },
         #endregion
 
-        #region Archery
-        { 10042, new AdditionalEffect[]
+        #region Cow
+        { 20012, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16633, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CowFrontKick.ToString(), Effect = 20594, Target = "Self" },
             }
         },
-        { 10043, new AdditionalEffect[]
+        { 20013, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16631, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CowBash.ToString(), Effect = 16591, Target = "Foe" },
             }
         },
-        { 10044, new AdditionalEffect[]
+        { 20014, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.AimedShot.ToString(), Effect = 16632, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CowBash.ToString(), Effect = 15205, Target = "Foe" },
             }
         },
-        { 10082, new AdditionalEffect[]
+        { 20016, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MultiShot.ToString(), Effect = 14906, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CowStampede.ToString(), Effect = 14245, Target = "Self" },
             }
         },
-        { 10122, new AdditionalEffect[]
+        { 20019, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 16634, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CowStampede.ToString(), Effect = 14266, Target = "Self" },
             }
         },
-        { 10124, new AdditionalEffect[]
+        { 20044, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 14906, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MooOfCalm.ToString(), Effect = 79, Target = "Self" },
             }
         },
-        { 10125, new AdditionalEffect[]
+        { 20061, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LongShot.ToString(), Effect = 16629, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Graze.ToString(), Effect = 15165, Target = "Self" },
             }
         },
-        { 10162, new AdditionalEffect[]
+        { 20062, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BlitzShot.ToString(), Effect = 16635, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ChewCud.ToString(), Effect = 14241, Target = "Self" },
             }
         },
-        { 10306, new AdditionalEffect[]
+        { 20065, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PoisonArrow.ToString(), Effect = 16636, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ChewCud.ToString(), Effect = 14241, Target = "Self" },
             }
         },
-        { 10308, new AdditionalEffect[]
+        { 20067, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FireArrow.ToString(), Effect = 15368, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ChewCud.ToString(), Effect = 14244, Target = "Self" },
             }
         },
-        { 10309, new AdditionalEffect[]
+        { 20104, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PoisonArrow.ToString(), Effect = 14363, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ClobberingHoof.ToString(), Effect = 15206, Target = "Foe" },
             }
         },
-        { 10401, new AdditionalEffect[]
+        { 20105, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SnareArrow.ToString(), Effect = 16638, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ClobberingHoof.ToString(), Effect = 20593, Target = "Foe" },
             }
         },
-        { 10403, new AdditionalEffect[]
+        { 20302, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SnareArrow.ToString(), Effect = 16637, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MooOfDetermination.ToString(), Effect = 13704, Target = "Self" },
             }
         },
-        { 10456, new AdditionalEffect[]
+        { 20307, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HeavyMultiShot.ToString(), Effect = 14621, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MooOfDetermination.ToString(), Effect = 78, Target = "Self" },
             }
         },
-        { 10501, new AdditionalEffect[]
+        { 20353, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 15151, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ToughHoof.ToString(), Effect = 15214, Target = "Self" },
             }
         },
-        { 10502, new AdditionalEffect[]
+        { 20406, new AdditionalEffect[]
             {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16626, Target = "Foe" },
-            }
-        },
-        { 10503, new AdditionalEffect[]
-            {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16627, Target = "Foe" },
-            }
-        },
-        { 10504, new AdditionalEffect[]
-            {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ManglingShot.ToString(), Effect = 16871, Target = "Foe" },
-            }
-        },
-        { 10508, new AdditionalEffect[]
-            {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.RestorativeArrow.ToString(), Effect = 16628, Target = "Self" },
-            }
-        },
-        { 10552, new AdditionalEffect[]
-            {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HookShot.ToString(), Effect = 16646, Target = "Foe" },
-            }
-        },
-        { 10554, new AdditionalEffect[]
-            {
-                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HookShot.ToString(), Effect = 16648, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DeadlyEmission.ToString(), Effect = 20592, Target = "Foe" },
             }
         },
         #endregion

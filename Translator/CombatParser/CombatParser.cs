@@ -490,7 +490,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "7309")
+        if (Key == "20020")
         {
         }
 
@@ -898,6 +898,7 @@ public partial class CombatParser
         { "Kick attack", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
         { "Any Kick ability", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
         { "All kicks", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
+        { "Cow's Front Kick", new List<AbilityKeyword>() { AbilityKeyword.CowFrontKick } },
         { "Bomb attack", new List<AbilityKeyword>() { AbilityKeyword.Bomb } },
         { "Psi Health Wave, Armor Wave, and Power Wave", new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiPowerWave } },
         { "All Psi Wave Ability", new List<AbilityKeyword>() { AbilityKeyword.PsiWave } },
@@ -952,6 +953,7 @@ public partial class CombatParser
         AbilityKeyword.FireMagicAttack,
         AbilityKeyword.Unarmed,
         AbilityKeyword.Kick,
+        AbilityKeyword.CowFrontKick,
         AbilityKeyword.Bomb,
         AbilityKeyword.PsiWave,
         AbilityKeyword.PsiHealthWave,
@@ -1287,6 +1289,7 @@ public partial class CombatParser
             case CombatKeyword.EffectDuration:
             case CombatKeyword.AnotherTrap:
             case CombatKeyword.ChangeDamageType:
+            case CombatKeyword.ConditionalDamageType:
             case CombatKeyword.AddMitigation:
             case CombatKeyword.NextAttack:
             case CombatKeyword.DealDirectHealthDamage:
@@ -2133,7 +2136,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "7309")
+            if (Entry.Key.Key == "20020")
             {
             }
 
@@ -3554,9 +3557,11 @@ public partial class CombatParser
             return false;
     }
 
+    public static string ComparisonString = "Indirect #D and indirect #D damage %f";
+
     private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref PgNumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence? selectedSentence)
     {
-        if (sentence.Format == "Mitigate %f damage from #D attacks")
+        if (sentence.Format == ComparisonString)
         {
         }
 
@@ -3806,8 +3811,15 @@ public partial class CombatParser
         {
             for (int i = startIndex; i < FoundTextMap.Count; i++)
             {
-                string NewPermutation = startIndex > 0 ? $"{previousPermutation}, {FoundTextMap[FoundTextKey[i]]}" : FoundTextMap[FoundTextKey[i]];
-                CreateDamageTypePermutations(FoundTextMap, FoundTextKey, startIndex + 1, NewPermutation, PossibleTextMap, Value);
+                if (startIndex > 0)
+                {
+                    string NewPermutationComma = $"{previousPermutation}, {FoundTextMap[FoundTextKey[i]]}";
+                    CreateDamageTypePermutations(FoundTextMap, FoundTextKey, startIndex + 1, NewPermutationComma, PossibleTextMap, Value);
+                    string NewPermutationSlash = $"{previousPermutation}/{FoundTextMap[FoundTextKey[i]]}";
+                    CreateDamageTypePermutations(FoundTextMap, FoundTextKey, startIndex + 1, NewPermutationSlash, PossibleTextMap, Value);
+                }
+                else
+                    CreateDamageTypePermutations(FoundTextMap, FoundTextKey, startIndex + 1, FoundTextMap[FoundTextKey[i]], PossibleTextMap, Value);
             }
         }
         else
@@ -3820,6 +3832,8 @@ public partial class CombatParser
                         PossibleTextMap.Add(KeyAnd, Value);
                         string KeyOr = $"{previousPermutation}, {FoundTextMap[FoundTextKey[startIndex + i]]}, or {FoundTextMap[FoundTextKey[startIndex + j]]}";
                         PossibleTextMap.Add(KeyOr, Value);
+                        string KeySlash = $"{previousPermutation}/{FoundTextMap[FoundTextKey[startIndex + i]]}/{FoundTextMap[FoundTextKey[startIndex + j]]}";
+                        PossibleTextMap.Add(KeySlash, Value);
                     }
         }
     }
@@ -3987,7 +4001,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "7309")
+            if (ItemPower.Key == "20020")
             {
             }
 
@@ -4199,6 +4213,7 @@ public partial class CombatParser
     {
         modText = modText.Replace("Indirect Poison and Indirect Trauma damage", "Indirect Poison and Trauma damage");
         modText = modText.Replace("Indirect Nature and Indirect Electricity damage", "Indirect Nature and Electricity damage");
+        modText = modText.Replace("Indirect Nature and Indirect Trauma damage", "Indirect Nature and Trauma damage");
         modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
         modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
         modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", string.Empty);
@@ -4347,6 +4362,7 @@ public partial class CombatParser
             CombatKeyword.AddMitigation,
             CombatKeyword.RestoreHealth,
             CombatKeyword.AddPowerCost,
+            CombatKeyword.AddMaxPower,
             CombatKeyword.AddSprintPowerCost,
             CombatKeyword.RandomDamage,
             CombatKeyword.WithinDistance,
