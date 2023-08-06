@@ -400,9 +400,54 @@ public partial class CombatParser
         #endregion
 
         #region Deer
+        { 21002, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DeerKick.ToString(), Effect = 14954, Target = "Self" },
+            }
+        },
+        { 21004, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DeerKick.ToString(), Effect = 14943, Target = "Foe" },
+            }
+        },
+        { 21007, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DeerKick.ToString(), Effect = 14943, Target = "Foe" },
+            }
+        },
+        { 21041, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DoeEyes.ToString(), Effect = 14941, Target = "Self" },
+            }
+        },
         { 21062, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CutenessOverload.ToString(), Effect = 15164, Target = "Self" },
+            }
+        },
+        { 21066, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CutenessOverload.ToString(), Effect = 14945, Target = "Foe" },
+            }
+        },
+        { 21083, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.KingOfTheForest.ToString(), Effect = 14947, Target = "Self" },
+            }
+        },
+        { 21254, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BoundingEscape.ToString(), Effect = 14953, Target = "Self" },
+            }
+        },
+        { 21255, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.BoundingEscape.ToString(), Effect = 15445, Target = "Self" },
+            }
+        },
+        { 21353, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ForestChallenge.ToString(), Effect = 14944, Target = "Self" },
             }
         },
         #endregion
