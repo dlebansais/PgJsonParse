@@ -399,6 +399,14 @@ public partial class CombatParser
         },
         #endregion
 
+        #region Deer
+        { 21062, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CutenessOverload.ToString(), Effect = 15164, Target = "Self" },
+            }
+        },
+        #endregion
+
         #region Spider
         { 23003, new AdditionalEffect[]
             {

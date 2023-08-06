@@ -41,6 +41,11 @@ public class Effect
             Result = rawDescription.Replace("Self Destruct", "Rage Acid Toss");
             effectDescriptionFix = EffectDescriptionFix.GolemAcidToss;
         }
+        else if (rawDescription.StartsWith("`"))
+        {
+            Result = rawDescription.Substring(1);
+            effectDescriptionFix = EffectDescriptionFix.TypoQuote;
+        }
         else
             Result = rawDescription;
 
@@ -110,6 +115,9 @@ public class Effect
                 break;
             case EffectDescriptionFix.GolemAcidToss:
                 Result = description?.Replace("Rage Acid Toss", "Self Destruct");
+                break;
+            case EffectDescriptionFix.TypoQuote:
+                Result = $"`{description}";
                 break;
         }
 

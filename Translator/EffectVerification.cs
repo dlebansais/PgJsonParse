@@ -25,6 +25,7 @@
                     new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health to least-healthy ally" },
                     new EffectVerificationEntry() { Prefix = "For 8 seconds, each time target attacks and damages you, heal", Suffix = "Health" },
                     new EffectVerificationEntry() { Prefix = "Heal", Suffix = "Health every 4 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health over 8 seconds" },
                 }
             },
             {
@@ -121,6 +122,13 @@
                 CombatKeyword.AddSprintSpeed, new List<EffectVerificationEntry>()
                 {
                     new EffectVerificationEntry() { Prefix = "Sprint Speed", Suffix = "(out of combat)" },
+                }
+            },
+            {
+                CombatKeyword.AddMitigation, new List<EffectVerificationEntry>()
+                {
+                    new EffectVerificationEntry() { Prefix = "Mitigates", Suffix = "Physical Damage" },
+                    new EffectVerificationEntry() { Prefix = "Mitigates", Suffix = "Additional Physical Damage from Elites", TargetElite = true },
                 }
             },
         };

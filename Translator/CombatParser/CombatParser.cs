@@ -490,7 +490,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "20020")
+        if (Key == "21353")
         {
         }
 
@@ -2136,7 +2136,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "20020")
+            if (Entry.Key.Key == "21353")
             {
             }
 
@@ -2509,6 +2509,17 @@ public partial class CombatParser
             ModCombatList.Add(new PgCombatEffect() { Keyword = CombatKeyword.EffectDuration, Data = new PgNumericValue() { RawValue = EffectCombatList[1].Data.RawValue, RawIsPercent = EffectCombatList[1].Data.RawIsPercent } });
         }
 
+        // Hack for Forest Challenge
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.ForestChallenge &&
+            ModCombatList.Count == 3 && ModCombatList[0].Keyword == CombatKeyword.AddMaxHealth && ModCombatList[2].Keyword == CombatKeyword.RestoreHealth &&
+            EffectCombatList.Count == 2 && EffectCombatList[0].Keyword == CombatKeyword.AddMaxHealth)
+        {
+            PgCombatEffect RestoreHealth = ModCombatList[2];
+            //EffectCombatList.Insert(0, RestoreHealth);
+            ModCombatList.RemoveAt(2);
+            ModCombatList.Insert(0, RestoreHealth);
+        }
+
         // Hack for Parry
         if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.OnlyParry &&
             EffectCombatList.Count == 1 && EffectCombatList[0].Keyword == CombatKeyword.WithinDistance &&
@@ -2518,6 +2529,14 @@ public partial class CombatParser
             ModCombatList.RemoveAt(1);
             ModCombatList.Insert(0, CombatEffect);
         }
+
+        // Hack for slow immunity
+        foreach (PgCombatEffect Item in EffectCombatList)
+            if (Item.Keyword == CombatKeyword.RemoveSlowRoot && Item.Data.RawValue.HasValue && Item.Data.Value == 100 && Item.Data.IsPercent)
+                Item.Data = new PgNumericValue();
+        foreach (PgCombatEffect Item in ModCombatList)
+            if (Item.Keyword == CombatKeyword.RemoveSlowRoot && Item.Data.RawValue.HasValue && Item.Data.Value == 100 && Item.Data.IsPercent)
+                Item.Data = new PgNumericValue();
 
         string ParsedEffectString = CombatEffectListToString(EffectCombatList, out extractedEffectKeywordList);
         string ParsedEffectTargetAbilityList = AbilityKeywordListToShortString(EffectTargetAbilityList);
@@ -2821,7 +2840,7 @@ public partial class CombatParser
         BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
         BasicTextReplace(ref modText, ref effectText, "Trick Foxes", "Trick Fox");
         //BasicTextReplace(ref modText, ref effectText, "Bun-Fu Blitz", "Bun-Fu Kick");
-        BasicTextReplace(ref modText, ref effectText, "after using Doe Eyes", string.Empty);
+        BasicTextReplace(ref modText, ref effectText, "and after using Doe Eyes", string.Empty);
 
         if (!modText.Contains("But I Love You"))
             ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -3200,7 +3219,8 @@ public partial class CombatParser
         ReplaceCaseInsensitive(ref text, "+Up ", "Add up ");
         ReplaceCaseInsensitive(ref text, " direct-damage ", " direct damage ");
         ReplaceCaseInsensitive(ref text, " abilities ", " ability ");
-        //ReplaceCaseInsensitive(ref text, "anf  ", "and ");
+        ReplaceCaseInsensitive(ref text, "implants ", "implant ");
+        ReplaceCaseInsensitive(ref text, "summons ", "summon ");
     }
 
     private void ReplaceCaseInsensitive(ref string text, string searchPattern, string replacementPattern)
@@ -4001,7 +4021,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "20020")
+            if (ItemPower.Key == "21353")
             {
             }
 

@@ -6,4 +6,5 @@ internal enum EffectDescriptionFix
     TypoAnf,
     DoeEyes,
     GolemAcidToss,
+    TypoQuote,
 }
