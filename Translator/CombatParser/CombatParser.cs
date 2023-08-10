@@ -490,7 +490,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "21353")
+        if (Key == "14004")
         {
         }
 
@@ -686,6 +686,9 @@ public partial class CombatParser
             EffectIconList.Add(108);
 
         if (AbilityKeywordList.Contains(AbilityKeyword.Knife) && Skill_Key == "Knife")
+            EffectIconList.Add(108);
+
+        if (AbilityKeywordList.Contains(AbilityKeyword.Druid) && Skill_Key == "Druid")
             EffectIconList.Add(108);
 
         if (AbilityKeywordList.Contains(AbilityKeyword.Melee))
@@ -2136,7 +2139,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "21353")
+            if (Entry.Key.Key == "14004")
             {
             }
 
@@ -4021,7 +4024,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "21353")
+            if (ItemPower.Key == "14004")
             {
             }
 

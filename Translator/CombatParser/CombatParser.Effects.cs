@@ -452,6 +452,29 @@ public partial class CombatParser
         },
         #endregion
 
+        #region Druid
+        { 14013, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HeartThorn.ToString(), Effect = 16653, Target = "Foe" },
+            }
+        },
+        { 14017, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PulseOfLife.ToString(), Effect = 16640, Target = "Self" },
+            }
+        },
+        { 14252, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FillWithBile.ToString(), Effect = 14384, Target = "Ally" },
+            }
+        },
+        { 14354, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Regrowth.ToString(), Effect = 16650, Target = "Self" },
+            }
+        },
+        #endregion
+
         #region Spider
         { 23003, new AdditionalEffect[]
             {
