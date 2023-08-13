@@ -108,6 +108,7 @@
         StunnedSelf,
         Concussion,
         StunIncorporeal,
+        StunDebuffed,
         SelfStun,
         StunImmunity,
         SlowRootImmunity,
@@ -127,6 +128,7 @@
         AddEvasionBurst,
         AddEvasionProjectile,
         AddEvasionMelee,
+        AddEvasionRanged,
         AddMitigation,
 
         // AddMitigationUniversal,
@@ -172,7 +174,6 @@
         AddBurstAccuracy,
         RemoveEvasion,
 
-        // AddProjectileEvasion,
         AddPhysicalReflection,
         AddElementalDamageResistance,
         AddDamageResistance,
@@ -223,5 +224,6 @@
         ApplyToCrits,
         ApplyToBasic,
         ImplantEgg,
+        AbsorbDamage,
     }
 }

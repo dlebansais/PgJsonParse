@@ -5,7 +5,7 @@
         Internal_None,
         WerewolfForm,
         WerewolfHowlMode,
-        TriggeredAlchemyGolem,
+        //TriggeredAlchemyGolem,
         Echolocation,
         RavenForm,
         DeerForm,

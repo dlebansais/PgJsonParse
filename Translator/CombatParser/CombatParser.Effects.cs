@@ -453,6 +453,11 @@ public partial class CombatParser
         #endregion
 
         #region Druid
+        { 14012, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HeartThorn.ToString(), Effect = 16652, Target = "Foe" },
+            }
+        },
         { 14013, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HeartThorn.ToString(), Effect = 16653, Target = "Foe" },
@@ -463,14 +468,89 @@ public partial class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.PulseOfLife.ToString(), Effect = 16640, Target = "Self" },
             }
         },
+        { 14052, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Rotskin.ToString(), Effect = 14710, Target = "Foe" },
+            }
+        },
+        { 14055, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Rotskin.ToString(), Effect = 16651, Target = "Self" },
+            }
+        },
+        { 14056, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Rotskin.ToString(), Effect = 15074, Target = "Foe" },
+            }
+        },
+        { 14152, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Brambleskin.ToString(), Effect = 14378, Target = "Self" },
+            }
+        },
+        { 14153, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Brambleskin.ToString(), Effect = 14379, Target = "Self" },
+            }
+        },
+        { 14154, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Brambleskin.ToString(), Effect = 14379, Target = "Self" },
+            }
+        },
+        { 14155, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Brambleskin.ToString(), Effect = 14380, Target = "Self" },
+            }
+        },
+        { 14156, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Brambleskin.ToString(), Effect = 14380, Target = "Self" },
+            }
+        },
+        { 14202, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CosmicStrike.ToString(), Effect = 16654, Target = "Self" },
+            }
+        },
         { 14252, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FillWithBile.ToString(), Effect = 14384, Target = "Ally" },
             }
         },
+        { 14253, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FillWithBile.ToString(), Effect = 14385, Target = "Ally" },
+            }
+        },
+        { 14254, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FillWithBile.ToString(), Effect = 14946, Target = "Ally" },
+            }
+        },
         { 14354, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Regrowth.ToString(), Effect = 16650, Target = "Self" },
+            }
+        },
+        { 14353, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Regrowth.ToString(), Effect = 419, Target = "Ally" },
+            }
+        },
+        { 14402, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Energize.ToString(), Effect = 419, Target = "Ally" },
+            }
+        },
+        { 14501, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CloudSight.ToString(), Effect = 16649, Target = "Foe" },
+            }
+        },
+        { 14604, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FillWithBile.ToString(), Effect = 14946, Target = "Ally" },
             }
         },
         #endregion

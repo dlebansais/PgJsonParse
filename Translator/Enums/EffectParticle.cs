@@ -171,7 +171,7 @@
         AnglingIceSpray,
         Mutation_ExtraToes,
         Mutation_StretchySpine,
-        Mutation_KneeSpikes,
+        //Mutation_KneeSpikes,
         Mutation_ExtraSkin,
         Mutation_ExtraHeart,
         HealingParticleQuick_Silent,
@@ -179,5 +179,6 @@
         AnglingWebs,
         AnglingSoulSphere,
         AnglingPinkSmoke,
+        MonsterBuff5,
     }
 }

@@ -62,10 +62,10 @@ public partial class CombatParser
 
         if (WriteFile)
         {
-            WritePowerCSV("combateffects.csv", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, objectList);
             WritePowerEffectJson("combateffects.json", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
             WriteBuffEffectJson("buffeffects.json", StringKeyTable.Count, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList);
             WritePowerKeyToCompleteEffectFile("PowerKeyToCompleteEffect.cs", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList);
+            WritePowerCSV("combateffects.csv", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, objectList);
 
             for (int i = 0; i < StringKeyTable.Count + EffectKeyList.Count; i++)
             {
@@ -490,7 +490,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "14004")
+        if (Key == "7481")
         {
         }
 
@@ -922,11 +922,11 @@ public partial class CombatParser
         { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },
         { "Survival Utility", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility } },
         { "Survival Utility and Major Heal", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility, AbilityKeyword.MajorHeal } },
-        { "Knee Spikes Mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_KneeSpikes } },
         { "Extra Skin mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraSkin } },
         { "Extra Heart mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraHeart } },
-        { "Extra Heart and Stretchy Spine mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraHeart, AbilityKeyword.Mutation_StretchySpine } },
-        { "Stretchy Spine mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_StretchySpine } },
+        { "Extra Heart and Extra Toes mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraHeart, AbilityKeyword.Mutation_ExtraToes } },
+        { "Extra Heart and Extra Skin mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraHeart, AbilityKeyword.Mutation_ExtraSkin } },
+        { "Extra Toes mutation", new List<AbilityKeyword>() { AbilityKeyword.Mutation_ExtraToes } },
         { "Animal Handling pets", new List<AbilityKeyword>() { AbilityKeyword.StabledPet } },
         { "Allies' Combat Refreshes", new List<AbilityKeyword>() { AbilityKeyword.CombatRefresh } },
         { "Raised Zombies", new List<AbilityKeyword>() { AbilityKeyword.SummonZombie } },
@@ -976,10 +976,11 @@ public partial class CombatParser
         AbilityKeyword.SurvivalUtility,
         AbilityKeyword.MajorHeal,
         AbilityKeyword.Rabbit,
-        AbilityKeyword.Mutation_KneeSpikes,
+        //AbilityKeyword.Mutation_KneeSpikes,
         AbilityKeyword.Mutation_ExtraSkin,
         AbilityKeyword.Mutation_ExtraHeart,
-        AbilityKeyword.Mutation_StretchySpine,
+        //AbilityKeyword.Mutation_StretchySpine,
+        AbilityKeyword.Mutation_ExtraToes,
         AbilityKeyword.StabledPet,
         AbilityKeyword.CombatRefresh,
         AbilityKeyword.SummonZombie,
@@ -1281,7 +1282,7 @@ public partial class CombatParser
             case CombatKeyword.DamageBoost:
             case CombatKeyword.DebuffMitigation:
             case CombatKeyword.AddSprintSpeed:
-            case CombatKeyword.DealArmorDamage:
+            case CombatKeyword.AddMitigation:
                 VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true);
                 break;
 
@@ -1293,7 +1294,6 @@ public partial class CombatParser
             case CombatKeyword.AnotherTrap:
             case CombatKeyword.ChangeDamageType:
             case CombatKeyword.ConditionalDamageType:
-            case CombatKeyword.AddMitigation:
             case CombatKeyword.NextAttack:
             case CombatKeyword.DealDirectHealthDamage:
             case CombatKeyword.EffectDelay:
@@ -1360,6 +1360,8 @@ public partial class CombatParser
             case CombatKeyword.Knockback:
             case CombatKeyword.DamageBoostToHealthAndArmor:
             case CombatKeyword.IncreaseHealEfficiency:
+            case CombatKeyword.DealArmorDamage:
+            case CombatKeyword.AddMitigationDirect:
                 VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, false);
                 break;
 
@@ -2139,7 +2141,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "14004")
+            if (Entry.Key.Key == "14018")
             {
             }
 
@@ -2466,7 +2468,7 @@ public partial class CombatParser
 
         string ModText = powerSimpleEffect.Description;
         string EffectText = effect.Description;
-        bool IsGolemAbility = ModText.StartsWith("Your golem minion's");
+        bool IsGolemAbility = ModText.StartsWith("Your golem minion");
 
         HackModAndEffectText(ref ModText, ref EffectText);
 
@@ -2531,6 +2533,14 @@ public partial class CombatParser
             PgCombatEffect CombatEffect = ModCombatList[1];
             ModCombatList.RemoveAt(1);
             ModCombatList.Insert(0, CombatEffect);
+        }
+
+        // Hack for Heart Thorn
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.HeartThorn &&
+            ModCombatList.Count == 1 && ModCombatList[0].Keyword == CombatKeyword.DealArmorDamage && ModCombatList[0].DamageType == GameDamageType.Internal_None &&
+            ModText.Contains("coat the target in acid"))
+        {
+            ModCombatList[0].DamageType = GameDamageType.Acid;
         }
 
         // Hack for slow immunity
@@ -2633,6 +2643,36 @@ public partial class CombatParser
                 TargetAbilityList = new List<AbilityKeyword>(),
             };
 
+            modEffect.SecondaryModEffect = SecondaryModEffect;
+        }
+
+        bool IsSelfDestruct = modEffect.Description.Contains("and its Self Destruct deals");
+        bool IsDoomAdmixture = modEffect.Description.Contains("and its Doom Admixture deals");
+        bool IsRageAcid = modEffect.Description.Contains("and its Rage Acid Toss deals");
+        
+        if ((IsSelfDestruct || IsDoomAdmixture || IsRageAcid) &&
+                 modEffect.DynamicCombatEffectList.Count == 2 && modEffect.DynamicCombatEffectList[0].Keyword == CombatKeyword.DamageBoost && modEffect.DynamicCombatEffectList[1].Keyword == CombatKeyword.DamageBoost)
+        {
+            AbilityKeyword SecondaryAbility = AbilityKeyword.Internal_None;
+
+            if (IsSelfDestruct)
+                SecondaryAbility = AbilityKeyword.GolemSelfDestruct;
+            if (IsDoomAdmixture)
+                SecondaryAbility = AbilityKeyword.GolemDoomAdmixture;
+            if (IsRageAcid)
+                SecondaryAbility = AbilityKeyword.GolemRageAcidToss;
+
+            PgModEffect SecondaryModEffect = new PgModEffect()
+            {
+                EffectKey = string.Empty,
+                AbilityList = new List<AbilityKeyword>() { SecondaryAbility },
+                StaticCombatEffectList = new PgCombatEffectCollection(),
+                DynamicCombatEffectList = new PgCombatEffectCollection() { modEffect.DynamicCombatEffectList[1] },
+                TargetAbilityList = new List<AbilityKeyword>(),
+            };
+
+            modEffect.DynamicCombatEffectList.RemoveAt(1);
+            modEffect.AbilityList[0] = AbilityKeyword.Minigolem;
             modEffect.SecondaryModEffect = SecondaryModEffect;
         }
 
@@ -2796,7 +2836,9 @@ public partial class CombatParser
             modText = modText.Substring(27) + " while Blur Step is active";
         else if (effectText.StartsWith("Universal Direct Elite Mitigation ") && effectText.EndsWith(" for 15 seconds"))
             effectText = effectText.Replace("for 15 seconds", "for 10 seconds");
-        
+        else if (modText.StartsWith("Healing Mist accelerates the current reuse time of") && effectText.StartsWith("Shortens the remaining reset time of"))
+            modText = modText.Substring(0, 13) + effectText;
+
         if (effectText.StartsWith("When you trigger Cloud Trick, "))
             effectText = effectText.Replace("When you trigger Cloud Trick", "When you trigger Teleport");
 
@@ -2813,6 +2855,7 @@ public partial class CombatParser
         RemoveDecorativeText(ref modText, "(both direct and indirect)", out _, ref IndexFound);
         RemoveDecorativeText(ref modText, "damage (such as via Insect Egg implantation),", out _, ref IndexFound);
         RemoveDecorativeText(ref modText, "Your golem minion's", out _, ref IndexFound);
+        RemoveDecorativeText(ref modText, "(including Toxic Irritant)", out _, ref IndexFound);
 
         int NegateIndex = modText.IndexOf(". (You can negate the latent psychic damage by using");
         if (NegateIndex >= 0)
@@ -2836,6 +2879,8 @@ public partial class CombatParser
         BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "roots or slows", "slow or root");
         BasicTextReplace(ref modText, ref effectText, "Incubated Spiders' Rage attacks", "Incubated Spiders Rage attacks");
+        BasicTextReplace(ref modText, ref effectText, "from Piercing and direct Poison damage", "from direct Piercing and Poison damage");
+        BasicTextReplace(ref modText, ref effectText, "from Slashing and direct Acid damage", "from direct Slashing and Acid damage");
 
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
         BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
@@ -2995,14 +3040,21 @@ public partial class CombatParser
         }
 
         // Hack for golem abilities
-        if (isGolemAbility && extractedAbilityList.Count == 1)
+        if (isGolemAbility)
         {
-            if (extractedAbilityList[0] == AbilityKeyword.HealingInjection)
-                extractedAbilityList[0] = AbilityKeyword.GolemHealingInjection;
-            else if (extractedAbilityList[0] == AbilityKeyword.HealingMist)
-                extractedAbilityList[0] = AbilityKeyword.GolemHealingMist;
-            else if (extractedAbilityList[0] == AbilityKeyword.HasteConcoction)
-                extractedAbilityList[0] = AbilityKeyword.GolemHasteConcoction;
+            if (extractedAbilityList.Count == 0)
+            {
+                extractedAbilityList.Add(AbilityKeyword.Minigolem);
+            }
+            else if (extractedAbilityList.Count == 1)
+            {
+                if (extractedAbilityList[0] == AbilityKeyword.HealingInjection)
+                    extractedAbilityList[0] = AbilityKeyword.GolemHealingInjection;
+                else if (extractedAbilityList[0] == AbilityKeyword.HealingMist)
+                    extractedAbilityList[0] = AbilityKeyword.GolemHealingMist;
+                else if (extractedAbilityList[0] == AbilityKeyword.HasteConcoction)
+                    extractedAbilityList[0] = AbilityKeyword.GolemHasteConcoction;
+            }
         }
 
         bool IsRandom = false;
@@ -3036,6 +3088,7 @@ public partial class CombatParser
         RemoveDecorativeText(ref text, "(ignores a fatal attack once; resets after 15 minutes)", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "damage (such as via Insect Egg implantation),", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Your golem minion's", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "(including Toxic Irritant)", out _, ref IndexFound);
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
     }
 
@@ -3173,6 +3226,7 @@ public partial class CombatParser
         ReplaceCaseInsensitive(ref text, "lowers ", "lower ");
         ReplaceCaseInsensitive(ref text, "mitigates ", "mitigate ");
         ReplaceCaseInsensitive(ref text, "grants ", "grant ");
+        ReplaceCaseInsensitive(ref text, "coats ", "coat ");
         ReplaceCaseInsensitive(ref text, "depletes ", "deplete ");
         ReplaceCaseInsensitive(ref text, "reaps ", "reap ");
         ReplaceCaseInsensitive(ref text, "steals ", "steal ");
@@ -3224,6 +3278,7 @@ public partial class CombatParser
         ReplaceCaseInsensitive(ref text, " abilities ", " ability ");
         ReplaceCaseInsensitive(ref text, "implants ", "implant ");
         ReplaceCaseInsensitive(ref text, "summons ", "summon ");
+        ReplaceCaseInsensitive(ref text, "absorbs ", "absorb ");
     }
 
     private void ReplaceCaseInsensitive(ref string text, string searchPattern, string replacementPattern)
@@ -4024,7 +4079,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "14004")
+            if (ItemPower.Key == "14018")
             {
             }
 
@@ -4125,6 +4180,14 @@ public partial class CombatParser
 
             if (unmatchedEffectList != null)
                 unmatchedEffectList.Remove(CandidateEffect);
+        }
+
+        // Hack for Heart Thorn
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.HeartThorn &&
+            ModCombatList.Count >= 1 && ModCombatList[0].Keyword == CombatKeyword.DealArmorDamage && ModCombatList[0].DamageType == GameDamageType.Internal_None &&
+            ModText.Contains("coats the target in acid"))
+        {
+            ModCombatList[0].DamageType = GameDamageType.Acid;
         }
 
         string ParsedAbilityList = AbilityKeywordListToShortString(ModAbilityList);

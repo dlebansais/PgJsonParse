@@ -24,8 +24,9 @@
                     new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health/Sec when near your Web Trap", AllowRecurrence = true },
                     new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health to least-healthy ally" },
                     new EffectVerificationEntry() { Prefix = "For 8 seconds, each time target attacks and damages you, heal", Suffix = "Health" },
-                    new EffectVerificationEntry() { Prefix = "Heal", Suffix = "Health every 4 seconds" },
-                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health over 8 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Heal", Suffix = "Health every 4 seconds", AllowRecurrence = true },
+                    new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health over 8 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health 5 times over 15 secs", AllowDuration = true },
                 }
             },
             {
@@ -64,7 +65,7 @@
             {
                 CombatKeyword.AddMaxHealth, new List<EffectVerificationEntry>()
                 {
-                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Max Health", Suffix = "for 60 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Max Health", Suffix = "for 60 seconds", AllowDuration = true },
                 }
             },
             {
@@ -96,26 +97,27 @@
                 {
                     new EffectVerificationEntry() { Prefix = "Deal", Suffix = "Damage every 2 seconds" },
                     new EffectVerificationEntry() { Prefix = "Deal", Suffix = "Trauma Damage every 2 seconds" },
-                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Direct Damage", Suffix = "for 60 seconds" },
-                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Direct Damage", Suffix = "for 5 minutes" },
-                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Damage Boosted", Suffix = "for 60 seconds" },
-                    new EffectVerificationEntry() { Prefix = "Minion Damage", Suffix = "for 10 seconds" },
-                    new EffectVerificationEntry() { Prefix = "Minion Damage Boost", Suffix = "for 10 seconds" },
-                    new EffectVerificationEntry() { Prefix = "All your attacks deal", Suffix = "damage for 10 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Direct Damage", Suffix = "for 60 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Direct Damage", Suffix = "for 5 minutes", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Existing Zombie's Damage Boosted", Suffix = "for 60 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Minion Damage", Suffix = "for 10 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Minion Damage Boost", Suffix = "for 10 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "All your attacks deal", Suffix = "damage for 10 seconds", AllowDuration = true },
                     new EffectVerificationEntry() { Prefix = "For 8 seconds, each time target attacks and damages you, they suffer", Suffix = "Trauma damage" },
-                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 10 seconds" },
-                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 12 seconds" },
-                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 15 seconds" },
-                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 18 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 10 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 12 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 15 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Future Infinite Legs attack damage +", Suffix = "for 18 seconds", AllowDuration = true },
                     new EffectVerificationEntry() { Prefix = "Undead targets suffer", Suffix = "indirect Nature damage" },
                     new EffectVerificationEntry() { Prefix = "Target suffers", Suffix = "Psychic damage after a 4-second delay" },
-                    new EffectVerificationEntry() { Prefix = "Attack Damage Boost", Suffix = "for 10 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Attack Damage Boost", Suffix = "for 10 seconds", AllowDuration = true },
                 }
             },
             {
                 CombatKeyword.DebuffMitigation, new List<EffectVerificationEntry>()
                 {
-                    new EffectVerificationEntry() { Prefix = "Target's mitigation reduced", Suffix = "for 30 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Target's mitigation reduced", Suffix = "for 30 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "Target's Mitigation", Suffix = "for 30 seconds", AllowDuration = true },
                 }
             },
             {

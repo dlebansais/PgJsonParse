@@ -29,5 +29,7 @@
         Hammer,
         Riding,
         Rapier,
+        FireStaffBeaker,
+        StaffBeaker,
     }
 }

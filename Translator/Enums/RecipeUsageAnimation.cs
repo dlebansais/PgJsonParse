@@ -7,5 +7,6 @@
         UseTeleportationCircle,
         BlacksmithHammering,
         UseItem,
+        Drink,
     }
 }

@@ -340,5 +340,7 @@
         SuperBuffs,
         Whittling,
         NatureDamage,
+        MonsterBuff5,
+        Regeneration,
     }
 }

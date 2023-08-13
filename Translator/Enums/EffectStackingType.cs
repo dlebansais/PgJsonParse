@@ -356,5 +356,9 @@
         TSysRabbitColdVuln,
         LoveTapDebuffSlashing,
         SprintCostPerSec,
+        AlchemyKnockbackResist,
+        AlchemySlowResist,
+        AlchemyRangedEvaion,
+        FireBalm,
     }
 }

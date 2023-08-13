@@ -234,6 +234,7 @@
             { AbilityCue.Opener, "Opener" },
             { AbilityCue.ServerRequested, "Server Requested" },
             { AbilityCue.Slowed, "Slowed" },
+            { AbilityCue.SpecialBuff, "Special Buff" },
         };
 
         public static Dictionary<AbilityIndicatingEnabled, string> AbilityIndicatingEnabledTextMap { get; } = new Dictionary<AbilityIndicatingEnabled, string>()
@@ -241,7 +242,7 @@
             { AbilityIndicatingEnabled.Internal_None, "Never" },
             { AbilityIndicatingEnabled.WerewolfForm, "When in wolf form" },
             { AbilityIndicatingEnabled.WerewolfHowlMode, "When in full-moon wolf form" },
-            { AbilityIndicatingEnabled.TriggeredAlchemyGolem, "When golem triggered" },
+            //{ AbilityIndicatingEnabled.TriggeredAlchemyGolem, "When golem triggered" },
             { AbilityIndicatingEnabled.Echolocation, "When echolocating" },
             { AbilityIndicatingEnabled.RavenForm, "When in raven form" },
             { AbilityIndicatingEnabled.DeerForm, "When in deer form" },
@@ -659,7 +660,7 @@
             { AbilityKeyword.FanOfBlades, "Fan Of Blades" },
             { AbilityKeyword.ToughenUp, "Toughen Up" },
             { AbilityKeyword.SurvivalInstincts, "Survival Instincts" },
-            { AbilityKeyword.IndomitableGrace, "Indomitable Grace" },
+            //{ AbilityKeyword.IndomitableGrace, "Indomitable Grace" },
             { AbilityKeyword.ToxicFlesh, "Toxic Flesh" },
             { AbilityKeyword.Howl, "Howl" },
             { AbilityKeyword.PoisonBombToss, "Poison Bomb Toss" },
@@ -688,11 +689,11 @@
             { AbilityKeyword.NoralaGift_HuntingSpeed3, "Norala Gift Hunting Speed (3)" },
             { AbilityKeyword.PatchArmor, "Patch Armor" },
             { AbilityKeyword.Mutation, "Mutation" },
-            { AbilityKeyword.Mutation_KneeSpikes, "Mutation (Knee Spikes)" },
+            //{ AbilityKeyword.Mutation_KneeSpikes, "Mutation (Knee Spikes)" },
             { AbilityKeyword.Mutation_ExtraSkin, "Mutation (Extra Skin)" },
             { AbilityKeyword.Mutation_ExtraHeart, "Mutation (Extra Heart)" },
             { AbilityKeyword.Mutation_ExtraToes, "Mutation (Extra Toes)" },
-            { AbilityKeyword.Mutation_StretchySpine, "Mutation (Stretchy Spine)" },
+            //{ AbilityKeyword.Mutation_StretchySpine, "Mutation (Stretchy Spine)" },
             { AbilityKeyword.ToxicIrritant, "Toxic Irritant" },
             { AbilityKeyword.Crossbow, "Crossbow" },
             { AbilityKeyword.BardSong, "Bard Song" },
@@ -852,6 +853,10 @@
             { AbilityKeyword.CorePoisonAttack, "Core Poison Attack" },
             { AbilityKeyword.NiceAcidAttack, "Nice Acid Attack" },
             { AbilityKeyword.NicePoisonAttack, "Nice Poison Attack" },
+            { AbilityKeyword.NonRageAttack, "Non-Rage Attack" },
+            { AbilityKeyword.SpecialBuff, "Special Buff" },
+            { AbilityKeyword.LendGrace, "Lend Grace" },
+            { AbilityKeyword.MinigolemAbility, "Minigolem Ability" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -1195,6 +1200,9 @@
             { CraftedBoost.CraftedChainHelm, "Crafted Chain Helm" },
             { CraftedBoost.CraftedDwarvenPlateHelm, "Crafted Dwarven Plate Helm" },
             { CraftedBoost.CraftedOrcishPlateHelm, "Crafted Orcish Plate Helm" },
+            { CraftedBoost.CraftedChemistryStaff, "Crafted Chemistry Staff" },
+            { CraftedBoost.PorcineBlastDisperser, "Porcine Blast Disperser" },
+            { CraftedBoost.CraftedAlchemistsClaw, "Crafted Alchemist's Claw" },
         };
 
         public static Dictionary<Currency, string> CurrencyTextMap { get; } = new Dictionary<Currency, string>()
@@ -1785,6 +1793,8 @@
             { EffectKeyword.SuperBuffs, "Super Buffs" },
             { EffectKeyword.Whittling, "Whittling" },
             { EffectKeyword.NatureDamage, "Nature Damage" },
+            { EffectKeyword.MonsterBuff5, "Monster Buffs" },
+            { EffectKeyword.Regeneration, "Regeneration" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -1958,7 +1968,7 @@
             { EffectParticle.AnglingIceSpray, "Angling Ice Spray" },
             { EffectParticle.Mutation_ExtraToes, "Mutation Extra Toes" },
             { EffectParticle.Mutation_StretchySpine, "Mutation Stretchy Spine" },
-            { EffectParticle.Mutation_KneeSpikes, "Mutation Knee Spikes" },
+            //{ EffectParticle.Mutation_KneeSpikes, "Mutation Knee Spikes" },
             { EffectParticle.Mutation_ExtraSkin, "Mutation Extra Skin" },
             { EffectParticle.Mutation_ExtraHeart, "Mutation Extra Heart" },
             { EffectParticle.HealingParticleQuick_Silent, "Healing Particle Quick (Silent)" },
@@ -1966,6 +1976,7 @@
             { EffectParticle.AnglingWebs, "Angling Webs" },
             { EffectParticle.AnglingSoulSphere, "Angling Soul Sphere" },
             { EffectParticle.AnglingPinkSmoke, "Angling Pink Smoke" },
+            { EffectParticle.MonsterBuff5, "Monster Buff5" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2324,6 +2335,10 @@
             { EffectStackingType.TSysRabbitColdVuln, "Rabbit Cold Vulnerability" },
             { EffectStackingType.LoveTapDebuffSlashing, "Love Tap Debuff Slashing" },
             { EffectStackingType.SprintCostPerSec, "Sprint Cost Per Second" },
+            { EffectStackingType.AlchemyKnockbackResist, "Alchemy Knockback Resist" },
+            { EffectStackingType.AlchemySlowResist, "Alchemy Slow Resist" },
+            { EffectStackingType.AlchemyRangedEvaion, "Alchemy Ranged Evasion" },
+            { EffectStackingType.FireBalm, "Fire Balm" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -4106,6 +4121,8 @@
            { Profile.Hammer, "Hammer" },
            { Profile.Riding, "Riding" },
            { Profile.Rapier, "Rapier" },
+           { Profile.FireStaffBeaker, "Fire Staff Beaker" },
+           { Profile.StaffBeaker, "Staff Beaker" },
         };
 
         public static Dictionary<QuestGroup, string> QuestGroupTextMap { get; } = new Dictionary<QuestGroup, string>()
@@ -5019,6 +5036,7 @@
             { RecipeUsageAnimation.UseTeleportationCircle, "Use Teleportation Circle" },
             { RecipeUsageAnimation.BlacksmithHammering, "Blacksmith Hammering" },
             { RecipeUsageAnimation.UseItem, "Use Item" },
+            { RecipeUsageAnimation.Drink, "Drink" },
         };
 
         public static Dictionary<SelfEffect, string> SelfEffectTextMap { get; } = new Dictionary<SelfEffect, string>()

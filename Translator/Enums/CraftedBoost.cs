@@ -85,5 +85,8 @@
         CraftedChainHelm,
         CraftedDwarvenPlateHelm,
         CraftedOrcishPlateHelm,
+        CraftedChemistryStaff,
+        PorcineBlastDisperser,
+        CraftedAlchemistsClaw,
     }
 }
