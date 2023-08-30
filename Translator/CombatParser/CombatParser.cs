@@ -1119,6 +1119,7 @@ public partial class CombatParser
         AddAbilityToNameList(abilityNameList, "Health Wave");
         AddAbilityToNameList(abilityNameList, "Power Wave");
         AddAbilityToNameList(abilityNameList, "Fire Walls'");
+        AddAbilityToNameList(abilityNameList, "your Fire Wall");
         AddAbilityToNameList(abilityNameList, "Summoned Skeletal Swordsmen");
         AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.GolemTauntingPunch, "Taunting Punch");
         AddAbilityToNameListAndTable(abilityNameList, KeywordToName, AbilityKeyword.PoisonBombToss, "Poison Bomb");
@@ -1141,6 +1142,7 @@ public partial class CombatParser
         }
 
         nameToKeyword.Add("Fire Walls'", new List<AbilityKeyword>() { AbilityKeyword.SummonedFireWall });
+        nameToKeyword.Add("your Fire Wall", new List<AbilityKeyword>() { AbilityKeyword.SummonedFireWall });
         nameToKeyword.Add("Summoned Skeletal Swordsmen", new List<AbilityKeyword>() { AbilityKeyword.SummonSkeletonSwordsman });
 
         foreach (AbilityKeyword Keyword in GenericAbilityList)
@@ -2141,7 +2143,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "14018")
+            if (Entry.Key.Key == "2023" || Entry.Key.Key == "10083")
             {
             }
 
@@ -2475,6 +2477,7 @@ public partial class CombatParser
         bool IsMod = false;
         if (EffectText == ModText)
             IsMod = true;
+        bool IsEffectTextEmpty = EffectText.Length == 0;
 
         AnalyzeText(abilityNameList, nameToKeyword, ModText, true, IsGolemAbility, out List <AbilityKeyword> ModAbilityList, out PgCombatEffectCollection ModCombatList, out List<AbilityKeyword> ModTargetAbilityList);
         AnalyzeText(abilityNameList, nameToKeyword, EffectText, IsMod, IsGolemAbility, out List <AbilityKeyword> EffectAbilityList, out PgCombatEffectCollection EffectCombatList, out List<AbilityKeyword> EffectTargetAbilityList);
@@ -2623,7 +2626,7 @@ public partial class CombatParser
 
         modEffect = new PgModEffect()
         {
-            EffectKey = effect.Key,
+            EffectKey = IsEffectTextEmpty ? string.Empty : effect.Key,
             Description = powerSimpleEffect.Description,
             AbilityList = ModAbilityList,
             StaticCombatEffectList = StaticCombatEffectList,
@@ -2800,6 +2803,7 @@ public partial class CombatParser
                 case CombatKeyword.AddTaunt:
                 case CombatKeyword.AddRage:
                 case CombatKeyword.DebuffMitigation:
+                case CombatKeyword.DamageBoost:
                     difference.Add(NoMatch);
                     break;
             }
@@ -2864,10 +2868,14 @@ public partial class CombatParser
         if (effectText.StartsWith("DamageType:"))
         {
             int EndDamageNameIndex = effectText.IndexOf(";");
+            if (EndDamageNameIndex < 0)
+                EndDamageNameIndex = effectText.Length - 1;
+
             if (EndDamageNameIndex > 11)
             {
-                string DamageTypeName = effectText.Substring(11, EndDamageNameIndex - 11);
-                effectText = $"Deals {DamageTypeName} damage and " + effectText.Substring(EndDamageNameIndex + 1).Trim();
+                //string DamageTypeName = effectText.Substring(11, EndDamageNameIndex - 11);
+                //effectText = $"Deals {DamageTypeName} damage and " + effectText.Substring(EndDamageNameIndex + 1).Trim();
+                effectText = effectText.Substring(EndDamageNameIndex + 1).Trim();
             }
         }
 
@@ -4079,7 +4087,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "14018")
+            if (ItemPower.Key == "2023")
             {
             }
 

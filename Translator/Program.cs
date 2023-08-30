@@ -1446,6 +1446,10 @@ public class Program
     {
         string ApplicationDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         string SharedIconsFolder = Path.Combine(ApplicationDataFolder, @"PgJsonParse\Shared Icons");
+
+        if (!Directory.Exists(SharedIconsFolder))
+            Directory.CreateDirectory(SharedIconsFolder);
+
         string[] FileNames = Directory.GetFiles(SharedIconsFolder);
         List<int> ExistingIconIdList = new();
 

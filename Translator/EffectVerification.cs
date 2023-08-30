@@ -27,6 +27,7 @@
                     new EffectVerificationEntry() { Prefix = "Heal", Suffix = "Health every 4 seconds", AllowRecurrence = true },
                     new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health over 8 seconds", AllowDuration = true },
                     new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Health 5 times over 15 secs", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "You heal", Suffix = "per second when near your fire wall", AllowRecurrence = true },
                 }
             },
             {

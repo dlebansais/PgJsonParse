@@ -555,6 +555,64 @@ public partial class CombatParser
         },
         #endregion
 
+        #region Fire Magic
+        { 2005, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FireBreath.ToString(), Effect = 14712, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SuperFireball.ToString(), Effect = 14712, Target = "Foe" },
+            }
+        },
+        { 2009, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FireBreath.ToString(), Effect = 16514, Target = "Self" },
+            }
+        },
+        { 2015, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Frostball.ToString(), Effect = 16655, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ScintillatingFrost.ToString(), Effect = 16655, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DefensiveChill.ToString(), Effect = 16655, Target = "Self" },
+            }
+        },
+        { 2016, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Calefaction.ToString(), Effect = 16517, Target = "Foe" },
+            }
+        },
+        { 2019, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FleshToFuel.ToString(), Effect = 16512, Target = "Self" },
+            }
+        },
+        { 2023, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CrushingBall.ToString(), Effect = 15316, Target = "Foe" },
+            }
+        },
+        { 2154, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Calefaction.ToString(), Effect = 15364, Target = "Foe" },
+            }
+        },
+        { 2203, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Frostball.ToString(), Effect = 15151, Target = "Foe" },
+            }
+        },
+        { 2204, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DefensiveBurst.ToString(), Effect = 16515, Target = "Self" },
+            }
+        },
+        { 2207, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Frostball.ToString(), Effect = 16513, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ScintillatingFrost.ToString(), Effect = 16513, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DefensiveChill.ToString(), Effect = 16513, Target = "Self" },
+            }
+        },
+        #endregion
+
         #region Spider
         { 23003, new AdditionalEffect[]
             {
