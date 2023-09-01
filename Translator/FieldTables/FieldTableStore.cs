@@ -193,7 +193,7 @@ public class FieldTableStore
         { "Value", typeof(float) },
         { "AttributesThatDelta", typeof(string[]) },
         { "AttributesThatMod", typeof(string[]) },
-        { "AttributesThatModBase", typeof(string[]) },
+        //{ "AttributesThatModBase", typeof(string[]) },
         { "DisplayType", typeof(string) },
         { "SkipIfZero", typeof(bool) },
     };
@@ -807,6 +807,9 @@ public class FieldTableStore
         { "NpcFriendlyName", typeof(string) },
         { "AreaName", typeof(string) },
         { "NumberOfSlots", typeof(int) },
+        { "NumberOfSlotsScriptAtomic", typeof(string) },
+        { "NumberOfSlotsScriptAtomicMaxValue", typeof(int) },
+        { "NumberOfSlotsScriptAtomicMinValue", typeof(int) },
         { "HasAssociatedNpc", typeof(bool) },
         { "Levels", typeof(PgStorageFavorLevel) },
         { "Requirements", typeof(PgStorageRequirement[]) },

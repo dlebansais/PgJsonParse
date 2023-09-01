@@ -1043,6 +1043,7 @@
             { AbilityTargetParticle.LightningHit, "Lightning Hit" },
             { AbilityTargetParticle.MycotoxinHit, "Mycotoxin Hit" },
             { AbilityTargetParticle.AcidHit, "Acid Hit" },
+            { AbilityTargetParticle.EnergyBombHit, "Energy Bomb Hit" },
         };
 
         public static Dictionary<AllowedFishingZone, string> AllowedFishingZoneTextMap { get; } = new Dictionary<AllowedFishingZone, string>()
@@ -1233,6 +1234,7 @@
             { DamageType.Acid, "Acid" },
             { DamageType.Darkness, "Darkness" },
             { DamageType.Regeneration, "None" },
+            { DamageType.Demonic, "Demonic" },
         };
 
         public static Dictionary<Deaths, string> DeathsTextMap { get; } = new Dictionary<Deaths, string>()
@@ -4178,6 +4180,7 @@
             { QuestKeyword.PovusNightly, "Povus Nightly" },
             { QuestKeyword.TofurkeyQuest, "Tofurkey Quest" },
             { QuestKeyword.AnglingNatureSpiritIsHappy, "Angling Nature Spirit Is Happy" },
+            { QuestKeyword.MainQuest, "Main Quest" },
         };
 
         public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()

@@ -56,5 +56,6 @@
         LightningHit,
         MycotoxinHit,
         AcidHit,
+        EnergyBombHit,
     }
 }

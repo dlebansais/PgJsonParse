@@ -10,6 +10,9 @@ public class RawStorageVault
     public StorageVaultLevel? Levels { get; set; }
     public string? NpcFriendlyName { get; set; }
     public int? NumSlots { get; set; }
+    public string? NumSlotsScriptAtomic { get; set; }
+    public int? NumSlotsScriptAtomicMaxValue { get; set; }
+    public int? NumSlotsScriptAtomicMinValue { get; set; }
     public string[]? RequiredItemKeywords { get; set; }
     public string? RequirementDescription { get; set; }
     public object? Requirements { get; set; }

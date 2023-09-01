@@ -20,5 +20,6 @@
         Acid,
         Darkness,
         Regeneration,
+        Demonic,
     }
 }

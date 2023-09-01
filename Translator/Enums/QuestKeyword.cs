@@ -22,5 +22,6 @@
         PovusNightly,
         TofurkeyQuest,
         AnglingNatureSpiritIsHappy,
+        MainQuest,
     }
 }

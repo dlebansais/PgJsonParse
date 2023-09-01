@@ -45,9 +45,9 @@ public class ParserSpecialValue : Parser
                 case "AttributesThatMod":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModList, Value);
                     break;
-                case "AttributesThatModBase":
+                /*case "AttributesThatModBase":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModBaseList, Value);
-                    break;
+                    break;*/
                 case "DisplayType":
                     Result = StringToEnumConversion<DisplayType>.SetEnum((DisplayType valueEnum) => item.DisplayType = valueEnum, Value);
                     break;

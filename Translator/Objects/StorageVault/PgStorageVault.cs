@@ -10,6 +10,11 @@
         public MapAreaName Area { get; set; }
         public int NumSlots { get { return RawNumSlots.HasValue ? RawNumSlots.Value : 0; } }
         public int? RawNumSlots { get; set; }
+        public string NumberOfSlotsScriptAtomic { get; set; } = string.Empty;
+        public int NumberOfSlotsScriptAtomicMaxValue { get { return RawNumberOfSlotsScriptAtomicMaxValue.HasValue ? RawNumberOfSlotsScriptAtomicMaxValue.Value : 0; } }
+        public int? RawNumberOfSlotsScriptAtomicMaxValue { get; set; }
+        public int NumberOfSlotsScriptAtomicMinValue { get { return RawNumberOfSlotsScriptAtomicMinValue.HasValue ? RawNumberOfSlotsScriptAtomicMinValue.Value : 0; } }
+        public int? RawNumberOfSlotsScriptAtomicMinValue { get; set; }
         public bool HasAssociatedNpc { get { return RawHasAssociatedNpc.HasValue && RawHasAssociatedNpc.Value; } }
         public bool? RawHasAssociatedNpc { get; set; }
         public PgNpcLocation? AssociatedNpc { get; set; }

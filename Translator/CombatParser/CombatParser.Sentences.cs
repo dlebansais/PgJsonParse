@@ -20,6 +20,7 @@ public partial class CombatParser
         { (int)GameDamageType.Poison, "Poison" },
         { (int)GameDamageType.Acid, "Acid" },
         { (int)GameDamageType.Darkness, "Darkness" },
+        //{ (int)GameDamageType.Demonic, "Demonic" },
     };
 
     public static readonly Dictionary<int, string> SkillTextMap = new Dictionary<int, string>()

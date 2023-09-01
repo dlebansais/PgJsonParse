@@ -42,6 +42,15 @@ public class ParserStorageVault : Parser
                 case "NumberOfSlots":
                     Result = SetIntProperty((int valueInt) => item.RawNumSlots = valueInt, Value);
                     break;
+                case "NumberOfSlotsScriptAtomic":
+                    Result = SetStringProperty((string valueString) => item.NumberOfSlotsScriptAtomic = valueString, Value);
+                    break;
+                case "NumberOfSlotsScriptAtomicMaxValue":
+                    Result = SetIntProperty((int valueInt) => item.RawNumberOfSlotsScriptAtomicMaxValue = valueInt, Value);
+                    break;
+                case "NumberOfSlotsScriptAtomicMinValue":
+                    Result = SetIntProperty((int valueInt) => item.RawNumberOfSlotsScriptAtomicMinValue = valueInt, Value);
+                    break;
                 case "HasAssociatedNpc":
                     Result = SetBoolProperty((bool valueBool) => item.RawHasAssociatedNpc = valueBool, Value);
                     break;

@@ -14,6 +14,9 @@ public class StorageVault
         Levels = rawStorageVault.Levels;
         NpcFriendlyName = rawStorageVault.NpcFriendlyName;
         NumberOfSlots = rawStorageVault.NumSlots;
+        NumberOfSlotsScriptAtomic = rawStorageVault.NumSlotsScriptAtomic;
+        NumberOfSlotsScriptAtomicMaxValue = rawStorageVault.NumSlotsScriptAtomicMaxValue;
+        NumberOfSlotsScriptAtomicMinValue = rawStorageVault.NumSlotsScriptAtomicMinValue;
         RequiredItemKeywords = rawStorageVault.RequiredItemKeywords;
         RequirementDescription = rawStorageVault.RequirementDescription;
         Requirements = Preprocessor.ToSingleOrMultiple(rawStorageVault.Requirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsFormat);
@@ -52,6 +55,9 @@ public class StorageVault
     public StorageVaultLevel? Levels { get; set; }
     public string? NpcFriendlyName { get; set; }
     public int? NumberOfSlots { get; set; }
+    public string? NumberOfSlotsScriptAtomic { get; set; }
+    public int? NumberOfSlotsScriptAtomicMaxValue { get; set; }
+    public int? NumberOfSlotsScriptAtomicMinValue { get; set; }
     public string[]? RequiredItemKeywords { get; set; }
     public string? RequirementDescription { get; set; }
     public Requirement[]? Requirements { get; set; }
@@ -69,6 +75,9 @@ public class StorageVault
         Result.Levels = Levels;
         Result.NpcFriendlyName = NpcFriendlyName;
         Result.NumSlots = NumberOfSlots;
+        Result.NumSlotsScriptAtomic = NumberOfSlotsScriptAtomic;
+        Result.NumSlotsScriptAtomicMaxValue = NumberOfSlotsScriptAtomicMaxValue;
+        Result.NumSlotsScriptAtomicMinValue = NumberOfSlotsScriptAtomicMinValue;
         Result.RequiredItemKeywords = RequiredItemKeywords;
         Result.RequirementDescription = RequirementDescription;
         Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
