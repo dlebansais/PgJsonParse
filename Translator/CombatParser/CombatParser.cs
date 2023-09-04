@@ -490,7 +490,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "7481")
+        if (Key == "13012")
         {
         }
 
@@ -689,6 +689,9 @@ public partial class CombatParser
             EffectIconList.Add(108);
 
         if (AbilityKeywordList.Contains(AbilityKeyword.Druid) && Skill_Key == "Druid")
+            EffectIconList.Add(108);
+
+        if (AbilityKeywordList.Contains(AbilityKeyword.HammerAttack) && Skill_Key == "Hammer")
             EffectIconList.Add(108);
 
         if (AbilityKeywordList.Contains(AbilityKeyword.Melee))

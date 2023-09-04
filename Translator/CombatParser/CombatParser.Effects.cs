@@ -579,14 +579,41 @@ public partial class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Calefaction.ToString(), Effect = 16517, Target = "Foe" },
             }
         },
+        { 2017, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CrushingBall.ToString(), Effect = 14969, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DefensiveBurst.ToString(), Effect = 14969, Target = "Foe" },
+            }
+        },
+        { 2018, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.SuperFireball.ToString(), Effect = 16516, Target = "Foe" },
+            }
+        },
         { 2019, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FleshToFuel.ToString(), Effect = 16512, Target = "Self" },
             }
         },
+        { 2022, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.FleshToFuel.ToString(), Effect = 14318, Target = "Self" },
+            }
+        },
         { 2023, new AdditionalEffect[]
             {
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CrushingBall.ToString(), Effect = 15316, Target = "Foe" },
+            }
+        },
+        { 2025, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ScintillatingFlame.ToString(), Effect = 16518, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MoltenVeins.ToString(), Effect = 16518, Target = "Foe" },
+            }
+        },
+        { 2104, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.MoltenVeins.ToString(), Effect = 15820, Target = "Foe" },
             }
         },
         { 2154, new AdditionalEffect[]
@@ -609,6 +636,97 @@ public partial class CombatParser
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Frostball.ToString(), Effect = 16513, Target = "Self" },
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ScintillatingFrost.ToString(), Effect = 16513, Target = "Self" },
                 new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DefensiveChill.ToString(), Effect = 16513, Target = "Self" },
+            }
+        },
+        { 2209, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DefensiveChill.ToString(), Effect = 14611, Target = "Self" },
+            }
+        },
+        #endregion
+
+        #region Hammer
+        { 13003, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.CoreAttack.ToString(), Effect = 14301, Target = "Self" },
+            }
+        },
+        { 13015, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WayOfTheHammer.ToString(), Effect = 16681, Target = "Self" },
+            }
+        },
+        { 13056, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WayOfTheHammer.ToString(), Effect = 16687, Target = "Allies" },
+            }
+        },
+        { 13103, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LookAtMyHammer.ToString(), Effect = 16688, Target = "Self" },
+            }
+        },
+        { 13104, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LookAtMyHammer.ToString(), Effect = 14414, Target = "Self" },
+            }
+        },
+        { 13105, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LookAtMyHammer.ToString(), Effect = 14415, Target = "Self" },
+            }
+        },
+        { 13106, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LookAtMyHammer.ToString(), Effect = 14416, Target = "Self" },
+            }
+        },
+        { 13205, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.WayOfTheHammer.ToString(), Effect = 16683, Target = "Allies" },
+            }
+        },
+        { 13152, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LeapingSmash.ToString(), Effect = 16685, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LatentCharge.ToString(), Effect = 16685, Target = "Self" },
+            }
+        },
+        { 13303, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.DischargingStrike.ToString(), Effect = 16686, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LatentCharge.ToString(), Effect = 16686, Target = "Self" },
+            }
+        },
+        { 13305, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.HurlLightning.ToString(), Effect = 16963, Target = "Foe" },
+            }
+        },
+        { 13351, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.RecklessSlam.ToString(), Effect = 14371, Target = "Self" },
+            }
+        },
+        { 13356, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.RecklessSlam.ToString(), Effect = 16691, Target = "Self" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ReverberatingStrike.ToString(), Effect = 16691, Target = "Self" },
+            }
+        },
+        { 13401, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LatentCharge.ToString(), Effect = 16260, Target = "Foe" },
+            }
+        },
+        { 13402, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.ReverberatingStrike.ToString(), Effect = 15867, Target = "Self" },
+            }
+        },
+        { 13403, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.LatentCharge.ToString(), Effect = 16660, Target = "Foe" },
             }
         },
         #endregion
