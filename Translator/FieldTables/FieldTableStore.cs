@@ -31,7 +31,7 @@ public class FieldTableStore
         { "DigitStrippedName", typeof(string) },
         { "EffectKeywordsIndicatingEnabled", typeof(string[]) },
         { "ExtraKeywordsForTooltips", typeof(string[]) },
-        { "IconID", typeof(int) },
+        { "IconId", typeof(int) },
         { "IgnoreEffectErrors", typeof(bool) },
         { "IsInternalAbility", typeof(bool) },
         { "InternalName", typeof(string) },

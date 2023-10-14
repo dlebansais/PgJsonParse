@@ -41,7 +41,7 @@ public class Ability
         DigitStrippedName = ToDigitStrippedName(rawAbility.InternalName);
         EffectKeywordsIndicatingEnabled = rawAbility.EffectKeywordsIndicatingEnabled;
         ExtraKeywordsForTooltips = rawAbility.ExtraKeywordsForTooltips;
-        IconID = rawAbility.IconID;
+        IconId = rawAbility.IconID;
         IgnoreEffectErrors = rawAbility.IgnoreEffectErrors;
         InternalName = rawAbility.InternalName;
         InventoryKeywordRequirementErrorMessage = rawAbility.InventoryKeywordReqErrorMessage;
@@ -196,7 +196,7 @@ public class Ability
     public string[]? EffectKeywordsIndicatingEnabled { get; set; }
     public string[]? ExtraKeywordsForTooltips { get; set; }
     public string? FormRequirement { get; set; }
-    public int IconID { get; set; }
+    public int IconId { get; set; }
     public bool? IgnoreEffectErrors { get; set; }
     public string? InternalName { get; set; }
     public string? InventoryKeywordRequirementErrorMessage { get; set; }
@@ -268,7 +268,7 @@ public class Ability
         Result.Description = Description;
         Result.EffectKeywordsIndicatingEnabled = EffectKeywordsIndicatingEnabled;
         Result.ExtraKeywordsForTooltips = ExtraKeywordsForTooltips;
-        Result.IconID = IconID;
+        Result.IconID = IconId;
         Result.IgnoreEffectErrors = IgnoreEffectErrors;
         Result.InternalAbility = IsInternalAbility;
         Result.InternalName = InternalName;

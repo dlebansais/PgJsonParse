@@ -731,6 +731,15 @@ public partial class CombatParser
         },
         #endregion
 
+        #region Ice Magic
+        { 15201, new AdditionalEffect[]
+            {
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Frostbite.ToString(), Effect = 14924, Target = "Foe" },
+                new AdditionalEffect() { AbilityTrigger = AbilityKeyword.Frostbite.ToString(), Effect = 14940, Target = "Foe" },
+            }
+        },
+        #endregion
+
         #region Spider
         { 23003, new AdditionalEffect[]
             {
