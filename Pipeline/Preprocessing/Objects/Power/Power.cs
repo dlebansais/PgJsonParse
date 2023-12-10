@@ -6,6 +6,7 @@ public class Power
 {
     public Power(RawPower rawPower)
     {
+        InternalName = rawPower.InternalName;
         IsUnavailable = rawPower.IsUnavailable;
         Prefix = rawPower.Prefix;
         Skill = rawPower.Skill;
@@ -29,6 +30,7 @@ public class Power
         return tier1.Tier - tier2.Tier;
     }
 
+    public string? InternalName { get; set; }
     public bool? IsUnavailable { get; set; }
     public string? Prefix { get; set; }
     public string? Skill { get; set; }
@@ -40,6 +42,7 @@ public class Power
     {
         RawPower Result = new();
 
+        Result.InternalName = InternalName;
         Result.IsUnavailable = IsUnavailable;
         Result.Prefix = Prefix;
         Result.Skill = Skill;

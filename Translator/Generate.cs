@@ -402,6 +402,10 @@ public class Generate
             if (Entry.Key.BaseType != typeof(PgObject))
                 continue;
 
+            if (Entry.Key == typeof(PgProfile))
+            {
+            }
+
             string ClassPrefix = ToClassName(Entry.Key);
             Writer.WriteLine($"  <data name=\"{ClassPrefix}\" xml:space=\"preserve\">");
             Writer.WriteLine($"    <value>");
@@ -579,13 +583,6 @@ public class Generate
 
         if (!typeIndexTable.ContainsKey(Type))
             typeIndexTable.Add(Type, new List<string>());
-
-        if (Item is PgItem AsItem)
-        {
-            if (AsItem.Description.Contains("Horseshoes, but fitted for a cow"))
-            {
-            }
-        }
 
         if (GetObjectIndexContent(Item, Type, 2, out string Key, out string Content))
         {

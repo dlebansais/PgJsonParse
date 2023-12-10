@@ -332,6 +332,7 @@ public class FieldTableStore
         { "Lint_VendorNpc", typeof(string) },
         { "MountedAppearance", typeof(string) },
         { "AttuneOnPickup", typeof(bool) },
+        { "IgnoreAlreadyKnownBestowals", typeof(bool) },
     };
 
     public static Dictionary<string, Type> TableItemBehavior { get; } = new Dictionary<string, Type>()
@@ -432,6 +433,7 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TablePower { get; } = new Dictionary<string, Type>()
     {
+        { "InternalName", typeof(string) },
         { "Prefix", typeof(string) },
         { "Suffix", typeof(string) },
         { "Tiers", typeof(PgPowerTier[]) },
@@ -457,6 +459,11 @@ public class FieldTableStore
         { "AttributeEffect", typeof(float) },
         { "AttributeSkill", typeof(string) },
         { "IconIds", typeof(int[]) },
+    };
+
+    public static Dictionary<string, Type> TableProfile { get; } = new Dictionary<string, Type>()
+    {
+        { "EffectList", typeof(string[]) },
     };
 
     public static Dictionary<string, Type> TableQuest { get; } = new Dictionary<string, Type>()
@@ -492,6 +499,9 @@ public class FieldTableStore
         { "FollowUpQuests", typeof(string[]) },
         { "PreGiveEffects", typeof(PgQuestPreGiveEffect[]) },
         { "MidwayGiveItems", typeof(PgQuestRewardItem[]) },
+        { "RewardsDescription", typeof(string) },
+        { "CheckRequirementsToSustainOnBestow", typeof(bool) },
+        { "QuestFailEffects", typeof(PgQuestFailEffect[]) },
     };
 
     public static Dictionary<string, Type> TableQuestRequirement { get; } = new Dictionary<string, Type>()
@@ -519,6 +529,8 @@ public class FieldTableStore
         { "AreaName", typeof(string) },
         { "EventQuest", typeof(string) },
         { "EventSkill", typeof(string) },
+        { "Attribute", typeof(string) },
+        { "ScriptAtomicInt", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()
@@ -613,6 +625,12 @@ public class FieldTableStore
         { "Days", typeof(int) },
         { "Hours", typeof(int) },
         { "Minutes", typeof(int) },
+    };
+
+    public static Dictionary<string, Type> TableQuestFailEffect { get; } = new Dictionary<string, Type>()
+    {
+        { "Type", typeof(string) },
+        { "InteractionFlag", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableRecipe { get; } = new Dictionary<string, Type>()
@@ -890,6 +908,7 @@ public class FieldTableStore
         { typeof(PgPower), new FixedFieldTable(TablePower) },
         { typeof(PgPowerTier), new FixedFieldTable(TablePowerTier) },
         { typeof(PgPowerEffect), new FixedFieldTable(TablePowerEffect) },
+        { typeof(PgProfile), new FixedFieldTable(TableProfile) },
         { typeof(PgQuest), new FixedFieldTable(TableQuest) },
         { typeof(PgQuestRequirement), new FixedFieldTable(TableQuestRequirement) },
         { typeof(PgQuestObjective), new FixedFieldTable(TableQuestObjective) },
@@ -898,6 +917,7 @@ public class FieldTableStore
         { typeof(PgQuestReward), new FixedFieldTable(TableQuestReward) },
         { typeof(PgQuestPreGiveEffect), new FixedFieldTable(TableQuestPreGiveEffect) },
         { typeof(PgQuestTime), new FixedFieldTable(TableQuestTime) },
+        { typeof(PgQuestFailEffect), new FixedFieldTable(TableQuestFailEffect) },
         { typeof(PgRecipe), new FixedFieldTable(TableRecipe) },
         { typeof(PgRecipeItem), new FixedFieldTable(TableRecipeItem) },
         { typeof(PgRecipeCost), new FixedFieldTable(TableRecipeCost) },
@@ -932,6 +952,7 @@ public class FieldTableStore
         typeof(PgQuest),
         typeof(PgRecipe),
         typeof(PgXpTable),
+        typeof(PgPower),
     };
 
     private static List<Type> UsedTableList = new List<Type>();

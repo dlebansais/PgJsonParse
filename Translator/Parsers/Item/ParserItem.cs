@@ -113,7 +113,7 @@ public class ParserItem : Parser
                     Result = Inserter<PgStockDye>.SetItemProperty((PgStockDye valueStockDye) => item.StockDye = valueStockDye, Value);
                     break;
                 case "TSysProfile":
-                    Result = StringToEnumConversion<Profile>.SetEnum((Profile valueEnum) => item.TSysProfile = valueEnum, Value);
+                    Result = Inserter<PgProfile>.SetItemByKey((PgProfile valueProfile) => item.Profile_Key = PgObject.GetItemKey(valueProfile), Value);
                     break;
                 case "Value":
                     Result = SetFloatProperty((float valueFloat) => item.RawValue = valueFloat, Value);
@@ -147,6 +147,9 @@ public class ParserItem : Parser
                     break;
                 case "AttuneOnPickup":
                     Result = SetBoolProperty((bool valueBool) => item.SetAttuneOnPickup(valueBool), Value);
+                    break;
+                case "IgnoreAlreadyKnownBestowals":
+                    Result = SetBoolProperty((bool valueBool) => item.SetIgnoreAlreadyKnownBestowals(valueBool), Value);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

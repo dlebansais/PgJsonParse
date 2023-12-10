@@ -31,6 +31,7 @@ public class Item
         EquipSlot = rawItem.EquipSlot;
         FoodDescription = rawItem.FoodDesc;
         IconId = rawItem.IconId;
+        IgnoreAlreadyKnownBestowals = rawItem.IgnoreAlreadyKnownBestowals;
         InternalName = rawItem.InternalName;
         IsCrafted = rawItem.IsCrafted;
         IsSkillRequirementsDefaults = rawItem.IsSkillReqsDefaults;
@@ -305,6 +306,7 @@ public class Item
     public string? EquipSlot { get; set; }
     public string? FoodDescription { get; set; }
     public int IconId { get; set; }
+    public bool? IgnoreAlreadyKnownBestowals { get; set; }
     public string? InternalName { get; set; }
     public bool? IsCrafted { get; set; }
     public bool? IsSkillRequirementsDefaults { get; set; }
@@ -349,6 +351,7 @@ public class Item
         Result.EquipSlot = EquipSlot;
         Result.FoodDesc = FoodDescription;
         Result.IconId = IconId;
+        Result.IgnoreAlreadyKnownBestowals = IgnoreAlreadyKnownBestowals;
         Result.InternalName = InternalName;
         Result.IsCrafted = IsCrafted;
         Result.IsSkillReqsDefaults = IsSkillRequirementsDefaults;

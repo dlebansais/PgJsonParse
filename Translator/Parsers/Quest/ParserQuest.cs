@@ -129,6 +129,15 @@ public class ParserQuest : Parser
                 case "MidwayGiveItems":
                     Result = Inserter<PgQuestReward>.AddKeylessArray(item.QuestMidwayGiveItemList, Value);
                     break;
+                case "RewardsDescription":
+                    Result = SetStringProperty((string valueString) => item.RewardsDescription = Tools.CleanedUpString(valueString), Value);
+                    break;
+                case "CheckRequirementsToSustainOnBestow":
+                    Result = SetBoolProperty((bool valueBool) => item.SetCheckRequirementsToSustainOnBestow(valueBool), Value);
+                    break;
+                case "QuestFailEffects":
+                    Result = Inserter<PgQuestFailEffect>.AddKeylessArray(item.QuestFailEffectListList, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

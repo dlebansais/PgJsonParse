@@ -147,5 +147,7 @@
         FishSmall,
         FishMedium,
         FishLarge,
+        MinTSysPrereq_91,
+        MaxTSysPrereq_120,
     }
 }

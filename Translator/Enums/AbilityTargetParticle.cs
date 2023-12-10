@@ -57,5 +57,6 @@
         MycotoxinHit,
         AcidHit,
         EnergyBombHit,
+        HeadBubble,
     }
 }

@@ -64,7 +64,7 @@
         public bool DestroyWhenUsedUp { get { return (BoolValues & (DestroyWhenUsedUpNotNull + DestroyWhenUsedUpIsTrue)) == (DestroyWhenUsedUpNotNull + DestroyWhenUsedUpIsTrue); } }
         public bool? RawDestroyWhenUsedUp { get { return ((BoolValues & DestroyWhenUsedUpNotNull) != 0) ? (BoolValues & DestroyWhenUsedUpIsTrue) != 0 : null; } }
         public void SetDestroyWhenUsedUp(bool value) { BoolValues |= (BoolValues & ~(DestroyWhenUsedUpNotNull + DestroyWhenUsedUpIsTrue)) | ((value ? DestroyWhenUsedUpIsTrue : 0) + DestroyWhenUsedUpNotNull); }
-        public Profile TSysProfile { get; set; }
+        public string? Profile_Key { get; set; }
         public PgItemBehaviorCollection BehaviorList { get; set; } = new PgItemBehaviorCollection();
         public string DynamicCraftingSummary { get; set; } = string.Empty;
         public const int IsSkillReqsDefaultsNotNull = 1 << 12;
@@ -79,8 +79,14 @@
         public string MountedAppearance { get; set; } = string.Empty;
         public const int AttuneOnPickupNotNull = 1 << 14;
         public const int AttuneOnPickupIsTrue = 1 << 15;
+        public bool AttuneOnPickup { get { return (BoolValues & (AttuneOnPickupNotNull + AttuneOnPickupIsTrue)) == (AttuneOnPickupNotNull + AttuneOnPickupIsTrue); } }
         public bool? RawAttuneOnPickup { get { return ((BoolValues & AttuneOnPickupNotNull) != 0) ? (BoolValues & AttuneOnPickupIsTrue) != 0 : null; } }
         public void SetAttuneOnPickup(bool value) { BoolValues |= (BoolValues & ~(AttuneOnPickupNotNull + AttuneOnPickupIsTrue)) | ((value ? AttuneOnPickupIsTrue : 0) + AttuneOnPickupNotNull); }
+        public const int IgnoreAlreadyKnownBestowalsNotNull = 1 << 16;
+        public const int IgnoreAlreadyKnownBestowalsIsTrue = 1 << 17;
+        public bool IgnoreAlreadyKnownBestowals { get { return (BoolValues & (IgnoreAlreadyKnownBestowalsNotNull + IgnoreAlreadyKnownBestowalsIsTrue)) == (IgnoreAlreadyKnownBestowalsNotNull + IgnoreAlreadyKnownBestowalsIsTrue); } }
+        public bool? RawIgnoreAlreadyKnownBestowals { get { return ((BoolValues & IgnoreAlreadyKnownBestowalsNotNull) != 0) ? (BoolValues & IgnoreAlreadyKnownBestowalsIsTrue) != 0 : null; } }
+        public void SetIgnoreAlreadyKnownBestowals(bool value) { BoolValues |= (BoolValues & ~(IgnoreAlreadyKnownBestowalsNotNull + IgnoreAlreadyKnownBestowalsIsTrue)) | ((value ? IgnoreAlreadyKnownBestowalsIsTrue : 0) + IgnoreAlreadyKnownBestowalsNotNull); }
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

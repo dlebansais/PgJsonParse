@@ -4,6 +4,7 @@
 
     public class PgPower : PgObject
     {
+        public string InternalName { get; set; } = string.Empty;
         public string Prefix { get; set; } = string.Empty;
         public string Suffix { get; set; } = string.Empty;
         public List<ItemSlot> SlotList { get; set; } = new List<ItemSlot>();

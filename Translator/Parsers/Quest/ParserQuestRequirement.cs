@@ -35,6 +35,7 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.QuestCompletedRecently, FinishItemQuestCompletedRecently },
         { QuestRequirementType.GeneralShape, FinishItemGeneralShape },
         { QuestRequirementType.Appearance, FinishItemAppearance },
+        { QuestRequirementType.AttributeMatchesScriptAtomic, FinishItemAttributeMatchesScriptAtomic },
     };
 
     private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
@@ -60,6 +61,7 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.QuestCompletedRecently, new List<string>() { "T", "Quest" } },
         { QuestRequirementType.GeneralShape, new List<string>() { "T", "Shape" } },
         { QuestRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
+        { QuestRequirementType.AttributeMatchesScriptAtomic, new List<string>() { "T", "Attribute", "ScriptAtomicInt" } },
     };
 
     private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
@@ -1025,6 +1027,52 @@ public class ParserQuestRequirement : Parser
                         break;
                     case "Appearance":
                         Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => NewItem.Appearance = valueEnum, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemAttributeMatchesScriptAtomic(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRequirementAttributeMatchesScriptAtomic NewItem = new PgQuestRequirementAttributeMatchesScriptAtomic();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "Attribute":
+                        Result = SetStringProperty((string valueString) => NewItem.Attribute = valueString, Value);
+                        break;
+                    case "ScriptAtomicInt":
+                        Result = SetStringProperty((string valueString) => NewItem.ScriptAtomicInt = valueString, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

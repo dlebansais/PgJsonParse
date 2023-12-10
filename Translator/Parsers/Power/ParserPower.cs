@@ -31,6 +31,9 @@ public class ParserPower : Parser
 
             switch (Key)
             {
+                case "InternalName":
+                    Result = SetStringProperty((string valueString) => item.InternalName = valueString, Value);
+                    break;
                 case "Prefix":
                     Result = SetStringProperty((string valueString) => item.Prefix = valueString, Value);
                     break;

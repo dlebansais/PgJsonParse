@@ -23,6 +23,7 @@ public class RawItem
     public string? EquipSlot { get; set; }
     public string? FoodDesc { get; set; }
     public int IconId { get; set; }
+    public bool? IgnoreAlreadyKnownBestowals { get; set; }
     public string? InternalName { get; set; }
     public bool? IsCrafted { get; set; }
     public bool? IsSkillReqsDefaults { get; set; }

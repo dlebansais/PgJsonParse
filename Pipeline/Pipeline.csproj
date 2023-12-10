@@ -12,7 +12,7 @@
     <Product />
     <Description>PG JSON processing pipeline</Description>
     <Copyright>Copyright © 2023 David Le Bansais</Copyright>
-    <AssemblyVersion>1.1.0.4864</AssemblyVersion>
+    <AssemblyVersion>1.1.0.4865</AssemblyVersion>
     <FileVersion>1.1.0.2</FileVersion>
     <RepositoryUrl>https://github.com/dlebansais/PgJsonParse</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>

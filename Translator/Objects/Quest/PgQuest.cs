@@ -57,6 +57,13 @@
         public string? WorkOrderSkill_Key { get; set; }
         public MapAreaName DisplayedLocation { get; set; }
         public PgQuestRewardCollection QuestMidwayGiveItemList { get; set; } = new PgQuestRewardCollection();
+        public string RewardsDescription { get; set; } = string.Empty;
+        public const int CheckRequirementsToSustainOnBestowNotNull = 1 << 8;
+        public const int CheckRequirementsToSustainOnBestowIsTrue = 1 << 9;
+        public bool CheckRequirementsToSustainOnBestow { get { return (BoolValues & (CheckRequirementsToSustainOnBestowNotNull + CheckRequirementsToSustainOnBestowIsTrue)) == (CheckRequirementsToSustainOnBestowNotNull + CheckRequirementsToSustainOnBestowIsTrue); } }
+        public bool? RawCheckRequirementsToSustainOnBestow { get { return ((BoolValues & CheckRequirementsToSustainOnBestowNotNull) != 0) ? (BoolValues & CheckRequirementsToSustainOnBestowIsTrue) != 0 : null; } }
+        public void SetCheckRequirementsToSustainOnBestow(bool value) { BoolValues |= (BoolValues & ~(CheckRequirementsToSustainOnBestowNotNull + CheckRequirementsToSustainOnBestowIsTrue)) | ((value ? CheckRequirementsToSustainOnBestowIsTrue : 0) + CheckRequirementsToSustainOnBestowNotNull); }
+        public PgQuestFailEffectCollection QuestFailEffectListList { get; set; } = new PgQuestFailEffectCollection();
 
         public int IconId { get; set; }
 

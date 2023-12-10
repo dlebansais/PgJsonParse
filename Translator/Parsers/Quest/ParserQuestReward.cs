@@ -833,7 +833,40 @@ public class ParserQuestReward : Parser
                     case "T":
                         break;
                     case "Effect":
-                        Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => NewItem.Effect_Key = PgObject.GetItemKey(valueEffect), Value);
+                        Result = Inserter<PgEffect>.SetItemByName((PgEffect valueEffect) => NewItem.Effect_Key = PgObject.GetItemKey(valueEffect), Value, ErrorControl.IgnoreIfNotFound);
+                        if (!Result && Value is string ValueString)
+                        {
+                            Dictionary<string, ParsingContext> KeyTable = ParsingContext.ObjectKeyTable[typeof(PgEffect)];
+                            foreach (KeyValuePair<string, ParsingContext> EffectEntry in KeyTable)
+                            {
+                                PgEffect Effect = (PgEffect)EffectEntry.Value.Item;
+
+                                foreach (EffectKeyword Keyword in Effect.KeywordList)
+                                    if (Keyword.ToString() == ValueString)
+                                    {
+                                        NewItem.Keyword = Keyword;
+                                        Result = true;
+                                        break;
+                                    }
+
+                                if (Result)
+                                    break;
+                            }
+
+                            if (!Result)
+                            {
+                                switch (ValueString)
+                                {
+                                    case "IncAktaariQuestCounter":
+                                        NewItem.Special = "Increment Aktaari Quest Counter";
+                                        Result = true;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

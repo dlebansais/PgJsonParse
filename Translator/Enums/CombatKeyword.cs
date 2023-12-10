@@ -177,7 +177,7 @@
         AddPhysicalReflection,
         AddElementalDamageResistance,
         AddDamageResistance,
-        Fear,
+        //Fear,
         FearSentient,
         SetVulnerable,
         ExtraTraumaDamage,
@@ -225,5 +225,7 @@
         ApplyToBasic,
         ImplantEgg,
         AbsorbDamage,
+        CancelSlowdown,
+        DoNotIgnoreKnockback,
     }
 }

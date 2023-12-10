@@ -68,6 +68,12 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
 
         if (StartIndex < 0)
         {
+            Pattern = "befriend ";
+            StartIndex = hint.IndexOf(Pattern);
+        }
+
+        if (StartIndex < 0)
+        {
             if (hint.Contains(" equip "))
                 return null;
 
@@ -82,6 +88,8 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
         EndIndex = hint.IndexOf(" in ", StartIndex);
         if (EndIndex < 0)
             EndIndex = hint.IndexOf(" outside of ", StartIndex);
+        if (EndIndex < 0)
+            EndIndex = hint.IndexOf(" deep beneath ", StartIndex);
 
         if (EndIndex <= StartIndex)
         {

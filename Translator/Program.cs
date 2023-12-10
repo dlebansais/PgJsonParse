@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(395);
+        return ParseCurated(399);
     }
 
     private static int ParseCurated(int Version)
@@ -67,6 +67,9 @@ public class Program
         if (!ParseFile(Version, "tsysclientinfo", typeof(PgPower)))
             return -1;
 
+        if (!ParseFile(Version, "tsysprofiles", typeof(PgProfile)))
+            return -1;
+
         if (!ParseFile(Version, "quests", typeof(PgQuest)))
             return -1;
 
@@ -105,6 +108,7 @@ public class Program
         FinalizingResult &= ParserQuestObjectiveRequirement.FinalizeParsing();
         FinalizingResult &= ParserQuestRequirement.FinalizeParsing();
         FinalizingResult &= ParserQuestReward.FinalizeParsing();
+        FinalizingResult &= ParserQuestFailEffect.FinalizeParsing();
         FinalizingResult &= ParserStorageRequirement.FinalizeParsing();
 
         FinalizingResult &= ParserAbility.UpdateSource();
@@ -116,6 +120,7 @@ public class Program
         ParserAttribute.UpdateIconsAndNames();
         ParserEffect.UpdateIconsAndNames();
         ParserPower.UpdateIconsAndNames();
+        ParserProfile.UpdateIconsAndNames();
         ParserQuest.UpdateIconsAndNames();
         ParserSkill.UpdateIconsAndNames();
 
@@ -1571,7 +1576,7 @@ public class Program
             { MapAreaName.Povus, "Povus" },
             { MapAreaName.Rahu, "Rahu" },
             { MapAreaName.RahuSewer, "Rahu Sewer" },
-            { MapAreaName.RahuSewers, "Rahu Sewers" },
+            //{ MapAreaName.RahuSewers, "Rahu Sewers" },
             { MapAreaName.Casino, "Red Wing Casino" },
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
             { MapAreaName.Serbule, "Serbule" },
@@ -1699,31 +1704,27 @@ public class Program
             }
         },
         {
+            MapAreaName.CarpalTunnels, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Mana Sponges", QuestSpecifics.None },
+                { "Sludge!", QuestSpecifics.None },
+            }
+        },
+        {
             MapAreaName.Dungeons, new Dictionary<string, QuestSpecifics>()
             {
-                { "Anti-Lycanthropy Potion", QuestSpecifics.None },
-                { "Bandage The Soul", QuestSpecifics.None },
-                { "Better Skulls Needed", QuestSpecifics.None },
-                { "Convince Ultashk to Help", QuestSpecifics.None },
-                { "Corey Wants Ogre Stomachs", QuestSpecifics.None },
-                { "Corey Wants Wings", QuestSpecifics.None },
+                { "Broken Globe Thing", QuestSpecifics.None },
+                { "Broken Playset", QuestSpecifics.None },
+                { "Dice Bunnies", QuestSpecifics.None },
+                { "Fake Bombs", QuestSpecifics.None },
                 { "Find Dalvos's Machine Parts", QuestSpecifics.None },
-                { "Free Tortured Fairies", QuestSpecifics.None },
-                { "Garnets", QuestSpecifics.None },
-                { "Goblin Genocide", QuestSpecifics.None },
-                { "Gorvessa's Cheesy Demand", QuestSpecifics.None },
-                { "Gribburn Wants Eel Kabobs", QuestSpecifics.None },
-                { "Gribburn's Hair Pin", QuestSpecifics.None },
                 { "Into the Kur Tower", QuestSpecifics.None },
-                { "Looking at Skulls", QuestSpecifics.None },
-                { "Malvol's Calligraphy Needs", QuestSpecifics.None },
-                { "Murdering Gorgos", QuestSpecifics.None },
-                { "Necromancy Goblets", QuestSpecifics.None },
-                { "Orange Juice for Malgath", QuestSpecifics.None },
-                { "Slabs for Malvol", QuestSpecifics.None },
-                { "The Sexy Panther", QuestSpecifics.None },
-                { "Tongues for Shoes", QuestSpecifics.None },
-                { "Worm Teeth", QuestSpecifics.None },
+                { "Locked Bottled Ship", QuestSpecifics.None },
+                { "Lost Penguins", QuestSpecifics.None },
+                { "Regma's Raging Rum", QuestSpecifics.None },
+                { "Rixie's Ring Challenge", QuestSpecifics.None },
+                { "Rixie's Ring Challenge 2", QuestSpecifics.None },
+                { "Stargazer Alignment", QuestSpecifics.None },
             }
         },
         {
@@ -1808,8 +1809,8 @@ public class Program
                 { "Explosive Mushrooms", QuestSpecifics.None },
                 { "Fae Panther Hunt", QuestSpecifics.None },
                 { "Fae Rhino Horns", QuestSpecifics.None },
-                { "Fashion Kittens", QuestSpecifics.None },
-                { "Felmer's First Aid", QuestSpecifics.None },
+                { "Fashion Kittens", QuestSpecifics.FaeOnly },
+                { "Felmer's First Aid", QuestSpecifics.FaeOnly },
                 { "Freshest Pears", QuestSpecifics.None },
                 { "Freshest Pixie's Parasols", QuestSpecifics.None },
                 { "Freshest Shimmerwing Wings", QuestSpecifics.None },
@@ -1838,39 +1839,6 @@ public class Program
             }
         },
         {
-            MapAreaName.GazlukCaves, new Dictionary<string, QuestSpecifics>()
-            {
-                { "Barghest Hunt", QuestSpecifics.None },
-                { "Black Foot Morels for Hemmit", QuestSpecifics.None },
-                { "Blankets From Ghosts", QuestSpecifics.None },
-                { "Cave Fishing", QuestSpecifics.None },
-                { "Cave Mummies", QuestSpecifics.None },
-                { "Confronting Tal-Saka", QuestSpecifics.None },
-                { "Confronting Urzab", QuestSpecifics.None },
-                { "Deadly Yellow Crystals", QuestSpecifics.None },
-                { "Dissolution of Cave Snails", QuestSpecifics.None },
-                { "Fake Cinnamon", QuestSpecifics.None },
-                { "Ghost Puke", QuestSpecifics.None },
-                { "Grisly Polar Bear Deaths", QuestSpecifics.None },
-                { "Groxmax Mushrooms for Hemmit", QuestSpecifics.None },
-                { "Ice Sludge", QuestSpecifics.None },
-                { "Inconsiderate Slime Organisms", QuestSpecifics.None },
-                { "Mummy Mastermind", QuestSpecifics.None },
-                { "Only The Best Handles", QuestSpecifics.None },
-                { "Proof of Rahu's Involvement", QuestSpecifics.None },
-                { "Puke Sweetener", QuestSpecifics.None },
-                { "Safer Crystal Transport", QuestSpecifics.None },
-                { "Sentimental Jewelry", QuestSpecifics.None },
-                { "Steel From Ghosts", QuestSpecifics.None },
-                { "The Chain of Gasu'um's Necklace", QuestSpecifics.None },
-                { "The Gem in Gasu'um's Necklace", QuestSpecifics.None },
-                { "The Gem in Gasu'um's Necklace (round 2)", QuestSpecifics.None },
-                { "The Mushroom Man's Secret", QuestSpecifics.None },
-                { "The Worst Slug", QuestSpecifics.None },
-                { "True Orcish Ore", QuestSpecifics.None },
-            }
-        },
-        {
             MapAreaName.GazlukKeep, new Dictionary<string, QuestSpecifics>()
             {
                 { "Contacting Melandria's Brother", QuestSpecifics.None },
@@ -1884,6 +1852,26 @@ public class Program
             {
                 { "Lumber for Campsite Repairs", QuestSpecifics.None },
                 { "Sampling Local Cinnabar", QuestSpecifics.None },
+            }
+        },
+        {
+            MapAreaName.GoblinDungeon, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Bandage The Soul", QuestSpecifics.None },
+                { "Goblin Genocide", QuestSpecifics.None },
+            }
+        },
+        {
+            MapAreaName.HogansBasement, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Convince Ultashk to Help", QuestSpecifics.None },
+                { "Gorvessa's Cheesy Demand", QuestSpecifics.None },
+                { "Gribburn Wants Eel Kabobs", QuestSpecifics.None },
+                { "Gribburn's Hair Pin", QuestSpecifics.None },
+                { "Malvol's Calligraphy Needs", QuestSpecifics.None },
+                { "Slabs for Malvol", QuestSpecifics.None },
+                { "The Sexy Panther", QuestSpecifics.None },
+                { "Tongues for Shoes", QuestSpecifics.None },
             }
         },
         {
@@ -1904,14 +1892,9 @@ public class Program
         {
             MapAreaName.Tomb1, new Dictionary<string, QuestSpecifics>()
             {
-                { "Damned Dinosaurs", QuestSpecifics.None },
-                { "Deer In The Crypt", QuestSpecifics.None },
                 { "Fiery Secrets", QuestSpecifics.None },
                 { "Fiery Secrets, Round 2", QuestSpecifics.NotTracked },
                 { "Fiery Secrets, Round 3", QuestSpecifics.NotTracked },
-                { "Mana Sponges", QuestSpecifics.None },
-                { "Sludge!", QuestSpecifics.None },
-                { "Ursula's Creepy Bear", QuestSpecifics.None },
             }
         },
         {
@@ -1961,6 +1944,14 @@ public class Program
             }
         },
         {
+            MapAreaName.KurTower, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Better Skulls Needed", QuestSpecifics.None },
+                { "Looking at Skulls", QuestSpecifics.None },
+                { "Necromancy Goblets", QuestSpecifics.None },
+            }
+        },
+        {
             MapAreaName.MyconianCave, new Dictionary<string, QuestSpecifics>()
             {
                 { "Cross-Pollination", QuestSpecifics.None },
@@ -1974,6 +1965,36 @@ public class Program
                 { "The Secret Ingredient", QuestSpecifics.None },
                 { "Too Many Tenders", QuestSpecifics.None },
                 { "Way's Lost Yo-Yo", QuestSpecifics.None },
+            }
+        },
+        {
+            MapAreaName.NewPrestonbule, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Barghest Hunt", QuestSpecifics.None },
+                { "Black Foot Morels for Hemmit", QuestSpecifics.None },
+                { "Blankets From Ghosts", QuestSpecifics.None },
+                { "Cave Fishing", QuestSpecifics.None },
+                { "Cave Mummies", QuestSpecifics.None },
+                { "Confronting Tal-Saka", QuestSpecifics.None },
+                { "Confronting Urzab", QuestSpecifics.None },
+                { "Deadly Yellow Crystals", QuestSpecifics.None },
+                { "Fake Cinnamon", QuestSpecifics.None },
+                { "Ghost Puke", QuestSpecifics.None },
+                { "Grisly Polar Bear Deaths", QuestSpecifics.None },
+                { "Groxmax Mushrooms for Hemmit", QuestSpecifics.None },
+                { "Ice Sludge", QuestSpecifics.None },
+                { "Mummy Mastermind", QuestSpecifics.None },
+                { "Only The Best Handles", QuestSpecifics.None },
+                { "Proof of Rahu's Involvement", QuestSpecifics.None },
+                { "Puke Sweetener", QuestSpecifics.None },
+                { "Safer Crystal Transport", QuestSpecifics.None },
+                { "Sentimental Jewelry", QuestSpecifics.None },
+                { "Steel From Ghosts", QuestSpecifics.None },
+                { "The Chain of Gasu'um's Necklace", QuestSpecifics.None },
+                { "The Gem in Gasu'um's Necklace", QuestSpecifics.None },
+                { "The Gem in Gasu'um's Necklace (round 2)", QuestSpecifics.None },
+                { "The Mushroom Man's Secret", QuestSpecifics.None },
+                { "True Orcish Ore", QuestSpecifics.None },
             }
         },
         {
@@ -2054,11 +2075,6 @@ public class Program
             MapAreaName.RahuSewer, new Dictionary<string, QuestSpecifics>()
             {
                 { "Bogaku's Lost Notebook", QuestSpecifics.None },
-            }
-        },
-        {
-            MapAreaName.RahuSewers, new Dictionary<string, QuestSpecifics>()
-            {
                 { "Cheese Testing", QuestSpecifics.None },
                 { "More Miner Tests", QuestSpecifics.None },
                 { "Necromancy Target Practice", QuestSpecifics.None },
@@ -2233,6 +2249,14 @@ public class Program
             }
         },
         {
+            MapAreaName.SerbuleCrypt, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Damned Dinosaurs", QuestSpecifics.None },
+                { "Deer In The Crypt", QuestSpecifics.None },
+                { "Ursula's Creepy Bear", QuestSpecifics.None },
+            }
+        },
+        {
             MapAreaName.Serbule2, new Dictionary<string, QuestSpecifics>()
             {
                 { "A Crop of Onions", QuestSpecifics.None },
@@ -2291,6 +2315,14 @@ public class Program
             }
         },
         {
+            MapAreaName.SnowbloodShadowGazlukShadowCaves, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Dissolution of Cave Snails", QuestSpecifics.None },
+                { "Inconsiderate Slime Organisms", QuestSpecifics.None },
+                { "The Worst Slug", QuestSpecifics.None },
+            }
+        },
+        {
             MapAreaName.SunVale, new Dictionary<string, QuestSpecifics>()
             {
                 { "A Brighter Glow", QuestSpecifics.None },
@@ -2344,6 +2376,24 @@ public class Program
                 { "Trade-In For Nice Werewolf Barding", QuestSpecifics.None },
                 { "Trade-In For Nice Werewolf Champron", QuestSpecifics.None },
                 { "Vegetable Masterpiece", QuestSpecifics.None },
+            }
+        },
+        {
+            MapAreaName.WinterNexus, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Corey Wants Ogre Stomachs", QuestSpecifics.None },
+                { "Corey Wants Wings", QuestSpecifics.None },
+                { "Free Tortured Fairies", QuestSpecifics.None },
+                { "Garnets", QuestSpecifics.None },
+                { "Murdering Gorgos", QuestSpecifics.None },
+            }
+        },
+        {
+            MapAreaName.KurCaves, new Dictionary<string, QuestSpecifics>()
+            {
+                { "Anti-Lycanthropy Potion", QuestSpecifics.None },
+                { "Orange Juice for Malgath", QuestSpecifics.None },
+                { "Worm Teeth", QuestSpecifics.None },
             }
         },
     };

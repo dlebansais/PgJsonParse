@@ -33,5 +33,6 @@
         WolfSeeRed,
         HasteExplosion,
         HealingMist,
+        AcidSpew,
     }
 }

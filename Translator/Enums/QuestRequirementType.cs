@@ -23,4 +23,5 @@ public enum QuestRequirementType
     QuestCompletedRecently,
     GeneralShape,
     Appearance,
+    AttributeMatchesScriptAtomic,
 }

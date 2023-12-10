@@ -2,6 +2,7 @@
 
 public class RawPower
 {
+    public string? InternalName { get; set; }
     public bool? IsUnavailable { get; set; }
     public string? Prefix { get; set; }
     public string? Skill { get; set; }

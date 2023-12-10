@@ -490,7 +490,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "13012")
+        if (Key == "1402")
         {
         }
 
@@ -584,7 +584,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "13003")
+        if (power.Key == "1402")
         {
         }
 
@@ -1346,7 +1346,7 @@ public partial class CombatParser
             case CombatKeyword.ComboFinalStepDamage:
             case CombatKeyword.Combo3:
             case CombatKeyword.Combo4:
-            case CombatKeyword.Fear:
+            //case CombatKeyword.Fear:
             case CombatKeyword.Stun:
             case CombatKeyword.Combo5:
             case CombatKeyword.Combo6:
@@ -2146,7 +2146,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "2023" || Entry.Key.Key == "10083")
+            if (Entry.Key.Key == "1402" || Entry.Key.Key == "1402")
             {
             }
 
@@ -2395,6 +2395,8 @@ public partial class CombatParser
             ValidationIndex = 1;
         if (TierList.Count >= 4)
             ValidationIndex = 2;
+        if (TierList.Count >= 8)
+            ValidationIndex = TierList.Count - 2;
 
         List<CombatKeyword>[] PowerTierKeywordListArray = new List<CombatKeyword>[TierList.Count];
         List<CombatKeyword>[] EffectKeywordListArray = new List<CombatKeyword>[TierList.Count];
@@ -2474,6 +2476,10 @@ public partial class CombatParser
         string ModText = powerSimpleEffect.Description;
         string EffectText = effect.Description;
         bool IsGolemAbility = ModText.StartsWith("Your golem minion");
+
+        if (ModText.StartsWith("Indirect Poison Damage, Indirect Trauma Damage") || EffectText.StartsWith("Indirect Poison Damage, Indirect Trauma Damage"))
+        {
+        }
 
         HackModAndEffectText(ref ModText, ref EffectText);
 
@@ -2897,6 +2903,7 @@ public partial class CombatParser
         BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
         BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels Ice Armor", "Fire damage no longer dispels");
         BasicTextReplace(ref modText, ref effectText, "Fire damage no longer dispels your Ice Armor", "Fire damage no longer dispels");
+        BasicTextReplace(ref modText, ref effectText, "while Ice Armor is active", "while active");
         BasicTextReplace(ref modText, ref effectText, "Trick Foxes", "Trick Fox");
         //BasicTextReplace(ref modText, ref effectText, "Bun-Fu Blitz", "Bun-Fu Kick");
         BasicTextReplace(ref modText, ref effectText, "and after using Doe Eyes", string.Empty);
@@ -3646,7 +3653,7 @@ public partial class CombatParser
             return false;
     }
 
-    public static string ComparisonString = "Indirect #D and indirect #D damage %f";
+    public static string ComparisonString = "Slowdown Cancelled";
 
     private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref PgNumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence? selectedSentence)
     {
@@ -4090,7 +4097,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "2023")
+            if (ItemPower.Key == "1402")
             {
             }
 
@@ -4385,6 +4392,9 @@ public partial class CombatParser
         string Text = EffectText;
 
         if (Text == "Poison attacks deal +5 damage")
+        {
+        }
+        if (ModText.StartsWith("Indirect Poison Damage, Indirect Trauma Damage") || EffectText.StartsWith("Indirect Poison Damage, Indirect Trauma Damage"))
         {
         }
 

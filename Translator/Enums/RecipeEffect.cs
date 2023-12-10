@@ -283,5 +283,11 @@
         ResearchWeatherWitching75,
         ResearchWeatherWitching80,
         SpawnPovusPaleomonster,
+        ResearchWeatherWitching85,
+        ResearchWeatherWitching90,
+        ResearchFireMagic85,
+        ResearchFireMagic90,
+        ResearchIceMagic85,
+        ResearchIceMagic90,
     }
 }

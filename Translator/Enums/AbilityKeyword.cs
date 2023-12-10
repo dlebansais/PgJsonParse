@@ -554,5 +554,8 @@
         SpecialBuff,
         LendGrace,
         MinigolemAbility,
+        ThrownKnife,
+        HymnOfResurrection3Enabled,
+        Lint_MonsterAbility,
     }
 }

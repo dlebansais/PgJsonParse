@@ -50,7 +50,7 @@ public class ParserQuestObjective : Parser
     {
         { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "Description", "Requirements", "GroupId", "Number", "InternalName" } },
         { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
-        { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "Number" } },
+        { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "GroupId", "Number" } },
         { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "Requirements", "ItemName", "GroupId", "Number", "InternalName" } },
         { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
         { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumberToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "Number", "InternalName" } },
@@ -287,6 +287,7 @@ public class ParserQuestObjective : Parser
                         Result = StringToEnumConversion<InteractionFlag>.TryParseList(Value, NewItem.InteractionFlagList);
                         break;
                     case "Description":
+                    case "GroupId":
                     case "Number":
                         Result = ParseCommonFields(NewItem, Key, Value);
                         break;

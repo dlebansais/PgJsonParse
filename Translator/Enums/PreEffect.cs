@@ -30,5 +30,8 @@
         DampenToggleEveryOtherUse,
         TsunamiToggleEveryOtherUse,
         ShockingGraspToggleEveryOtherUse,
+        SuperZombie9,
+        CastigateUndeadDmgMod120,
+        CastigateUndeadDmgMod140,
     }
 }

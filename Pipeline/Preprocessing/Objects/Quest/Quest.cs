@@ -9,6 +9,7 @@ public class Quest
 {
     public Quest(RawQuest rawQuest)
     {
+        CheckRequirementsToSustainOnBestow = rawQuest.CheckRequirementsToSustainOnBestow;
         Description = rawQuest.Description;
         DisplayedLocation = Area.FromRawAreaName(rawQuest.DisplayedLocation, out OriginalDisplayedLocation);
         FavorNpc = rawQuest.FavorNpc;
@@ -31,10 +32,12 @@ public class Quest
         PreGiveRecipes = rawQuest.PreGiveRecipes;
         PrefaceText = rawQuest.PrefaceText;
         PrerequisiteFavorLevel = rawQuest.PrerequisiteFavorLevel;
+        QuestFailEffects = ParseQuestFailEffects(rawQuest.QuestFailEffects);
         QuestNpc = rawQuest.QuestNpc;
         Requirements = Preprocessor.ToSingleOrMultiple(rawQuest.Requirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsFormat);
         RequirementsToSustain = Preprocessor.ToSingleOrMultiple(rawQuest.RequirementsToSustain, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsToSustainFormat);
         ReuseTime = ParseReuseTime(rawQuest.ReuseTime_Days, rawQuest.ReuseTime_Hours, rawQuest.ReuseTime_Minutes);
+        RewardsDescription = rawQuest.Rewards_Description;
         SuccessText = rawQuest.SuccessText;
         TSysLevel = rawQuest.TSysLevel;
         Version = rawQuest.Version;
@@ -125,6 +128,33 @@ public class Quest
         string QuestGroup = ParameterSplitted[1].Trim();
 
         return new QuestPreGive() { T = "Item", Item = Item, QuestGroup = QuestGroup };
+    }
+
+    private static QuestFailEffect[]? ParseQuestFailEffects(string[]? rawQuestFailEffects)
+    {
+        if (rawQuestFailEffects is null)
+            return null;
+
+        List<QuestFailEffect> Result = new();
+
+        foreach (string Effect in rawQuestFailEffects)
+            Result.Add(ParseQuestFailEffect(Effect));
+
+        return Result.ToArray();
+    }
+
+    private static QuestFailEffect ParseQuestFailEffect(string rawQuestFailEffect)
+    {
+        const string ClearInteractionFlag = "ClearInteractionFlag";
+        string ClearInteractionFlagPattern = @$"^{ClearInteractionFlag}\([^)]*\)$";
+        Match ParameterMatch = Regex.Match(rawQuestFailEffect, ClearInteractionFlagPattern);
+        if (ParameterMatch.Success)
+            return new QuestFailEffect { Type = "ClearInteractionFlag", InteractionFlag = rawQuestFailEffect.Substring(ClearInteractionFlag.Length + 1, rawQuestFailEffect.Length - ClearInteractionFlag.Length - 2) };
+
+        if (rawQuestFailEffect == "RingFailureMessage")
+            return new QuestFailEffect { Type = "RingFailureMessage" };
+
+        throw new PreprocessorException();
     }
 
     private static Time? ParseReuseTime(int? rawDays, int? rawHours, int? rawMinutes)
@@ -314,6 +344,7 @@ public class Quest
         return new QuestReward() { T = "SkillLevel", Skill = Skill, Level = Level };
     }
 
+    public bool? CheckRequirementsToSustainOnBestow { get; set; }
     public string? Description { get; set; }
     public string? DisplayedLocation { get; set; }
     public string? FavorNpc { get; set; }
@@ -336,11 +367,13 @@ public class Quest
     public string[]? PreGiveRecipes { get; set; }
     public string? PrefaceText { get; set; }
     public string? PrerequisiteFavorLevel { get; set; }
+    public QuestFailEffect[]? QuestFailEffects { get; set; }
     public string? QuestNpc { get; set; }
     public Requirement[]? Requirements { get; set; }
     public Requirement[]? RequirementsToSustain { get; set; }
     public Time? ReuseTime { get; set; }
     public QuestReward[]? Rewards { get; set; }
+    public string? RewardsDescription { get; set; }
     public string? SuccessText { get; set; }
     public int? TSysLevel { get; set; }
     public int? Version { get; set; }
@@ -350,6 +383,7 @@ public class Quest
     {
         RawQuest Result = new();
 
+        Result.CheckRequirementsToSustainOnBestow = CheckRequirementsToSustainOnBestow;
         Result.Description = Description;
         Result.DisplayedLocation = Area.ToRawAreaName(DisplayedLocation, OriginalDisplayedLocation);
         Result.FavorNpc = FavorNpc;
@@ -372,10 +406,12 @@ public class Quest
         Result.PreGiveRecipes = PreGiveRecipes;
         Result.PrefaceText = PrefaceText;
         Result.PrerequisiteFavorLevel = PrerequisiteFavorLevel;
+        Result.QuestFailEffects = ToRawQuestFailEffects(QuestFailEffects);
         Result.QuestNpc = QuestNpc;
         Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
         Result.RequirementsToSustain = Preprocessor.FromSingleOrMultiple(RequirementsToSustain, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsToSustainFormat);
         (Result.ReuseTime_Days, Result.ReuseTime_Hours, Result.ReuseTime_Minutes) = SplitReuseTime(ReuseTime);
+        Result.Rewards_Description = RewardsDescription;
         Result.SuccessText = SuccessText;
         Result.TSysLevel = TSysLevel;
         Result.Version = Version;
@@ -546,6 +582,31 @@ public class Quest
         return KeyToTitleMap[title];
     }
 
+    private static string[]? ToRawQuestFailEffects(QuestFailEffect[]? questFailEffects)
+    {
+        if (questFailEffects is null)
+            return null;
+
+        List<string> Result = new();
+
+        foreach (QuestFailEffect QuestFailEffect in questFailEffects)
+            Result.Add(ToRawQuestFailEffect(QuestFailEffect));
+
+        return Result.ToArray();
+    }
+
+    private static string ToRawQuestFailEffect(QuestFailEffect questFailEffect)
+    {
+        switch (questFailEffect.Type)
+        {
+            case "ClearInteractionFlag":
+                return $"{questFailEffect.Type}({questFailEffect.InteractionFlag})";
+            default:
+            case "RingFailureMessage":
+                return questFailEffect.Type;
+        }
+    }
+
     private static readonly Dictionary<string, int> TitleToKeyMap = new Dictionary<string, int>()
     {
         { "Event_Halloween_CultistOfZhiaLian", 5009 },
@@ -564,6 +625,7 @@ public class Quest
         { "Event_TurkeyKiller", 5223 },
         { "GuideEvent_EggsellentHunter", 5209 },
         { "Event_Halloween_NotAfraidOfLungs", 5024 },
+        { "Event_Errana_BunnyLove2024", 5052 },
     };
 
     private string? OriginalDisplayedLocation;

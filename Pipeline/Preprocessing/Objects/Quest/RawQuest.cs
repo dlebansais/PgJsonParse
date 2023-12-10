@@ -2,6 +2,7 @@
 
 public class RawQuest
 {
+    public bool? CheckRequirementsToSustainOnBestow { get; set; }
     public string? Description { get; set; }
     public string? DisplayedLocation { get; set; }
     public string? FavorNpc { get; set; }
@@ -24,6 +25,7 @@ public class RawQuest
     public string[]? PreGiveRecipes { get; set; }
     public string? PrefaceText { get; set; }
     public string? PrerequisiteFavorLevel { get; set; }
+    public string[]? QuestFailEffects { get; set; }
     public string? QuestNpc { get; set; }
     public object? Requirements { get; set; }
     public object? RequirementsToSustain { get; set; }
@@ -32,6 +34,7 @@ public class RawQuest
     public int? ReuseTime_Minutes { get; set; }
     public int? Reward_Favor { get; set; }
     public QuestReward[]? Rewards { get; set; }
+    public string? Rewards_Description { get; set; }
     public string[]? Rewards_Effects { get; set; }
     public int? Rewards_Favor { get; set; }
     public QuestRewardItem[]? Rewards_Items { get; set; }

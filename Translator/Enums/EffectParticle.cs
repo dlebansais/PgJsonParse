@@ -180,5 +180,7 @@
         AnglingSoulSphere,
         AnglingPinkSmoke,
         MonsterBuff5,
+        PrismaticBuff,
+        FireworkPurple,
     }
 }

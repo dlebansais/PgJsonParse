@@ -42,6 +42,7 @@ public class Preprocessor
         new IntDictionaryJsonConverter<SourceRecipe, RawSourceRecipe, SourceRecipeDictionary>("recipe"),
         new StringDictionaryJsonConverter<StorageVault, RawStorageVault, StorageVaultDictionary>(),
         new IntDictionaryJsonConverter<Power, RawPower, PowerDictionary>("power"),
+        new ProfileDictionaryJsonConverter(),
         new IntDictionaryJsonConverter<XpTable, RawXpTable, XpTableDictionary>("Table"),
     };
 
@@ -149,7 +150,12 @@ public class Preprocessor
         ReadContent = ReadContent.Replace("\"AdvancementTable\": null,", "\"AdvancementTable\": \"null\",");
 
         if (isPretty)
+        {
             ReadContent = ReadContent.Replace("\r\n", "\n");
+
+            while (ReadContent.EndsWith("\n"))
+                ReadContent = ReadContent.Substring(0, ReadContent.Length - 1);
+        }
 
         return ReadContent;
     }

@@ -23,5 +23,9 @@
         TofurkeyQuest,
         AnglingNatureSpiritIsHappy,
         MainQuest,
+        AktaariRepeatingQuest,
+        WantedPoster,
+        PovusCaves2WantedPoster,
+        Lint_NoTsys,
     }
 }

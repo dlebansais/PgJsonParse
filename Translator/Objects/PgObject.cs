@@ -68,6 +68,10 @@
                     Prefix = "W";
                     break;
 
+                case PgProfile AsProfile:
+                    Prefix = "K";
+                    break;
+
                 case PgQuest AsQuest:
                     Prefix = "Q";
                     break;

@@ -12,6 +12,7 @@ public class Requirement
         Appearance = rawRequirement.Appearance;
         AreaEvent = rawRequirement.AreaEvent;
         AtomicVar = rawRequirement.AtomicVar;
+        Attribute = rawRequirement.Attribute;
         ClearSky = rawRequirement.ClearSky;
         DisallowedRace = rawRequirement.DisallowedRace;
         DisallowedStates = rawRequirement.DisallowedStates;
@@ -36,6 +37,7 @@ public class Requirement
         Quest = rawRequirement.Quest;
         Recipe = rawRequirement.Recipe;
         Rule = ParseRule(rawRequirement.Rule);
+        ScriptAtomicInt = rawRequirement.ScriptAtomicInt;
         Shape = rawRequirement.Shape;
         Skill = rawRequirement.Skill;
         Slot = rawRequirement.Slot;
@@ -127,6 +129,7 @@ public class Requirement
     public string? AreaEvent { get; set; }
     public string? AreaName { get; set; }
     public string? AtomicVar { get; set; }
+    public string? Attribute { get; set; }
     public bool? ClearSky { get; set; }
     public bool? Daytime { get; set; }
     public string? DisallowedRace { get; set; }
@@ -156,6 +159,7 @@ public class Requirement
     public string? Quest { get; set; }
     public string? Recipe { get; set; }
     public string? Rule { get; set; }
+    public string? ScriptAtomicInt { get; set; }
     public string? Shape { get; set; }
     public string? Skill { get; set; }
     public string? Slot { get; set; }
@@ -172,6 +176,7 @@ public class Requirement
         Result.Appearance = Appearance;
         Result.AreaEvent = AreaEvent;
         Result.AtomicVar = AtomicVar;
+        Result.Attribute = Attribute;
         Result.ClearSky = ClearSky;
         Result.DisallowedRace = DisallowedRace;
         Result.DisallowedStates = DisallowedStates;
@@ -196,6 +201,7 @@ public class Requirement
         Result.Quest = Quest;
         Result.Recipe = Recipe;
         Result.Rule = ToRawRule(Rule);
+        Result.ScriptAtomicInt = ScriptAtomicInt;
         Result.Shape = Shape;
         Result.Skill = Skill;
         Result.Slot = Slot;

@@ -159,5 +159,6 @@
         InhaledWater,
         Tsunami,
         Hail,
+        DemonicDamage,
     }
 }

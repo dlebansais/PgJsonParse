@@ -74,8 +74,9 @@
         /*LiveNpc_Raim,
         LiveNpc_Moxie,
         LiveNpc_Torana,*/
-        LiveNpc_BatInTheHat,
+        //LiveNpc_BatInTheHat,
         //LiveNpc_Thedar,
         NPC_Ultashk,
+        Halloween_BatInTheHat,
     }
 }
