@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(399);
+        return ParseCurated(400);
     }
 
     private static int ParseCurated(int Version)
@@ -1592,6 +1592,14 @@ public class Program
             {
                 PgQuest Quest = (PgQuest)Entry.Value.Item;
 
+                MapAreaName DisplayedLocation = Quest.DisplayedLocation;
+                if (DisplayedLocation == MapAreaName.NightmareCaves)
+                {
+                }
+
+                if (!QuestAreaListedTable.ContainsKey(DisplayedLocation))
+                    QuestAreaListedTable.Add(DisplayedLocation, new List<PgQuest>());
+
                 if (Quest.KeywordList.Contains(QuestKeyword.EventQuest) ||
                     Quest.KeywordList.Contains(QuestKeyword.WorkOrder))
                     continue;
@@ -1628,7 +1636,6 @@ public class Program
                     }
                 }
 
-                MapAreaName DisplayedLocation = Quest.DisplayedLocation;
                 PgNpcLocation? QuestNpc = Quest.QuestNpc;
 
                 if (QuestNpc is null)
@@ -1644,12 +1651,7 @@ public class Program
                     DisplayedLocation = MapAreaName.Internal_None;
 
                 if (DisplayedLocation == QuestAreaEntry.Key)
-                {
-                    if (!QuestAreaListedTable.ContainsKey(DisplayedLocation))
-                        QuestAreaListedTable.Add(DisplayedLocation, new List<PgQuest>());
-
                     QuestAreaListedTable[DisplayedLocation].Add(Quest);
-                }
             }
         }
 
@@ -1658,7 +1660,7 @@ public class Program
             MapAreaName Area = Entry.Key;
 
             if (!KnownUniqueQuests.ContainsKey(Area))
-                Debug.WriteLine($"UNKNOWN QUEST AREA: {Area}");
+                Debug.WriteLine($"UNKNOWN AREA: {Area}");
             else
             {
                 foreach (PgQuest Quest in Entry.Value)

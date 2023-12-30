@@ -584,7 +584,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "1402")
+        if (power.Key == "15101")
         {
         }
 
@@ -2146,7 +2146,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "1402" || Entry.Key.Key == "1402")
+            if (Entry.Key.Key == "15101" || Entry.Key.Key == "15101")
             {
             }
 
@@ -2798,7 +2798,7 @@ public partial class CombatParser
 
                 int ItemIndex = list1.IndexOf(Item);
                 if (ItemIndex >= 2)
-                    if (list1[ItemIndex - 1].Keyword == CombatKeyword.DamageBoost)
+                    if (list1[ItemIndex - 1].Keyword == CombatKeyword.DamageBoost || list1[ItemIndex - 1].Keyword == CombatKeyword.DamageBoostToHealthAndArmor)
                         difference.Add(list1[ItemIndex - 1]);
             }
             else if (!MatchList.Contains(Item))
@@ -2890,6 +2890,7 @@ public partial class CombatParser
 
         //BasicTextReplace(ref modText, ref effectText, "Sic Em", "Sic 'Em");
         BasicTextReplace(ref modText, ref effectText, "physical (slashing, piercing, and crushing)", "Crushing, Slashing, or Piercing");
+        BasicTextReplace(ref modText, ref effectText, "Physical and Cold", "Crushing, Slashing, Piercing or Cold");
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Pet Healing");
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' basic attacks", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "pets' basic attacks", "Pet base attack");
@@ -3653,7 +3654,7 @@ public partial class CombatParser
             return false;
     }
 
-    public static string ComparisonString = "Slowdown Cancelled";
+    public static string ComparisonString = "Mitigate %f #D Damage";
 
     private void ExtractSentence(Sentence sentence, List<CombatKeyword> skippedKeywordList, string text, ref string modifiedText, List<CombatKeyword> extractedKeywordList, ref PgNumericValue data1, ref GameDamageType damageType, ref GameCombatSkill combatSkill, ref int parsedIndex, ref Sentence? selectedSentence)
     {
@@ -4097,7 +4098,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "1402")
+            if (ItemPower.Key == "15101")
             {
             }
 
@@ -4318,6 +4319,7 @@ public partial class CombatParser
         modText = modText.Replace("Indirect Poison and Indirect Trauma damage", "Indirect Poison and Trauma damage");
         modText = modText.Replace("Indirect Nature and Indirect Electricity damage", "Indirect Nature and Electricity damage");
         modText = modText.Replace("Indirect Nature and Indirect Trauma damage", "Indirect Nature and Trauma damage");
+        modText = modText.Replace("Physical and Cold damage", "Crushing, Slashing, Piercing, and Cold damage");
         modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
         modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
         modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", string.Empty);

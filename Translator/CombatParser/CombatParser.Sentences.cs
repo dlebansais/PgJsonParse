@@ -472,6 +472,7 @@ public partial class CombatParser
         new Sentence("Mitigation vs Elite attack %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
         new Sentence("Resist %f damage from Elite attack", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
         new Sentence("A further %f from Elite attack", new List<CombatKeyword>() { CombatKeyword.AddMitigationDirect, CombatKeyword.TargetElite }),
+        new Sentence("Mitigate %f more against Elite attack", new List<CombatKeyword>() { CombatKeyword.AddMitigationDirect, CombatKeyword.TargetElite }),
 
         new Sentence("Mitigation vs all attack by Elites %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),
         new Sentence("Against Elite enemies, mitigate %f", new List<CombatKeyword>() { CombatKeyword.AddMitigation, CombatKeyword.TargetElite }),

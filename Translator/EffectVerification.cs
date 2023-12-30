@@ -132,6 +132,8 @@
                 {
                     new EffectVerificationEntry() { Prefix = "Mitigates", Suffix = "Physical Damage" },
                     new EffectVerificationEntry() { Prefix = "Mitigates", Suffix = "Additional Physical Damage from Elites", TargetElite = true },
+                    new EffectVerificationEntry() { Prefix = "Mitigate", Suffix = "Physical (Crushing, Slashing, Piercing) and Cold damage" },
+                    new EffectVerificationEntry() { Prefix = "Further Mitigate", Suffix = "Elite Direct Physical and Cold damage", TargetElite = true },
                 }
             },
         };
