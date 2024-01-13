@@ -5,11 +5,6 @@
         public string Key { get; set; } = string.Empty;
         public PgAIAbilitySet Abilities { get; set; } = null!;
         public int BoolValues { get; set; }
-        public const int IsMeleeNotNull = 1 << 0;
-        public const int IsMeleeIsTrue = 1 << 1;
-        public bool IsMelee { get { return (BoolValues & (IsMeleeNotNull + IsMeleeIsTrue)) == (IsMeleeNotNull + IsMeleeIsTrue); } }
-        public bool? RawIsMelee { get { return ((BoolValues & IsMeleeNotNull) != 0) ? (BoolValues & IsMeleeIsTrue) != 0 : null; } }
-        public void SetIsMelee(bool value) { BoolValues |= (BoolValues & ~(IsMeleeNotNull + IsMeleeIsTrue)) | ((value ? IsMeleeIsTrue : 0) + IsMeleeNotNull); }
         public string Comment { get; set; } = string.Empty;
         public const int IsUncontrolledPetNotNull = 1 << 2;
         public const int IsUncontrolledPetIsTrue = 1 << 3;
@@ -34,6 +29,7 @@
         public bool? RawIsSwimming { get { return ((BoolValues & IsSwimmingNotNull) != 0) ? (BoolValues & IsSwimmingIsTrue) != 0 : null; } }
         public void SetIsSwimming(bool value) { BoolValues |= (BoolValues & ~(IsSwimmingNotNull + IsSwimmingIsTrue)) | ((value ? IsSwimmingIsTrue : 0) + IsSwimmingNotNull); }
         public MobilityType MobilityType { get; set; }
+        public Strategy Strategy { get; set; }
         public const int IsFlyingNotNull = 1 << 10;
         public const int IsFlyingIsTrue = 1 << 11;
         public bool IsFlying { get { return (BoolValues & (IsFlyingNotNull + IsFlyingIsTrue)) == (IsFlyingNotNull + IsFlyingIsTrue); } }

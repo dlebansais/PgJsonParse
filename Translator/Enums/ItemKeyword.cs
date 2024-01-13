@@ -1295,5 +1295,7 @@
         OrcishFlour,
         Firework,
         Teapot,
+        Lint_RecipesIgnoreReqs,
+        Cargo,
     }
 }

@@ -5,5 +5,6 @@
         Internal_None,
         GuildCredits,
         FaeEnergy,
+        GlamourCredits,
     }
 }

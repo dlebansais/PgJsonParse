@@ -357,5 +357,7 @@
         BanditCurse,
         ButterflyPermanentBuff1,
         BigHandsCurseB,
+        Particle_MonsterBuffCycle,
+        LuscaCurse,
     }
 }

@@ -42,7 +42,7 @@ public class ParserSource : Parser
             case "Quest":
                 Result = ParseSourceQuest(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                 break;
-            case "Gift":
+            case "NpcGift":
                 Result = ParseSourceGift(ref item, contentTable, contentTypeTable, itemCollection, lastItemType, parsedFile, parsedKey);
                 break;
             case "HangOut":

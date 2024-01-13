@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 80;
+        public const int TotalEnumTypes = 81;
 
         static TextMaps()
         {
@@ -835,7 +835,7 @@
             { AbilityKeyword.InfectiousInstincts, "Infectious Instincts" },
             { AbilityKeyword.SummonTornado, "Summon Tornado" },
             { AbilityKeyword.CloudTrickActivation, "Cloud Trick Activation" },
-            { AbilityKeyword.Lint_UnreachableLevel, "Lint Unreachable Level" },
+            { AbilityKeyword.Lint_UnreachableLevel, "Unreachable Level" },
             { AbilityKeyword.SummonedTornado, "Summoned Tornado" },
             { AbilityKeyword.Sandstorm, "Sandstorm" },
             { AbilityKeyword.Disease, "Disease" },
@@ -1753,7 +1753,7 @@
             { EffectKeyword.SpawnPremonition_Undead_10sec, "Spawn Premonition (Undead, 10 seconds)" },
             { EffectKeyword.SpawnPremonition_Perfect, "Spawn Premonition (Perfect)" },
             { EffectKeyword.SpawnPremonition_Rodents_10sec, "Spawn Premonition (Rodents, 10 seconds)" },
-            { EffectKeyword.Lint_SelfStun, "Lint (Self Stun)" },
+            { EffectKeyword.Lint_SelfStun, "Self Stun" },
             { EffectKeyword.MountedEffect, "Mounted Effect" },
             { EffectKeyword.DisperseSkeletonEnabled, "Disperse Skeleton Enabled" },
             { EffectKeyword.UnfunGuyCurse, "Unfun Guy Curse" },
@@ -1820,6 +1820,8 @@
             { EffectKeyword.BanditCurse, "Bandit Curse" },
             { EffectKeyword.ButterflyPermanentBuff1, "Butterfly Permanent Buff #1" },
             { EffectKeyword.BigHandsCurseB, "Big Hand's Curse #B" },
+            { EffectKeyword.Particle_MonsterBuffCycle, "Particle (Monster Buff Cycle)" },
+            { EffectKeyword.LuscaCurse, "Lusca Curse" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2004,6 +2006,7 @@
             { EffectParticle.MonsterBuff5, "Monster Buff #5" },
             { EffectParticle.PrismaticBuff, "Prismatic Buff" },
             { EffectParticle.FireworkPurple, "Firework Purple" },
+            { EffectParticle.Confetti2Purple, "Confetti #2 Purple" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -4025,6 +4028,8 @@
             { ItemKeyword.OrcishFlour, "Orcish Flour" },
             { ItemKeyword.Firework, "Firework" },
             { ItemKeyword.Teapot, "Teapot" },
+            { ItemKeyword.Lint_RecipesIgnoreReqs, "Recipes Ignore Reqs" },
+            { ItemKeyword.Cargo, "Cargo" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4287,7 +4292,7 @@
             { QuestKeyword.AktaariRepeatingQuest, "Aktaari Repeating Quest" },
             { QuestKeyword.WantedPoster, "Wanted Poster" },
             { QuestKeyword.PovusCaves2WantedPoster, "Povus Caves #2 Wanted Poster" },
-            { QuestKeyword.Lint_NoTsys, "Lint No Tsys" },
+            { QuestKeyword.Lint_NoTsys, "No Tsys" },
         };
 
         public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
@@ -4654,6 +4659,7 @@
             { RecipeCurrency.Internal_None, string.Empty },
             { RecipeCurrency.GuildCredits, "Guild Credit(s)" },
             { RecipeCurrency.FaeEnergy, "Fae Energy" },
+            { RecipeCurrency.GlamourCredits, "Glamour Credits" },
         };
 
         public static Dictionary<RecipeEffect, string> RecipeEffectTextMap { get; } = new Dictionary<RecipeEffect, string>()
@@ -5133,7 +5139,7 @@
             { RecipeKeyword.DistillSimpleMagicalItem1, "Distill Simple Magical Item #1" },
             { RecipeKeyword.Lint_UnusedHotspot, "Unused Hotspot" },
             { RecipeKeyword.Research, "Research" },
-            { RecipeKeyword.Lint_MealGroup, "Lint Meal Group" },
+            { RecipeKeyword.Lint_MealGroup, "Meal Group" },
             { RecipeKeyword.MaxEnchanting, "Max Enchanting" },
         };
 
@@ -5227,7 +5233,7 @@
         public static Dictionary<SpecialNpc, string> SpecialNpcTextMap { get; } = new Dictionary<SpecialNpc, string>()
         {
             { SpecialNpc.Internal_None, string.Empty },
-            /*{ SpecialNpc.CatCharmPedestal, "Cat Charm Pedestal" },
+            { SpecialNpc.CatCharmPedestal, "Cat Charm Pedestal" },
             { SpecialNpc.BearCharmPedestal, "Bear Charm Pedestal" },
             { SpecialNpc.GoblinFireResearchDesk1, "Goblin Fire Research Desk" },
             { SpecialNpc.AlchemyBook, "Alchemy Book" },
@@ -5239,12 +5245,12 @@
             { SpecialNpc.GolemBook, "Golem Book" },
             { SpecialNpc.AlchemyBook_SpiderEggs, "Alchemy Book (Spider Eggs)" },
             { SpecialNpc.DeathPenaltyAltar, "Death Penalty Altar" },
-            { SpecialNpc.NPC_Sphere, "Glowing Sphere" },*/
-            // { SpecialNpc.NPC_Oritania, "Oritania" },
+            { SpecialNpc.NPC_Sphere, "Glowing Sphere" },
+            //{ SpecialNpc.NPC_Oritania, "Oritania" },
             { SpecialNpc.NPC_Pennoc, "Pennoc" },
             { SpecialNpc.NPC_Lakrea, "Lakrea" },
             { SpecialNpc.NPC_Chirrra, "Chirrra" },
-            //{ SpecialNpc.ModeratorToolbox, "Moderator Toolbox" },
+            { SpecialNpc.ModeratorToolbox, "Moderator Toolbox" },
             { SpecialNpc.NPC_Halloween_BrandonMellus, "Brandon Mellus (Halloween)" },
             { SpecialNpc.NPC_Halloween_Westley, "Westley (Halloween)" },
             { SpecialNpc.NPC_Halloween_Deville, "Deville (Halloween)" },
@@ -5284,24 +5290,33 @@
             { SpecialNpc.BeeHiveJ, "Bee Hive (J)" },
             { SpecialNpc.BeeHiveK, "Bee Hive (K)" },
             //{ SpecialNpc.LiveNpc_Jopol, "Jopol" },
-            /*{ SpecialNpc.TrainingStation1, "Training Station #1" },
+            { SpecialNpc.TrainingStation1, "Training Station #1" },
             { SpecialNpc.TrainingStation2, "Training Station #2" },
             { SpecialNpc.CandleMakingBook_Bacon, "Candle Making Book (Bacon)" },
             { SpecialNpc.CandleMakingBook_Ocean, "Candle Making Book (Ocean)" },
             { SpecialNpc.CandleMakingBook_Sprint, "Candle Making Book (Sprint)" },
             { SpecialNpc.CandleMakingBook_Cold, "Candle Making Book (Cold)" },
             { SpecialNpc.CandleMakingBook_Precog, "Candle Making Book (Precog)" },
-            { SpecialNpc.CandleMakingBook_Halloween, "Candle Making Book (Halloween)" },*/
+            { SpecialNpc.CandleMakingBook_Halloween, "Candle Making Book (Halloween)" },
             { SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
             { SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
             { SpecialNpc.LiveNpc_Boop, "Boop" },
             /*{ SpecialNpc.LiveNpc_Raim, "Raim" },
             { SpecialNpc.LiveNpc_Moxie, "Moxie" },
-            { SpecialNpc.LiveNpc_Torana, "Torana" },*/
-            //{ SpecialNpc.LiveNpc_BatInTheHat, "Bat In The Hat" },
-            //{ SpecialNpc.LiveNpc_Thedar, "Thedar" },
+            { SpecialNpc.LiveNpc_Torana, "Torana" },
+            { SpecialNpc.LiveNpc_BatInTheHat, "Bat In The Hat" },
+            { SpecialNpc.LiveNpc_Thedar, "Thedar" },*/
             { SpecialNpc.NPC_Ultashk, "Ultashk" },
             { SpecialNpc.Halloween_BatInTheHat, "Bat In The Hat" },
+            { SpecialNpc.AntiBrainBugSpellBook, "Anti Brain Bug Spell Book" },
+            { SpecialNpc.HalloweenPartyLoot, "Halloween Party Loot" },
+        };
+
+        public static Dictionary<Strategy, string> StrategyTextMap { get; } = new Dictionary<Strategy, string>()
+        {
+            { Strategy.Internal_None, string.Empty },
+            { Strategy.Melee, "Melee" },
+            { Strategy.Ranged, "Ranged" },
         };
 
         public static Dictionary<TargetEffectKeyword, string> TargetEffectKeywordTextMap { get; } = new Dictionary<TargetEffectKeyword, string>()

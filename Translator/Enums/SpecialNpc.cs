@@ -3,7 +3,7 @@
     public enum SpecialNpc
     {
         Internal_None,
-        /*CatCharmPedestal,
+        CatCharmPedestal,
         BearCharmPedestal,
         GoblinFireResearchDesk1,
         AlchemyBook,
@@ -15,12 +15,12 @@
         GolemBook,
         AlchemyBook_SpiderEggs,
         DeathPenaltyAltar,
-        NPC_Sphere,*/
-        // NPC_Oritania,
+        NPC_Sphere,
+        //NPC_Oritania,
         NPC_Pennoc,
         NPC_Lakrea,
         NPC_Chirrra,
-        //ModeratorToolbox,
+        ModeratorToolbox,
         NPC_Halloween_BrandonMellus,
         NPC_Halloween_Westley,
         NPC_Halloween_Deville,
@@ -60,23 +60,25 @@
         BeeHiveJ,
         BeeHiveK,
         //LiveNpc_Jopol,
-        /*TrainingStation1,
+        TrainingStation1,
         TrainingStation2,
         CandleMakingBook_Bacon,
         CandleMakingBook_Ocean,
         CandleMakingBook_Sprint,
         CandleMakingBook_Cold,
         CandleMakingBook_Precog,
-        CandleMakingBook_Halloween,*/
+        CandleMakingBook_Halloween,
         LiveNpc_Lopsy,
         LiveNpc_Flopsy,
         LiveNpc_Boop,
         /*LiveNpc_Raim,
         LiveNpc_Moxie,
-        LiveNpc_Torana,*/
-        //LiveNpc_BatInTheHat,
-        //LiveNpc_Thedar,
+        LiveNpc_Torana,
+        LiveNpc_BatInTheHat,
+        LiveNpc_Thedar,*/
         NPC_Ultashk,
         Halloween_BatInTheHat,
+        AntiBrainBugSpellBook,
+        HalloweenPartyLoot,
     }
 }

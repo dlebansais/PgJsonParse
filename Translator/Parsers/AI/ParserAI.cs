@@ -33,9 +33,6 @@
                     case "Abilities":
                         Result = Inserter<PgAIAbilitySet>.SetItemProperty((PgAIAbilitySet valueAIAbilitySet) => item.Abilities = valueAIAbilitySet, Value);
                         break;
-                    case "Melee":
-                        Result = SetBoolProperty((bool valueBool) => item.SetIsMelee(valueBool), Value);
-                        break;
                     case "Comment":
                         Result = SetStringProperty((string valueString) => item.Comment = valueString, Value);
                         break;
@@ -56,6 +53,9 @@
                         break;
                     case "MobilityType":
                         Result = StringToEnumConversion<MobilityType>.SetEnum((MobilityType valueEnum) => item.MobilityType = valueEnum, Value);
+                        break;
+                    case "Strategy":
+                        Result = StringToEnumConversion<Strategy>.SetEnum((Strategy valueEnum) => item.Strategy = valueEnum, Value);
                         break;
                     case "Flying":
                         Result = SetBoolProperty((bool valueBool) => item.SetIsFlying(valueBool), Value);

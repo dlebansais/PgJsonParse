@@ -219,7 +219,6 @@ public class FieldTableStore
     public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
     {
         { "Abilities", typeof(PgAIAbilitySet) },
-        { "Melee", typeof(bool) },
         { "Comment", typeof(string) },
         { "UncontrolledPet", typeof(bool) },
         { "ServerDriven", typeof(bool) },
@@ -229,6 +228,7 @@ public class FieldTableStore
         { "MobilityType", typeof(string) },
         { "Flying", typeof(bool) },
         { "Description", typeof(string) },
+        { "Strategy", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableAIAbility { get; } = new Dictionary<string, Type>()

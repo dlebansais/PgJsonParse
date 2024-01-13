@@ -182,5 +182,6 @@
         MonsterBuff5,
         PrismaticBuff,
         FireworkPurple,
+        Confetti2Purple,
     }
 }

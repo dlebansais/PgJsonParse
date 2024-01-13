@@ -5,6 +5,7 @@
         Internal_None,
         Ignore,
         DamageBoost,
+        DirectOnlyDamageBoost,
         DamageBoostDouble,
         DealDirectHealthDamage,
         DealIndirectDamage,

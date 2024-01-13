@@ -584,7 +584,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "15101")
+        if (power.Key == "13005")
         {
         }
 
@@ -2146,7 +2146,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "15101" || Entry.Key.Key == "15101")
+            if (Entry.Key.Key == "13005" || Entry.Key.Key == "13005")
             {
             }
 
@@ -2695,7 +2695,7 @@ public partial class CombatParser
 
     public static bool CombatEffectEquals(PgCombatEffect effect1, PgCombatEffect effect2)
     {
-        if (effect1.Keyword != effect2.Keyword && effect1.Keyword != CombatKeyword.Again && effect2.Keyword != CombatKeyword.Again)
+        if (effect1.Keyword != effect2.Keyword && (effect1.Keyword != CombatKeyword.DamageBoost || effect2.Keyword != CombatKeyword.DirectOnlyDamageBoost) && effect1.Keyword != CombatKeyword.Again && effect2.Keyword != CombatKeyword.Again)
         {
             if (effect1.Keyword != CombatKeyword.AddVulnerability && effect2.Keyword != CombatKeyword.AddVulnerability)
                 return false;
@@ -4098,7 +4098,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "15101")
+            if (ItemPower.Key == "13005")
             {
             }
 
@@ -4323,6 +4323,7 @@ public partial class CombatParser
         modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
         modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
         modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", string.Empty);
+        modText = modText.Replace("Direct Electricity Damage, Direct Fire Damage, and Direct Cold Damage", "Direct Electricity, Fire, and Cold Damage");
 
         if (!modText.Contains("But I Love You"))
             ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
