@@ -10,6 +10,7 @@ public class Ability
     private const string FormHeader = "form:";
     private const string AnatomyTypeHeader = "AnatomyType_";
     private const string AnatomyHeader = "Anatomy_";
+    private const string EmptyNameReplacement = "Blade Assault 2";
 
     public Ability(RawAbility rawAbility)
     {
@@ -31,6 +32,7 @@ public class Ability
         CanTargetUntargetableEnemies = rawAbility.CanTargetUntargetableEnemies;
         CausesOfDeath = rawAbility.CausesOfDeath;
         CombatRefreshBaseAmount = rawAbility.CombatRefreshBaseAmount;
+        ConditionalKeywords = ParseConditionalKeywords(rawAbility.ConditionalKeywords);
         Costs = rawAbility.Costs;
         DamageType = rawAbility.DamageType;
         DelayLoopIsAbortedIfAttacked = rawAbility.DelayLoopIsAbortedIfAttacked;
@@ -54,7 +56,10 @@ public class Ability
         (FormRequirement, ItemKeywordRequirements) = ParseItemKeywordReqs(rawAbility.ItemKeywordReqs);
         Keywords = rawAbility.Keywords;
         Level = rawAbility.Level;
-        Name = rawAbility.Name;
+
+        IsNameEmpty = rawAbility.Name == string.Empty;
+        Name = IsNameEmpty ? EmptyNameReplacement : rawAbility.Name;
+
         PetTypeTagRequirement = rawAbility.PetTypeTagReq;
         PetTypeTagRequirementMax = rawAbility.PetTypeTagReqMax;
         Prerequisite = rawAbility.Prerequisite;
@@ -91,6 +96,31 @@ public class Ability
             KeywordsList.Remove("Lint_NotLearnable");
             Keywords = KeywordsList.ToArray();
         }
+    }
+
+    private static ConditionalKeyword[]? ParseConditionalKeywords(RawConditionalKeyword[]? rawConditionalKeywords)
+    {
+        if (rawConditionalKeywords is null)
+            return null;
+
+        List<ConditionalKeyword> Result = new();
+        foreach (RawConditionalKeyword ConditionalKeyword in rawConditionalKeywords)
+            Result.Add(ParseRawConditionalKeyword(ConditionalKeyword));
+
+        return Result.ToArray();
+    }
+
+    private static ConditionalKeyword ParseRawConditionalKeyword(RawConditionalKeyword rawConditionalKeyword)
+    {
+        ConditionalKeyword Result = new()
+        {
+            IsDefault = rawConditionalKeyword.Default,
+            EffectKeywordMustExist = rawConditionalKeyword.EffectKeywordMustExist,
+            EffectKeywordMustNotExist = rawConditionalKeyword.EffectKeywordMustNotExist,
+            Keyword = rawConditionalKeyword.Keyword,
+        };
+
+        return Result;
     }
 
     private static string? ParseTargetTypeTagReq(string? rawTargetTypeTagReq)
@@ -185,6 +215,7 @@ public class Ability
     public bool? CanTargetUntargetableEnemies { get; set; }
     public string[]? CausesOfDeath { get; set; }
     public int? CombatRefreshBaseAmount { get; set; }
+    public ConditionalKeyword[]? ConditionalKeywords { get; set; }
     public Cost[]? Costs { get; set; }
     public string? DamageType { get; set; }
     public bool? DelayLoopIsAbortedIfAttacked { get; set; }
@@ -259,6 +290,7 @@ public class Ability
         Result.CanTargetUntargetableEnemies = CanTargetUntargetableEnemies;
         Result.CausesOfDeath = CausesOfDeath;
         Result.CombatRefreshBaseAmount = CombatRefreshBaseAmount;
+        Result.ConditionalKeywords = ToRawConditionalKeywords(ConditionalKeywords);
         Result.Costs = Costs;
         Result.DamageType = DamageType;
         Result.DelayLoopIsAbortedIfAttacked = DelayLoopIsAbortedIfAttacked;
@@ -280,7 +312,9 @@ public class Ability
         Result.ItemKeywordReqs = ToRawItemKeywordReqs(FormRequirement, ItemKeywordRequirements);
         Result.Keywords = Keywords;
         Result.Level = Level;
-        Result.Name = Name;
+
+        Result.Name = IsNameEmpty ? string.Empty : Name;
+
         Result.PetTypeTagReq = PetTypeTagRequirement;
         Result.PetTypeTagReqMax = PetTypeTagRequirementMax;
         Result.Prerequisite = Prerequisite;
@@ -319,6 +353,31 @@ public class Ability
         return Result;
     }
 
+    private static RawConditionalKeyword[]? ToRawConditionalKeywords(ConditionalKeyword[]? conditionalKeywords)
+    {
+        if (conditionalKeywords == null)
+            return null;
+
+        List<RawConditionalKeyword> Result = new List<RawConditionalKeyword>();
+        foreach (ConditionalKeyword ConditionalKeyword in conditionalKeywords)
+            Result.Add(ToRawConditionalKeyword(ConditionalKeyword));
+
+        return Result.ToArray();
+    }
+
+    private static RawConditionalKeyword ToRawConditionalKeyword(ConditionalKeyword conditionalKeyword)
+    {
+        RawConditionalKeyword Result = new()
+        {
+            Default = conditionalKeyword.IsDefault,
+            EffectKeywordMustExist = conditionalKeyword.EffectKeywordMustExist,
+            EffectKeywordMustNotExist = conditionalKeyword.EffectKeywordMustNotExist,
+            Keyword = conditionalKeyword.Keyword,
+        };
+
+        return Result;
+    }
+
     private static string? ToRawTargetTypeTagReq(string? targetTypeTagRequirement)
     {
         string? Result = null;
@@ -352,4 +411,5 @@ public class Ability
 
     private readonly JsonArrayFormat SpecialCasterRequirementsFormat;
     private readonly bool IsProjectileNone;
+    private readonly bool IsNameEmpty;
 }

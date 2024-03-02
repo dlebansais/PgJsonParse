@@ -77,6 +77,7 @@ public class FieldTableStore
         { "InventoryKeywordRequirementErrorMessage", typeof(string) },
         { "InventoryKeywordRequirements", typeof(string[]) },
         { "IsAoECenteredOnCaster", typeof(bool) },
+        { "ConditionalKeywords", typeof(PgConditionalKeyword[]) },
     };
 
     public static Dictionary<string, Type> TableSelfParticle { get; } = new Dictionary<string, Type>()
@@ -106,6 +107,14 @@ public class FieldTableStore
     {
         { "ItemKeyword", typeof(string) },
         { "Count", typeof(int) },
+    };
+
+    public static Dictionary<string, Type> TableAbilityConditionalKeyword { get; } = new Dictionary<string, Type>()
+    {
+        { "EffectKeywordMustExist", typeof(string) },
+        { "EffectKeywordMustNotExist", typeof(string) },
+        { "IsDefault", typeof(bool) },
+        { "Keyword", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableAbilityPvX { get; } = new Dictionary<string, Type>()
@@ -239,6 +248,7 @@ public class FieldTableStore
         { "MaxRange", typeof(int) },
         { "Cue", typeof(string) },
         { "CueVal", typeof(int) },
+        { "Favorite", typeof(bool) },
     };
 
     public static Dictionary<string, Type> TableArea { get; } = new Dictionary<string, Type>()
@@ -408,6 +418,12 @@ public class FieldTableStore
         { "AreaName", typeof(string) },
         { "AreaFriendlyName", typeof(string) },
         { "Preferences", typeof(PgNpcPreference[]) },
+        { "Description", typeof(string) },
+        { "ItemGifts", typeof(string[]) },
+        { "PositionX", typeof(float) },
+        { "PositionY", typeof(float) },
+        { "PositionZ", typeof(float) },
+        { "Services", typeof(PgNpcService[]) },
     };
 
     public static Dictionary<string, Type> TableNpcPreference { get; } = new Dictionary<string, Type>()
@@ -421,6 +437,27 @@ public class FieldTableStore
         { "SlotRequirement", typeof(string) },
         { "MinRarityRequirement", typeof(string) },
         { "RarityRequirement", typeof(string) },
+        { "Name", typeof(string) },
+    };
+
+    public static Dictionary<string, Type> TableNpcService { get; } = new Dictionary<string, Type>()
+    {
+        { "Type", typeof(string) },
+        { "Favor", typeof(string) },
+        { "Skills", typeof(string[]) },
+        { "ItemTypes", typeof(string[]) },
+        { "Unlocks", typeof(string[]) },
+        { "AdditionalUnlocks", typeof(string[]) },
+        { "CapIncreases", typeof(string[]) },
+        { "ItemDescriptions", typeof(string[]) },
+        { "SpaceIncreases", typeof(string[]) },
+        { "LevelRanges", typeof(PgNpcLevelRange[]) },
+    };
+
+    public static Dictionary<string, Type> TableNpcLevelRange { get; } = new Dictionary<string, Type>()
+    {
+        { "Min", typeof(int) },
+        { "Max", typeof(int) },
     };
 
     public static Dictionary<string, Type> TablePlayerTitle { get; } = new Dictionary<string, Type>()
@@ -873,6 +910,7 @@ public class FieldTableStore
         { typeof(PgAbility), new FixedFieldTable(TableAbility) },
         { typeof(PgAbilityAmmo), new FixedFieldTable(TableAbilityAmmo) },
         { typeof(PgAbilityPvX), new FixedFieldTable(TableAbilityPvX) },
+        { typeof(PgConditionalKeyword), new FixedFieldTable(TableAbilityConditionalKeyword) },
         { typeof(PgSelfPreEffect), new FixedFieldTable(TableSelfPreEffect) },
         { typeof(PgAbilityRequirement), new FixedFieldTable(TableAbilityRequirement) },
         { typeof(PgSelfParticle), new FixedFieldTable(TableSelfParticle) },
@@ -904,6 +942,8 @@ public class FieldTableStore
         { typeof(PgLoreBook), new FixedFieldTable(TableLoreBook) },
         { typeof(PgNpc), new FixedFieldTable(TableNpc) },
         { typeof(PgNpcPreference), new FixedFieldTable(TableNpcPreference) },
+        { typeof(PgNpcService), new FixedFieldTable(TableNpcService) },
+        { typeof(PgNpcLevelRange), new FixedFieldTable(TableNpcLevelRange) },
         { typeof(PgPlayerTitle), new FixedFieldTable(TablePlayerTitle) },
         { typeof(PgPower), new FixedFieldTable(TablePower) },
         { typeof(PgPowerTier), new FixedFieldTable(TablePowerTier) },

@@ -57,6 +57,9 @@ public class ParserNpcPreference : Parser
                 case "RarityRequirement":
                     Result = StringToEnumConversion<RecipeItemKey>.SetEnum((RecipeItemKey valueEnum) => item.RarityRequirement = valueEnum, $"Rarity_{Value}");
                     break;
+                case "Name":
+                    Result = SetStringProperty((string valueString) => item.Name = valueString, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

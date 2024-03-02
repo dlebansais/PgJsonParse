@@ -63,7 +63,7 @@
         public bool CheckRequirementsToSustainOnBestow { get { return (BoolValues & (CheckRequirementsToSustainOnBestowNotNull + CheckRequirementsToSustainOnBestowIsTrue)) == (CheckRequirementsToSustainOnBestowNotNull + CheckRequirementsToSustainOnBestowIsTrue); } }
         public bool? RawCheckRequirementsToSustainOnBestow { get { return ((BoolValues & CheckRequirementsToSustainOnBestowNotNull) != 0) ? (BoolValues & CheckRequirementsToSustainOnBestowIsTrue) != 0 : null; } }
         public void SetCheckRequirementsToSustainOnBestow(bool value) { BoolValues |= (BoolValues & ~(CheckRequirementsToSustainOnBestowNotNull + CheckRequirementsToSustainOnBestowIsTrue)) | ((value ? CheckRequirementsToSustainOnBestowIsTrue : 0) + CheckRequirementsToSustainOnBestowNotNull); }
-        public PgQuestFailEffectCollection QuestFailEffectListList { get; set; } = new PgQuestFailEffectCollection();
+        public PgQuestFailEffectCollection QuestFailEffectList { get; set; } = new PgQuestFailEffectCollection();
 
         public int IconId { get; set; }
 

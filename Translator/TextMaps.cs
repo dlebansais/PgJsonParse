@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 81;
+        public const int TotalEnumTypes = 82;
 
         static TextMaps()
         {
@@ -223,6 +223,7 @@
             { AbilityAnimation.Attack_BattleChemistry_ToxicIrritant, "Attack Battle Chemistry Toxic Irritant" },
             { AbilityAnimation.PlayFairyChimesFast, "Play Fairy Chimes Fast" },
             { AbilityAnimation.PlayFairyChimesSlow, "Play Fairy Chimes Slow" },
+            { AbilityAnimation.Drink, "Drink" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -1822,6 +1823,25 @@
             { EffectKeyword.BigHandsCurseB, "Big Hand's Curse #B" },
             { EffectKeyword.Particle_MonsterBuffCycle, "Particle (Monster Buff Cycle)" },
             { EffectKeyword.LuscaCurse, "Lusca Curse" },
+            { EffectKeyword.BarrageAoE, "Barrage AoE" },
+            { EffectKeyword.HipThrowAoE, "Hip Throw AoE" },
+            { EffectKeyword.ManyCutsAoE, "Many Cuts AoE" },
+            { EffectKeyword.ParryAoE, "Parry AoE" },
+            { EffectKeyword.FastTalkAoE, "Fast Talk AoE" },
+            { EffectKeyword.MockAoE, "Mock AoE" },
+            { EffectKeyword.WerewolfBiteAoE, "Werewolf Bite AoE" },
+            { EffectKeyword.PigBiteAoE, "Pig Bite AoE" },
+            { EffectKeyword.AntlerSlashAoE, "Antler Slash AoE" },
+            { EffectKeyword.CowFrontKickAoE, "Cow Front Kick AoE" },
+            { EffectKeyword.LungeAoE, "Lunge AoE" },
+            { EffectKeyword.LifeStealAoE, "Life Steal AoE" },
+            { EffectKeyword.RestorativeArrowAoE, "Restorative Arrow AoE" },
+            { EffectKeyword.FireBreathAoE, "Fire Breath AoE" },
+            { EffectKeyword.FrostballAoE, "Frostball AoE" },
+            { EffectKeyword.DelugeAoE, "Deluge AoE" },
+            { EffectKeyword.PoundToSlagAoE, "Pound To Slag AoE" },
+            { EffectKeyword.SeismicImpactAoE, "Seismic Impact AoE" },
+            { EffectKeyword.RotskinAoE, "Rotskin AoE" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2007,6 +2027,8 @@
             { EffectParticle.PrismaticBuff, "Prismatic Buff" },
             { EffectParticle.FireworkPurple, "Firework Purple" },
             { EffectParticle.Confetti2Purple, "Confetti #2 Purple" },
+            { EffectParticle.Confetti2Green, "Confetti #2 Green" },
+            { EffectParticle.FireworkGreen, "Firework Green" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2375,6 +2397,7 @@
             { EffectStackingType.BigHandsCurse, "Big Hand's Curse" },
             { EffectStackingType.Windstrike_ProjectileEvasion_10, "Windstrike Projectile Evasion 10" },
             { EffectStackingType.FinishingBlowDecapitateBuff, "Finishing Blow Decapitate Buff" },
+            { EffectStackingType.SerenePrecisionTea, "Serene Precision Tea" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -4030,6 +4053,21 @@
             { ItemKeyword.Teapot, "Teapot" },
             { ItemKeyword.Lint_RecipesIgnoreReqs, "Recipes Ignore Reqs" },
             { ItemKeyword.Cargo, "Cargo" },
+            { ItemKeyword.ParasolMushroomFlakes, "Parasol Mushroom Flakes" },
+            { ItemKeyword.MycenaMushroomFlakes, "Mycena Mushroom Flakes" },
+            { ItemKeyword.BoletusMushroomFlakes, "Boletus Mushroom Flakes" },
+            { ItemKeyword.FieldMushroomFlakes, "Field Mushroom Flakes" },
+            { ItemKeyword.BlusherMushroomFlakes, "Blusher Mushroom Flakes" },
+            { ItemKeyword.MilkCapMushroomPowder, "Milk Cap Mushroom Powder" },
+            { ItemKeyword.BloodMushroomPowder, "Blood Mushroom Powder" },
+            { ItemKeyword.CoralMushroomPowder, "Coral Mushroom Powder" },
+            { ItemKeyword.IocainePowder, "Iocaine Powder" },
+            { ItemKeyword.IocainePracticeDose, "Iocaine Practice Dose" },
+            { ItemKeyword.GroxmaxPowder, "Groxmax Powder" },
+            { ItemKeyword.PorciniMushroomFlakes, "Porcini Mushroom Flakes" },
+            { ItemKeyword.BlackFootMorelFlakes, "Black Foot Morel Flakes" },
+            { ItemKeyword.ClothEquipment, "Cloth Equipment" },
+            { ItemKeyword.Dairy, "Dairy" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4154,6 +4192,7 @@
             { MapAreaName.WinterNexus, "Winter Nexus" },
             { MapAreaName.TheWintertide, "The Wintertide" },
             { MapAreaName.NightmareCaves, "Nightmare Caves" },
+            { MapAreaName.PovusCaves, "Povus Caves" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -5245,11 +5284,11 @@
             { SpecialNpc.GolemBook, "Golem Book" },
             { SpecialNpc.AlchemyBook_SpiderEggs, "Alchemy Book (Spider Eggs)" },
             { SpecialNpc.DeathPenaltyAltar, "Death Penalty Altar" },
-            { SpecialNpc.NPC_Sphere, "Glowing Sphere" },
+            //{ SpecialNpc.NPC_Sphere, "Glowing Sphere" },
             //{ SpecialNpc.NPC_Oritania, "Oritania" },
-            { SpecialNpc.NPC_Pennoc, "Pennoc" },
-            { SpecialNpc.NPC_Lakrea, "Lakrea" },
-            { SpecialNpc.NPC_Chirrra, "Chirrra" },
+            //{ SpecialNpc.NPC_Pennoc, "Pennoc" },
+            //{ SpecialNpc.NPC_Lakrea, "Lakrea" },
+            //{ SpecialNpc.NPC_Chirrra, "Chirrra" },
             { SpecialNpc.ModeratorToolbox, "Moderator Toolbox" },
             { SpecialNpc.NPC_Halloween_BrandonMellus, "Brandon Mellus (Halloween)" },
             { SpecialNpc.NPC_Halloween_Westley, "Westley (Halloween)" },
@@ -5257,7 +5296,7 @@
             { SpecialNpc.NPC_Halloween_ChafSpringfield, "Chaf Springfield (Halloween)" },
             { SpecialNpc.NPC_GoblinDoorGuard, "Goblin Door Guard" },
             { SpecialNpc.NPC_Glortok, "Glortok" },
-            { SpecialNpc.NPC_InjuredRakshasa, "Injured Rakshasa" },
+            //{ SpecialNpc.NPC_InjuredRakshasa, "Injured Rakshasa" },
             { SpecialNpc.NPC_Uriana, "Uriana" },
             //{ SpecialNpc.NPC_AgrashabGod, "Agrashab God" },
             { SpecialNpc.Flopsy, "Flopsy" },
@@ -5298,9 +5337,9 @@
             { SpecialNpc.CandleMakingBook_Cold, "Candle Making Book (Cold)" },
             { SpecialNpc.CandleMakingBook_Precog, "Candle Making Book (Precog)" },
             { SpecialNpc.CandleMakingBook_Halloween, "Candle Making Book (Halloween)" },
-            { SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
-            { SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
-            { SpecialNpc.LiveNpc_Boop, "Boop" },
+            //{ SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
+            //{ SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
+            //{ SpecialNpc.LiveNpc_Boop, "Boop" },
             /*{ SpecialNpc.LiveNpc_Raim, "Raim" },
             { SpecialNpc.LiveNpc_Moxie, "Moxie" },
             { SpecialNpc.LiveNpc_Torana, "Torana" },
@@ -5310,6 +5349,7 @@
             { SpecialNpc.Halloween_BatInTheHat, "Bat In The Hat" },
             { SpecialNpc.AntiBrainBugSpellBook, "Anti Brain Bug Spell Book" },
             { SpecialNpc.HalloweenPartyLoot, "Halloween Party Loot" },
+            { SpecialNpc.AdminTestNpc, "Admin Test Npc" },
         };
 
         public static Dictionary<Strategy, string> StrategyTextMap { get; } = new Dictionary<Strategy, string>()

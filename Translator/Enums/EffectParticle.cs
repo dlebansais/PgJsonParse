@@ -183,5 +183,7 @@
         PrismaticBuff,
         FireworkPurple,
         Confetti2Purple,
+        Confetti2Green,
+        FireworkGreen,
     }
 }

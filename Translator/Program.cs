@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(401);
+        return ParseCurated(403);
     }
 
     private static int ParseCurated(int Version)
@@ -110,6 +110,7 @@ public class Program
         FinalizingResult &= ParserQuestReward.FinalizeParsing();
         FinalizingResult &= ParserQuestFailEffect.FinalizeParsing();
         FinalizingResult &= ParserStorageRequirement.FinalizeParsing();
+        FinalizingResult &= ParserNpcService.FinalizeParsing();
 
         FinalizingResult &= ParserAbility.UpdateSource();
         FinalizingResult &= ParserRecipe.UpdateSource();
@@ -1011,6 +1012,7 @@ public class Program
 
         TagTableCell? GiveCell = null;
         TagTableCell? ReceiveCell = null;
+        string? ReceiveText = null;
         PgNpcBarter NewBarter = null!;
         int GiveRowSpan = 1;
         int ReceiveRowSpan = 1;
@@ -1091,12 +1093,19 @@ public class Program
                 //Debug.Assert(GiveCell.NestedTagList.Count > 0); TODO find out why NestedTagList.Count == 0 for Kelim
 
                 ReceiveCell = (TagTableCell)Row.NestedTagList[1];
-                Debug.Assert(ReceiveCell.NestedTagList.Count > 0);
+                if (ReceiveCell.NestedTagList.Count == 0)
+                {
+                    ReceiveText = ReceiveCell.Content;
+                    if (ReceiveText.EndsWith("\n"))
+                        ReceiveText = ReceiveText.Substring(0, ReceiveText.Length - 1);
+
+                    ReceiveCell = null;
+                }
 
                 GiveRowSpan = 1;
                 ReceiveRowSpan = 1;
 
-                if (NewBarter != null && NewBarter.GiveTable.Count > 0 && NewBarter.ReceiveTable.Count > 0)
+                if (NewBarter != null && NewBarter.GiveTable.Count > 0 && (NewBarter.ReceiveTable.Count > 0 || NewBarter.ReceiveText is not null))
                 {
                     Dictionary<string, int> GiveTable = NewBarter.GiveTable;
                     Dictionary<string, int> ReceiveTable = NewBarter.ReceiveTable;
@@ -1190,9 +1199,13 @@ public class Program
                         Debug.WriteLine($"Item NOT FOUND in wiki");
                 }
             }
+            else if (NewBarter != null && ReceiveText != null)
+            {
+                NewBarter.ReceiveText = ReceiveText;
+            }
         }
 
-        if (NewBarter != null && NewBarter.GiveTable.Count > 0 && NewBarter.ReceiveTable.Count > 0)
+        if (NewBarter != null && NewBarter.GiveTable.Count > 0 && (NewBarter.ReceiveTable.Count > 0 || NewBarter.ReceiveText is not null))
         {
             if (SplitGive)
             {

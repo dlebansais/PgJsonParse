@@ -48,6 +48,9 @@ public class ParserAIAbility : Parser
                 case "CueVal":
                     Result = SetIntProperty((int valueInt) => item.RawCueValue = valueInt, Value);
                     break;
+                case "Favorite":
+                    Result = SetBoolProperty((bool valueBool) => item.RawFavorite = valueBool, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

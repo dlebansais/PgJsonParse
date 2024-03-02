@@ -54,5 +54,6 @@
         WinterNexus,
         TheWintertide,
         NightmareCaves,
+        PovusCaves,
     }
 }

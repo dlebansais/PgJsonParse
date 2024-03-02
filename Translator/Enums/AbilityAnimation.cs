@@ -212,5 +212,6 @@
         Attack_BattleChemistry_ToxicIrritant,
         PlayFairyChimesFast,
         PlayFairyChimesSlow,
+        Drink,
     }
 }

@@ -21,6 +21,7 @@ public class RawAbility
     public bool? CanTargetUntargetableEnemies { get; set; }
     public string[]? CausesOfDeath { get; set; }
     public int? CombatRefreshBaseAmount { get; set; }
+    public RawConditionalKeyword[]? ConditionalKeywords { get; set; }
     public Cost[]? Costs { get; set; }
     public string? DamageType { get; set; }
     public bool? DelayLoopIsAbortedIfAttacked { get; set; }

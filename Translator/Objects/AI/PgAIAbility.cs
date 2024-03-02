@@ -14,5 +14,7 @@
         public AbilityCue Cue { get; set; }
         public int CueValue { get { return RawCueValue.HasValue ? RawCueValue.Value : 0; } }
         public int? RawCueValue { get; set; }
+        public bool Favorite { get { return RawFavorite.HasValue && RawFavorite.Value; } }
+        public bool? RawFavorite { get; set; }
     }
 }

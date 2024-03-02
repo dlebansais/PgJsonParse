@@ -1,6 +1,7 @@
 ﻿namespace Preprocessor;
 
 using System.Collections.Generic;
+using System.Globalization;
 
 public class Npc
 {
@@ -10,8 +11,12 @@ public class Npc
     {
         AreaFriendlyName = rawNpc.AreaFriendlyName;
         (AreaName, OriginalAreaName) = ParseAreaName(rawNpc.AreaName);
+        Description = rawNpc.Desc;
+        ItemGifts = rawNpc.ItemGifts;
         Name = rawNpc.Name;
+        (PositionX, PositionY, PositionZ) = ParsePosition(rawNpc.Pos);
         (UnsortedPreferences, Preferences) = ParsePreferences(rawNpc.Preferences);
+        Services = Preprocessor.ToSingleOrMultiple(rawNpc.Services, (RawNpcService rawNpcService) => new NpcService(rawNpcService), out ServicesFormat);
     }
 
     private static (string?, string?) ParseAreaName(string? rawAreaName)
@@ -26,6 +31,53 @@ public class Npc
         AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName);
 
         return (AreaName, OriginalAreaName);
+    }
+
+    private static (decimal?, decimal?, decimal?) ParsePosition(string? content)
+    {
+        if (content is null)
+            return (null, null, null);
+
+        string[] Splitted = content.Split(' ');
+        if (Splitted.Length != 3)
+            throw new PreprocessorException();
+
+        decimal? PositionX = null;
+        decimal? PositionY = null;
+        decimal? PositionZ = null;
+
+        for (int i = 0; i < Splitted.Length; i++)
+        {
+            string[] Coordinates = Splitted[i].Split(':');
+            if (Coordinates.Length != 2)
+                throw new PreprocessorException();
+
+            string CoordinateName = Coordinates[0];
+            string CoordinateValue = Coordinates[1];
+
+            if (!decimal.TryParse(CoordinateValue, NumberStyles.Float, CultureInfo.InvariantCulture, out decimal Value))
+                throw new PreprocessorException();
+
+            switch (CoordinateName)
+            {
+                case "x":
+                    PositionX = Value;
+                    break;
+
+                case "y":
+                    PositionY = Value;
+                    break;
+
+                case "z":
+                    PositionZ = Value;
+                    break;
+
+                default:
+                    throw new PreprocessorException();
+            }
+        }
+
+        return (PositionX, PositionY, PositionZ);
     }
 
     private static (NpcPreference[]?, NpcPreference[]?) ParsePreferences(RawNpcPreference[]? content)
@@ -64,8 +116,14 @@ public class Npc
 
     public string? AreaFriendlyName { get; set; }
     public string? AreaName { get; set; }
+    public string? Description { get; set; }
+    public string[]? ItemGifts { get; set; }
     public string? Name { get; set; }
+    public decimal? PositionX { get; set; }
+    public decimal? PositionY { get; set; }
+    public decimal? PositionZ { get; set; }
     public NpcPreference[]? Preferences { get; set; }
+    public NpcService[]? Services { get; set; }
 
     public RawNpc ToRawNpc()
     {
@@ -73,8 +131,12 @@ public class Npc
 
         Result.AreaFriendlyName = AreaFriendlyName;
         Result.AreaName = ToRawAreaName(AreaName, OriginalAreaName);
+        Result.Desc = Description;
+        Result.ItemGifts = ItemGifts;
         Result.Name = Name;
+        Result.Pos = ToRawPosition(PositionX, PositionY, PositionZ);
         Result.Preferences = ToRawNpcPreferences(UnsortedPreferences);
+        Result.Services = Preprocessor.FromSingleOrMultiple(Services, (NpcService npcService) => npcService.ToRawNpcService(), ServicesFormat);
 
         return Result;
     }
@@ -85,6 +147,14 @@ public class Npc
             return null;
 
         return $"{AreaHeader}{Area.ToRawAreaName(areaName, originalAreaName)}";
+    }
+
+    private static string? ToRawPosition(decimal? positionX, decimal? positionY, decimal? positionZ)
+    {
+        if (positionX is null || positionY is null || positionZ is null)
+            return null;
+
+        return $"x:{positionX?.ToString(CultureInfo.InvariantCulture)} y:{positionY?.ToString(CultureInfo.InvariantCulture)} z:{positionZ?.ToString(CultureInfo.InvariantCulture)}";
     }
 
     private static RawNpcPreference[]? ToRawNpcPreferences(NpcPreference[]? npcPreferenceArray)
@@ -102,4 +172,5 @@ public class Npc
 
     private NpcPreference[]? UnsortedPreferences;
     private string? OriginalAreaName;
+    private readonly JsonArrayFormat ServicesFormat;
 }

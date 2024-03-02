@@ -6,6 +6,7 @@ public class AIAbility
     {
         Cue = rawAIAbility.cue;
         CueVal = rawAIAbility.cueVal;
+        Favorite = rawAIAbility.favorite;
         MaxLevel = rawAIAbility.maxLevel;
         MaxRange = rawAIAbility.maxRange;
         MinLevel = rawAIAbility.minLevel;
@@ -26,6 +27,7 @@ public class AIAbility
 
     public string? Cue { get; set; }
     public int? CueVal { get; set; }
+    public bool? Favorite { get; set; }
     public int? MaxLevel { get; set; }
     public decimal? MaxRange { get; set; }
     public int? MinLevel { get; set; }
@@ -37,6 +39,7 @@ public class AIAbility
 
         Result.cue = Cue;
         Result.cueVal = CueVal;
+        Result.favorite = Favorite;
         Result.maxLevel = MaxLevel;
         Result.maxRange = MaxRange;
 

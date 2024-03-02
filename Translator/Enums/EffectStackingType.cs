@@ -366,5 +366,6 @@
         BigHandsCurse,
         Windstrike_ProjectileEvasion_10,
         FinishingBlowDecapitateBuff,
+        SerenePrecisionTea,
     }
 }

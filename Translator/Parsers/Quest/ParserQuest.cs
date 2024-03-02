@@ -136,7 +136,7 @@ public class ParserQuest : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetCheckRequirementsToSustainOnBestow(valueBool), Value);
                     break;
                 case "QuestFailEffects":
-                    Result = Inserter<PgQuestFailEffect>.AddKeylessArray(item.QuestFailEffectListList, Value);
+                    Result = Inserter<PgQuestFailEffect>.AddKeylessArray(item.QuestFailEffectList, Value);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

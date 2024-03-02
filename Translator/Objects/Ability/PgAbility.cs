@@ -148,6 +148,7 @@
         public int? RawRank { get; set; }
         public string InventoryKeywordRequirementErrorMessage { get; set; } = string.Empty;
         public List<AbilityItemKeyword> InventoryKeywordReqList { get; set; } = new List<AbilityItemKeyword>();
+        public PgConditionalKeywordCollection ConditionalKeywordList { get; set; } = new PgConditionalKeywordCollection();
 
         public int FriendlyIconId { get; set; }
 

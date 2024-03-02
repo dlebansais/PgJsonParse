@@ -9,6 +9,7 @@ public class NpcPreference
     {
         Desire = rawNpcPreference.Desire;
         Favor = ParseFavor(rawNpcPreference.Favor, out IsFavorError);
+        Name = rawNpcPreference.Name;
         ParseKeywords(rawNpcPreference.Keywords);
         PreferenceMultiplier = rawNpcPreference.Pref;
     }
@@ -89,6 +90,7 @@ public class NpcPreference
     public List<string>? ItemKeywords { get; set; }
     public string? MinRarityRequirement { get; set; }
     public int? MinValueRequirement { get; set; }
+    public string? Name { get; set; }
     public decimal? PreferenceMultiplier { get; set; }
     public string? RarityRequirement { get; set; }
     public string? SkillRequirement { get; set; }
@@ -101,6 +103,7 @@ public class NpcPreference
         Result.Desire = Desire;
         Result.Favor = ToRawFavor(Favor, IsFavorError);
         Result.Keywords = ToRawKeywords();
+        Result.Name = Name;
         Result.Pref = PreferenceMultiplier;
 
         return Result;

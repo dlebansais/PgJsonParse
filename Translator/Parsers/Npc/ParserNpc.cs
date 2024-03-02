@@ -42,6 +42,24 @@ public class ParserNpc : Parser
                 case "Preferences":
                     Result = Inserter<PgNpcPreference>.AddKeylessArray(item.PreferenceList, Value);
                     break;
+                case "Description":
+                    Result = SetStringProperty((string valueString) => item.Description = valueString, Value);
+                    break;
+                case "ItemGifts":
+                    Result = StringToEnumConversion<Favor>.TryParseList(Value, item.ItemGiftList);
+                    break;
+                case "PositionX":
+                    Result = SetFloatProperty((float valueFloat) => item.RawPositionX = valueFloat, Value);
+                    break;
+                case "PositionY":
+                    Result = SetFloatProperty((float valueFloat) => item.RawPositionY = valueFloat, Value);
+                    break;
+                case "PositionZ":
+                    Result = SetFloatProperty((float valueFloat) => item.RawPositionZ = valueFloat, Value);
+                    break;
+                case "Services":
+                    Result = Inserter<PgNpcService>.AddKeylessArray(item.ServiceList, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

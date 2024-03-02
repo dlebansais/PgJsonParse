@@ -237,6 +237,9 @@ public class ParserAbility : Parser
                 case "IsAoECenteredOnCaster":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsAoECenteredOnCaster(valueBool), Value);
                     break;
+                case "ConditionalKeywords":
+                    Result = Inserter<PgConditionalKeyword>.AddKeylessArray(item.ConditionalKeywordList, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;
