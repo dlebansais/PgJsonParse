@@ -185,5 +185,7 @@
         Confetti2Purple,
         Confetti2Green,
         FireworkGreen,
+        HeadConfettiFountain,
+        HeadConfettiBurst,
     }
 }

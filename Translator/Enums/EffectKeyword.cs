@@ -378,5 +378,8 @@
         PoundToSlagAoE,
         SeismicImpactAoE,
         RotskinAoE,
+        MeleeKnifeAnatomyCriticals,
+        ThrownKnifeAnatomyCriticals,
+        DuelistsSlashAoE,
     }
 }

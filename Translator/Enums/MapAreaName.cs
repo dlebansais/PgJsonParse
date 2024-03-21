@@ -42,7 +42,7 @@
         Wintertide2,
         //WNSWintertide,
         Povus,
-        Staging,
+        //Staging,
         PovusCaves2,
         HogansBasement,
         SerbuleCrypt,
@@ -54,6 +54,6 @@
         WinterNexus,
         TheWintertide,
         NightmareCaves,
-        PovusCaves,
+        //PovusCaves,
     }
 }

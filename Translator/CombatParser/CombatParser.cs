@@ -490,7 +490,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "1402")
+        if (Key == "16065")
         {
         }
 
@@ -584,7 +584,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "13005")
+        if (power.Key == "16065")
         {
         }
 
@@ -685,7 +685,7 @@ public partial class CombatParser
         if (AbilityKeywordList.Contains(AbilityKeyword.Unarmed) && Skill_Key == "Unarmed")
             EffectIconList.Add(108);
 
-        if (AbilityKeywordList.Contains(AbilityKeyword.Knife) && Skill_Key == "Knife")
+        if ((AbilityKeywordList.Contains(AbilityKeyword.Knife) || AbilityKeywordList.Contains(AbilityKeyword.KnifeCut)) && Skill_Key == "Knife")
             EffectIconList.Add(108);
 
         if (AbilityKeywordList.Contains(AbilityKeyword.Druid) && Skill_Key == "Druid")
@@ -1288,6 +1288,8 @@ public partial class CombatParser
             case CombatKeyword.DebuffMitigation:
             case CombatKeyword.AddSprintSpeed:
             case CombatKeyword.AddMitigation:
+            case CombatKeyword.DealIndirectDamage:
+            case CombatKeyword.DirectOnlyDamageBoost:
                 VerifyStaticEffectKeyword(keyword, combatEffectList, combatEffect.Keyword, true);
                 break;
 
@@ -1320,7 +1322,6 @@ public partial class CombatParser
             case CombatKeyword.ResetOtherAbilityTimer:
             case CombatKeyword.AddMaxArmor:
             case CombatKeyword.DamageBoostAgainstSpecie:
-            case CombatKeyword.DealIndirectDamage:
             case CombatKeyword.ZeroTaunt:
             case CombatKeyword.ThickArmor:
             case CombatKeyword.ReflectOnBurst:
@@ -2146,7 +2147,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "13005" || Entry.Key.Key == "13005")
+            if (Entry.Key.Key == "16065")
             {
             }
 
@@ -2869,6 +2870,7 @@ public partial class CombatParser
         RemoveDecorativeText(ref modText, "damage (such as via Insect Egg implantation),", out _, ref IndexFound);
         RemoveDecorativeText(ref modText, "Your golem minion's", out _, ref IndexFound);
         RemoveDecorativeText(ref modText, "(including Toxic Irritant)", out _, ref IndexFound);
+        RemoveDecorativeText(ref modText, "(including from Toxic Irritant)", out _, ref IndexFound);
 
         int NegateIndex = modText.IndexOf(". (You can negate the latent psychic damage by using");
         if (NegateIndex >= 0)
@@ -4098,7 +4100,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "13005")
+            if (ItemPower.Key == "16065")
             {
             }
 
@@ -4209,6 +4211,13 @@ public partial class CombatParser
             ModCombatList[0].DamageType = GameDamageType.Acid;
         }
 
+        // Hack for Poisoner's Cut
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.PoisonersCut &&
+            ModCombatList.Count >= 1 && ModCombatList[0].Keyword == CombatKeyword.DirectOnlyDamageBoost && ModCombatList[0].DamageType == GameDamageType.Poison)
+        {
+            ModCombatList.Add(new PgCombatEffect() { Keyword = CombatKeyword.EffectDuration, Data = new PgNumericValue() { RawValue = 8 } });
+        }
+
         string ParsedAbilityList = AbilityKeywordListToShortString(ModAbilityList);
         string ParsedPowerString = CombatEffectListToString(ModCombatList, out extractedPowerTierKeywordList);
         string ParsedModTargetAbilityList = AbilityKeywordListToShortString(ModTargetAbilityList);
@@ -4218,6 +4227,12 @@ public partial class CombatParser
             /*Debug.WriteLine("");
             Debug.WriteLine($"    Power: {powerSimpleEffect.Description}");
             Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");*/
+        }
+
+        if (ModText.Contains("leave a Lasting Mark in the target"))
+        {
+            ModCombatList.Clear();
+            ModTargetAbilityList.Clear();
         }
 
         modEffect = new PgModEffect()

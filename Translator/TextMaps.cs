@@ -861,6 +861,7 @@
             { AbilityKeyword.ThrownKnife, "Thrown Knife" },
             { AbilityKeyword.HymnOfResurrection3Enabled, "Hymn Of Resurrection #3 Enabled" },
             { AbilityKeyword.Lint_MonsterAbility, "Monster Ability" },
+            { AbilityKeyword.MinorHealSelf, "Minor Heal Self" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -1842,6 +1843,9 @@
             { EffectKeyword.PoundToSlagAoE, "Pound To Slag AoE" },
             { EffectKeyword.SeismicImpactAoE, "Seismic Impact AoE" },
             { EffectKeyword.RotskinAoE, "Rotskin AoE" },
+            { EffectKeyword.MeleeKnifeAnatomyCriticals, "Melee Knife Anatomy Criticals" },
+            { EffectKeyword.ThrownKnifeAnatomyCriticals, "Thrown Knife Anatomy Criticals" },
+            { EffectKeyword.DuelistsSlashAoE, "Duelist's Slash AoE" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2029,6 +2033,8 @@
             { EffectParticle.Confetti2Purple, "Confetti #2 Purple" },
             { EffectParticle.Confetti2Green, "Confetti #2 Green" },
             { EffectParticle.FireworkGreen, "Firework Green" },
+            { EffectParticle.HeadConfettiFountain, "Head Confetti Fountain" },
+            { EffectParticle.HeadConfettiBurst, "Head Confetti Burst" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2216,7 +2222,7 @@
             { EffectStackingType.PorcineResistStun, "Porcine Stun Resist" },
             { EffectStackingType.IndirectBoost, "Indirect Boost" },
             { EffectStackingType.PigFrenzy, "Pig Frenzy" },
-            { EffectStackingType.PoisonersCut, "Poisoner's Cut" },
+            //{ EffectStackingType.PoisonersCut, "Poisoner's Cut" },
             { EffectStackingType.VagueArtAppreciationCombat, "Combat Vague Art Appreciation" },
             { EffectStackingType.VagueArtAppreciationCrafting, "Crafting Vague Art Appreciation" },
             { EffectStackingType.SeasonalArtAppreciationCombat, "Combat Seasonal Art Appreciation" },
@@ -2398,6 +2404,8 @@
             { EffectStackingType.Windstrike_ProjectileEvasion_10, "Windstrike Projectile Evasion 10" },
             { EffectStackingType.FinishingBlowDecapitateBuff, "Finishing Blow Decapitate Buff" },
             { EffectStackingType.SerenePrecisionTea, "Serene Precision Tea" },
+            { EffectStackingType.ToxicIrritantAcidBuff, "Toxic Irritant Acid Buff" },
+            { EffectStackingType.PoisonersCutBuffDirect, "Poisoner's Cut Buff Direct" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2660,6 +2668,8 @@
             { InteractionFlag.PovusCaves2NectarPot10, "Povus Caves #2 Nectar Pot #10" },
             { InteractionFlag.PovusCaves2NectarPot11, "Povus Caves #2 Nectar Pot #11" },
             { InteractionFlag.PovusCaves2NectarPot12, "Povus Caves #2 Nectar Pot #12" },
+            { InteractionFlag.IrkimaPigeonWait, "Irkima Pigeon Wait" },
+            { InteractionFlag.IrkimaPigeonWait2, "Irkima Pigeon Wait #2" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -2756,6 +2766,8 @@
             { ItemDroppedAppearance.LootScroll14, "Loot Scroll #14" },
             { ItemDroppedAppearance.LootScroll15, "Loot Scroll #15" },
             { ItemDroppedAppearance.LootScroll16, "Loot Scroll #16" },*/
+            { ItemDroppedAppearance.Barrel, "Barrel" },
+            { ItemDroppedAppearance.DeployedTrashCan, "Deployed Trash Can" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -4068,6 +4080,11 @@
             { ItemKeyword.BlackFootMorelFlakes, "Black Foot Morel Flakes" },
             { ItemKeyword.ClothEquipment, "Cloth Equipment" },
             { ItemKeyword.Dairy, "Dairy" },
+            { ItemKeyword.Flax, "Flax" },
+            { ItemKeyword.TentakillerTentacle, "Tentakiller Tentacle" },
+            { ItemKeyword.BirdFeed, "Bird Feed" },
+            { ItemKeyword.TrashCan, "Trash Can" },
+            { ItemKeyword.HardcoreEquipment, "Hardcore Equipment" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4180,7 +4197,7 @@
             { MapAreaName.Wintertide2, "Wintertide #2" },
             //{ MapAreaName.WNSWintertide, "WNS Wintertide" },
             { MapAreaName.Povus, "Povus" },
-            { MapAreaName.Staging, "Staging" },
+            //{ MapAreaName.Staging, "Staging" },
             { MapAreaName.PovusCaves2, "Povus Caves #2" },
             { MapAreaName.HogansBasement, "Hogan's Basement" },
             { MapAreaName.SerbuleCrypt, "Serbule Crypt" },
@@ -4192,7 +4209,7 @@
             { MapAreaName.WinterNexus, "Winter Nexus" },
             { MapAreaName.TheWintertide, "The Wintertide" },
             { MapAreaName.NightmareCaves, "Nightmare Caves" },
-            { MapAreaName.PovusCaves, "Povus Caves" },
+            //{ MapAreaName.PovusCaves, "Povus Caves" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -5297,7 +5314,7 @@
             { SpecialNpc.NPC_GoblinDoorGuard, "Goblin Door Guard" },
             { SpecialNpc.NPC_Glortok, "Glortok" },
             //{ SpecialNpc.NPC_InjuredRakshasa, "Injured Rakshasa" },
-            { SpecialNpc.NPC_Uriana, "Uriana" },
+            //{ SpecialNpc.NPC_Uriana, "Uriana" },
             //{ SpecialNpc.NPC_AgrashabGod, "Agrashab God" },
             { SpecialNpc.Flopsy, "Flopsy" },
             { SpecialNpc.Lopsy, "Lopsy" },
@@ -5337,9 +5354,9 @@
             { SpecialNpc.CandleMakingBook_Cold, "Candle Making Book (Cold)" },
             { SpecialNpc.CandleMakingBook_Precog, "Candle Making Book (Precog)" },
             { SpecialNpc.CandleMakingBook_Halloween, "Candle Making Book (Halloween)" },
-            //{ SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
-            //{ SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
-            //{ SpecialNpc.LiveNpc_Boop, "Boop" },
+            { SpecialNpc.LiveNpc_Lopsy, "Lopsy" },
+            { SpecialNpc.LiveNpc_Flopsy, "Flopsy" },
+            { SpecialNpc.LiveNpc_Boop, "Boop" },
             /*{ SpecialNpc.LiveNpc_Raim, "Raim" },
             { SpecialNpc.LiveNpc_Moxie, "Moxie" },
             { SpecialNpc.LiveNpc_Torana, "Torana" },
@@ -5350,6 +5367,9 @@
             { SpecialNpc.AntiBrainBugSpellBook, "Anti Brain Bug Spell Book" },
             { SpecialNpc.HalloweenPartyLoot, "Halloween Party Loot" },
             { SpecialNpc.AdminTestNpc, "Admin Test Npc" },
+            { SpecialNpc.WerewolfAltar, "Werewolf Altar" },
+            { SpecialNpc.EventNPC_GiantBatMode, "EventNPC (Giant Bat Mode)" },
+            { SpecialNpc.Altar_Druid, "Druid Altar" },
         };
 
         public static Dictionary<Strategy, string> StrategyTextMap { get; } = new Dictionary<Strategy, string>()

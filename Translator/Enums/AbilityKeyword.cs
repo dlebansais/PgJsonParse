@@ -557,5 +557,6 @@
         ThrownKnife,
         HymnOfResurrection3Enabled,
         Lint_MonsterAbility,
+        MinorHealSelf,
     }
 }

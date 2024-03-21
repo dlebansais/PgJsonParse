@@ -166,11 +166,17 @@ public class ParserNpcService : Parser
 
         if (Result)
         {
+            NewItem.AdditionalUnlockList.Sort(SortByFavor);
             item = NewItem;
             return true;
         }
         else
             return false;
+    }
+
+    private static int SortByFavor(Favor f1, Favor f2)
+    {
+        return (int)f2 - (int)f1;
     }
 
     private static bool FinishItemConsignment(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
@@ -215,6 +221,7 @@ public class ParserNpcService : Parser
 
         if (Result)
         {
+            NewItem.UnlockList.Sort(SortByFavor);
             item = NewItem;
             return true;
         }
@@ -304,11 +311,17 @@ public class ParserNpcService : Parser
 
         if (Result)
         {
+            NewItem.LevelRangeList.Sort(SortByMinLevel);
             item = NewItem;
             return true;
         }
         else
             return false;
+    }
+
+    private static int SortByMinLevel(PgNpcLevelRange l1, PgNpcLevelRange l2)
+    {
+        return l2.Min - l1.Min;
     }
 
     private static bool FinishItemStables(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
@@ -379,7 +392,7 @@ public class ParserNpcService : Parser
                         Result = StringToEnumConversion<Favor>.SetEnum((Favor valueEnum) => NewItem.Favor = valueEnum, Value);
                         break;
                     case "CapIncreases":
-                        Result = StringToEnumConversion<Favor>.TryParseList(Value, NewItem.CapIncreaseList);
+                        Result = Inserter<PgNpcCapIncrease>.AddKeylessArray(NewItem.CapIncreaseList, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
@@ -393,11 +406,17 @@ public class ParserNpcService : Parser
 
         if (Result)
         {
+            NewItem.CapIncreaseList.Sort(SortByFavor);
             item = NewItem;
             return true;
         }
         else
             return false;
+    }
+
+    private static int SortByFavor(PgNpcCapIncrease l1, PgNpcCapIncrease l2)
+    {
+        return (int)l2.CapIncreaseFavor - (int)l1.CapIncreaseFavor;
     }
 
     private static bool FinishItemStorage(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
@@ -442,6 +461,7 @@ public class ParserNpcService : Parser
 
         if (Result)
         {
+            NewItem.SpaceIncreaseList.Sort(SortByFavor);
             item = NewItem;
             return true;
         }
@@ -507,6 +527,7 @@ public class ParserNpcService : Parser
 
         if (Result)
         {
+            NewItem.UnlockList.Sort(SortByFavor);
             item = NewItem;
             return true;
         }

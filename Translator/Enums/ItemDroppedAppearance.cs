@@ -94,5 +94,7 @@
         LootScroll14,
         LootScroll15,
         LootScroll16,*/
+        Barrel,
+        DeployedTrashCan,
     }
 }

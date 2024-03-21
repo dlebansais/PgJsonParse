@@ -448,10 +448,16 @@ public class FieldTableStore
         { "ItemTypes", typeof(string[]) },
         { "Unlocks", typeof(string[]) },
         { "AdditionalUnlocks", typeof(string[]) },
-        { "CapIncreases", typeof(string[]) },
+        { "CapIncreases", typeof(PgNpcCapIncrease[]) },
         { "ItemDescriptions", typeof(string[]) },
         { "SpaceIncreases", typeof(string[]) },
         { "LevelRanges", typeof(PgNpcLevelRange[]) },
+    };
+
+    public static Dictionary<string, Type> TableNpcCapIncrease { get; } = new Dictionary<string, Type>()
+    {
+        { "Favor", typeof(string) },
+        { "Value", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableNpcLevelRange { get; } = new Dictionary<string, Type>()
@@ -943,6 +949,7 @@ public class FieldTableStore
         { typeof(PgNpc), new FixedFieldTable(TableNpc) },
         { typeof(PgNpcPreference), new FixedFieldTable(TableNpcPreference) },
         { typeof(PgNpcService), new FixedFieldTable(TableNpcService) },
+        { typeof(PgNpcCapIncrease), new FixedFieldTable(TableNpcCapIncrease) },
         { typeof(PgNpcLevelRange), new FixedFieldTable(TableNpcLevelRange) },
         { typeof(PgPlayerTitle), new FixedFieldTable(TablePlayerTitle) },
         { typeof(PgPower), new FixedFieldTable(TablePower) },

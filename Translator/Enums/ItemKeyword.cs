@@ -1312,5 +1312,10 @@
         BlackFootMorelFlakes,
         ClothEquipment,
         Dairy,
+        Flax,
+        TentakillerTentacle,
+        BirdFeed,
+        TrashCan,
+        HardcoreEquipment,
     }
 }

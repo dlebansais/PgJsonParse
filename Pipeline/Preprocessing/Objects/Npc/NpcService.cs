@@ -7,7 +7,7 @@ public class NpcService
     public NpcService(RawNpcService rawNpcService)
     {
         AdditionalUnlocks = rawNpcService.AdditionalUnlocks;
-        CapIncreases = rawNpcService.CapIncreases;
+        CapIncreases = ParseCapIncreases(rawNpcService.CapIncreases);
         Favor = rawNpcService.Favor;
         ItemDescriptions = rawNpcService.ItemDescs;
         ItemTypes = rawNpcService.ItemTypes;
@@ -16,6 +16,32 @@ public class NpcService
         SpaceIncreases = rawNpcService.SpaceIncreases;
         Type = rawNpcService.Type;
         Unlocks = rawNpcService.Unlocks;
+    }
+
+    private static NpcServiceCapIncrease[]? ParseCapIncreases(string[]? rawCapIncrease)
+    {
+        if (rawCapIncrease is null)
+            return null;
+
+        List<NpcServiceCapIncrease> Result = new();
+        foreach (string CapIncrease in rawCapIncrease)
+            Result.Add(ParseCapIncrease(CapIncrease));
+
+        return Result.ToArray();
+    }
+
+    private static NpcServiceCapIncrease ParseCapIncrease(string rawCapIncrease)
+    {
+        string[] Splitted = rawCapIncrease.Split(':');
+        if (Splitted.Length != 2)
+            throw new PreprocessorException();
+
+        if (!int.TryParse(Splitted[1], out int Value))
+            throw new PreprocessorException();
+
+        NpcServiceCapIncrease Result = new() { Favor = Splitted[0], Value = Value };
+
+        return Result;
     }
 
     private static NpcServiceLevelRange[]? ParseLevelRange(string[]? rawLevelRange)
@@ -48,7 +74,7 @@ public class NpcService
     }
 
     public string[]? AdditionalUnlocks { get; set; }
-    public string[]? CapIncreases { get; set; }
+    public NpcServiceCapIncrease[]? CapIncreases { get; set; }
     public string? Favor { get; set; }
     public string[]? ItemDescriptions { get; set; }
     public string[]? ItemTypes { get; set; }
@@ -63,7 +89,7 @@ public class NpcService
         RawNpcService Result = new();
 
         Result.AdditionalUnlocks = AdditionalUnlocks;
-        Result.CapIncreases = CapIncreases;
+        Result.CapIncreases = ToRawCapIncreases(CapIncreases);
         Result.Favor = Favor;
         Result.ItemDescs = ItemDescriptions;
         Result.ItemTypes = ItemTypes;
@@ -74,6 +100,19 @@ public class NpcService
         Result.Unlocks = Unlocks;
 
         return Result;
+    }
+
+    private static string[]? ToRawCapIncreases(NpcServiceCapIncrease[]? npcServiceCapIncreases)
+    {
+        if (npcServiceCapIncreases is null)
+            return null;
+
+        List<string> Result = new();
+
+        foreach (NpcServiceCapIncrease CapIncrease in npcServiceCapIncreases)
+            Result.Add($"{CapIncrease.Favor}:{CapIncrease.Value}");
+
+        return Result.ToArray();
     }
 
     private static string[]? ToRawLevelRange(NpcServiceLevelRange[]? npcServiceLevelRanges)

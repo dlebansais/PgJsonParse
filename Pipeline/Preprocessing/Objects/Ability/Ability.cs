@@ -175,6 +175,31 @@ public class Ability
         // Insert a whitespace before any upper case letter, except the first one.
         Result = Regex.Replace(Result, @"\B[A-Z]", m => " " + m.ToString());
 
+        if (Result == "Poisoners Cut")
+            Result = "Poisoner's Cut";
+        else if (Result == "Hearts Power")
+            Result = "Heart's Power";
+        else if (Result == "Spleens Power")
+            Result = "Spleen's Power";
+        else if (Result == "Deaths Hold")
+            Result = "Death's Hold";
+        else if (Result == "Hunters Stride")
+            Result = "Hunter's Stride";
+        else if (Result == "Duelists Slash")
+            Result = "Duelist's Slash";
+        else if (Result == "Virtuosos Ballad")
+            Result = "Virtuoso's Ballad";
+        else if (Result == "Rabbits Foot")
+            Result = "Rabbit's Foot";
+        else if (Result == "Sic Em")
+            Result = "Sic 'Em";
+        else if (Result == "Summon Minigolem A")
+            Result = "Summon Minigolem";
+
+        const string PlayerPrefix = "Player ";
+        if (Result.StartsWith(PlayerPrefix))
+            Result = Result.Substring(PlayerPrefix.Length);
+
         return Result;
     }
 

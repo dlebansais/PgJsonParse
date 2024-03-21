@@ -112,6 +112,13 @@
                     new EffectVerificationEntry() { Prefix = "Undead targets suffer", Suffix = "indirect Nature damage" },
                     new EffectVerificationEntry() { Prefix = "Target suffers", Suffix = "Psychic damage after a 4-second delay" },
                     new EffectVerificationEntry() { Prefix = "Attack Damage Boost", Suffix = "for 10 seconds", AllowDuration = true },
+                    new EffectVerificationEntry() { Prefix = "For 8 seconds, boost Direct Poison Damage", Suffix = "per attack" },
+                }
+            },
+            {
+                CombatKeyword.DirectOnlyDamageBoost, new List<EffectVerificationEntry>()
+                {
+                    new EffectVerificationEntry() { Prefix = "For 8 seconds, boost Direct Poison Damage", Suffix = "per attack" },
                 }
             },
             {
@@ -134,6 +141,12 @@
                     new EffectVerificationEntry() { Prefix = "Mitigates", Suffix = "Additional Physical Damage from Elites", TargetElite = true },
                     new EffectVerificationEntry() { Prefix = "Mitigate", Suffix = "Physical (Crushing, Slashing, Piercing) and Cold damage" },
                     new EffectVerificationEntry() { Prefix = "Further Mitigate", Suffix = "Elite Direct Physical and Cold damage", TargetElite = true },
+                }
+            },
+            {
+                CombatKeyword.DealIndirectDamage, new List<EffectVerificationEntry>()
+                {
+                    new EffectVerificationEntry() { Prefix = "For 8 seconds, boost Indirect Poison Damage", Suffix = "per tick" },
                 }
             },
         };

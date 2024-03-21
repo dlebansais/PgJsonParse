@@ -208,5 +208,7 @@
         PovusCaves2NectarPot10,
         PovusCaves2NectarPot11,
         PovusCaves2NectarPot12,
+        IrkimaPigeonWait,
+        IrkimaPigeonWait2,
     }
 }

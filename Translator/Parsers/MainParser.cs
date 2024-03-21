@@ -48,6 +48,7 @@ public static class MainParser
         { typeof(PgNpc), new ParserNpc() },
         { typeof(PgNpcPreference), new ParserNpcPreference() },
         { typeof(PgNpcService), new ParserNpcService() },
+        { typeof(PgNpcCapIncrease), new ParserNpcCapIncrease() },
         { typeof(PgNpcLevelRange), new ParserNpcLevelRange() },
         { typeof(PgPlayerTitle), new ParserPlayerTitle() },
         { typeof(PgPower), new ParserPower() },

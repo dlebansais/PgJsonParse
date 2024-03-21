@@ -185,7 +185,7 @@
         PorcineResistStun,
         IndirectBoost,
         PigFrenzy,
-        PoisonersCut,
+        //PoisonersCut,
         VagueArtAppreciationCombat,
         VagueArtAppreciationCrafting,
         SeasonalArtAppreciationCombat,
@@ -367,5 +367,7 @@
         Windstrike_ProjectileEvasion_10,
         FinishingBlowDecapitateBuff,
         SerenePrecisionTea,
+        ToxicIrritantAcidBuff,
+        PoisonersCutBuffDirect,
     }
 }
