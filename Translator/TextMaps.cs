@@ -862,6 +862,8 @@
             { AbilityKeyword.HymnOfResurrection3Enabled, "Hymn Of Resurrection #3 Enabled" },
             { AbilityKeyword.Lint_MonsterAbility, "Monster Ability" },
             { AbilityKeyword.MinorHealSelf, "Minor Heal Self" },
+            { AbilityKeyword.KnifeSlashing, "" },
+            { AbilityKeyword.StaffCrushing, "" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()

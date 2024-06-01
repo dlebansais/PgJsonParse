@@ -145,8 +145,13 @@ public class Item
             string EffectString = rawEffectDescription.Substring(1, rawEffectDescription.Length - 2);
             Result = ParseAttributeEffectDescription(EffectString);
         }
-        else if (rawEffectDescription.Contains("{") || rawEffectDescription.Contains("}"))
-            throw new PreprocessorException();
+        else
+        {
+            Result.Description = Result.Description.Replace("Windstrike", "Wind Strike");
+
+            if (rawEffectDescription.Contains("{") || rawEffectDescription.Contains("}"))
+                throw new PreprocessorException();
+        }
 
         return Result;
     }
@@ -436,7 +441,11 @@ public class Item
     private static string EffectDescriptionToString(ItemEffect effectDescription)
     {
         if (effectDescription.Description is not null)
-            return effectDescription.Description;
+        {
+            string Description = effectDescription.Description;
+            Description = Description.Replace("Wind Strike", "Windstrike");
+            return Description;
+        }
         else
             return $"{{{effectDescription.AttributeName}}}{{{effectDescription.AttributeEffect!.Value.ToString(CultureInfo.InvariantCulture)}}}";
     }

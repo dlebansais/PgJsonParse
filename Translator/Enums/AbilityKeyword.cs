@@ -558,5 +558,7 @@
         HymnOfResurrection3Enabled,
         Lint_MonsterAbility,
         MinorHealSelf,
+        KnifeSlashing,
+        StaffCrushing,
     }
 }

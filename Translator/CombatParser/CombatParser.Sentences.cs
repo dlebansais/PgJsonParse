@@ -191,6 +191,7 @@ public partial class CombatParser
         new Sentence("Deal %f #D damage", CombatKeyword.DamageBoost),
         new Sentence("Deal %f direct #D damage", CombatKeyword.DamageBoost),
         new Sentence("Deal direct #D damage to deal %f damage", CombatKeyword.DamageBoost),
+        new Sentence("Deal direct #D damage", CombatKeyword.ChangeDamageType),
         new Sentence("Critical hit deal %f damage", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits }),
         new Sentence("Crit Damage %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToCrits }),
         new Sentence("When they critically hit", CombatKeyword.ApplyToCrits),

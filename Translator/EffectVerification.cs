@@ -73,6 +73,7 @@
                 CombatKeyword.DrainHealth, new List<EffectVerificationEntry>()
                 {
                     new EffectVerificationEntry() { Prefix = "Reaps", Suffix = "of the Health damage done (up to the max)" },
+                    new EffectVerificationEntry() { Prefix = "Steals", Suffix = "Health." },
                 }
             },
             {

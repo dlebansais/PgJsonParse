@@ -13,8 +13,8 @@
     <Product />
     <Description>PG json preprocessor</Description>
     <Copyright>Copyright © 2023 David Le Bansais</Copyright>
-    <AssemblyVersion>1.1.0.4864</AssemblyVersion>
-    <FileVersion>1.1.0.1</FileVersion>
+    <AssemblyVersion>1.1.0.4869</AssemblyVersion>
+    <FileVersion>1.1.0.2</FileVersion>
     <RepositoryUrl>https://github.com/dlebansais/PgJsonParse</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>Preprocessor</RootNamespace>

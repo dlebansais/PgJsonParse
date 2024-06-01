@@ -25,6 +25,7 @@ public partial class CombatParser
                 SkillTable.Add(AsSkill.Key, AsSkill);
 
         List<PgSkill> SkillList = new List<PgSkill>();
+        Dictionary<PgItem, List<PgItemEffectSimple>> ItemList = new();
 
         foreach (object Item in objectList)
             switch (Item)
@@ -46,6 +47,196 @@ public partial class CombatParser
 
         InitValidAbilityList(SkillTable);
         FilterValidPowers(validSlotList, SkillList, out _, out List<PgPower> PowerSimpleEffectList);
+
+        List<string> VerifiedItemPowers = new()
+        {
+            "Item_40311_0",
+            "Item_40312_0",
+            "Item_40404_0",
+            "Item_40405_0",
+            "Item_40406_0",
+            "Item_40407_0",
+            "Item_40407_0",
+            "Item_40408_0",
+            "Item_40409_0",
+            "Item_40410_0",
+            "Item_41264_0",
+            "Item_41265_0",
+            "Item_41266_0",
+            "Item_41267_0",
+            "Item_41268_0",
+            "Item_41269_0",
+            "Item_41270_0",
+            "Item_41309_0",
+            "Item_41310_0",
+            "Item_42057_0",
+            "Item_42058_0",
+            "Item_42085_0",
+            "Item_42087_0",
+            "Item_42091_0",
+            "Item_42095_0",
+            "Item_42351_0",
+            "Item_42352_0",
+            "Item_42353_0",
+            "Item_42354_0",
+            "Item_42355_0",
+            "Item_42356_0",
+            "Item_42357_0",
+            "Item_42358_0",
+            "Item_42359_0",
+            "Item_42360_0",
+            "Item_42384_0",
+            "Item_42385_0",
+            "Item_42386_0",
+            "Item_42387_0",
+            "Item_42388_0",
+            "Item_42389_0",
+            "Item_42390_0",
+            "Item_42446_0",
+            "Item_42447_0",
+            "Item_42448_0",
+            "Item_42449_0",
+            "Item_42450_0",
+            "Item_42466_0",
+            "Item_42467_0",
+            "Item_42468_0",
+            "Item_42469_0",
+            "Item_42470_0",
+            "Item_43118_0",
+            "Item_43119_0",
+            "Item_44309_0",
+            "Item_44310_0",
+            "Item_46012_0",
+            "Item_46012_1",
+            "Item_46013_0",
+            "Item_46013_1",
+            "Item_46014_0",
+            "Item_46026_0",
+            "Item_46045_0",
+            "Item_46055_0",
+            "Item_46734_0",
+            "Item_46735_0",
+            "Item_46736_0",
+            "Item_48083_0",
+            "Item_48084_0",
+            "Item_48085_0",
+            "Item_48086_0",
+            "Item_48087_0",
+            "Item_48088_0",
+            "Item_48089_0",
+            "Item_48090_0",
+            "Item_48091_0",
+            "Item_48093_0",
+            "Item_48094_0",
+            "Item_48095_0",
+            "Item_48096_0",
+            "Item_48097_0",
+            "Item_48098_0",
+            "Item_48099_0",
+            "Item_48100_0",
+            "Item_48101_0",
+            "Item_48181_0",
+            "Item_48182_0",
+            "Item_49062_0",
+            "Item_49063_0",
+            "Item_49064_0",
+            "Item_49065_0",
+            "Item_49066_0",
+            "Item_49067_0",
+            "Item_49068_0",
+            "Item_49069_0",
+            "Item_49070_0",
+            "Item_51029_0",
+            "Item_52028_0",
+            "Item_52030_0",
+            "Item_52611_0",
+            "Item_54001_0",
+            "Item_54002_0",
+            "Item_54003_0",
+            "Item_54004_0",
+            "Item_54005_0",
+            "Item_54006_0",
+            "Item_54007_0",
+            "Item_54008_0",
+            "Item_54301_0",
+            "Item_54302_0",
+            "Item_54616_0",
+            "Item_54617_0",
+            "Item_54618_0",
+            "Item_54619_0",
+            "Item_54620_0",
+            "Item_54621_0",
+            "Item_54622_0",
+            "Item_54623_0",
+            "Item_54624_0",
+            "Item_54625_0",
+            "Item_54626_0",
+            "Item_54627_0",
+            "Item_54628_0",
+            "Item_55509_0",
+            "Item_45641_0",
+            "Item_45637_0",
+            "Item_45533_0",
+            "Item_45721_0",
+            "Item_44551_0",
+            "Item_47040_0",
+            "Item_47042_0",
+            "Item_47051_0",
+            "Item_47068_0",
+            "Item_47052_0",
+            "Item_55613_0",
+            "Item_42094_0",
+            "Item_46036_0",
+            "Item_46051_0",
+            "Item_46052_0",
+        };
+
+        foreach (object Item in objectList)
+            if (Item is PgItem AsItem)
+            {
+                if (AsItem.EquipSlot == ItemSlot.Feet ||
+                    AsItem.EquipSlot == ItemSlot.Head ||
+                    AsItem.EquipSlot == ItemSlot.Chest ||
+                    AsItem.EquipSlot == ItemSlot.Legs ||
+                    AsItem.EquipSlot == ItemSlot.Necklace ||
+                    AsItem.EquipSlot == ItemSlot.Ring ||
+                    AsItem.EquipSlot == ItemSlot.Hands ||
+                    AsItem.EquipSlot == ItemSlot.MainHand ||
+                    AsItem.EquipSlot == ItemSlot.OffHand ||
+                    AsItem.EquipSlot == ItemSlot.OffHandShield ||
+                    AsItem.EquipSlot == ItemSlot.Waist ||
+                    AsItem.EquipSlot == ItemSlot.Racial)
+                {
+                    List<PgItemEffectSimple> ItemEffects = new();
+                    foreach (var Effect in AsItem.EffectDescriptionList)
+                        if (Effect is PgItemEffectSimple AsSimpleEffect)
+                            ItemEffects.Add(AsSimpleEffect);
+
+                    if (ItemEffects.Count > 0)
+                    {
+                        ItemList.Add(AsItem, ItemEffects);
+                        int Index = 0;
+                        foreach (PgItemEffectSimple SimpleEffect in ItemEffects)
+                        {
+                            PgPowerEffectSimple NewPowerEffect = new();
+                            NewPowerEffect.Description = SimpleEffect.Description;
+                            PgPowerTier NewTier = new();
+                            NewTier.EffectList.Add(NewPowerEffect);
+                            PgPower NewPower = new();
+                            NewPower.Key = $"Item_{AsItem.Key}_{Index}";
+                            NewPower.SlotList.Add(AsItem.EquipSlot);
+                            NewPower.TierList.Add(NewTier);
+
+                            PowerSimpleEffectList.Insert(0, NewPower);
+                            Index++;
+
+                            if (!VerifiedItemPowers.Contains(NewPower.Key))
+                                Debug.WriteLine($"UNVERIFIED {NewPower.Key}  {AsItem.Name}: #{Index} {NewPowerEffect.Description} ({AsItem.EquipSlot})");
+                        }
+                    }
+                }
+            }
+
         FilterValidEffects(out Dictionary<string, Dictionary<string, List<PgEffect>>> AllEffectTable);
         FindAbilitiesWithMatchingEffect();
         FindPowersWithMatchingEffect(AllEffectTable, PowerSimpleEffectList, out Dictionary<PgPower, List<PgEffect>> PowerToEffectTable, out List<PgPower> UnmatchedPowerList, out List<PgEffect> UnmatchedEffectList, out Dictionary<PgPower, List<PgEffect>> CandidateEffectTable);
@@ -65,7 +256,7 @@ public partial class CombatParser
             WritePowerEffectJson("combateffects.json", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
             WriteBuffEffectJson("buffeffects.json", StringKeyTable.Count, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList);
             WritePowerKeyToCompleteEffectFile("PowerKeyToCompleteEffect.cs", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList);
-            WritePowerCSV("combateffects.csv", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, objectList);
+            // WritePowerCSV("combateffects.csv", StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, objectList);
 
             for (int i = 0; i < StringKeyTable.Count + EffectKeyList.Count; i++)
             {
@@ -939,6 +1130,9 @@ public partial class CombatParser
         { "Minor Healing (Targeted)", new List<AbilityKeyword>() { AbilityKeyword.MinorHealTargeted } },
         { "All Mentalism and Psychology attack", new List<AbilityKeyword>() { AbilityKeyword.MentalismAttack, AbilityKeyword.PsychologyAttack } },
         { "All non-basic attack", new List<AbilityKeyword>() { Internal_NonBasic } },
+        { "Knife ability that normally deal Slashing damage", new List<AbilityKeyword>() { AbilityKeyword.KnifeSlashing } },
+        { "Staff ability that normally deal Crushing damage", new List<AbilityKeyword>() { AbilityKeyword.StaffCrushing } },
+        //{ "Sword Slash, Riposte, Windstrike, and Finishing Blow", new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.Riposte, AbilityKeyword.WindStrike, AbilityKeyword.FinishingBlow } },
     };
 
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -993,6 +1187,12 @@ public partial class CombatParser
         AbilityKeyword.MinorHealTargeted,
         AbilityKeyword.MentalismAttack,
         AbilityKeyword.PsychologyAttack,
+        AbilityKeyword.KnifeSlashing,
+        AbilityKeyword.StaffCrushing,
+        //AbilityKeyword.SwordSlash,
+        //AbilityKeyword.Riposte,
+        //AbilityKeyword.WindStrike,
+        //AbilityKeyword.FinishingBlow,
         Internal_NonBasic,
     };
 
@@ -1026,6 +1226,10 @@ public partial class CombatParser
 
         foreach (PgAbility Item in ValidAbilityList)
         {
+            if (Item.Name == "Windstrike")
+            {
+            }
+
             string Skill_Key = FromSkillKey(Item.Skill_Key ?? throw new NullReferenceException());
             PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
@@ -1643,6 +1847,7 @@ public partial class CombatParser
     {
         Dictionary<int, PowerToEffect> PowerToEffectTable = new();
 
+        // Regular powers
         for (int i = 0; i < stringKeyTable.Count; i++)
         {
             string[] StringKeyArray;
@@ -1662,33 +1867,35 @@ public partial class CombatParser
                 if (PgModEffect is not null)
                 {
                     string[] Splitted = StringKey.Split('_');
-                    Debug.Assert(Splitted.Length == 2);
-                    int TierPowerId = int.Parse(Splitted[0]);
-
-                    if (PowerId < 0)
-                        PowerId = TierPowerId;
-                    else
-                        Debug.Assert(PowerId == TierPowerId);
-
-                    int Tier = int.Parse(Splitted[1]);
-
-                    PowerTierToEffect? NewPowerTierToEffect = ToPowerTierEffect(PgModEffect, hasTier: true, Tier);
-
-                    if (NewPowerTierToEffect is not null)
+                    if (Splitted.Length == 2)
                     {
-                        if (PgModEffect.SecondaryModEffect is not null)
+                        int TierPowerId = int.Parse(Splitted[0]);
+
+                        if (PowerId < 0)
+                            PowerId = TierPowerId;
+                        else
+                            Debug.Assert(PowerId == TierPowerId);
+
+                        int Tier = int.Parse(Splitted[1]);
+
+                        PowerTierToEffect? NewPowerTierToEffect = ToPowerTierEffect(PgModEffect, hasTier: true, Tier);
+
+                        if (NewPowerTierToEffect is not null)
                         {
-                            Debug.Assert(PgModEffect.SecondaryModEffect.EffectKey == string.Empty);
-                            Debug.Assert(PgModEffect.SecondaryModEffect.Description == string.Empty);
+                            if (PgModEffect.SecondaryModEffect is not null)
+                            {
+                                Debug.Assert(PgModEffect.SecondaryModEffect.EffectKey == string.Empty);
+                                Debug.Assert(PgModEffect.SecondaryModEffect.Description == string.Empty);
 
-                            PowerTierToEffect? SecondaryPowerTierToEffect = ToPowerTierEffect(PgModEffect.SecondaryModEffect, hasTier: false, 0);
-                            Debug.Assert(SecondaryPowerTierToEffect is not null);
+                                PowerTierToEffect? SecondaryPowerTierToEffect = ToPowerTierEffect(PgModEffect.SecondaryModEffect, hasTier: false, 0);
+                                Debug.Assert(SecondaryPowerTierToEffect is not null);
 
-                            if (SecondaryPowerTierToEffect is not null)
-                                NewPowerTierToEffect.Xtra = SecondaryPowerTierToEffect;
+                                if (SecondaryPowerTierToEffect is not null)
+                                    NewPowerTierToEffect.Xtra = SecondaryPowerTierToEffect;
+                            }
+
+                            Tiers.Add(NewPowerTierToEffect);
                         }
-
-                        Tiers.Add(NewPowerTierToEffect);
                     }
                 }
             }
@@ -1711,6 +1918,90 @@ public partial class CombatParser
                 }
 
                 PowerToEffectTable.Add(PowerId, NewPowerToEffect);
+            }
+        }
+
+        // Powers from items
+        for (int i = 0; i < stringKeyTable.Count; i++)
+        {
+            string[] StringKeyArray;
+            StringKeyArray = stringKeyTable[i];
+            PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+
+            Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+
+            string[] Splitted = StringKeyArray[0].Split('_');
+            if (Splitted.Length != 4 || Splitted[0] != "Item")
+                continue;
+
+            int ItemPowerId = 0x08000000 + int.Parse(Splitted[1]);
+            if (PowerToEffectTable.TryGetValue(ItemPowerId, out PowerToEffect PowerToEffect))
+                continue;
+
+            List<PowerTierToEffect> Tiers = new();
+
+            for (int j = i; j < stringKeyTable.Count; j++)
+            {
+                StringKeyArray = stringKeyTable[j];
+                ModEffectArray = powerKeyToCompleteEffectTable[j];
+
+                Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+
+                Splitted = StringKeyArray[0].Split('_');
+                if (Splitted.Length == 4 && Splitted[0] == "Item")
+                {
+                    int OtherTierPowerId = 0x08000000 + int.Parse(Splitted[1]);
+
+                    if (OtherTierPowerId == ItemPowerId)
+                    {
+                        if (i != j)
+                        {
+                        }
+
+                        PgModEffect PgModEffect = ModEffectArray[0];
+
+                        int Tier = int.Parse(Splitted[2]);
+
+                        PowerTierToEffect? NewPowerTierToEffect = ToPowerTierEffect(PgModEffect, hasTier: true, Tier);
+
+                        if (NewPowerTierToEffect is not null)
+                        {
+                            if (PgModEffect.SecondaryModEffect is not null)
+                            {
+                                Debug.Assert(PgModEffect.SecondaryModEffect.EffectKey == string.Empty);
+                                Debug.Assert(PgModEffect.SecondaryModEffect.Description == string.Empty);
+
+                                PowerTierToEffect? SecondaryPowerTierToEffect = ToPowerTierEffect(PgModEffect.SecondaryModEffect, hasTier: false, 0);
+                                Debug.Assert(SecondaryPowerTierToEffect is not null);
+
+                                if (SecondaryPowerTierToEffect is not null)
+                                    NewPowerTierToEffect.Xtra = SecondaryPowerTierToEffect;
+                            }
+
+                            Tiers.Add(NewPowerTierToEffect);
+                        }
+                    }
+                }
+            }
+
+            if (Tiers.Count > 0)
+            {
+                Debug.Assert(ItemPowerId > 0);
+
+                PowerToEffect NewPowerToEffect = new() { Tiers = Tiers.ToArray() };
+
+                if (HardcodedEffectAllTiersTable.ContainsKey(ItemPowerId))
+                {
+                    foreach (PowerTierToEffect PowerTierToEffect in NewPowerToEffect.Tiers)
+                        PowerTierToEffect.AdditionalEffects = HardcodedEffectAllTiersTable[ItemPowerId];
+                }
+                else if (HardcodedEffectTable.ContainsKey(ItemPowerId))
+                {
+                    for (int j = 0; j < NewPowerToEffect.Tiers.Length && j < HardcodedEffectTable[ItemPowerId].Count; j++)
+                        NewPowerToEffect.Tiers[j].AdditionalEffects = HardcodedEffectTable[ItemPowerId][j + 1];
+                }
+
+                PowerToEffectTable.Add(ItemPowerId, NewPowerToEffect);
             }
         }
 
@@ -4100,7 +4391,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "16065")
+            if (ItemPower.Key == "Item_46036_0")
             {
             }
 
@@ -4339,6 +4630,7 @@ public partial class CombatParser
         modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
         modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", string.Empty);
         modText = modText.Replace("Direct Electricity Damage, Direct Fire Damage, and Direct Cold Damage", "Direct Electricity, Fire, and Cold Damage");
+        modText = modText.Replace("All Sword abilities apply Flaming Sword damage for 10 seconds.", "");
 
         if (!modText.Contains("But I Love You"))
             ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");

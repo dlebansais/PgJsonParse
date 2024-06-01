@@ -91,11 +91,46 @@ public class Ability
 
         // Remove Lint_NotLearnable for an ability that we can actually learn.
         if (InternalName == "SwordSlash" && Keywords is not null)
+            Keywords = RemoveKeyword(Keywords, "Lint_NotLearnable");
+
+        // Add new keywords needed for combat parsing.
+        if (Skill == "Knife" && DamageType == "Slashing")
+            Keywords = AddKeyword(Keywords, "KnifeSlashing");
+        if (Skill == "Staff" && DamageType == "Crushing")
+            Keywords = AddKeyword(Keywords, "StaffCrushing");
+
+        if (Name is not null && Name.StartsWith("Life Steal") && SpecialInfo is not null && SpecialInfo.StartsWith("Steals "))
         {
-            List<string> KeywordsList = Keywords.ToList();
-            KeywordsList.Remove("Lint_NotLearnable");
-            Keywords = KeywordsList.ToArray();
+            Debug.Assert(PvE is not null && PvE.SpecialValues is null);
+
+            SpecialValue LifeStealSpecialValue = new();
+            LifeStealSpecialValue.Label = "Steals";
+            LifeStealSpecialValue.Suffix = "Health.";
+            string[] Parts = SpecialInfo.Split(' ');
+            Debug.Assert(Parts.Length == 3);
+            LifeStealSpecialValue.Value = int.Parse(Parts[1]);
+
+            SpecialInfo = null;
+            PvE!.SpecialValues = new SpecialValue[] { LifeStealSpecialValue };
         }
+    }
+
+    private static string[]? AddKeyword(string[]? Keywords, string keywordToAdd)
+    {
+        List<string> KeywordsList = Keywords.ToList();
+        KeywordsList.Add(keywordToAdd);
+        Keywords = KeywordsList.ToArray();
+
+        return Keywords;
+    }
+
+    private static string[]? RemoveKeyword(string[]? Keywords, string keywordToRemove)
+    {
+        List<string> KeywordsList = Keywords.ToList();
+        KeywordsList.Remove(keywordToRemove);
+        Keywords = KeywordsList.ToArray();
+
+        return Keywords;
     }
 
     private static ConditionalKeyword[]? ParseConditionalKeywords(RawConditionalKeyword[]? rawConditionalKeywords)
@@ -368,11 +403,27 @@ public class Ability
         Result.WorksWhileMounted = WorksWhileMounted;
         Result.WorksWhileStunned = WorksWhileStunned;
 
-        if (InternalName == "SwordSlash" && Result.Keywords is not null)
+        if (Result.Keywords is not null)
         {
-            List<string> KeywordsList = Result.Keywords.ToList();
-            KeywordsList.Add("Lint_NotLearnable");
-            Result.Keywords = KeywordsList.ToArray();
+            if (InternalName == "SwordSlash")
+                Result.Keywords = AddKeyword(Result.Keywords, "Lint_NotLearnable");
+
+            if (Skill == "Knife" && DamageType == "Slashing")
+                Result.Keywords = RemoveKeyword(Result.Keywords, "KnifeSlashing");
+            if (Skill == "Staff" && DamageType == "Crushing")
+                Result.Keywords = RemoveKeyword(Result.Keywords, "StaffCrushing");
+        }
+
+        if (Result.Name is not null && Result.Name.StartsWith("Life Steal") && Result.PvE?.SpecialValues is not null && Result.PvE.SpecialValues.Length == 1)
+        {
+            SpecialValue LifeStealSpecialValue = Result.PvE.SpecialValues[0];
+            if (LifeStealSpecialValue.Label == "Steals" && LifeStealSpecialValue.Suffix == "Health.")
+            {
+                Debug.Assert(Result.SpecialInfo is null);
+
+                Result.SpecialInfo = $"{LifeStealSpecialValue.Label} {LifeStealSpecialValue.Value} {LifeStealSpecialValue.Suffix}";
+                Result.PvE.SpecialValues = null;
+            }
         }
 
         return Result;
