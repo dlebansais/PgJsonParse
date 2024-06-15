@@ -1589,12 +1589,14 @@ public class Program
             { MapAreaName.Povus, "Povus" },
             { MapAreaName.Rahu, "Rahu" },
             { MapAreaName.RahuSewer, "Rahu Sewer" },
-            //{ MapAreaName.RahuSewers, "Rahu Sewers" },
             { MapAreaName.Casino, "Red Wing Casino" },
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
             { MapAreaName.Serbule, "Serbule" },
             { MapAreaName.Serbule2, "Serbule Hills" },
             { MapAreaName.SunVale, "Sun Vale" },
+            { MapAreaName.Cave2, "Cave2" },
+            { MapAreaName.RanalonDen, "Ranalon Den" },
+            { MapAreaName.TheWintertide, "The Wintertide" },
         };
 
         Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();
@@ -1678,7 +1680,10 @@ public class Program
             {
                 foreach (PgQuest Quest in Entry.Value)
                     if (!KnownUniqueQuests[Area].ContainsKey(Quest.Name))
-                        Debug.WriteLine($"UNKNOWN QUEST: {Quest.Name}, Area: {Area}");
+                    {
+                        if (Quest.Name != "A New Life") // Ignored
+                            Debug.WriteLine($"UNKNOWN QUEST: {Quest.Name}, Area: {Area}");
+                    }
             }
         }
     }
@@ -1740,6 +1745,7 @@ public class Program
                 { "Rixie's Ring Challenge", QuestSpecifics.None },
                 { "Rixie's Ring Challenge 2", QuestSpecifics.None },
                 { "Stargazer Alignment", QuestSpecifics.None },
+                { "Stringless Lute", QuestSpecifics.None },
             }
         },
         {
@@ -2111,11 +2117,13 @@ public class Program
                 { "Bear Meat Swirlers", QuestSpecifics.None },
                 { "Better Cheese Needed", QuestSpecifics.None },
                 { "Better Lac Than Lac?", QuestSpecifics.None },
+                { "Broken Wings", QuestSpecifics.None },
                 { "Cheese For Reasons", QuestSpecifics.None },
                 { "Cottage Pie", QuestSpecifics.None },
                 { "Cotton For Dresses", QuestSpecifics.None },
                 { "Darker Than Dark", QuestSpecifics.None },
                 { "Dirty Snow Water", QuestSpecifics.None },
+                { "Don't Forget the Egg", QuestSpecifics.None },
                 { "Fae Felt", QuestSpecifics.None },
                 { "Fiddler's Favorite Snack", QuestSpecifics.None },
                 { "Fiddler's Hoof Scrubber", QuestSpecifics.None },
@@ -2128,6 +2136,7 @@ public class Program
                 { "Letting Qatik Down Gently", QuestSpecifics.None },
                 { "Lucky Rabbit Feet", QuestSpecifics.None },
                 { "Metal for Repairs", QuestSpecifics.None },
+                { "Need for Feed", QuestSpecifics.None },
                 { "Moss Agates for the Garden", QuestSpecifics.Bugged },
                 { "NEED POTION", QuestSpecifics.None },
                 { "NEED STINGER", QuestSpecifics.None },
@@ -2404,11 +2413,27 @@ public class Program
             }
         },
         {
-            MapAreaName.KurCaves, new Dictionary<string, QuestSpecifics>()
+            MapAreaName.Cave2, new Dictionary<string, QuestSpecifics>()
             {
                 { "Anti-Lycanthropy Potion", QuestSpecifics.None },
                 { "Orange Juice for Malgath", QuestSpecifics.None },
                 { "Worm Teeth", QuestSpecifics.None },
+            }
+        },
+
+        {
+            MapAreaName.RanalonDen, new Dictionary<string, QuestSpecifics>()
+            {
+            }
+        },
+        {
+            MapAreaName.TheWintertide, new Dictionary<string, QuestSpecifics>()
+            {
+            }
+        },
+        {
+            MapAreaName.NightmareCaves, new Dictionary<string, QuestSpecifics>()
+            {
             }
         },
     };
