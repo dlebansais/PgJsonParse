@@ -9,5 +9,6 @@
         HardcoreDeathPenalty,
         NotInAir,
         NotInWater,
+        Underwater,
     }
 }

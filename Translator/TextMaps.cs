@@ -224,6 +224,31 @@
             { AbilityAnimation.PlayFairyChimesFast, "Play Fairy Chimes Fast" },
             { AbilityAnimation.PlayFairyChimesSlow, "Play Fairy Chimes Slow" },
             { AbilityAnimation.Drink, "Drink" },
+            { AbilityAnimation.DancePole1, "Dance Pole #1" },
+            { AbilityAnimation.DancePole2, "Dance Pole #2" },
+            { AbilityAnimation.DancePole3, "Dance Pole #3" },
+            { AbilityAnimation.DancePole4, "Dance Pole #4" },
+            { AbilityAnimation.DancePole5, "Dance Pole #5" },
+            { AbilityAnimation.DancePole6, "Dance Pole #6" },
+            { AbilityAnimation.Dance1D, "Dance1D" },
+            { AbilityAnimation.Dance2D, "Dance2D" },
+            { AbilityAnimation.Dance3D, "Dance3D" },
+            { AbilityAnimation.Dance4D, "Dance4D" },
+            { AbilityAnimation.Dance5D, "Dance5D" },
+            { AbilityAnimation.Dance6D, "Dance6D" },
+            { AbilityAnimation.Dance1E, "Dance1E" },
+            { AbilityAnimation.Dance2E, "Dance2E" },
+            { AbilityAnimation.Dance3E, "Dance3E" },
+            { AbilityAnimation.Dance4E, "Dance4E" },
+            { AbilityAnimation.Dance5E, "Dance5E" },
+            { AbilityAnimation.Dance6E, "Dance6E" },
+            { AbilityAnimation.Dance1F, "Dance1F" },
+            { AbilityAnimation.Dance2F, "Dance2F" },
+            { AbilityAnimation.Dance3F, "Dance3F" },
+            { AbilityAnimation.Dance4F, "Dance4F" },
+            { AbilityAnimation.Dance5F, "Dance5F" },
+            { AbilityAnimation.Dance6F, "Dance6F" },
+            { AbilityAnimation.Attack_SummonCosmeticPet, "Attack (Summon Cosmetic Pet)" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -777,7 +802,7 @@
             { AbilityKeyword.SummonDeer, "Summon Deer" },
             { AbilityKeyword.SummonedSpider, "Summoned Spider" },
             { AbilityKeyword.MoltenVeins, "Molten Veins" },
-            { AbilityKeyword.Projectile, "Projectile" },
+            //{ AbilityKeyword.Projectile, "Projectile" },
             { AbilityKeyword.ViperAttack, "Viper Attack" },
             { AbilityKeyword.SpiderPuntEnabled, "Spider Punt Enabled" },
             { AbilityKeyword.CombatRefreshTrigger, "Combat Refresh Trigger" },
@@ -861,9 +886,14 @@
             { AbilityKeyword.ThrownKnife, "Thrown Knife" },
             { AbilityKeyword.HymnOfResurrection3Enabled, "Hymn Of Resurrection #3 Enabled" },
             { AbilityKeyword.Lint_MonsterAbility, "Monster Ability" },
-            { AbilityKeyword.MinorHealSelf, "Minor Heal Self" },
-            { AbilityKeyword.KnifeSlashing, "" },
-            { AbilityKeyword.StaffCrushing, "" },
+            { AbilityKeyword.KnifeSlashing, "" }, // Empty on purpose
+            { AbilityKeyword.StaffCrushing, "" }, // Empty on purpose
+            { AbilityKeyword.Lint_ForceMelee, "(Force Melee)" },
+            { AbilityKeyword.Lint_ForceRanged, "(Force Ranged)" },
+            { AbilityKeyword.AcidSigil, "Acid Sigil" },
+            { AbilityKeyword.TrueRotskin, "True Rotskin" },
+            { AbilityKeyword.Rotflesh, "Rotflesh" },
+            { AbilityKeyword.AccountWidePet, "Account Wide Pet" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -921,6 +951,8 @@
             { AbilityProjectile.Projectile_Dagger, "Projectile (Dagger)" },
             { AbilityProjectile.Projectile_PlasmaBlastRed, "Projectile (Plasma Blast Red)" },
             { AbilityProjectile.Projectile_PlasmaBlastBlue, "Projectile (Plasma Blast Blue)" },
+            { AbilityProjectile.Projectile_Blood, "Projectile (Blood)" },
+            { AbilityProjectile.Projectile_Nature, "Projectile (Nature)" },
         };
 
         public static Dictionary<AbilitySelfPreParticle, string> AbilitySelfPreParticleTextMap { get; } = new Dictionary<AbilitySelfPreParticle, string>()
@@ -981,6 +1013,7 @@
             { AbilitySelfParticle.HasteExplosion, "Haste Explosion" },
             { AbilitySelfParticle.HealingMist, "Healing Mist" },
             { AbilitySelfParticle.AcidSpew, "Acid Spew" },
+            { AbilitySelfParticle.GreenDragonBreath, "Green Dragon Breath" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -1055,6 +1088,10 @@
             { AbilityTargetParticle.AcidHit, "Acid Hit" },
             { AbilityTargetParticle.EnergyBombHit, "Energy Bomb Hit" },
             { AbilityTargetParticle.HeadBubble, "Head Bubble" },
+            { AbilityTargetParticle.BloodSplatSmall, "Blood Splat Small" },
+            { AbilityTargetParticle.BloodSplatBurst, "Blood Splat Burst" },
+            { AbilityTargetParticle.NatureCloudHit, "Nature Cloud Hit" },
+            { AbilityTargetParticle.fdfd, "@bugged@" },
         };
 
         public static Dictionary<AllowedFishingZone, string> AllowedFishingZoneTextMap { get; } = new Dictionary<AllowedFishingZone, string>()
@@ -1215,6 +1252,15 @@
             { CraftedBoost.CraftedChemistryStaff, "Crafted Chemistry Staff" },
             { CraftedBoost.PorcineBlastDisperser, "Porcine Blast Disperser" },
             { CraftedBoost.CraftedAlchemistsClaw, "Crafted Alchemist's Claw" },
+            { CraftedBoost.CraftedLinenShoes, "Crafted Linen Shoes" },
+            { CraftedBoost.CraftedLinenPants, "Crafted Linen Pants" },
+            { CraftedBoost.CraftedLinenShirt, "Crafted Linen Shirt" },
+            { CraftedBoost.CraftedLinenGloves, "Crafted Linen Gloves" },
+            { CraftedBoost.CraftedLinenHelm, "Crafted Linen Helm" },
+            { CraftedBoost.CraftedMilitarySword, "Crafted Military Sword" },
+            { CraftedBoost.CraftedMilitaryDirk, "Crafted Military Dirk" },
+            { CraftedBoost.CraftedMilitaryDagger, "Crafted Military Dagger" },
+            { CraftedBoost.CraftedFightingClaw, "Crafted Fighting Claw" },
         };
 
         public static Dictionary<Currency, string> CurrencyTextMap { get; } = new Dictionary<Currency, string>()
@@ -1408,6 +1454,8 @@
             { Deaths.Tsunami, "Tsunami" },
             { Deaths.Hail, "Hail" },
             { Deaths.DemonicDamage, "Demonic Damage" },
+            { Deaths.ToxicBlood, "Toxic Blood" },
+            { Deaths.MinotaurHorn, "Minotaur Horn" },
         };
 
         public static Dictionary<Desire, string> DesireTextMap { get; } = new Dictionary<Desire, string>()
@@ -1470,7 +1518,7 @@
         public static Dictionary<EffectKeyword, string> EffectKeywordTextMap { get; } = new Dictionary<EffectKeyword, string>()
         {
             { EffectKeyword.Internal_None, string.Empty },
-            //{ EffectKeyword.Hyphen, "Hyphen" },
+            { EffectKeyword.Hyphen, "-" },
             { EffectKeyword.Debuff, "Debuff" },
             { EffectKeyword.MusicPerformance, "Music Performance" },
             { EffectKeyword.Dispel, "Dispel" },
@@ -1848,6 +1896,10 @@
             { EffectKeyword.MeleeKnifeAnatomyCriticals, "Melee Knife Anatomy Criticals" },
             { EffectKeyword.ThrownKnifeAnatomyCriticals, "Thrown Knife Anatomy Criticals" },
             { EffectKeyword.DuelistsSlashAoE, "Duelist's Slash AoE" },
+            { EffectKeyword.ShriveledArmsCurse, "Shriveled Arms Curse" },
+            { EffectKeyword.KunaxCurse, "Kunax Curse" },
+            { EffectKeyword.KunaxPoison, "Kunax Poison" },
+            { EffectKeyword.RacingBoost, "Racing Boost" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2037,6 +2089,13 @@
             { EffectParticle.FireworkGreen, "Firework Green" },
             { EffectParticle.HeadConfettiFountain, "Head Confetti Fountain" },
             { EffectParticle.HeadConfettiBurst, "Head Confetti Burst" },
+            { EffectParticle.SpecialBuffDamage, "Special Buff Damage" },
+            { EffectParticle.SpecialBuffShield, "Special Buff Shield" },
+            { EffectParticle.SpecialBuffApplied1, "Special Buff Applied #1" },
+            { EffectParticle.SpecialBuffHollowed, "Special Buff Hollowed" },
+            { EffectParticle.SparkHitGreen, "Spark Hit Green" },
+            { EffectParticle.SpecialBuffReflect, "Special Buff Reflect" },
+            { EffectParticle.MountSuperSpeed, "Mount Super Speed" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2264,7 +2323,6 @@
             { EffectStackingType.AnthemOfAvoidanceProjectile, "Anthem Of Avoidance Projectile" },
             { EffectStackingType.MomentOfBravery, "Moment Of Bravery" },
             { EffectStackingType.DisharmonyDebuff, "Disharmony Debuff (A)" },
-            { EffectStackingType.DisharmonyDebuffB, "Disharmony Debuff (B)" },
             { EffectStackingType.DrugWithdrawal_Alcohol, "Alcohol Drug Withdrawal" },
             { EffectStackingType.Soberize, "Soberize" },
             { EffectStackingType.RabbitsFoot, "Rabbit's Foot" },
@@ -2408,6 +2466,7 @@
             { EffectStackingType.SerenePrecisionTea, "Serene Precision Tea" },
             { EffectStackingType.ToxicIrritantAcidBuff, "Toxic Irritant Acid Buff" },
             { EffectStackingType.PoisonersCutBuffDirect, "Poisoner's Cut Buff Direct" },
+            { EffectStackingType.DragonDisableEpic, "Dragon Disable Epic" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -4087,6 +4146,30 @@
             { ItemKeyword.BirdFeed, "Bird Feed" },
             { ItemKeyword.TrashCan, "Trash Can" },
             { ItemKeyword.HardcoreEquipment, "Hardcore Equipment" },
+            { ItemKeyword.VolatileInk5, "Volatile Ink #5" },
+            { ItemKeyword.HolisticInk5, "Holistic Ink #5" },
+            { ItemKeyword.CausticInk5, "Caustic Ink #5" },
+            { ItemKeyword.Sand, "Sand" },
+            { ItemKeyword.UnrettedFlax, "Unretted Flax" },
+            { ItemKeyword.Linen, "Linen" },
+            { ItemKeyword.RacingRibbon, "Racing Ribbon" },
+            { ItemKeyword.RacingRibbonParticipation, "Racing Ribbon Participation" },
+            { ItemKeyword.BladesmithingRecipe, "Bladesmithing Recipe" },
+            { ItemKeyword.SwordTuneupKit, "Sword Tuneup Kit" },
+            { ItemKeyword.TuneupKit, "Tuneup Kit" },
+            { ItemKeyword.DaggerTuneupKit, "Dagger Tuneup Kit" },
+            { ItemKeyword.DirkTuneupKit, "Dirk Tuneup Kit" },
+            { ItemKeyword.ClawTuneupKit, "Claw Tuneup Kit" },
+            { ItemKeyword.SigilScriptingRecipe, "Sigil Scripting Recipe" },
+            { ItemKeyword.TextilesRecipe, "Textiles Recipe" },
+            { ItemKeyword.SharpenableWeapon, "Sharpenable Weapon" },
+            { ItemKeyword.WeaponWhetstone, "Weapon Whetstone" },
+            { ItemKeyword.ReweightingKit, "Reweighting Kit" },
+            { ItemKeyword.WeaponsGradeSandpaper, "Weapons Grade Sandpaper" },
+            { ItemKeyword.JewelersMaintenanceKit, "Jewelers Maintenance Kit" },
+            { ItemKeyword.StaffLikeForCraftingPurposes, "Staff Like For Crafting Purposes" },
+            { ItemKeyword.ReinsOrSaddle, "Reins Or Saddle" },
+            { ItemKeyword.MountCosmetic, "Mount Cosmetic" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4109,6 +4192,7 @@
             { ItemSlot.Saddlebag, "Saddlebag" },
             { ItemSlot.Reins, "Reins" },
             { ItemSlot.Horseshoes, "Horseshoes" },
+            { ItemSlot.MountCosmetic, "Mount Cosmetic" },
         };
 
         public static Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap { get; } = new Dictionary<ItemUseAnimation, string>()
@@ -4131,6 +4215,7 @@
             { ItemUseRequirement.HardcoreDeathPenalty, "Hardcore Death Penalty" },
             { ItemUseRequirement.NotInAir, "Not In Air" },
             { ItemUseRequirement.NotInWater, "Not In Water" },
+            { ItemUseRequirement.Underwater, "Underwater" },
         };
 
         public static Dictionary<LoreBookKeyword, string> LoreBookKeywordTextMap { get; } = new Dictionary<LoreBookKeyword, string>()
@@ -4248,6 +4333,14 @@
             { NamedLootProfile.ForthragarianCaveLootChest, "Forthragarian Cave Loot Chest" },
             { NamedLootProfile.L90RareRecipes, "Level 90 Rare Recipes" },
             { NamedLootProfile.PovusCaves2WantedPosterLoot, "Povus Caves #2 Wanted Poster Loot" },
+            { NamedLootProfile.Racing_Eltibule, "Racing (Eltibule)" },
+            { NamedLootProfile.Racing_EltibuleExcellent, "Racing (Eltibule, Excellent)" },
+            { NamedLootProfile.Racing_Ilmari, "Racing (Ilmari)" },
+            { NamedLootProfile.Racing_IlmariExcellent, "Racing (Ilmari, Excellent)" },
+            { NamedLootProfile.Racing_Kur, "Racing (Kur)" },
+            { NamedLootProfile.Racing_KurExcellent, "Racing (Kur, Excellent)" },
+            { NamedLootProfile.L35Equipment, "L35 Equipment" },
+            { NamedLootProfile.L50Equipment, "L50 Equipment" },
         };
 
         public static Dictionary<PowerWaxType, string> PowerWaxTypeTextMap { get; } = new Dictionary<PowerWaxType, string>()
@@ -4256,6 +4349,12 @@
             { PowerWaxType.WaxArmor, "Wax Armor" },
             { PowerWaxType.WaxArmorNoShieldReq, "Wax Armor, No Shield Requirement" },
             { PowerWaxType.WaxAcid, "Wax Acid" },
+            { PowerWaxType.SharpenedSwordAccuracy, "Sharpened Sword Accuracy" },
+            { PowerWaxType.SharpenedSwordVulnDamage, "Sharpened Sword Vulnerable Damage" },
+            { PowerWaxType.SharpenedDaggerAccuracy, "Sharpened Dagger Accuracy" },
+            { PowerWaxType.SharpenedDaggerCritDamage, "Sharpened Dagger Crit Damage" },
+            { PowerWaxType.SharpenedDirkAccuracy, "Sharpened Dirk Accuracy" },
+            { PowerWaxType.SharpenedClawAccuracy, "Sharpened Claw Accuracy" },
         };
 
         public static Dictionary<PreEffect, string> PreEffectTextMap { get; } = new Dictionary<PreEffect, string>()
@@ -4351,6 +4450,8 @@
             { QuestKeyword.WantedPoster, "Wanted Poster" },
             { QuestKeyword.PovusCaves2WantedPoster, "Povus Caves #2 Wanted Poster" },
             { QuestKeyword.Lint_NoTsys, "No Tsys" },
+            { QuestKeyword.ActivityQuest, "Activity Quest" },
+            { QuestKeyword.Lint_RewardOnly, "Reward Only" },
         };
 
         public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
@@ -4718,6 +4819,7 @@
             { RecipeCurrency.GuildCredits, "Guild Credit(s)" },
             { RecipeCurrency.FaeEnergy, "Fae Energy" },
             { RecipeCurrency.GlamourCredits, "Glamour Credits" },
+            { RecipeCurrency.CombatWisdom, "Combat Wisdom" },
         };
 
         public static Dictionary<RecipeEffect, string> RecipeEffectTextMap { get; } = new Dictionary<RecipeEffect, string>()
@@ -5009,6 +5111,9 @@
             { RecipeEffect.ResearchFireMagic90, "Fire Magic Research, Level 90" },
             { RecipeEffect.ResearchIceMagic85, "Ice Magic Research, Level 85" },
             { RecipeEffect.ResearchIceMagic90, "Ice Magic Research, Level 90" },
+            { RecipeEffect.ApplyRacingRibbonToReins, "Apply Racing Ribbon To Reins" },
+            { RecipeEffect.CraftingEnhanceForetoldItemDamage, "Crafting Enhance Foretold Item Damage" },
+            { RecipeEffect.ApplyAddItemTSysPowerWaxFromSourceItem, "Apply Add Item TSys Power Wax From Source Item" },
         };
 
         public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()
@@ -5160,6 +5265,20 @@
             { RecipeItemKey.FishLarge, "Fish Large" },
             { RecipeItemKey.MinTSysPrereq_91, "Prerequisite: Min Level 91" },
             { RecipeItemKey.MaxTSysPrereq_120, "Prerequisite: Min Level 120" },
+            { RecipeItemKey.ReinsOrSaddle, "Reins Or Saddle" },
+            { RecipeItemKey.RacingRibbon, "Racing Ribbon" },
+            { RecipeItemKey.Special_MastercraftedOrForetold, "Special (Mastercrafted Or Foretold)" },
+            { RecipeItemKey.Status_Augmented, "Status (Augmented)" },
+            { RecipeItemKey.StaffLikeForCraftingPurposes, "Staff Like For Crafting Purposes" },
+            { RecipeItemKey.EquipmentSlot_OffHandShield, "Equipment Slot (OffHand Shield)" },
+            { RecipeItemKey.Amulet, "Amulet" },
+            { RecipeItemKey.Ring, "Ring" },
+            { RecipeItemKey.Special_Foretold, "Special (Foretold)" },
+            { RecipeItemKey.Eye, "Eye" },
+            { RecipeItemKey.SwordTuneupKit, "Sword Tuneup Kit" },
+            { RecipeItemKey.DaggerTuneupKit, "Dagger Tuneup Kit" },
+            { RecipeItemKey.DirkTuneupKit, "Dirk Tuneup Kit" },
+            { RecipeItemKey.ClawTuneupKit, "Claw Tuneup Kit" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -5462,6 +5581,7 @@
             { XpTableEnum.Riding, "Riding" },
             { XpTableEnum.TempestEnergyByLevel, "Tempest Energy By Level" },
             { XpTableEnum.Endurance, "Endurance" },
+            { XpTableEnum.Hardcore, "Hardcore" },
         };
 
         public static Dictionary<Deaths, string> DeathCauseTextTable { get; } = new Dictionary<Deaths, string>()
@@ -5624,6 +5744,8 @@
             { Deaths.Tsunami, "" },
             { Deaths.Hail, "Battered by Hail" },
             { Deaths.DemonicDamage, "Demonic Damage" },
+            { Deaths.ToxicBlood, "Toxic Blood" },
+            { Deaths.MinotaurHorn, "Minotaur Horn" },
 
             // Many Cuts dots: "Discomfort"
         };

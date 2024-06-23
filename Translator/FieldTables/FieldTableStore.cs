@@ -142,6 +142,8 @@ public class FieldTableStore
         { "AttributesThatDeltaAccuracy", typeof(string[]) },
         { "AttributesThatModCritDamage", typeof(string[]) },
         { "AttributesThatDeltaTempTaunt", typeof(string[]) },
+        { "AttributesThatDeltaAoE", typeof(string[]) },
+        { "AttributesThatDeltaDamageIfTargetIsVulnerable", typeof(string[]) },
         { "SpecialValues", typeof(PgSpecialValue[]) },
         { "TauntDelta", typeof(int) },
         { "TempTauntDelta", typeof(int) },
@@ -201,9 +203,10 @@ public class FieldTableStore
         { "Suffix", typeof(string) },
         { "Value", typeof(float) },
         { "AttributesThatDelta", typeof(string[]) },
+        { "AttributesThatDeltaBase", typeof(string[]) },
         { "AttributesThatMod", typeof(string[]) },
-        //{ "AttributesThatModBase", typeof(string[]) },
         { "DisplayType", typeof(string) },
+        { "SkipIfThisAttributeIsZero", typeof(string) },
         { "SkipIfZero", typeof(bool) },
     };
 
@@ -238,6 +241,7 @@ public class FieldTableStore
         { "Flying", typeof(bool) },
         { "Description", typeof(string) },
         { "Strategy", typeof(string) },
+        { "FlyOffset", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableAIAbility { get; } = new Dictionary<string, Type>()
@@ -458,6 +462,7 @@ public class FieldTableStore
     {
         { "Favor", typeof(string) },
         { "Value", typeof(int) },
+        { "Purchase", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableNpcLevelRange { get; } = new Dictionary<string, Type>()
@@ -468,6 +473,7 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TablePlayerTitle { get; } = new Dictionary<string, Type>()
     {
+        { "AccountWide", typeof(bool) },
         { "Color", typeof(string) },
         { "Title", typeof(string) },
         { "Tooltip", typeof(string) },
@@ -545,6 +551,7 @@ public class FieldTableStore
         { "RewardsDescription", typeof(string) },
         { "CheckRequirementsToSustainOnBestow", typeof(bool) },
         { "QuestFailEffects", typeof(PgQuestFailEffect[]) },
+        { "ForceBookOnWrapUp", typeof(bool) },
     };
 
     public static Dictionary<string, Type> TableQuestRequirement { get; } = new Dictionary<string, Type>()
@@ -785,6 +792,7 @@ public class FieldTableStore
         { "Slot", typeof(string) },
         { "Tier", typeof(int) },
         { "Type", typeof(string) },
+        { "Recipe", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableSkill { get; } = new Dictionary<string, Type>()

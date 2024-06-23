@@ -58,5 +58,9 @@
         AcidHit,
         EnergyBombHit,
         HeadBubble,
+        BloodSplatSmall,
+        BloodSplatBurst,
+        NatureCloudHit,
+        fdfd,
     }
 }

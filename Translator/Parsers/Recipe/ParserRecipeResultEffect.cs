@@ -38,6 +38,8 @@ public class ParserRecipeResultEffect : Parser
         { RecipeResultEffectType.CraftingResetItem, FinishItemCraftingResetItem },
         { RecipeResultEffectType.SendItemToSaddlebag, FinishItemSendItemToSaddlebag },
         { RecipeResultEffectType.TransmogItemAppearance, FinishItemTransmogItemAppearance },
+        { RecipeResultEffectType.CraftWaxItem, FinishItemCraftWaxItem },
+        { RecipeResultEffectType.BestowRecipeIfNotKnown, FinishBestowRecipeIfNotKnown },
     };
 
     private static Dictionary<RecipeResultEffectType, List<string>> KnownFieldTable = new Dictionary<RecipeResultEffectType, List<string>>()
@@ -65,6 +67,8 @@ public class ParserRecipeResultEffect : Parser
         { RecipeResultEffectType.CraftingResetItem, new List<string>() { "Type" } },
         { RecipeResultEffectType.SendItemToSaddlebag, new List<string>() { "Type" } },
         { RecipeResultEffectType.TransmogItemAppearance, new List<string>() { "Type" } },
+        { RecipeResultEffectType.CraftWaxItem, new List<string>() { "Type", "Item", "PowerWaxType", "BoostLevel", "MaxHitCount" } },
+        { RecipeResultEffectType.BestowRecipeIfNotKnown, new List<string>() { "Type", "Recipe" } },
     };
 
     private static Dictionary<RecipeResultEffectType, List<string>> HandledTable = new Dictionary<RecipeResultEffectType, List<string>>();
@@ -1146,6 +1150,101 @@ public class ParserRecipeResultEffect : Parser
                 switch (Key)
                 {
                     case "Type":
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemCraftWaxItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgRecipeResultCraftWaxItem NewItem = new PgRecipeResultCraftWaxItem();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "Type":
+                        break;
+                    case "Item":
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
+                        break;
+                    case "PowerWaxType":
+                        Result = StringToEnumConversion<PowerWaxType>.SetEnum((PowerWaxType valueEnum) => NewItem.PowerWaxType = valueEnum, Value);
+                        break;
+                    case "BoostLevel":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawBoostLevel = valueInt, Value);
+                        break;
+                    case "MaxHitCount":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawMaxHitCount = valueInt, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishBestowRecipeIfNotKnown(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgRecipeResultBestowRecipeIfNotKnown NewItem = new PgRecipeResultBestowRecipeIfNotKnown();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "Type":
+                        break;
+                    case "Recipe":
+                        Result = Inserter<PgRecipe>.SetItemByInternalName((PgRecipe valueItem) => NewItem.Recipe_Key = PgObject.GetItemKey(valueItem), Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

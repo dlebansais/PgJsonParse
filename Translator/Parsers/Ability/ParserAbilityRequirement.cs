@@ -32,16 +32,18 @@ public class ParserAbilityRequirement : Parser
         { OtherRequirementType.IsVolunteerGuide, FinishItemIsVolunteerGuide },
         { OtherRequirementType.IsNotGuest, FinishItemIsNotGuest },
         { OtherRequirementType.IsNotInHotspot, FinishItemNotInHotspot },
-        { OtherRequirementType.EffectKeywordUnset, FinishEffectKeywordUnset },
-        { OtherRequirementType.InventoryItemKeyword, FinishInventoryItemKeyword },
-        { OtherRequirementType.Appearance, FinishAppearance },
-        { OtherRequirementType.HasHands, FinishHasHands },
-        { OtherRequirementType.TimeOfDay, FinishTimeOfDay },
-        { OtherRequirementType.RecipeUsed, FinishRecipeUsed },
-        { OtherRequirementType.Weather, FinishWeather },
-        { OtherRequirementType.MoonPhase, FinishMoonPhase },
-        { OtherRequirementType.EntityPhysicalState, FinishEntityPhysicalState },
-        { OtherRequirementType.EntitiesNear, FinishEntitiesNear },
+        { OtherRequirementType.EffectKeywordUnset, FinishItemEffectKeywordUnset },
+        { OtherRequirementType.InventoryItemKeyword, FinishItemInventoryItemKeyword },
+        { OtherRequirementType.Appearance, FinishItemAppearance },
+        { OtherRequirementType.HasHands, FinishItemHasHands },
+        { OtherRequirementType.TimeOfDay, FinishItemTimeOfDay },
+        { OtherRequirementType.RecipeUsed, FinishItemRecipeUsed },
+        { OtherRequirementType.Weather, FinishItemWeather },
+        { OtherRequirementType.MoonPhase, FinishItemMoonPhase },
+        { OtherRequirementType.EntityPhysicalState, FinishItemEntityPhysicalState },
+        { OtherRequirementType.EntitiesNear, FinishItemEntitiesNear },
+        { OtherRequirementType.InMusicPerformance, FinishItemInMusicPerformance },
+        { OtherRequirementType.IsDancingOnPole, FinishItemIsDancingOnPole },
     };
 
     private static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
@@ -74,6 +76,8 @@ public class ParserAbilityRequirement : Parser
         { OtherRequirementType.MoonPhase, new List<string>() { "T", "MoonPhase" } },
         { OtherRequirementType.EntityPhysicalState, new List<string>() { "T", "AllowedStates" } },
         { OtherRequirementType.EntitiesNear, new List<string>() { "T", "Distance", "EntityTypeTag", "ErrorMessage", "MinCount" } },
+        { OtherRequirementType.InMusicPerformance, new List<string>() { "T" } },
+        { OtherRequirementType.IsDancingOnPole, new List<string>() { "T" } },
     };
 
     private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
@@ -957,7 +961,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishEffectKeywordUnset(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemEffectKeywordUnset(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementEffectKeywordUnset NewItem = new PgAbilityRequirementEffectKeywordUnset();
 
@@ -1000,7 +1004,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishInventoryItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemInventoryItemKeyword(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementInventoryItemKeyword NewItem = new PgAbilityRequirementInventoryItemKeyword();
 
@@ -1043,7 +1047,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishAppearance(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemAppearance(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementAppearance NewItem = new PgAbilityRequirementAppearance();
 
@@ -1086,7 +1090,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishHasHands(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemHasHands(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementHasHands NewItem = new PgAbilityRequirementHasHands();
 
@@ -1126,7 +1130,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishTimeOfDay(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemTimeOfDay(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementTimeOfDay NewItem = new PgAbilityRequirementTimeOfDay();
 
@@ -1172,7 +1176,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishRecipeUsed(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemRecipeUsed(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementRecipeUsed NewItem = new PgAbilityRequirementRecipeUsed();
 
@@ -1218,7 +1222,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishWeather(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemWeather(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementWeather NewItem = new PgAbilityRequirementWeather();
 
@@ -1261,7 +1265,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishMoonPhase(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemMoonPhase(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementMoonPhase NewItem = new PgAbilityRequirementMoonPhase();
 
@@ -1304,7 +1308,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishEntityPhysicalState(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemEntityPhysicalState(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementEntityPhysicalState NewItem = new PgAbilityRequirementEntityPhysicalState();
 
@@ -1347,7 +1351,7 @@ public class ParserAbilityRequirement : Parser
             return false;
     }
 
-    private static bool FinishEntitiesNear(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemEntitiesNear(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementEntitiesNear NewItem = new PgAbilityRequirementEntitiesNear();
 
@@ -1379,6 +1383,86 @@ public class ParserAbilityRequirement : Parser
                         break;
                     case "MinCount":
                         Result = SetIntProperty((int valueInt) => NewItem.RawMinCount = valueInt, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemInMusicPerformance(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgAbilityRequirementInMusicPerformance NewItem = new PgAbilityRequirementInMusicPerformance();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    default:
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemIsDancingOnPole(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgAbilityRequirementIsDancingOnPole NewItem = new PgAbilityRequirementIsDancingOnPole();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

@@ -26,5 +26,7 @@
         CraftingResetItem,
         SendItemToSaddlebag,
         TransmogItemAppearance,
+        CraftWaxItem,
+        BestowRecipeIfNotKnown,
     }
 }

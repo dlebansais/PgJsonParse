@@ -6,6 +6,7 @@ public class PlayerTitle
 {
     public PlayerTitle(RawPlayerTitle rawPlayerTitle)
     {
+        AccountWide = rawPlayerTitle.AccountWide;
         Keywords = rawPlayerTitle.Keywords;
         (Title, Color, ColorFormat) = ParseTitle(rawPlayerTitle.Title);
         Tooltip = rawPlayerTitle.Tooltip;
@@ -43,6 +44,7 @@ public class PlayerTitle
         return (rawTitle, null, null);
     }
 
+    public bool? AccountWide { get; set; }
     public string? Color { get; set; }
     public string[]? Keywords { get; set; }
     public string? Title { get; set; }
@@ -52,6 +54,7 @@ public class PlayerTitle
     {
         RawPlayerTitle Result = new();
 
+        Result.AccountWide = AccountWide;
         Result.Keywords = Keywords;
         Result.Title = ToRawTitle(Title, ColorFormat);
         Result.Tooltip = Tooltip;

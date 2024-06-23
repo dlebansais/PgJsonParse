@@ -6,5 +6,11 @@
         WaxArmor,
         WaxArmorNoShieldReq,
         WaxAcid,
+        SharpenedSwordAccuracy,
+        SharpenedSwordVulnDamage,
+        SharpenedDaggerAccuracy,
+        SharpenedDaggerCritDamage,
+        SharpenedDirkAccuracy,
+        SharpenedClawAccuracy,
     }
 }

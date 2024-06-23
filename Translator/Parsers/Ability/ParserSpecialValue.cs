@@ -42,14 +42,17 @@ public class ParserSpecialValue : Parser
                 case "AttributesThatDelta":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaList, Value);
                     break;
+                case "AttributesThatDeltaBase":
+                    Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaBaseList, Value);
+                    break;
                 case "AttributesThatMod":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModList, Value);
                     break;
-                /*case "AttributesThatModBase":
-                    Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModBaseList, Value);
-                    break;*/
                 case "DisplayType":
                     Result = StringToEnumConversion<DisplayType>.SetEnum((DisplayType valueEnum) => item.DisplayType = valueEnum, Value);
+                    break;
+                case "SkipIfThisAttributeIsZero":
+                    Result = SetStringProperty((string valueString) => item.SkipIfThisAttributeIsZero = valueString, Value);
                     break;
                 case "SkipIfZero":
                     Result = SetBoolProperty((bool valueBool) => item.RawSkipIfZero = valueBool, Value);

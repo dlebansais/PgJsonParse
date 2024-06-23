@@ -416,7 +416,7 @@ public class ParserNpcService : Parser
 
     private static int SortByFavor(PgNpcCapIncrease l1, PgNpcCapIncrease l2)
     {
-        return (int)l2.CapIncreaseFavor - (int)l1.CapIncreaseFavor;
+        return (int)l1.CapIncreaseFavor - (int)l2.CapIncreaseFavor;
     }
 
     private static bool FinishItemStorage(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)

@@ -20,5 +20,6 @@
         Saddlebag,
         Reins,
         Horseshoes,
+        MountCosmetic,
     }
 }

@@ -114,6 +114,7 @@ public partial class CombatParser
             "Item_46026_0",
             "Item_46045_0",
             "Item_46055_0",
+            "Item_46723_0",
             "Item_46734_0",
             "Item_46735_0",
             "Item_46736_0",
@@ -174,6 +175,7 @@ public partial class CombatParser
             "Item_54627_0",
             "Item_54628_0",
             "Item_55509_0",
+            "Item_55524_0",
             "Item_45641_0",
             "Item_45637_0",
             "Item_45533_0",
@@ -364,7 +366,8 @@ public partial class CombatParser
                      Skill_Key == PgSkill.AnySkill.Key ||
                      Skill_Key == "Endurance" ||
                      Skill_Key == "ArmorPatching" ||
-                     Skill_Key == "ShamanicInfusion"));
+                     Skill_Key == "Bladesmithing" ||
+                     Skill_Key == "ShamanicInfusion"), $"Unexpected skill: {Skill_Key}");
 
         if (Skill_Key != null && (Skill_Key.Length == 0 || Skill_Key == "Gourmand"))
             return;
@@ -681,7 +684,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "16065")
+        if (Key == "13006")
         {
         }
 
@@ -775,7 +778,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "16065")
+        if (power.Key == "13006")
         {
         }
 
@@ -2438,7 +2441,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "16065")
+            if (Entry.Key.Key == "13006")
             {
             }
 
@@ -3402,6 +3405,7 @@ public partial class CombatParser
         RemoveDecorativeText(ref text, "Your golem minion's", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "(including Toxic Irritant)", out _, ref IndexFound);
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
+        ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
     }
 
     private void ExtractAbilityList(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, bool limitParsing, bool isGolemAbility, ref string text, out List<AbilityKeyword> extractedAbilityList, out int removeCount)
@@ -4391,7 +4395,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "Item_46036_0")
+            if (ItemPower.Key == "13007")
             {
             }
 

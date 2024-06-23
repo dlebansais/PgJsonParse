@@ -88,5 +88,14 @@
         CraftedChemistryStaff,
         PorcineBlastDisperser,
         CraftedAlchemistsClaw,
+        CraftedLinenShoes,
+        CraftedLinenPants,
+        CraftedLinenShirt,
+        CraftedLinenGloves,
+        CraftedLinenHelm,
+        CraftedMilitarySword,
+        CraftedMilitaryDirk,
+        CraftedMilitaryDagger,
+        CraftedFightingClaw,
     }
 }

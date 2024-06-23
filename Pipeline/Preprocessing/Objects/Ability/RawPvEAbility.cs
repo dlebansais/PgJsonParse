@@ -7,7 +7,9 @@ public class RawPvEAbility
     public int? ArmorMitigationRatio { get; set; }
     public int? ArmorSpecificDamage { get; set; }
     public string[]? AttributesThatDeltaAccuracy { get; set; }
+    public string[]? AttributesThatDeltaAoE { get; set; }
     public string[]? AttributesThatDeltaDamage { get; set; }
+    public string[]? AttributesThatDeltaDamageIfTargetIsVulnerable { get; set; }
     public string[]? AttributesThatDeltaRage { get; set; }
     public string[]? AttributesThatDeltaRange { get; set; }
     public string[]? AttributesThatDeltaTaunt { get; set; }

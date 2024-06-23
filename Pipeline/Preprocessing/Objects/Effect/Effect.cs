@@ -1,4 +1,6 @@
-﻿namespace Preprocessor;
+﻿using System.Collections.Generic;
+
+namespace Preprocessor;
 
 public class Effect
 {
@@ -9,12 +11,32 @@ public class Effect
         DisplayMode = rawEffect.DisplayMode;
         Duration = Preprocessor.ToNumberOrString(rawEffect.Duration, out IsDurationNumber);
         IconId = rawEffect.IconId;
-        Keywords = rawEffect.Keywords;
+        Keywords = ParseKeywords(rawEffect.Keywords);
         Name = rawEffect.Name;
         Particle = EffectParticle.Parse(rawEffect.Particle);
         SpewText = rawEffect.SpewText;
         StackingPriority = rawEffect.StackingPriority;
         StackingType = ParseStackingType(rawEffect.StackingType);
+    }
+
+    private static string[]? ParseKeywords(string[]? rawKeywords)
+    {
+        if (rawKeywords is null)
+            return null;
+
+        List<string> Result = new();
+        foreach (var Keyword in rawKeywords)
+            Result.Add(ParseKeyword(Keyword));
+
+        return Result.ToArray();
+    }
+
+    private static string ParseKeyword(string rawKeyword)
+    {
+        if (rawKeyword == "-")
+            return "Hyphen";
+        else
+            return rawKeyword;
     }
 
     private static string? ParseDescription(string? rawDescription, string[]? rawAbilityKeywords, string? rawName, out EffectDescriptionFix effectDescriptionFix)
@@ -88,7 +110,7 @@ public class Effect
         Result.DisplayMode = DisplayMode;
         Result.Duration = Preprocessor.FromNumberOrString(Duration, IsDurationNumber);
         Result.IconId = IconId;
-        Result.Keywords = Keywords;
+        Result.Keywords = ToRawKeywords(Keywords);
         Result.Name = Name;
         Result.Particle = EffectParticle.ToString(Particle);
         Result.SpewText = SpewText;
@@ -96,6 +118,26 @@ public class Effect
         Result.StackingType = ToRawStackingType(StackingType);
 
         return Result;
+    }
+
+    private static string[]? ToRawKeywords(string[]? keywords)
+    {
+        if (keywords is null)
+            return null;
+
+        List<string> Result = new();
+        foreach (var Keyword in keywords)
+            Result.Add(ToRawKeyword(Keyword));
+
+        return Result.ToArray();
+    }
+
+    private static string ToRawKeyword(string keyword)
+    {
+        if (keyword == "Hyphen")
+            return "-";
+        else
+            return keyword;
     }
 
     private static string? ToRawDescription(string? description, EffectDescriptionFix effectDescriptionFix)

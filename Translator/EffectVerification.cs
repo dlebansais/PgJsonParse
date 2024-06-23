@@ -38,6 +38,7 @@
                     new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Power Per Second when near your Web Trap", AllowRecurrence = true },
                     new EffectVerificationEntry() { Prefix = "Recover", Suffix = "Power when melee attacks deal damage to you" },
                     new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Power after a 12-second delay" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Power after a 6-second delay" },
                 }
             },
             {
@@ -53,6 +54,7 @@
                 CombatKeyword.RestoreHealthArmor, new List<EffectVerificationEntry>()
                 {
                     new EffectVerificationEntry() { Prefix = "Restore", Suffix = "Health (or Armor if Health is full) to nearby ally undead" },
+                    new EffectVerificationEntry() { Prefix = "Restores", Suffix = "Armor to Target" },
                 }
             },
             {
@@ -114,6 +116,7 @@
                     new EffectVerificationEntry() { Prefix = "Target suffers", Suffix = "Psychic damage after a 4-second delay" },
                     new EffectVerificationEntry() { Prefix = "Attack Damage Boost", Suffix = "for 10 seconds", AllowDuration = true },
                     new EffectVerificationEntry() { Prefix = "For 8 seconds, boost Direct Poison Damage", Suffix = "per attack" },
+                    new EffectVerificationEntry() { Prefix = "Target's next attack deals +", Suffix = "damage" },
                 }
             },
             {

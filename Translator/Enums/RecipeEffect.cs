@@ -289,5 +289,8 @@
         ResearchFireMagic90,
         ResearchIceMagic85,
         ResearchIceMagic90,
+        ApplyRacingRibbonToReins,
+        CraftingEnhanceForetoldItemDamage,
+        ApplyAddItemTSysPowerWaxFromSourceItem,
     }
 }

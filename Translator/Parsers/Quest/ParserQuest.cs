@@ -138,6 +138,9 @@ public class ParserQuest : Parser
                 case "QuestFailEffects":
                     Result = Inserter<PgQuestFailEffect>.AddKeylessArray(item.QuestFailEffectList, Value);
                     break;
+                case "ForceBookOnWrapUp":
+                    Result = SetBoolProperty((bool valueBool) => item.SetForceBookOnWrapUp(valueBool), Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;
@@ -229,6 +232,13 @@ public class ParserQuest : Parser
                     if (iconId == 0)
                     {
                         Skill = ParsingContext.GetParsedSkillByKey(AsRewardSkillXp.Skill_Key);
+                        iconId = ParserSkill.SkillToIcon(Skill);
+                    }
+                    break;
+                case PgQuestRewardRacingXp AsRewardRacingXp:
+                    if (iconId == 0)
+                    {
+                        Skill = ParsingContext.GetParsedSkillByKey(AsRewardRacingXp.Skill_Key);
                         iconId = ParserSkill.SkillToIcon(Skill);
                     }
                     break;

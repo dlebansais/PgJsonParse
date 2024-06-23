@@ -107,6 +107,8 @@ public class Recipe
         {
             case "ExtractTSysPower":
                 return ParseExtractTSysPower(EffectName, EffectParameter);
+            case "CraftWaxItem":
+                return ParseCraftWaxItem(EffectName, EffectParameter);
             case "RepairItemDurability":
                 return ParseRepairItemDurability(EffectName, EffectParameter);
             case "TSysCraftedEquipment":
@@ -139,6 +141,8 @@ public class Recipe
             case "SendItemToSaddlebag":
             case "TransmogItemAppearance":
                 return new RecipeResultEffect() { Type = EffectName };
+            case "BestowRecipeIfNotKnown":
+                return new RecipeResultEffect() { Type = EffectName, Recipe = EffectParameter };
             default:
                 return new RecipeResultEffect() { Type = "Special", Effect = EffectName };
         }
@@ -191,6 +195,21 @@ public class Recipe
         int MaxLevel = int.Parse(Splitted[3]);
 
         return new RecipeResultEffect() { Type = effectName, Augment = Augment, Skill = Skill, MinLevel = MinLevel, MaxLevel = MaxLevel };
+    }
+
+    private static RecipeResultEffect ParseCraftWaxItem(string effectName, string effectParameter)
+    {
+        string[] Splitted = effectParameter.Split(',');
+
+        if (Splitted.Length != 4)
+            throw new PreprocessorException();
+
+        string Item = Splitted[0];
+        string PowerWaxType = Splitted[1];
+        int BoostLevel = int.Parse(Splitted[2]);
+        int MaxHitCount = int.Parse(Splitted[3]);
+
+        return new RecipeResultEffect() { Type = effectName, Item = Item, PowerWaxType = PowerWaxType, BoostLevel = BoostLevel, MaxHitCount = MaxHitCount };
     }
 
     private static RecipeResultEffect ParseRepairItemDurability(string effectName, string effectParameter)
@@ -374,6 +393,11 @@ public class Recipe
         return new RecipeResultEffect() { Type = effectName, AreaName = AreaName, Other = Other };
     }
 
+    private static RecipeResultEffect ParseBestowRecipeIfNotKnown(string effectName, string effectParameter)
+    {
+        return new RecipeResultEffect() { Type = effectName, Recipe = effectParameter };
+    }
+
     private static RecipeResultEffect ParseCreateMiningSurvey(string effectName, string effectParameter)
     {
         return new RecipeResultEffect() { Type = CreateMiningSurvey, Effect = effectName, Item = effectParameter };
@@ -544,6 +568,8 @@ public class Recipe
                 return $"{effect.Keyword}{effect.Tier}";
             case "ExtractTSysPower":
                 return $"{effect.Type}({effect.Augment},{effect.Skill},{effect.MinLevel},{effect.MaxLevel})";
+            case "CraftWaxItem":
+                return $"{effect.Type}({effect.Item},{effect.PowerWaxType},{effect.BoostLevel},{effect.MaxHitCount})";
             case "RepairItemDurability":
                 return ToRawRepairItemDurability(effect);
             case "TSysCraftedEquipment":
@@ -574,6 +600,8 @@ public class Recipe
                 return $"{effect.Type}_All_{effect.DurationInSeconds}sec";
             case "PermanentlyRaiseMaxTempestEnergy":
                 return $"{effect.Type}({effect.Delta})";
+            case "BestowRecipeIfNotKnown":
+                return $"{effect.Type}({effect.Recipe})";
             case "Special":
                 Debug.Assert(effect.Effect is not null);
                 return effect.Effect!;

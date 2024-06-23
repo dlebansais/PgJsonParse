@@ -15,5 +15,13 @@
         ForthragarianCaveLootChest,
         L90RareRecipes,
         PovusCaves2WantedPosterLoot,
+        Racing_Eltibule,
+        Racing_EltibuleExcellent,
+        Racing_Ilmari,
+        Racing_IlmariExcellent,
+        Racing_Kur,
+        Racing_KurExcellent,
+        L35Equipment,
+        L50Equipment,
     }
 }

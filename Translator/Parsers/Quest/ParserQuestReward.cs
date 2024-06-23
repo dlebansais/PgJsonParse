@@ -32,6 +32,7 @@ public class ParserQuestReward : Parser
         { QuestRewardType.DispelFaeBombSporeBuff, FinishItemDispelFaeBombSporeBuff },
         { QuestRewardType.Effect, FinishItemEffect },
         { QuestRewardType.Item, FinishItemItem },
+        { QuestRewardType.RacingXp, FinishItemRacingXp },
     };
 
     private static Dictionary<QuestRewardType, List<string>> KnownFieldTable = new Dictionary<QuestRewardType, List<string>>()
@@ -54,6 +55,7 @@ public class ParserQuestReward : Parser
         { QuestRewardType.DispelFaeBombSporeBuff, new List<string>() { "T" } },
         { QuestRewardType.Effect, new List<string>() { "T", "Effect" } },
         { QuestRewardType.Item, new List<string>() { "T", "Item", "StackSize" } },
+        { QuestRewardType.RacingXp, new List<string>() { "T", "Skill", "Xp" } },
     };
 
     private static Dictionary<QuestRewardType, List<string>> HandledTable = new Dictionary<QuestRewardType, List<string>>();
@@ -913,6 +915,55 @@ public class ParserQuestReward : Parser
                         break;
                     case "StackSize":
                         Result = SetIntProperty((int valueInt) => NewItem.RawStackSize = valueInt, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemRacingXp(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRewardRacingXp NewItem = new PgQuestRewardRacingXp();
+
+        bool Result = true;
+
+        if (contentTable.Count < 3)
+            Result = Program.ReportFailure(parsedFile, parsedKey, "Missing fields in Racing Xp reward");
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "Skill":
+                        Result = Inserter<PgSkill>.SetItemByKey((PgSkill valueSkill) => NewItem.Skill_Key = PgObject.GetItemKey(valueSkill), Value);
+                        break;
+                    case "Xp":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawXp = valueInt, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

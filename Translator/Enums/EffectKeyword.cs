@@ -3,7 +3,7 @@
     public enum EffectKeyword
     {
         Internal_None,
-        //Hyphen,
+        Hyphen,
         Debuff,
         MusicPerformance,
         Dispel,
@@ -381,5 +381,9 @@
         MeleeKnifeAnatomyCriticals,
         ThrownKnifeAnatomyCriticals,
         DuelistsSlashAoE,
+        ShriveledArmsCurse,
+        KunaxCurse,
+        KunaxPoison,
+        RacingBoost,
     }
 }

@@ -7,6 +7,7 @@ public class RawQuest
     public string? DisplayedLocation { get; set; }
     public string? FavorNpc { get; set; }
     public string[]? FollowUpQuests { get; set; }
+    public bool? ForceBookOnWrapUp { get; set; }
     public string? GroupingName { get; set; }
     public string? InternalName { get; set; }
     public bool? IsAutoPreface { get; set; }

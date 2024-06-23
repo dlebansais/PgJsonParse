@@ -64,6 +64,11 @@
         public bool? RawCheckRequirementsToSustainOnBestow { get { return ((BoolValues & CheckRequirementsToSustainOnBestowNotNull) != 0) ? (BoolValues & CheckRequirementsToSustainOnBestowIsTrue) != 0 : null; } }
         public void SetCheckRequirementsToSustainOnBestow(bool value) { BoolValues |= (BoolValues & ~(CheckRequirementsToSustainOnBestowNotNull + CheckRequirementsToSustainOnBestowIsTrue)) | ((value ? CheckRequirementsToSustainOnBestowIsTrue : 0) + CheckRequirementsToSustainOnBestowNotNull); }
         public PgQuestFailEffectCollection QuestFailEffectList { get; set; } = new PgQuestFailEffectCollection();
+        public const int ForceBookOnWrapUpNotNull = 1 << 10;
+        public const int ForceBookOnWrapUpIsTrue = 1 << 11;
+        public bool ForceBookOnWrapUp { get { return (BoolValues & (ForceBookOnWrapUpNotNull + ForceBookOnWrapUpIsTrue)) == (ForceBookOnWrapUpNotNull + ForceBookOnWrapUpIsTrue); } }
+        public bool? RawForceBookOnWrapUp { get { return ((BoolValues & ForceBookOnWrapUpNotNull) != 0) ? (BoolValues & ForceBookOnWrapUpIsTrue) != 0 : null; } }
+        public void SetForceBookOnWrapUp(bool value) { BoolValues |= (BoolValues & ~(ForceBookOnWrapUpNotNull + ForceBookOnWrapUpIsTrue)) | ((value ? ForceBookOnWrapUpIsTrue : 0) + ForceBookOnWrapUpNotNull); }
 
         public int IconId { get; set; }
 

@@ -36,5 +36,7 @@
         public bool? RawIsFlying { get { return ((BoolValues & IsFlyingNotNull) != 0) ? (BoolValues & IsFlyingIsTrue) != 0 : null; } }
         public void SetIsFlying(bool value) { BoolValues |= (BoolValues & ~(IsFlyingNotNull + IsFlyingIsTrue)) | ((value ? IsFlyingIsTrue : 0) + IsFlyingNotNull); }
         public string Description { get; set; } = string.Empty;
+        public int FlyOffset { get { return RawFlyOffset.HasValue ? RawFlyOffset.Value : 0; } }
+        public int? RawFlyOffset { get; set; }
     }
 }

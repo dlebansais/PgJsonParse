@@ -187,5 +187,12 @@
         FireworkGreen,
         HeadConfettiFountain,
         HeadConfettiBurst,
+        SpecialBuffDamage,
+        SpecialBuffShield,
+        SpecialBuffApplied1,
+        SpecialBuffHollowed,
+        SparkHitGreen,
+        SpecialBuffReflect,
+        MountSuperSpeed,
     }
 }

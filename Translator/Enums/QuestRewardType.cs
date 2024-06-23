@@ -21,4 +21,5 @@ public enum QuestRewardType
     DispelFaeBombSporeBuff,
     Effect,
     Item,
+    RacingXp,
 }

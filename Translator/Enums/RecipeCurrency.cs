@@ -6,5 +6,6 @@
         GuildCredits,
         FaeEnergy,
         GlamourCredits,
+        CombatWisdom,
     }
 }

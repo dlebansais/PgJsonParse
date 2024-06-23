@@ -13,7 +13,9 @@ public class PvEAbility
         ArmorMitigationRatio = rawPvEAbility.ArmorMitigationRatio;
         ArmorSpecificDamage = rawPvEAbility.ArmorSpecificDamage;
         AttributesThatDeltaAccuracy = rawPvEAbility.AttributesThatDeltaAccuracy;
+        AttributesThatDeltaAoE = rawPvEAbility.AttributesThatDeltaAoE;
         AttributesThatDeltaDamage = rawPvEAbility.AttributesThatDeltaDamage;
+        AttributesThatDeltaDamageIfTargetIsVulnerable = rawPvEAbility.AttributesThatDeltaDamageIfTargetIsVulnerable;
         AttributesThatDeltaRage = rawPvEAbility.AttributesThatDeltaRage;
         AttributesThatDeltaRange = rawPvEAbility.AttributesThatDeltaRange;
         AttributesThatDeltaTaunt = rawPvEAbility.AttributesThatDeltaTaunt;
@@ -89,7 +91,9 @@ public class PvEAbility
     public int? ArmorMitigationRatio { get; set; }
     public int? ArmorSpecificDamage { get; set; }
     public string[]? AttributesThatDeltaAccuracy { get; set; }
+    public string[]? AttributesThatDeltaAoE { get; set; }
     public string[]? AttributesThatDeltaDamage { get; set; }
+    public string[]? AttributesThatDeltaDamageIfTargetIsVulnerable { get; set; }
     public string[]? AttributesThatDeltaRage { get; set; }
     public string[]? AttributesThatDeltaRange { get; set; }
     public string[]? AttributesThatDeltaTaunt { get; set; }
@@ -125,7 +129,9 @@ public class PvEAbility
         Result.ArmorMitigationRatio = ArmorMitigationRatio;
         Result.ArmorSpecificDamage = ArmorSpecificDamage;
         Result.AttributesThatDeltaAccuracy = AttributesThatDeltaAccuracy;
+        Result.AttributesThatDeltaAoE = AttributesThatDeltaAoE;
         Result.AttributesThatDeltaDamage = AttributesThatDeltaDamage;
+        Result.AttributesThatDeltaDamageIfTargetIsVulnerable = AttributesThatDeltaDamageIfTargetIsVulnerable;
         Result.AttributesThatDeltaRage = AttributesThatDeltaRage;
         Result.AttributesThatDeltaRange = AttributesThatDeltaRange;
         Result.AttributesThatDeltaTaunt = AttributesThatDeltaTaunt;

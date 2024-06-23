@@ -33,13 +33,16 @@ public class NpcService
     private static NpcServiceCapIncrease ParseCapIncrease(string rawCapIncrease)
     {
         string[] Splitted = rawCapIncrease.Split(':');
-        if (Splitted.Length != 2)
+        if (Splitted.Length < 2 || Splitted.Length > 3 )
             throw new PreprocessorException();
 
         if (!int.TryParse(Splitted[1], out int Value))
             throw new PreprocessorException();
 
-        NpcServiceCapIncrease Result = new() { Favor = Splitted[0], Value = Value };
+        string Favor = Splitted[0];
+        string? Purchase = Splitted.Length > 2 ? Splitted[2] : null;
+
+        NpcServiceCapIncrease Result = new() { Favor = Favor, Value = Value, Purchase = Purchase };
 
         return Result;
     }
@@ -110,7 +113,13 @@ public class NpcService
         List<string> Result = new();
 
         foreach (NpcServiceCapIncrease CapIncrease in npcServiceCapIncreases)
-            Result.Add($"{CapIncrease.Favor}:{CapIncrease.Value}");
+        {
+            string StringValue = $"{CapIncrease.Favor}:{CapIncrease.Value}";
+            if (CapIncrease.Purchase is not null)
+                StringValue += $":{CapIncrease.Purchase}";
+
+            Result.Add(StringValue);
+        }
 
         return Result.ToArray();
     }

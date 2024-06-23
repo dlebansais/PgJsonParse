@@ -27,5 +27,7 @@
         WantedPoster,
         PovusCaves2WantedPoster,
         Lint_NoTsys,
+        ActivityQuest,
+        Lint_RewardOnly,
     }
 }

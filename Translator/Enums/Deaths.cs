@@ -160,5 +160,7 @@
         Tsunami,
         Hail,
         DemonicDamage,
+        ToxicBlood,
+        MinotaurHorn,
     }
 }

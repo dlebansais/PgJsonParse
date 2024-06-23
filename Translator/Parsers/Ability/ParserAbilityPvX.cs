@@ -99,6 +99,12 @@ public class ParserAbilityPvX : Parser
                 case "AttributesThatDeltaTempTaunt":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaTempTauntList, Value);
                     break;
+                case "AttributesThatDeltaAoE":
+                    Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaAoEList, Value);
+                    break;
+                case "AttributesThatDeltaDamageIfTargetIsVulnerable":
+                    Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaDamageIfTargetIsVulnerableList, Value);
+                    break;
                 case "SpecialValues":
                     Result = Inserter<PgSpecialValue>.AddKeylessArray(item.SpecialValueList, Value);
                     break;

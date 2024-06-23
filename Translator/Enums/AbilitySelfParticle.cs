@@ -34,5 +34,6 @@
         HasteExplosion,
         HealingMist,
         AcidSpew,
+        GreenDragonBreath,
     }
 }

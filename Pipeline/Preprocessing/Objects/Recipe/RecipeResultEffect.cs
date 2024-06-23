@@ -31,6 +31,7 @@ public class RecipeResultEffect
     public string? Other { get; set; }
     public int? PowerLevel { get; set; }
     public string? PowerWaxType { get; set; }
+    public string? Recipe { get; set; }
     public Time? RepairCooldown { get; set; }
     public int? RepairMaxEfficiency { get; set; }
     public int? RepairMinEfficiency { get; set; }

@@ -228,5 +228,8 @@
         AbsorbDamage,
         CancelSlowdown,
         DoNotIgnoreKnockback,
+        IfRestoreArmorAfterDelay,
+        MultiplyArmorRestauration,
+        MultiplyPowerRestauration,
     }
 }

@@ -57,6 +57,9 @@
                     case "Strategy":
                         Result = StringToEnumConversion<Strategy>.SetEnum((Strategy valueEnum) => item.Strategy = valueEnum, Value);
                         break;
+                    case "FlyOffset":
+                        Result = SetIntProperty((int valueInt) => item.RawFlyOffset = valueInt, Value);
+                        break;
                     case "Flying":
                         Result = SetBoolProperty((bool valueBool) => item.SetIsFlying(valueBool), Value);
                         break;

@@ -36,6 +36,9 @@ public class ParserNpcCapIncrease : Parser
                 case "Value":
                     Result = SetIntProperty((int valueInt) => item.RawValue = valueInt, Value);
                     break;
+                case "Purchase":
+                    Result = SetStringProperty((string valueString) => item.Purchase = valueString, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

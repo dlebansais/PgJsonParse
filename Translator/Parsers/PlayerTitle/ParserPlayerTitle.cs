@@ -43,6 +43,9 @@ public class ParserPlayerTitle : Parser
                 case "Keywords":
                     Result = StringToEnumConversion<TitleKeyword>.TryParseList(Value, item.KeywordList);
                     break;
+                case "AccountWide":
+                    Result = SetBoolProperty((bool valueBool) => item.RawIsAccountWide = valueBool, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

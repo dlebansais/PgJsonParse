@@ -473,7 +473,7 @@
         SummonDeer,
         SummonedSpider,
         MoltenVeins,
-        Projectile,
+        //Projectile,
         ViperAttack,
         SpiderPuntEnabled,
         CombatRefreshTrigger,
@@ -557,8 +557,13 @@
         ThrownKnife,
         HymnOfResurrection3Enabled,
         Lint_MonsterAbility,
-        MinorHealSelf,
         KnifeSlashing,
         StaffCrushing,
+        Lint_ForceMelee,
+        Lint_ForceRanged,
+        AcidSigil,
+        TrueRotskin,
+        Rotflesh,
+        AccountWidePet,
     }
 }

@@ -27,17 +27,19 @@
         public float? RawRageMultiplier { get; set; }
         public float Accuracy { get { return RawAccuracy.HasValue ? RawAccuracy.Value : 0; } }
         public float? RawAccuracy { get; set; }
-        public PgAttributeCollection AttributesThatDeltaDamageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModDamageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModBaseDamageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaTauntList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModTauntList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaRageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModRageList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatDeltaRangeList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaAccuracyList { get; set; } = new PgAttributeCollection();
-        public PgAttributeCollection AttributesThatModCritDamageList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaAoEList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaDamageIfTargetIsVulnerableList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaDamageList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaRageList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaRangeList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaTauntList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaTempTauntList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModBaseDamageList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModCritDamageList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModDamageList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModRageList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatModTauntList { get; set; } = new PgAttributeCollection();
         public PgSpecialValueCollection SpecialValueList { get; set; } = new PgSpecialValueCollection();
         public int TauntDelta { get { return RawTauntDelta.HasValue ? RawTauntDelta.Value : 0; } }
         public int? RawTauntDelta { get; set; }

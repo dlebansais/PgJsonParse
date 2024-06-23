@@ -31,5 +31,7 @@
         MoonPhase,
         EntityPhysicalState,
         EntitiesNear,
+        InMusicPerformance,
+        IsDancingOnPole,
     }
 }

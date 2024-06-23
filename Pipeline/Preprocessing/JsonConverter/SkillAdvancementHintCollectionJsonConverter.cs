@@ -46,6 +46,9 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
         if (hint.EndsWith("learn a new dance move."))
             return null;
 
+        if (hint.EndsWith("defeat a fabled dragon of yore."))
+            return null;
+
         hint = hint.Replace(" during a Full Moon,", string.Empty);
 
         string Pattern;

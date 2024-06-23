@@ -52,5 +52,6 @@
         Riding,
         TempestEnergyByLevel,
         Endurance,
+        Hardcore,
     }
 }

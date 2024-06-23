@@ -34,5 +34,7 @@
         Projectile_Dagger,
         Projectile_PlasmaBlastRed,
         Projectile_PlasmaBlastBlue,
+        Projectile_Blood,
+        Projectile_Nature,
     }
 }

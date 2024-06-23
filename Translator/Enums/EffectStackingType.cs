@@ -225,7 +225,6 @@
         AnthemOfAvoidanceProjectile,
         MomentOfBravery,
         DisharmonyDebuff,
-        DisharmonyDebuffB,
         DrugWithdrawal_Alcohol,
         Soberize,
         RabbitsFoot,
@@ -369,5 +368,6 @@
         SerenePrecisionTea,
         ToxicIrritantAcidBuff,
         PoisonersCutBuffDirect,
+        DragonDisableEpic,
     }
 }

@@ -14,6 +14,7 @@ public class Quest
         DisplayedLocation = Area.FromRawAreaName(rawQuest.DisplayedLocation, out OriginalDisplayedLocation);
         FavorNpc = rawQuest.FavorNpc;
         FollowUpQuests = rawQuest.FollowUpQuests;
+        ForceBookOnWrapUp = rawQuest.ForceBookOnWrapUp;
         GroupingName = rawQuest.GroupingName;
         InternalName = rawQuest.InternalName;
         IsAutoPreface = rawQuest.IsAutoPreface;
@@ -349,6 +350,7 @@ public class Quest
     public string? DisplayedLocation { get; set; }
     public string? FavorNpc { get; set; }
     public string[]? FollowUpQuests { get; set; }
+    public bool? ForceBookOnWrapUp { get; set; }
     public string? GroupingName { get; set; }
     public string? InternalName { get; set; }
     public bool? IsAutoPreface { get; set; }
@@ -388,6 +390,7 @@ public class Quest
         Result.DisplayedLocation = Area.ToRawAreaName(DisplayedLocation, OriginalDisplayedLocation);
         Result.FavorNpc = FavorNpc;
         Result.FollowUpQuests = FollowUpQuests;
+        Result.ForceBookOnWrapUp = ForceBookOnWrapUp;
         Result.GroupingName = GroupingName;
         Result.InternalName = InternalName;
         Result.IsAutoPreface = IsAutoPreface;
