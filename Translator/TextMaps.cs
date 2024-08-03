@@ -4355,6 +4355,7 @@
             { PowerWaxType.SharpenedDaggerCritDamage, "Sharpened Dagger Crit Damage" },
             { PowerWaxType.SharpenedDirkAccuracy, "Sharpened Dirk Accuracy" },
             { PowerWaxType.SharpenedClawAccuracy, "Sharpened Claw Accuracy" },
+            { PowerWaxType.SharpenedDirkCritDamage, "Sharpened Dirk Crit Damage" },
         };
 
         public static Dictionary<PreEffect, string> PreEffectTextMap { get; } = new Dictionary<PreEffect, string>()
@@ -5741,11 +5742,11 @@
             { Deaths.FungusManSpores, "Brain replaced by fungus" },
             { Deaths.GobbledUp, "" },
             { Deaths.InhaledWater, "Inhaled too much water" },
-            { Deaths.Tsunami, "" },
+            { Deaths.Tsunami, "Battered by a tsunami" },
             { Deaths.Hail, "Battered by Hail" },
             { Deaths.DemonicDamage, "Demonic Damage" },
-            { Deaths.ToxicBlood, "Toxic Blood" },
-            { Deaths.MinotaurHorn, "Minotaur Horn" },
+            { Deaths.ToxicBlood, "Drowned in Blood" },
+            { Deaths.MinotaurHorn, "" },
 
             // Many Cuts dots: "Discomfort"
         };

@@ -12,5 +12,6 @@
         SharpenedDaggerCritDamage,
         SharpenedDirkAccuracy,
         SharpenedClawAccuracy,
+        SharpenedDirkCritDamage,
     }
 }
