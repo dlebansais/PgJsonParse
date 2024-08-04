@@ -194,5 +194,11 @@
         SparkHitGreen,
         SpecialBuffReflect,
         MountSuperSpeed,
+        HandheldSparklerJumbo,
+        HandheldSparklerMulticolor,
+        HandheldSparklerBlue,
+        HandheldSparklerGreen,
+        HandheldSparklerRed,
+        HandheldSparkler,
     }
 }

@@ -629,6 +629,9 @@ public class Quest
         { "GuideEvent_EggsellentHunter", 5209 },
         { "Event_Halloween_NotAfraidOfLungs", 5024 },
         { "Event_Errana_BunnyLove2024", 5052 },
+        { "Event_IHelped", 5241 },
+        { "Event_DidMyPart", 5242 },
+        //{ "Event_IReallyHelper", 5243 },
     };
 
     private string? OriginalDisplayedLocation;

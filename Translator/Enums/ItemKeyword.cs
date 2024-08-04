@@ -1341,5 +1341,10 @@
         StaffLikeForCraftingPurposes,
         ReinsOrSaddle,
         MountCosmetic,
+        Temporary,
+        WritOfUnlock,
+        GoldenWritOfUnlock,
+        SaddlebagAccess,
+        Banner,
     }
 }

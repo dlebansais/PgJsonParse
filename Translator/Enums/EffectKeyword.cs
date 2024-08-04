@@ -385,5 +385,7 @@
         KunaxCurse,
         KunaxPoison,
         RacingBoost,
+        Deploy,
+        Event_WritChallenge,
     }
 }

@@ -1091,7 +1091,6 @@
             { AbilityTargetParticle.BloodSplatSmall, "Blood Splat Small" },
             { AbilityTargetParticle.BloodSplatBurst, "Blood Splat Burst" },
             { AbilityTargetParticle.NatureCloudHit, "Nature Cloud Hit" },
-            { AbilityTargetParticle.fdfd, "@bugged@" },
         };
 
         public static Dictionary<AllowedFishingZone, string> AllowedFishingZoneTextMap { get; } = new Dictionary<AllowedFishingZone, string>()
@@ -1900,6 +1899,8 @@
             { EffectKeyword.KunaxCurse, "Kunax Curse" },
             { EffectKeyword.KunaxPoison, "Kunax Poison" },
             { EffectKeyword.RacingBoost, "Racing Boost" },
+            { EffectKeyword.Deploy, "Deploy" },
+            { EffectKeyword.Event_WritChallenge, "Event (Writ Challenge)" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2096,6 +2097,12 @@
             { EffectParticle.SparkHitGreen, "Spark Hit Green" },
             { EffectParticle.SpecialBuffReflect, "Special Buff Reflect" },
             { EffectParticle.MountSuperSpeed, "Mount Super Speed" },
+            { EffectParticle.HandheldSparklerJumbo, "Handheld Sparkler Jumbo" },
+            { EffectParticle.HandheldSparklerMulticolor, "Handheld Sparkler Multicolor" },
+            { EffectParticle.HandheldSparklerBlue, "Handheld Sparkler Blue" },
+            { EffectParticle.HandheldSparklerGreen, "Handheld Sparkler Green" },
+            { EffectParticle.HandheldSparklerRed, "Handheld Sparkler Red" },
+            { EffectParticle.HandheldSparkler, "Handheld Sparkler" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -4170,6 +4177,11 @@
             { ItemKeyword.StaffLikeForCraftingPurposes, "Staff Like For Crafting Purposes" },
             { ItemKeyword.ReinsOrSaddle, "Reins Or Saddle" },
             { ItemKeyword.MountCosmetic, "Mount Cosmetic" },
+            { ItemKeyword.Temporary, "Temporary" },
+            { ItemKeyword.WritOfUnlock, "Writ Of Unlock" },
+            { ItemKeyword.GoldenWritOfUnlock, "Golden Writ Of Unlock" },
+            { ItemKeyword.SaddlebagAccess, "Saddlebag Access" },
+            { ItemKeyword.Banner, "Banner" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4193,6 +4205,7 @@
             { ItemSlot.Reins, "Reins" },
             { ItemSlot.Horseshoes, "Horseshoes" },
             { ItemSlot.MountCosmetic, "Mount Cosmetic" },
+            { ItemSlot.Banner, "Banner" },
         };
 
         public static Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap { get; } = new Dictionary<ItemUseAnimation, string>()
@@ -4204,6 +4217,7 @@
             { ItemUseAnimation.UseItem, "Use Item" },
             { ItemUseAnimation.Pickup, "Pickup" },
             { ItemUseAnimation.Cry, "Cry" },
+            { ItemUseAnimation.WaveItem, "Wave Item" },
         };
 
         public static Dictionary<ItemUseRequirement, string> ItemUseRequirementTextMap { get; } = new Dictionary<ItemUseRequirement, string>()

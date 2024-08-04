@@ -21,5 +21,6 @@
         Reins,
         Horseshoes,
         MountCosmetic,
+        Banner,
     }
 }

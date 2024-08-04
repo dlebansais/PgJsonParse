@@ -61,6 +61,5 @@
         BloodSplatSmall,
         BloodSplatBurst,
         NatureCloudHit,
-        fdfd,
     }
 }

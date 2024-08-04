@@ -186,7 +186,7 @@
         AddIndirectVulnerability,
         AddDirectVulnerability,
         AddVulnerabilityToElite,
-        DestroyedByDamageType,
+        //DestroyedByDamageType,
         ChangeDamageType,
         ConditionalDamageType,
         IgnoreKnockback,

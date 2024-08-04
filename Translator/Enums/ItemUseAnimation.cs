@@ -9,5 +9,6 @@
         UseItem,
         Pickup,
         Cry,
+        WaveItem,
     }
 }
