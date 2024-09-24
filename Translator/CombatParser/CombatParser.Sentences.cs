@@ -421,6 +421,7 @@ public partial class CombatParser
         new Sentence("Range is %f meter", CombatKeyword.AddRange),
         new Sentence("Range is increased %f meter", CombatKeyword.AddRange),
         new Sentence("Range is reduced %f meter", CombatKeyword.AddRange, SignInterpretation.AlwaysNegative),
+        new Sentence("Area of Effect %f meter", CombatKeyword.AddAoERange),
         new Sentence("Stun you", CombatKeyword.SelfStun),
         new Sentence("Complete stun immunity", CombatKeyword.StunImmunity),
         new Sentence("Grant immunity to new stun", CombatKeyword.StunImmunity),

@@ -39,6 +39,9 @@ public class ParserAbility : Parser
                 case "Animation":
                     Result = StringToEnumConversion<AbilityAnimation>.SetEnum((AbilityAnimation valueEnum) => item.Animation = valueEnum, Value);
                     break;
+                case "AttributeThatPreventsDelayLoopAbortOnAttacked":
+                    Result = Inserter<PgAttribute>.SetItemByKey((PgAttribute valueAttribute) => item.AttributeThatPreventsDelayLoopAbortOnAttacked_Key = PgObject.GetItemKey(valueAttribute), Value);
+                    break;
                 case "AttributesThatModAmmoConsumeChance":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModAmmoConsumeChanceList, Value);
                     break;
@@ -113,6 +116,9 @@ public class ParserAbility : Parser
                     break;
                 case "IsHarmless":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsHarmless(valueBool), Value);
+                    break;
+                case "IsTimerResetWhenDisabling":
+                    Result = SetBoolProperty((bool valueBool) => item.SetIsTimerResetWhenDisabling(valueBool), Value);
                     break;
                 case "ItemKeywordRequirementErrorMessage":
                     Result = SetStringProperty((string valueString) => item.ItemKeywordRequirementErrorMessage = valueString, Value);

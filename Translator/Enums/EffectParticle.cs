@@ -200,5 +200,8 @@
         HandheldSparklerGreen,
         HandheldSparklerRed,
         HandheldSparkler,
+        VampirePoof,
+        FloatyHeartsPerm,
+        BloodSplatBurstLoop,
     }
 }

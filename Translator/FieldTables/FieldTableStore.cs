@@ -11,6 +11,7 @@ public class FieldTableStore
     {
         { "AbilityGroup", typeof(string) },
         { "Animation", typeof(string) },
+        { "AttributeThatPreventsDelayLoopAbortOnAttacked", typeof(string) },
         { "AttributesThatModAmmoConsumeChance", typeof(string[]) },
         { "AttributesThatDeltaDelayLoopTime", typeof(string[]) },
         { "AttributesThatDeltaPowerCost", typeof(string[]) },
@@ -36,6 +37,7 @@ public class FieldTableStore
         { "IsInternalAbility", typeof(bool) },
         { "InternalName", typeof(string) },
         { "IsHarmless", typeof(bool) },
+        { "IsTimerResetWhenDisabling", typeof(bool) },
         { "ItemKeywordRequirementErrorMessage", typeof(string) },
         { "FormRequirement", typeof(string) },
         { "ItemKeywordRequirements", typeof(string[]) },

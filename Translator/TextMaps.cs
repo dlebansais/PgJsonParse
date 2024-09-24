@@ -285,6 +285,8 @@
             { AbilityIndicatingEnabled.WindWard, "Wind Ward" },
             { AbilityIndicatingEnabled.CloudTrick, "Cloud Trick" },
             { AbilityIndicatingEnabled.AnglingMode, "Angling Mode" },
+            { AbilityIndicatingEnabled.HasCharmedPet, "Has Charmed Pet" },
+            { AbilityIndicatingEnabled.BloodMist, "Blood Mist" },
         };
 
         public static Dictionary<AbilityItemKeyword, string> AbilityItemKeywordTextMap { get; } = new Dictionary<AbilityItemKeyword, string>()
@@ -894,6 +896,10 @@
             { AbilityKeyword.TrueRotskin, "True Rotskin" },
             { AbilityKeyword.Rotflesh, "Rotflesh" },
             { AbilityKeyword.AccountWidePet, "Account Wide Pet" },
+            { AbilityKeyword.ChanneledWeatherWitching, "Channeled Weather Witching" },
+            { AbilityKeyword.TeleportAbility, "Teleport Ability" },
+            { AbilityKeyword.Charmp, "Charmp" },
+            { AbilityKeyword.BloodMist, "BloodMist" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -1014,6 +1020,7 @@
             { AbilitySelfParticle.HealingMist, "Healing Mist" },
             { AbilitySelfParticle.AcidSpew, "Acid Spew" },
             { AbilitySelfParticle.GreenDragonBreath, "Green Dragon Breath" },
+            { AbilitySelfParticle.VampirePoof, "Vampire Poof" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -1901,6 +1908,10 @@
             { EffectKeyword.RacingBoost, "Racing Boost" },
             { EffectKeyword.Deploy, "Deploy" },
             { EffectKeyword.Event_WritChallenge, "Event (Writ Challenge)" },
+            { EffectKeyword.CharmedPet, "Charmed Pet" },
+            { EffectKeyword.HasCharmedPet, "Has Charmed Pet" },
+            { EffectKeyword.BloodMist, "Blood Mist" },
+            { EffectKeyword.TSysStunWhenDisablingCharm, "TSys Stun When Disabling Charm" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2103,6 +2114,9 @@
             { EffectParticle.HandheldSparklerGreen, "Handheld Sparkler Green" },
             { EffectParticle.HandheldSparklerRed, "Handheld Sparkler Red" },
             { EffectParticle.HandheldSparkler, "Handheld Sparkler" },
+            { EffectParticle.VampirePoof, "Vampire Poof" },
+            { EffectParticle.FloatyHeartsPerm, "Floaty Hearts Perm" },
+            { EffectParticle.BloodSplatBurstLoop, "Blood Splat Burst Loop" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()

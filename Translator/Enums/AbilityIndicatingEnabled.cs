@@ -22,5 +22,7 @@
         WindWard,
         CloudTrick,
         AnglingMode,
+        HasCharmedPet,
+        BloodMist,
     }
 }

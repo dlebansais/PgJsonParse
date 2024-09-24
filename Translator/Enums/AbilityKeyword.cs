@@ -565,5 +565,9 @@
         TrueRotskin,
         Rotflesh,
         AccountWidePet,
+        ChanneledWeatherWitching,
+        TeleportAbility,
+        Charmp,
+        BloodMist,
     }
 }

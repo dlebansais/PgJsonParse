@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(409);
+        return ParseCurated(411);
     }
 
     private static int ParseCurated(int Version)
@@ -1608,7 +1608,7 @@ public class Program
                 PgQuest Quest = (PgQuest)Entry.Value.Item;
 
                 MapAreaName DisplayedLocation = Quest.DisplayedLocation;
-                if (DisplayedLocation == MapAreaName.NightmareCaves)
+                if (Quest.Name == "Race Completed")
                 {
                 }
 
@@ -1622,7 +1622,7 @@ public class Program
                 if (Quest.IsGuildQuest)
                     continue;
 
-                if (!Quest.Name.StartsWith("Angling:"))
+                if (!Quest.Name.StartsWith("Angling:") && Quest.Name != "Race Completed")
                 {
                     if (Quest.IsAutoWrapUp)
                         continue;
@@ -1709,6 +1709,7 @@ public class Program
                 { "Learn Oritania's Secret Info", QuestSpecifics.None },
                 { "Lucky Teeth", QuestSpecifics.None },
                 { "Orange Proof", QuestSpecifics.None },
+                { "Race Completed", QuestSpecifics.None },
                 { "The Sewer Man", QuestSpecifics.None },
                 { "Under The Hand Is An Orb", QuestSpecifics.None },
             }

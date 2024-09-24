@@ -684,7 +684,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "13006")
+        if (Key == "25135")
         {
         }
 
@@ -778,7 +778,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "13006")
+        if (power.Key == "25135")
         {
         }
 
@@ -1476,6 +1476,7 @@ public partial class CombatParser
             case CombatKeyword.AddPowerCost:
             case CombatKeyword.AddResetTimer:
             case CombatKeyword.AddRange:
+            case CombatKeyword.AddAoERange:
             case CombatKeyword.AddRage:
             case CombatKeyword.ZeroRage:
                 break;
@@ -2441,7 +2442,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "13006")
+            if (Entry.Key.Key == "25135")
             {
             }
 
@@ -4395,7 +4396,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "13007")
+            if (ItemPower.Key == "25135")
             {
             }
 

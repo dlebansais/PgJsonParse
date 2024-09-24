@@ -15,6 +15,7 @@
         public void SetIsAoECenteredOnCaster(bool value) { BoolValues |= (BoolValues & ~(IsAoECenteredOnCasterNotNull + IsAoECenteredOnCasterIsTrue)) | ((value ? IsAoECenteredOnCasterIsTrue : 0) + IsAoECenteredOnCasterNotNull); }
         public float AoERange { get { return RawAoERange.HasValue ? RawAoERange.Value : 0; } }
         public float? RawAoERange { get; set; }
+        public string? AttributeThatPreventsDelayLoopAbortOnAttacked_Key { get; set; }
         public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaPowerCostList { get; set; } = new PgAttributeCollection();
@@ -149,6 +150,11 @@
         public string InventoryKeywordRequirementErrorMessage { get; set; } = string.Empty;
         public List<AbilityItemKeyword> InventoryKeywordReqList { get; set; } = new List<AbilityItemKeyword>();
         public PgConditionalKeywordCollection ConditionalKeywordList { get; set; } = new PgConditionalKeywordCollection();
+        public const int IsTimerResetWhenDisablingNotNull = 1 << 28;
+        public const int IsTimerResetWhenDisablingIsTrue = 1 << 29;
+        public bool IsTimerResetWhenDisabling { get { return (BoolValues & (IsTimerResetWhenDisablingNotNull + IsTimerResetWhenDisablingIsTrue)) == (IsTimerResetWhenDisablingNotNull + IsTimerResetWhenDisablingIsTrue); } }
+        public bool? RawIsTimerResetWhenDisabling { get { return ((BoolValues & IsTimerResetWhenDisablingNotNull) != 0) ? (BoolValues & IsTimerResetWhenDisablingIsTrue) != 0 : null; } }
+        public void SetIsTimerResetWhenDisabling(bool value) { BoolValues |= (BoolValues & ~(IsTimerResetWhenDisablingNotNull + IsTimerResetWhenDisablingIsTrue)) | ((value ? IsTimerResetWhenDisablingIsTrue : 0) + IsTimerResetWhenDisablingNotNull); }
 
         public int FriendlyIconId { get; set; }
 

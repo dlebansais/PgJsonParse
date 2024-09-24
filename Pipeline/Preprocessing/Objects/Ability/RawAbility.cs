@@ -10,6 +10,7 @@ public class RawAbility
     public decimal? AmmoStickChance { get; set; }
     public string? Animation { get; set; }
     public bool? AoEIsCenteredOnCaster { get; set; }
+    public string? AttributeThatPreventsDelayLoopAbortOnAttacked { get; set; }
     public string[]? AttributesThatDeltaDelayLoopTime { get; set; }
     public string[]? AttributesThatDeltaPowerCost { get; set; }
     public string[]? AttributesThatDeltaResetTime { get; set; }
@@ -39,6 +40,7 @@ public class RawAbility
     public string[]? InventoryKeywordReqs { get; set; }
     public bool? IsCosmeticPet { get; set; }
     public bool? IsHarmless { get; set; }
+    public bool? IsTimerResetWhenDisabling { get; set; }
     public string? ItemKeywordReqErrorMessage { get; set; }
     public string[]? ItemKeywordReqs { get; set; }
     public string[]? Keywords { get; set; }

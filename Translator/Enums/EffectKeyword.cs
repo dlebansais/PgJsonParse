@@ -387,5 +387,9 @@
         RacingBoost,
         Deploy,
         Event_WritChallenge,
+        CharmedPet,
+        HasCharmedPet,
+        BloodMist,
+        TSysStunWhenDisablingCharm,
     }
 }

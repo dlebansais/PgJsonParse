@@ -104,6 +104,7 @@
         ApplyToPet,
         ApplyToPetAndMaster,
         AddRange,
+        AddAoERange,
         Stun,
         StunnedTarget,
         StunnedSelf,

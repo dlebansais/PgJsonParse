@@ -35,5 +35,6 @@
         HealingMist,
         AcidSpew,
         GreenDragonBreath,
+        VampirePoof,
     }
 }

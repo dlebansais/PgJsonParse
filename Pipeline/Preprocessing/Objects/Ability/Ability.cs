@@ -21,6 +21,7 @@ public class Ability
         AmmoKeywords = rawAbility.AmmoKeywords;
         AmmoStickChance = rawAbility.AmmoStickChance;
         Animation = rawAbility.Animation;
+        AttributeThatPreventsDelayLoopAbortOnAttacked = rawAbility.AttributeThatPreventsDelayLoopAbortOnAttacked;
         AttributesThatDeltaDelayLoopTime = rawAbility.AttributesThatDeltaDelayLoopTime;
         AttributesThatDeltaPowerCost = rawAbility.AttributesThatDeltaPowerCost;
         AttributesThatDeltaResetTime = rawAbility.AttributesThatDeltaResetTime;
@@ -51,6 +52,7 @@ public class Ability
         IsAoECenteredOnCaster = rawAbility.AoEIsCenteredOnCaster;
         IsCosmeticPet = rawAbility.IsCosmeticPet;
         IsHarmless = rawAbility.IsHarmless;
+        IsTimerResetWhenDisabling = rawAbility.IsTimerResetWhenDisabling;
         IsInternalAbility = rawAbility.InternalAbility;
         ItemKeywordRequirementErrorMessage = rawAbility.ItemKeywordReqErrorMessage;
         (FormRequirement, ItemKeywordRequirements) = ParseItemKeywordReqs(rawAbility.ItemKeywordReqs);
@@ -264,6 +266,7 @@ public class Ability
     public Ammo[]? AmmoKeywords { get; set; }
     public decimal? AmmoStickChance { get; set; }
     public string? Animation { get; set; }
+    public string? AttributeThatPreventsDelayLoopAbortOnAttacked { get; set; }
     public string[]? AttributesThatDeltaDelayLoopTime { get; set; }
     public string[]? AttributesThatDeltaPowerCost { get; set; }
     public string[]? AttributesThatDeltaResetTime { get; set; }
@@ -296,6 +299,7 @@ public class Ability
     public bool? IsCosmeticPet { get; set; }
     public bool? IsHarmless { get; set; }
     public bool? IsInternalAbility { get; set; }
+    public bool? IsTimerResetWhenDisabling { get; set; }
     public string? ItemKeywordRequirementErrorMessage { get; set; }
     public string[]? ItemKeywordRequirements { get; set; }
     public string[]? Keywords { get; set; }
@@ -339,6 +343,7 @@ public class Ability
         Result.AmmoStickChance = AmmoStickChance;
         Result.Animation = Animation;
         Result.AoEIsCenteredOnCaster = IsAoECenteredOnCaster;
+        Result.AttributeThatPreventsDelayLoopAbortOnAttacked = AttributeThatPreventsDelayLoopAbortOnAttacked;
         Result.AttributesThatDeltaDelayLoopTime = AttributesThatDeltaDelayLoopTime;
         Result.AttributesThatDeltaPowerCost = AttributesThatDeltaPowerCost;
         Result.AttributesThatDeltaResetTime = AttributesThatDeltaResetTime;
@@ -368,6 +373,7 @@ public class Ability
         Result.InventoryKeywordReqs = InventoryKeywordRequirements;
         Result.IsCosmeticPet = IsCosmeticPet;
         Result.IsHarmless = IsHarmless;
+        Result.IsTimerResetWhenDisabling = IsTimerResetWhenDisabling;
         Result.ItemKeywordReqErrorMessage = ItemKeywordRequirementErrorMessage;
         Result.ItemKeywordReqs = ToRawItemKeywordReqs(FormRequirement, ItemKeywordRequirements);
         Result.Keywords = Keywords;
