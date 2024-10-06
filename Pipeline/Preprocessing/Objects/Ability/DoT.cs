@@ -9,5 +9,6 @@ public class DoT
     public int? Duration { get; set; }
     public int? NumTicks { get; set; }
     public string? Preface { get; set; }
+    public string? ReqEffectKeyword { get; set; }
     public string[]? SpecialRules { get; set; }
 }

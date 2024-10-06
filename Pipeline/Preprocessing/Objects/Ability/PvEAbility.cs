@@ -40,6 +40,7 @@ public class PvEAbility
         SelfPreEffects = ParseSelfPreEffects(rawPvEAbility.SelfPreEffects);
         SpecialValues = rawPvEAbility.SpecialValues;
         TauntDelta = rawPvEAbility.TauntDelta;
+        TauntMod = rawPvEAbility.TauntMod;
         TempTauntDelta = rawPvEAbility.TempTauntDelta;
     }
 
@@ -118,6 +119,7 @@ public class PvEAbility
     public SelfPreEffect[]? SelfPreEffects { get; set; }
     public SpecialValue[]? SpecialValues { get; set; }
     public int? TauntDelta { get; set; }
+    public int? TauntMod { get; set; }
     public int? TempTauntDelta { get; set; }
 
     public RawPvEAbility ToRawPvEAbility()
@@ -156,6 +158,7 @@ public class PvEAbility
         Result.SelfPreEffects = SelfPreEffectsToStrings(SelfPreEffects);
         Result.SpecialValues = SpecialValues;
         Result.TauntDelta = TauntDelta;
+        Result.TauntMod = TauntMod;
         Result.TempTauntDelta = TempTauntDelta;
 
         return Result;

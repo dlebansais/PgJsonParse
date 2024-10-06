@@ -53,5 +53,7 @@
         public float CritDamageMod { get { return RawCritDamageMod.HasValue ? RawCritDamageMod.Value : 0; } }
         public float? RawCritDamageMod { get; set; }
         public List<SelfEffect> SelfEffectOnCritList { get; set; } = new List<SelfEffect>();
+        public int TauntMod { get { return RawTauntMod.HasValue ? RawTauntMod.Value : 0; } }
+        public int? RawTauntMod { get; set; }
     }
 }

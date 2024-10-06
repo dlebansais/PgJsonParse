@@ -61,5 +61,6 @@
         BloodSplatSmall,
         BloodSplatBurst,
         NatureCloudHit,
+        BurnedParticleBlue,
     }
 }

@@ -2,6 +2,8 @@
 
 public class RawItem
 {
+    public bool? AllowInstallInGuildHalls { get; set; }
+    public bool? AllowInstallInHomes { get; set; }
     public bool? AllowPrefix { get; set; }
     public bool? AllowSuffix { get; set; }
     public bool? AttuneOnPickup { get; set; }

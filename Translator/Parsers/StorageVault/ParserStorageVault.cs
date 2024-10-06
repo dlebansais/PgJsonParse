@@ -36,8 +36,8 @@ public class ParserStorageVault : Parser
                 case "NpcFriendlyName":
                     Result = SetStringProperty((string valueString) => item.NpcFriendlyName = valueString, Value);
                     break;
-                case "AreaName":
-                    Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.Area = valueEnum, Value);
+                case "StorageArea":
+                    Result = Inserter<PgAreaDetail>.SetItemProperty((PgAreaDetail valueAreaDetail) => item.StorageArea = valueAreaDetail, Value);
                     break;
                 case "NumberOfSlots":
                     Result = SetIntProperty((int valueInt) => item.RawNumSlots = valueInt, Value);
@@ -64,7 +64,7 @@ public class ParserStorageVault : Parser
                     Result = SetStringProperty((string valueString) => item.RequirementDescription = valueString, Value);
                     break;
                 case "Grouping":
-                    Result = StringToEnumConversion<MapAreaName>.SetEnum((MapAreaName valueEnum) => item.Grouping = valueEnum, Value);
+                    Result = Inserter<PgAreaDetail>.SetItemProperty((PgAreaDetail valueAreaDetail) => item.Grouping = valueAreaDetail, Value);
                     break;
                 case "RequiredItemKeywords":
                     Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.RequiredItemKeywordList);

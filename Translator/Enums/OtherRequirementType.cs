@@ -33,5 +33,6 @@
         EntitiesNear,
         InMusicPerformance,
         IsDancingOnPole,
+        HasGuildHall,
     }
 }

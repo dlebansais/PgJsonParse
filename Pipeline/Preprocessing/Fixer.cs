@@ -18,7 +18,7 @@ public class Fixer
         AddNonClientAttributes(dictionary);
     }
 
-    public static bool NonClientAttributesExist = false;
+    public static bool NonClientAttributesExist = true;
 
     private static void AddNonClientAttributes(AttributeDictionary dictionary)
     {

@@ -6,9 +6,9 @@ public class StorageVault
 
     public StorageVault(RawStorageVault rawStorageVault)
     {
-        (IsAnyArea, AreaName, OriginalAreaName) = ParseArea(rawStorageVault.Area);
+        StorageArea = ParseArea(rawStorageVault.Area);
         EventLevels = rawStorageVault.EventLevels;
-        (_, Grouping, _) = ParseArea(rawStorageVault.Grouping);
+        Grouping = ParseArea(rawStorageVault.Grouping);
         HasAssociatedNpc = rawStorageVault.HasAssociatedNpc;
         ID = rawStorageVault.ID;
         Levels = rawStorageVault.Levels;
@@ -23,33 +23,41 @@ public class StorageVault
         SlotAttribute = rawStorageVault.SlotAttribute;
     }
 
-    private static (bool, string?, string?) ParseArea(string? rawArea)
+    private static AreaDetail ParseArea(string? rawArea)
     {
-        (bool, string ?, string ?) Result = (false, null, null);
+        AreaDetail Result;
 
         if (rawArea is not null)
         {
             if (rawArea == "*")
             {
-                Result = (true, null, null);
+                Result = new() { AreaType = (int)AreaType.Any };
+            }
+            else if (rawArea == "Apartment")
+            {
+                Result = new() { AreaType = (int)AreaType.Apartment };
             }
             else if (rawArea.StartsWith(AreaHeader))
             {
                 string AreaName = rawArea.Substring(AreaHeader.Length);
                 AreaName = Area.FromRawAreaName(AreaName, out string? OriginalAreaName)!;
 
-                Result = (false, AreaName, OriginalAreaName);
+                if (OriginalAreaName is not null)
+                    throw new PreprocessorException();
+
+                Result = new() { AreaType = (int)AreaType.Normal, AreaName = AreaName };
             }
             else
                 throw new PreprocessorException();
         }
+        else
+            Result = new();
 
         return Result;
     }
 
-    public string? AreaName { get; set; }
     public StorageVaultEventLevel? EventLevels { get; set; }
-    public string? Grouping { get; set; }
+    public AreaDetail Grouping { get; set; }
     public bool? HasAssociatedNpc { get; set; }
     public int? ID { get; set; }
     public StorageVaultLevel? Levels { get; set; }
@@ -62,14 +70,15 @@ public class StorageVault
     public string? RequirementDescription { get; set; }
     public Requirement[]? Requirements { get; set; }
     public string? SlotAttribute { get; set; }
+    public AreaDetail StorageArea { get; set; }
 
     public RawStorageVault ToRawStorageVault()
     {
         RawStorageVault Result = new();
 
-        Result.Area = ToRawArea(IsAnyArea, AreaName, OriginalAreaName);
+        Result.Area = ToRawArea(StorageArea);
         Result.EventLevels = EventLevels;
-        Result.Grouping = ToRawArea(isAnyArea: false, Grouping, originalAreaName: null);
+        Result.Grouping = ToRawArea(Grouping);
         Result.HasAssociatedNpc = HasAssociatedNpc;
         Result.ID = ID;
         Result.Levels = Levels;
@@ -86,17 +95,16 @@ public class StorageVault
         return Result;
     }
 
-    private static string? ToRawArea(bool isAnyArea, string? areaName, string? originalAreaName)
+    private static string? ToRawArea(AreaDetail areaDetail)
     {
-        if (isAnyArea)
-            return "*";
-        else if (areaName is not null)
-            return $"{AreaHeader}{Area.ToRawAreaName(areaName, originalAreaName)}";
-        else
-            return null;
+        return (AreaType)areaDetail.AreaType switch
+        {
+            AreaType.Apartment => "Apartment",
+            AreaType.Any => "*",
+            AreaType.Normal => areaDetail.AreaName is not null ? $"{AreaHeader}{Area.ToRawAreaName(areaDetail.AreaName, null)}" : null,
+            _ => null,
+        };
     }
 
     private JsonArrayFormat RequirementsFormat;
-    private bool IsAnyArea;
-    private string? OriginalAreaName;
 }

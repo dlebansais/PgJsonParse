@@ -44,6 +44,7 @@ public class ParserAbilityRequirement : Parser
         { OtherRequirementType.EntitiesNear, FinishItemEntitiesNear },
         { OtherRequirementType.InMusicPerformance, FinishItemInMusicPerformance },
         { OtherRequirementType.IsDancingOnPole, FinishItemIsDancingOnPole },
+        { OtherRequirementType.HasGuildHall, FinishItemHasGuildHall },
     };
 
     private static Dictionary<OtherRequirementType, List<string>> KnownFieldTable = new Dictionary<OtherRequirementType, List<string>>()
@@ -78,6 +79,7 @@ public class ParserAbilityRequirement : Parser
         { OtherRequirementType.EntitiesNear, new List<string>() { "T", "Distance", "EntityTypeTag", "ErrorMessage", "MinCount" } },
         { OtherRequirementType.InMusicPerformance, new List<string>() { "T" } },
         { OtherRequirementType.IsDancingOnPole, new List<string>() { "T" } },
+        { OtherRequirementType.HasGuildHall, new List<string>() { "T" } },
     };
 
     private static Dictionary<OtherRequirementType, List<string>> HandledTable = new Dictionary<OtherRequirementType, List<string>>();
@@ -1446,6 +1448,46 @@ public class ParserAbilityRequirement : Parser
     private static bool FinishItemIsDancingOnPole(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgAbilityRequirementIsDancingOnPole NewItem = new PgAbilityRequirementIsDancingOnPole();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    default:
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemHasGuildHall(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgAbilityRequirementHasGuildHall NewItem = new PgAbilityRequirementHasGuildHall();
 
         bool Result = true;
 

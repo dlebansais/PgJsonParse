@@ -292,5 +292,8 @@
         ApplyRacingRibbonToReins,
         CraftingEnhanceForetoldItemDamage,
         ApplyAddItemTSysPowerWaxFromSourceItem,
+        ResearchExoticFireWalls65,
+        ResearchExoticFireWalls75,
+        ResearchExoticFireWalls85,
     }
 }

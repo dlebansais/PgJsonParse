@@ -1,6 +1,5 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -10,6 +9,8 @@ public class Item
 {
     public Item(RawItem rawItem)
     {
+        AllowInstallInGuildHalls = rawItem.AllowInstallInGuildHalls;
+        AllowInstallInHomes = rawItem.AllowInstallInHomes;
         AllowPrefix = rawItem.AllowPrefix;
         AllowSuffix = rawItem.AllowSuffix;
         AttuneOnPickup = rawItem.AttuneOnPickup;
@@ -290,6 +291,8 @@ public class Item
         return Result;
     }
 
+    public bool? AllowInstallInGuildHalls { get; set; }
+    public bool? AllowInstallInHomes { get; set; }
     public bool? AllowPrefix { get; set; }
     public bool? AllowSuffix { get; set; }
     public bool? AttuneOnPickup { get; set; }
@@ -335,6 +338,8 @@ public class Item
     {
         RawItem Result = new();
 
+        Result.AllowInstallInGuildHalls = AllowInstallInGuildHalls;
+        Result.AllowInstallInHomes = AllowInstallInHomes;
         Result.AllowPrefix = AllowPrefix;
         Result.AllowSuffix = AllowSuffix;
         Result.AttuneOnPickup = AttuneOnPickup;

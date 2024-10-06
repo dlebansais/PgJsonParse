@@ -167,7 +167,7 @@
         NotSoSmart,
         BruisingBlow,
         WerewolfHowlBuff,
-        SeeRed,
+        //SeeRed,
         StrategicPreparation,
         PoisonAirCurse,
         RedCrystalCurse,
@@ -369,5 +369,6 @@
         ToxicIrritantAcidBuff,
         PoisonersCutBuffDirect,
         DragonDisableEpic,
+        SlashingStrikeDebuff,
     }
 }

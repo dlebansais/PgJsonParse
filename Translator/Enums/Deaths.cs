@@ -162,5 +162,6 @@
         DemonicDamage,
         ToxicBlood,
         MinotaurHorn,
+        AttackColdWall,
     }
 }

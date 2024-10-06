@@ -87,6 +87,16 @@
         public bool IgnoreAlreadyKnownBestowals { get { return (BoolValues & (IgnoreAlreadyKnownBestowalsNotNull + IgnoreAlreadyKnownBestowalsIsTrue)) == (IgnoreAlreadyKnownBestowalsNotNull + IgnoreAlreadyKnownBestowalsIsTrue); } }
         public bool? RawIgnoreAlreadyKnownBestowals { get { return ((BoolValues & IgnoreAlreadyKnownBestowalsNotNull) != 0) ? (BoolValues & IgnoreAlreadyKnownBestowalsIsTrue) != 0 : null; } }
         public void SetIgnoreAlreadyKnownBestowals(bool value) { BoolValues |= (BoolValues & ~(IgnoreAlreadyKnownBestowalsNotNull + IgnoreAlreadyKnownBestowalsIsTrue)) | ((value ? IgnoreAlreadyKnownBestowalsIsTrue : 0) + IgnoreAlreadyKnownBestowalsNotNull); }
+        public const int AllowInstallInGuildHallsNotNull = 1 << 18;
+        public const int AllowInstallInGuildHallsIsTrue = 1 << 19;
+        public bool AllowInstallInGuildHalls { get { return (BoolValues & (AllowInstallInGuildHallsNotNull + AllowInstallInGuildHallsIsTrue)) == (AllowInstallInGuildHallsNotNull + AllowInstallInGuildHallsIsTrue); } }
+        public bool? RawAllowInstallInGuildHalls { get { return ((BoolValues & AllowInstallInGuildHallsNotNull) != 0) ? (BoolValues & AllowInstallInGuildHallsIsTrue) != 0 : null; } }
+        public void SetAllowInstallInGuildHalls(bool value) { BoolValues |= (BoolValues & ~(AllowInstallInGuildHallsNotNull + AllowInstallInGuildHallsIsTrue)) | ((value ? AllowInstallInGuildHallsIsTrue : 0) + AllowInstallInGuildHallsNotNull); }
+        public const int AllowInstallInHomesNotNull = 1 << 20;
+        public const int AllowInstallInHomesIsTrue = 1 << 21;
+        public bool AllowInstallInHomes { get { return (BoolValues & (AllowInstallInHomesNotNull + AllowInstallInHomesIsTrue)) == (AllowInstallInHomesNotNull + AllowInstallInHomesIsTrue); } }
+        public bool? RawAllowInstallInHomes { get { return ((BoolValues & AllowInstallInHomesNotNull) != 0) ? (BoolValues & AllowInstallInHomesIsTrue) != 0 : null; } }
+        public void SetAllowInstallInHomes(bool value) { BoolValues |= (BoolValues & ~(AllowInstallInHomesNotNull + AllowInstallInHomesIsTrue)) | ((value ? AllowInstallInHomesIsTrue : 0) + AllowInstallInHomesNotNull); }
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

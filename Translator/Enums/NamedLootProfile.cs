@@ -23,5 +23,6 @@
         Racing_KurExcellent,
         L35Equipment,
         L50Equipment,
+        HorseThieves_Serbule,
     }
 }

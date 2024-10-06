@@ -43,7 +43,7 @@
         Ranged,
         FireSpell,
         SuperFireball,
-        Firebolts,
+        //Firebolts,
         ScintillatingFlame,
         Scintillating,
         Calefaction,
@@ -567,7 +567,13 @@
         AccountWidePet,
         ChanneledWeatherWitching,
         TeleportAbility,
-        Charmp,
+        //Charmp,
         BloodMist,
+        HealingFlame,
+        RealFireArrow,
+        RealManglingShot,
+        Lint_NotObtainable,
+        Charm,
+        DominatingWords,
     }
 }

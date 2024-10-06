@@ -151,6 +151,12 @@ public class ParserItem : Parser
                 case "IgnoreAlreadyKnownBestowals":
                     Result = SetBoolProperty((bool valueBool) => item.SetIgnoreAlreadyKnownBestowals(valueBool), Value);
                     break;
+                case "AllowInstallInGuildHalls":
+                    Result = SetBoolProperty((bool valueBool) => item.SetAllowInstallInGuildHalls(valueBool), Value);
+                    break;
+                case "AllowInstallInHomes":
+                    Result = SetBoolProperty((bool valueBool) => item.SetAllowInstallInHomes(valueBool), Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

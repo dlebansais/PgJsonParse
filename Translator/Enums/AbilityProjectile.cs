@@ -36,5 +36,6 @@
         Projectile_PlasmaBlastBlue,
         Projectile_Blood,
         Projectile_Nature,
+        Projectile_Frostball_Scintillating,
     }
 }

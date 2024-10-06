@@ -36,5 +36,6 @@
         AcidSpew,
         GreenDragonBreath,
         VampirePoof,
+        AcidExplosion,
     }
 }

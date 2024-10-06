@@ -1346,5 +1346,9 @@
         GoldenWritOfUnlock,
         SaddlebagAccess,
         Banner,
+        GeneAnalyzer_Ungulates,
+        RequireHorse,
+        Bed,
+        Table,
     }
 }

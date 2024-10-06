@@ -111,6 +111,9 @@ public class ParserAbilityPvX : Parser
                 case "TauntDelta":
                     Result = SetIntProperty((int valueInt) => item.RawTauntDelta = valueInt, Value);
                     break;
+                case "TauntMod":
+                    Result = SetIntProperty((int valueInt) => item.RawTauntMod = valueInt, Value);
+                    break;
                 case "TempTauntDelta":
                     Result = SetIntProperty((int valueInt) => item.RawTempTauntDelta = valueInt, Value);
                     break;

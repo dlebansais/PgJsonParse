@@ -7,7 +7,7 @@
         public int Id { get { return RawId.HasValue ? RawId.Value : 0; } }
         public int? RawId { get; set; }
         public string NpcFriendlyName { get; set; } = string.Empty;
-        public MapAreaName Area { get; set; }
+        public PgAreaDetail? StorageArea { get; set; }
         public int NumSlots { get { return RawNumSlots.HasValue ? RawNumSlots.Value : 0; } }
         public int? RawNumSlots { get; set; }
         public string NumberOfSlotsScriptAtomic { get; set; } = string.Empty;
@@ -21,7 +21,7 @@
         public PgStorageFavorLevel? Levels { get; set; }
         public PgStorageRequirementCollection RequirementList { get; set; } = new();
         public string RequirementDescription { get; set; } = string.Empty;
-        public MapAreaName Grouping { get; set; }
+        public PgAreaDetail? Grouping { get; set; }
         public List<ItemKeyword> RequiredItemKeywordList { get; set; } = new List<ItemKeyword>();
         public string? SlotAttribute_Key { get; set; }
         public PgStorageEventList? EventLevels { get; set; }

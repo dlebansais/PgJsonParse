@@ -82,6 +82,7 @@ public static class MainParser
         { typeof(PgStorageEventList), new ParserStorageEventLevel() },
         { typeof(PgStorageFavorLevel), new ParserStorageFavorLevel() },
         { typeof(PgStorageRequirement), new ParserStorageRequirement() },
+        { typeof(PgAreaDetail), new ParserAreaDetail() },
         { typeof(PgXpTable), new ParserXpTable() },
     };
 

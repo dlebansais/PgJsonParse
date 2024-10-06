@@ -15,5 +15,6 @@
         public PgAttributeCollection AttributesThatDeltaList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatModList { get; set; } = new PgAttributeCollection();
         public string Preface { get; set; } = string.Empty;
+        public EffectKeyword ReqEffectKeyword { get; set; }
     }
 }

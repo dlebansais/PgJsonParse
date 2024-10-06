@@ -391,5 +391,7 @@
         HasCharmedPet,
         BloodMist,
         TSysStunWhenDisablingCharm,
+        ArcheryCritPoison,
+        Archery,
     }
 }

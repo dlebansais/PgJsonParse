@@ -148,6 +148,7 @@ public class FieldTableStore
         { "AttributesThatDeltaDamageIfTargetIsVulnerable", typeof(string[]) },
         { "SpecialValues", typeof(PgSpecialValue[]) },
         { "TauntDelta", typeof(int) },
+        { "TauntMod", typeof(int) },
         { "TempTauntDelta", typeof(int) },
         { "RageCost", typeof(int) },
         { "RageCostMod", typeof(float) },
@@ -197,6 +198,7 @@ public class FieldTableStore
         { "AttributesThatDelta", typeof(string[]) },
         { "AttributesThatMod", typeof(string[]) },
         { "Preface", typeof(string) },
+        { "ReqEffectKeyword", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableSpecialValue { get; } = new Dictionary<string, Type>()
@@ -349,6 +351,8 @@ public class FieldTableStore
         { "MountedAppearance", typeof(string) },
         { "AttuneOnPickup", typeof(bool) },
         { "IgnoreAlreadyKnownBestowals", typeof(bool) },
+        { "AllowInstallInGuildHalls", typeof(bool) },
+        { "AllowInstallInHomes", typeof(bool) },
     };
 
     public static Dictionary<string, Type> TableItemBehavior { get; } = new Dictionary<string, Type>()
@@ -876,7 +880,6 @@ public class FieldTableStore
     {
         { "ID", typeof(int) },
         { "NpcFriendlyName", typeof(string) },
-        { "AreaName", typeof(string) },
         { "NumberOfSlots", typeof(int) },
         { "NumberOfSlotsScriptAtomic", typeof(string) },
         { "NumberOfSlotsScriptAtomicMaxValue", typeof(int) },
@@ -885,10 +888,11 @@ public class FieldTableStore
         { "Levels", typeof(PgStorageFavorLevel) },
         { "Requirements", typeof(PgStorageRequirement[]) },
         { "RequirementDescription", typeof(string) },
-        { "Grouping", typeof(string) },
+        { "Grouping", typeof(PgAreaDetail) },
         { "RequiredItemKeywords", typeof(string[]) },
         { "SlotAttribute", typeof(string) },
         { "EventLevels", typeof(PgStorageEventList) },
+        { "StorageArea", typeof(PgAreaDetail) },
     };
 
     public static Dictionary<string, Type> TableStorageEventList { get; } = new Dictionary<string, Type>()
@@ -919,6 +923,13 @@ public class FieldTableStore
     {
         { "InternalName", typeof(string) },
         { "XpAmounts", typeof(int[]) },
+    };
+
+    public static Dictionary<string, Type> TableAreaDetail { get; } = new Dictionary<string, Type>()
+    {
+        { "AreaType", typeof(int) },
+        { "AreaName", typeof(string) },
+        //{ "OriginalAreaName", typeof(string) },
     };
 
     public static Dictionary<Type, FieldTable> Tables { get; } = new Dictionary<Type, FieldTable>()
@@ -992,6 +1003,7 @@ public class FieldTableStore
         { typeof(PgStorageEventList), new FixedFieldTable(TableStorageEventList) },
         { typeof(PgStorageFavorLevel), new FixedFieldTable(TableStorageFavorLevel) },
         { typeof(PgStorageRequirement), new VariadicFieldTable(typeof(string)) },
+        { typeof(PgAreaDetail), new FixedFieldTable(TableAreaDetail) },
         { typeof(PgXpTable), new FixedFieldTable(TableXpTable) },
     };
 
