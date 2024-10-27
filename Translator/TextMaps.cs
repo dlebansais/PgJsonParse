@@ -249,6 +249,15 @@
             { AbilityAnimation.Dance5F, "Dance5F" },
             { AbilityAnimation.Dance6F, "Dance6F" },
             { AbilityAnimation.Attack_SummonCosmeticPet, "Attack (Summon Cosmetic Pet)" },
+            { AbilityAnimation.Attack_Vampire_Bite, "Attack (Vampire Bite)" },
+            { AbilityAnimation.Attack_Vampire_Teleport, "Attack (Vampire Teleport)" },
+            { AbilityAnimation.Attack_Vampire_Drain, "Attack (Vampire Drain)" },
+            { AbilityAnimation.Attack_Vampire_Aoe, "Attack (Vampire AoE)" },
+            { AbilityAnimation.Attack_Vampire_Buff1, "Attack (Vampire Buff #1)" },
+            { AbilityAnimation.Attack_Vampire_Claw, "Attack (Vampire Claw)" },
+            { AbilityAnimation.Attack_Vampire_Grasp, "Attack (Vampire Grasp)" },
+            { AbilityAnimation.Attack_Vampire_Mental, "Attack (Vampire Mental)" },
+            { AbilityAnimation.Attack_Vampire_Enthrall, "Attack (Vampire Enthrall)" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -905,7 +914,21 @@
             { AbilityKeyword.RealManglingShot, "Real Mangling Shot" },
             { AbilityKeyword.Lint_NotObtainable, "Lint (Not Obtainable)" },
             { AbilityKeyword.Charm, "Charm" },
-            { AbilityKeyword.DominatingWords, "Dominating Words" },
+            //{ AbilityKeyword.DominatingWords, "Dominating Words" },
+            { AbilityKeyword.OverwhelmingBite, "Overwhelming Bite" },
+            { AbilityKeyword.EmbraceOfDespair, "Embrace Of Despair" },
+            { AbilityKeyword.Lifedrain, "Lifedrain" },
+            { AbilityKeyword.RippleOfAmnesia, "Ripple Of Amnesia" },
+            { AbilityKeyword.Dominate, "Dominate" },
+            { AbilityKeyword.Exsanguinate, "Exsanguinate" },
+            { AbilityKeyword.NecroticGrasp, "Necrotic Grasp" },
+            { AbilityKeyword.EclipseOfShadows, "Eclipse Of Shadows" },
+            { AbilityKeyword.WitheringShroud, "Withering Shroud" },
+            { AbilityKeyword.Willbreaker, "Willbreaker" },
+            { AbilityKeyword.Enthrall, "Enthrall" },
+            { AbilityKeyword.BloodMistBurst, "Blood Mist Burst" },
+            { AbilityKeyword.Mindworm, "Mindworm" },
+            { AbilityKeyword.TrueMindworm, "True Mindworm" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -990,6 +1013,10 @@
             { AbilitySelfPreParticle.MycotoxinExplosion, "Mycotoxin Explosion" },
             { AbilitySelfPreParticle.AcidExplosion, "Acid Explosion" },
             { AbilitySelfPreParticle.FreezingMist, "Freezing Mist" },
+            { AbilitySelfPreParticle.PreVampTeleport, "Pre Vamp Teleport" },
+            { AbilitySelfPreParticle.BloodSiphon, "Blood Siphon" },
+            { AbilitySelfPreParticle.VampCharmHand, "Vamp Charm Hand" },
+            { AbilitySelfPreParticle.BloodFullBody, "Blood Full Body" },
         };
 
         public static Dictionary<AbilitySelfParticle, string> AbilitySelfParticleTextMap { get; } = new Dictionary<AbilitySelfParticle, string>()
@@ -1027,8 +1054,16 @@
             { AbilitySelfParticle.HealingMist, "Healing Mist" },
             { AbilitySelfParticle.AcidSpew, "Acid Spew" },
             { AbilitySelfParticle.GreenDragonBreath, "Green Dragon Breath" },
-            { AbilitySelfParticle.VampirePoof, "Vampire Poof" },
+            //{ AbilitySelfParticle.VampirePoof, "Vampire Poof" },
             { AbilitySelfParticle.AcidExplosion, "Acid Explosion" },
+            { AbilitySelfParticle.BloodExplosionHand, "Blood Explosion Hand" },
+            { AbilitySelfParticle.VampAmnesiaAoe, "Vamp Amnesia Aoe" },
+            { AbilitySelfParticle.VampCharm, "Vamp Charm" },
+            { AbilitySelfParticle.BloodExplosion, "Blood Explosion" },
+            { AbilitySelfParticle.ShadowExplosionHand, "Shadow Explosion Hand" },
+            { AbilitySelfParticle.VampEnvyHateAoe, "Vamp Envy Hate Aoe" },
+            { AbilitySelfParticle.Fear, "Fear" },
+            { AbilitySelfParticle.BloodSplatBurst, "Blood Splat Burst" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -1107,6 +1142,15 @@
             { AbilityTargetParticle.BloodSplatBurst, "Blood Splat Burst" },
             { AbilityTargetParticle.NatureCloudHit, "Nature Cloud Hit" },
             { AbilityTargetParticle.BurnedParticleBlue, "Burned Particle Blue" },
+            { AbilityTargetParticle.MesmerizeExplosion, "Mesmerize Explosion" },
+            { AbilityTargetParticle.BloodExplosion, "Blood Explosion" },
+            { AbilityTargetParticle.VampAmnesia, "Vamp Amnesia" },
+            { AbilityTargetParticle.VampCharm, "Vamp Charm" },
+            { AbilityTargetParticle.XClaw, "X Claw" },
+            { AbilityTargetParticle.ShadowExplosionTiny, "Shadow Explosion Tiny" },
+            { AbilityTargetParticle.VampEnvyHate, "Vamp Envy Hate" },
+            { AbilityTargetParticle.ShadowFullBody, "Shadow Full Body" },
+            { AbilityTargetParticle.Fear, "Fear" },
         };
 
         public static Dictionary<AllowedFishingZone, string> AllowedFishingZoneTextMap { get; } = new Dictionary<AllowedFishingZone, string>()
@@ -1924,6 +1968,10 @@
             { EffectKeyword.TSysStunWhenDisablingCharm, "TSys Stun When Disabling Charm" },
             { EffectKeyword.ArcheryCritPoison, "Archery Crit Poison" },
             { EffectKeyword.Archery, "Archery" },
+            { EffectKeyword.EnableBloodMistTSysBurst, "Enable Blood Mist TSys Burst" },
+            { EffectKeyword.TSysNecroticGraspRanged, "TSys Necrotic Grasp Ranged" },
+            { EffectKeyword.StormShieldAoE, "Storm Shield AoE" },
+            { EffectKeyword.StunOnNextEvade, "Stun On Next Evade" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2126,9 +2174,12 @@
             { EffectParticle.HandheldSparklerGreen, "Handheld Sparkler Green" },
             { EffectParticle.HandheldSparklerRed, "Handheld Sparkler Red" },
             { EffectParticle.HandheldSparkler, "Handheld Sparkler" },
-            { EffectParticle.VampirePoof, "Vampire Poof" },
+            //{ EffectParticle.VampirePoof, "Vampire Poof" },
             { EffectParticle.FloatyHeartsPerm, "Floaty Hearts Perm" },
-            { EffectParticle.BloodSplatBurstLoop, "Blood Splat Burst Loop" },
+            //{ EffectParticle.BloodSplatBurstLoop, "Blood Splat Burst Loop" },
+            { EffectParticle.VampTeleport, "Vamp Teleport" },
+            { EffectParticle.VampireSunSmoke, "Vampire Sun Smoke" },
+            { EffectParticle.VampireSunFire, "Vampire Sun Fire" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2501,6 +2552,9 @@
             { EffectStackingType.PoisonersCutBuffDirect, "Poisoner's Cut Buff Direct" },
             { EffectStackingType.DragonDisableEpic, "Dragon Disable Epic" },
             { EffectStackingType.SlashingStrikeDebuff, "Slashing Strike Debuff" },
+            { EffectStackingType.RippleOfAmnesiaDebuffPsychic, "Ripple Of Amnesia Debuff Psychic" },
+            { EffectStackingType.EmbraceofDespairDebuffDarkness, "Embrace of Despair Debuff Darkness" },
+            { EffectStackingType.EmbraceofDespairDebuffTrauma, "Embrace of Despair Debuff Trauma" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2765,6 +2819,7 @@
             { InteractionFlag.PovusCaves2NectarPot12, "Povus Caves #2 Nectar Pot #12" },
             { InteractionFlag.IrkimaPigeonWait, "Irkima Pigeon Wait" },
             { InteractionFlag.IrkimaPigeonWait2, "Irkima Pigeon Wait #2" },
+            { InteractionFlag.SerbuleCommunityChestPoints, "Serbule Community Chest Points" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -4213,6 +4268,16 @@
             { ItemKeyword.RequireHorse, "Require Horse" },
             { ItemKeyword.Bed, "Bed" },
             { ItemKeyword.Table, "Table" },
+            { ItemKeyword.MareBlanket, "Mare Blanket" },
+            { ItemKeyword.RequireFemale, "Require Female" },
+            { ItemKeyword.RequireTemperament_IceBlooded, "Require Temperament (Ice Blooded)" },
+            { ItemKeyword.RequireTemperament_ColdBlooded, "Require Temperament (Cold Blooded)" },
+            { ItemKeyword.RequireTemperament_CoolBlooded, "Require Temperament (Cool Blooded)" },
+            { ItemKeyword.RequireTemperament_WarmBlooded, "Require Temperament (Warm Blooded)" },
+            { ItemKeyword.RequireTemperament_HotBlooded, "Require Temperament (Hot Blooded)" },
+            { ItemKeyword.RequireTemperament_FireBlooded, "Require Temperament (Fire Blooded)" },
+            { ItemKeyword.HorseRuby, "Horse Ruby" },
+            { ItemKeyword.MountGlamour, "Mount Glamour" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4237,6 +4302,7 @@
             { ItemSlot.Horseshoes, "Horseshoes" },
             { ItemSlot.MountCosmetic, "Mount Cosmetic" },
             { ItemSlot.Banner, "Banner" },
+            { ItemSlot.MountGlamour, "Mount Glamour" },
         };
 
         public static Dictionary<ItemUseAnimation, string> ItemUseAnimationTextMap { get; } = new Dictionary<ItemUseAnimation, string>()
@@ -4342,6 +4408,7 @@
             { MapAreaName.TheWintertide, "The Wintertide" },
             { MapAreaName.NightmareCaves, "Nightmare Caves" },
             //{ MapAreaName.PovusCaves, "Povus Caves" },
+            { MapAreaName.Staging, "Staging" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -4785,6 +4852,7 @@
             { QuestObjectiveTarget.ForthragarianEngineer, "Forthragarian Engineer" },
             { QuestObjectiveTarget.GricklingYoung, "Grickling Young" },
             { QuestObjectiveTarget.GricklingTrained, "Grickling Trained" },
+            { QuestObjectiveTarget.Senzur, "Senzur" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()

@@ -210,5 +210,6 @@
         PovusCaves2NectarPot12,
         IrkimaPigeonWait,
         IrkimaPigeonWait2,
+        SerbuleCommunityChestPoints,
     }
 }

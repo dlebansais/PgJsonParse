@@ -284,5 +284,6 @@
         ForthragarianEngineer,
         GricklingYoung,
         GricklingTrained,
+        Senzur,
     }
 }

@@ -22,5 +22,6 @@
         Horseshoes,
         MountCosmetic,
         Banner,
+        MountGlamour,
     }
 }

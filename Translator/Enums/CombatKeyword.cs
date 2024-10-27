@@ -161,6 +161,7 @@
         TargetNextRageAttack,
         NextUse,
         WithinDistance,
+        AnotherWithinDistance,
         TargetAnatomyArthropods,
         TargetFishAndSnail,
         TargetAnatomyAbberation,

@@ -55,5 +55,6 @@
         TheWintertide,
         NightmareCaves,
         //PovusCaves,
+        Staging,
     }
 }

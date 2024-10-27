@@ -62,5 +62,14 @@
         BloodSplatBurst,
         NatureCloudHit,
         BurnedParticleBlue,
+        MesmerizeExplosion,
+        BloodExplosion,
+        VampAmnesia,
+        VampCharm,
+        XClaw,
+        ShadowExplosionTiny,
+        VampEnvyHate,
+        ShadowFullBody,
+        Fear,
     }
 }

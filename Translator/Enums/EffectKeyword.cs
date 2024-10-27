@@ -393,5 +393,9 @@
         TSysStunWhenDisablingCharm,
         ArcheryCritPoison,
         Archery,
+        EnableBloodMistTSysBurst,
+        TSysNecroticGraspRanged,
+        StormShieldAoE,
+        StunOnNextEvade,
     }
 }

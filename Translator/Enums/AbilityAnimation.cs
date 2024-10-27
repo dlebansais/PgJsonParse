@@ -238,5 +238,14 @@
         Dance5F,
         Dance6F,
         Attack_SummonCosmeticPet,
+        Attack_Vampire_Bite,
+        Attack_Vampire_Teleport,
+        Attack_Vampire_Drain,
+        Attack_Vampire_Aoe,
+        Attack_Vampire_Buff1,
+        Attack_Vampire_Claw,
+        Attack_Vampire_Grasp,
+        Attack_Vampire_Mental,
+        Attack_Vampire_Enthrall,
     }
 }

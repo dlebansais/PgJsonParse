@@ -684,7 +684,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "29946")
+        if (Key == "9814")
         {
         }
 
@@ -778,7 +778,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "29946")
+        if (power.Key == "9814")
         {
         }
 
@@ -2442,7 +2442,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "29946")
+            if (Entry.Key.Key == "9814")
             {
             }
 
@@ -3196,6 +3196,9 @@ public partial class CombatParser
         BasicTextReplace(ref modText, ref effectText, "Incubated Spiders' Rage attacks", "Incubated Spiders Rage attacks");
         BasicTextReplace(ref modText, ref effectText, "from Piercing and direct Poison damage", "from direct Piercing and Poison damage");
         BasicTextReplace(ref modText, ref effectText, "from Slashing and direct Acid damage", "from direct Slashing and Acid damage");
+        BasicTextReplace(ref modText, ref effectText, "has less than 33% of their max Rage", "have less than 33% of their Max Rage");
+        BasicTextReplace(ref modText, ref effectText, "has less than 33% of their Max Rage", "have less than 33% of their Max Rage");
+        BasicTextReplace(ref modText, ref effectText, "has less than 33% Max Rage", "have less than 33% of their Max Rage");
 
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets'", "Animal Handling pets uuuuuuuuuuuuuuuuuuuuunused");
         BasicTextReplace(ref modText, ref effectText, "damage-over-time effects (if any)", "Damage over Time");
@@ -3205,6 +3208,8 @@ public partial class CombatParser
         BasicTextReplace(ref modText, ref effectText, "Trick Foxes", "Trick Fox");
         //BasicTextReplace(ref modText, ref effectText, "Bun-Fu Blitz", "Bun-Fu Kick");
         BasicTextReplace(ref modText, ref effectText, "and after using Doe Eyes", string.Empty);
+        BasicTextReplace(ref modText, ref effectText, "using Mindworm ", string.Empty);
+        BasicTextReplace(ref modText, ref effectText, "Mindworm also attacks ", "also attacks ");
 
         if (!modText.Contains("But I Love You"))
             ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -4396,7 +4401,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "29946")
+            if (ItemPower.Key == "9814")
             {
             }
 

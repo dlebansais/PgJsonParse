@@ -22,5 +22,9 @@
         MycotoxinExplosion,
         AcidExplosion,
         FreezingMist,
+        PreVampTeleport,
+        BloodSiphon,
+        VampCharmHand,
+        BloodFullBody,
     }
 }

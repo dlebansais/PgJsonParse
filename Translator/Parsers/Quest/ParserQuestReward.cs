@@ -33,6 +33,7 @@ public class ParserQuestReward : Parser
         { QuestRewardType.Effect, FinishItemEffect },
         { QuestRewardType.Item, FinishItemItem },
         { QuestRewardType.RacingXp, FinishItemRacingXp },
+        { QuestRewardType.DeltaScriptAtomicInt, FinishItemDeltaScriptAtomicInt },
     };
 
     private static Dictionary<QuestRewardType, List<string>> KnownFieldTable = new Dictionary<QuestRewardType, List<string>>()
@@ -56,6 +57,7 @@ public class ParserQuestReward : Parser
         { QuestRewardType.Effect, new List<string>() { "T", "Effect" } },
         { QuestRewardType.Item, new List<string>() { "T", "Item", "StackSize" } },
         { QuestRewardType.RacingXp, new List<string>() { "T", "Skill", "Xp" } },
+        { QuestRewardType.DeltaScriptAtomicInt, new List<string>() { "T", "InteractionFlag", "Amount" } },
     };
 
     private static Dictionary<QuestRewardType, List<string>> HandledTable = new Dictionary<QuestRewardType, List<string>>();
@@ -964,6 +966,53 @@ public class ParserQuestReward : Parser
                         break;
                     case "Xp":
                         Result = SetIntProperty((int valueInt) => NewItem.RawXp = valueInt, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+
+    private static bool FinishItemDeltaScriptAtomicInt(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRewardDeltaScriptAtomicInt NewItem = new PgQuestRewardDeltaScriptAtomicInt();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "Amount":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawAmount = valueInt, Value);
+                        break;
+                    case "InteractionFlag":
+                        Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

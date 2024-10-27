@@ -1350,5 +1350,15 @@
         RequireHorse,
         Bed,
         Table,
+        MareBlanket,
+        RequireFemale,
+        RequireTemperament_IceBlooded,
+        RequireTemperament_ColdBlooded,
+        RequireTemperament_CoolBlooded,
+        RequireTemperament_WarmBlooded,
+        RequireTemperament_HotBlooded,
+        RequireTemperament_FireBlooded,
+        HorseRuby,
+        MountGlamour,
     }
 }

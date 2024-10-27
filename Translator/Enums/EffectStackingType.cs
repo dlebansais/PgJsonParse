@@ -370,5 +370,8 @@
         PoisonersCutBuffDirect,
         DragonDisableEpic,
         SlashingStrikeDebuff,
+        RippleOfAmnesiaDebuffPsychic,
+        EmbraceofDespairDebuffDarkness,
+        EmbraceofDespairDebuffTrauma,
     }
 }

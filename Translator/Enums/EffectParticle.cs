@@ -200,8 +200,11 @@
         HandheldSparklerGreen,
         HandheldSparklerRed,
         HandheldSparkler,
-        VampirePoof,
+        //VampirePoof,
         FloatyHeartsPerm,
-        BloodSplatBurstLoop,
+        //BloodSplatBurstLoop,
+        VampTeleport,
+        VampireSunSmoke,
+        VampireSunFire,
     }
 }

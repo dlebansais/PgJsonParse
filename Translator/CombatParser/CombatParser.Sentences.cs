@@ -615,6 +615,8 @@ public partial class CombatParser
         new Sentence("%f resistance to #D damage", CombatKeyword.AddDamageResistance),
         new Sentence("#D Resistance %f", CombatKeyword.AddDamageResistance),
         new Sentence("%f resistant to #D damage", CombatKeyword.AddDamageResistance),
+        new Sentence("Another enemy within %f meter", CombatKeyword.AnotherWithinDistance),
+        new Sentence("Another enemy within %fm", CombatKeyword.AnotherWithinDistance),
         new Sentence("Within %f meter", CombatKeyword.WithinDistance),
         new Sentence("%f resistance to Elemental damage (Fire, Cold, Electricity)", CombatKeyword.AddElementalDamageResistance),
         new Sentence("Worth %f more XP", CombatKeyword.IncreaseXPGain),

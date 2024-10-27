@@ -35,7 +35,15 @@
         HealingMist,
         AcidSpew,
         GreenDragonBreath,
-        VampirePoof,
+        //VampirePoof,
         AcidExplosion,
+        BloodExplosionHand,
+        VampAmnesiaAoe,
+        VampCharm,
+        BloodExplosion,
+        ShadowExplosionHand,
+        VampEnvyHateAoe,
+        Fear,
+        BloodSplatBurst,
     }
 }

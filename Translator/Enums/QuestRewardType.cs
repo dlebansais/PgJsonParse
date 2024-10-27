@@ -22,4 +22,5 @@ public enum QuestRewardType
     Effect,
     Item,
     RacingXp,
+    DeltaScriptAtomicInt,
 }

@@ -266,6 +266,8 @@ public class Quest
                 return ParseRewardEffectRaiseSkillToLevel(EffectParameter);
             case "DispelFaeBombSporeBuff":
                 return new QuestReward() { T = EffectName };
+            case "DeltaScriptAtomicInt":
+                return ParseRewardEffectDeltaScriptAtomicInt(EffectParameter);
             default:
                 return new QuestReward() { T = "Effect", Effect = EffectName };
         }
@@ -343,6 +345,18 @@ public class Quest
         int Level = int.Parse(LevelSplitted[1]);
 
         return new QuestReward() { T = "SkillLevel", Skill = Skill, Level = Level };
+    }
+
+    private static QuestReward ParseRewardEffectDeltaScriptAtomicInt(string npcFavor)
+    {
+        string[] RewardSplitted = npcFavor.Split(',');
+        if (RewardSplitted.Length != 2)
+            throw new PreprocessorException();
+
+        string InteractionFlag = RewardSplitted[0].Trim();
+        int Amount = int.Parse(RewardSplitted[1]);
+
+        return new QuestReward() { T = "DeltaScriptAtomicInt", InteractionFlag = InteractionFlag, Amount = Amount };
     }
 
     public bool? CheckRequirementsToSustainOnBestow { get; set; }
@@ -574,6 +588,8 @@ public class Quest
                 return $"RaiseSkillToLevel({reward.Skill},{reward.Level})";
             case "DispelFaeBombSporeBuff":
                 return reward.T;
+            case "DeltaScriptAtomicInt":
+                return $"DeltaScriptAtomicInt({reward.InteractionFlag},{reward.Amount})";
             default:
                 return reward.Effect!;
         }
