@@ -338,6 +338,17 @@ public class ParserSkill : Parser
                 continue;
             if (Ability.KeywordList.Contains(AbilityKeyword.Lint_NotLearnable))
                 continue;
+            if (Ability.KeywordList.Contains(AbilityKeyword.Lint_NotObtainable))
+            {
+                bool Accept = skill.Name == "Vampirism" && !Ability.IsInternalAbility;
+                if (Accept)
+                    Debug.WriteLine($"Accepting {Ability.Name} for {skill.Name}");
+                else
+                {
+                    Debug.WriteLine($"Ignoring {Ability.Name} for {skill.Name}");
+                    continue;
+                }
+            }
 
             skill.AssociationListAbility.Add(AbilityKey);
         }
