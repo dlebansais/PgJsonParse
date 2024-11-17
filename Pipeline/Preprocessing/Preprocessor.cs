@@ -16,6 +16,7 @@ public class Preprocessor
     private static List<JsonConverter> JsonConverters = new()
     {
         new IntDictionaryJsonConverter<Ability, RawAbility, AbilityDictionary>("ability"),
+        new StringDictionaryJsonConverter<AbilityKeyword, AbilityKeyword, AbilityKeywordDictionary>(),
         new AdvancementTableDictionaryJsonConverter(),
         new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
         new StringDictionaryJsonConverter<AIAbility, RawAIAbility, AIAbilityDictionary>(),
@@ -39,6 +40,7 @@ public class Preprocessor
         new SkillLevelCapCollectionJsonConverter(),
         new SkillReportCollectionJsonConverter(),
         new IntDictionaryJsonConverter<SourceAbility, RawSourceAbility, SourceAbilityDictionary>("ability"),
+        new IntDictionaryJsonConverter<SourceItem, RawSourceItem, SourceItemDictionary>("item"),
         new IntDictionaryJsonConverter<SourceRecipe, RawSourceRecipe, SourceRecipeDictionary>("recipe"),
         new StringDictionaryJsonConverter<StorageVault, RawStorageVault, StorageVaultDictionary>(),
         new IntDictionaryJsonConverter<Power, RawPower, PowerDictionary>("power"),

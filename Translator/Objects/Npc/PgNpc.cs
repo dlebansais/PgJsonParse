@@ -12,6 +12,7 @@
         public PgItemCollection SaleList { get; set; } = new PgItemCollection();
         public PgNpcBarterCollection BarterList { get; set; } = new PgNpcBarterCollection();
         public PgSourceCollection SourceAbilityList { get; set; } = new PgSourceCollection();
+        public PgItemCollection SourceItemList { get; set; } = new PgItemCollection();
         public PgSourceCollection SourceRecipeList { get; set; } = new PgSourceCollection();
         public string Description { get; set; } = string.Empty;
         public List<Favor> ItemGiftList { get; set; } = new List<Favor>();

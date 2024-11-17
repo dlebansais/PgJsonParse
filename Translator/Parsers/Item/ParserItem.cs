@@ -175,4 +175,25 @@ public class ParserItem : Parser
 
         return Result;
     }
+
+    public static bool UpdateSource()
+    {
+        Dictionary<string, ParsingContext> ItemSourceParsingTable = ParsingContext.ObjectKeyTable[typeof(PgSourceEntriesItem)];
+        Dictionary<string, ParsingContext> ItemParsingTable = ParsingContext.ObjectKeyTable[typeof(PgItem)];
+
+        foreach (KeyValuePair<string, ParsingContext> Entry in ItemSourceParsingTable)
+        {
+            PgSourceEntries ItemSource = (PgSourceEntries)Entry.Value.Item;
+            string Key = ItemSource.Key;
+
+            if (!ItemParsingTable.ContainsKey(Key))
+                return Program.ReportFailure($"Source for '{Key}' but no such object");
+
+            PgItem Item = (PgItem)ItemParsingTable[Key].Item;
+            foreach (PgSource SourceEntry in ItemSource.EntryList)
+                Item.SourceList.Add(SourceEntry);
+        }
+
+        return true;
+    }
 }

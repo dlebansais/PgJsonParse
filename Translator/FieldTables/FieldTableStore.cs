@@ -864,16 +864,14 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TableSource { get; } = new Dictionary<string, Type>()
     {
-/*            { "SkillTypeId", typeof(string) },
-        { "EffectName", typeof(string) },
-        { "EffectTypeId", typeof(string) },
-*/
-        { "Skill", typeof(string) },
-        { "Type", typeof(string) },
+        { "FriendlyName", typeof(string) },
+        { "HangOutId", typeof(int) },
         { "ItemTypeId", typeof(int) },
         { "Npc", typeof(string) },
         { "QuestId", typeof(int) },
-        { "HangOutId", typeof(int) },
+        { "Skill", typeof(string) },
+        { "RecipeId", typeof(int) },
+        { "Type", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableStorageVault { get; } = new Dictionary<string, Type>()
@@ -998,6 +996,7 @@ public class FieldTableStore
         { typeof(PgReport), new FixedFieldTable(TableReport) },
         { typeof(PgSource), new FixedFieldTable(TableSource) },
         { typeof(PgSourceEntriesAbility), new FixedFieldTable(TableSourceEntries) },
+        { typeof(PgSourceEntriesItem), new FixedFieldTable(TableSourceEntries) },
         { typeof(PgSourceEntriesRecipe), new FixedFieldTable(TableSourceEntries) },
         { typeof(PgStorageVault), new FixedFieldTable(TableStorageVault) },
         { typeof(PgStorageEventList), new FixedFieldTable(TableStorageEventList) },

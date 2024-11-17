@@ -76,6 +76,7 @@ public static class MainParser
         { typeof(PgReward), new ParserReward() },
         { typeof(PgReport), new ParserReport() },
         { typeof(PgSourceEntriesAbility), new ParserSourceEntriesAbility() },
+        { typeof(PgSourceEntriesItem), new ParserSourceEntriesItem() },
         { typeof(PgSourceEntriesRecipe), new ParserSourceEntriesRecipe() },
         { typeof(PgSource), new ParserSource() },
         { typeof(PgStorageVault), new ParserStorageVault() },

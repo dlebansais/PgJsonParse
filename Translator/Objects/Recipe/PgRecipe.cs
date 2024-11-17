@@ -62,12 +62,12 @@
         public bool RewardAllowBonusXp { get { return (BoolValues & (RewardAllowBonusXpNotNull + RewardAllowBonusXpIsTrue)) == (RewardAllowBonusXpNotNull + RewardAllowBonusXpIsTrue); } }
         public bool? RawRewardAllowBonusXp { get { return ((BoolValues & RewardAllowBonusXpNotNull) != 0) ? (BoolValues & RewardAllowBonusXpIsTrue) != 0 : null; } }
         public void SetRewardAllowBonusXp(bool value) { BoolValues |= (BoolValues & ~(RewardAllowBonusXpNotNull + RewardAllowBonusXpIsTrue)) | ((value ? RewardAllowBonusXpIsTrue : 0) + RewardAllowBonusXpNotNull); }
-        public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
         public string? RequiredAttributeNonZero_Key { get; set; }
         public PgRecipeParticle? LoopParticle { get; set; }
         public PgRecipeParticle? Particle { get; set; }
         public int MaxUses { get { return RawMaxUses.HasValue ? RawMaxUses.Value : 0; } }
         public int? RawMaxUses { get; set; }
+        public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

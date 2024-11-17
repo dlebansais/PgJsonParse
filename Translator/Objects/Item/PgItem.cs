@@ -97,6 +97,7 @@
         public bool AllowInstallInHomes { get { return (BoolValues & (AllowInstallInHomesNotNull + AllowInstallInHomesIsTrue)) == (AllowInstallInHomesNotNull + AllowInstallInHomesIsTrue); } }
         public bool? RawAllowInstallInHomes { get { return ((BoolValues & AllowInstallInHomesNotNull) != 0) ? (BoolValues & AllowInstallInHomesIsTrue) != 0 : null; } }
         public void SetAllowInstallInHomes(bool value) { BoolValues |= (BoolValues & ~(AllowInstallInHomesNotNull + AllowInstallInHomesIsTrue)) | ((value ? AllowInstallInHomesIsTrue : 0) + AllowInstallInHomesNotNull); }
+        public PgSourceCollection SourceList { get; set; } = new PgSourceCollection();
 
         public override int ObjectIconId { get { return IconId; } }
         public override string ObjectName { get { return Name; } }

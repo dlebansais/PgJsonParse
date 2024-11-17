@@ -82,6 +82,9 @@ public class Program
         if (!ParseFile(Version, "sources_abilities", typeof(PgSourceEntriesAbility)))
             return -1;
 
+        if (!ParseFile(Version, "sources_items", typeof(PgSourceEntriesItem)))
+            return -1;
+
         if (!ParseFile(Version, "sources_recipes", typeof(PgSourceEntriesRecipe)))
             return -1;
 
@@ -113,6 +116,7 @@ public class Program
         FinalizingResult &= ParserNpcService.FinalizeParsing();
 
         FinalizingResult &= ParserAbility.UpdateSource();
+        FinalizingResult &= ParserItem.UpdateSource();
         FinalizingResult &= ParserRecipe.UpdateSource();
 
         Debug.WriteLine("Updating icons and names...");
@@ -876,6 +880,7 @@ public class Program
     {
         List<PgSource> SourceList = new List<PgSource>();
         List<PgAbility> AbilityList = new List<PgAbility>();
+        List<PgItem> ItemList = new List<PgItem>();
         List<PgRecipe> RecipeList = new List<PgRecipe>();
         List<PgNpc> NpcList = new List<PgNpc>();
 
@@ -887,6 +892,9 @@ public class Program
                     break;
                 case PgAbility AsAbility:
                     AbilityList.Add(AsAbility);
+                    break;
+                case PgItem AsItem:
+                    ItemList.Add(AsItem);
                     break;
                 case PgRecipe AsRecipe:
                     RecipeList.Add(AsRecipe);
@@ -900,30 +908,59 @@ public class Program
         {
             switch (Source)
             {
-                case PgSourceAutomaticFromSkill AsSourceAutomaticFromSkill:
+                case PgSourceAngling Angling:
                     break;
-                case PgSourceEffect AsSourceEffect:
+                case PgSourceAutomaticFromSkill AutomaticFromSkill:
                     break;
-                case PgSourceGift AsSourceGift:
-                    AddNpcSource(Source, AsSourceGift.Npc, AbilityList, RecipeList, NpcList);
+                case PgSourceBarter Barter:
+                    AddNpcSource(Source, Barter.Npc, AbilityList, ItemList, RecipeList, NpcList);
                     break;
-                case PgSourceHangOut AsSourceHangOut:
-                    AddNpcSource(Source, AsSourceHangOut.Npc, AbilityList, RecipeList, NpcList);
+                case PgSourceCorpseButchering CorpseButchering:
                     break;
-                case PgSourceItem AsSourceItem:
+                case PgSourceCorpseSkinning CorpseSkinning:
                     break;
-                case PgSourceLearnAbility AsSourceLearnAbility:
+                case PgSourceCorpseSkullExtraction CorpseSkullExtraction:
                     break;
-                case PgSourceQuest AsSourceQuest:
+                case PgSourceCraftedInteractor CraftedInteractor:
                     break;
-                case PgSourceTraining AsSourceTraining:
-                    AddNpcSource(Source, AsSourceTraining.Npc, AbilityList, RecipeList, NpcList);
+                case PgSourceEffect Effect:
+                    break;
+                case PgSourceGift Gift:
+                    AddNpcSource(Source, Gift.Npc, AbilityList, ItemList, RecipeList, NpcList);
+                    break;
+                case PgSourceHangOut HangOut:
+                    AddNpcSource(Source, HangOut.Npc, AbilityList, ItemList, RecipeList, NpcList);
+                    break;
+                case PgSourceItem Item:
+                    break;
+                case PgSourceLearnAbility LearnAbility:
+                    break;
+                case PgSourceMonster Monster:
+                    break;
+                case PgSourceQuest Quest:
+                    break;
+                case PgSourceQuestObjectiveMacGuffin QuestObjectiveMacGuffin:
+                    break;
+                case PgSourceRecipe Recipe:
+                    break;
+                case PgSourceResourceInteractor ResourceInteractor:
+                    break;
+                case PgSourceTraining Training:
+                    AddNpcSource(Source, Training.Npc, AbilityList, ItemList, RecipeList, NpcList);
+                    break;
+                case PgSourceTreasureMap SourceTreasureMap:
+                    break;
+                case PgSourceVendor Vendor:
+                    AddNpcSource(Source, Vendor.Npc, AbilityList, ItemList, RecipeList, NpcList);
+                    break;
+                default:
+                    Debug.Assert(false, $"Missing case for {Source.GetType().Name}");
                     break;
             }
         }
     }
 
-    private static void AddNpcSource(PgSource source, PgNpcLocation location, List<PgAbility> abilityList, List<PgRecipe> recipeList, List<PgNpc> npcList)
+    private static void AddNpcSource(PgSource source, PgNpcLocation location, List<PgAbility> abilityList, List<PgItem> itemList, List<PgRecipe> recipeList, List<PgNpc> npcList)
     {
         string? Npc_Key = location.Npc_Key;
         if (Npc_Key == null)
@@ -949,6 +986,17 @@ public class Program
                 if (Item.Key == SourceKey)
                 {
                     Npc.SourceAbilityList.Add(source);
+                    IsFound = true;
+                    break;
+                }
+        }
+
+        if (source.IsItem)
+        {
+            foreach (PgItem Item in itemList)
+                if (Item.Key == SourceKey)
+                {
+                    Npc.SourceItemList.Add(SourceKey);
                     IsFound = true;
                     break;
                 }
@@ -1984,6 +2032,7 @@ public class Program
                 { "Heartshrooms", QuestSpecifics.None },
                 { "Inhibiting the Sporing", QuestSpecifics.None },
                 { "Iocaine Samples", QuestSpecifics.None },
+                { "The Sad End of Senzur", QuestSpecifics.None },
                 { "The Secret Ingredient", QuestSpecifics.None },
                 { "Too Many Tenders", QuestSpecifics.None },
                 { "Way's Lost Yo-Yo", QuestSpecifics.None },
