@@ -28,6 +28,9 @@ public class Program
         if (!ParseFile(Version, "abilities", typeof(PgAbility)))
             return -1;
 
+        if (!ParseKeylessArrayFile(Version, "abilitykeywords", typeof(PgAbilityKeyword)))
+            return -1;
+
         if (!ParseFile(Version, "advancementtables", typeof(PgAdvancementTable)))
             return -1;
 
@@ -104,6 +107,8 @@ public class Program
 
         if (!ParsingContext.FinalizeParsing())
             return -1;
+
+        ParserAbility.UpdateAttributes();
 
         bool FinalizingResult = true;
         FinalizingResult &= ParserAbilityRequirement.FinalizeParsing();
@@ -268,8 +273,33 @@ public class Program
         return true;
     }
 
+    private static bool ParseKeylessArrayFile(int version, string fileName, Type itemType)
+    {
+        LastParsedFile = fileName;
+
+        string FullPath = $"{VersionPath}\\Curated\\{fileName}.json";
+
+        if (!File.Exists(FullPath))
+            return false;
+
+        using FileStream Stream = new FileStream(FullPath, FileMode.Open, FileAccess.Read);
+        JsonTextReader Reader = new JsonTextReader(Stream);
+
+        if (!FieldTableStore.GetTable(itemType, out FieldTable MainItemTable))
+            return ReportFailure($"Table doesn't contain type {itemType}");
+
+        Debug.WriteLine($"Parsing {fileName}...");
+
+        if (!ParseFileKeylessArray(Reader, itemType, MainItemTable))
+            return false;
+
+        return true;
+    }
+
     private static bool ParseFileKeylessArray(JsonTextReader reader, Type itemType, FieldTable rootItemTable)
     {
+        reader.Read();
+
         if (reader.CurrentToken != Json.Token.ArrayStart)
             return ReportFailure("First token must open an array");
 

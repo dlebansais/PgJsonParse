@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows;
 using PgJsonReader;
 using PgObjects;
 
@@ -325,5 +326,57 @@ public class ParserAbility : Parser
         }
 
         return true;
+    }
+
+    public static void UpdateAttributes()
+    {
+        Dictionary<string, ParsingContext> AbilityParsingTable = ParsingContext.ObjectKeyTable[typeof(PgAbility)];
+        
+        List<PgAbilityKeyword> AbilityKeywords = new();
+        foreach (ParsingContext Context in ParsingContext.ContextList)
+            if (Context.Item is PgAbilityKeyword AsPgAbilityKeyword)
+                AbilityKeywords.Add(AsPgAbilityKeyword);
+
+        foreach (KeyValuePair<string, ParsingContext> AbilityEntry in AbilityParsingTable)
+        {
+            PgAbility Ability = (PgAbility)AbilityEntry.Value.Item;
+            List<PgAbilityKeyword> ApplicableAbilityKeywords = new();
+
+            foreach (PgAbilityKeyword PgAbilityKeyword in AbilityKeywords)
+            {
+                bool ContainMust = true;
+                bool NotContainMustNot = true;
+
+                foreach (AbilityKeyword Keyword in PgAbilityKeyword.MustHaveKeywordList)
+                    if (!Ability.KeywordList.Contains(Keyword))
+                        ContainMust = false;
+
+                foreach (AbilityKeyword Keyword in PgAbilityKeyword.MustNotHaveKeywordList)
+                    if (Ability.KeywordList.Contains(Keyword))
+                        NotContainMustNot = false;
+
+                if (ContainMust && NotContainMustNot)
+                    ApplicableAbilityKeywords.Add(PgAbilityKeyword);
+            }
+
+            foreach (PgAbilityKeyword AbilityKeyword in ApplicableAbilityKeywords)
+            {
+                AddAttributeKey(Ability.PvE.AttributesThatDeltaAccuracyList, AbilityKeyword.AttributesThatDeltaAccuracyList);
+                AddAttributeKey(Ability.AttributesThatDeltaCritChanceList, AbilityKeyword.AttributesThatDeltaCritChanceList);
+                AddAttributeKey(Ability.PvE.AttributesThatDeltaDamageList, AbilityKeyword.AttributesThatDeltaDamageList);
+                AddAttributeKey(Ability.AttributesThatDeltaPowerCostList, AbilityKeyword.AttributesThatDeltaPowerCostList);
+                AddAttributeKey(Ability.PvE.AttributesThatDeltaRangeList, AbilityKeyword.AttributesThatDeltaRangeList);
+                AddAttributeKey(Ability.AttributesThatDeltaResetTimeList, AbilityKeyword.AttributesThatDeltaResetTimeList);
+                AddAttributeKey(Ability.PvE.AttributesThatModCritDamageList, AbilityKeyword.AttributesThatModCritDamageList);
+                AddAttributeKey(Ability.PvE.AttributesThatModDamageList, AbilityKeyword.AttributesThatModDamageList);
+            }
+        }
+    }
+
+    private static void AddAttributeKey(PgAttributeCollection abilityKeys, PgAttributeCollection abilityKeywordKeys)
+    {
+        foreach (string AttributeKey in abilityKeywordKeys)
+            if (!abilityKeys.Contains(AttributeKey))
+                abilityKeys.Add(AttributeKey);
     }
 }

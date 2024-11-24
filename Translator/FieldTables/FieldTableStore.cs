@@ -83,6 +83,20 @@ public class FieldTableStore
         { "ConditionalKeywords", typeof(PgConditionalKeyword[]) },
     };
 
+    public static Dictionary<string, Type> TableAbilityKeyword { get; } = new Dictionary<string, Type>()
+    {
+        { "AttributesThatDeltaAccuracy", typeof(string[]) },
+        { "AttributesThatDeltaCritChance", typeof(string[]) },
+        { "AttributesThatDeltaDamage", typeof(string[]) },
+        { "AttributesThatDeltaPowerCost", typeof(string[]) },
+        { "AttributesThatDeltaRange", typeof(string[]) },
+        { "AttributesThatDeltaResetTime", typeof(string[]) },
+        { "AttributesThatModCritDamage", typeof(string[]) },
+        { "AttributesThatModDamage", typeof(string[]) },
+        { "MustHaveKeywords", typeof(string[]) },
+        { "MustNotHaveKeywords", typeof(string[]) },
+    };
+
     public static Dictionary<string, Type> TableSelfParticle { get; } = new Dictionary<string, Type>()
     {
         { "ParticleName", typeof(string) },
@@ -934,6 +948,7 @@ public class FieldTableStore
     public static Dictionary<Type, FieldTable> Tables { get; } = new Dictionary<Type, FieldTable>()
     {
         { typeof(PgAbility), new FixedFieldTable(TableAbility) },
+        { typeof(PgAbilityKeyword), new FixedFieldTable(TableAbilityKeyword) },
         { typeof(PgAbilityAmmo), new FixedFieldTable(TableAbilityAmmo) },
         { typeof(PgAbilityPvX), new FixedFieldTable(TableAbilityPvX) },
         { typeof(PgConditionalKeyword), new FixedFieldTable(TableAbilityConditionalKeyword) },

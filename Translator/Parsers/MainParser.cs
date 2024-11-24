@@ -13,6 +13,7 @@ public static class MainParser
         { typeof(float), new ParserNative() },
         { typeof(string), new ParserNative() },
         { typeof(PgAbility), new ParserAbility() },
+        { typeof(PgAbilityKeyword), new ParserAbilityKeyword() },
         { typeof(PgAbilityAmmo), new ParserAbilityAmmo() },
         { typeof(PgAbilityPvX), new ParserAbilityPvX() },
         { typeof(PgConditionalKeyword), new ParserConditionalKeyword() },
