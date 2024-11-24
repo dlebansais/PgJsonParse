@@ -259,10 +259,14 @@ public static class Inserter<T>
             NpcLocation.Npc_Key = PgObject.GetItemKey(ParsedNpc);
         else if (StringToEnumConversion<SpecialNpc>.TryParse(npcId, out NpcEnum, ErrorControl.IgnoreIfNotFound))
             NpcLocation.NpcEnum = NpcEnum;
-        else if (npcId.ToUpper().StartsWith("NPC_"))
-            NpcLocation.NpcName = npcId.Substring(4);
         else
-            return Program.ReportFailure(parsedFile, parsedKey, $"'{npcId}' unknown NPC name", errorControl);
+        {
+            string UpperName = npcId.ToUpper();
+            if (UpperName.StartsWith("NPC_") && !UpperName.Substring(4).Contains("_"))
+                NpcLocation.NpcName = npcId.Substring(4);
+            else
+                return Program.ReportFailure(parsedFile, parsedKey, $"'{npcId}' unknown NPC name", errorControl);
+        }
 
         ParsingContext.AddSuplementaryObject(NpcLocation);
 

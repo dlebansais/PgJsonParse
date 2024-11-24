@@ -662,6 +662,7 @@ public class ParserQuestRequirement : Parser
         PgQuestRequirementRuntimeBehaviorRuleSet NewItem = new PgQuestRequirementRuntimeBehaviorRuleSet();
 
         bool Result = true;
+        string RuleKey = string.Empty;
 
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
@@ -679,7 +680,15 @@ public class ParserQuestRequirement : Parser
                     case "T":
                         break;
                     case "Rule":
-                        Result = SetStringProperty((string valueString) => NewItem.Rule = valueString, Value);
+                        Result = SetStringProperty((string valueString) => RuleKey = valueString, Value);
+                        if (RuleKey == "HalloweenQuests")
+                            NewItem.Rule = "Halloween Quests";
+                        else if (RuleKey == "During Christmas Quests")
+                            NewItem.Rule = RuleKey;
+                        else if (RuleKey == "TurkeysSpawnInBushes")
+                            NewItem.Rule = "Turkeys Spawn In Bushes";
+                        else
+                            Result = Program.ReportFailure($"Unknown Rule: '{RuleKey}'");
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
