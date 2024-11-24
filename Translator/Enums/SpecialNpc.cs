@@ -3,8 +3,8 @@
     public enum SpecialNpc
     {
         Internal_None,
-        CatCharmPedestal,
-        BearCharmPedestal,
+        //CatCharmPedestal,
+        //BearCharmPedestal,
         GoblinFireResearchDesk1,
         AlchemyBook,
         UkorgasWelcomeSign,
@@ -81,8 +81,8 @@
         AntiBrainBugSpellBook,
         HalloweenPartyLoot,
         AdminTestNpc,
-        WerewolfAltar,
-        EventNPC_GiantBatMode,
+        //WerewolfAltar,
+        //EventNPC_GiantBatMode,
         Altar_Druid,
         SummonedBarley,
         SummonedBasil,
@@ -185,5 +185,6 @@
         Altar_Femur,
         Goat_GrakUnFalSqueak,
         Goat_GubthaSqueak,
+        Altar_Necromancy,
     }
 }

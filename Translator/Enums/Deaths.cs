@@ -163,5 +163,6 @@
         ToxicBlood,
         MinotaurHorn,
         AttackColdWall,
+        VampiricBloodSpray,
     }
 }

@@ -684,7 +684,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "9814")
+        if (Key == "17103")
         {
         }
 
@@ -778,7 +778,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "9814")
+        if (power.Key == "17103")
         {
         }
 
@@ -854,9 +854,15 @@ public partial class CombatParser
         else
         {
             foreach (PgEffect EffectItem in effectList)
+            {
+                // Hack to avoid mixing shield and bard mods.
+                if (EffectItem.Description.Contains("Bardic Blast"))
+                    continue;
+
                 foreach (AbilityKeyword Keyword in EffectItem.AbilityKeywordList)
                     if (!AbilityKeywordList.Contains(Keyword))
                         AbilityKeywordList.Add(Keyword);
+            }
         }
 
         if (AbilityKeywordList.Contains(AbilityKeyword.NiceAttack) ||
@@ -1131,11 +1137,13 @@ public partial class CombatParser
         { "Summoned Deer", new List<AbilityKeyword>() { AbilityKeyword.SummonDeer } },
         { "Incubated Spiders", new List<AbilityKeyword>() { AbilityKeyword.SummonedSpider } },
         { "Minor Healing (Targeted)", new List<AbilityKeyword>() { AbilityKeyword.MinorHealTargeted } },
-        { "All Mentalism and Psychology attack", new List<AbilityKeyword>() { AbilityKeyword.MentalismAttack, AbilityKeyword.PsychologyAttack } },
+        { "All Mentalism and Psychology attack", new List<AbilityKeyword>() { AbilityKeyword.PsychicAttack, AbilityKeyword.PsychologyAttack } },
         { "All non-basic attack", new List<AbilityKeyword>() { Internal_NonBasic } },
         { "Knife ability that normally deal Slashing damage", new List<AbilityKeyword>() { AbilityKeyword.KnifeSlashing } },
         { "Staff ability that normally deal Crushing damage", new List<AbilityKeyword>() { AbilityKeyword.StaffCrushing } },
         //{ "Sword Slash, Riposte, Windstrike, and Finishing Blow", new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.Riposte, AbilityKeyword.WindStrike, AbilityKeyword.FinishingBlow } },
+        { "Bardic Blast", new List<AbilityKeyword>() { AbilityKeyword.BardBlast } },
+        { "Melee ability", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
     };
 
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -1188,7 +1196,8 @@ public partial class CombatParser
         AbilityKeyword.SummonDeer,
         AbilityKeyword.SummonedSpider,
         AbilityKeyword.MinorHealTargeted,
-        AbilityKeyword.MentalismAttack,
+        //AbilityKeyword.MentalismAttack,
+        AbilityKeyword.PsychicAttack,
         AbilityKeyword.PsychologyAttack,
         AbilityKeyword.KnifeSlashing,
         AbilityKeyword.StaffCrushing,
@@ -1196,6 +1205,8 @@ public partial class CombatParser
         //AbilityKeyword.Riposte,
         //AbilityKeyword.WindStrike,
         //AbilityKeyword.FinishingBlow,
+        AbilityKeyword.BardBlast,
+        AbilityKeyword.Melee,
         Internal_NonBasic,
     };
 
@@ -1587,6 +1598,8 @@ public partial class CombatParser
             case CombatKeyword.WhenTeleporting:
             case CombatKeyword.AddAccuracy:
             case CombatKeyword.TargetUndead:
+            case CombatKeyword.UsableWhileStunned:
+            case CombatKeyword.ActiveAbility:
                 break;
 
             default:
@@ -2442,7 +2455,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "9814")
+            if (Entry.Key.Key == "17103")
             {
             }
 
@@ -3210,6 +3223,7 @@ public partial class CombatParser
         BasicTextReplace(ref modText, ref effectText, "and after using Doe Eyes", string.Empty);
         BasicTextReplace(ref modText, ref effectText, "using Mindworm ", string.Empty);
         BasicTextReplace(ref modText, ref effectText, "Mindworm also attacks ", "also attacks ");
+        BasicTextReplace(ref modText, ref effectText, "Blood Mist Eruption Damage ", "Blood Mist Eruption Direct Damage ");
 
         if (!modText.Contains("But I Love You"))
             ReplaceCaseInsensitive(ref modText, " but ", " b*u*t ");
@@ -3297,7 +3311,7 @@ public partial class CombatParser
         ExtractAttributesFull(text, extractedAbilityList, out extractedCombatEffectList);
 
         if (RemoveCount > extractedAbilityList.Count && extractedAbilityList.Count > 0 && extractedTargetAbilityList.Count == 0)
-            if (extractedAbilityList[extractedAbilityList.Count - 1] != AbilityKeyword.Chill)
+            if (extractedAbilityList[extractedAbilityList.Count - 1] != AbilityKeyword.Chill && extractedAbilityList[extractedAbilityList.Count - 1] != AbilityKeyword.MomentOfResolve)
                 extractedTargetAbilityList.Add(extractedAbilityList[extractedAbilityList.Count - 1]);
 
         // Hack for single abilities
@@ -3308,6 +3322,21 @@ public partial class CombatParser
             else if (extractedAbilityList[0] == AbilityKeyword.Barrage)
                 extractedAbilityList[0] = AbilityKeyword.BarrageOnly;
         }
+
+        // Remove ability for active songs
+        /*
+        foreach (PgCombatEffect Item in extractedCombatEffectList)
+            if (Item.Keyword == CombatKeyword.ActiveSong)
+            {
+                if (extractedTargetAbilityList.Count == 1 && (extractedTargetAbilityList[0] == AbilityKeyword.SongOfBravery ||
+                                                              extractedTargetAbilityList[0] == AbilityKeyword.SongOfDiscord ||
+                                                              extractedTargetAbilityList[0] == AbilityKeyword.SongOfResurgence))
+                {
+                    extractedTargetAbilityList.Clear();
+                    break;
+                }
+            }
+        */
 
         // Hack for major heals
         foreach (PgCombatEffect Item in extractedCombatEffectList)
@@ -3410,6 +3439,7 @@ public partial class CombatParser
         RemoveDecorativeText(ref text, "damage (such as via Insect Egg implantation),", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Your golem minion's", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "(including Toxic Irritant)", out _, ref IndexFound);
+        ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
     }
@@ -4034,7 +4064,7 @@ public partial class CombatParser
         }
         else
         {
-            int PatternIndex = FindPattern(LowerText, LowerFormat, 0, out GameDamageType ParsedDamageType, out GameCombatSkill ParsedCombatSkill, out int FormatLength);
+            int PatternIndex = FindPattern(LowerText, LowerFormat, 0, out GameDamageType ParsedDamageType, out GameCombatSkill ParsedCombatSkill, out AbilityKeyword songKeyword, out int FormatLength);
             if (PatternIndex < 0)
                 return false;
 
@@ -4057,11 +4087,12 @@ public partial class CombatParser
         int PatternLengthBefore;
         GameDamageType DamageTypeAfter;
         GameCombatSkill CombatSkillAfter;
+        AbilityKeyword SongKeyword;
         int PatternLengthAfter;
 
         if (beforePattern.Length > 0)
         {
-            PatternIndex = FindPattern(lowerText, beforePattern, startIndex, out DamageTypeBefore, out CombatSkillBefore, out PatternLengthBefore);
+            PatternIndex = FindPattern(lowerText, beforePattern, startIndex, out DamageTypeBefore, out CombatSkillBefore, out SongKeyword, out PatternLengthBefore);
             DamageTypeAfter = GameDamageType.Internal_None;
             CombatSkillAfter = GameCombatSkill.Internal_None;
             PatternLengthAfter = 0;
@@ -4072,7 +4103,7 @@ public partial class CombatParser
             CombatSkillBefore = GameCombatSkill.Internal_None;
             PatternLengthBefore = 0;
 
-            AfterPatternIndex = FindPattern(lowerText, afterPattern, startIndex, out DamageTypeAfter, out CombatSkillAfter, out PatternLengthAfter);
+            AfterPatternIndex = FindPattern(lowerText, afterPattern, startIndex, out DamageTypeAfter, out CombatSkillAfter, out SongKeyword, out PatternLengthAfter);
             if (AfterPatternIndex > 0)
             {
                 PatternIndex = NumericValueBackwardIndex(lowerText, AfterPatternIndex);
@@ -4108,7 +4139,7 @@ public partial class CombatParser
 
         PgNumericValue Data = NumericValueParse(lowerText.Substring(StartDataIndex, EndDataIndex - StartDataIndex));
 
-        AfterPatternIndex = FindPattern(lowerText, afterPattern, EndDataIndex, out DamageTypeAfter, out CombatSkillAfter, out PatternLengthAfter);
+        AfterPatternIndex = FindPattern(lowerText, afterPattern, EndDataIndex, out DamageTypeAfter, out CombatSkillAfter, out SongKeyword, out PatternLengthAfter);
         if (AfterPatternIndex != EndDataIndex)
             return true;
 
@@ -4176,10 +4207,11 @@ public partial class CombatParser
         return Index;
     }
 
-    private int FindPattern(string text, string pattern, int startIndex, out GameDamageType damageType, out GameCombatSkill combatSkill, out int patternLength)
+    private int FindPattern(string text, string pattern, int startIndex, out GameDamageType damageType, out GameCombatSkill combatSkill, out AbilityKeyword songKeyword, out int patternLength)
     {
         damageType = GameDamageType.Internal_None;
         combatSkill = GameCombatSkill.Internal_None;
+        songKeyword = AbilityKeyword.Internal_None;
 
         int Value;
         int Index;
@@ -4199,6 +4231,13 @@ public partial class CombatParser
         if (Index >= 0)
         {
             combatSkill = (GameCombatSkill)Value;
+            return Index;
+        }
+
+        Index = FindPattern("#B", SongMap, text, pattern, startIndex, out Value, out patternLength);
+        if (Index >= 0)
+        {
+            songKeyword = (AbilityKeyword)Value;
             return Index;
         }
 
@@ -4401,7 +4440,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "9814")
+            if (ItemPower.Key == "17103")
             {
             }
 

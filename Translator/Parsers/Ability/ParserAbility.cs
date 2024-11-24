@@ -45,6 +45,9 @@ public class ParserAbility : Parser
                 case "AttributesThatModAmmoConsumeChance":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModAmmoConsumeChanceList, Value);
                     break;
+                case "AttributesThatDeltaCritChance":
+                    Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaCritChanceList, Value);
+                    break;
                 case "AttributesThatDeltaDelayLoopTime":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatDeltaDelayLoopTimeList, Value);
                     break;
@@ -79,7 +82,7 @@ public class ParserAbility : Parser
                     Result = SetIntProperty((int valueInt) => item.RawCombatRefreshBaseAmount = valueInt, Value);
                     break;
                 case "DamageType":
-                    Result = StringToEnumConversion<DamageType>.SetEnum((DamageType valueEnum) => item.DamageType = valueEnum, DamageType.Internal_None, DamageType.Internal_Empty, Value);
+                    Result = StringToEnumConversion<DamageType>.SetEnum((DamageType valueEnum) => item.DamageType = valueEnum, Value);
                     break;
                 case "DelayLoopIsAbortedIfAttacked":
                     Result = SetBoolProperty((bool valueBool) => item.SetDelayLoopIsAbortedIfAttacked(valueBool), Value);

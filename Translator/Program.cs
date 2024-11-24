@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(415);
+        return ParseCurated(416);
     }
 
     private static int ParseCurated(int Version)
@@ -1645,6 +1645,10 @@ public class Program
             { MapAreaName.Cave2, "Cave2" },
             { MapAreaName.RanalonDen, "Ranalon Den" },
             { MapAreaName.TheWintertide, "The Wintertide" },
+            { MapAreaName.NightmareCaves, "Nightmare Caves" },
+            { MapAreaName.Statehelm, "Statehelm" },
+            { MapAreaName.StatehelmCaves, "Statehelm Caves" },
+            { MapAreaName.XX, "XX" },
         };
 
         Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();

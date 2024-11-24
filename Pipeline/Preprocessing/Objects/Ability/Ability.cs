@@ -22,6 +22,7 @@ public class Ability
         AmmoStickChance = rawAbility.AmmoStickChance;
         Animation = rawAbility.Animation;
         AttributeThatPreventsDelayLoopAbortOnAttacked = rawAbility.AttributeThatPreventsDelayLoopAbortOnAttacked;
+        AttributesThatDeltaCritChance = rawAbility.AttributesThatDeltaCritChance;
         AttributesThatDeltaDelayLoopTime = rawAbility.AttributesThatDeltaDelayLoopTime;
         AttributesThatDeltaPowerCost = rawAbility.AttributesThatDeltaPowerCost;
         AttributesThatDeltaResetTime = rawAbility.AttributesThatDeltaResetTime;
@@ -267,6 +268,7 @@ public class Ability
     public decimal? AmmoStickChance { get; set; }
     public string? Animation { get; set; }
     public string? AttributeThatPreventsDelayLoopAbortOnAttacked { get; set; }
+    public string[]? AttributesThatDeltaCritChance { get; set; }
     public string[]? AttributesThatDeltaDelayLoopTime { get; set; }
     public string[]? AttributesThatDeltaPowerCost { get; set; }
     public string[]? AttributesThatDeltaResetTime { get; set; }
@@ -284,7 +286,7 @@ public class Ability
     public bool? DelayLoopIsAbortedIfAttacked { get; set; }
     public bool? DelayLoopIsOnlyUsedInCombat { get; set; }
     public string? DelayLoopMessage { get; set; }
-    public int? DelayLoopTime { get; set; }
+    public float? DelayLoopTime { get; set; }
     public string? Description { get; set; }
     public string? DigitStrippedName { get; set; }
     public string[]? EffectKeywordsIndicatingEnabled { get; set; }
@@ -344,6 +346,7 @@ public class Ability
         Result.Animation = Animation;
         Result.AoEIsCenteredOnCaster = IsAoECenteredOnCaster;
         Result.AttributeThatPreventsDelayLoopAbortOnAttacked = AttributeThatPreventsDelayLoopAbortOnAttacked;
+        Result.AttributesThatDeltaCritChance = AttributesThatDeltaCritChance;
         Result.AttributesThatDeltaDelayLoopTime = AttributesThatDeltaDelayLoopTime;
         Result.AttributesThatDeltaPowerCost = AttributesThatDeltaPowerCost;
         Result.AttributesThatDeltaResetTime = AttributesThatDeltaResetTime;

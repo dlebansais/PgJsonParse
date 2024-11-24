@@ -22,6 +22,7 @@ public class ParserConditionalKeyword : Parser
     private bool FinishItem(PgConditionalKeyword item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, string parsedFile, string parsedKey)
     {
         bool Result = true;
+        string? KeywordRead = null;
 
         foreach (KeyValuePair<string, object> Entry in contentTable)
         {
@@ -40,6 +41,7 @@ public class ParserConditionalKeyword : Parser
                     Result = StringToEnumConversion<EffectKeyword>.SetEnum((EffectKeyword valueEnum) => item.EffectKeywordMustNotExist = valueEnum, Value);
                     break;
                 case "Keyword":
+                    KeywordRead = Value as string;
                     Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => item.Keyword = valueEnum, Value);
                     break;
                 default:
@@ -54,7 +56,9 @@ public class ParserConditionalKeyword : Parser
         if (Result)
         {
             if (item.Keyword == AbilityKeyword.Internal_None)
-                return Program.ReportFailure("Keyword expected in ConditionalKeyword");
+            {
+                Program.ReportFailure($"Keyword '{KeywordRead}' expected in ConditionalKeyword");
+            }
         }
 
         return Result;

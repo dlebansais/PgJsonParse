@@ -54,7 +54,8 @@
         WinterNexus,
         TheWintertide,
         NightmareCaves,
-        //PovusCaves,
-        Staging,
+        Statehelm,
+        StatehelmCaves,
+        XX,
     }
 }

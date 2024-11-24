@@ -16,7 +16,7 @@ public class Preprocessor
     private static List<JsonConverter> JsonConverters = new()
     {
         new IntDictionaryJsonConverter<Ability, RawAbility, AbilityDictionary>("ability"),
-        new StringDictionaryJsonConverter<AbilityKeyword, AbilityKeyword, AbilityKeywordDictionary>(),
+        new ArrayJsonConverter<AbilityKeyword, AbilityKeyword, AbilityKeywordArray>(),
         new AdvancementTableDictionaryJsonConverter(),
         new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
         new StringDictionaryJsonConverter<AIAbility, RawAIAbility, AIAbilityDictionary>(),
@@ -96,6 +96,18 @@ public class Preprocessor
     {
         if (Preprocess(versionPath, fileName, isPretty, out T ObjectCollection))
         { 
+            Debug.WriteLine($" OK ({ObjectCollection.Count})");
+            return (true, ObjectCollection);
+        }
+
+        return (false, null!);
+    }
+
+    public static (bool, object) PreprocessArray<T>(string versionPath, string fileName, bool isPretty)
+        where T : ICollection
+    {
+        if (Preprocess(versionPath, fileName, isPretty, out T ObjectCollection))
+        {
             Debug.WriteLine($" OK ({ObjectCollection.Count})");
             return (true, ObjectCollection);
         }

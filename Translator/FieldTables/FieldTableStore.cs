@@ -13,6 +13,7 @@ public class FieldTableStore
         { "Animation", typeof(string) },
         { "AttributeThatPreventsDelayLoopAbortOnAttacked", typeof(string) },
         { "AttributesThatModAmmoConsumeChance", typeof(string[]) },
+        { "AttributesThatDeltaCritChance", typeof(string[]) },
         { "AttributesThatDeltaDelayLoopTime", typeof(string[]) },
         { "AttributesThatDeltaPowerCost", typeof(string[]) },
         { "AttributesThatDeltaResetTime", typeof(string[]) },

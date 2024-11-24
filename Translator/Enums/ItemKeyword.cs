@@ -1360,5 +1360,8 @@
         RequireTemperament_FireBlooded,
         HorseRuby,
         MountGlamour,
+        Chrysoberyl,
+        FireOpal,
+        HematicOpal,
     }
 }

@@ -17,6 +17,7 @@
         public float? RawAoERange { get; set; }
         public string? AttributeThatPreventsDelayLoopAbortOnAttacked_Key { get; set; }
         public PgAttributeCollection AttributesThatModAmmoConsumeChanceList { get; set; } = new PgAttributeCollection();
+        public PgAttributeCollection AttributesThatDeltaCritChanceList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaDelayLoopTimeList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaPowerCostList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatDeltaResetTimeList { get; set; } = new PgAttributeCollection();

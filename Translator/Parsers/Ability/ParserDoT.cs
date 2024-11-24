@@ -72,7 +72,7 @@ public class ParserDoT : Parser
         if (item.RawDamagePerTick == null)
             return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected empty damage per tick");
 
-        if (item.DamageType == DamageType.Internal_None || item.DamageType == DamageType.Internal_Empty)
+        if (item.DamageType == DamageType.Internal_None)
             return Program.ReportFailure(parsedFile, parsedKey, $"Unexpected empty damage type");
 
         if (item.RawNumTicks == null)

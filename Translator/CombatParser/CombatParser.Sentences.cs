@@ -59,6 +59,13 @@ public partial class CombatParser
         { (int)GameCombatSkill.SpiritFox, "Spirit Fox" },
     };
 
+    public static readonly Dictionary<int, string> SongMap = new Dictionary<int, string>()
+    {
+        { (int)AbilityKeyword.SongOfBravery, "Song Of Bravery" },
+        { (int)AbilityKeyword.SongOfDiscord, "Song Of Discord" },
+        { (int)AbilityKeyword.SongOfResurgence, "Song Of Resurgence" },
+    };
+
     private static List<Sentence> SentenceList = new List<Sentence>()
     {
         new Sentence("Place an extra trap", CombatKeyword.AnotherTrap),
@@ -92,6 +99,7 @@ public partial class CombatParser
         new Sentence("If it is a #D attack", CombatKeyword.IfDamageType),
         new Sentence("If it deal #D damage", CombatKeyword.IfDamageType),
         new Sentence("Deal %f Direct health damage", CombatKeyword.DealDirectHealthDamage),
+        new Sentence("Gain %f Direct Elite Vulnerability", new List<CombatKeyword>() { CombatKeyword.AddMitigationDirect, CombatKeyword.TargetElite }, SignInterpretation.Opposite),
         new Sentence("Gain %f Direct", CombatKeyword.DirectOnlyDamageBoost),
         new Sentence("Deal %f Direct", CombatKeyword.DirectOnlyDamageBoost),
         new Sentence("#D damage for your next attack", new List<CombatKeyword>() { CombatKeyword.IfDamageType, CombatKeyword.NextAttack }),
@@ -222,6 +230,7 @@ public partial class CombatParser
         new Sentence("Final step deal %f damage", CombatKeyword.ComboFinalStepDamage),
         new Sentence("Final step stun the target while dealing %f damage", CombatKeyword.ComboFinalStepDamageAndStun),
         new Sentence("Whenever you take damage from an enemy", CombatKeyword.ReflectOnAnyAttack),
+        new Sentence("While @ is active", CombatKeyword.ActiveAbility),
         new Sentence("If you are using the #S skill", CombatKeyword.ActiveSkill),
         new Sentence("While the #S skill is active", CombatKeyword.ActiveSkill),
         new Sentence("While #S skill is active", CombatKeyword.ActiveSkill),
@@ -328,6 +337,7 @@ public partial class CombatParser
         new Sentence("Power Cost %f", CombatKeyword.AddPowerCost),
         new Sentence("Power Cost is %f", CombatKeyword.AddPowerCost),
         new Sentence("Reduce the Power cost of your @ %f", CombatKeyword.AddPowerCost),
+        new Sentence("Further reduce ability cost %f", CombatKeyword.AddPowerCost),
         new Sentence("Reduce Power cost of your next @ by %f", new List<CombatKeyword>() { CombatKeyword.AddPowerCost, CombatKeyword.NextUse }),
         new Sentence("Reduce the Power cost of your next @ by %f", new List<CombatKeyword>() { CombatKeyword.AddPowerCost, CombatKeyword.NextUse }),
         new Sentence("Reduce the Power cost of @ %f", CombatKeyword.AddPowerCost),
@@ -387,6 +397,7 @@ public partial class CombatParser
 
         new Sentence("Restore %f health (or Armor)", CombatKeyword.RestoreHealthArmor),
         new Sentence("Restore %f health or Armor", CombatKeyword.RestoreHealthArmor),
+        new Sentence("Restore %f health/Armor", CombatKeyword.RestoreHealthArmor),
         new Sentence("Pet Healing, if any, restore %f health", CombatKeyword.IncreaseHealEfficiency),
         new Sentence("Restore %f health", CombatKeyword.RestoreHealth),
         new Sentence("Boost the healing of your @ %f", CombatKeyword.RestoreHealth),
@@ -435,7 +446,8 @@ public partial class CombatParser
         new Sentence("Grant the target %f Slow/Root Ignore Chance", CombatKeyword.SlowRootImmunity),
         new Sentence("Dispel stun", CombatKeyword.RemoveStun),
         new Sentence("Dispel any Stun", CombatKeyword.RemoveStun),
-        new Sentence("Can be used while stunned. Doing so remove the stun effect from you.", CombatKeyword.RemoveStun),
+        new Sentence("Can be used while stunned", CombatKeyword.UsableWhileStunned),
+        new Sentence("Doing so remove the stun effect from you.", CombatKeyword.RemoveStun),
         new Sentence("Dispel slow and root", CombatKeyword.RemoveSlowRoot),
         new Sentence("Dispel any Slow or Root", CombatKeyword.RemoveSlowRoot),
         new Sentence("Dispel any active Slow or Root", CombatKeyword.RemoveSlowRoot),
@@ -624,6 +636,7 @@ public partial class CombatParser
         new Sentence("Slain within %f second", CombatKeyword.MaxKillTime),
         new Sentence("Buff targets' direct #D damage %f", CombatKeyword.DamageBoost),
         new Sentence("%f Direct Damage", CombatKeyword.DirectOnlyDamageBoost),
+        new Sentence("Direct Damage %f", CombatKeyword.DirectOnlyDamageBoost),
         new Sentence("%f #D damage", CombatKeyword.DamageBoost),
         new Sentence("#D damage %f", CombatKeyword.DamageBoost),
         new Sentence("%f health damage", CombatKeyword.DealDirectHealthDamage),

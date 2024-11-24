@@ -13,5 +13,6 @@
         Cheese4,
         GF_Food,
         GF_Dishes,
+        Mushrooms_ArcaneForest,
     }
 }

@@ -101,6 +101,7 @@
                 {
                     new EffectVerificationEntry() { Prefix = "Deal", Suffix = "Damage every 2 seconds" },
                     new EffectVerificationEntry() { Prefix = "Deal", Suffix = "Trauma Damage every 2 seconds" },
+                    new EffectVerificationEntry() { Prefix = "Every 2 Seconds, Deal", Suffix = "Trauma damage to Health instantly" },
                     new EffectVerificationEntry() { Prefix = "Existing Zombie's Direct Damage", Suffix = "for 60 seconds", AllowDuration = true },
                     new EffectVerificationEntry() { Prefix = "Existing Zombie's Direct Damage", Suffix = "for 5 minutes", AllowDuration = true },
                     new EffectVerificationEntry() { Prefix = "Existing Zombie's Damage Boosted", Suffix = "for 60 seconds", AllowDuration = true },
@@ -151,6 +152,12 @@
                 CombatKeyword.DealIndirectDamage, new List<EffectVerificationEntry>()
                 {
                     new EffectVerificationEntry() { Prefix = "For 8 seconds, boost Indirect Poison Damage", Suffix = "per tick" },
+                }
+            },
+            {
+                CombatKeyword.AddPowerCost, new List<EffectVerificationEntry>()
+                {
+                    new EffectVerificationEntry() { Prefix = "Ability Power Cost", Suffix = "For All Nearby Allies" },
                 }
             },
         };

@@ -211,5 +211,7 @@
         IrkimaPigeonWait,
         IrkimaPigeonWait2,
         SerbuleCommunityChestPoints,
+        Completed_Truxartis_Intro,
+        Enabled_BloodWell_Truxartis,
     }
 }

@@ -37,6 +37,7 @@
         ReflectOnRanged,
         ReflectKnockbackOnFirstMelee,
         ActiveSkill,
+        ActiveAbility,
         NotAttackedRecently,
 
         // LessThanHalfMaxHealth,
@@ -116,6 +117,7 @@
         SlowRootImmunity,
         RemoveStun,
         RemoveSlowRoot,
+        UsableWhileStunned,
 
         // SelfImmolation,
         PetImmolation,

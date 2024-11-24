@@ -24,5 +24,6 @@
         AnglingMode,
         HasCharmedPet,
         BloodMist,
+        GiantBatForm,
     }
 }

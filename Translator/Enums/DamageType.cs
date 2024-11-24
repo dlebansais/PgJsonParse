@@ -3,7 +3,7 @@
     public enum DamageType
     {
         Internal_None,
-        Internal_Empty,
+        //Internal_Empty,
         Crushing,
         Slashing,
         Nature,

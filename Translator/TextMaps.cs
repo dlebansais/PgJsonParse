@@ -296,6 +296,7 @@
             { AbilityIndicatingEnabled.AnglingMode, "Angling Mode" },
             { AbilityIndicatingEnabled.HasCharmedPet, "Has Charmed Pet" },
             { AbilityIndicatingEnabled.BloodMist, "Blood Mist" },
+            { AbilityIndicatingEnabled.GiantBatForm, "Giant Bat Form" },
         };
 
         public static Dictionary<AbilityItemKeyword, string> AbilityItemKeywordTextMap { get; } = new Dictionary<AbilityItemKeyword, string>()
@@ -546,7 +547,7 @@
             { AbilityKeyword.PsiPowerWave, "Psi Power Wave" },
             { AbilityKeyword.PsiAdrenalineWave, "Psi Adrenaline Wave" },
             { AbilityKeyword.Mindreave, "Mindreave" },
-            { AbilityKeyword.MentalismAttack, "Mentalism Attack" },
+            //{ AbilityKeyword.MentalismAttack, "Mentalism Attack" },
             { AbilityKeyword.SystemShock, "System Shock" },
             { AbilityKeyword.Reconstruct, "Reconstruct" },
             { AbilityKeyword.RevitalizeOrReconstruct, "Revitalize Or Reconstruct" },
@@ -929,6 +930,22 @@
             { AbilityKeyword.BloodMistBurst, "Blood Mist Burst" },
             { AbilityKeyword.Mindworm, "Mindworm" },
             { AbilityKeyword.TrueMindworm, "True Mindworm" },
+            { AbilityKeyword.CrushingAttack, "Crushing Attack" },
+            { AbilityKeyword.TraumaAttack, "Trauma Attack" },
+            { AbilityKeyword.SlashingAttack, "Slashing Attack" },
+            { AbilityKeyword.FireAttack, "Fire Attack" },
+            { AbilityKeyword.PiercingAttack, "Piercing Attack" },
+            { AbilityKeyword.PsychicAttack, "Psychic Attack" },
+            { AbilityKeyword.ElectricityAttack, "Electricity Attack" },
+            { AbilityKeyword.PoisonAttack, "Poison Attack" },
+            { AbilityKeyword.DarknessAttack, "Darkness Attack" },
+            { AbilityKeyword.ColdAttack, "Cold Attack" },
+            { AbilityKeyword.NatureAttack, "Nature Attack" },
+            { AbilityKeyword.AcidAttack, "Acid Attack" },
+            { AbilityKeyword.DemonicAttack, "Demonic Attack" },
+            { AbilityKeyword.Heal, "Heal" },
+            { AbilityKeyword.NothingnessAttack, "Nothingness Attack" },
+            { AbilityKeyword.SmitingAttack, "Smiting Attack" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -1205,8 +1222,9 @@
             { AppearanceSkin.Cheese2, "Cheese #2" },
             { AppearanceSkin.Cheese3, "Cheese #3" },
             { AppearanceSkin.Cheese4, "Cheese #4" },
-            { AppearanceSkin.GF_Food, "GF-Food" },
-            { AppearanceSkin.GF_Dishes, "GF-Dishes" },
+            { AppearanceSkin.GF_Food, "GF (Food)" },
+            { AppearanceSkin.GF_Dishes, "GF (Dishes)" },
+            { AppearanceSkin.Mushrooms_ArcaneForest, "Mushrooms (Arcane Forest)" },
         };
 
         public static Dictionary<Augment, string> AugmentTextMap { get; } = new Dictionary<Augment, string>()
@@ -1333,7 +1351,7 @@
         public static Dictionary<DamageType, string> DamageTypeTextMap { get; } = new Dictionary<DamageType, string>()
         {
             { DamageType.Internal_None, string.Empty },
-            { DamageType.Internal_Empty, string.Empty },
+            //{ DamageType.Internal_Empty, string.Empty },
             { DamageType.Crushing, "Crushing" },
             { DamageType.Slashing, "Slashing" },
             { DamageType.Nature, "Nature" },
@@ -1516,6 +1534,7 @@
             { Deaths.ToxicBlood, "Toxic Blood" },
             { Deaths.MinotaurHorn, "Minotaur Horn" },
             { Deaths.AttackColdWall, "Attack Cold Wall" },
+            { Deaths.VampiricBloodSpray, "Vampiric Blood Spray" },
         };
 
         public static Dictionary<Desire, string> DesireTextMap { get; } = new Dictionary<Desire, string>()
@@ -1972,6 +1991,41 @@
             { EffectKeyword.TSysNecroticGraspRanged, "TSys Necrotic Grasp Ranged" },
             { EffectKeyword.StormShieldAoE, "Storm Shield AoE" },
             { EffectKeyword.StunOnNextEvade, "Stun On Next Evade" },
+            { EffectKeyword.TSysBruisingBlowTrauma, "TSys Bruising Blow Trauma" },
+            { EffectKeyword.TSysInfuriatingFistTrauma, "TSys Infuriating Fist Trauma" },
+            { EffectKeyword.TSysFlamingSwordConversion, "TSys Flaming Sword Conversion" },
+            { EffectKeyword.TSysKingOfTheForestPsychic, "TSys King Of The Forest Psychic" },
+            { EffectKeyword.TSysStaffToHalberdConversion, "TSys Staff To Halberd Conversion" },
+            { EffectKeyword.TSysMindreaveElectricity, "TSys Mindreave Electricity" },
+            { EffectKeyword.TSysMultiShotFire, "TSys Multi Shot Fire" },
+            { EffectKeyword.TSysFairyFireFire, "TSys Fairy Fire Fire" },
+            { EffectKeyword.TSysAstralStrikeFire, "TSys Astral Strike Fire" },
+            { EffectKeyword.TSysPixieFlareFireConversion, "TSys Pixie Flare Fire Conversion" },
+            { EffectKeyword.TSysBlitzShotPoison, "TSys Blitz Shot Poison" },
+            { EffectKeyword.TSysCrushingBallDarkness, "TSys Crushing Ball Darkness" },
+            { EffectKeyword.TSysDampenCold, "TSys Dampen Cold" },
+            { EffectKeyword.TSysHailstormNature, "TSys Hailstorm Nature" },
+            { EffectKeyword.TSysEmbraceOfDespairCrits, "TSys Embrace Of Despair Crits" },
+            { EffectKeyword.TSysEmbraceOfDespairSonic, "TSys Embrace Of Despair Sonic" },
+            { EffectKeyword.TSysEclipseOfShadowsCrits, "TSys Eclipse Of Shadows Crits" },
+            { EffectKeyword.TSysEclipseOfShadowsPsychic, "TSys Eclipse Of Shadows Psychic" },
+            { EffectKeyword.TSysWillbreakerCrits, "TSys Willbreaker Crits" },
+            { EffectKeyword.TSysEnthrallRanged, "TSys Enthrall Ranged" },
+            { EffectKeyword.TSysHammerToPickConversion, "TSys Hammer To Pick Conversion" },
+            { EffectKeyword.TSysHeartThornPoison, "TSys Heart Thorn Poison" },
+            { EffectKeyword.TSysDeadlyEmissionDarknessConversion, "TSys Deadly Emission Darkness Conversion" },
+            { EffectKeyword.TSysForestChallengePsychic, "TSys Forest Challenge Psychic" },
+            { EffectKeyword.TSysKnifeColdConversion, "TSys Knife Cold Conversion" },
+            { EffectKeyword.TSysApprehendElectricityConversion, "TSys Apprehend Electricity Conversion" },
+            { EffectKeyword.TSysSoulBiteFireConversion, "TSys Soul Bite Fire Conversion" },
+            { EffectKeyword.TSysDimensionalSnareFireConversion, "TSys Dimensional Snare Fire Conversion" },
+            { EffectKeyword.TSysSpiritBoltFireConversion, "TSys Spirit Bolt Fire Conversion" },
+            { EffectKeyword.TSysThunderousNoteNature, "TSys Thunderous Note Nature" },
+            { EffectKeyword.TSysThunderousNoteBlast, "TSys Thunderous Note Blast" },
+            { EffectKeyword.TSysRabbitScratchTrauma, "TSys Rabbit Scratch Trauma" },
+            { EffectKeyword.TSysBunFuStrikeColdDamage, "TSys Bun Fu Strike Cold Damage" },
+            { EffectKeyword.TSysBunFuBlastCold, "TSys Bun Fu Blast Cold" },
+            { EffectKeyword.TSysCastigateFire, "TSys Castigate Fire" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2292,9 +2346,9 @@
             { EffectStackingType.MagicalDarkness, "Magical Darkness" },
             { EffectStackingType.DarknessDmgBuff, "Darkness Damage Buff" },
             { EffectStackingType.DruidEvent, "Druid Event" },
-            { EffectStackingType.TSysNatureVuln, "Nature Vulnerability" },
-            { EffectStackingType.TSysTraumaVuln, "Trauma Vulnerability" },
-            { EffectStackingType.TSysSlashingVuln, "Slashing Vulnerability" },
+            //{ EffectStackingType.TSysNatureVuln, "Nature Vulnerability" },
+            //{ EffectStackingType.TSysTraumaVuln, "Trauma Vulnerability" },
+            //{ EffectStackingType.TSysSlashingVuln, "Slashing Vulnerability" },
             { EffectStackingType.TSysPoisonResist, "Poison Resistance" },
             //{ EffectStackingType.TSysPsychicResist, "Psychic Resistance" },
             //{ EffectStackingType.TSysAccuracyBoost, "Accuracy Boost" },
@@ -2320,7 +2374,7 @@
             // { EffectStackingType.ReverberatingStrikeReduceArmorRegen, "Reverberating Strike Reduced Armor Regen" },
             // { EffectStackingType.ReverberatingStrikeReduceHealthRegen, "Reverberating Strike Reduced Health Regen" },
             { EffectStackingType.UnnaturalWrathDelayHurt, "Unnatural Wrath Delay Hurt" },
-            { EffectStackingType.ArrowsMitigation, "Arrows Mitigation" },
+            //{ EffectStackingType.ArrowsMitigation, "Arrows Mitigation" },
             { EffectStackingType.Uncrackable, "Uncrackable" },
             { EffectStackingType.TSysSpiderBoostNoStack, "Spider Boost NoS tack" },
             //{ EffectStackingType.TSysPoisonBoost, "Poison Boost" },
@@ -2375,7 +2429,7 @@
             { EffectStackingType.Food, "Food" },
             { EffectStackingType.Snack, "Snack" },
             { EffectStackingType.Instant, "Instant" },
-            { EffectStackingType.One, "One" },
+            //{ EffectStackingType.One, "One" },
             { EffectStackingType.DarknessCoat, "Darkness Coat" },
             { EffectStackingType.Augury, "Augury" },
             { EffectStackingType.Perfume_Righteousness, "Righteousness Perfume" },
@@ -2555,6 +2609,9 @@
             { EffectStackingType.RippleOfAmnesiaDebuffPsychic, "Ripple Of Amnesia Debuff Psychic" },
             { EffectStackingType.EmbraceofDespairDebuffDarkness, "Embrace of Despair Debuff Darkness" },
             { EffectStackingType.EmbraceofDespairDebuffTrauma, "Embrace of Despair Debuff Trauma" },
+            { EffectStackingType.ArrowsMitigationA, "Arrows Mitigation #A" },
+            { EffectStackingType.GhostlyResistance, "Ghostly Resistance" },
+            { EffectStackingType.TrollHealing, "Troll Healing" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2820,6 +2877,8 @@
             { InteractionFlag.IrkimaPigeonWait, "Irkima Pigeon Wait" },
             { InteractionFlag.IrkimaPigeonWait2, "Irkima Pigeon Wait #2" },
             { InteractionFlag.SerbuleCommunityChestPoints, "Serbule Community Chest Points" },
+            { InteractionFlag.Completed_Truxartis_Intro, "Completed Truxartis Intro" },
+            { InteractionFlag.Enabled_BloodWell_Truxartis, "Enabled BloodWell Truxartis" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -4278,6 +4337,9 @@
             { ItemKeyword.RequireTemperament_FireBlooded, "Require Temperament (Fire Blooded)" },
             { ItemKeyword.HorseRuby, "Horse Ruby" },
             { ItemKeyword.MountGlamour, "Mount Glamour" },
+            { ItemKeyword.Chrysoberyl, "Chrysoberyl" },
+            { ItemKeyword.FireOpal, "Fire Opal" },
+            { ItemKeyword.HematicOpal, "Hematic Opal" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4393,9 +4455,7 @@
             { MapAreaName.RahuSewer1, "Rahu Sewer #1" },
             { MapAreaName.Wintertide1, "Wintertide #1" },
             { MapAreaName.Wintertide2, "Wintertide #2" },
-            //{ MapAreaName.WNSWintertide, "WNS Wintertide" },
             { MapAreaName.Povus, "Povus" },
-            //{ MapAreaName.Staging, "Staging" },
             { MapAreaName.PovusCaves2, "Povus Caves #2" },
             { MapAreaName.HogansBasement, "Hogan's Basement" },
             { MapAreaName.SerbuleCrypt, "Serbule Crypt" },
@@ -4407,8 +4467,9 @@
             { MapAreaName.WinterNexus, "Winter Nexus" },
             { MapAreaName.TheWintertide, "The Wintertide" },
             { MapAreaName.NightmareCaves, "Nightmare Caves" },
-            //{ MapAreaName.PovusCaves, "Povus Caves" },
-            { MapAreaName.Staging, "Staging" },
+            { MapAreaName.Statehelm, "Statehelm" },
+            { MapAreaName.StatehelmCaves, "Statehelm Caves" },
+            { MapAreaName.XX, "XX" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -5528,8 +5589,8 @@
         public static Dictionary<SpecialNpc, string> SpecialNpcTextMap { get; } = new Dictionary<SpecialNpc, string>()
         {
             { SpecialNpc.Internal_None, string.Empty },
-            { SpecialNpc.CatCharmPedestal, "Cat Charm Pedestal" },
-            { SpecialNpc.BearCharmPedestal, "Bear Charm Pedestal" },
+            //{ SpecialNpc.CatCharmPedestal, "Cat Charm Pedestal" },
+            //{ SpecialNpc.BearCharmPedestal, "Bear Charm Pedestal" },
             { SpecialNpc.GoblinFireResearchDesk1, "Goblin Fire Research Desk" },
             { SpecialNpc.AlchemyBook, "Alchemy Book" },
             { SpecialNpc.UkorgasWelcomeSign, "Ukorga's Welcome Sign" },
@@ -5606,8 +5667,8 @@
             { SpecialNpc.AntiBrainBugSpellBook, "Anti Brain Bug Spell Book" },
             { SpecialNpc.HalloweenPartyLoot, "Halloween Party Loot" },
             { SpecialNpc.AdminTestNpc, "Admin Test Npc" },
-            { SpecialNpc.WerewolfAltar, "Werewolf Altar" },
-            { SpecialNpc.EventNPC_GiantBatMode, "EventNPC (Giant Bat Mode)" },
+            //{ SpecialNpc.WerewolfAltar, "Werewolf Altar" },
+            //{ SpecialNpc.EventNPC_GiantBatMode, "EventNPC (Giant Bat Mode)" },
             { SpecialNpc.Altar_Druid, "Druid Altar" },
             { SpecialNpc.SummonedBarley, "Summoned Barley" },
             { SpecialNpc.SummonedBasil, "Summoned Basil" },
@@ -5710,6 +5771,7 @@
             { SpecialNpc.Altar_Femur, "Altar (Femur)" },
             { SpecialNpc.Goat_GrakUnFalSqueak, "Goat (Grak Un Fal Squeak)" },
             { SpecialNpc.Goat_GubthaSqueak, "Goat (Gubtha Squeak)" },
+            { SpecialNpc.Altar_Necromancy, "Altar (Necromancy)" },
         };
 
         public static Dictionary<Strategy, string> StrategyTextMap { get; } = new Dictionary<Strategy, string>()
@@ -5966,6 +6028,7 @@
             { Deaths.ToxicBlood, "Drowned in Blood" },
             { Deaths.MinotaurHorn, "" },
             { Deaths.AttackColdWall, "Frozen by flame" },
+            { Deaths.VampiricBloodSpray, "" },
 
             // Many Cuts dots: "Discomfort"
         };
