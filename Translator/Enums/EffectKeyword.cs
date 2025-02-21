@@ -432,5 +432,6 @@
         TSysBunFuStrikeColdDamage,
         TSysBunFuBlastCold,
         TSysCastigateFire,
+        CouncilSwordInStoneBuff,
     }
 }

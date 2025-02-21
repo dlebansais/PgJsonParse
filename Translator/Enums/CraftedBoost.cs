@@ -97,5 +97,6 @@
         CraftedMilitaryDirk,
         CraftedMilitaryDagger,
         CraftedFightingClaw,
+        CraftedHuntingBow,
     }
 }

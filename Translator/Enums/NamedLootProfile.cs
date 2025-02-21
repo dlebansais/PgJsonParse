@@ -24,5 +24,6 @@
         L35Equipment,
         L50Equipment,
         HorseThieves_Serbule,
+        L90Jewelry,
     }
 }

@@ -111,6 +111,9 @@ public class Item
                     Result.SkinColor = RgbColor.Parse(Value, string.Empty, out ColorFormat SkinColorFormat);
                     Result.SetSkinColorFormat(SkinColorFormat);
                     break;
+                case "Scale":
+                    Result.Scale = ParseAppearance(Value);
+                    break;
                 case "Other":
                 default:
                     throw new PreprocessorException();
@@ -393,10 +396,12 @@ public class Item
         string? Cork = ToRawAppearance(droppedAppearance.Cork);
         string? Food = ToRawAppearance(droppedAppearance.Food);
         string? Plate = ToRawAppearance(droppedAppearance.Plate);
+        string? Scale = ToRawAppearance(droppedAppearance.Scale);
         string SkinString = Skin is null ? string.Empty : (droppedAppearance.GetIsSkinInverted() ? $"Skin=^{Skin}" : $"^Skin={Skin}");
         string CorkString = Cork is null ? string.Empty : $"^Cork={Cork}";
         string FoodString = Food is null ? string.Empty : $"^Food={Food}";
         string PlateString = Plate is null ? string.Empty : $"^Plate={Plate}";
+        string ScaleString = Scale is null ? string.Empty : $"Scale={Scale}";
         string ColorString = droppedAppearance.Color is null ? string.Empty : $"Color={droppedAppearance.GetColorFormat()}";
         string SkinColorString = droppedAppearance.SkinColor is null ? string.Empty : $"Skin_Color={droppedAppearance.GetSkinColorFormat()}";
 
@@ -406,6 +411,7 @@ public class Item
             CorkString,
             FoodString,
             PlateString,
+            ScaleString,
             ColorString,
             SkinColorString,
         };

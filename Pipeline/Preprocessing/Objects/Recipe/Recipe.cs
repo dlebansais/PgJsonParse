@@ -141,6 +141,8 @@ public class Recipe
             case "SendItemToSaddlebag":
             case "TransmogItemAppearance":
                 return new RecipeResultEffect() { Type = EffectName };
+            case "MeditationWithDaily":
+                return ParseMeditationWithDaily(EffectName, EffectParameter);
             case "BestowRecipeIfNotKnown":
                 return new RecipeResultEffect() { Type = EffectName, Recipe = EffectParameter };
             default:
@@ -393,11 +395,6 @@ public class Recipe
         return new RecipeResultEffect() { Type = effectName, AreaName = AreaName, Other = Other };
     }
 
-    private static RecipeResultEffect ParseBestowRecipeIfNotKnown(string effectName, string effectParameter)
-    {
-        return new RecipeResultEffect() { Type = effectName, Recipe = effectParameter };
-    }
-
     private static RecipeResultEffect ParseCreateMiningSurvey(string effectName, string effectParameter)
     {
         return new RecipeResultEffect() { Type = CreateMiningSurvey, Effect = effectName, Item = effectParameter };
@@ -418,6 +415,26 @@ public class Recipe
         int Delta = int.Parse(effectParameter);
 
         return new RecipeResultEffect() { Type = effectName, Delta = Delta };
+    }
+
+    private static RecipeResultEffect ParseMeditationWithDaily(string effectName, string effectParameter)
+    {
+        if (effectParameter == string.Empty)
+            return new RecipeResultEffect() { Type = effectName };
+        else
+        {
+            string MeditationTagPattern = @$"UnarmedMeditationCombo([a-zA-Z0-9#]+)";
+            Match MeditationTagMatch;
+
+            MeditationTagMatch = Regex.Match(effectParameter, MeditationTagPattern);
+            if (!MeditationTagMatch.Success)
+                return new RecipeResultEffect() { Type = effectName };
+
+            if (!int.TryParse(MeditationTagMatch.Groups[1].Value, out int MeditationId))
+                throw new PreprocessorException();
+
+            return new RecipeResultEffect() { Type = effectName, MeditationId = MeditationId };
+        }
     }
 
     private static string? ParseItemMenuCategory(string? rawItemMenuCategory)
@@ -602,6 +619,8 @@ public class Recipe
                 return $"{effect.Type}({effect.Delta})";
             case "BestowRecipeIfNotKnown":
                 return $"{effect.Type}({effect.Recipe})";
+            case "MeditationWithDaily":
+                return ToRawMeditationWithDaily(effect);
             case "Special":
                 Debug.Assert(effect.Effect is not null);
                 return effect.Effect!;
@@ -653,6 +672,14 @@ public class Recipe
             CraftedItem += $",{BoostedAnimal}";
 
         return $"{effect.Type}({CraftedItem})";
+    }
+
+    private static string ToRawMeditationWithDaily(RecipeResultEffect effect)
+    {
+        if (effect.MeditationId is null)
+            return $"{effect.Type}";
+        else
+            return $"{effect.Type}(UnarmedMeditationCombo{effect.MeditationId})";
     }
 
     private static string ToRawBrewItem(RecipeResultEffect effect)

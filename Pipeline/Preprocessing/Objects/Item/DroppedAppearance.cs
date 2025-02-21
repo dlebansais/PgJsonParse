@@ -7,6 +7,7 @@ public class DroppedAppearance
     public string? Cork { get; set; }
     public string? Food { get; set; }
     public string? Plate { get; set; }
+    public string? Scale { get; set; }
     public string? Skin { get; set; }
     public string? SkinColor { get; set; }
 

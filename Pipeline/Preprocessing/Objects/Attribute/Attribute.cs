@@ -9,28 +9,10 @@ public class Attribute
         DefaultValue = rawAttribute.DefaultValue;
         DisplayRule = rawAttribute.DisplayRule;
         DisplayType = rawAttribute.DisplayType;
-        IconIds = ParseIconIds(rawAttribute.IconIds, rawAttribute.Label);
+        IconIds = rawAttribute.IconIds;
         IsHidden = rawAttribute.IsHidden;
         Label = rawAttribute.Label;
         Tooltip = rawAttribute.Tooltip;
-    }
-
-    private static int[]? ParseIconIds(int[]? rawIconIds, string? rawLabel)
-    {
-        if (rawIconIds is null || rawLabel is null)
-            return null;
-
-        List<int> Result = new();
-
-        foreach (int IconId in rawIconIds)
-        {
-            if (IconId == 3402 && rawLabel.StartsWith("Gripjaw"))
-                Result.Add(3042);
-            else
-                Result.Add(IconId);
-        }
-
-        return Result.ToArray();
     }
 
     public decimal? DefaultValue { get; set; }
@@ -48,29 +30,11 @@ public class Attribute
         Result.DefaultValue = DefaultValue;
         Result.DisplayRule = DisplayRule;
         Result.DisplayType = DisplayType;
-        Result.IconIds = ToRawIconIds(IconIds, Label);
+        Result.IconIds = IconIds;
         Result.IsHidden = IsHidden;
         Result.Label = Label;
         Result.Tooltip = Tooltip;
 
         return Result;
-    }
-
-    private static int[]? ToRawIconIds(int[]? iconIds, string? label)
-    {
-        if (iconIds is null || label is null)
-            return null;
-
-        List<int> Result = new();
-
-        foreach (int IconId in iconIds)
-        {
-            if (IconId == 3042 && label.StartsWith("Gripjaw"))
-                Result.Add(3402);
-            else
-                Result.Add(IconId);
-        }
-
-        return Result.ToArray();
     }
 }

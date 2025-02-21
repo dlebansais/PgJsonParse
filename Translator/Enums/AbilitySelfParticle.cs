@@ -45,5 +45,7 @@
         VampEnvyHateAoe,
         Fear,
         BloodSplatBurst,
+        SporeParticle,
+        GrayExplosion,
     }
 }

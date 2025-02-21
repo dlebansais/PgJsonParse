@@ -28,5 +28,6 @@
         TransmogItemAppearance,
         CraftWaxItem,
         BestowRecipeIfNotKnown,
+        MeditationWithDaily,
     }
 }

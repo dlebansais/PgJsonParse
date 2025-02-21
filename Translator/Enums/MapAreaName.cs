@@ -28,10 +28,8 @@
         Casino,
         RahuCaves,
         RahuSewer,
-        //RahuSewers,
         FaeRealm,
         SacredGrotto,
-        //ANewLife,
         FaeRealm1Caves,
         Labyrinth1,
         Labyrinth2,
@@ -40,9 +38,7 @@
         RahuSewer1,
         Wintertide1,
         Wintertide2,
-        //WNSWintertide,
         Povus,
-        //Staging,
         PovusCaves2,
         HogansBasement,
         SerbuleCrypt,
@@ -57,5 +53,6 @@
         Statehelm,
         StatehelmCaves,
         XX,
+        Vidaria,
     }
 }

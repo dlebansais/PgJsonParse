@@ -134,20 +134,6 @@ public class PowerTier
 
         string Description = Content;
 
-        // Fix Bat Stability icon.
-        if (IsBuggedBatStabilityDescription(Description) && IconIdList.Contains(3553))
-        {
-            IconIdList.Remove(3553);
-            IconIdList.Add(3547);
-        }
-
-        // Fix Gripjaw icon.
-        if (IsBuggedGripjawDescription(Description) && IconIdList.Contains(3402))
-        {
-            IconIdList.Remove(3402);
-            IconIdList.Add(3042);
-        }
-
         // Fix Sic 'Em.
         bool IsSicEmFixed;
         if (Description.Contains("Sic Em"))
@@ -163,19 +149,6 @@ public class PowerTier
         Result.SetIsSicEmFixed(IsSicEmFixed);
 
         return Result;
-    }
-
-    private static bool IsBuggedBatStabilityDescription(string description)
-    {
-        return description.StartsWith("Bat Stability provides +") && description.EndsWith("% Projectile Evasion for 10 seconds");
-    }
-
-    private static bool IsBuggedGripjawDescription(string description)
-    {
-        return (description.StartsWith("Gripjaw deals ") && description.EndsWith(" Armor to you")) ||
-               (description.StartsWith("Gripjaw deals ") && description.Contains("and hastens the current reset timer of Grappling Web")) ||
-               (description.StartsWith("Gripjaw has a ") && description.EndsWith(" damage")) ||
-                description.StartsWith("Combo: Gripjaw+Any Spider+Any Spider+Inject Venom");
     }
 
     public PowerEffect[]? EffectDescriptions { get; set; }
@@ -225,20 +198,6 @@ public class PowerTier
         if (powerEffect.IconIds is not null)
         {
             List<int> IconIdList = new(powerEffect.IconIds);
-
-            // Fix Bat Stability icon.
-            if (IsBuggedBatStabilityDescription(description) && IconIdList.Contains(3547))
-            {
-                IconIdList.Remove(3547);
-                IconIdList.Add(3553);
-            }
-
-            // Fix Gripjaw icon.
-            if (IsBuggedGripjawDescription(description) && IconIdList.Contains(3042))
-            {
-                IconIdList.Remove(3042);
-                IconIdList.Add(3402);
-            }
 
             foreach (int IconId in IconIdList)
                 Icons += $"{IconTagStart}{IconId}>";

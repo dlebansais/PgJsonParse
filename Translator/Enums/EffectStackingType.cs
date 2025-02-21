@@ -376,5 +376,6 @@
         ArrowsMitigationA,
         GhostlyResistance,
         TrollHealing,
+        SongOfBraveryBuffDamage,
     }
 }

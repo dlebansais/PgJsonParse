@@ -390,6 +390,7 @@ public class FieldTableStore
         { "Plate", typeof(string) },
         { "Color", typeof(string) },
         { "SkinColor", typeof(string) },
+        { "Scale", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableItemKeywordValues { get; } = new Dictionary<string, Type>()
@@ -814,6 +815,7 @@ public class FieldTableStore
         { "Tier", typeof(int) },
         { "Type", typeof(string) },
         { "Recipe", typeof(string) },
+        { "MeditationId", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableSkill { get; } = new Dictionary<string, Type>()

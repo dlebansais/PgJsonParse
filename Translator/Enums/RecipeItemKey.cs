@@ -163,5 +163,7 @@
         DaggerTuneupKit,
         DirkTuneupKit,
         ClawTuneupKit,
+        ZeltaToken,
+        BowTuneupKit,
     }
 }

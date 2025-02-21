@@ -45,6 +45,9 @@ public class ParserDroppedAppearance : Parser
                 case "Plate":
                     Result = StringToEnumConversion<AppearanceSkin>.SetEnum((AppearanceSkin valueEnum) => item.Plate = valueEnum, Value);
                     break;
+                case "Scale":
+                    Result = SetFloatProperty((float valueFloat) => item.RawScale = valueFloat, Value);
+                    break;
                 case "Color":
                     Result = SetColorProperty((uint valueColor) => item.RawColor = valueColor, Value);
                     break;

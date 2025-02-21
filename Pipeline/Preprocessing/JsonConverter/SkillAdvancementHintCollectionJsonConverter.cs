@@ -77,6 +77,24 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
 
         if (StartIndex < 0)
         {
+            Pattern = " ...";
+            StartIndex = hint.IndexOf(Pattern);
+
+            if (StartIndex > 0)
+                return null;
+        }
+
+        if (StartIndex < 0)
+        {
+            Pattern = " ??";
+            StartIndex = hint.IndexOf(Pattern);
+
+            if (StartIndex > 0)
+                return null;
+        }
+
+        if (StartIndex < 0)
+        {
             if (hint.Contains(" equip "))
                 return null;
 

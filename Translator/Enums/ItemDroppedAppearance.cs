@@ -96,5 +96,6 @@
         LootScroll16,*/
         Barrel,
         DeployedTrashCan,
+        Mushroom17,
     }
 }

@@ -1081,6 +1081,8 @@
             { AbilitySelfParticle.VampEnvyHateAoe, "Vamp Envy Hate Aoe" },
             { AbilitySelfParticle.Fear, "Fear" },
             { AbilitySelfParticle.BloodSplatBurst, "Blood Splat Burst" },
+            { AbilitySelfParticle.SporeParticle, "Spore Particle" },
+            { AbilitySelfParticle.GrayExplosion, "Gray Explosion" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -1338,6 +1340,7 @@
             { CraftedBoost.CraftedMilitaryDirk, "Crafted Military Dirk" },
             { CraftedBoost.CraftedMilitaryDagger, "Crafted Military Dagger" },
             { CraftedBoost.CraftedFightingClaw, "Crafted Fighting Claw" },
+            { CraftedBoost.CraftedHuntingBow, "Crafted Hunting Bow" },
         };
 
         public static Dictionary<Currency, string> CurrencyTextMap { get; } = new Dictionary<Currency, string>()
@@ -2026,6 +2029,7 @@
             { EffectKeyword.TSysBunFuStrikeColdDamage, "TSys Bun Fu Strike Cold Damage" },
             { EffectKeyword.TSysBunFuBlastCold, "TSys Bun Fu Blast Cold" },
             { EffectKeyword.TSysCastigateFire, "TSys Castigate Fire" },
+            { EffectKeyword.CouncilSwordInStoneBuff, "Council Sword In Stone Buff" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2612,6 +2616,7 @@
             { EffectStackingType.ArrowsMitigationA, "Arrows Mitigation #A" },
             { EffectStackingType.GhostlyResistance, "Ghostly Resistance" },
             { EffectStackingType.TrollHealing, "Troll Healing" },
+            { EffectStackingType.SongOfBraveryBuffDamage, "Song Of Bravery Buff Damage" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2977,6 +2982,7 @@
             { ItemDroppedAppearance.LootScroll16, "Loot Scroll #16" },*/
             { ItemDroppedAppearance.Barrel, "Barrel" },
             { ItemDroppedAppearance.DeployedTrashCan, "Deployed Trash Can" },
+            { ItemDroppedAppearance.Mushroom17, "Mushroom #17" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -4340,6 +4346,14 @@
             { ItemKeyword.Chrysoberyl, "Chrysoberyl" },
             { ItemKeyword.FireOpal, "Fire Opal" },
             { ItemKeyword.HematicOpal, "Hematic Opal" },
+            { ItemKeyword.Mushroom18, "Mushroom #18" },
+            { ItemKeyword.ZeltaToken, "Zelta Token" },
+            { ItemKeyword.MixedGreens, "Mixed Greens" },
+            { ItemKeyword.Weed, "Weed" },
+            { ItemKeyword.GemFragment, "Gem Fragment" },
+            { ItemKeyword.BowTuneupKit, "Bow Tuneup Kit" },
+            { ItemKeyword.BowyeryRecipe, "Bowyery Recipe" },
+            { ItemKeyword.RedLeafLettuce, "Red Leaf Lettuce" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4443,10 +4457,8 @@
             { MapAreaName.Casino, "Red Wing Casino" },
             { MapAreaName.RahuCaves, "Caves Under Rahu" },
             { MapAreaName.RahuSewer, "Rahu Sewer" },
-            //{ MapAreaName.RahuSewers, "Rahu Sewers" },
             { MapAreaName.FaeRealm, "Fae Realm" },
             { MapAreaName.SacredGrotto, "Sacred Grotto" },
-            //{ MapAreaName.ANewLife, "A New Life" },
             { MapAreaName.FaeRealm1Caves, "Fae Realm1 Caves" },
             { MapAreaName.Labyrinth1, "Labyrinth #1" },
             { MapAreaName.Labyrinth2, "Labyrinth #2" },
@@ -4470,6 +4482,7 @@
             { MapAreaName.Statehelm, "Statehelm" },
             { MapAreaName.StatehelmCaves, "Statehelm Caves" },
             { MapAreaName.XX, "XX" },
+            { MapAreaName.Vidaria, "Vidaria" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -4515,6 +4528,7 @@
             { NamedLootProfile.L35Equipment, "L35 Equipment" },
             { NamedLootProfile.L50Equipment, "L50 Equipment" },
             { NamedLootProfile.HorseThieves_Serbule, "Horse Thieves (Serbule)" },
+            { NamedLootProfile.L90Jewelry, "L90 Jewelry" },
         };
 
         public static Dictionary<PowerWaxType, string> PowerWaxTypeTextMap { get; } = new Dictionary<PowerWaxType, string>()
@@ -4530,6 +4544,8 @@
             { PowerWaxType.SharpenedDirkAccuracy, "Sharpened Dirk Accuracy" },
             { PowerWaxType.SharpenedClawAccuracy, "Sharpened Claw Accuracy" },
             { PowerWaxType.SharpenedDirkCritDamage, "Sharpened Dirk Crit Damage" },
+            { PowerWaxType.SharpenedBowAccuracy, "Sharpened Bow Accuracy" },
+            { PowerWaxType.SharpenedBowCritDamage, "Sharpened Bow Crit Damage" },
         };
 
         public static Dictionary<PreEffect, string> PreEffectTextMap { get; } = new Dictionary<PreEffect, string>()
@@ -4914,6 +4930,10 @@
             { QuestObjectiveTarget.GricklingYoung, "Grickling Young" },
             { QuestObjectiveTarget.GricklingTrained, "Grickling Trained" },
             { QuestObjectiveTarget.Senzur, "Senzur" },
+            { QuestObjectiveTarget.GhoulHoleSwarmer, "Ghoul Hole Swarmer" },
+            { QuestObjectiveTarget.SkeletonHoleTank, "Skeleton Hole Tank" },
+            { QuestObjectiveTarget.SkeletonDarknessMageHole, "Skeleton Darkness Mage Hole" },
+            { QuestObjectiveTarget.SkeletonFireMageHole, "Skeleton Fire Mage Hole" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -5028,7 +5048,7 @@
             { RecipeEffect.ResearchIceMagic50, "Ice Magic Research, Level 50" },
             { RecipeEffect.ResearchIceMagic55, "Ice Magic Research, Level 55" },
             { RecipeEffect.ResearchIceMagic60, "Ice Magic Research, Level 60" },
-            { RecipeEffect.Meditation1, "Meditation 1" },
+            /*{ RecipeEffect.Meditation1, "Meditation 1" },
             { RecipeEffect.Meditation2, "Meditation 2" },
             { RecipeEffect.Meditation3, "Meditation 3" },
             { RecipeEffect.Meditation4, "Meditation 4" },
@@ -5046,7 +5066,7 @@
             { RecipeEffect.Meditation16, "Meditation 16" },
             { RecipeEffect.Meditation17, "Meditation 17" },
             { RecipeEffect.Meditation18, "Meditation 18" },
-            { RecipeEffect.Meditation19, "Meditation 19" },
+            { RecipeEffect.Meditation19, "Meditation 19" },*/
             { RecipeEffect.MeditationHealth5, "Meditation Health 5" },
             { RecipeEffect.MeditationPower5, "Meditation Power 5" },
             { RecipeEffect.MeditationVulnPsi5, "Meditation Psi Vulnerability 5" },
@@ -5060,36 +5080,36 @@
             { RecipeEffect.MeditationVulnPsi10, "Meditation Psi Vulnerability 10" },
             { RecipeEffect.MeditationVulnDarkness10, "Meditation Darkness Vulnerability 10" },
             { RecipeEffect.MeditationVulnPsi15, "Meditation Psi Vulnerability 15" },
-            { RecipeEffect.Meditation20, "Meditation 20" },
+            //{ RecipeEffect.Meditation20, "Meditation 20" },
             { RecipeEffect.MeditationPower20, "Meditation Power 20" },
-            { RecipeEffect.Meditation21, "Meditation 21" },
-            { RecipeEffect.Meditation22, "Meditation 22" },
+            //{ RecipeEffect.Meditation21, "Meditation 21" },
+            //{ RecipeEffect.Meditation22, "Meditation 22" },
             { RecipeEffect.MeditationVulnFire20, "Meditation Fire Vulnerability 20" },
-            { RecipeEffect.Meditation23, "Meditation 23" },
+            //{ RecipeEffect.Meditation23, "Meditation 23" },
             { RecipeEffect.MeditationVulnPsi20, "Meditation Psi Vulnerability 20" },
-            { RecipeEffect.Meditation24, "Meditation 24" },
+            //{ RecipeEffect.Meditation24, "Meditation 24" },
             { RecipeEffect.MeditationHealth20, "Meditation Health 20" },
-            { RecipeEffect.Meditation25, "Meditation 25" },
+            //{ RecipeEffect.Meditation25, "Meditation 25" },
             { RecipeEffect.MeditationCritDmg10, "Meditation Critical Damage 10" },
-            { RecipeEffect.Meditation26, "Meditation 26" },
+            //{ RecipeEffect.Meditation26, "Meditation 26" },
             { RecipeEffect.MeditationVulnCold20, "Meditation Cold Vulnerability 20" },
-            { RecipeEffect.Meditation27, "Meditation 27" },
+            //{ RecipeEffect.Meditation27, "Meditation 27" },
             { RecipeEffect.MeditationPower25, "Meditation Power 25" },
-            { RecipeEffect.Meditation28, "Meditation 28" },
+            //{ RecipeEffect.Meditation28, "Meditation 28" },
             { RecipeEffect.MeditationVulnPsi25, "Meditation Psi Vulnerability 25" },
-            { RecipeEffect.Meditation29, "Meditation 29" },
+            //{ RecipeEffect.Meditation29, "Meditation 29" },
             { RecipeEffect.MeditationIndirect5, "Meditation Indirect Mitigation 5" },
-            { RecipeEffect.Meditation30, "Meditation 30" },
+            //{ RecipeEffect.Meditation30, "Meditation 30" },
             { RecipeEffect.MeditationVulnNature20, "Meditation Nature Vulnerability 20" },
-            { RecipeEffect.Meditation31, "Meditation 31" },
+            //{ RecipeEffect.Meditation31, "Meditation 31" },
             { RecipeEffect.MeditationVulnElectricity20, "Meditation Electricity Vulnerability " },
-            { RecipeEffect.Meditation32, "Meditation 32" },
+            //{ RecipeEffect.Meditation32, "Meditation 32" },
             { RecipeEffect.MeditationHealth25, "Meditation Health 25" },
-            { RecipeEffect.Meditation33, "Meditation 33" },
+            //{ RecipeEffect.Meditation33, "Meditation 33" },
             { RecipeEffect.MeditationVulnPsi30, "Meditation Psi Vulnerability 30" },
-            { RecipeEffect.Meditation34, "Meditation 34" },
+            //{ RecipeEffect.Meditation34, "Meditation 34" },
             { RecipeEffect.MeditationVulnDarkness25, "Meditation Darkness Vulnerability 25" },
-            { RecipeEffect.Meditation35, "Meditation 35" },
+            //{ RecipeEffect.Meditation35, "Meditation 35" },
             { RecipeEffect.MeditationHealth30, "Meditation Health 30" },
             { RecipeEffect.DispelCalligraphyA, "Dispel Calligraphy A" },
             { RecipeEffect.CalligraphyCombo1, "Calligraphy Combo 1" },
@@ -5293,6 +5313,22 @@
             { RecipeEffect.ResearchExoticFireWalls65, "Research Exotic Fire Walls Level 65" },
             { RecipeEffect.ResearchExoticFireWalls75, "Research Exotic Fire Walls Level 75" },
             { RecipeEffect.ResearchExoticFireWalls85, "Research Exotic Fire Walls Level 85" },
+            { RecipeEffect.MeditationNoDaily, "Meditation No Daily" },
+            { RecipeEffect.CalligraphyCombo33, "Calligraphy Combo #33" },
+            { RecipeEffect.CalligraphyPiercing13, "Calligraphy Piercing #13" },
+            { RecipeEffect.CalligraphyCombo34, "Calligraphy Combo #34" },
+            { RecipeEffect.CalligraphySlashingFlat70, "Calligraphy Slashing Flat #70" },
+            { RecipeEffect.CalligraphyCombo35, "Calligraphy Combo #35" },
+            { RecipeEffect.CalligraphySlash12, "Calligraphy Slash #12" },
+            { RecipeEffect.CalligraphyCombo36, "Calligraphy Combo #36" },
+            { RecipeEffect.CalligraphyRage15, "Calligraphy Rage #15" },
+            { RecipeEffect.CalligraphyPiercing14, "Calligraphy Piercing #14" },
+            { RecipeEffect.CalligraphyCombo37, "Calligraphy Combo #37" },
+            { RecipeEffect.CalligraphyArmorRepair95, "Calligraphy Armor Repair #95" },
+            { RecipeEffect.CalligraphyCombo38, "Calligraphy Combo #38" },
+            { RecipeEffect.CalligraphyRage18, "Calligraphy Rage #18" },
+            { RecipeEffect.Calligraphy14B, "Calligraphy #14B" },
+            { RecipeEffect.Calligraphy15B, "Calligraphy #15B" },
         };
 
         public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()
@@ -5458,6 +5494,8 @@
             { RecipeItemKey.DaggerTuneupKit, "Dagger Tuneup Kit" },
             { RecipeItemKey.DirkTuneupKit, "Dirk Tuneup Kit" },
             { RecipeItemKey.ClawTuneupKit, "Claw Tuneup Kit" },
+            { RecipeItemKey.ZeltaToken, "Zelta Token" },
+            { RecipeItemKey.BowTuneupKit, "Bow Tuneup Kit" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -5497,6 +5535,7 @@
             { RecipeKeyword.Research, "Research" },
             { RecipeKeyword.Lint_MealGroup, "Meal Group" },
             { RecipeKeyword.MaxEnchanting, "Max Enchanting" },
+            { RecipeKeyword.Lint_LevelTooHigh, "Level Too High" },
         };
 
         public static Dictionary<RecipeParticle, string> RecipeParticleTextMap { get; } = new Dictionary<RecipeParticle, string>()
@@ -5641,7 +5680,7 @@
             { SpecialNpc.AntiBrainBugSpellBook, "Anti Brain Bug Spell Book" },
             { SpecialNpc.HalloweenPartyLoot, "Halloween Party Loot" },
             { SpecialNpc.AdminTestNpc, "Admin Test Npc" },
-            { SpecialNpc.Altar_Druid, "Druid Altar" },
+            //{ SpecialNpc.Altar_Druid, "Druid Altar" },
             { SpecialNpc.SummonedBarley, "Summoned Barley" },
             { SpecialNpc.SummonedBasil, "Summoned Basil" },
             { SpecialNpc.SummonedBeet, "Summoned Beet" },
@@ -5676,6 +5715,7 @@
             { SpecialNpc.SummonedPeaPlant, "Summoned Pea Plant" },
             { SpecialNpc.SummonedPotato, "Summoned Potato" },
             { SpecialNpc.SummonedPumpkin, "Summoned Pumpkin" },
+            { SpecialNpc.SummonedRedLeafLettuce, "Summoned Red Leaf Lettuce" },
             { SpecialNpc.SummonedRedLettuce, "Summoned Red Lettuce" },
             { SpecialNpc.SummonedRedPepper, "Summoned Red Pepper" },
             { SpecialNpc.SummonedSoybeanPlant, "Summoned Soybean Plant" },
@@ -5688,7 +5728,7 @@
             { SpecialNpc.UrsulaHauntingNPC, "Ursula Haunting NPC" },
             { SpecialNpc.MushroomGrowBox1, "Mushroom Grow Box #1" },
             { SpecialNpc.IvynsChest, "Ivyn's Chest" },
-            { SpecialNpc.GuildAltar, "Guild Altar" },
+            //{ SpecialNpc.GuildAltar, "Guild Altar" },
             { SpecialNpc.ElementalGuardianChest, "Elemental Guardian Chest" },
             { SpecialNpc.MilkableFaeSnail1, "Milkable Fae Snail #1" },
             { SpecialNpc.MilkableFaeSnail10, "Milkable Fae Snail #10" },
@@ -5717,23 +5757,23 @@
             { SpecialNpc.WaterWell, "Water Well" },
             { SpecialNpc.ArcheryChest, "Archery Chest" },
             { SpecialNpc.MoonPhaseSacrificeStatue, "Moon Phase Sacrifice Statue" },
-            { SpecialNpc.PoiBrewingWorkstation, "Poi Brewing Workstation" },
+            //{ SpecialNpc.PoiBrewingWorkstation, "Poi Brewing Workstation" },
             { SpecialNpc.LegacyItemHelper, "Legacy ItemH elper" },
             { SpecialNpc.ItemWorkbench, "Item Workbench" },
             { SpecialNpc.EventNPC_SpiderMode, "Event NPC (Spider Mode)" },
-            { SpecialNpc.SerbuleWorkOrderSign, "Serbule Work Order Sign" },
-            { SpecialNpc.EltibuleWorkOrderSign, "Eltibule Work Order Sign" },
-            { SpecialNpc.CasinoWorkOrderSign, "Casino Work Order Sign" },
-            { SpecialNpc.Desert1WorkOrderSign, "Desert #1 Work Order Sign" },
-            { SpecialNpc.RahuWorkOrderSign, "Rahu Work Order Sign" },
-            { SpecialNpc.FaeRealm1WorkOrderSign, "Fae Realm #1 Work Order Sign" },
-            { SpecialNpc.SunValeWorkOrderSign, "Sun Vale Work Order Sign" },
+            //{ SpecialNpc.SerbuleWorkOrderSign, "Serbule Work Order Sign" },
+            //{ SpecialNpc.EltibuleWorkOrderSign, "Eltibule Work Order Sign" },
+            //{ SpecialNpc.CasinoWorkOrderSign, "Casino Work Order Sign" },
+            //{ SpecialNpc.Desert1WorkOrderSign, "Desert #1 Work Order Sign" },
+            //{ SpecialNpc.RahuWorkOrderSign, "Rahu Work Order Sign" },
+            //{ SpecialNpc.FaeRealm1WorkOrderSign, "Fae Realm #1 Work Order Sign" },
+            //{ SpecialNpc.SunValeWorkOrderSign, "Sun Vale Work Order Sign" },
             { SpecialNpc.NonfictionWritingTable, "Nonfiction Writing Table" },
             { SpecialNpc.NewbieFaeLootChest, "Newbie Fae Loot Chest" },
             { SpecialNpc.StatuePuzzleSwitch, "Statue Puzzle Switch" },
             { SpecialNpc.Altar_Eye, "Altar (Eye)" },
             { SpecialNpc.HorseGlamourizer, "Horse Glamourizer" },
-            { SpecialNpc.KurMountainsWorkOrderSign, "Kur Mountains Work Order Sign" },
+            //{ SpecialNpc.KurMountainsWorkOrderSign, "Kur Mountains Work Order Sign" },
             { SpecialNpc.Library, "Library" },
             { SpecialNpc.WritingTable, "WritingTable" },
             { SpecialNpc.UrsulaHauntingStorage, "Ursula Haunting Storage" },

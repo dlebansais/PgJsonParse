@@ -26,6 +26,7 @@ public class RecipeResultEffect
     public string? Keyword { get; set; }
     public int? MaxHitCount { get; set; }
     public int? MaxLevel { get; set; }
+    public int? MeditationId { get; set; }
     public int? MinLevel { get; set; }
     public string? MoonPhase { get; set; }
     public string? Other { get; set; }

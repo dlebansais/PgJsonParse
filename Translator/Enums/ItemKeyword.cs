@@ -1363,5 +1363,13 @@
         Chrysoberyl,
         FireOpal,
         HematicOpal,
+        Mushroom18,
+        ZeltaToken,
+        MixedGreens,
+        Weed,
+        GemFragment,
+        BowTuneupKit,
+        BowyeryRecipe,
+        RedLeafLettuce,
     }
 }

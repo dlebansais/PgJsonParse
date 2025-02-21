@@ -285,5 +285,9 @@
         GricklingYoung,
         GricklingTrained,
         Senzur,
+        GhoulHoleSwarmer,
+        SkeletonHoleTank,
+        SkeletonDarknessMageHole,
+        SkeletonFireMageHole,
     }
 }
