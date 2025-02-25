@@ -24,4 +24,7 @@ public enum QuestRequirementType
     GeneralShape,
     Appearance,
     AttributeMatchesScriptAtomic,
+    AccountFlagUnset,
+    DayOfWeek,
+    IsVampire,
 }

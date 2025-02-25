@@ -77,7 +77,8 @@ public class Npc
             }
         }
 
-        return (PositionX, PositionY, PositionZ);
+        //return (PositionX, PositionY, PositionZ); Z and Y are inverted.
+        return (PositionX, PositionZ, PositionY);
     }
 
     private static (NpcPreference[]?, NpcPreference[]?) ParsePreferences(RawNpcPreference[]? content)
@@ -154,7 +155,9 @@ public class Npc
         if (positionX is null || positionY is null || positionZ is null)
             return null;
 
-        return $"x:{positionX?.ToString(CultureInfo.InvariantCulture)} y:{positionY?.ToString(CultureInfo.InvariantCulture)} z:{positionZ?.ToString(CultureInfo.InvariantCulture)}";
+        // return $"x:{positionX?.ToString(CultureInfo.InvariantCulture)} y:{positionY?.ToString(CultureInfo.InvariantCulture)} z:{positionZ?.ToString(CultureInfo.InvariantCulture)}";
+        // Z and Y are inverted.
+        return $"x:{positionX?.ToString(CultureInfo.InvariantCulture)} y:{positionZ?.ToString(CultureInfo.InvariantCulture)} z:{positionY?.ToString(CultureInfo.InvariantCulture)}";
     }
 
     private static RawNpcPreference[]? ToRawNpcPreferences(NpcPreference[]? npcPreferenceArray)

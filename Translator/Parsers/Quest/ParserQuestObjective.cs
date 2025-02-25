@@ -49,11 +49,11 @@ public class ParserQuestObjective : Parser
     private static Dictionary<QuestObjectiveType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveType, List<string>>()
     {
         { QuestObjectiveType.Kill, new List<string>() { "Type", "Target", "Description", "Requirements", "GroupId", "Number", "InternalName" } },
-        { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number" } },
+        { QuestObjectiveType.Scripted, new List<string>() { "Type", "Description", "Requirements", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
         { QuestObjectiveType.MultipleInteractionFlags, new List<string>() { "Type", "Description", "InteractionFlags", "GroupId", "Number" } },
-        { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "Requirements", "ItemName", "GroupId", "Number", "InternalName" } },
-        { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
-        { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumberToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "Number", "InternalName" } },
+        { QuestObjectiveType.Collect, new List<string>() { "Type", "Target", "Description", "IsHiddenUntilEarlierObjectivesComplete", "Requirements", "ItemName", "GroupId", "Number", "InternalName" } },
+        { QuestObjectiveType.InteractionFlag, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number" } },
+        { QuestObjectiveType.Deliver, new List<string>() { "Type", "Target", "Description", "ItemName", "NumberToDeliver", "IsHiddenUntilEarlierObjectivesComplete", "GroupId", "Number", "InternalName" } },
         { QuestObjectiveType.Have, new List<string>() { "Type", "Target", "Description", "ItemName", "GroupId", "Number", "InternalName" } },
         { QuestObjectiveType.Harvest, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "Number" } },
         { QuestObjectiveType.TipPlayer, new List<string>() { "Type", "Description", "MinAmount", "Number" } },
@@ -238,6 +238,7 @@ public class ParserQuestObjective : Parser
                     case "IsHiddenUntilEarlierObjectivesComplete":
                     case "GroupId":
                     case "Number":
+                    case "InternalName":
                         Result = ParseCommonFields(NewItem, Key, Value);
                         break;
                     default:
@@ -353,6 +354,7 @@ public class ParserQuestObjective : Parser
                         Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
                     case "Description":
+                    case "IsHiddenUntilEarlierObjectivesComplete":
                     case "GroupId":
                     case "Number":
                     case "InternalName":
@@ -459,6 +461,9 @@ public class ParserQuestObjective : Parser
                 {
                     case "Type":
                         break;
+                    case "ItemName":
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
+                        break;
                     case "Target":
                         Result = SetStringProperty((string valueString) => NewItem.Target = valueString, Value);
                         break;
@@ -521,6 +526,7 @@ public class ParserQuestObjective : Parser
                         break;
                     case "Description":
                     case "IsHiddenUntilEarlierObjectivesComplete":
+                    case "GroupId":
                     case "Number":
                     case "InternalName":
                         Result = ParseCommonFields(NewItem, Key, Value);

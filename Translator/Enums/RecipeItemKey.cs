@@ -165,5 +165,12 @@
         ClawTuneupKit,
         ZeltaToken,
         BowTuneupKit,
+        Ore,
+        Demonic,
+        MixedGreens,
+        EnergyBow,
+        PowerSource,
+        WhittlingKnife,
+        BeastMeat,
     }
 }

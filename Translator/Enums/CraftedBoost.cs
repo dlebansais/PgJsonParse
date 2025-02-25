@@ -98,5 +98,7 @@
         CraftedMilitaryDagger,
         CraftedFightingClaw,
         CraftedHuntingBow,
+        CraftedHuntingCrossbow,
+        CraftedFaebow,
     }
 }

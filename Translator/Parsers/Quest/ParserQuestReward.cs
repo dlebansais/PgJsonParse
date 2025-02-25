@@ -24,7 +24,8 @@ public class ParserQuestReward : Parser
         { QuestRewardType.WorkOrderCurrency, FinishItemWorkOrderCurrency },
         { QuestRewardType.Favor, FinishItemFavor },
         { QuestRewardType.NamedLootProfile, FinishItemNamedLootProfile },
-        { QuestRewardType.InteractionFlag, FinishItemInteractionFlag },
+        { QuestRewardType.SetInteractionFlag, FinishItemSetInteractionFlag },
+        { QuestRewardType.ClearInteractionFlag, FinishItemClearInteractionFlag },
         { QuestRewardType.LoreBook, FinishItemLoreBook },
         { QuestRewardType.Title, FinishItemTitle },
         { QuestRewardType.ScriptedQuestObjective, FinishItemScriptedQuestObjective },
@@ -48,7 +49,8 @@ public class ParserQuestReward : Parser
         { QuestRewardType.WorkOrderCurrency, new List<string>() { "T", "Amount", "Currency" } },
         { QuestRewardType.Favor, new List<string>() { "T", "Favor", "Npc" } },
         { QuestRewardType.NamedLootProfile, new List<string>() { "T", "NamedLootProfile" } },
-        { QuestRewardType.InteractionFlag, new List<string>() { "T", "InteractionFlag" } },
+        { QuestRewardType.SetInteractionFlag, new List<string>() { "T", "InteractionFlag" } },
+        { QuestRewardType.ClearInteractionFlag, new List<string>() { "T", "InteractionFlag" } },
         { QuestRewardType.LoreBook, new List<string>() { "T", "LoreBook" } },
         { QuestRewardType.Title, new List<string>() { "T", "Title" } },
         { QuestRewardType.ScriptedQuestObjective, new List<string>() { "T", "Npc" } },
@@ -554,9 +556,19 @@ public class ParserQuestReward : Parser
             return false;
     }
 
-    private static bool FinishItemInteractionFlag(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    private static bool FinishItemSetInteractionFlag(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
-        PgQuestRewardInteractionFlag NewItem = new PgQuestRewardInteractionFlag();
+        return FinishItemInteractionFlag(isSet: true, ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+    }
+
+    private static bool FinishItemClearInteractionFlag(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        return FinishItemInteractionFlag(isSet: false, ref item, contentTable, contentTypeTable, itemCollection, lastItemType, knownFieldList, usedFieldList, parsedFile, parsedKey);
+    }
+
+    private static bool FinishItemInteractionFlag(bool isSet, ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRewardInteractionFlag NewItem = new PgQuestRewardInteractionFlag() { IsSet = isSet };
 
         bool Result = true;
 
@@ -861,11 +873,17 @@ public class ParserQuestReward : Parser
                             {
                                 switch (ValueString)
                                 {
+                                    case "HelpMsg_VidariaRenown":
+                                        NewItem.Special = "Help Message (Vidaria Renown)";
+                                        Result = true;
+                                        break;
+
                                     case "IncAktaariQuestCounter":
                                         NewItem.Special = "Increment Aktaari Quest Counter";
                                         Result = true;
                                         break;
                                     default:
+                                        Result = Program.ReportFailure($"Unknown effect: {ValueString}");
                                         break;
                                 }
                             }

@@ -247,5 +247,8 @@
         Attack_Vampire_Grasp,
         Attack_Vampire_Mental,
         Attack_Vampire_Enthrall,
+        Attack_TwoHand_Swing,
+        Attack_TwoHand_Parry,
+        Attack_TwoHand_Overhead,
     }
 }

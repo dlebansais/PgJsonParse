@@ -51,8 +51,7 @@
         TheWintertide,
         NightmareCaves,
         Statehelm,
-        StatehelmCaves,
-        XX,
         Vidaria,
+        VidariaCaves,
     }
 }

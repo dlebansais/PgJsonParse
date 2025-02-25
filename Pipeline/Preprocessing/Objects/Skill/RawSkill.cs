@@ -2,8 +2,8 @@
 
 public class RawSkill
 {
+    public string? ActiveAdvancementTable { get; set; }
     public SkillAdvancementHintCollection? AdvancementHints { get; set; }
-    public string? AdvancementTable { get; set; }
     public bool? AuxCombat { get; set; }
     public bool? Combat { get; set; }
     public string? Description { get; set; }
@@ -16,6 +16,7 @@ public class RawSkill
     public int? MaxBonusLevels { get; set; }
     public string? Name { get; set; }
     public string[]? Parents { get; set; }
+    public string? PassiveAdvancementTable { get; set; }
     public string[]? RecipeIngredientKeywords { get; set; }
     public SkillReportCollection? Reports { get; set; }
     public SkillRewardCollection? Rewards { get; set; }

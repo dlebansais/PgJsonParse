@@ -7,8 +7,8 @@ public class Skill
 {
     public Skill(RawSkill rawSkill)
     {
+        ActiveAdvancementTable = rawSkill.ActiveAdvancementTable;
         AdvancementHints = rawSkill.AdvancementHints;
-        AdvancementTable = rawSkill.AdvancementTable;
         AuxCombat = rawSkill.AuxCombat;
         Combat = rawSkill.Combat;
         Description = rawSkill.Description;
@@ -21,6 +21,7 @@ public class Skill
         MaxBonusLevels = rawSkill.MaxBonusLevels;
         Name = rawSkill.Name;
         Parents = rawSkill.Parents;
+        PassiveAdvancementTable = rawSkill.PassiveAdvancementTable;
         RecipeIngredientKeywords = rawSkill.RecipeIngredientKeywords;
         Reports = rawSkill.Reports;
         Rewards = rawSkill.Rewards;
@@ -39,10 +40,10 @@ public class Skill
         else
             RecipeIngredientKeywords = rawSkill.RecipeIngredientKeywords;
 
-        if (AdvancementTable == "null")
+        if (ActiveAdvancementTable == "null")
         {
             IsNullAdvancementTable = true;
-            AdvancementTable = null;
+            ActiveAdvancementTable = null;
         }
 
         if (rawSkill.TSysCompatibleCombatSkills is not null)
@@ -55,8 +56,8 @@ public class Skill
         }
     }
 
+    public string? ActiveAdvancementTable { get; set; }
     public SkillAdvancementHintCollection? AdvancementHints { get; set; }
-    public string? AdvancementTable { get; set; }
     public bool? AuxCombat { get; set; }
     public bool? Combat { get; set; }
     public string? Description { get; set; }
@@ -69,6 +70,7 @@ public class Skill
     public int? MaxBonusLevels { get; set; }
     public string? Name { get; set; }
     public string[]? Parents { get; set; }
+    public string? PassiveAdvancementTable { get; set; }
     public string[]? RecipeIngredientKeywords { get; set; }
     public SkillReportCollection? Reports { get; set; }
     public SkillRewardCollection? Rewards { get; set; }
@@ -81,8 +83,8 @@ public class Skill
     {
         RawSkill Result = new();
 
+        Result.ActiveAdvancementTable = ActiveAdvancementTable;
         Result.AdvancementHints = AdvancementHints;
-        Result.AdvancementTable = AdvancementTable;
         Result.AuxCombat = AuxCombat;
         Result.Combat = Combat;
         Result.Description = Description;
@@ -95,6 +97,7 @@ public class Skill
         Result.MaxBonusLevels = MaxBonusLevels;
         Result.Name = Name;
         Result.Parents = Parents;
+        Result.PassiveAdvancementTable = PassiveAdvancementTable;
         Result.Reports = Reports;
         Result.Rewards = Rewards;
         Result.SkillLevelDisparityApplies = SkillLevelDisparityApplies;
@@ -107,7 +110,7 @@ public class Skill
             Result.RecipeIngredientKeywords = RecipeIngredientKeywords;
 
         if (IsNullAdvancementTable)
-            Result.AdvancementTable = "null";
+            Result.ActiveAdvancementTable = "null";
 
         if (UnsortedCombatSkills is not null)
             Result.TSysCompatibleCombatSkills = UnsortedCombatSkills.ToArray();

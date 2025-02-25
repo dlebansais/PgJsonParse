@@ -97,5 +97,6 @@
         Barrel,
         DeployedTrashCan,
         Mushroom17,
+        Egg2,
     }
 }

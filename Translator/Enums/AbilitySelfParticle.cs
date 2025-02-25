@@ -47,5 +47,11 @@
         BloodSplatBurst,
         SporeParticle,
         GrayExplosion,
+        IceNova,
+        IceBreath,
+        HellfireBurst,
+        PinkExplosion,
+        LightningNova,
+        FireNova,
     }
 }

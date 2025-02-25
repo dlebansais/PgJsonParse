@@ -213,5 +213,11 @@
         SerbuleCommunityChestPoints,
         Completed_Truxartis_Intro,
         Enabled_BloodWell_Truxartis,
+        Completed_Truxartis_Task_Today,
+        Quest_KilltheDoctrineKeeper_Complete,
+        FoundLasriNote,
+        Crall_DiscoveredAcceleratedRotor,
+        Crall_DiscoveredSpecializedIceFishing,
+        Drummond_Offended,
     }
 }

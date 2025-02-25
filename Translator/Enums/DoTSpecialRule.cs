@@ -7,5 +7,6 @@
         IfTargetNotLooking,
         DelayedDamage,
         ArmorDamage,
+        BuffActivatedCheckOnlyFirstAttribute,
     }
 }

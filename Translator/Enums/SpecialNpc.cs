@@ -75,6 +75,11 @@
         SummonedFlower13,
         SummonedFlower14,
         SummonedFlower15,
+        SummonedFlower16,
+        SummonedFlower17,
+        SummonedFlower18,
+        SummonedFlower19,
+        SummonedFlower20,
         SummonedFlower2,
         SummonedFlower3,
         SummonedFlower4,
@@ -98,6 +103,7 @@
         SummonedSugarcane,
         SummonedTomatoPlant,
         SummonedWheatPlant,
+        WaterWellFillable,
         DalvosChest,
         KhyrulekMementoChest,
         UrsulaHauntingNPC,
@@ -161,5 +167,6 @@
         Altar_Necromancy,
         NPC_Thanksgiving_Ricatu,
         NPC_Velkort_Halloween,
+        VidariaShed1,
     }
 }

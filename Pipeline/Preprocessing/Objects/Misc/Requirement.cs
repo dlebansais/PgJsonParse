@@ -7,6 +7,7 @@ public class Requirement
     public Requirement(RawRequirement rawRequirement)
     {
         AbilityKeyword = rawRequirement.AbilityKeyword;
+        AccountFlag = rawRequirement.AccountFlag;
         AllowedRace = rawRequirement.AllowedRace;
         AllowedStates = rawRequirement.AllowedStates;
         Appearance = rawRequirement.Appearance;
@@ -14,6 +15,7 @@ public class Requirement
         AtomicVar = rawRequirement.AtomicVar;
         Attribute = rawRequirement.Attribute;
         ClearSky = rawRequirement.ClearSky;
+        DaysAllowed = rawRequirement.DaysAllowed;
         DisallowedRace = rawRequirement.DisallowedRace;
         DisallowedStates = rawRequirement.DisallowedStates;
         Distance = rawRequirement.Distance;
@@ -123,6 +125,7 @@ public class Requirement
     }
 
     public string? AbilityKeyword { get; set; }
+    public string? AccountFlag { get; set; }
     public string? AllowedRace { get; set; }
     public string[]? AllowedStates { get; set; }
     public string? Appearance { get; set; }
@@ -131,6 +134,7 @@ public class Requirement
     public string? AtomicVar { get; set; }
     public string? Attribute { get; set; }
     public bool? ClearSky { get; set; }
+    public string[]? DaysAllowed { get; set; }
     public bool? Daytime { get; set; }
     public string? DisallowedRace { get; set; }
     public string[]? DisallowedStates { get; set; }
@@ -171,6 +175,7 @@ public class Requirement
         RawRequirement Result = new();
 
         Result.AbilityKeyword = AbilityKeyword;
+        Result.AccountFlag = AccountFlag;
         Result.AllowedRace = AllowedRace;
         Result.AllowedStates = AllowedStates;
         Result.Appearance = Appearance;
@@ -178,6 +183,7 @@ public class Requirement
         Result.AtomicVar = AtomicVar;
         Result.Attribute = Attribute;
         Result.ClearSky = ClearSky;
+        Result.DaysAllowed = DaysAllowed;
         Result.DisallowedRace = DisallowedRace;
         Result.DisallowedStates = DisallowedStates;
         Result.Distance = Distance;

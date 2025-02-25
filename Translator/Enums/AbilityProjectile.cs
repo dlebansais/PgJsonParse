@@ -37,5 +37,7 @@
         Projectile_Blood,
         Projectile_Nature,
         Projectile_Frostball_Scintillating,
+        Projectile_Web,
+        Projectile_Ice,
     }
 }

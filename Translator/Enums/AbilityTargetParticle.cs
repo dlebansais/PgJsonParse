@@ -71,5 +71,6 @@
         VampEnvyHate,
         ShadowFullBody,
         Fear,
+        LightningHitQuick,
     }
 }

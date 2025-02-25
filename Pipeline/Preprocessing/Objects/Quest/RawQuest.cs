@@ -3,6 +3,7 @@
 public class RawQuest
 {
     public bool? CheckRequirementsToSustainOnBestow { get; set; }
+    public bool? DeleteFromHistoryIfVersionChanged { get; set; }
     public string? Description { get; set; }
     public string? DisplayedLocation { get; set; }
     public string? FavorNpc { get; set; }

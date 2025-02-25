@@ -289,5 +289,10 @@
         SkeletonHoleTank,
         SkeletonDarknessMageHole,
         SkeletonFireMageHole,
+        DemonSwarmer,
+        DemonSoldier,
+        RubywallCrystalMonster,
+        RanalonDoctrineKeeper,
+        RanalonDenMother,
     }
 }

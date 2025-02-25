@@ -69,6 +69,11 @@
         public bool ForceBookOnWrapUp { get { return (BoolValues & (ForceBookOnWrapUpNotNull + ForceBookOnWrapUpIsTrue)) == (ForceBookOnWrapUpNotNull + ForceBookOnWrapUpIsTrue); } }
         public bool? RawForceBookOnWrapUp { get { return ((BoolValues & ForceBookOnWrapUpNotNull) != 0) ? (BoolValues & ForceBookOnWrapUpIsTrue) != 0 : null; } }
         public void SetForceBookOnWrapUp(bool value) { BoolValues |= (BoolValues & ~(ForceBookOnWrapUpNotNull + ForceBookOnWrapUpIsTrue)) | ((value ? ForceBookOnWrapUpIsTrue : 0) + ForceBookOnWrapUpNotNull); }
+        public const int DeleteFromHistoryIfVersionChangedNotNull = 1 << 12;
+        public const int DeleteFromHistoryIfVersionChangedIsTrue = 1 << 13;
+        public bool DeleteFromHistoryIfVersionChanged { get { return (BoolValues & (DeleteFromHistoryIfVersionChangedNotNull + DeleteFromHistoryIfVersionChangedIsTrue)) == (DeleteFromHistoryIfVersionChangedNotNull + DeleteFromHistoryIfVersionChangedIsTrue); } }
+        public bool? RawDeleteFromHistoryIfVersionChanged { get { return ((BoolValues & DeleteFromHistoryIfVersionChangedNotNull) != 0) ? (BoolValues & DeleteFromHistoryIfVersionChangedIsTrue) != 0 : null; } }
+        public void SetDeleteFromHistoryIfVersionChanged(bool value) { BoolValues |= (BoolValues & ~(DeleteFromHistoryIfVersionChangedNotNull + DeleteFromHistoryIfVersionChangedIsTrue)) | ((value ? DeleteFromHistoryIfVersionChangedIsTrue : 0) + DeleteFromHistoryIfVersionChangedNotNull); }
 
         public int IconId { get; set; }
 

@@ -311,5 +311,9 @@
         CalligraphyRage18,
         Calligraphy14B,
         Calligraphy15B,
+        DecomposeDemonOreIntoEssence,
+        DispelFairyLight,
+        MeditationBodyHeat30,
+        MeditationMetabolism30,
     }
 }

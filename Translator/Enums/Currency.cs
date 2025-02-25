@@ -6,5 +6,7 @@
         Gold,
         WardenPoints,
         LiveEventCredits,
+        VidariaRenown,
+        BloodOaths,
     }
 }

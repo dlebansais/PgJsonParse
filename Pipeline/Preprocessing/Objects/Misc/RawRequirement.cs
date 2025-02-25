@@ -3,6 +3,7 @@
 public class RawRequirement
 {
     public string? AbilityKeyword { get; set; }
+    public string? AccountFlag { get; set; }
     public string? AllowedRace { get; set; }
     public string[]? AllowedStates { get; set; }
     public string? Appearance { get; set; }
@@ -10,6 +11,7 @@ public class RawRequirement
     public string? AtomicVar { get; set; }
     public string? Attribute { get; set; }
     public bool? ClearSky { get; set; }
+    public string[]? DaysAllowed { get; set; }
     public string? DisallowedRace { get; set; }
     public string[]? DisallowedStates { get; set; }
     public int? Distance { get; set; }

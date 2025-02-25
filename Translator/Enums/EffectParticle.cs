@@ -206,5 +206,9 @@
         VampTeleport,
         VampireSunSmoke,
         VampireSunFire,
+        LoveBomb,
+        FireworkCyan,
+        Confetti2Cyan,
+        Particle_LoveBomb,
     }
 }

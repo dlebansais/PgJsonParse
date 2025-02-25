@@ -433,5 +433,11 @@
         TSysBunFuBlastCold,
         TSysCastigateFire,
         CouncilSwordInStoneBuff,
+        Hellfire,
+        DriedOutCurse,
+        DriedOutDehydrated,
+        DriedOutDehydrated1,
+        DriedOutDehydrated2,
+        TruxartisBuff,
     }
 }

@@ -572,6 +572,7 @@ public class FieldTableStore
         { "MidwayGiveItems", typeof(PgQuestRewardItem[]) },
         { "RewardsDescription", typeof(string) },
         { "CheckRequirementsToSustainOnBestow", typeof(bool) },
+        { "DeleteFromHistoryIfVersionChanged", typeof(bool) },
         { "QuestFailEffects", typeof(PgQuestFailEffect[]) },
         { "ForceBookOnWrapUp", typeof(bool) },
     };
@@ -603,6 +604,8 @@ public class FieldTableStore
         { "EventSkill", typeof(string) },
         { "Attribute", typeof(string) },
         { "ScriptAtomicInt", typeof(string) },
+        { "AccountFlag", typeof(string) },
+        { "DaysAllowed", typeof(string[]) },
     };
 
     public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()
@@ -824,7 +827,6 @@ public class FieldTableStore
         { "Description", typeof(string) },
         { "HideWhenZero", typeof(bool) },
         { "XpTable", typeof(string) },
-        { "AdvancementTable", typeof(string) },
         { "Combat", typeof(bool) },
         { "TSysCompatibleCombatSkills", typeof(string[]) },
         { "MaxBonusLevels", typeof(int) },
@@ -841,6 +843,8 @@ public class FieldTableStore
         { "IsFakeCombatSkill", typeof(bool) },
         { "IsUmbrellaSkill", typeof(bool) },
         { "SkillLevelDisparityApplies", typeof(bool) },
+        { "ActiveAdvancementTable", typeof(string) },
+        { "PassiveAdvancementTable", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableLevelCapInteraction { get; } = new Dictionary<string, Type>()

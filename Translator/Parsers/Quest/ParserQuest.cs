@@ -135,6 +135,9 @@ public class ParserQuest : Parser
                 case "CheckRequirementsToSustainOnBestow":
                     Result = SetBoolProperty((bool valueBool) => item.SetCheckRequirementsToSustainOnBestow(valueBool), Value);
                     break;
+                case "DeleteFromHistoryIfVersionChanged":
+                    Result = SetBoolProperty((bool valueBool) => item.SetDeleteFromHistoryIfVersionChanged(valueBool), Value);
+                    break;
                 case "QuestFailEffects":
                     Result = Inserter<PgQuestFailEffect>.AddKeylessArray(item.QuestFailEffectList, Value);
                     break;

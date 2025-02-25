@@ -5,5 +5,6 @@
         Internal_None,
         Turret,
         Immobile,
+        Static,
     }
 }

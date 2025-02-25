@@ -164,5 +164,7 @@
         MinotaurHorn,
         AttackColdWall,
         VampiricBloodSpray,
+        DemonBite,
+        BloodLoss,
     }
 }

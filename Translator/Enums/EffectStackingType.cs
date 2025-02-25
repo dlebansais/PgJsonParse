@@ -377,5 +377,8 @@
         GhostlyResistance,
         TrollHealing,
         SongOfBraveryBuffDamage,
+        ArrangementComfort,
+        SpiritFoxBoostPotion,
+        WeatherWitchingBoostPotion,
     }
 }

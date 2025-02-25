@@ -684,7 +684,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "17103")
+        if (Key == "8001")
         {
         }
 
@@ -778,7 +778,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "17103")
+        if (power.Key == "8001")
         {
         }
 
@@ -1901,8 +1901,8 @@ public partial class CombatParser
                         {
                             if (PgModEffect.SecondaryModEffect is not null)
                             {
-                                Debug.Assert(PgModEffect.SecondaryModEffect.EffectKey == string.Empty);
-                                Debug.Assert(PgModEffect.SecondaryModEffect.Description == string.Empty);
+                                //Debug.Assert(PgModEffect.SecondaryModEffect.EffectKey == string.Empty);
+                                //Debug.Assert(PgModEffect.SecondaryModEffect.Description == string.Empty);
 
                                 PowerTierToEffect? SecondaryPowerTierToEffect = ToPowerTierEffect(PgModEffect.SecondaryModEffect, hasTier: false, 0);
                                 Debug.Assert(SecondaryPowerTierToEffect is not null);
@@ -2455,7 +2455,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "17103")
+            if (Entry.Key.Key == "8001")
             {
             }
 
@@ -2776,28 +2776,46 @@ public partial class CombatParser
 
     private bool AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, PgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
     {
+        IList<PgPowerEffect> EffectList = powerTier.EffectList;
+        Debug.Assert(EffectList.Count == 1);
+        PgPowerEffectSimple powerSimpleEffect = (PgPowerEffectSimple)EffectList[0];
+
+        string ModText = powerSimpleEffect.Description;
+
+        if (ModText.Contains("Necromancy Base Damage") && ModText.Contains("Summoned Skeletons deal"))
+        {
+            string[] Split = ModText.Split(new string[] { ";" }, StringSplitOptions.None);
+            PgEffect NoEffect = new();
+            bool Result = true;
+            Result &= AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, Split[0], NoEffect, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out modEffect, displayAnalysisResult);
+            Result &= AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, Split[1], effect, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out PgModEffect SecondaryModEffect, displayAnalysisResult);
+
+            modEffect.SecondaryModEffect = SecondaryModEffect;
+            return Result;
+        }
+
+        return AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, ModText, effect, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out modEffect, displayAnalysisResult);
+    }
+
+    private bool AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, string modText, PgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
+    {
         modEffect = null!;
 
         IList<PgPowerEffect> EffectList = powerTier.EffectList;
         Debug.Assert(EffectList.Count == 1);
         PgPowerEffectSimple powerSimpleEffect = (PgPowerEffectSimple)EffectList[0];
 
-        string ModText = powerSimpleEffect.Description;
         string EffectText = effect.Description;
-        bool IsGolemAbility = ModText.StartsWith("Your golem minion");
+        bool IsGolemAbility = modText.StartsWith("Your golem minion");
 
-        if (ModText.StartsWith("Indirect Poison Damage, Indirect Trauma Damage") || EffectText.StartsWith("Indirect Poison Damage, Indirect Trauma Damage"))
-        {
-        }
-
-        HackModAndEffectText(ref ModText, ref EffectText);
+        HackModAndEffectText(ref modText, ref EffectText);
 
         bool IsMod = false;
-        if (EffectText == ModText)
+        if (EffectText == modText)
             IsMod = true;
         bool IsEffectTextEmpty = EffectText.Length == 0;
 
-        AnalyzeText(abilityNameList, nameToKeyword, ModText, true, IsGolemAbility, out List <AbilityKeyword> ModAbilityList, out PgCombatEffectCollection ModCombatList, out List<AbilityKeyword> ModTargetAbilityList);
+        AnalyzeText(abilityNameList, nameToKeyword, modText, true, IsGolemAbility, out List <AbilityKeyword> ModAbilityList, out PgCombatEffectCollection ModCombatList, out List<AbilityKeyword> ModTargetAbilityList);
         AnalyzeText(abilityNameList, nameToKeyword, EffectText, IsMod, IsGolemAbility, out List <AbilityKeyword> EffectAbilityList, out PgCombatEffectCollection EffectCombatList, out List<AbilityKeyword> EffectTargetAbilityList);
 
         // Make mitigation more accurate
@@ -2859,7 +2877,7 @@ public partial class CombatParser
         // Hack for Heart Thorn
         if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.HeartThorn &&
             ModCombatList.Count == 1 && ModCombatList[0].Keyword == CombatKeyword.DealArmorDamage && ModCombatList[0].DamageType == GameDamageType.Internal_None &&
-            ModText.Contains("coat the target in acid"))
+            modText.Contains("coat the target in acid"))
         {
             ModCombatList[0].DamageType = GameDamageType.Acid;
         }
@@ -4440,7 +4458,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "17103")
+            if (ItemPower.Key == "8001")
             {
             }
 

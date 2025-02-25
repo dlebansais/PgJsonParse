@@ -11,5 +11,6 @@
         Desert1WorkOrderSign,
         KurMountainsWorkOrderSign,
         FaeRealm1WorkOrderSign,
+        VidariaWorkOrderSign,
     }
 }

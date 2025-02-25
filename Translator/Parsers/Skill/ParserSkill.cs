@@ -63,8 +63,11 @@ public class ParserSkill : Parser
                 case "XpTable":
                     Result = Inserter<PgXpTable>.SetItemByInternalName((PgXpTable valueXpTable) => item.XpTable = valueXpTable, Value);
                     break;
-                case "AdvancementTable":
-                    Result = ParseAdvancementTable(item, Value, parsedFile, parsedKey);
+                case "ActiveAdvancementTable":
+                    Result = ParseAdvancementTable(item.SkillAdvancementList, isActive:true,  Value, parsedFile, parsedKey);
+                    break;
+                case "PassiveAdvancementTable":
+                    Result = ParseAdvancementTable(item.SkillAdvancementList, isActive: false, Value, parsedFile, parsedKey);
                     break;
                 case "Combat":
                     Result = SetBoolProperty((bool valueBool) => item.SetIsCombatSkill(valueBool), Value);
@@ -150,7 +153,7 @@ public class ParserSkill : Parser
             return 0;
     }
 
-    private bool ParseAdvancementTable(PgSkill item, object value, string parsedFile, string parsedKey)
+    private bool ParseAdvancementTable(PgSkillAdvancementCollection advancementList, bool isActive, object value, string parsedFile, string parsedKey)
     {
         if (value == null)
             return true;
@@ -175,10 +178,10 @@ public class ParserSkill : Parser
 
                     foreach (PgAdvancementEffectAttribute EffectAttribute in Advancement.EffectAttributeList)
                     {
-                        PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardAdvancement() { RawLevel = Level, EffectAttribute = EffectAttribute };
+                        PgSkillAdvancement NewSkillAdvancement = new PgSkillAdvancementRewardAdvancement() { IsActive = isActive, RawLevel = Level, EffectAttribute = EffectAttribute };
 
                         ParsingContext.AddSuplementaryObject(NewSkillAdvancement);
-                        item.SkillAdvancementList.Add(NewSkillAdvancement);
+                        advancementList.Add(NewSkillAdvancement);
                     }
                 }
 
@@ -388,7 +391,8 @@ public class ParserSkill : Parser
                     if (Item is PgSkillAdvancementRewardAdvancement)
                         IconId = PgObject.SkillIconId;
 
-                IconId = PgObject.AbilityIconId;
+                if (IconId == 0)
+                    IconId = PgObject.AbilityIconId;
             }
         }
 

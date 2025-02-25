@@ -10,6 +10,7 @@ public class Quest
     public Quest(RawQuest rawQuest)
     {
         CheckRequirementsToSustainOnBestow = rawQuest.CheckRequirementsToSustainOnBestow;
+        DeleteFromHistoryIfVersionChanged = rawQuest.DeleteFromHistoryIfVersionChanged;
         Description = rawQuest.Description;
         DisplayedLocation = Area.FromRawAreaName(rawQuest.DisplayedLocation, out OriginalDisplayedLocation);
         FavorNpc = rawQuest.FavorNpc;
@@ -246,8 +247,10 @@ public class Quest
 
         switch (EffectName)
         {
+            case "ClearInteractionFlag":
+                return new QuestReward() { T = "ClearInteractionFlag", InteractionFlag = EffectParameter };
             case "SetInteractionFlag":
-                return new QuestReward() { T = "InteractionFlag", InteractionFlag = EffectParameter };
+                return new QuestReward() { T = "SetInteractionFlag", InteractionFlag = EffectParameter };
             case "EnsureLoreBookKnown":
                 return new QuestReward() { T = "LoreBook", LoreBook = EffectParameter };
             case "BestowTitle":
@@ -360,6 +363,7 @@ public class Quest
     }
 
     public bool? CheckRequirementsToSustainOnBestow { get; set; }
+    public bool? DeleteFromHistoryIfVersionChanged { get; set; }
     public string? Description { get; set; }
     public string? DisplayedLocation { get; set; }
     public string? FavorNpc { get; set; }
@@ -400,6 +404,7 @@ public class Quest
         RawQuest Result = new();
 
         Result.CheckRequirementsToSustainOnBestow = CheckRequirementsToSustainOnBestow;
+        Result.DeleteFromHistoryIfVersionChanged = DeleteFromHistoryIfVersionChanged;
         Result.Description = Description;
         Result.DisplayedLocation = Area.ToRawAreaName(DisplayedLocation, OriginalDisplayedLocation);
         Result.FavorNpc = FavorNpc;
@@ -568,7 +573,9 @@ public class Quest
     {
         switch (reward.T)
         {
-            case "InteractionFlag":
+            case "ClearInteractionFlag":
+                return $"ClearInteractionFlag({reward.InteractionFlag})";
+            case "SetInteractionFlag":
                 return $"SetInteractionFlag({reward.InteractionFlag})";
             case "LoreBook":
                 return $"EnsureLoreBookKnown({reward.LoreBook})";

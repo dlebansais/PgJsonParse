@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 82;
+        public const int TotalEnumTypes = 83;
 
         static TextMaps()
         {
@@ -258,6 +258,9 @@
             { AbilityAnimation.Attack_Vampire_Grasp, "Attack (Vampire Grasp)" },
             { AbilityAnimation.Attack_Vampire_Mental, "Attack (Vampire Mental)" },
             { AbilityAnimation.Attack_Vampire_Enthrall, "Attack (Vampire Enthrall)" },
+            { AbilityAnimation.Attack_TwoHand_Swing, "Attack (Two Hand Swing)" },
+            { AbilityAnimation.Attack_TwoHand_Parry, "Attack (Two Hand Parry)" },
+            { AbilityAnimation.Attack_TwoHand_Overhead, "Attack (Two Hand Overhead)" },
         };
 
         public static Dictionary<AbilityCue, string> AbilityCueTextMap { get; } = new Dictionary<AbilityCue, string>()
@@ -1006,6 +1009,8 @@
             { AbilityProjectile.Projectile_Blood, "Projectile (Blood)" },
             { AbilityProjectile.Projectile_Nature, "Projectile (Nature)" },
             { AbilityProjectile.Projectile_Frostball_Scintillating, "Projectile (Frostball, Scintillating)" },
+            { AbilityProjectile.Projectile_Web, "Projectile (Web)" },
+            { AbilityProjectile.Projectile_Ice, "Projectile (Ice)" },
         };
 
         public static Dictionary<AbilitySelfPreParticle, string> AbilitySelfPreParticleTextMap { get; } = new Dictionary<AbilitySelfPreParticle, string>()
@@ -1083,6 +1088,12 @@
             { AbilitySelfParticle.BloodSplatBurst, "Blood Splat Burst" },
             { AbilitySelfParticle.SporeParticle, "Spore Particle" },
             { AbilitySelfParticle.GrayExplosion, "Gray Explosion" },
+            { AbilitySelfParticle.IceNova, "Ice Nova" },
+            { AbilitySelfParticle.IceBreath, "Ice Breath" },
+            { AbilitySelfParticle.HellfireBurst, "Hellfire Burst" },
+            { AbilitySelfParticle.PinkExplosion, "Pink Explosion" },
+            { AbilitySelfParticle.LightningNova, "Lightning Nova" },
+            { AbilitySelfParticle.FireNova, "Fire Nova" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -1170,6 +1181,7 @@
             { AbilityTargetParticle.VampEnvyHate, "Vamp Envy Hate" },
             { AbilityTargetParticle.ShadowFullBody, "Shadow Full Body" },
             { AbilityTargetParticle.Fear, "Fear" },
+            { AbilityTargetParticle.LightningHitQuick, "Lightning Hit Quick" },
         };
 
         public static Dictionary<AllowedFishingZone, string> AllowedFishingZoneTextMap { get; } = new Dictionary<AllowedFishingZone, string>()
@@ -1341,6 +1353,8 @@
             { CraftedBoost.CraftedMilitaryDagger, "Crafted Military Dagger" },
             { CraftedBoost.CraftedFightingClaw, "Crafted Fighting Claw" },
             { CraftedBoost.CraftedHuntingBow, "Crafted Hunting Bow" },
+            { CraftedBoost.CraftedHuntingCrossbow, "Crafted Hunting Crossbow" },
+            { CraftedBoost.CraftedFaebow, "Crafted Faebow" },
         };
 
         public static Dictionary<Currency, string> CurrencyTextMap { get; } = new Dictionary<Currency, string>()
@@ -1349,6 +1363,8 @@
             { Currency.Gold, "Gold" },
             { Currency.WardenPoints, "Warden Points" },
             { Currency.LiveEventCredits, "Live Event Credits" },
+            { Currency.VidariaRenown, "Vidaria Renown" },
+            { Currency.BloodOaths, "Blood Oaths" },
         };
 
         public static Dictionary<DamageType, string> DamageTypeTextMap { get; } = new Dictionary<DamageType, string>()
@@ -1372,6 +1388,18 @@
             { DamageType.Darkness, "Darkness" },
             { DamageType.Regeneration, "None" },
             { DamageType.Demonic, "Demonic" },
+        };
+
+        public static Dictionary<DayOfWeek, string> DayOfWeekTextMap { get; } = new Dictionary<DayOfWeek, string>()
+        {
+            { DayOfWeek.Internal_None, string.Empty },
+            { DayOfWeek.Monday, "Monday" },
+            { DayOfWeek.Tuesday, "Tuesday" },
+            { DayOfWeek.Wednesday, "Wednesday" },
+            { DayOfWeek.Thursday, "Thursday" },
+            { DayOfWeek.Friday, "Friday" },
+            { DayOfWeek.Saturday, "Saturday" },
+            { DayOfWeek.Sunday, "Sunday" },
         };
 
         public static Dictionary<Deaths, string> DeathsTextMap { get; } = new Dictionary<Deaths, string>()
@@ -1538,6 +1566,8 @@
             { Deaths.MinotaurHorn, "Minotaur Horn" },
             { Deaths.AttackColdWall, "Attack Cold Wall" },
             { Deaths.VampiricBloodSpray, "Vampiric Blood Spray" },
+            { Deaths.DemonBite, "Demon Bite" },
+            { Deaths.BloodLoss, "Blood Loss" },
         };
 
         public static Dictionary<Desire, string> DesireTextMap { get; } = new Dictionary<Desire, string>()
@@ -1586,6 +1616,7 @@
             { DoTSpecialRule.IfTargetNotLooking, "If Target Not Looking" },
             { DoTSpecialRule.DelayedDamage, "Delayed Damage" },
             { DoTSpecialRule.ArmorDamage, "Armor Damage" },
+            { DoTSpecialRule.BuffActivatedCheckOnlyFirstAttribute, "Buff Activated Check Only First Attribute" },
         };
 
         public static Dictionary<EffectDisplayMode, string> EffectDisplayModeTextMap { get; } = new Dictionary<EffectDisplayMode, string>()
@@ -2030,6 +2061,12 @@
             { EffectKeyword.TSysBunFuBlastCold, "TSys Bun Fu Blast Cold" },
             { EffectKeyword.TSysCastigateFire, "TSys Castigate Fire" },
             { EffectKeyword.CouncilSwordInStoneBuff, "Council Sword In Stone Buff" },
+            { EffectKeyword.Hellfire, "Hellfire" },
+            { EffectKeyword.DriedOutCurse, "Dried Out Curse" },
+            { EffectKeyword.DriedOutDehydrated, "Dried Out Dehydrated" },
+            { EffectKeyword.DriedOutDehydrated1, "Dried Out Dehydrated #1" },
+            { EffectKeyword.DriedOutDehydrated2, "Dried Out Dehydrated #2" },
+            { EffectKeyword.TruxartisBuff, "Truxartis Buff" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2238,6 +2275,10 @@
             { EffectParticle.VampTeleport, "Vamp Teleport" },
             { EffectParticle.VampireSunSmoke, "Vampire Sun Smoke" },
             { EffectParticle.VampireSunFire, "Vampire Sun Fire" },
+            { EffectParticle.LoveBomb, "Love Bomb" },
+            { EffectParticle.FireworkCyan, "Firework Cyan" },
+            { EffectParticle.Confetti2Cyan, "Confetti 2 Cyan" },
+            { EffectParticle.Particle_LoveBomb, "Particle (Love Bomb)" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -2617,6 +2658,9 @@
             { EffectStackingType.GhostlyResistance, "Ghostly Resistance" },
             { EffectStackingType.TrollHealing, "Troll Healing" },
             { EffectStackingType.SongOfBraveryBuffDamage, "Song Of Bravery Buff Damage" },
+            { EffectStackingType.ArrangementComfort, "Arrangement Comfort" },
+            { EffectStackingType.SpiritFoxBoostPotion, "Spirit Fox Boost Potion" },
+            { EffectStackingType.WeatherWitchingBoostPotion, "Weather Witching Boost Potion" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2884,6 +2928,12 @@
             { InteractionFlag.SerbuleCommunityChestPoints, "Serbule Community Chest Points" },
             { InteractionFlag.Completed_Truxartis_Intro, "Completed Truxartis Intro" },
             { InteractionFlag.Enabled_BloodWell_Truxartis, "Enabled BloodWell Truxartis" },
+            { InteractionFlag.Completed_Truxartis_Task_Today, "Completed Truxartis Task Today" },
+            { InteractionFlag.Quest_KilltheDoctrineKeeper_Complete, "Quest (Kill the Doctrine Keeper) Complete" },
+            { InteractionFlag.FoundLasriNote, "Found Lasri Note" },
+            { InteractionFlag.Crall_DiscoveredAcceleratedRotor, "Crall (Discovered Accelerated Rotor)" },
+            { InteractionFlag.Crall_DiscoveredSpecializedIceFishing, "Crall (Discovered Specialized Ice Fishing)" },
+            { InteractionFlag.Drummond_Offended, "Drummond Offended" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -2983,6 +3033,7 @@
             { ItemDroppedAppearance.Barrel, "Barrel" },
             { ItemDroppedAppearance.DeployedTrashCan, "Deployed Trash Can" },
             { ItemDroppedAppearance.Mushroom17, "Mushroom #17" },
+            { ItemDroppedAppearance.Egg2, "Egg #2" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -4354,6 +4405,29 @@
             { ItemKeyword.BowTuneupKit, "Bow Tuneup Kit" },
             { ItemKeyword.BowyeryRecipe, "Bowyery Recipe" },
             { ItemKeyword.RedLeafLettuce, "Red Leaf Lettuce" },
+            { ItemKeyword.PowerSource, "Power Source" },
+            { ItemKeyword.SmokingPipe, "Smoking Pipe" },
+            { ItemKeyword.GurHortaLeaves, "Gur Horta Leaves" },
+            { ItemKeyword.KegOfLove, "Keg Of Love" },
+            { ItemKeyword.Vampire, "Vampire" },
+            { ItemKeyword.FireCore, "Fire Core" },
+            { ItemKeyword.Demonic, "Demonic" },
+            { ItemKeyword.Memory, "Memory" },
+            { ItemKeyword.UninspectedMemento, "Uninspected Memento" },
+            { ItemKeyword.InspectedMemento, "Inspected Memento" },
+            { ItemKeyword.VampirismRecipe, "Vampirism Recipe" },
+            { ItemKeyword.RingOfJauntyTraipsing, "Ring Of Jaunty Traipsing" },
+            { ItemKeyword.ERingOfJauntyTraipsing, "Enhanced Ring Of Jaunty Traipsing" },
+            { ItemKeyword.ScavengersRing, "Scavenger's Ring" },
+            { ItemKeyword.ScroungersRing, "Scrounger's Ring" },
+            { ItemKeyword.RadiantMuskie, "Radiant Muskie" },
+            { ItemKeyword.VidarianPickerel, "Vidarian Pickerel" },
+            { ItemKeyword.Frostfin, "Frostfin" },
+            { ItemKeyword.Irmaki, "Irmaki" },
+            { ItemKeyword.Pyrocarp, "Pyrocarp" },
+            { ItemKeyword.Icebrook, "Icebrook" },
+            { ItemKeyword.CraterGar, "Crater Gar" },
+            { ItemKeyword.DemonMeat, "Demon Meat" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4480,9 +4554,8 @@
             { MapAreaName.TheWintertide, "The Wintertide" },
             { MapAreaName.NightmareCaves, "Nightmare Caves" },
             { MapAreaName.Statehelm, "Statehelm" },
-            { MapAreaName.StatehelmCaves, "Statehelm Caves" },
-            { MapAreaName.XX, "XX" },
             { MapAreaName.Vidaria, "Vidaria" },
+            { MapAreaName.VidariaCaves, "Vidaria Caves" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -4643,6 +4716,7 @@
             { QuestKeyword.Lint_NoTsys, "No Tsys" },
             { QuestKeyword.ActivityQuest, "Activity Quest" },
             { QuestKeyword.Lint_RewardOnly, "Reward Only" },
+            { QuestKeyword.Vampirism, "Vampirism" },
         };
 
         public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
@@ -4934,6 +5008,11 @@
             { QuestObjectiveTarget.SkeletonHoleTank, "Skeleton Hole Tank" },
             { QuestObjectiveTarget.SkeletonDarknessMageHole, "Skeleton Darkness Mage Hole" },
             { QuestObjectiveTarget.SkeletonFireMageHole, "Skeleton Fire Mage Hole" },
+            { QuestObjectiveTarget.DemonSwarmer, "Demon Swarmer" },
+            { QuestObjectiveTarget.DemonSoldier, "Demon Soldier" },
+            { QuestObjectiveTarget.RubywallCrystalMonster, "Rubywall Crystal Monster" },
+            { QuestObjectiveTarget.RanalonDoctrineKeeper, "Ranalon Doctrine Keeper" },
+            { QuestObjectiveTarget.RanalonDenMother, "Ranalon Den Mother" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -5329,6 +5408,10 @@
             { RecipeEffect.CalligraphyRage18, "Calligraphy Rage #18" },
             { RecipeEffect.Calligraphy14B, "Calligraphy #14B" },
             { RecipeEffect.Calligraphy15B, "Calligraphy #15B" },
+            { RecipeEffect.DecomposeDemonOreIntoEssence, "Decompose Demon Ore Into Essence" },
+            { RecipeEffect.DispelFairyLight, "Dispel Fairy Light" },
+            { RecipeEffect.MeditationBodyHeat30, "Meditation Body Heat #30" },
+            { RecipeEffect.MeditationMetabolism30, "Meditation Metabolism #30" },
         };
 
         public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()
@@ -5496,6 +5579,13 @@
             { RecipeItemKey.ClawTuneupKit, "Claw Tuneup Kit" },
             { RecipeItemKey.ZeltaToken, "Zelta Token" },
             { RecipeItemKey.BowTuneupKit, "Bow Tuneup Kit" },
+            { RecipeItemKey.Ore, "" },
+            { RecipeItemKey.Demonic, "" },
+            { RecipeItemKey.MixedGreens, "" },
+            { RecipeItemKey.EnergyBow, "" },
+            { RecipeItemKey.PowerSource, "" },
+            { RecipeItemKey.WhittlingKnife, "" },
+            { RecipeItemKey.BeastMeat, "" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()
@@ -5524,7 +5614,6 @@
             { RecipeKeyword.Lint_MealCategory, "Meal Category" },
             { RecipeKeyword.Lint_IconId, "Icon Id" },
             { RecipeKeyword.PixiePocket, "Pixie Pocket" },
-            //{ RecipeKeyword.Lint_LevelTooHigh, "Level Too High" },
             { RecipeKeyword.ShieldWax, "Shield Wax" },
             { RecipeKeyword.PumpkinSoup, "Pumpkin Soup" },
             { RecipeKeyword.PumpkinSalad, "Pumpkin Salad" },
@@ -5535,7 +5624,8 @@
             { RecipeKeyword.Research, "Research" },
             { RecipeKeyword.Lint_MealGroup, "Meal Group" },
             { RecipeKeyword.MaxEnchanting, "Max Enchanting" },
-            { RecipeKeyword.Lint_LevelTooHigh, "Level Too High" },
+            //{ RecipeKeyword.Lint_LevelTooHigh, "Level Too High" },
+            { RecipeKeyword.Vampirism, "Vampirism" },
         };
 
         public static Dictionary<RecipeParticle, string> RecipeParticleTextMap { get; } = new Dictionary<RecipeParticle, string>()
@@ -5700,6 +5790,11 @@
             { SpecialNpc.SummonedFlower13, "Summoned Flower #13" },
             { SpecialNpc.SummonedFlower14, "Summoned Flower #14" },
             { SpecialNpc.SummonedFlower15, "Summoned Flower #15" },
+            { SpecialNpc.SummonedFlower16, "Summoned Flower #16" },
+            { SpecialNpc.SummonedFlower17, "Summoned Flower #17" },
+            { SpecialNpc.SummonedFlower18, "Summoned Flower #18" },
+            { SpecialNpc.SummonedFlower19, "Summoned Flower #19" },
+            { SpecialNpc.SummonedFlower20, "Summoned Flower #20" },
             { SpecialNpc.SummonedFlower2, "Summoned Flower #2" },
             { SpecialNpc.SummonedFlower3, "Summoned Flower #3" },
             { SpecialNpc.SummonedFlower4, "Summoned Flower #4" },
@@ -5723,6 +5818,7 @@
             { SpecialNpc.SummonedSugarcane, "Summoned Sugarcane" },
             { SpecialNpc.SummonedTomatoPlant, "Summoned Tomato Plant" },
             { SpecialNpc.SummonedWheatPlant, "Summoned Wheat Plant" },
+            { SpecialNpc.WaterWellFillable, "Water Well Fillable" },
             { SpecialNpc.DalvosChest, "Dalvos Chest" },
             { SpecialNpc.KhyrulekMementoChest, "Khyrule kMemento Chest" },
             { SpecialNpc.UrsulaHauntingNPC, "Ursula Haunting NPC" },
@@ -5786,6 +5882,7 @@
             { SpecialNpc.Altar_Necromancy, "Altar (Necromancy)" },
             { SpecialNpc.NPC_Thanksgiving_Ricatu, "Ricatu (Thanksgiving)" },
             { SpecialNpc.NPC_Velkort_Halloween, "Velkort (Halloween)" },
+            { SpecialNpc.VidariaShed1, "Vidaria Shed #1" },
         };
 
         public static Dictionary<Strategy, string> StrategyTextMap { get; } = new Dictionary<Strategy, string>()
@@ -5822,6 +5919,7 @@
             { WorkOrderSign.Desert1WorkOrderSign, "Ilmari Work Order Sign" },
             { WorkOrderSign.KurMountainsWorkOrderSign, "Kur Mountains Work Order Sign" },
             { WorkOrderSign.FaeRealm1WorkOrderSign, "Fae Realm Work Order Sign" },
+            { WorkOrderSign.VidariaWorkOrderSign, "Vidaria Work Order Sign" },
         };
 
         public static Dictionary<XpTableEnum, string> XpTableEnumTextMap { get; } = new Dictionary<XpTableEnum, string>()
@@ -6043,6 +6141,8 @@
             { Deaths.MinotaurHorn, "" },
             { Deaths.AttackColdWall, "Frozen by flame" },
             { Deaths.VampiricBloodSpray, "" },
+            { Deaths.DemonBite, "Bit by a Demonic Creature" },
+            { Deaths.BloodLoss, "" },
 
             // Many Cuts dots: "Discomfort"
         };

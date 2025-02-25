@@ -36,6 +36,9 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.GeneralShape, FinishItemGeneralShape },
         { QuestRequirementType.Appearance, FinishItemAppearance },
         { QuestRequirementType.AttributeMatchesScriptAtomic, FinishItemAttributeMatchesScriptAtomic },
+        { QuestRequirementType.AccountFlagUnset, FinishItemAccountFlagUnset },
+        { QuestRequirementType.DayOfWeek, FinishItemDayOfWeek },
+        { QuestRequirementType.IsVampire, FinishItemIsVampire },
     };
 
     private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
@@ -62,6 +65,9 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.GeneralShape, new List<string>() { "T", "Shape" } },
         { QuestRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
         { QuestRequirementType.AttributeMatchesScriptAtomic, new List<string>() { "T", "Attribute", "ScriptAtomicInt" } },
+        { QuestRequirementType.AccountFlagUnset, new List<string>() { "T", "AccountFlag" } },
+        { QuestRequirementType.DayOfWeek, new List<string>() { "T", "DaysAllowed" } },
+        { QuestRequirementType.IsVampire, new List<string>() { "T" } },
     };
 
     private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
@@ -1082,6 +1088,132 @@ public class ParserQuestRequirement : Parser
                         break;
                     case "ScriptAtomicInt":
                         Result = SetStringProperty((string valueString) => NewItem.ScriptAtomicInt = valueString, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemAccountFlagUnset(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRequirementAccountFlagUnset NewItem = new PgQuestRequirementAccountFlagUnset();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "AccountFlag":
+                        Result = SetStringProperty((string valueString) => NewItem.AccountFlag = valueString, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemDayOfWeek(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRequirementDayOfWeek NewItem = new PgQuestRequirementDayOfWeek();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "DaysAllowed":
+                        Result = StringToEnumConversion<DayOfWeek>.TryParseList(Value, NewItem.DaysAllowedList);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemIsVampire(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRequirementIsVampire NewItem = new PgQuestRequirementIsVampire();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

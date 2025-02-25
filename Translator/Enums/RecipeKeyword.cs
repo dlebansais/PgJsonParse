@@ -26,7 +26,6 @@
         Lint_MealCategory,
         Lint_IconId,
         PixiePocket,
-        //Lint_LevelTooHigh,
         ShieldWax,
         PumpkinSoup,
         PumpkinSalad,
@@ -37,6 +36,7 @@
         Research,
         Lint_MealGroup,
         MaxEnchanting,
-        Lint_LevelTooHigh,
+        //Lint_LevelTooHigh,
+        Vampirism,
     }
 }

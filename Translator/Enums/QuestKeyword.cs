@@ -29,5 +29,6 @@
         Lint_NoTsys,
         ActivityQuest,
         Lint_RewardOnly,
+        Vampirism,
     }
 }
