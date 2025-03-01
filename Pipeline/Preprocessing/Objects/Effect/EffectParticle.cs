@@ -21,7 +21,11 @@ public class EffectParticle
         Match ParameterMatch = Regex.Match(content, ParameterPattern, RegexOptions.IgnoreCase);
         if (!ParameterMatch.Success)
         {
-            string ParticleName = content == "OnFire-Green" ? "OnFireGreen" : content;
+            string ParticleName = content == "OnFire-Green"
+                                  ? "OnFireGreen"
+                                  : content == "OnFire-Demonic"
+                                      ? "OnFireDemonic"
+                                      : content;
             return new EffectParticle { ParticleName = ParticleName };
         }
 
@@ -61,6 +65,8 @@ public class EffectParticle
         {
             if (particle.ParticleName == "OnFireGreen")
                 return "OnFire-Green";
+            else if (particle.ParticleName == "OnFireDemonic")
+                return "OnFire-Demonic";
             else
                 return particle.ParticleName;
         }

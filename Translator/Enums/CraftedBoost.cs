@@ -100,5 +100,7 @@
         CraftedHuntingBow,
         CraftedHuntingCrossbow,
         CraftedFaebow,
+        CraftedOrcMiningPick,
+        CraftedOrcpick,
     }
 }

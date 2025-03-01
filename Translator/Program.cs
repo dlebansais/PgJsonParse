@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(420);
+        return ParseCurated(421);
     }
 
     private static int ParseCurated(int Version)
@@ -1690,7 +1690,7 @@ public class Program
                 PgQuest Quest = (PgQuest)Entry.Value.Item;
 
                 MapAreaName DisplayedLocation = Quest.DisplayedLocation;
-                if (Quest.Name == "Race Completed")
+                if (Quest.Name == "The Man In The Coffin")
                 {
                 }
 
@@ -1704,7 +1704,7 @@ public class Program
                 if (Quest.IsGuildQuest)
                     continue;
 
-                if (!Quest.Name.StartsWith("Angling:") && Quest.Name != "Race Completed")
+                if (!Quest.Name.StartsWith("Angling:") && Quest.Name != "Race Completed" && Quest.Name != "The Man In The Coffin")
                 {
                     if (Quest.IsAutoWrapUp)
                         continue;
@@ -1764,7 +1764,7 @@ public class Program
                     if (!KnownUniqueQuests[Area].ContainsKey(Quest.Name))
                     {
                         if (Quest.Name != "A New Life") // Ignored
-                            Debug.WriteLine($"UNKNOWN QUEST: {Quest.Name}, Area: {Area}");
+                            Debug.WriteLine($"UNKNOWN QUEST: \"{Quest.Name}\", Area: {Area}");
                     }
             }
         }
@@ -2136,6 +2136,7 @@ public class Program
                 { "Stephie's Gorget", QuestSpecifics.None },
                 { "Tending To the Root-Tenders", QuestSpecifics.None },
                 { "Time For a Smoke Break", QuestSpecifics.None },
+                { "Tryaka Needs Glass", QuestSpecifics.None }, //?
                 { "Way of the Warsmith", QuestSpecifics.None },
             }
         },
@@ -2230,6 +2231,7 @@ public class Program
                 { "Paralytic Chicken Meat", QuestSpecifics.None },
                 { "Probing Tavilak's History", QuestSpecifics.None },
                 { "Quartz Jewelry", QuestSpecifics.None },
+                { "Riston Needs Hops", QuestSpecifics.None }, //?
                 { "Specialty Bread Order", QuestSpecifics.None },
                 { "Still Better Cheese", QuestSpecifics.None },
                 { "Sulfur Bath", QuestSpecifics.None },
@@ -2508,6 +2510,9 @@ public class Program
         {
             MapAreaName.RanalonDen, new Dictionary<string, QuestSpecifics>()
             {
+                { "Kill the Doctrine-Keeper", QuestSpecifics.None }, //?
+                { "Kill the Ranalon Den Mother", QuestSpecifics.None }, //?
+                { "Recover Orrrilund's Sack", QuestSpecifics.None }, //?
             }
         },
         {
@@ -2518,6 +2523,53 @@ public class Program
         {
             MapAreaName.NightmareCaves, new Dictionary<string, QuestSpecifics>()
             {
+            }
+        },
+        {
+            MapAreaName.Vidaria, new Dictionary<string, QuestSpecifics>()
+            {
+                { "A Dwarf in the Swamp", QuestSpecifics.None }, //?
+                { "A New Mining Pick", QuestSpecifics.None }, //?
+                { "A New Strength Potion", QuestSpecifics.None }, //?
+                { "Accessing the Safehouse", QuestSpecifics.None }, //?
+                { "An Orc in the Mountains", QuestSpecifics.None }, //?
+                { "Angling: The Pyrocarp", QuestSpecifics.None }, //?
+                { "Angling: The Crater Gar", QuestSpecifics.None }, //?
+                { "Angling: Radiant Muskie", QuestSpecifics.None }, //?
+                { "Angling: Vidarian Pickerel", QuestSpecifics.None }, //?
+                { "Blood of Lost Thralls", QuestSpecifics.None }, //?
+                { "Collaborative Ice Fishing", QuestSpecifics.None }, //?
+                { "Crystal Mobility Analysis", QuestSpecifics.None },
+                { "Deciphering the Planar Planner", QuestSpecifics.None }, //?
+                { "Demon Soldiers", QuestSpecifics.None },
+                { "Demonic Gems", QuestSpecifics.None },
+                { "Droach Pineal Juice", QuestSpecifics.None }, //?
+                { "Fire and Darkness From the Hole", QuestSpecifics.None },
+                { "Flapskull Blood", QuestSpecifics.None },
+                { "Fluxic Quartz", QuestSpecifics.None },
+                { "Forthragarian Aetherite", QuestSpecifics.None },
+                { "Ghouls from the Hole", QuestSpecifics.None },
+                { "Grasuul the Butler", QuestSpecifics.None }, //?
+                { "Hole Bulwarks", QuestSpecifics.None },
+                { "Infernal Recipes", QuestSpecifics.None },
+                { "Khyrulek's Planar Planner", QuestSpecifics.None }, //?
+                { "Lost Strength", QuestSpecifics.None }, //?
+                { "Magma Testing", QuestSpecifics.None }, //?
+                { "Pocket Magma", QuestSpecifics.None }, //?
+                { "Realigning the Planar Planner", QuestSpecifics.None }, //?
+                { "Recover Engineering Notes", QuestSpecifics.None }, //?
+                { "Reinvigorating the Mind", QuestSpecifics.None }, //?
+                { "Remnants of the First Thrall", QuestSpecifics.None }, //?
+                { "Spectracite", QuestSpecifics.None },
+                { "Swarmer Brains", QuestSpecifics.None },
+                { "Testing Your Demon-Killing Mettle", QuestSpecifics.None },
+                { "The Man In The Coffin", QuestSpecifics.None }, //???????
+                { "The Mind Made Anew", QuestSpecifics.None }, //?
+                { "The Power of the Bat", QuestSpecifics.None }, //?
+                { "The Stonecurl Clan", QuestSpecifics.None }, //?
+                { "The Strength Potion's Strength", QuestSpecifics.None }, //?
+                { "The Swarmer Hypothesis", QuestSpecifics.None },
+                { "Undead Memories", QuestSpecifics.None }, //?
             }
         },
     };

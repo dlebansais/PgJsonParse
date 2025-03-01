@@ -213,7 +213,7 @@ public class FieldTableStore
         { "AttributesThatDelta", typeof(string[]) },
         { "AttributesThatMod", typeof(string[]) },
         { "Preface", typeof(string) },
-        { "ReqEffectKeyword", typeof(string) },
+        { "RequiredEffectKeyword", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableSpecialValue { get; } = new Dictionary<string, Type>()

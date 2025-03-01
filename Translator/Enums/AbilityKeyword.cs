@@ -605,5 +605,6 @@
         Heal,
         NothingnessAttack,
         SmitingAttack,
+        Lint_MultipleDamageTypeKeywords,
     }
 }

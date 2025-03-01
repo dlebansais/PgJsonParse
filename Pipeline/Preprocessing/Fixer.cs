@@ -18,7 +18,7 @@ public class Fixer
         AddNonClientAttributes(dictionary);
     }
 
-    public static bool NonClientAttributesExist = true;
+    public static bool NonClientAttributesExist = false;
 
     private static void AddNonClientAttributes(AttributeDictionary dictionary)
     {
@@ -40,6 +40,9 @@ public class Fixer
             "MOD_VAULT_SIZE",
             "MENTAL_DEFENSE_RATING",
             "MONSTER_AGGRAVATION_HEALTH_PCT",
+            "MONSTER_CHASE_RADIUS",
+            "MONSTER_DETECTION_RADIUS",
+            "MONSTER_HELP_SHOUT_RADIUS",
         };
 
         foreach (string Key in AttributeKeyList)

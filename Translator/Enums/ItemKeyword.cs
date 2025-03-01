@@ -1394,5 +1394,7 @@
         Icebrook,
         CraterGar,
         DemonMeat,
+        CerberusHide,
+        TrophyCerberusHide,
     }
 }

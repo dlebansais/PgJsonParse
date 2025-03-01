@@ -210,5 +210,6 @@
         FireworkCyan,
         Confetti2Cyan,
         Particle_LoveBomb,
+        OnFireDemonic,
     }
 }

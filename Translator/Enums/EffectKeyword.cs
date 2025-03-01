@@ -439,5 +439,6 @@
         DriedOutDehydrated1,
         DriedOutDehydrated2,
         TruxartisBuff,
+        Client_AlwaysShow,
     }
 }

@@ -949,6 +949,7 @@
             { AbilityKeyword.Heal, "Heal" },
             { AbilityKeyword.NothingnessAttack, "Nothingness Attack" },
             { AbilityKeyword.SmitingAttack, "Smiting Attack" },
+            { AbilityKeyword.Lint_MultipleDamageTypeKeywords, "Multiple Damage Type Keywords" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -1355,6 +1356,8 @@
             { CraftedBoost.CraftedHuntingBow, "Crafted Hunting Bow" },
             { CraftedBoost.CraftedHuntingCrossbow, "Crafted Hunting Crossbow" },
             { CraftedBoost.CraftedFaebow, "Crafted Faebow" },
+            { CraftedBoost.CraftedOrcMiningPick, "Crafted Orc Mining Pick" },
+            { CraftedBoost.CraftedOrcpick, "Crafted Orcpick" },
         };
 
         public static Dictionary<Currency, string> CurrencyTextMap { get; } = new Dictionary<Currency, string>()
@@ -2067,6 +2070,7 @@
             { EffectKeyword.DriedOutDehydrated1, "Dried Out Dehydrated #1" },
             { EffectKeyword.DriedOutDehydrated2, "Dried Out Dehydrated #2" },
             { EffectKeyword.TruxartisBuff, "Truxartis Buff" },
+            { EffectKeyword.Client_AlwaysShow, "Client Always Show" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2279,6 +2283,7 @@
             { EffectParticle.FireworkCyan, "Firework Cyan" },
             { EffectParticle.Confetti2Cyan, "Confetti 2 Cyan" },
             { EffectParticle.Particle_LoveBomb, "Particle (Love Bomb)" },
+            { EffectParticle.OnFireDemonic, "On Fire (Demonic)" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -4428,6 +4433,8 @@
             { ItemKeyword.Icebrook, "Icebrook" },
             { ItemKeyword.CraterGar, "Crater Gar" },
             { ItemKeyword.DemonMeat, "Demon Meat" },
+            { ItemKeyword.CerberusHide, "Cerberus Hide" },
+            { ItemKeyword.TrophyCerberusHide, "Trophy Cerberus Hide" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
