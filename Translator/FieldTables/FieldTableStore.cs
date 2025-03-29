@@ -163,7 +163,7 @@ public class FieldTableStore
         { "AttributesThatDeltaDamageIfTargetIsVulnerable", typeof(string[]) },
         { "SpecialValues", typeof(PgSpecialValue[]) },
         { "TauntDelta", typeof(int) },
-        { "TauntMod", typeof(int) },
+        { "TauntMod", typeof(float) },
         { "TempTauntDelta", typeof(int) },
         { "RageCost", typeof(int) },
         { "RageCostMod", typeof(float) },

@@ -315,5 +315,6 @@
         DispelFairyLight,
         MeditationBodyHeat30,
         MeditationMetabolism30,
+        WeatherReport,
     }
 }

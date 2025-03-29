@@ -34,6 +34,6 @@ public class RawPvEAbility
     public string[]? SelfPreEffects { get; set; }
     public SpecialValue[]? SpecialValues { get; set; }
     public int? TauntDelta { get; set; }
-    public int? TauntMod { get; set; }
+    public decimal? TauntMod { get; set; }
     public int? TempTauntDelta { get; set; }
 }

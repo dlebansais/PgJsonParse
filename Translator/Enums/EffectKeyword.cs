@@ -440,5 +440,7 @@
         DriedOutDehydrated2,
         TruxartisBuff,
         Client_AlwaysShow,
+        SummonTornadoExtraSummon,
+        DampenWhileChannelingBuff,
     }
 }

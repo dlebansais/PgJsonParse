@@ -380,5 +380,7 @@
         ArrangementComfort,
         SpiritFoxBoostPotion,
         WeatherWitchingBoostPotion,
+        BeeDebuff,
+        MarkWeakness,
     }
 }

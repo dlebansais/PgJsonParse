@@ -950,6 +950,8 @@
             { AbilityKeyword.NothingnessAttack, "Nothingness Attack" },
             { AbilityKeyword.SmitingAttack, "Smiting Attack" },
             { AbilityKeyword.Lint_MultipleDamageTypeKeywords, "Multiple Damage Type Keywords" },
+            { AbilityKeyword.MarkWeakness, "Mark Weakness" },
+            { AbilityKeyword.TrueMarkWeakness, "True Mark Weakness" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -2071,6 +2073,8 @@
             { EffectKeyword.DriedOutDehydrated2, "Dried Out Dehydrated #2" },
             { EffectKeyword.TruxartisBuff, "Truxartis Buff" },
             { EffectKeyword.Client_AlwaysShow, "Client Always Show" },
+            { EffectKeyword.SummonTornadoExtraSummon, "Summon Tornado Extra Summon" },
+            { EffectKeyword.DampenWhileChannelingBuff, "Dampen While Channeling Buff" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2258,8 +2262,8 @@
             { EffectParticle.Confetti2Purple, "Confetti #2 Purple" },
             { EffectParticle.Confetti2Green, "Confetti #2 Green" },
             { EffectParticle.FireworkGreen, "Firework Green" },
-            { EffectParticle.HeadConfettiFountain, "Head Confetti Fountain" },
-            { EffectParticle.HeadConfettiBurst, "Head Confetti Burst" },
+            //{ EffectParticle.HeadConfettiFountain, "Head Confetti Fountain" },
+            //{ EffectParticle.HeadConfettiBurst, "Head Confetti Burst" },
             { EffectParticle.SpecialBuffDamage, "Special Buff Damage" },
             { EffectParticle.SpecialBuffShield, "Special Buff Shield" },
             { EffectParticle.SpecialBuffApplied1, "Special Buff Applied #1" },
@@ -2282,7 +2286,7 @@
             { EffectParticle.LoveBomb, "Love Bomb" },
             { EffectParticle.FireworkCyan, "Firework Cyan" },
             { EffectParticle.Confetti2Cyan, "Confetti 2 Cyan" },
-            { EffectParticle.Particle_LoveBomb, "Particle (Love Bomb)" },
+            //{ EffectParticle.Particle_LoveBomb, "Particle (Love Bomb)" },
             { EffectParticle.OnFireDemonic, "On Fire (Demonic)" },
         };
 
@@ -2666,6 +2670,8 @@
             { EffectStackingType.ArrangementComfort, "Arrangement Comfort" },
             { EffectStackingType.SpiritFoxBoostPotion, "Spirit Fox Boost Potion" },
             { EffectStackingType.WeatherWitchingBoostPotion, "Weather Witching Boost Potion" },
+            { EffectStackingType.BeeDebuff, "Bee Debuff" },
+            { EffectStackingType.MarkWeakness, "Mark Weakness" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -5419,6 +5425,7 @@
             { RecipeEffect.DispelFairyLight, "Dispel Fairy Light" },
             { RecipeEffect.MeditationBodyHeat30, "Meditation Body Heat #30" },
             { RecipeEffect.MeditationMetabolism30, "Meditation Metabolism #30" },
+            { RecipeEffect.WeatherReport, "Weather Report" },
         };
 
         public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()

@@ -78,24 +78,24 @@
                     new EffectVerificationEntry() { Prefix = "Steals", Suffix = "Health." },
                 }
             },
-            {
+/*            {
                 CombatKeyword.DrainArmor, new List<EffectVerificationEntry>()
                 {
                     new EffectVerificationEntry() { Prefix = "Reaps", Suffix = "of the Armor damage done (up to the max)" },
                 }
-            },
+            },*/
             {
                 CombatKeyword.DrainHealthMax, new List<EffectVerificationEntry>()
                 {
                     new EffectVerificationEntry() { Prefix = "Max Health Reaped", Suffix = string.Empty },
                 }
             },
-            {
+/*            {
                 CombatKeyword.DrainArmorMax, new List<EffectVerificationEntry>()
                 {
                     new EffectVerificationEntry() { Prefix = "Max Armor Reaped", Suffix = string.Empty },
                 }
-            },
+            },*/
             {
                 CombatKeyword.DamageBoost, new List<EffectVerificationEntry>()
                 {

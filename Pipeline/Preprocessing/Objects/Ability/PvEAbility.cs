@@ -119,7 +119,7 @@ public class PvEAbility
     public SelfPreEffect[]? SelfPreEffects { get; set; }
     public SpecialValue[]? SpecialValues { get; set; }
     public int? TauntDelta { get; set; }
-    public int? TauntMod { get; set; }
+    public decimal? TauntMod { get; set; }
     public int? TempTauntDelta { get; set; }
 
     public RawPvEAbility ToRawPvEAbility()

@@ -185,8 +185,8 @@
         Confetti2Purple,
         Confetti2Green,
         FireworkGreen,
-        HeadConfettiFountain,
-        HeadConfettiBurst,
+        //HeadConfettiFountain,
+        //HeadConfettiBurst,
         SpecialBuffDamage,
         SpecialBuffShield,
         SpecialBuffApplied1,
@@ -209,7 +209,7 @@
         LoveBomb,
         FireworkCyan,
         Confetti2Cyan,
-        Particle_LoveBomb,
+        //Particle_LoveBomb,
         OnFireDemonic,
     }
 }

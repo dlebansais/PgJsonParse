@@ -32,6 +32,7 @@ public class ParserAbilityRequirement : Parser
         { OtherRequirementType.IsVolunteerGuide, FinishItemIsVolunteerGuide },
         { OtherRequirementType.IsNotGuest, FinishItemIsNotGuest },
         { OtherRequirementType.IsNotInHotspot, FinishItemNotInHotspot },
+        { OtherRequirementType.IsVampire, FinishItemIsVampire },
         { OtherRequirementType.EffectKeywordUnset, FinishItemEffectKeywordUnset },
         { OtherRequirementType.InventoryItemKeyword, FinishItemInventoryItemKeyword },
         { OtherRequirementType.Appearance, FinishItemAppearance },
@@ -67,6 +68,7 @@ public class ParserAbilityRequirement : Parser
         { OtherRequirementType.IsVolunteerGuide, new List<string>() { "T" } },
         { OtherRequirementType.IsNotGuest, new List<string>() { "T" } },
         { OtherRequirementType.IsNotInHotspot, new List<string>() { "T", "Name" } },
+        { OtherRequirementType.IsVampire, new List<string>() { "T" } },
         { OtherRequirementType.EffectKeywordUnset, new List<string>() { "T", "Keyword" } },
         { OtherRequirementType.InventoryItemKeyword, new List<string>() { "T", "Keyword" } },
         { OtherRequirementType.Appearance, new List<string>() { "T", "Appearance" } },
@@ -943,6 +945,46 @@ public class ParserAbilityRequirement : Parser
                         break;
                     case "Name":
                         Result = SetStringProperty((string valueString) => NewItem.Name = valueString, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemIsVampire(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgAbilityRequirementIsVampire NewItem = new PgAbilityRequirementIsVampire();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
                         break;
                     default:
                         Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

@@ -21,6 +21,7 @@
         IsVolunteerGuide,
         IsNotGuest,
         IsNotInHotspot,
+        IsVampire,
         EffectKeywordUnset,
         InventoryItemKeyword,
         Appearance,

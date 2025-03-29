@@ -47,9 +47,9 @@
         DamageBoostToHealthAndArmor,
         BaseDamageBoost,
         DrainHealth,
-        DrainArmor,
+        //DrainArmor,
         DrainHealthMax,
-        DrainArmorMax,
+        //DrainArmorMax,
         ReflectMeleeIndirectDamage,
 
         // MaxOccurence,
@@ -81,6 +81,7 @@
         AboveRage,
         RestoreHealth,
         IncreaseHealEfficiency,
+        RegenPercentageOfArmor,
 
         // RestoreMaxHealth,
         RestoreArmor,
@@ -223,7 +224,7 @@
         MitigateReflectKick,
         ReflectRate,
         ThickArmor,
-        DrainAsArmor,
+        //DrainAsArmor,
         WhenTeleporting,
         But,
         ApplyToCrits,

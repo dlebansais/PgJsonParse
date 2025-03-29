@@ -1500,9 +1500,9 @@ public partial class CombatParser
             case CombatKeyword.RestoreHealthArmorPower:
             case CombatKeyword.AddMaxHealth:
             case CombatKeyword.DrainHealth:
-            case CombatKeyword.DrainArmor:
+            //case CombatKeyword.DrainArmor:
             case CombatKeyword.DrainHealthMax:
-            case CombatKeyword.DrainArmorMax:
+            //case CombatKeyword.DrainArmorMax:
             case CombatKeyword.DamageBoost:
             case CombatKeyword.DebuffMitigation:
             case CombatKeyword.AddSprintSpeed:
@@ -1556,7 +1556,7 @@ public partial class CombatParser
             case CombatKeyword.RequireTwoKnives:
             case CombatKeyword.RequireNoAggro:
             case CombatKeyword.BaseDamageBoost:
-            case CombatKeyword.DrainAsArmor:
+            //case CombatKeyword.DrainAsArmor:
             // case CombatKeyword.MaxOccurence:
             case CombatKeyword.ChanceToConsume:
             // case CombatKeyword.AddHealthRegen:
@@ -2825,24 +2825,26 @@ public partial class CombatParser
                 ModCombatList[i].Data.RawIsPercent.HasValue && EffectCombatList[i].Data.RawIsPercent.HasValue && ModCombatList[i].Data.IsPercent == EffectCombatList[i].Data.IsPercent)
                 ModCombatList[i].Keyword = CombatKeyword.AddMitigationDirect;
 
+        // Hacks for Animal Handling
+        if (effect.AbilityKeywordList.Count == 1 &&
+            EffectAbilityList.Count == 0 &&
+            EffectTargetAbilityList.Count == 0)
+        {
+            if (effect.AbilityKeywordList[0] == AbilityKeyword.StabledPet && ModAbilityList.Count == 0)
+                ModAbilityList.Add(AbilityKeyword.StabledPet);
+            if ((effect.AbilityKeywordList[0] == AbilityKeyword.MarkWeakness || effect.AbilityKeywordList[0] == AbilityKeyword.TrueMarkWeakness) && ModAbilityList.Count == 1)
+                EffectTargetAbilityList.Add(AbilityKeyword.MarkWeakness);
+        }
+
         // Hack for Animal Handling
-        if ((ModAbilityList.Contains(AbilityKeyword.SicEm) || ModAbilityList.Contains(AbilityKeyword.CleverTrick)) &&
+        if ((ModAbilityList.Contains(AbilityKeyword.SicEm) || ModAbilityList.Contains(AbilityKeyword.CleverTrick) || ModAbilityList.Contains(AbilityKeyword.MarkWeakness)) &&
             EffectAbilityList.Count == 0 && ModTargetAbilityList.Count == 0 &&
-            (EffectTargetAbilityList.Contains(AbilityKeyword.SicEm) || EffectTargetAbilityList.Contains(AbilityKeyword.CleverTrick)))
+            (EffectTargetAbilityList.Contains(AbilityKeyword.SicEm) || EffectTargetAbilityList.Contains(AbilityKeyword.CleverTrick) || EffectTargetAbilityList.Contains(AbilityKeyword.MarkWeakness)))
         {
             foreach (AbilityKeyword Keyword in ModAbilityList)
                 ModTargetAbilityList.Add(Keyword);
 
             ModAbilityList.Clear();
-        }
-
-        // Hack for Animal Handling
-        if (effect.AbilityKeywordList.Count == 1 && effect.AbilityKeywordList[0] == AbilityKeyword.StabledPet &&
-            EffectAbilityList.Count == 0 &&
-            EffectTargetAbilityList.Count == 0 &&
-            ModAbilityList.Count == 0)
-        {
-            ModAbilityList.Add(AbilityKeyword.StabledPet);
         }
 
         // Hack for Look At My Hammer
@@ -2880,6 +2882,15 @@ public partial class CombatParser
             modText.Contains("coat the target in acid"))
         {
             ModCombatList[0].DamageType = GameDamageType.Acid;
+        }
+
+        // Hacks for Shocking Grasp
+        if (effect.AbilityKeywordList.Count == 1 &&
+            EffectAbilityList.Count == 0 &&
+            EffectTargetAbilityList.Count == 0)
+        {
+            if (effect.AbilityKeywordList[0] == AbilityKeyword.ShockingGrasp && ModAbilityList.Count == 1)
+                EffectTargetAbilityList.Add(AbilityKeyword.ShockingGrasp);
         }
 
         // Hack for slow immunity
@@ -3024,6 +3035,12 @@ public partial class CombatParser
     {
         if (effect1.Keyword != effect2.Keyword && (effect1.Keyword != CombatKeyword.DamageBoost || effect2.Keyword != CombatKeyword.DirectOnlyDamageBoost) && effect1.Keyword != CombatKeyword.Again && effect2.Keyword != CombatKeyword.Again)
         {
+            if (((effect1.Keyword == CombatKeyword.AddVulnerability && effect2.Keyword == CombatKeyword.AddMitigation) || (effect1.Keyword == CombatKeyword.AddMitigation && effect2.Keyword == CombatKeyword.AddVulnerability)) &&
+                effect1.Data.Value == (-1) * effect2.Data.Value)
+            {
+                return true;
+            }
+
             if (effect1.Keyword != CombatKeyword.AddVulnerability && effect2.Keyword != CombatKeyword.AddVulnerability)
                 return false;
         }

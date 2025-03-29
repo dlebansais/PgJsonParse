@@ -606,5 +606,7 @@
         NothingnessAttack,
         SmitingAttack,
         Lint_MultipleDamageTypeKeywords,
+        MarkWeakness,
+        TrueMarkWeakness,
     }
 }
