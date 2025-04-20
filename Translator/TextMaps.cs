@@ -952,6 +952,7 @@
             { AbilityKeyword.Lint_MultipleDamageTypeKeywords, "Multiple Damage Type Keywords" },
             { AbilityKeyword.MarkWeakness, "Mark Weakness" },
             { AbilityKeyword.TrueMarkWeakness, "True Mark Weakness" },
+            { AbilityKeyword.Lint_LowRange, "Low Range" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -1185,6 +1186,7 @@
             { AbilityTargetParticle.ShadowFullBody, "Shadow Full Body" },
             { AbilityTargetParticle.Fear, "Fear" },
             { AbilityTargetParticle.LightningHitQuick, "Lightning Hit Quick" },
+            { AbilityTargetParticle.PsychicDebuff, "Psychic Debuff" },
         };
 
         public static Dictionary<AllowedFishingZone, string> AllowedFishingZoneTextMap { get; } = new Dictionary<AllowedFishingZone, string>()
@@ -4615,6 +4617,8 @@
             { NamedLootProfile.L50Equipment, "L50 Equipment" },
             { NamedLootProfile.HorseThieves_Serbule, "Horse Thieves (Serbule)" },
             { NamedLootProfile.L90Jewelry, "L90 Jewelry" },
+            { NamedLootProfile.Custom_Orrrilund_1, "Custom Loot: Orrrilund Tier 1" },
+            { NamedLootProfile.Custom_Orrrilund_2, "Custom Loot: Orrrilund Tier 1" },
         };
 
         public static Dictionary<PowerWaxType, string> PowerWaxTypeTextMap { get; } = new Dictionary<PowerWaxType, string>()
@@ -5961,7 +5965,7 @@
             { XpTableEnum.AuxCombatSkill, "Aux Combat Skill" },
             { XpTableEnum.Lore, "Lore" },
             { XpTableEnum.AuxCraftingSkill, "Auxiliary Crafting Skill" },
-            { XpTableEnum.VeryCheapRecipe, "Very Cheap Recipe" },
+            //{ XpTableEnum.VeryCheapRecipe, "Very Cheap Recipe" },
             { XpTableEnum.CheapRecipe, "Cheap Recipe" },
             { XpTableEnum.AlcoholTolerance, "Alcohol Tolerance" },
             { XpTableEnum.BeastSpeech, "Beast Speech" },
@@ -5979,7 +5983,7 @@
             { XpTableEnum.TypicalNoncombatSkill_FastTo50, "Typical Non-combat Skill, Fast To 50" },
             { XpTableEnum.AuxCombatSkill_FastTo50, "Aux Combat Skill, Fast To 50" },
             { XpTableEnum.PerformanceDance, "Performance Dance" },
-            { XpTableEnum.CookingUnused, "Cooking (Unused)" },
+            //{ XpTableEnum.CookingUnused, "Cooking (Unused)" },
             { XpTableEnum.Paleontology, "Paleontology" },
             { XpTableEnum.AnimalHusbandry, "Animal Husbandry" },
             { XpTableEnum.None, "None" },

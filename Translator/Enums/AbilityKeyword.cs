@@ -608,5 +608,6 @@
         Lint_MultipleDamageTypeKeywords,
         MarkWeakness,
         TrueMarkWeakness,
+        Lint_LowRange,
     }
 }

@@ -72,5 +72,6 @@
         ShadowFullBody,
         Fear,
         LightningHitQuick,
+        PsychicDebuff,
     }
 }

@@ -3239,6 +3239,7 @@ public partial class CombatParser
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' healing abilities", "Pet Healing");
         BasicTextReplace(ref modText, ref effectText, "Animal Handling pets' basic attacks", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "pets' basic attacks", "Pet base attack");
+        BasicTextReplace(ref modText, ref effectText, "pet's basic attacks", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "Pet basic attack", "Pet base attack");
         BasicTextReplace(ref modText, ref effectText, "roots or slows", "slow or root");
         BasicTextReplace(ref modText, ref effectText, "Incubated Spiders' Rage attacks", "Incubated Spiders Rage attacks");

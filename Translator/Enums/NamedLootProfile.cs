@@ -25,5 +25,7 @@
         L50Equipment,
         HorseThieves_Serbule,
         L90Jewelry,
+        Custom_Orrrilund_1,
+        Custom_Orrrilund_2,
     }
 }

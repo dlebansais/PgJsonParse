@@ -278,8 +278,10 @@ public class Quest
 
     private static QuestReward ParseRewardEffectBestowTitle(string title)
     {
-        int TitleKey = TitleToKeyMap[title];
-        return new QuestReward() { T = "Title", Title = TitleKey };
+        if (TitleToKeyMap.TryGetValue(title, out int TitleKey))
+            return new QuestReward() { T = "Title", Title = TitleKey };
+        else
+            throw new PreprocessorException();
     }
 
     private static QuestReward ParseRewardEffectAdvanceScriptedQuestObjective(string questObjective)
@@ -652,6 +654,7 @@ public class Quest
         { "GuideEvent_EggsellentHunter", 5209 },
         { "Event_Halloween_NotAfraidOfLungs", 5024 },
         { "Event_Errana_BunnyLove2024", 5052 },
+        { "Event_Errana_BunnyLove2025", 5078 },
         { "Event_IHelped", 5241 },
         { "Event_DidMyPart", 5242 },
         //{ "Event_IReallyHelper", 5243 },
