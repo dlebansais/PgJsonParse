@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 83;
+        public const int TotalEnumTypes = 81;
 
         static TextMaps()
         {
@@ -953,6 +953,8 @@
             { AbilityKeyword.MarkWeakness, "Mark Weakness" },
             { AbilityKeyword.TrueMarkWeakness, "True Mark Weakness" },
             { AbilityKeyword.Lint_LowRange, "Low Range" },
+            { AbilityKeyword.DruidNonBasic, "Druid Non Basic" },
+            { AbilityKeyword.Projectile, "Projectile" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -2026,7 +2028,7 @@
             { EffectKeyword.HasCharmedPet, "Has Charmed Pet" },
             { EffectKeyword.BloodMist, "Blood Mist" },
             { EffectKeyword.TSysStunWhenDisablingCharm, "TSys Stun When Disabling Charm" },
-            { EffectKeyword.ArcheryCritPoison, "Archery Crit Poison" },
+            //{ EffectKeyword.ArcheryCritPoison, "Archery Crit Poison" },
             { EffectKeyword.Archery, "Archery" },
             { EffectKeyword.EnableBloodMistTSysBurst, "Enable Blood Mist TSys Burst" },
             { EffectKeyword.TSysNecroticGraspRanged, "TSys Necrotic Grasp Ranged" },
@@ -2077,6 +2079,9 @@
             { EffectKeyword.Client_AlwaysShow, "Client Always Show" },
             { EffectKeyword.SummonTornadoExtraSummon, "Summon Tornado Extra Summon" },
             { EffectKeyword.DampenWhileChannelingBuff, "Dampen While Channeling Buff" },
+            { EffectKeyword.DeleriumAoE, "Delerium AoE" },
+            { EffectKeyword.TSysProjectilesDealPoisonDoT, "Projectiles Deal Poison DoT" },
+            { EffectKeyword.TSysBurstsDealNatureDoT, "Bursts Deal Nature DoT" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2674,6 +2679,8 @@
             { EffectStackingType.WeatherWitchingBoostPotion, "Weather Witching Boost Potion" },
             { EffectStackingType.BeeDebuff, "Bee Debuff" },
             { EffectStackingType.MarkWeakness, "Mark Weakness" },
+            { EffectStackingType.FillWithBileResistPoison, "Fill With Bile Resist Poison" },
+            { EffectStackingType.FillWithBileResistAcid, "Fill With Bile Resist Acid" },
         };
 
         public static Dictionary<EnhancementEffect, string> EnhancementEffectTextMap { get; } = new Dictionary<EnhancementEffect, string>()
@@ -2947,6 +2954,8 @@
             { InteractionFlag.Crall_DiscoveredAcceleratedRotor, "Crall (Discovered Accelerated Rotor)" },
             { InteractionFlag.Crall_DiscoveredSpecializedIceFishing, "Crall (Discovered Specialized Ice Fishing)" },
             { InteractionFlag.Drummond_Offended, "Drummond Offended" },
+            { InteractionFlag.WritChallenge_2025, "Writ Challenge (2025)" },
+            { InteractionFlag.GoldenWrit_Pending, "Golden Writ (Pending)" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -3047,6 +3056,7 @@
             { ItemDroppedAppearance.DeployedTrashCan, "Deployed Trash Can" },
             { ItemDroppedAppearance.Mushroom17, "Mushroom #17" },
             { ItemDroppedAppearance.Egg2, "Egg #2" },
+            { ItemDroppedAppearance.BreadLoaf, "Bread Loaf" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -4443,6 +4453,8 @@
             { ItemKeyword.DemonMeat, "Demon Meat" },
             { ItemKeyword.CerberusHide, "Cerberus Hide" },
             { ItemKeyword.TrophyCerberusHide, "Trophy Cerberus Hide" },
+            { ItemKeyword.Tongue, "Tongue" },
+            { ItemKeyword.WhittlingRecipe, "Whittling Recipe" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4636,41 +4648,6 @@
             { PowerWaxType.SharpenedDirkCritDamage, "Sharpened Dirk Crit Damage" },
             { PowerWaxType.SharpenedBowAccuracy, "Sharpened Bow Accuracy" },
             { PowerWaxType.SharpenedBowCritDamage, "Sharpened Bow Crit Damage" },
-        };
-
-        public static Dictionary<PreEffect, string> PreEffectTextMap { get; } = new Dictionary<PreEffect, string>()
-        {
-            { PreEffect.Internal_None, string.Empty },
-            { PreEffect.EnhanceZombie, "Enhance Zombie" },
-            { PreEffect.ConfigGalvanize, "Config Galvanize" },
-            { PreEffect.CastigateUndeadDmgMod20, "Castigate Undead Damage Modifier 20%" },
-            { PreEffect.CastigateUndeadDmgMod40, "Castigate Undead Damage Modifier 40%" },
-            { PreEffect.CastigateUndeadDmgMod60, "Castigate Undead Damage Modifier 60%" },
-            { PreEffect.CastigateUndeadDmgMod80, "Castigate Undead Damage Modifier 80%" },
-            { PreEffect.CastigateUndeadDmgMod100, "Castigate Undead Damage Modifier 100%" },
-            { PreEffect.FlamestrikeUndeadDmgMod33, "Flamestrike Undead Damage Modifier 33%" },
-            { PreEffect.ResetTetheredSoul, "Reset Tethered Soul" },
-            { PreEffect.FishGutFishMod100, "Fish Gut Fish Modifier 100%" },
-            { PreEffect.SpadeAssaultPlantMod100, "Spade Assault Plant Modifier 100%" },
-            { PreEffect.SuperZombie1, "Super Zombie #1" },
-            { PreEffect.SuperZombie2, "Super Zombie #2" },
-            { PreEffect.SuperZombie3, "Super Zombie #3" },
-            { PreEffect.SuperZombie4, "Super Zombie #4" },
-            { PreEffect.SuperZombie5, "Super Zombie #5" },
-            { PreEffect.SuperZombie6, "Super Zombie #6" },
-            { PreEffect.SuperZombie7, "Super Zombie #7" },
-            { PreEffect.EndBardSong, "End Bard Song" },
-            { PreEffect.MambaStrikeLowArmorDmgMod, "Mamba Strike Low Armor Damage Mod" },
-            { PreEffect.SuperZombie8, "Super Zombie #8" },
-            { PreEffect.LethalForceAnimalDmgMod, "Lethal Force Animal Damage Mod" },
-            { PreEffect.WeatherExtraDamageAgainstWeakenedA, "Weather Extra Damage Against Weakened A" },
-            { PreEffect.WeatherExtraDamageAgainstWeakenedB, "Weather Extra Damage Against Weakened B" },
-            { PreEffect.DampenToggleEveryOtherUse, "Dampen Toggle Every Other Use" },
-            { PreEffect.TsunamiToggleEveryOtherUse, "Tsunami Toggle Every Other Use" },
-            { PreEffect.ShockingGraspToggleEveryOtherUse, "Shocking Grasp Toggle Every Other Use" },
-            { PreEffect.SuperZombie9, "Super Zombie #9" },
-            { PreEffect.CastigateUndeadDmgMod120, "Castigate Undead Dmg Mod 120" },
-            { PreEffect.CastigateUndeadDmgMod140, "Castigate Undead Dmg Mod 140" },
         };
 
         public static Dictionary<QuestGroup, string> QuestGroupTextMap { get; } = new Dictionary<QuestGroup, string>()
@@ -5043,67 +5020,6 @@
             { Race.Dwarf, "Dwarf" },
         };
 
-        /*
-        public static Dictionary<RecipeAction, string> RecipeActionTextMap { get; } = new Dictionary<RecipeAction, string>()
-        {
-            { RecipeAction.Internal_None, string.Empty },
-            { RecipeAction.Research, "Research" },
-            { RecipeAction.Meditate, "Meditate" },
-            { RecipeAction.Bind, "Bind" },
-            { RecipeAction.Teleport, "Teleport" },
-            { RecipeAction.Summon, "Summon" },
-            { RecipeAction.DecomposeItem, "Decompose Item" },
-            { RecipeAction.RemoveAugment, "Remove Augment" },
-            { RecipeAction.DistillItem, "Distill Item" },
-            { RecipeAction.RepairItem, "Repair Item" },
-            { RecipeAction.Sew, "Sew" },
-            { RecipeAction.Dye, "Dye" },
-            { RecipeAction.Construct, "Construct" },
-            { RecipeAction.Forge, "Forge" },
-            { RecipeAction.Create, "Create" },
-            { RecipeAction.Carve, "Carve" },
-            { RecipeAction.Augment, "Augment" },
-            { RecipeAction.Craft, "Craft" },
-            { RecipeAction.Survey, "Survey" },
-            { RecipeAction.CreateMap, "Create Map" },
-            { RecipeAction.StudySkull, "Study Skull" },
-            { RecipeAction.StudyEquipment, "Study Equipment" },
-            { RecipeAction.SayTheSooth, "Say The Sooth" },
-            { RecipeAction.MixDye, "Mix Dye" },
-            { RecipeAction.InfuseSpirits, "Infuse Spirits" },
-            { RecipeAction.CreateSpiritBelt, "Create Spirit Belt" },
-            { RecipeAction.ApplyAugment, "Apply Augment" },
-            { RecipeAction.Brew, "Brew" },
-            { RecipeAction.PrepareCask, "Prepare Cask" },
-            { RecipeAction.SortGrass, "Sort Grass" },
-            { RecipeAction.TapKeg, "Tap Keg" },
-            { RecipeAction.RendSpaceTime, "Rend Space-Time" },
-            { RecipeAction.PerformTheRitual, "Perform the Ritual" },
-            { RecipeAction.WaxShield, "Wax Shield" },
-            { RecipeAction.Enhance, "Enhance" },
-            { RecipeAction.Combine, "Combine" },
-            { RecipeAction.Melt, "Melt" },
-            { RecipeAction.AttuneMind, "Attune Mind" },
-            { RecipeAction.Icify, "Icify" },
-            { RecipeAction.CraftEnchantedKit, "Craft Enchanted Kit" },
-            { RecipeAction.CraftIceShield, "Craft Ice Shield" },
-            { RecipeAction.CraftIceSkinningKnife, "Craft Ice Skinning Knife" },
-            { RecipeAction.CraftIceButcherKnife, "Craft Ice Butcher Knife" },
-            { RecipeAction.CraftIceHandsaw, "Craft Ice Handsaw" },
-            { RecipeAction.Dustify, "Dustify" },
-            { RecipeAction.OpenPortal, "Open Portal" },
-            { RecipeAction.DyeFur, "Dye Fur" },
-            { RecipeAction.AssembleAndAnimate, "Assemble and Animate" },
-            { RecipeAction.Assemble, "Assemble" },
-            { RecipeAction.SendToSaddlebag, "Send to Saddlebag" },
-            { RecipeAction.ApplyGlamour, "Apply Glamour" },
-            { RecipeAction.PerformRitual, "Perform Ritual" },
-            { RecipeAction.DrinkNectar, "Drink Nectar" },
-            { RecipeAction.Perform, "Perform" },
-            //{ RecipeAction.BrownAle, "Brown Ale" },
-            { RecipeAction.Reset, "Reset" },
-            { RecipeAction.CutBait, "Cut Bait" },
-        };*/
 
         public static Dictionary<RecipeCurrency, string> RecipeCurrencyTextMap { get; } = new Dictionary<RecipeCurrency, string>()
         {
@@ -5692,13 +5608,13 @@
             { RecipeUsageAnimation.UseItem, "Use Item" },
             { RecipeUsageAnimation.Drink, "Drink" },
         };
-
+        /*
         public static Dictionary<SelfEffect, string> SelfEffectTextMap { get; } = new Dictionary<SelfEffect, string>()
         {
             { SelfEffect.Internal_None, string.Empty },
             { SelfEffect.MonsterCritHeal, "Monster Crit Heal" },
             { SelfEffect.EliteMonsterCrit, "Elite Monster Crit" },
-        };
+        };*/
 
         public static Dictionary<ShamanicSlotPower, string> ShamanicSlotPowerTextMap { get; } = new Dictionary<ShamanicSlotPower, string>()
         {
@@ -5901,6 +5817,18 @@
             { SpecialNpc.NPC_Thanksgiving_Ricatu, "Ricatu (Thanksgiving)" },
             { SpecialNpc.NPC_Velkort_Halloween, "Velkort (Halloween)" },
             { SpecialNpc.VidariaShed1, "Vidaria Shed #1" },
+            { SpecialNpc.WritQuest, "Writ Quest" },
+            { SpecialNpc.Altar_ScorpionStinger_Bowl, "Altar (Scorpion Stinger) Bowl" },
+            { SpecialNpc.Altar_PigSnout, "Altar (Pig Snout)" },
+            { SpecialNpc.Altar_CrudeUndershirt, "Altar (Crude Undershirt)" },
+            { SpecialNpc.Altar_AzureDye, "Altar (Azure Dye)" },
+            { SpecialNpc.Altar_Web, "Altar (Web)" },
+            { SpecialNpc.Altar_ZombieHand, "Altar (Zombie Hand)" },
+            { SpecialNpc.Altar_Lemon, "Altar (Zombie Hand)" },
+            { SpecialNpc.Altar_GlowyCrystal, "Altar (Glowy Crystal)" },
+            { SpecialNpc.Altar_Tongue, "Altar (Tongue)" },
+            { SpecialNpc.Altar_Hogshead, "Altar (Hogshead)" },
+            { SpecialNpc.Altar_AntiInvincibility, "Altar (Anti Invincibility)" },
         };
 
         public static Dictionary<Strategy, string> StrategyTextMap { get; } = new Dictionary<Strategy, string>()

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PgSelfPreEffectCollection : List<PgSelfPreEffect>
+    public class PgAbilityDynamicDot
     {
     }
 }

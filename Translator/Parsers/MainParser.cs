@@ -17,7 +17,6 @@ public static class MainParser
         { typeof(PgAbilityAmmo), new ParserAbilityAmmo() },
         { typeof(PgAbilityPvX), new ParserAbilityPvX() },
         { typeof(PgConditionalKeyword), new ParserConditionalKeyword() },
-        { typeof(PgSelfPreEffect), new ParserSelfPreEffect() },
         { typeof(PgAbilityRequirement), new ParserAbilityRequirement() },
         { typeof(PgSelfParticle), new ParserSelfParticle() },
         { typeof(PgSelfPreParticle), new ParserSelfPreParticle() },

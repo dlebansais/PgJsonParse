@@ -168,5 +168,17 @@
         NPC_Thanksgiving_Ricatu,
         NPC_Velkort_Halloween,
         VidariaShed1,
+        WritQuest,
+        Altar_ScorpionStinger_Bowl,
+        Altar_PigSnout,
+        Altar_CrudeUndershirt,
+        Altar_AzureDye,
+        Altar_Web,
+        Altar_ZombieHand,
+        Altar_Lemon,
+        Altar_GlowyCrystal,
+        Altar_Tongue,
+        Altar_Hogshead,
+        Altar_AntiInvincibility,
     }
 }

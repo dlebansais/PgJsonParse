@@ -54,9 +54,6 @@ public class ParserDoT : Parser
                 case "Preface":
                     Result = SetStringProperty((string valueString) => item.Preface = valueString, Value);
                     break;
-                case "RequiredEffectKeyword":
-                    Result = StringToEnumConversion<EffectKeyword>.SetEnum((EffectKeyword valueEnum) => item.RequiredEffectKeyword = valueEnum, Value);
-                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

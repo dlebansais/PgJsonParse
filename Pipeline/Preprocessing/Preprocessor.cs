@@ -17,6 +17,8 @@ public class Preprocessor
     {
         new IntDictionaryJsonConverter<Ability, RawAbility, AbilityDictionary>("ability"),
         new ArrayJsonConverter<AbilityKeyword, AbilityKeyword, AbilityKeywordArray>(),
+        new ArrayJsonConverter<AbilityDynamicDot, RawAbilityDynamicDot, AbilityDynamicDotArray>(),
+        new ArrayJsonConverter<AbilityDynamicSpecialValue, RawAbilityDynamicSpecialValue, AbilityDynamicSpecialValueArray>(),
         new AdvancementTableDictionaryJsonConverter(),
         new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
         new StringDictionaryJsonConverter<AIAbility, RawAIAbility, AIAbilityDictionary>(),

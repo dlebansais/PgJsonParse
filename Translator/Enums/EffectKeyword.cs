@@ -391,7 +391,7 @@
         HasCharmedPet,
         BloodMist,
         TSysStunWhenDisablingCharm,
-        ArcheryCritPoison,
+        //ArcheryCritPoison,
         Archery,
         EnableBloodMistTSysBurst,
         TSysNecroticGraspRanged,
@@ -442,5 +442,8 @@
         Client_AlwaysShow,
         SummonTornadoExtraSummon,
         DampenWhileChannelingBuff,
+        DeleriumAoE,
+        TSysProjectilesDealPoisonDoT,
+        TSysBurstsDealNatureDoT,
     }
 }

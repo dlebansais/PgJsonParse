@@ -191,6 +191,20 @@ public partial class CombatParser
             "Item_46036_0",
             "Item_46051_0",
             "Item_46052_0",
+            "Item_46059_0",
+            "Item_52038_0",
+            "Item_55619_0",
+            "Item_55620_0",
+            "Item_55621_0",
+            "Item_55622_0",
+            "Item_55623_0",
+            "Item_55624_0",
+            "Item_55625_0",
+            "Item_55631_0",
+            "Item_55632_0",
+            "Item_55633_0",
+            "Item_55634_0",
+            "Item_55635_0",
         };
 
         foreach (object Item in objectList)
@@ -684,7 +698,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "8001")
+        if (Key == "14006")
         {
         }
 
@@ -778,7 +792,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "8001")
+        if (power.Key == "14006")
         {
         }
 
@@ -1144,6 +1158,8 @@ public partial class CombatParser
         //{ "Sword Slash, Riposte, Windstrike, and Finishing Blow", new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.Riposte, AbilityKeyword.WindStrike, AbilityKeyword.FinishingBlow } },
         { "Bardic Blast", new List<AbilityKeyword>() { AbilityKeyword.BardBlast } },
         { "Melee ability", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
+        { "All Druid ability except Shillelagh", new List<AbilityKeyword>() { AbilityKeyword.DruidNonBasic } },
+        { "ability that fire a projectile, such as Toxinball, Fireball, or most Archery abilities", new List<AbilityKeyword>() { AbilityKeyword.Projectile } },
     };
 
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -1207,6 +1223,8 @@ public partial class CombatParser
         //AbilityKeyword.FinishingBlow,
         AbilityKeyword.BardBlast,
         AbilityKeyword.Melee,
+        AbilityKeyword.DruidNonBasic,
+        AbilityKeyword.Projectile,
         Internal_NonBasic,
     };
 
@@ -1230,6 +1248,37 @@ public partial class CombatParser
         AbilityKeyword.CleverTrick,
         AbilityKeyword.FillWithBile,
         AbilityKeyword.IceArmor,
+    };
+
+    private List<AbilityKeyword> AbilitySpecificKeywordList = new List<AbilityKeyword>()
+    {
+        AbilityKeyword.StrikeANerve,
+        AbilityKeyword.PigChomp,
+        AbilityKeyword.CowStampede,
+        AbilityKeyword.CowBash,
+        AbilityKeyword.MycotoxinBomb,
+        AbilityKeyword.StaffPin,
+        AbilityKeyword.WaveOfDarkness,
+        AbilityKeyword.SparkOfDeath,
+        AbilityKeyword.MultiShot,
+        AbilityKeyword.HeavyMultiShot,
+        AbilityKeyword.SpiderFear,
+        AbilityKeyword.SpiderAcid,
+        AbilityKeyword.SpiderIncubate,
+        AbilityKeyword.RingOfFire,
+        AbilityKeyword.CrushingBall,
+        AbilityKeyword.SummonTornado,
+        AbilityKeyword.EmbraceOfDespair,
+        AbilityKeyword.RippleOfAmnesia,
+        AbilityKeyword.BloodMistBurst,
+        AbilityKeyword.PulseOfLife,
+        AbilityKeyword.IceSpear,
+        AbilityKeyword.FanOfBlades,
+        AbilityKeyword.BlastOfFury,
+        AbilityKeyword.BlastOfDefiance,
+        AbilityKeyword.BlastOfDespair,
+        AbilityKeyword.BunFuBlast,
+        AbilityKeyword.CorruptHate,
     };
 
     private void GetAbilityNames(List<PgSkill> skillList, out List<string> abilityNameList, out Dictionary<string, List<AbilityKeyword>> nameToKeyword)
@@ -1302,22 +1351,34 @@ public partial class CombatParser
 
                         if (KeywordList.Count > 1)
                         {
-                            string KeywordListString = string.Empty;
-
+                            AbilityKeyword SpecificKeyword = AbilityKeyword.Internal_None;
                             foreach (AbilityKeyword Keyword in KeywordList)
+                                if (AbilitySpecificKeywordList.Contains(Keyword))
+                                {
+                                    SpecificKeyword = Keyword;
+                                    FinalMatchingKeyword = Keyword;
+                                    break;
+                                }
+
+                            if (SpecificKeyword == AbilityKeyword.Internal_None)
                             {
-                                if (KeywordListString.Length > 0)
-                                    KeywordListString += ", ";
+                                string KeywordListString = string.Empty;
 
-                                KeywordListString += Keyword.ToString();
-                            }
+                                foreach (AbilityKeyword Keyword in KeywordList)
+                                {
+                                    if (KeywordListString.Length > 0)
+                                        KeywordListString += ", ";
 
-                            if (!Name.EndsWith(" (Orc)"))
-                            {
-                                if (FinalMatchingKeyword == AbilityKeyword.WeatherWitching && KeywordList.Contains(AbilityKeyword.SummonedTornado))
-                                    FinalMatchingKeyword = AbilityKeyword.SummonedTornado;
+                                    KeywordListString += Keyword.ToString();
+                                }
 
-                                Debug.WriteLine($"{Name} has more than one keyword: {KeywordListString}. Selected: {FinalMatchingKeyword}");
+                                if (!Name.EndsWith(" (Orc)"))
+                                {
+                                    if (FinalMatchingKeyword == AbilityKeyword.WeatherWitching && KeywordList.Contains(AbilityKeyword.SummonedTornado))
+                                        FinalMatchingKeyword = AbilityKeyword.SummonedTornado;
+
+                                    Debug.WriteLine($"{Name} has more than one keyword: {KeywordListString}. Selected: {FinalMatchingKeyword}");
+                                }
                             }
                         }
 
@@ -1600,6 +1661,7 @@ public partial class CombatParser
             case CombatKeyword.TargetUndead:
             case CombatKeyword.UsableWhileStunned:
             case CombatKeyword.ActiveAbility:
+            case CombatKeyword.NonStackingDebuff:
                 break;
 
             default:
@@ -2455,7 +2517,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "8001")
+            if (Entry.Key.Key == "14006")
             {
             }
 
@@ -4476,7 +4538,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "8001")
+            if (ItemPower.Key == "14006")
             {
             }
 

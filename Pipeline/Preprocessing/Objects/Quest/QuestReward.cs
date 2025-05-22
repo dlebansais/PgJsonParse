@@ -3,6 +3,7 @@
 public class QuestReward
 {
     public string? Ability { get; set; }
+    public string? AccountFlag { get; set; }
     public int? Amount { get; set; }
     public int? Credits { get; set; }
     public string? Currency { get; set; }

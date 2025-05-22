@@ -347,11 +347,11 @@ public class ParserAbility : Parser
                 bool ContainMust = true;
                 bool NotContainMustNot = true;
 
-                foreach (AbilityKeyword Keyword in PgAbilityKeyword.MustHaveKeywordList)
+                foreach (AbilityKeyword Keyword in PgAbilityKeyword.MustHaveAbilityKeywordList)
                     if (!Ability.KeywordList.Contains(Keyword))
                         ContainMust = false;
 
-                foreach (AbilityKeyword Keyword in PgAbilityKeyword.MustNotHaveKeywordList)
+                foreach (AbilityKeyword Keyword in PgAbilityKeyword.MustNotHaveAbilityKeywordList)
                     if (Ability.KeywordList.Contains(Keyword))
                         NotContainMustNot = false;
 

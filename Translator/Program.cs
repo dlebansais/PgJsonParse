@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(426);
+        return ParseCurated(427);
     }
 
     private static int ParseCurated(int Version)
@@ -30,6 +30,11 @@ public class Program
 
         if (!ParseKeylessArrayFile(Version, "abilitykeywords", typeof(PgAbilityKeyword)))
             return -1;
+
+        /*
+        if (!ParseKeylessArrayFile(Version, "abilitydynamicdots", typeof(PgAbilityDynamicDot)))
+            return -1;
+        */
 
         if (!ParseFile(Version, "advancementtables", typeof(PgAdvancementTable)))
             return -1;
@@ -2553,6 +2558,8 @@ public class Program
                 { "Hole Bulwarks", QuestSpecifics.None },
                 { "Infernal Recipes", QuestSpecifics.None },
                 { "Khyrulek's Planar Planner", QuestSpecifics.None }, //?
+                { "Lesser of Two Evils", QuestSpecifics.None },
+                { "Lonely at the Top", QuestSpecifics.None },
                 { "Lost Strength", QuestSpecifics.None }, //?
                 { "Magma Testing", QuestSpecifics.None }, //?
                 { "Pocket Magma", QuestSpecifics.None }, //?

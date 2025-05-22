@@ -188,6 +188,7 @@ public partial class CombatParser
         new Sentence("Cause the target to suffer %f #D damage", CombatKeyword.AddVulnerability),
         new Sentence("Cause target to be %f more vulnerable to #D damage", CombatKeyword.AddVulnerability),
         new Sentence("Deal %f damage to Health and Armor", CombatKeyword.DamageBoostToHealthAndArmor),
+        new Sentence("Deal %f #D damage to Health", CombatKeyword.DamageBoostToHealthAndArmor),
         new Sentence("Increase the damage of all targets' attack %f", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }),
         new Sentence("%f damage from all attack", new List<CombatKeyword>() { CombatKeyword.DamageBoost, CombatKeyword.ApplyToAllies }),
         new Sentence("Turning half of that into Trauma damage", CombatKeyword.ExtraTraumaDamage),

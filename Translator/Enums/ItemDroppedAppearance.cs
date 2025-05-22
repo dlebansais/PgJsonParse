@@ -98,5 +98,6 @@
         DeployedTrashCan,
         Mushroom17,
         Egg2,
+        BreadLoaf,
     }
 }

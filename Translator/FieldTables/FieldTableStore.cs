@@ -93,8 +93,10 @@ public class FieldTableStore
         { "AttributesThatDeltaResetTime", typeof(string[]) },
         { "AttributesThatModCritDamage", typeof(string[]) },
         { "AttributesThatModDamage", typeof(string[]) },
-        { "MustHaveKeywords", typeof(string[]) },
-        { "MustNotHaveKeywords", typeof(string[]) },
+        { "MustHaveAbilityKeywords", typeof(string[]) },
+        { "MustHaveActiveSkill", typeof(string) },
+        { "MustHaveEffectKeywords", typeof(string[]) },
+        { "MustNotHaveAbilityKeywords", typeof(string[]) },
     };
 
     public static Dictionary<string, Type> TableSelfParticle { get; } = new Dictionary<string, Type>()
@@ -144,7 +146,6 @@ public class FieldTableStore
         { "PowerCost", typeof(int) },
         { "ArmorMitigationRatio", typeof(int) },
         { "AoE", typeof(int) },
-        { "SelfPreEffects", typeof(PgSelfPreEffect[]) },
         { "RageBoost", typeof(int) },
         { "RageMultiplier", typeof(float) },
         { "Accuracy", typeof(float) },
@@ -169,7 +170,6 @@ public class FieldTableStore
         { "RageCostMod", typeof(float) },
         { "DoTs", typeof(PgDoT[]) },
         { "CritDamageMod", typeof(float) },
-        { "SelfEffectsOnCrit", typeof(string[]) },
     };
 
     public static Dictionary<string, Type> TableSelfPreEffect { get; } = new Dictionary<string, Type>()
@@ -213,7 +213,6 @@ public class FieldTableStore
         { "AttributesThatDelta", typeof(string[]) },
         { "AttributesThatMod", typeof(string[]) },
         { "Preface", typeof(string) },
-        { "RequiredEffectKeyword", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableSpecialValue { get; } = new Dictionary<string, Type>()
@@ -683,6 +682,7 @@ public class FieldTableStore
         { "Effect", typeof(string) },
         { "Item", typeof(string) },
         { "StackSize", typeof(int) },
+        { "AccountFlag", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestPreGiveEffect { get; } = new Dictionary<string, Type>()
@@ -958,7 +958,6 @@ public class FieldTableStore
         { typeof(PgAbilityAmmo), new FixedFieldTable(TableAbilityAmmo) },
         { typeof(PgAbilityPvX), new FixedFieldTable(TableAbilityPvX) },
         { typeof(PgConditionalKeyword), new FixedFieldTable(TableAbilityConditionalKeyword) },
-        { typeof(PgSelfPreEffect), new FixedFieldTable(TableSelfPreEffect) },
         { typeof(PgAbilityRequirement), new FixedFieldTable(TableAbilityRequirement) },
         { typeof(PgSelfParticle), new FixedFieldTable(TableSelfParticle) },
         { typeof(PgSelfPreParticle), new FixedFieldTable(TableSelfPreParticle) },

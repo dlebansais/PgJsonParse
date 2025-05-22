@@ -382,5 +382,7 @@
         WeatherWitchingBoostPotion,
         BeeDebuff,
         MarkWeakness,
+        FillWithBileResistPoison,
+        FillWithBileResistAcid,
     }
 }

@@ -24,4 +24,5 @@ public enum QuestRewardType
     Item,
     RacingXp,
     DeltaScriptAtomicInt,
+    SetAccountFlag,
 }

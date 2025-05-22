@@ -1396,5 +1396,7 @@
         DemonMeat,
         CerberusHide,
         TrophyCerberusHide,
+        Tongue,
+        WhittlingRecipe,
     }
 }

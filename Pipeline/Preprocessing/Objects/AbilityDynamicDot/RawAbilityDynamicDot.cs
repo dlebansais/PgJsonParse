@@ -1,13 +1,14 @@
 ﻿namespace Preprocessor;
 
-public class DoT
+public class RawAbilityDynamicDot
 {
     public string[]? AttributesThatDelta { get; set; }
-    public string[]? AttributesThatMod { get; set; }
     public int? DamagePerTick { get; set; }
     public string? DamageType { get; set; }
     public int? Duration { get; set; }
     public int? NumTicks { get; set; }
-    public string? Preface { get; set; }
+    public string[]? ReqAbilityKeywords { get; set; }
+    public string? ReqActiveSkill { get; set; }
+    public string[]? ReqEffectKeywords { get; set; }
     public string[]? SpecialRules { get; set; }
 }

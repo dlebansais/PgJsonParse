@@ -35,6 +35,7 @@ public class ParserQuestReward : Parser
         { QuestRewardType.Item, FinishItemItem },
         { QuestRewardType.RacingXp, FinishItemRacingXp },
         { QuestRewardType.DeltaScriptAtomicInt, FinishItemDeltaScriptAtomicInt },
+        { QuestRewardType.SetAccountFlag, FinishItemSetAccountFlag },
     };
 
     private static Dictionary<QuestRewardType, List<string>> KnownFieldTable = new Dictionary<QuestRewardType, List<string>>()
@@ -60,6 +61,7 @@ public class ParserQuestReward : Parser
         { QuestRewardType.Item, new List<string>() { "T", "Item", "StackSize" } },
         { QuestRewardType.RacingXp, new List<string>() { "T", "Skill", "Xp" } },
         { QuestRewardType.DeltaScriptAtomicInt, new List<string>() { "T", "InteractionFlag", "Amount" } },
+        { QuestRewardType.SetAccountFlag, new List<string>() { "T", "AccountFlag" } },
     };
 
     private static Dictionary<QuestRewardType, List<string>> HandledTable = new Dictionary<QuestRewardType, List<string>>();
@@ -1004,7 +1006,6 @@ public class ParserQuestReward : Parser
             return false;
     }
 
-
     private static bool FinishItemDeltaScriptAtomicInt(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgQuestRewardDeltaScriptAtomicInt NewItem = new PgQuestRewardDeltaScriptAtomicInt();
@@ -1031,6 +1032,49 @@ public class ParserQuestReward : Parser
                         break;
                     case "InteractionFlag":
                         Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.InteractionFlag = valueEnum, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemSetAccountFlag(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRewardAccountFlag NewItem = new PgQuestRewardAccountFlag();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "AccountFlag":
+                        Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => NewItem.AccountFlag = valueEnum, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

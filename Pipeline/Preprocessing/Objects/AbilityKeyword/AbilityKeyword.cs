@@ -10,6 +10,8 @@ public class AbilityKeyword
     public string[]? AttributesThatDeltaResetTime { get; set; }
     public string[]? AttributesThatModCritDamage { get; set; }
     public string[]? AttributesThatModDamage { get; set; }
-    public string[]? MustHaveKeywords { get; set; }
-    public string[]? MustNotHaveKeywords { get; set; }
+    public string[]? MustHaveAbilityKeywords { get; set; }
+    public string? MustHaveActiveSkill { get; set; }
+    public string[]? MustHaveEffectKeywords { get; set; }
+    public string[]? MustNotHaveAbilityKeywords { get; set; }
 }

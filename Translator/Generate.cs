@@ -805,6 +805,7 @@ public class Generate
         WriteGroupingDictionary(objectList, Writer, typeof(AbilityKeyword), "AbilityByKeyword", GetAbilityByKeywordTable);
         WriteGroupingDictionary(objectList, Writer, typeof(InteractionFlag), "QuestByInteractionFlag", GetQuestByInteractionFlagTable);
         WriteGroupingDictionary(objectList, Writer, typeof(RecipeItemKey), "ItemByRecipeKey", GetItemByRecipeKeyTable);
+        WriteGroupingDictionary(objectList, Writer, typeof(string), "RecipeFromRecipe", GetRecipeFromRecipe);
         WriteGroupingList(objectList, Writer, "Buff", GetBuffList);
         WriteIconIdList(Writer);
         WriteSkillNamesDictionary(objectList, Writer);
@@ -1069,6 +1070,37 @@ public class Generate
             foreach (PgItem Item in Entry.Value)
                 KeyTable[Keyword].Add(Item.Key);
         }
+
+        return KeyTable;
+    }
+
+    private static Dictionary<object, List<string>> GetRecipeFromRecipe(List<object> objectList)
+    {
+        Dictionary<object, List<string>> KeyTable = new Dictionary<object, List<string>>();
+
+        foreach (object Item in objectList)
+            if (Item is PgRecipe AsRecipe)
+            {
+                PgRecipeResultEffectCollection ResultEffectList = AsRecipe.ResultEffectList;
+
+                foreach (PgRecipeResultEffect ResultEffect in ResultEffectList)
+                {
+                    if (ResultEffect is PgRecipeResultBestowRecipeIfNotKnown BestowRecipeIfNotKnown)
+                    {
+                        if (BestowRecipeIfNotKnown.Recipe_Key is string BestowedRecipeKey)
+                        {
+                            if (KeyTable.TryGetValue(BestowedRecipeKey, out List<string> RecipeList))
+                            {
+                                RecipeList.Add(BestowedRecipeKey);
+                            }
+                            else
+                            {
+                                KeyTable.Add(AsRecipe.Key, new List<string> { BestowedRecipeKey });
+                            }
+                        }
+                    }
+                }
+            }
 
         return KeyTable;
     }

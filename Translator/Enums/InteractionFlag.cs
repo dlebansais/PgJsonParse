@@ -219,5 +219,7 @@
         Crall_DiscoveredAcceleratedRotor,
         Crall_DiscoveredSpecializedIceFishing,
         Drummond_Offended,
+        WritChallenge_2025,
+        GoldenWrit_Pending,
     }
 }

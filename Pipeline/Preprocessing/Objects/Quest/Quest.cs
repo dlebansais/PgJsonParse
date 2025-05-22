@@ -261,6 +261,8 @@ public class Quest
                 return new QuestReward() { T = "Ability", Ability = EffectParameter };
             case "AdvanceScriptedQuestObjective":
                 return ParseRewardEffectAdvanceScriptedQuestObjective(EffectParameter);
+            case "SetAccountFlag":
+                return new QuestReward() { T = "SetAccountFlag", AccountFlag = EffectParameter };
             case "GiveXP":
                 return ParseRewardEffectGiveXP(EffectParameter);
             case "DeltaNpcFavor":
@@ -589,6 +591,8 @@ public class Quest
                 return $"LearnAbility({reward.Ability})";
             case "ScriptedQuestObjective":
                 return $"AdvanceScriptedQuestObjective({reward.Npc}{reward.GetObjectiveCompleteOrDone()})";
+            case "SetAccountFlag":
+                return $"SetAccountFlag({reward.AccountFlag})";
             case "SkillXp":
                 return $"GiveXP({reward.Skill},{reward.Xp})";
             case "Favor":

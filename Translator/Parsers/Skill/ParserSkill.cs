@@ -343,6 +343,9 @@ public class ParserSkill : Parser
                 continue;
             if (Ability.KeywordList.Contains(AbilityKeyword.Lint_NotObtainable))
             {
+                if (Ability.KeywordList.Contains(AbilityKeyword.MarkWeakness) || Ability.KeywordList.Contains(AbilityKeyword.TrueMarkWeakness))
+                    continue;
+
                 bool Accept = skill.Name == "Vampirism" && !Ability.IsInternalAbility;
                 if (Accept)
                     Debug.WriteLine($"Accepting {Ability.Name} for {skill.Name}");

@@ -609,5 +609,7 @@
         MarkWeakness,
         TrueMarkWeakness,
         Lint_LowRange,
+        DruidNonBasic,
+        Projectile,
     }
 }

@@ -20,7 +20,6 @@
         public int? RawArmorMitigationRatio { get; set; }
         public int AoE { get { return RawAoE.HasValue ? RawAoE.Value : 0; } }
         public int? RawAoE { get; set; }
-        public PgSelfPreEffectCollection SelfPreEffectList { get; set; } = new PgSelfPreEffectCollection();
         public int RageBoost { get { return RawRageBoost.HasValue ? RawRageBoost.Value : 0; } }
         public int? RawRageBoost { get; set; }
         public float RageMultiplier { get { return RawRageMultiplier.HasValue ? RawRageMultiplier.Value : 1.0F; } }
@@ -52,7 +51,6 @@
         public PgDoTCollection DoTList { get; set; } = new PgDoTCollection();
         public float CritDamageMod { get { return RawCritDamageMod.HasValue ? RawCritDamageMod.Value : 0; } }
         public float? RawCritDamageMod { get; set; }
-        public List<SelfEffect> SelfEffectOnCritList { get; set; } = new List<SelfEffect>();
         public float TauntMod { get { return RawTauntMod.HasValue ? RawTauntMod.Value : 0; } }
         public float? RawTauntMod { get; set; }
     }

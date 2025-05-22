@@ -12,7 +12,9 @@
         public PgAttributeCollection AttributesThatDeltaResetTimeList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatModCritDamageList { get; set; } = new PgAttributeCollection();
         public PgAttributeCollection AttributesThatModDamageList { get; set; } = new PgAttributeCollection();
-        public List<AbilityKeyword> MustHaveKeywordList { get; set; } = new();
-        public List<AbilityKeyword> MustNotHaveKeywordList { get; set; } = new();
+        public List<AbilityKeyword> MustHaveAbilityKeywordList { get; set; } = new();
+        public string? MustHaveActiveSkill_Key { get; set; }
+        public List<EffectKeyword> MustHaveEffectKeywordList { get; set; } = new();
+        public List<AbilityKeyword> MustNotHaveAbilityKeywordList { get; set; } = new();
     }
 }

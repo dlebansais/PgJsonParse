@@ -36,55 +36,10 @@ public class PvEAbility
         RageCostMod = rawPvEAbility.RageCostMod;
         RageMultiplier = rawPvEAbility.RageMultiplier;
         Range = rawPvEAbility.Range;
-        SelfEffectsOnCrit = rawPvEAbility.SelfEffectsOnCrit;
-        SelfPreEffects = ParseSelfPreEffects(rawPvEAbility.SelfPreEffects);
         SpecialValues = rawPvEAbility.SpecialValues;
         TauntDelta = rawPvEAbility.TauntDelta;
         TauntMod = rawPvEAbility.TauntMod;
         TempTauntDelta = rawPvEAbility.TempTauntDelta;
-    }
-
-    private static SelfPreEffect[]? ParseSelfPreEffects(string[]? rawSelfPreEffects)
-    {
-        if (rawSelfPreEffects is null)
-            return null;
-
-        List<SelfPreEffect> Result = new();
-        foreach (string SelfPreEffects in rawSelfPreEffects)
-            Result.Add(ParseSelfPreEffect(SelfPreEffects));
-
-        return Result.ToArray();
-    }
-
-    private static SelfPreEffect ParseSelfPreEffect(string rawSelfPreEffect)
-    {
-        // Search for an expression between parentheses.
-        string ParameterPattern = @"\(([^)]+)\)";
-        Match ParameterMatch = Regex.Match(rawSelfPreEffect, ParameterPattern, RegexOptions.IgnoreCase);
-        if (!ParameterMatch.Success)
-            return new SelfPreEffect { Name = rawSelfPreEffect };
-
-        string Name = rawSelfPreEffect.Substring(0, ParameterMatch.Index);
-        string InsideParameterString = rawSelfPreEffect.Substring(ParameterMatch.Index + 1, rawSelfPreEffect.Length - ParameterMatch.Index - 2);
-
-        SelfPreEffect Result = new() { Name = Name };
-
-        switch (Name)
-        {
-            case "EnhanceZombie":
-                Result.Enhancement = InsideParameterString;
-                break;
-            case "ConfigGalvanize":
-                if (InsideParameterString[0] != ',')
-                    throw new PreprocessorException();
-
-                Result.Value = int.Parse(InsideParameterString.Substring(1));
-                break;
-            default:
-                throw new PreprocessorException();
-        }
-
-        return Result;
     }
 
     public decimal? Accuracy { get; set; }
@@ -115,8 +70,6 @@ public class PvEAbility
     public decimal? RageCostMod { get; set; }
     public int? RageMultiplier { get; set; }
     public int Range { get; set; }
-    public string[]? SelfEffectsOnCrit { get; set; }
-    public SelfPreEffect[]? SelfPreEffects { get; set; }
     public SpecialValue[]? SpecialValues { get; set; }
     public int? TauntDelta { get; set; }
     public decimal? TauntMod { get; set; }
@@ -154,46 +107,10 @@ public class PvEAbility
         Result.RageCostMod = RageCostMod;
         Result.RageMultiplier = RageMultiplier;
         Result.Range = Range;
-        Result.SelfEffectsOnCrit = SelfEffectsOnCrit;
-        Result.SelfPreEffects = SelfPreEffectsToStrings(SelfPreEffects);
         Result.SpecialValues = SpecialValues;
         Result.TauntDelta = TauntDelta;
         Result.TauntMod = TauntMod;
         Result.TempTauntDelta = TempTauntDelta;
-
-        return Result;
-    }
-
-    private static string[]? SelfPreEffectsToStrings(SelfPreEffect[]? selfPreEffects)
-    {
-        if (selfPreEffects is null)
-            return null;
-
-        List<string> Result = new();
-        foreach (SelfPreEffect SelfPreEffect in selfPreEffects)
-            Result.Add(SelfPreEffectToString(SelfPreEffect));
-
-        return Result.ToArray();
-    }
-
-    private static string SelfPreEffectToString(SelfPreEffect selfPreEffect)
-    {
-        string Result;
-
-        switch (selfPreEffect.Name)
-        {
-            case "EnhanceZombie":
-                Result = $"{selfPreEffect.Name}({selfPreEffect.Enhancement})";
-                break;
-            case "ConfigGalvanize":
-                Result = $"{selfPreEffect.Name}(,{selfPreEffect.Value})";
-                break;
-            default:
-                Result = selfPreEffect.Name;
-                break;
-        }
-
-        Debug.Assert(Result != string.Empty);
 
         return Result;
     }

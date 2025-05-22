@@ -54,9 +54,6 @@ public class ParserAbilityPvX : Parser
                 case "AoE":
                     Result = SetIntProperty((int valueInt) => item.RawAoE = valueInt, Value);
                     break;
-                case "SelfPreEffects":
-                    Result = Inserter<PgSelfPreEffect>.AddKeylessArray(item.SelfPreEffectList, Value);
-                    break;
                 case "RageBoost":
                     Result = SetIntProperty((int valueInt) => item.RawRageBoost = valueInt, Value);
                     break;
@@ -128,9 +125,6 @@ public class ParserAbilityPvX : Parser
                     break;
                 case "CritDamageMod":
                     Result = SetFloatProperty((float valueFloat) => item.RawCritDamageMod = valueFloat, Value);
-                    break;
-                case "SelfEffectsOnCrit":
-                    Result = StringToEnumConversion<SelfEffect>.TryParseList(Value, item.SelfEffectOnCritList);
                     break;
 
                 default:

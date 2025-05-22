@@ -9,6 +9,8 @@ internal class Program
     private static List<JsonFile> JsonFileList = new()
     {
         new JsonFile("abilities", true, Preprocessor.PreprocessDictionary<AbilityDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<AbilityDictionary>),
+        new JsonFile("abilitydynamicdots", true, Preprocessor.PreprocessArray<AbilityDynamicDotArray>, Fixer.NoFix, Preprocessor.SaveSerializedContent<AbilityDynamicDotArray>),
+        new JsonFile("abilitydynamicspecialvalues", true, Preprocessor.PreprocessArray<AbilityDynamicSpecialValueArray>, Fixer.NoFix, Preprocessor.SaveSerializedContent<AbilityDynamicSpecialValueArray>),
         new JsonFile("abilitykeywords", true, Preprocessor.PreprocessArray<AbilityKeywordArray>, Fixer.NoFix, Preprocessor.SaveSerializedContent<AbilityKeywordArray>),
         new JsonFile("advancementtables", true, Preprocessor.PreprocessDictionary<AdvancementTableDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<AdvancementTableDictionary>),
         new JsonFile("ai", true, Preprocessor.PreprocessDictionary<AIDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<AIDictionary>),

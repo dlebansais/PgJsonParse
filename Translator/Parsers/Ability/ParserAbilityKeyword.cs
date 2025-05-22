@@ -55,11 +55,17 @@ public class ParserAbilityKeyword : Parser
                 case "AttributesThatModDamage":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.AttributesThatModDamageList, Value);
                     break;
-                case "MustHaveKeywords":
-                    Result = StringToEnumConversion<AbilityKeyword>.TryParseList(Value, item.MustHaveKeywordList);
+                case "MustHaveAbilityKeywords":
+                    Result = StringToEnumConversion<AbilityKeyword>.TryParseList(Value, item.MustHaveAbilityKeywordList);
                     break;
-                case "MustNotHaveKeywords":
-                    Result = StringToEnumConversion<AbilityKeyword>.TryParseList(Value, item.MustNotHaveKeywordList);
+                case "MustHaveActiveSkill":
+                    Result = ParserSkill.Parse((PgSkill valueSkill) => item.MustHaveActiveSkill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                    break;
+                case "MustHaveEffectKeywords":
+                    Result = StringToEnumConversion<EffectKeyword>.TryParseList(Value, item.MustHaveEffectKeywordList);
+                    break;
+                case "MustNotHaveAbilityKeywords":
+                    Result = StringToEnumConversion<AbilityKeyword>.TryParseList(Value, item.MustNotHaveAbilityKeywordList);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
