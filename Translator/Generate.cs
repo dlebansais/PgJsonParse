@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Text.Json;
 using PgObjects;
 
 public class Generate
@@ -67,6 +68,8 @@ public class Generate
         {
             using FileStream Stream = Entry.Value;
         }
+
+        WriteAiFiles(objectList);
     }
 
     private static void Write(List<object> objectList)
@@ -1742,5 +1745,37 @@ public class Generate
         }
 
         return type.Name;
+    }
+
+    private static void WriteAiFiles(List<object> objectList)
+    {
+        Dictionary<string, PgSkill> SkillTable = new();
+        foreach (object Item in objectList)
+            if (Item is PgSkill AsSkill)
+                SkillTable.Add(AsSkill.Key, AsSkill);
+
+        List<string> CombatSkillList = new List<string>();
+
+        foreach (object Item in objectList)
+            if (Item is PgSkill AsSkill)
+            {
+                if (IsCombatSkill(AsSkill, SkillTable))
+                {
+                    if (AsSkill.Name.Length > 0)
+                        CombatSkillList.Add(AsSkill.Name);
+                    else
+                        CombatSkillList.Add(AsSkill.Key);
+                }
+            }
+
+        string DestinationPath = @"C:\Projects\PgWithAi\PgWithAi\Resources";
+
+        WriteAiSkills(DestinationPath, CombatSkillList);
+    }
+
+    private static void WriteAiSkills(string destinationPath, List<string> skillList)
+    {
+        string Content = string.Join("\n", skillList);
+        File.WriteAllText(Path.Combine(destinationPath, "Skills.txt"), Content);
     }
 }

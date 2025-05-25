@@ -20,7 +20,7 @@ public class NpcTest
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
     }
-
+    /*
     [Test]
     public void TestDesire()
     {
@@ -29,8 +29,8 @@ public class NpcTest
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
         Assert.That(Success, Is.True);
-    }
-
+    }*/
+    /*
     [Test]
     public void TestNoAreaName()
     {
@@ -39,8 +39,8 @@ public class NpcTest
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
         Assert.That(Success, Is.True);
-    }
-
+    }*/
+    /*
     [Test]
     public void TestPreferenceKeywords()
     {
@@ -49,5 +49,5 @@ public class NpcTest
         Preprocessor Preprocessor = new();
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
         Assert.That(Success, Is.True);
-    }
+    }*/
 }

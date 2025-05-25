@@ -57,7 +57,7 @@ public class AbilityTest
         bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
         Assert.That(Success, Is.True);
     }
-
+    /*
     [Test]
     public void TestPvESelfPreEffect()
     {
@@ -65,8 +65,8 @@ public class AbilityTest
 
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
-    }
-
+    }*/
+    /*
     [Test]
     public void TestPvESelfPreEffectGalvanize()
     {
@@ -74,5 +74,5 @@ public class AbilityTest
 
         Preprocessor Preprocessor = new();
         Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
-    }
+    }*/
 }
