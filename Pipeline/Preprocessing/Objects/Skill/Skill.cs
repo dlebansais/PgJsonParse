@@ -40,12 +40,6 @@ public class Skill
         else
             RecipeIngredientKeywords = rawSkill.RecipeIngredientKeywords;
 
-        if (ActiveAdvancementTable == "null")
-        {
-            IsNullAdvancementTable = true;
-            ActiveAdvancementTable = null;
-        }
-
         if (rawSkill.TSysCompatibleCombatSkills is not null)
         {
             UnsortedCombatSkills = rawSkill.TSysCompatibleCombatSkills;
@@ -109,9 +103,6 @@ public class Skill
         else
             Result.RecipeIngredientKeywords = RecipeIngredientKeywords;
 
-        if (IsNullAdvancementTable)
-            Result.ActiveAdvancementTable = "null";
-
         if (UnsortedCombatSkills is not null)
             Result.TSysCompatibleCombatSkills = UnsortedCombatSkills.ToArray();
         else
@@ -121,6 +112,5 @@ public class Skill
     }
 
     private bool Is_RecipeIngredientKeywords;
-    private bool IsNullAdvancementTable;
     private string[]? UnsortedCombatSkills;
 }

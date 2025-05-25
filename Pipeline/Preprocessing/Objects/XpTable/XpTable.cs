@@ -4,11 +4,7 @@ public class XpTable
 {
     public XpTable(RawXpTable rawXpTable)
     {
-        if (rawXpTable.InternalName == "Cooking-unused")
-            InternalName = "CookingUnused";
-        else
-            InternalName = rawXpTable.InternalName;
-
+        InternalName = rawXpTable.InternalName;
         XpAmounts = rawXpTable.XpAmounts;
     }
 
@@ -19,11 +15,7 @@ public class XpTable
     {
         RawXpTable Result = new();
 
-        if (InternalName == "CookingUnused")
-            Result.InternalName = "Cooking-unused";
-        else
-            Result.InternalName = InternalName;
-
+        Result.InternalName = InternalName;
         Result.XpAmounts = XpAmounts;
 
         return Result;

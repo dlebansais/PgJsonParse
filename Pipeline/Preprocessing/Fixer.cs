@@ -103,15 +103,6 @@ public class Fixer
     {
     }
 
-    public static void FixProfiles(object objectCollection)
-    {
-        FixProfiles((ProfileDictionary)objectCollection);
-    }
-
-    private static void FixProfiles(ProfileDictionary dictionary)
-    {
-    }
-
     public static void FixXpTables(object objectCollection)
     {
         FixXpTables((XpTableDictionary)objectCollection);

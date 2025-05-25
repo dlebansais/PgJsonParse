@@ -10,19 +10,7 @@ public class AIAbility
         MaxLevel = rawAIAbility.maxLevel;
         MaxRange = rawAIAbility.maxRange;
         MinLevel = rawAIAbility.minLevel;
-
-        if (rawAIAbility.minDistance is null)
-        {
-            MinRange = rawAIAbility.minRange;
-            IsMinDistance = false;
-        }
-        else if (rawAIAbility.minRange is null)
-        {
-            MinRange = rawAIAbility.minDistance;
-            IsMinDistance = true;
-        }
-        else
-            throw new PreprocessorException(this);
+        MinRange = rawAIAbility.minRange;
     }
 
     public string? Cue { get; set; }
@@ -42,16 +30,9 @@ public class AIAbility
         Result.favorite = Favorite;
         Result.maxLevel = MaxLevel;
         Result.maxRange = MaxRange;
-
-        if (IsMinDistance)
-            Result.minDistance = MinRange;
-        else
-            Result.minRange = MinRange;
-
+        Result.minRange = MinRange;
         Result.minLevel = MinLevel;
 
         return Result;
     }
-
-    private readonly bool IsMinDistance;
 }

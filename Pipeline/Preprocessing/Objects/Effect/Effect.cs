@@ -53,21 +53,6 @@ public class Effect
             Result = rawDescription.Replace(" anf  ", " and ");
             effectDescriptionFix = EffectDescriptionFix.TypoAnf;
         }
-        else if (rawDescription == "Restores 4 Armor" && rawAbilityKeywords is not null && rawAbilityKeywords.Length > 0 && rawAbilityKeywords[0] == "DoeEyes")
-        {
-            Result = "Restores 4 Power";
-            effectDescriptionFix = EffectDescriptionFix.DoeEyes;
-        }
-        else if (rawDescription.StartsWith("Self Destruct") && rawName is not null && rawName.StartsWith("TSys_BatChemGolemRageAcidTossBoost"))
-        {
-            Result = rawDescription.Replace("Self Destruct", "Rage Acid Toss");
-            effectDescriptionFix = EffectDescriptionFix.GolemAcidToss;
-        }
-        else if (rawDescription.StartsWith("`"))
-        {
-            Result = rawDescription.Substring(1);
-            effectDescriptionFix = EffectDescriptionFix.TypoQuote;
-        }
         else
             Result = rawDescription;
 
@@ -82,8 +67,6 @@ public class Effect
                 return null;
             case "Lamia's Gaze":
                 return "LamiasGaze";
-            case "1":
-                return "One";
             default:
                 return rawContent;
         }
@@ -152,15 +135,6 @@ public class Effect
             case EffectDescriptionFix.TypoAnf:
                 Result = description?.Replace(" and ", " anf  ");
                 break;
-            case EffectDescriptionFix.DoeEyes:
-                Result = "Restores 4 Armor";
-                break;
-            case EffectDescriptionFix.GolemAcidToss:
-                Result = description?.Replace("Rage Acid Toss", "Self Destruct");
-                break;
-            case EffectDescriptionFix.TypoQuote:
-                Result = $"`{description}";
-                break;
         }
 
         return Result;
@@ -174,8 +148,6 @@ public class Effect
                 return null;
             case "LamiasGaze":
                 return "Lamia's Gaze";
-            case "One":
-                return "1";
             default:
                 return rawContent;
         }
