@@ -32,6 +32,7 @@ public class Requirement
         MinCount = rawRequirement.MinCount;
         MinFavor = rawRequirement.MinFavor;
         MinHour = rawRequirement.MinHour;
+        MinLevel = rawRequirement.MinLevel;
         MoonPhase = rawRequirement.MoonPhase;
         Name = rawRequirement.Name;
         Npc = rawRequirement.Npc;
@@ -156,6 +157,7 @@ public class Requirement
     public int? MinCount { get; set; }
     public int? MinFavor { get; set; }
     public int? MinHour { get; set; }
+    public int? MinLevel { get; set; }
     public string? MoonPhase { get; set; }
     public string? Name { get; set; }
     public string? Npc { get; set; }
@@ -200,6 +202,7 @@ public class Requirement
         Result.MinCount = MinCount;
         Result.MinFavor = MinFavor;
         Result.MinHour = MinHour;
+        Result.MinLevel = MinLevel;
         Result.MoonPhase = MoonPhase;
         Result.Name = Name;
         Result.Npc = Npc;

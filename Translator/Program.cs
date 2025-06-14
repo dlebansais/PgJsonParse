@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(427);
+        return ParseCurated(430);
     }
 
     private static int ParseCurated(int Version)
@@ -1684,6 +1684,8 @@ public class Program
             { MapAreaName.Statehelm, "Statehelm" },
             { MapAreaName.Vidaria, "Vidaria" },
             { MapAreaName.VidariaCaves, "Vidaria Caves" },
+            { MapAreaName.BeneathStatehelm, "Beneath Statehelm" },
+            { MapAreaName.Statehelm, "Statehelm" },
         };
 
         Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();
@@ -1809,6 +1811,11 @@ public class Program
                 { "Find Bones", QuestSpecifics.None },
                 { "Find Spoons", QuestSpecifics.None },
                 { "Obelisk Math", QuestSpecifics.None },
+            }
+        },
+        {
+            MapAreaName.BeneathStatehelm, new Dictionary<string, QuestSpecifics>()
+            {
             }
         },
         {
@@ -2161,6 +2168,8 @@ public class Program
                 { "Care Package from Rahu", QuestSpecifics.None },
                 { "Drumskins", QuestSpecifics.None },
                 { "Escaped Snail Meat", QuestSpecifics.DruidOnly },
+                { "Furlak's Follow-up", QuestSpecifics.None },
+                { "Furlak's Fury", QuestSpecifics.None },
                 { "Furnishing Nishika's Restaurant", QuestSpecifics.None },
                 { "Grapefish for Snacks", QuestSpecifics.None },
                 { "Killing Orcs For Old Times' Sake", QuestSpecifics.None },
@@ -2577,6 +2586,11 @@ public class Program
                 { "The Strength Potion's Strength", QuestSpecifics.None }, //?
                 { "The Swarmer Hypothesis", QuestSpecifics.None },
                 { "Undead Memories", QuestSpecifics.None }, //?
+            }
+        },
+        {
+            MapAreaName.Statehelm, new Dictionary<string, QuestSpecifics>()
+            {
             }
         },
     };

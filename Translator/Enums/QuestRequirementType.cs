@@ -27,4 +27,5 @@ public enum QuestRequirementType
     AccountFlagUnset,
     DayOfWeek,
     IsVampire,
+    MinCombatSkillLevel,
 }

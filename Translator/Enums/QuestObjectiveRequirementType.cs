@@ -13,5 +13,8 @@
         EquipmentSlotEmpty,
         HangOutCompleted,
         UseAbility,
+        InCombatWithElite,
+        MonsterTargetLevel,
+        FullMoon,
     }
 }

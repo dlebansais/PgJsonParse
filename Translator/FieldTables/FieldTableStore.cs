@@ -613,6 +613,7 @@ public class FieldTableStore
         { "Target", typeof(string) },
         { "Description", typeof(string) },
         { "Number", typeof(int) },
+        //{ "InteractionFlag", typeof(string) },
         { "InteractionFlags", typeof(string[]) },
         { "ItemName", typeof(string) },
         { "MinAmount", typeof(string) },
@@ -654,6 +655,7 @@ public class FieldTableStore
         { "AbilityKeyword", typeof(string) },
         { "Daytime", typeof(bool) },
         { "AreaName", typeof(string) },
+        { "MinLevel", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableQuestRewardItem { get; } = new Dictionary<string, Type>()

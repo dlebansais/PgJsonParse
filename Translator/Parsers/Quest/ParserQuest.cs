@@ -343,7 +343,8 @@ public class ParserQuest : Parser
                     }
                     break;
                 case PgQuestObjectiveUseAbility AsObjectiveUseAbility:
-                    UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbility.Keyword);
+                    UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbility.TargetKeyword);
+                    UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbility.AbilityKeyword);
                     break;
                 case PgQuestObjectiveUseAbilityOnTargets AsObjectiveUseAbilityOnTargets:
                     UpdateIconIdFromAbilityKeyword(ref iconId, AsObjectiveUseAbilityOnTargets.Keyword);

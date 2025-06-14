@@ -65,7 +65,7 @@ public class ParserQuestObjective : Parser
         { QuestObjectiveType.SayInChat, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
         { QuestObjectiveType.BeAttacked, new List<string>() { "Type", "Target", "Description", "AnatomyType", "GroupId", "Number" } },
         { QuestObjectiveType.Bury, new List<string>() { "Type", "Target", "Description", "AnatomyType", "Number" } },
-        { QuestObjectiveType.UseAbility, new List<string>() { "Type", "Target", "Description", "Number" } },
+        { QuestObjectiveType.UseAbility, new List<string>() { "Type", "Target", "AbilityKeyword", "Requirements", "InteractionFlags", "Description", "GroupId", "Number" } },
         { QuestObjectiveType.UniqueSpecial, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
         { QuestObjectiveType.GuildGiveItem, new List<string>() { "Type", "Target", "Description", "ItemName", "ItemKeyword", "GroupId", "Number" } },
         { QuestObjectiveType.GuildKill, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
@@ -1421,9 +1421,19 @@ public class ParserQuestObjective : Parser
                     case "Type":
                         break;
                     case "Target":
-                        Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                        Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.TargetKeyword = valueEnum, Value);
+                        break;
+                    case "AbilityKeyword":
+                        Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.AbilityKeyword = valueEnum, Value);
+                        break;
+                    case "Requirements":
+                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestRequirementList, Value);
+                        break;
+                    case "InteractionFlags":
+                        Result = StringToEnumConversion<InteractionFlag>.TryParseList(Value, NewItem.InteractionFlagList);
                         break;
                     case "Description":
+                    case "GroupId":
                     case "Number":
                         Result = ParseCommonFields(NewItem, Key, Value);
                         break;

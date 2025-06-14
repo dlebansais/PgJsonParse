@@ -955,6 +955,7 @@
             { AbilityKeyword.Lint_LowRange, "Low Range" },
             { AbilityKeyword.DruidNonBasic, "Druid Non Basic" },
             { AbilityKeyword.Projectile, "Projectile" },
+            { AbilityKeyword.Dance, "Dance" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -2956,6 +2957,12 @@
             { InteractionFlag.Drummond_Offended, "Drummond Offended" },
             { InteractionFlag.WritChallenge_2025, "Writ Challenge (2025)" },
             { InteractionFlag.GoldenWrit_Pending, "Golden Writ (Pending)" },
+            { InteractionFlag.Statehelm_Bard_AdvancedStudent, "Statehelm Bard (Advanced Student)" },
+            { InteractionFlag.WizardSchool_Letter_SandSeer, "Wizard School Letter (Sand Seer)" },
+            { InteractionFlag.WizardSchool_Letter_BendithTheBanished, "Wizard School Letter (Bendith The Banished)" },
+            { InteractionFlag.WizardSchool_Letter_Velkort, "Wizard School Letter (Velkort)" },
+            { InteractionFlag.WizardSchool_Letter_IchinTheIceMaster, "Wizard School Letter (Ichin The Ice Master)" },
+            { InteractionFlag.WizardSchool_Letter_LandriTheCold, "Wizard School Letter (Landri The Cold)" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -3055,8 +3062,9 @@
             { ItemDroppedAppearance.Barrel, "Barrel" },
             { ItemDroppedAppearance.DeployedTrashCan, "Deployed Trash Can" },
             { ItemDroppedAppearance.Mushroom17, "Mushroom #17" },
-            { ItemDroppedAppearance.Egg2, "Egg #2" },
+            //{ ItemDroppedAppearance.Egg2, "Egg #2" },
             { ItemDroppedAppearance.BreadLoaf, "Bread Loaf" },
+            { ItemDroppedAppearance.Egg3, "Egg #3" },
         };
 
         public static Dictionary<ItemKeyword, string> ItemKeywordTextMap { get; } = new Dictionary<ItemKeyword, string>()
@@ -4521,6 +4529,8 @@
             { LoreBookKeyword.AreaCasino, "Casino" },
             { LoreBookKeyword.AreaRahuCaves, "Rahu Caves" },
             { LoreBookKeyword.AreaSunVale, "Sun Vale" },
+            { LoreBookKeyword.Lint_Hardcoded, "Hardcoded" },
+            { LoreBookKeyword.Lint_NotObtainable, "Not Obtainable" },
         };
 
         public static Dictionary<LoreBookVisibility, string> LoreBookVisibilityTextMap { get; } = new Dictionary<LoreBookVisibility, string>()
@@ -4583,6 +4593,7 @@
             { MapAreaName.Statehelm, "Statehelm" },
             { MapAreaName.Vidaria, "Vidaria" },
             { MapAreaName.VidariaCaves, "Vidaria Caves" },
+            { MapAreaName.BeneathStatehelm, "Beneath Statehelm" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -4711,6 +4722,7 @@
             { QuestKeyword.ActivityQuest, "Activity Quest" },
             { QuestKeyword.Lint_RewardOnly, "Reward Only" },
             { QuestKeyword.Vampirism, "Vampirism" },
+            { QuestKeyword.Lint_CannotComplete, "Cannot Complete" },
         };
 
         public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
@@ -5007,6 +5019,8 @@
             { QuestObjectiveTarget.RubywallCrystalMonster, "Rubywall Crystal Monster" },
             { QuestObjectiveTarget.RanalonDoctrineKeeper, "Ranalon Doctrine Keeper" },
             { QuestObjectiveTarget.RanalonDenMother, "Ranalon Den Mother" },
+            { QuestObjectiveTarget.RhinoThePerforator, "Rhino The Perforator" },
+            { QuestObjectiveTarget.RhinoThePuncturer, "Rhino The Puncturer" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()

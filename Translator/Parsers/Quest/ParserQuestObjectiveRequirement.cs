@@ -24,6 +24,9 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.EquipmentSlotEmpty, FinishEquipmentSlotEmpty },
         { QuestObjectiveRequirementType.HangOutCompleted, FinishHangOutCompleted },
         { QuestObjectiveRequirementType.UseAbility, FinishItemUseAbility },
+        { QuestObjectiveRequirementType.InCombatWithElite, FinishItemInCombatWithElite },
+        { QuestObjectiveRequirementType.MonsterTargetLevel, FinishItemMonsterTargetLevel },
+        { QuestObjectiveRequirementType.FullMoon, FinishItemFullMoon },
     };
 
     private static Dictionary<QuestObjectiveRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveRequirementType, List<string>>()
@@ -38,6 +41,9 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.EquipmentSlotEmpty, new List<string>() { "T", "Slot" } },
         { QuestObjectiveRequirementType.HangOutCompleted, new List<string>() { "T", "HangOut" } },
         { QuestObjectiveRequirementType.UseAbility, new List<string>() { "T", "AbilityKeyword" } },
+        { QuestObjectiveRequirementType.InCombatWithElite, new List<string>() { "T", "MinLevel" } },
+        { QuestObjectiveRequirementType.MonsterTargetLevel, new List<string>() { "T", "MinLevel" } },
+        { QuestObjectiveRequirementType.FullMoon, new List<string>() { "T" } },
     };
 
     private static Dictionary<QuestObjectiveRequirementType, List<string>> HandledTable = new Dictionary<QuestObjectiveRequirementType, List<string>>();
@@ -511,6 +517,132 @@ public class ParserQuestObjectiveRequirement : Parser
                         break;
                     case "AbilityKeyword":
                         Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemInCombatWithElite(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestObjectiveRequirementInCombatWithElite NewItem = new PgQuestObjectiveRequirementInCombatWithElite();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "MinLevel":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawMinLevel = valueInt, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemMonsterTargetLevel(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestObjectiveRequirementMonsterTargetLevel NewItem = new PgQuestObjectiveRequirementMonsterTargetLevel();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "MinLevel":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawMinLevel = valueInt, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemFullMoon(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestObjectiveRequirementFullMoon NewItem = new PgQuestObjectiveRequirementFullMoon();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

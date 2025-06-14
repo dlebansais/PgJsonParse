@@ -30,5 +30,6 @@
         ActivityQuest,
         Lint_RewardOnly,
         Vampirism,
+        Lint_CannotComplete,
     }
 }

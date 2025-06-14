@@ -97,7 +97,8 @@
         Barrel,
         DeployedTrashCan,
         Mushroom17,
-        Egg2,
+        //Egg2,
         BreadLoaf,
+        Egg3,
     }
 }

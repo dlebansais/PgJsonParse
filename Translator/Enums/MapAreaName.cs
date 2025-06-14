@@ -53,5 +53,6 @@
         Statehelm,
         Vidaria,
         VidariaCaves,
+        BeneathStatehelm,
     }
 }

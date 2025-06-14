@@ -611,5 +611,6 @@
         Lint_LowRange,
         DruidNonBasic,
         Projectile,
+        Dance,
     }
 }

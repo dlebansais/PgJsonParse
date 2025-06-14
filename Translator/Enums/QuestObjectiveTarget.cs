@@ -294,5 +294,7 @@
         RubywallCrystalMonster,
         RanalonDoctrineKeeper,
         RanalonDenMother,
+        RhinoThePerforator,
+        RhinoThePuncturer,
     }
 }
