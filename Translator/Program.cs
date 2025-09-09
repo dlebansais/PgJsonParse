@@ -1685,7 +1685,6 @@ public class Program
             { MapAreaName.Vidaria, "Vidaria" },
             { MapAreaName.VidariaCaves, "Vidaria Caves" },
             { MapAreaName.BeneathStatehelm, "Beneath Statehelm" },
-            { MapAreaName.Statehelm, "Statehelm" },
         };
 
         Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();

@@ -236,5 +236,6 @@
         IfRestoreArmorAfterDelay,
         MultiplyArmorRestauration,
         MultiplyPowerRestauration,
+        CanPhrenoCrit,
     }
 }

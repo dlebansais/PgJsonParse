@@ -192,6 +192,7 @@ public partial class CombatParser
             "Item_46051_0",
             "Item_46052_0",
             "Item_46059_0",
+            "Item_46521_0",
             "Item_52038_0",
             "Item_55619_0",
             "Item_55620_0",
@@ -698,7 +699,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "14006")
+        if (Key == "18003")
         {
         }
 
@@ -792,7 +793,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "14006")
+        if (power.Key == "18003")
         {
         }
 
@@ -1160,6 +1161,7 @@ public partial class CombatParser
         { "Melee ability", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "All Druid ability except Shillelagh", new List<AbilityKeyword>() { AbilityKeyword.DruidNonBasic } },
         { "ability that fire a projectile, such as Toxinball, Fireball, or most Archery abilities", new List<AbilityKeyword>() { AbilityKeyword.Projectile } },
+        { "@ , Willbreaker, and Embrace of Despair", new List<AbilityKeyword>() { AbilityKeyword.EclipseOfShadows, AbilityKeyword.Willbreaker, AbilityKeyword.EmbraceOfDespair } },
     };
 
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
@@ -1225,6 +1227,9 @@ public partial class CombatParser
         AbilityKeyword.Melee,
         AbilityKeyword.DruidNonBasic,
         AbilityKeyword.Projectile,
+        AbilityKeyword.EclipseOfShadows,
+        AbilityKeyword.EmbraceOfDespair,
+        AbilityKeyword.Willbreaker,
         Internal_NonBasic,
     };
 
@@ -2517,7 +2522,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "14006")
+            if (Entry.Key.Key == "18003")
             {
             }
 
@@ -4538,7 +4543,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "14006")
+            if (ItemPower.Key == "18003")
             {
             }
 
@@ -4727,14 +4732,36 @@ public partial class CombatParser
                 AbilityKeyword Ability = ModAbilityList[0];
                 AbilityKeyword TargetAbility = ModTargetAbilityList[0];
 
-                if (Ability != TargetAbility)
+                if (Ability != TargetAbility || ModTargetAbilityList.Count > 1)
                 {
-                    if (ModCombatList.Count >= 2)
+                    if (Ability == AbilityKeyword.Melee || Ability == AbilityKeyword.FillWithBile || Ability == AbilityKeyword.Deluge)
                     {
-                        PgCombatEffect FirstCombatEffect = ModCombatList[0];
-                        PgCombatEffect SecondCombatEffect = ModCombatList[1];
+                    }
 
-                        if (FirstCombatEffect.Keyword != CombatKeyword.ReflectOnAnyAttack && FirstCombatEffect.Keyword != CombatKeyword.ApplyWithChance && SecondCombatEffect.Keyword != CombatKeyword.ResetOtherAbilityTimer && SecondCombatEffect.Keyword != CombatKeyword.EffectDuration)
+                    if (Ability != AbilityKeyword.Melee && Ability != AbilityKeyword.FillWithBile && Ability != AbilityKeyword.Deluge && ModCombatList.Count >= 2)
+                    {
+                        List<AbilityKeyword> TargetAbilityList = new(ModTargetAbilityList);
+
+                        PgCombatEffectCollection FirstCombatEffects = new();
+                        PgCombatEffectCollection SecondCombatEffects = new();
+                        int CombatIndex = 0;
+                        int Dividing = 1;
+
+                        if (Ability == AbilityKeyword.EclipseOfShadows)
+                            Dividing = ModCombatList.Count - 1;
+
+                        for (; CombatIndex < Dividing && CombatIndex < ModCombatList.Count; CombatIndex++)
+                            FirstCombatEffects.Add(ModCombatList[CombatIndex]);
+                        for (; CombatIndex < ModCombatList.Count; CombatIndex++)
+                            SecondCombatEffects.Add(ModCombatList[CombatIndex]);
+
+                        PgCombatEffect FirstCombatEffect = FirstCombatEffects[0];
+                        PgCombatEffect SecondCombatEffect = SecondCombatEffects[0];
+
+                        if (FirstCombatEffect.Keyword != CombatKeyword.ReflectOnAnyAttack &&
+                            FirstCombatEffect.Keyword != CombatKeyword.ApplyWithChance &&
+                            FirstCombatEffect.Keyword != CombatKeyword.EffectRecurrence &&
+                            SecondCombatEffect.Keyword != CombatKeyword.ResetOtherAbilityTimer && SecondCombatEffect.Keyword != CombatKeyword.EffectDuration && SecondCombatEffect.Keyword != CombatKeyword.WithinDistance)
                         {
                             if (SecondCombatEffect.Keyword == CombatKeyword.AddResetTimer)
                             {
@@ -4746,13 +4773,15 @@ public partial class CombatParser
                                 PgModEffect SecondaryModEffect = new PgModEffect()
                                 {
                                     EffectKey = string.Empty,
-                                    AbilityList = new List<AbilityKeyword>() { TargetAbility },
-                                    StaticCombatEffectList = new PgCombatEffectCollection() { SecondCombatEffect },
+                                    AbilityList = TargetAbilityList,
+                                    StaticCombatEffectList = SecondCombatEffects,
                                     DynamicCombatEffectList = new PgCombatEffectCollection(),
                                     TargetAbilityList = new List<AbilityKeyword>(),
                                 };
 
-                                modEffect.StaticCombatEffectList.Remove(SecondCombatEffect);
+                                foreach (var CombatEffect in SecondCombatEffects)
+                                    modEffect.StaticCombatEffectList.Remove(CombatEffect);
+
                                 modEffect.SecondaryModEffect = SecondaryModEffect;
                                 modEffect.TargetAbilityList.Clear();
                             }

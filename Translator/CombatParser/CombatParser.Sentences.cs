@@ -159,7 +159,6 @@ public partial class CombatParser
         new Sentence("Take %f damage from direct #D attack", CombatKeyword.AddDirectVulnerability),
         new Sentence("Suffer %f direct #D vulnerability", CombatKeyword.AddDirectVulnerability),
         new Sentence("Target take %f indirect #D damage", CombatKeyword.AddIndirectVulnerability),
-        new Sentence("Indirect #D damage is %f per tick", CombatKeyword.AddIndirectVulnerability),
         new Sentence("Cause the target to take %f damage from indirect #D", CombatKeyword.AddIndirectVulnerability),
         new Sentence("Cause the target to take %f more damage from #D", CombatKeyword.AddVulnerability),
         //new Sentence("Cause the target to suffer %f from #D damage", CombatKeyword.AddVulnerability),
@@ -275,6 +274,7 @@ public partial class CombatParser
         new Sentence("Indirect #D damage %f", CombatKeyword.DealIndirectDamage),
         //new Sentence("Indirect #D %f per tick", CombatKeyword.DealIndirectDamage),
         new Sentence("Indirect #D %f (per tick)", CombatKeyword.DealIndirectDamage),
+        new Sentence("Indirect #D damage is %f per tick", CombatKeyword.DealIndirectDamage),
         new Sentence("%f indirect damage per tick", CombatKeyword.DealIndirectDamage),
         new Sentence("Deal indirect #D damage is %f per tick", CombatKeyword.DealIndirectDamage),
         new Sentence("Direct and Indirect #D Damage %f", CombatKeyword.DamageBoost),
@@ -437,6 +437,7 @@ public partial class CombatParser
         new Sentence("Range is %f meter", CombatKeyword.AddRange),
         new Sentence("Range is increased %f meter", CombatKeyword.AddRange),
         new Sentence("Range is reduced %f meter", CombatKeyword.AddRange, SignInterpretation.AlwaysNegative),
+        new Sentence("Range %f", CombatKeyword.AddRange),
         new Sentence("Area of Effect %f meter", CombatKeyword.AddAoERange),
         new Sentence("Stun you", CombatKeyword.SelfStun),
         new Sentence("Complete stun immunity", CombatKeyword.StunImmunity),
@@ -709,5 +710,6 @@ public partial class CombatParser
         new Sentence("Subsequent Deer Kicks to this target", CombatKeyword.ImplantEgg),
         new Sentence("Absorb the first %f #D damage you suffer", CombatKeyword.AbsorbDamage),
         new Sentence("Absorb %f #D damage", CombatKeyword.AbsorbDamage),
+        new Sentence("Become eligible for phrenology critical hit", CombatKeyword.CanPhrenoCrit),
     };
 }
