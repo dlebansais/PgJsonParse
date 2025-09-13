@@ -24,9 +24,9 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.EquipmentSlotEmpty, FinishEquipmentSlotEmpty },
         { QuestObjectiveRequirementType.HangOutCompleted, FinishHangOutCompleted },
         { QuestObjectiveRequirementType.UseAbility, FinishItemUseAbility },
-        { QuestObjectiveRequirementType.InCombatWithElite, FinishItemInCombatWithElite },
-        { QuestObjectiveRequirementType.MonsterTargetLevel, FinishItemMonsterTargetLevel },
-        { QuestObjectiveRequirementType.FullMoon, FinishItemFullMoon },
+        //{ QuestObjectiveRequirementType.InCombatWithElite, FinishItemInCombatWithElite },
+        //{ QuestObjectiveRequirementType.MonsterTargetLevel, FinishItemMonsterTargetLevel },
+        //{ QuestObjectiveRequirementType.FullMoon, FinishItemFullMoon },
     };
 
     private static Dictionary<QuestObjectiveRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestObjectiveRequirementType, List<string>>()
@@ -41,9 +41,9 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.EquipmentSlotEmpty, new List<string>() { "T", "Slot" } },
         { QuestObjectiveRequirementType.HangOutCompleted, new List<string>() { "T", "HangOut" } },
         { QuestObjectiveRequirementType.UseAbility, new List<string>() { "T", "AbilityKeyword" } },
-        { QuestObjectiveRequirementType.InCombatWithElite, new List<string>() { "T", "MinLevel" } },
-        { QuestObjectiveRequirementType.MonsterTargetLevel, new List<string>() { "T", "MinLevel" } },
-        { QuestObjectiveRequirementType.FullMoon, new List<string>() { "T" } },
+        //{ QuestObjectiveRequirementType.InCombatWithElite, new List<string>() { "T", "MinLevel" } },
+        //{ QuestObjectiveRequirementType.MonsterTargetLevel, new List<string>() { "T", "MinLevel" } },
+        //{ QuestObjectiveRequirementType.FullMoon, new List<string>() { "T" } },
     };
 
     private static Dictionary<QuestObjectiveRequirementType, List<string>> HandledTable = new Dictionary<QuestObjectiveRequirementType, List<string>>();
@@ -537,6 +537,7 @@ public class ParserQuestObjectiveRequirement : Parser
             return false;
     }
 
+    /*
     private static bool FinishItemInCombatWithElite(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
     {
         PgQuestObjectiveRequirementInCombatWithElite NewItem = new PgQuestObjectiveRequirementInCombatWithElite();
@@ -662,4 +663,5 @@ public class ParserQuestObjectiveRequirement : Parser
         else
             return false;
     }
+    */
 }

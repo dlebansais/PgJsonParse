@@ -2,6 +2,7 @@
 
 public class RecipeResultEffect
 {
+    public string? Ability { get; set; }
     public decimal? AddedQuantity { get; set; }
     public int? AdditionalEnchantments { get; set; }
     public Time? AdjustedReuseTime { get; set; }

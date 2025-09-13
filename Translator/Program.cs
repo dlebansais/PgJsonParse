@@ -16,7 +16,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(430);
+        return ParseCurated(435);
     }
 
     private static int ParseCurated(int Version)
@@ -1684,7 +1684,7 @@ public class Program
             { MapAreaName.Statehelm, "Statehelm" },
             { MapAreaName.Vidaria, "Vidaria" },
             { MapAreaName.VidariaCaves, "Vidaria Caves" },
-            { MapAreaName.BeneathStatehelm, "Beneath Statehelm" },
+            //{ MapAreaName.BeneathStatehelm, "Beneath Statehelm" },
         };
 
         Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();
@@ -1812,11 +1812,12 @@ public class Program
                 { "Obelisk Math", QuestSpecifics.None },
             }
         },
+        /*
         {
             MapAreaName.BeneathStatehelm, new Dictionary<string, QuestSpecifics>()
             {
             }
-        },
+        },*/
         {
             MapAreaName.CarpalTunnels, new Dictionary<string, QuestSpecifics>()
             {

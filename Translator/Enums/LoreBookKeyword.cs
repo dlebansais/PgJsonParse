@@ -17,5 +17,6 @@
         AreaSunVale,
         Lint_Hardcoded,
         Lint_NotObtainable,
+        AreaStatehelm,
     }
 }

@@ -211,5 +211,6 @@
         Confetti2Cyan,
         //Particle_LoveBomb,
         OnFireDemonic,
+        SpiritHit,
     }
 }

@@ -42,7 +42,7 @@ public class Area
         { "Winter Nexus", "WinterNexus" },
         { "The Wintertide", "TheWintertide" },
         { "Nightmare Caves", "NightmareCaves" },
-        { "Beneath Statehelm", "BeneathStatehelm" },
+        //{ "Beneath Statehelm", "BeneathStatehelm" },
     };
 
     private static readonly Dictionary<string, string> AreaTableReversed = AreaTable.ToDictionary(x => x.Value, x => x.Key);

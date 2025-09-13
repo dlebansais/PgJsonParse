@@ -36,7 +36,7 @@
         Research,
         Lint_MealGroup,
         MaxEnchanting,
-        //Lint_LevelTooHigh,
+        Lint_LevelTooHigh,
         Vampirism,
     }
 }

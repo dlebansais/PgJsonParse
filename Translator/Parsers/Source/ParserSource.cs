@@ -223,7 +223,8 @@ public class ParserSource : Parser
                 case "Type":
                     break;
                 case "QuestId":
-                    Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = PgObject.GetItemKey(valueQuest), Value.ToString());
+                    Debug.WriteLine("TODO: corriger");
+                    _ = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = PgObject.GetItemKey(valueQuest), Value.ToString(), ErrorControl.IgnoreIfNotFound);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");

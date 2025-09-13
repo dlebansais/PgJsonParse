@@ -60,6 +60,7 @@
 
         public Dictionary<ItemSlot, List<string>> AssociationTablePower { get; set; } = new Dictionary<ItemSlot, List<string>>();
         public List<string> AssociationListAbility { get; set; } = new List<string>();
+        public PgAttributeCollection XpEarnedAttributeList { get; set; } = new PgAttributeCollection();
 
         public int IconId { get; set; }
 

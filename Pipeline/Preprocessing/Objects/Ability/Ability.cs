@@ -43,6 +43,8 @@ public class Ability
         DelayLoopTime = rawAbility.DelayLoopTime;
         Description = rawAbility.Description;
         DigitStrippedName = ToDigitStrippedName(rawAbility.InternalName);
+        EffectKeywordRequirementErrorMessage = rawAbility.EffectKeywordReqErrorMessage;
+        EffectKeywordRequirements = rawAbility.EffectKeywordReqs;
         EffectKeywordsIndicatingEnabled = rawAbility.EffectKeywordsIndicatingEnabled;
         ExtraKeywordsForTooltips = rawAbility.ExtraKeywordsForTooltips;
         IconId = rawAbility.IconID;
@@ -289,6 +291,8 @@ public class Ability
     public float? DelayLoopTime { get; set; }
     public string? Description { get; set; }
     public string? DigitStrippedName { get; set; }
+    public string? EffectKeywordRequirementErrorMessage { get; set; }
+    public string[]? EffectKeywordRequirements { get; set; }
     public string[]? EffectKeywordsIndicatingEnabled { get; set; }
     public string[]? ExtraKeywordsForTooltips { get; set; }
     public string? FormRequirement { get; set; }
@@ -366,6 +370,8 @@ public class Ability
         Result.DelayLoopMessage = DelayLoopMessage;
         Result.DelayLoopTime = DelayLoopTime;
         Result.Description = Description;
+        Result.EffectKeywordReqErrorMessage = EffectKeywordRequirementErrorMessage;
+        Result.EffectKeywordReqs = EffectKeywordRequirements;
         Result.EffectKeywordsIndicatingEnabled = EffectKeywordsIndicatingEnabled;
         Result.ExtraKeywordsForTooltips = ExtraKeywordsForTooltips;
         Result.IconID = IconId;

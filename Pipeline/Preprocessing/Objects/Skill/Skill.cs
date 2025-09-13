@@ -27,6 +27,7 @@ public class Skill
         Rewards = rawSkill.Rewards;
         SkillLevelDisparityApplies = rawSkill.SkillLevelDisparityApplies;
         SkipBonusLevelsIfSkillUnlearned = rawSkill.SkipBonusLevelsIfSkillUnlearned;
+        XpEarnedAttributes = rawSkill.XpEarnedAttributes;
         XpTable = rawSkill.XpTable;
 
         if (rawSkill._RecipeIngredientKeywords is not null)
@@ -71,6 +72,7 @@ public class Skill
     public bool? SkillLevelDisparityApplies { get; set; }
     public bool? SkipBonusLevelsIfSkillUnlearned { get; set; }
     public string[]? TSysCompatibleCombatSkills { get; set; }
+    public string[]? XpEarnedAttributes { get; set; }
     public string? XpTable { get; set; }
 
     public RawSkill ToRawSkill()
@@ -96,6 +98,7 @@ public class Skill
         Result.Rewards = Rewards;
         Result.SkillLevelDisparityApplies = SkillLevelDisparityApplies;
         Result.SkipBonusLevelsIfSkillUnlearned = SkipBonusLevelsIfSkillUnlearned;
+        Result.XpEarnedAttributes = XpEarnedAttributes;
         Result.XpTable = XpTable;
 
         if (Is_RecipeIngredientKeywords)

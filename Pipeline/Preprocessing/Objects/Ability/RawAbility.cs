@@ -32,6 +32,8 @@ public class RawAbility
     public float? DelayLoopTime { get; set; }
     public string? Description { get; set; }
     public string[]? EffectKeywordsIndicatingEnabled { get; set; }
+    public string? EffectKeywordReqErrorMessage { get; set; }
+    public string[]? EffectKeywordReqs { get; set; }
     public string[]? ExtraKeywordsForTooltips { get; set; }
     public int IconID { get; set; }
     public bool? IgnoreEffectErrors { get; set; }

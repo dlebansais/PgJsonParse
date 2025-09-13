@@ -296,5 +296,6 @@
         RanalonDenMother,
         RhinoThePerforator,
         RhinoThePuncturer,
+        FrogCold90,
     }
 }

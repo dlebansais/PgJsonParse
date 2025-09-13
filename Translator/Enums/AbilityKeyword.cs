@@ -612,5 +612,8 @@
         DruidNonBasic,
         Projectile,
         Dance,
+        BugBomb,
+        SummonFlapskull,
+        Empty,
     }
 }

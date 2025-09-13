@@ -119,6 +119,7 @@
         RemoveStun,
         RemoveSlowRoot,
         UsableWhileStunned,
+        WhenUsedWhileStunned,
 
         // SelfImmolation,
         PetImmolation,

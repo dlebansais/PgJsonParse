@@ -699,7 +699,7 @@ public partial class CombatParser
         string Key = power.Key;
         Debug.Assert(Key.Length >= 3);
 
-        if (Key == "18003")
+        if (Key == "2060")
         {
         }
 
@@ -793,7 +793,7 @@ public partial class CombatParser
 
     private List<PgEffect> FindMatchingEffectOneTier(PgPower power)
     {
-        if (power.Key == "18003")
+        if (power.Key == "2060")
         {
         }
 
@@ -2522,7 +2522,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (Entry.Key.Key == "18003")
+            if (Entry.Key.Key == "2060")
             {
             }
 
@@ -2917,8 +2917,10 @@ public partial class CombatParser
         // Hack for Look At My Hammer
         if (EffectTargetAbilityList.Count == 1 && EffectTargetAbilityList[0] == AbilityKeyword.LookAtMyHammer &&
             EffectCombatList.Count == 2 && EffectCombatList[0].Keyword == CombatKeyword.RestorePower && EffectCombatList[1].Keyword == CombatKeyword.EffectDuration &&
-            ModCombatList.Count == 1 && ModCombatList[0].Keyword == CombatKeyword.RestorePower)
+            ModCombatList.Count == 2 && ModCombatList[1].Keyword == CombatKeyword.RestorePower &&
+            ModTargetAbilityList.Count == 1 && ModTargetAbilityList[0] == AbilityKeyword.CoreAttack)
         {
+            ModTargetAbilityList[0] = AbilityKeyword.LookAtMyHammer;
             ModCombatList.Add(new PgCombatEffect() { Keyword = CombatKeyword.EffectDuration, Data = new PgNumericValue() { RawValue = EffectCombatList[1].Data.RawValue, RawIsPercent = EffectCombatList[1].Data.RawIsPercent } });
         }
 
@@ -3262,6 +3264,8 @@ public partial class CombatParser
             effectText = effectText.Replace("for 15 seconds", "for 10 seconds");
         else if (modText.StartsWith("Healing Mist accelerates the current reuse time of") && effectText.StartsWith("Shortens the remaining reset time of"))
             modText = modText.Substring(0, 13) + effectText;
+        else if (effectText.StartsWith("Boosts Slashing, Piercing, and Crushing Mitigation") && effectText.EndsWith("for 12 seconds"))
+            effectText = effectText.Replace("for 12 seconds", "for 15 seconds");
 
         if (effectText.StartsWith("When you trigger Cloud Trick, "))
             effectText = effectText.Replace("When you trigger Cloud Trick", "When you trigger Teleport");
@@ -4543,7 +4547,7 @@ public partial class CombatParser
                 continue;
             }
 
-            if (ItemPower.Key == "18003")
+            if (ItemPower.Key == "2060")
             {
             }
 

@@ -250,6 +250,12 @@ public class ParserAbility : Parser
                 case "ConditionalKeywords":
                     Result = Inserter<PgConditionalKeyword>.AddKeylessArray(item.ConditionalKeywordList, Value);
                     break;
+                case "EffectKeywordRequirementErrorMessage":
+                    Result = SetStringProperty((string valueString) => item.EffectKeywordRequirementErrorMessage = valueString, Value);
+                    break;
+                case "EffectKeywordRequirements":
+                    Result = StringToEnumConversion<EffectKeyword>.TryParseList(Value, item.EffectKeywordRequirementList);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

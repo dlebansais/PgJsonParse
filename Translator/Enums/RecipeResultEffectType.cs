@@ -29,5 +29,6 @@
         CraftWaxItem,
         BestowRecipeIfNotKnown,
         MeditationWithDaily,
+        LearnAbility,
     }
 }

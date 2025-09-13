@@ -39,7 +39,19 @@ public class Item
         IsTemporary = rawItem.IsTemporary;
         Keywords = ParseKeywords(rawItem.Keywords);
         Lint_VendorNpc = rawItem.Lint_VendorNpc;
-        MacGuffinQuestName = rawItem.MacGuffinQuestName;
+
+        if (rawItem.MacGuffinQuestName == "MindWork3" ||
+            rawItem.MacGuffinQuestName == "TheHeartOfAWetTwister" ||
+            rawItem.MacGuffinQuestName == "TheHeartOfASwampySpout" ||
+            rawItem.MacGuffinQuestName == "RumorsOfSentientBeef" ||
+            rawItem.MacGuffinQuestName == "TheHeartOfATinyStorm")
+        {
+            Debug.WriteLine("TODO: corriger");
+            IgnoredQuestName = rawItem.MacGuffinQuestName;
+        }
+        else
+            MacGuffinQuestName = rawItem.MacGuffinQuestName;
+
         MaxCarryable = rawItem.MaxCarryable;
         MaxOnVendor = rawItem.MaxOnVendor;
         MaxStackSize = rawItem.MaxStackSize;
@@ -371,7 +383,12 @@ public class Item
         Result.IsTemporary = IsTemporary;
         Result.Keywords = KeywordsToString(Keywords, RawKeywords);
         Result.Lint_VendorNpc = Lint_VendorNpc;
-        Result.MacGuffinQuestName = MacGuffinQuestName;
+
+        if (IgnoredQuestName.Length > 0)
+            Result.MacGuffinQuestName = IgnoredQuestName;
+        else
+            Result.MacGuffinQuestName = MacGuffinQuestName;
+
         Result.MaxCarryable = MaxCarryable;
         Result.MaxOnVendor = MaxOnVendor;
         Result.MaxStackSize = MaxStackSize;
@@ -507,4 +524,5 @@ public class Item
     private readonly JsonArrayFormat BehaviorsFormat;
     private string[]? RawKeywords;
     private bool HasStockDye;
+    private string IgnoredQuestName = string.Empty;
 }

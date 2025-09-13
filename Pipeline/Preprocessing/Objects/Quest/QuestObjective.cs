@@ -10,7 +10,14 @@ public class QuestObjective
 
     public QuestObjective(RawQuestObjective rawQuestObjective)
     {
-        AbilityKeyword = rawQuestObjective.AbilityKeyword;
+        if (rawQuestObjective.AbilityKeyword is not null && rawQuestObjective.AbilityKeyword.Length == 0)
+        {
+            AbilityKeyword = "Empty";
+            EmptyAbilityKeyword = true;
+        }
+        else
+            AbilityKeyword = rawQuestObjective.AbilityKeyword;
+
         AllowedFishingZone = rawQuestObjective.AllowedFishingZone;
         AnatomyType = rawQuestObjective.AnatomyType;
         BehaviorId = rawQuestObjective.BehaviorId;
@@ -125,7 +132,11 @@ public class QuestObjective
     {
         RawQuestObjective Result = new();
 
-        Result.AbilityKeyword = AbilityKeyword;
+        if (EmptyAbilityKeyword)
+            Result.AbilityKeyword = string.Empty;
+        else
+            Result.AbilityKeyword = AbilityKeyword;
+
         Result.AllowedFishingZone = AllowedFishingZone;
         Result.AnatomyType = AnatomyType;
         Result.BehaviorId = BehaviorId;
@@ -213,4 +224,5 @@ public class QuestObjective
     private int RequirementIndexKillWithAbility;
     private Requirement? RequirementTargetInArea;
     private int RequirementIndexTargetInArea;
+    private bool EmptyAbilityKeyword;
 }

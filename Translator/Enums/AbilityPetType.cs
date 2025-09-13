@@ -19,5 +19,6 @@
         PowerGlyph,
         SummonedFox,
         SummonedTornado,
+        SummonedFlapskull,
     }
 }

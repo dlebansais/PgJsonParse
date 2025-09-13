@@ -28,4 +28,5 @@ public enum QuestRequirementType
     DayOfWeek,
     IsVampire,
     MinCombatSkillLevel,
+    InventoryItem,
 }

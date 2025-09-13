@@ -61,11 +61,11 @@ public class ParserQuestObjective : Parser
         { QuestObjectiveType.GiveGift, new List<string>() { "Type", "Description", "MinFavorReceived", "MaxFavorReceived", "Number" } },
         { QuestObjectiveType.UseItem, new List<string>() { "Type", "Target", "Description", "ItemName", "Requirements", "GroupId", "BehaviorId", "Number", "InternalName" } },
         { QuestObjectiveType.UseRecipe, new List<string>() { "Type", "Target", "Description", "Skill", "ResultItemKeyword", "GroupId", "Number" } },
-        { QuestObjectiveType.KillElite, new List<string>() { "Type", "Target", "Description", "Number", "Requirements" } },
+        { QuestObjectiveType.KillElite, new List<string>() { "Type", "Target", "Description", "Number", "Requirements", "AbilityKeyword" } },
         { QuestObjectiveType.SayInChat, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
         { QuestObjectiveType.BeAttacked, new List<string>() { "Type", "Target", "Description", "AnatomyType", "GroupId", "Number" } },
         { QuestObjectiveType.Bury, new List<string>() { "Type", "Target", "Description", "AnatomyType", "Number" } },
-        { QuestObjectiveType.UseAbility, new List<string>() { "Type", "Target", "AbilityKeyword", "Requirements", "InteractionFlags", "Description", "GroupId", "Number" } },
+        { QuestObjectiveType.UseAbility, new List<string>() { "Type", "Target", "Description", "Number" } },
         { QuestObjectiveType.UniqueSpecial, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
         { QuestObjectiveType.GuildGiveItem, new List<string>() { "Type", "Target", "Description", "ItemName", "ItemKeyword", "GroupId", "Number" } },
         { QuestObjectiveType.GuildKill, new List<string>() { "Type", "Target", "Description", "GroupId", "Number" } },
@@ -1213,6 +1213,9 @@ public class ParserQuestObjective : Parser
                     case "Requirements":
                         Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestObjectiveRequirementList, Value);
                         break;
+                    case "AbilityKeyword":
+                        Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.AbilityKeyword = valueEnum, Value);
+                        break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");
                         break;
@@ -1423,17 +1426,7 @@ public class ParserQuestObjective : Parser
                     case "Target":
                         Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.TargetKeyword = valueEnum, Value);
                         break;
-                    case "AbilityKeyword":
-                        Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.AbilityKeyword = valueEnum, Value);
-                        break;
-                    case "Requirements":
-                        Result = Inserter<PgQuestObjectiveRequirement>.AddKeylessArray(NewItem.QuestRequirementList, Value);
-                        break;
-                    case "InteractionFlags":
-                        Result = StringToEnumConversion<InteractionFlag>.TryParseList(Value, NewItem.InteractionFlagList);
-                        break;
                     case "Description":
-                    case "GroupId":
                     case "Number":
                         Result = ParseCommonFields(NewItem, Key, Value);
                         break;

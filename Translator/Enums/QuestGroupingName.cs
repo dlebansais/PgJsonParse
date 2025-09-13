@@ -19,5 +19,7 @@
         CasinoExcursion,
         //GeneticsTraining,
         AurestMission,
+        SupportTheWarEffort,
+        JoinTheWarEffort,
     }
 }

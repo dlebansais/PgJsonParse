@@ -2,6 +2,7 @@
 
 public class RawAbilityDynamicSpecialValue
 {
+    public string[]? AttributesThatDelta { get; set; }
     public string? Label { get; set; }
     public string[]? ReqAbilityKeywords { get; set; }
     public string[]? ReqEffectKeywords { get; set; }

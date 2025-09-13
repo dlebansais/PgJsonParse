@@ -166,5 +166,8 @@
         VampiricBloodSpray,
         DemonBite,
         BloodLoss,
+        SteppedOnTrap,
+        ScintillatingFlame,
+        EmotionalDamage,
     }
 }

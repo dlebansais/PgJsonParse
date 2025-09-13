@@ -3,6 +3,7 @@
     public class PgQuestObjectiveKillElite : PgQuestObjective
     {
         public QuestObjectiveTarget Target { get; set; }
+        public AbilityKeyword AbilityKeyword { get; set; }
         public PgQuestObjectiveRequirementCollection QuestObjectiveRequirementList { get; set; } = new PgQuestObjectiveRequirementCollection();
     }
 }

@@ -156,6 +156,8 @@
         public bool IsTimerResetWhenDisabling { get { return (BoolValues & (IsTimerResetWhenDisablingNotNull + IsTimerResetWhenDisablingIsTrue)) == (IsTimerResetWhenDisablingNotNull + IsTimerResetWhenDisablingIsTrue); } }
         public bool? RawIsTimerResetWhenDisabling { get { return ((BoolValues & IsTimerResetWhenDisablingNotNull) != 0) ? (BoolValues & IsTimerResetWhenDisablingIsTrue) != 0 : null; } }
         public void SetIsTimerResetWhenDisabling(bool value) { BoolValues |= (BoolValues & ~(IsTimerResetWhenDisablingNotNull + IsTimerResetWhenDisablingIsTrue)) | ((value ? IsTimerResetWhenDisablingIsTrue : 0) + IsTimerResetWhenDisablingNotNull); }
+        public string EffectKeywordRequirementErrorMessage { get; set; } = string.Empty;
+        public List<EffectKeyword> EffectKeywordRequirementList { get; set; } = new List<EffectKeyword>();
 
         public int FriendlyIconId { get; set; }
 

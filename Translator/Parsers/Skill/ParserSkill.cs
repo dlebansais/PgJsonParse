@@ -117,6 +117,9 @@ public class ParserSkill : Parser
                 case "SkillLevelDisparityApplies":
                     Result = SetBoolProperty((bool valueBool) => item.SetSkillLevelDisparityApplies(valueBool), Value);
                     break;
+                case "XpEarnedAttributes":
+                    Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.XpEarnedAttributeList, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

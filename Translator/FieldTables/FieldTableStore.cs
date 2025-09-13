@@ -81,6 +81,8 @@ public class FieldTableStore
         { "InventoryKeywordRequirements", typeof(string[]) },
         { "IsAoECenteredOnCaster", typeof(bool) },
         { "ConditionalKeywords", typeof(PgConditionalKeyword[]) },
+        { "EffectKeywordRequirementErrorMessage", typeof(string) },
+        { "EffectKeywordRequirements", typeof(string[]) },
     };
 
     public static Dictionary<string, Type> TableAbilityKeyword { get; } = new Dictionary<string, Type>()
@@ -605,6 +607,7 @@ public class FieldTableStore
         { "ScriptAtomicInt", typeof(string) },
         { "AccountFlag", typeof(string) },
         { "DaysAllowed", typeof(string[]) },
+        { "Item", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestObjective { get; } = new Dictionary<string, Type>()
@@ -655,7 +658,7 @@ public class FieldTableStore
         { "AbilityKeyword", typeof(string) },
         { "Daytime", typeof(bool) },
         { "AreaName", typeof(string) },
-        { "MinLevel", typeof(int) },
+        //{ "MinLevel", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableQuestRewardItem { get; } = new Dictionary<string, Type>()
@@ -821,6 +824,7 @@ public class FieldTableStore
         { "Type", typeof(string) },
         { "Recipe", typeof(string) },
         { "MeditationId", typeof(int) },
+        { "Ability", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableSkill { get; } = new Dictionary<string, Type>()
@@ -847,6 +851,7 @@ public class FieldTableStore
         { "SkillLevelDisparityApplies", typeof(bool) },
         { "ActiveAdvancementTable", typeof(string) },
         { "PassiveAdvancementTable", typeof(string) },
+        { "XpEarnedAttributes", typeof(string[]) },
     };
 
     public static Dictionary<string, Type> TableLevelCapInteraction { get; } = new Dictionary<string, Type>()

@@ -105,46 +105,50 @@ public class Recipe
 
         switch (EffectName)
         {
-            case "ExtractTSysPower":
-                return ParseExtractTSysPower(EffectName, EffectParameter);
-            case "CraftWaxItem":
-                return ParseCraftWaxItem(EffectName, EffectParameter);
-            case "RepairItemDurability":
-                return ParseRepairItemDurability(EffectName, EffectParameter);
-            case "TSysCraftedEquipment":
-                return ParseTSysCraftedEquipment(EffectName, EffectParameter);
-            case "CraftSimpleTSysItem":
-                return ParseCraftSimpleTSysItem(EffectName, EffectParameter);
             case "AddItemTSysPower":
                 return ParseAddItemTSysPower(EffectName, EffectParameter);
             case "AddItemTSysPowerWax":
                 return ParseAddItemTSysPowerWax(EffectName, EffectParameter);
-            case "BrewItem":
-                return ParseBrewItem(EffectName, EffectParameter);
             case "AdjustRecipeReuseTime":
                 return ParseAdjustRecipeReuseTime(EffectName, EffectParameter);
-            case "GiveTSysItem":
-                return ParseGiveTSysItem(EffectName, EffectParameter);
+            case "BestowRecipeIfNotKnown":
+                return new RecipeResultEffect() { Type = EffectName, Recipe = EffectParameter };
+            case "BrewItem":
+                return ParseBrewItem(EffectName, EffectParameter);
             case "ConsumeItemUses":
                 return ParseConsumeItemUses(EffectName, EffectParameter);
+            case "CraftingResetItem":
+                return new RecipeResultEffect() { Type = EffectName };
+            case "CraftSimpleTSysItem":
+                return ParseCraftSimpleTSysItem(EffectName, EffectParameter);
+            case "CraftWaxItem":
+                return ParseCraftWaxItem(EffectName, EffectParameter);
             case "DeltaCurFairyEnergy":
                 return ParseDeltaCurFairyEnergy(EffectName, EffectParameter);
-            case "Teleport":
-                return ParseTeleport(EffectName, EffectParameter);
+            case "ExtractTSysPower":
+                return ParseExtractTSysPower(EffectName, EffectParameter);
+            case "GiveTSysItem":
+                return ParseGiveTSysItem(EffectName, EffectParameter);
+            case "LearnAbility":
+                return new RecipeResultEffect() { Type = EffectName, Ability = EffectParameter };
+            case "MeditationWithDaily":
+                return ParseMeditationWithDaily(EffectName, EffectParameter);
+            case "PermanentlyRaiseMaxTempestEnergy":
+                return ParsePermanentlyRaiseMaxTempestEnergy(EffectName, EffectParameter);
+            case "RepairItemDurability":
+                return ParseRepairItemDurability(EffectName, EffectParameter);
+            case "SendItemToSaddlebag":
+                return new RecipeResultEffect() { Type = EffectName };
             case "SpawnPremonition_All_2sec":
                 return ParseSpawnPremonition("SpawnPremonition", 2);
             case "SpawnPremonition_All_4sec":
                 return ParseSpawnPremonition("SpawnPremonition", 4);
-            case "PermanentlyRaiseMaxTempestEnergy":
-                return ParsePermanentlyRaiseMaxTempestEnergy(EffectName, EffectParameter);
-            case "CraftingResetItem":
-            case "SendItemToSaddlebag":
+            case "Teleport":
+                return ParseTeleport(EffectName, EffectParameter);
             case "TransmogItemAppearance":
                 return new RecipeResultEffect() { Type = EffectName };
-            case "MeditationWithDaily":
-                return ParseMeditationWithDaily(EffectName, EffectParameter);
-            case "BestowRecipeIfNotKnown":
-                return new RecipeResultEffect() { Type = EffectName, Recipe = EffectParameter };
+            case "TSysCraftedEquipment":
+                return ParseTSysCraftedEquipment(EffectName, EffectParameter);
             default:
                 return new RecipeResultEffect() { Type = "Special", Effect = EffectName };
         }
@@ -581,49 +585,51 @@ public class Recipe
 
         switch (effect.Type)
         {
-            case "Tiered":
-                return $"{effect.Keyword}{effect.Tier}";
-            case "ExtractTSysPower":
-                return $"{effect.Type}({effect.Augment},{effect.Skill},{effect.MinLevel},{effect.MaxLevel})";
-            case "CraftWaxItem":
-                return $"{effect.Type}({effect.Item},{effect.PowerWaxType},{effect.BoostLevel},{effect.MaxHitCount})";
-            case "RepairItemDurability":
-                return ToRawRepairItemDurability(effect);
-            case "TSysCraftedEquipment":
-                return ToRawTSysCraftedEquipment(effect);
-            case "CraftSimpleTSysItem":
-                return $"{effect.Type}({effect.Item})";
             case "AddItemTSysPower":
                 return $"{effect.Type}({effect.Slot},{effect.Tier})";
             case "AddItemTSysPowerWax":
                 return $"{effect.Type}({effect.PowerWaxType},{effect.PowerLevel},{effect.MaxHitCount})";
-            case "BrewItem":
-                return ToRawBrewItem(effect);
             case "AdjustRecipeReuseTime":
                 return ToRawAdjustRecipeReuseTime(effect);
-            case "GiveTSysItem":
-                return $"{effect.Type}({effect.Item})";
-            case "ConsumeItemUses":
-                return $"{effect.Type}({effect.Keyword},{effect.ConsumedUses})";
-            case "DeltaCurFairyEnergy":
-                return $"{effect.Type}({effect.Delta})";
-            case "Teleport":
-                return ToRawTeleport(effect);
-            case CreateMiningSurvey:
-                return $"{effect.Type}{effect.Effect}({effect.Item})";
-            case CreateGeologySurvey:
-                return $"{effect.Type}{effect.Effect}({effect.Item})";
-            case "SpawnPremonition":
-                return $"{effect.Type}_All_{effect.DurationInSeconds}sec";
-            case "PermanentlyRaiseMaxTempestEnergy":
-                return $"{effect.Type}({effect.Delta})";
             case "BestowRecipeIfNotKnown":
                 return $"{effect.Type}({effect.Recipe})";
+            case "BrewItem":
+                return ToRawBrewItem(effect);
+            case "ConsumeItemUses":
+                return $"{effect.Type}({effect.Keyword},{effect.ConsumedUses})";
+            case "CraftSimpleTSysItem":
+                return $"{effect.Type}({effect.Item})";
+            case "CraftWaxItem":
+                return $"{effect.Type}({effect.Item},{effect.PowerWaxType},{effect.BoostLevel},{effect.MaxHitCount})";
+            case CreateGeologySurvey:
+                return $"{effect.Type}{effect.Effect}({effect.Item})";
+            case CreateMiningSurvey:
+                return $"{effect.Type}{effect.Effect}({effect.Item})";
+            case "DeltaCurFairyEnergy":
+                return $"{effect.Type}({effect.Delta})";
+            case "ExtractTSysPower":
+                return $"{effect.Type}({effect.Augment},{effect.Skill},{effect.MinLevel},{effect.MaxLevel})";
+            case "GiveTSysItem":
+                return $"{effect.Type}({effect.Item})";
+            case "LearnAbility":
+                return $"{effect.Type}({effect.Ability})";
             case "MeditationWithDaily":
                 return ToRawMeditationWithDaily(effect);
+            case "PermanentlyRaiseMaxTempestEnergy":
+                return $"{effect.Type}({effect.Delta})";
+            case "RepairItemDurability":
+                return ToRawRepairItemDurability(effect);
+            case "SpawnPremonition":
+                return $"{effect.Type}_All_{effect.DurationInSeconds}sec";
             case "Special":
                 Debug.Assert(effect.Effect is not null);
                 return effect.Effect!;
+            case "Teleport":
+                return ToRawTeleport(effect);
+            case "Tiered":
+                return $"{effect.Keyword}{effect.Tier}";
+            case "TSysCraftedEquipment":
+                return ToRawTSysCraftedEquipment(effect);
             default:
                 return effect.Type;
         }

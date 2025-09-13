@@ -221,11 +221,13 @@
         Drummond_Offended,
         WritChallenge_2025,
         GoldenWrit_Pending,
+        /*
         Statehelm_Bard_AdvancedStudent,
         WizardSchool_Letter_SandSeer,
         WizardSchool_Letter_BendithTheBanished,
         WizardSchool_Letter_Velkort,
         WizardSchool_Letter_IchinTheIceMaster,
         WizardSchool_Letter_LandriTheCold,
+        */
     }
 }

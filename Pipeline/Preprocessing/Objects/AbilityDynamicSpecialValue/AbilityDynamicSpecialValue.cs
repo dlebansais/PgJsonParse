@@ -4,6 +4,7 @@ public class AbilityDynamicSpecialValue
 {
     public AbilityDynamicSpecialValue(RawAbilityDynamicSpecialValue rawAAbilityDynamicSpecialValue)
     {
+        AttributesThatDelta = rawAAbilityDynamicSpecialValue.AttributesThatDelta;
         Label = rawAAbilityDynamicSpecialValue.Label;
         RequiredAbilityKeywords = rawAAbilityDynamicSpecialValue.ReqAbilityKeywords;
         RequiredEffectKeywords = rawAAbilityDynamicSpecialValue.ReqEffectKeywords;
@@ -12,6 +13,7 @@ public class AbilityDynamicSpecialValue
         Value = rawAAbilityDynamicSpecialValue.Value;
     }
 
+    public string[]? AttributesThatDelta { get; set; }
     public string? Label { get; set; }
     public string[]? RequiredAbilityKeywords { get; set; }
     public string[]? RequiredEffectKeywords { get; set; }
@@ -23,6 +25,7 @@ public class AbilityDynamicSpecialValue
     {
         RawAbilityDynamicSpecialValue Result = new();
 
+        Result.AttributesThatDelta = AttributesThatDelta;
         Result.Label = Label;
         Result.ReqAbilityKeywords = RequiredAbilityKeywords;
         Result.ReqEffectKeywords = RequiredEffectKeywords;

@@ -316,5 +316,13 @@
         MeditationBodyHeat30,
         MeditationMetabolism30,
         WeatherReport,
+        ResearchWeatherWitching95,
+        ResearchWeatherWitching100,
+        ResearchExoticFireWalls95,
+        ResearchFireMagic95,
+        ResearchFireMagic100,
+        ResearchIceMagic95,
+        ResearchIceMagic100,
+        DiscoverWordOfPower6,
     }
 }

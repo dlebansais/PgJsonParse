@@ -53,5 +53,7 @@
         PinkExplosion,
         LightningNova,
         FireNova,
+        ColdSpit,
+        NatureCloudHit,
     }
 }

@@ -40,6 +40,7 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.DayOfWeek, FinishItemDayOfWeek },
         { QuestRequirementType.IsVampire, FinishItemIsVampire },
         { QuestRequirementType.MinCombatSkillLevel, FinishItemMinCombatSkillLevel },
+        { QuestRequirementType.InventoryItem, FinishItemInventoryItem },
     };
 
     private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
@@ -70,6 +71,7 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.DayOfWeek, new List<string>() { "T", "DaysAllowed" } },
         { QuestRequirementType.IsVampire, new List<string>() { "T" } },
         { QuestRequirementType.MinCombatSkillLevel, new List<string>() { "T", "Level" } },
+        { QuestRequirementType.InventoryItem, new List<string>() { "T", "Item" } },
     };
 
     private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
@@ -1259,6 +1261,49 @@ public class ParserQuestRequirement : Parser
                         break;
                     case "Level":
                         Result = SetIntProperty((int valueInt) => NewItem.RawSkillLevel = valueInt, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemInventoryItem(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRequirementInventoryItem NewItem = new PgQuestRequirementInventoryItem();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "Item":
+                        Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

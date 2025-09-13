@@ -96,7 +96,7 @@
         SummonedPotato,
         SummonedPumpkin,
         SummonedRedLeafLettuce,
-        SummonedRedLettuce,
+        //SummonedRedLettuce,
         SummonedRedPepper,
         SummonedSoybeanPlant,
         SummonedSquash,
@@ -180,5 +180,9 @@
         Altar_Tongue,
         Altar_Hogshead,
         Altar_AntiInvincibility,
+        SummonedMoonspelt,
+        SummonedOats,
+        SummonedTundraRyePlant,
+        CandleMakingBook_Fire,
     }
 }
