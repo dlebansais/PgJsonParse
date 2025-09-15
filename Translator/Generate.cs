@@ -478,7 +478,9 @@ public class Generate
 
     private static void WriteItemProperties(StreamWriter writer, object item, Type type, List<object> objectList, string objectName)
     {
-        PropertyInfo[] Properties = type.GetProperties();
+        List<PropertyInfo> Properties = new(type.GetProperties());
+        Properties.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+
         foreach (PropertyInfo Property in Properties)
         {
             if (!Property.CanWrite)

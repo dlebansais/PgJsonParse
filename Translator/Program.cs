@@ -153,24 +153,7 @@ public class Program
         Debug.WriteLine("Running combat parser...");
 
         CombatParser CombatParser = new CombatParser();
-        List<ItemSlot> ValidSlotList = new List<ItemSlot>()
-        {
-            ItemSlot.MainHand,
-            ItemSlot.OffHand,
-            ItemSlot.Head,
-            ItemSlot.Chest,
-            ItemSlot.Legs,
-            ItemSlot.Feet,
-            ItemSlot.Hands,
-            ItemSlot.Necklace,
-            ItemSlot.Ring,
-            ItemSlot.Racial,
-            ItemSlot.Waist,
-        };
-
-        Dictionary<string, PgModEffect> PowerKeyToCompleteEffectTable = new Dictionary<string, PgModEffect>();
-        Dictionary<string, PgModEffect> EffectKeyToCompleteEffectTable = new Dictionary<string, PgModEffect>();
-        CombatParser.AnalyzeCachedData(ValidSlotList, ObjectList, PowerKeyToCompleteEffectTable, EffectKeyToCompleteEffectTable);
+        CombatParser.AnalyzeCachedData(ObjectList);
 
         FinalizingResult &= StringToEnumConversion.FinalizeParsing();
 

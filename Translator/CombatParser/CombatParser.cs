@@ -17,14 +17,26 @@ public partial class CombatParser
     private bool WriteFile = true;
     private bool CompareTable = false;
 
-    public void AnalyzeCachedData(List<ItemSlot> validSlotList, List<object> objectList, Dictionary<string, PgModEffect> existingPowerKeyToCompleteEffectTable, Dictionary<string, PgModEffect> existingEffectKeyToCompleteEffectTable)
+    public void AnalyzeCachedData(List<object> objectList)
     {
-        Dictionary<string, PgSkill> SkillTable = new();
-        foreach (object Item in objectList)
-            if (Item is PgSkill AsSkill)
-                SkillTable.Add(AsSkill.Key, AsSkill);
+        List<ItemSlot> ValidSlotList = new List<ItemSlot>()
+        {
+            ItemSlot.MainHand,
+            ItemSlot.OffHand,
+            ItemSlot.Head,
+            ItemSlot.Chest,
+            ItemSlot.Legs,
+            ItemSlot.Feet,
+            ItemSlot.Hands,
+            ItemSlot.Necklace,
+            ItemSlot.Ring,
+            ItemSlot.Racial,
+            ItemSlot.Waist,
+        };
 
-        List<PgSkill> SkillList = new List<PgSkill>();
+        Dictionary<string, PgModEffect> ExistingPowerKeyToCompleteEffectTable = new();
+        Dictionary<string, PgModEffect> ExistingEffectKeyToCompleteEffectTable = new();
+        Dictionary<string, PgSkill> SkillTable = new();
         Dictionary<PgItem, List<PgItemEffectSimple>> ItemList = new();
 
         foreach (object Item in objectList)
@@ -40,13 +52,17 @@ public partial class CombatParser
                     PowerObjectKeyList.Add(AsPower.Key);
                     break;
                 case PgSkill AsSkill:
-                    if (Generate.IsCombatSkill(AsSkill, SkillTable))
-                        SkillList.Add(AsSkill);
+                    SkillTable.Add(AsSkill.Key, AsSkill);
                     break;
             }
 
+        List<PgSkill> SkillList = new List<PgSkill>();
+        foreach (KeyValuePair<string, PgSkill> Entry in SkillTable)
+            if (Generate.IsCombatSkill(Entry.Value, SkillTable))
+                SkillList.Add(Entry.Value);
+
         InitValidAbilityList(SkillTable);
-        FilterValidPowers(validSlotList, SkillList, out _, out List<PgPower> PowerSimpleEffectList);
+        FilterValidPowers(ValidSlotList, SkillList, out _, out List<PgPower> PowerSimpleEffectList);
 
         List<string> VerifiedItemPowers = new()
         {
@@ -260,7 +276,7 @@ public partial class CombatParser
         GetAbilityNames(SkillList, out List<string> AbilityNameList, out Dictionary<string, List<AbilityKeyword>> NameToKeyword);
 
         List<string[]> StringKeyTable = new List<string[]>();
-        List<PgModEffect[]> AnalyzedPowerKeyToCompleteEffectTable = new List<PgModEffect[]>();
+        List<PgModEffectCollection> AnalyzedPowerKeyToCompleteEffectTable = new List<PgModEffectCollection>();
         AnalyzeMatchingPowersAndEffects(AbilityNameList, NameToKeyword, PowerToEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
         AnalyzeRemainingPowers(AbilityNameList, NameToKeyword, UnmatchedPowerList, UnmatchedEffectList, CandidateEffectTable, StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
         AnalyzeRemainingEffects(AbilityNameList, NameToKeyword, UnmatchedEffectList, AnalyzedPowerKeyToCompleteEffectTable, out List<string> EffectKeyList);
@@ -284,14 +300,14 @@ public partial class CombatParser
                 else
                     StringKeyArray = new string[] { EffectKeyList[i - StringKeyTable.Count] };
 
-                PgModEffect[] ModEffectArray = AnalyzedPowerKeyToCompleteEffectTable[i];
+                PgModEffectCollection ModEffectArray = AnalyzedPowerKeyToCompleteEffectTable[i];
 
-                Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+                Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
                 for (int j = 0; j < StringKeyArray.Length; j++)
                 {
                     string StringKey = StringKeyArray[j];
-                    PgModEffect ModEffect = ModEffectArray[j];
+                    PgModEffect ModEffect = ModEffectArray.Items[j];
                     ModEffect.Key = StringKey;
 
                     if (ModEffect.SecondaryModEffect != null)
@@ -306,7 +322,7 @@ public partial class CombatParser
         }
 
         if (CompareTable)
-            CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList, existingPowerKeyToCompleteEffectTable, existingEffectKeyToCompleteEffectTable);
+            CompareWithPowerKeyToCompleteEffectTable(StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable, EffectKeyList, ExistingPowerKeyToCompleteEffectTable, ExistingEffectKeyToCompleteEffectTable);
     }
 
     public static string FromSkillKey(string? key)
@@ -1927,7 +1943,7 @@ public partial class CombatParser
         return 0;
     }
 
-    private void WritePowerEffectJson(string fileName, List<string[]> stringKeyTable, List<PgModEffect[]> powerKeyToCompleteEffectTable)
+    private void WritePowerEffectJson(string fileName, List<string[]> stringKeyTable, List<PgModEffectCollection> powerKeyToCompleteEffectTable)
     {
         Dictionary<int, PowerToEffect> PowerToEffectTable = new();
 
@@ -1936,9 +1952,9 @@ public partial class CombatParser
         {
             string[] StringKeyArray;
             StringKeyArray = stringKeyTable[i];
-            PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+            PgModEffectCollection ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-            Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+            Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
             int PowerId = -1;
             List<PowerTierToEffect> Tiers = new();
@@ -1946,7 +1962,7 @@ public partial class CombatParser
             for (int j = 0; j < StringKeyArray.Length; j++)
             {
                 string StringKey = StringKeyArray[j];
-                PgModEffect PgModEffect = ModEffectArray[j];
+                PgModEffect PgModEffect = ModEffectArray.Items[j];
 
                 if (PgModEffect is not null)
                 {
@@ -2010,9 +2026,9 @@ public partial class CombatParser
         {
             string[] StringKeyArray;
             StringKeyArray = stringKeyTable[i];
-            PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+            PgModEffectCollection ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-            Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+            Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
             string[] Splitted = StringKeyArray[0].Split('_');
             if (Splitted.Length != 4 || Splitted[0] != "Item")
@@ -2029,7 +2045,7 @@ public partial class CombatParser
                 StringKeyArray = stringKeyTable[j];
                 ModEffectArray = powerKeyToCompleteEffectTable[j];
 
-                Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+                Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
                 Splitted = StringKeyArray[0].Split('_');
                 if (Splitted.Length == 4 && Splitted[0] == "Item")
@@ -2042,7 +2058,7 @@ public partial class CombatParser
                         {
                         }
 
-                        PgModEffect PgModEffect = ModEffectArray[0];
+                        PgModEffect PgModEffect = ModEffectArray.Items[0];
 
                         int Tier = int.Parse(Splitted[2]);
 
@@ -2132,20 +2148,20 @@ public partial class CombatParser
         },
     };
 
-    private void WriteBuffEffectJson(string fileName, int stringKeyTableCount, List<PgModEffect[]> powerKeyToCompleteEffectTable, List<string> effectKeyList)
+    private void WriteBuffEffectJson(string fileName, int stringKeyTableCount, List<PgModEffectCollection> powerKeyToCompleteEffectTable, List<string> effectKeyList)
     {
         Dictionary<int, PowerTierToEffect> PowerToEffectTable = new();
 
         for (int i = 0; i < effectKeyList.Count; i++)
         {
             string[] StringKeyArray = new string[] { effectKeyList[i] };
-            PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[stringKeyTableCount + i];
+            PgModEffectCollection ModEffectArray = powerKeyToCompleteEffectTable[stringKeyTableCount + i];
 
             Debug.Assert(StringKeyArray.Length == 1);
-            Debug.Assert(ModEffectArray.Length == 1);
+            Debug.Assert(ModEffectArray.Items.Length == 1);
 
             string StringKey = StringKeyArray[0];
-            PgModEffect PgModEffect = ModEffectArray[0];
+            PgModEffect PgModEffect = ModEffectArray.Items[0];
 
             if (PgModEffect is not null)
             {
@@ -2292,7 +2308,7 @@ public partial class CombatParser
         return NewPowerTierCombatEffect;
     }
 
-    private void WritePowerKeyToCompleteEffectFile(string fileName, List<string[]> stringKeyTable, List<PgModEffect[]> powerKeyToCompleteEffectTable, List<string> effectKeyList)
+    private void WritePowerKeyToCompleteEffectFile(string fileName, List<string[]> stringKeyTable, List<PgModEffectCollection> powerKeyToCompleteEffectTable, List<string> effectKeyList)
     {
         using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
         {
@@ -2319,14 +2335,14 @@ public partial class CombatParser
                     else
                         StringKeyArray = new string[] { effectKeyList[i - stringKeyTable.Count] };
 
-                    PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+                    PgModEffectCollection ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
                     for (int j = 0; j < StringKeyArray.Length; j++)
                     {
                         string StringKey = StringKeyArray[j];
-                        PgModEffect PgModEffect = ModEffectArray[j];
+                        PgModEffect PgModEffect = ModEffectArray.Items[j];
 
                         if (PgModEffect is not null)
                             WritePowerKeyToCompleteEffectKeyLine(sw, StringKey, PgModEffect.EffectKey);
@@ -2347,14 +2363,14 @@ public partial class CombatParser
                     else
                         StringKeyArray = new string[] { effectKeyList[i - stringKeyTable.Count] };
 
-                    PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+                    PgModEffectCollection ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
                     for (int j = 0; j < StringKeyArray.Length; j++)
                     {
                         string StringKey = StringKeyArray[j];
-                        PgModEffect PgModEffect = ModEffectArray[j];
+                        PgModEffect PgModEffect = ModEffectArray.Items[j];
 
                         WritePowerKeyToCompleteEffectAbilityKeywordListLine(sw, StringKey, PgModEffect.AbilityList);
                     }
@@ -2374,14 +2390,14 @@ public partial class CombatParser
                     else
                         StringKeyArray = new string[] { effectKeyList[i - stringKeyTable.Count] };
 
-                    PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+                    PgModEffectCollection ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
                     for (int j = 0; j < StringKeyArray.Length; j++)
                     {
                         string StringKey = StringKeyArray[j];
-                        PgModEffect PgModEffect = ModEffectArray[j];
+                        PgModEffect PgModEffect = ModEffectArray.Items[j];
 
                         WritePowerKeyToCompleteEffectCombatEffectListLine(sw, StringKey, PgModEffect.StaticCombatEffectList);
                     }
@@ -2401,14 +2417,14 @@ public partial class CombatParser
                     else
                         StringKeyArray = new string[] { effectKeyList[i - stringKeyTable.Count] };
 
-                    PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+                    PgModEffectCollection ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
                     for (int j = 0; j < StringKeyArray.Length; j++)
                     {
                         string StringKey = StringKeyArray[j];
-                        PgModEffect PgModEffect = ModEffectArray[j];
+                        PgModEffect PgModEffect = ModEffectArray.Items[j];
 
                         WritePowerKeyToCompleteEffectCombatEffectListLine(sw, StringKey, PgModEffect.DynamicCombatEffectList);
                     }
@@ -2428,14 +2444,14 @@ public partial class CombatParser
                     else
                         StringKeyArray = new string[] { effectKeyList[i - stringKeyTable.Count] };
 
-                    PgModEffect[] ModEffectArray = powerKeyToCompleteEffectTable[i];
+                    PgModEffectCollection ModEffectArray = powerKeyToCompleteEffectTable[i];
 
-                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+                    Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
                     for (int j = 0; j < StringKeyArray.Length; j++)
                     {
                         string StringKey = StringKeyArray[j];
-                        PgModEffect PgModEffect = ModEffectArray[j];
+                        PgModEffect PgModEffect = ModEffectArray.Items[j];
 
                         WritePowerKeyToCompleteEffectAbilityKeywordListLine(sw, StringKey, PgModEffect.TargetAbilityList);
                     }
@@ -2507,7 +2523,7 @@ public partial class CombatParser
     #endregion
 
     #region Data Analysis, Matching Powers and effects
-    private void AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<PgPower, List<PgEffect>> powerToEffectTable, List<string[]> stringKeyTable, List<PgModEffect[]> powerKeyToCompleteEffectTable)
+    private void AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, Dictionary<PgPower, List<PgEffect>> powerToEffectTable, List<string[]> stringKeyTable, List<PgModEffectCollection> powerKeyToCompleteEffectTable)
     {
         int DebugIndex = 0;
         int SkipIndex = 0;
@@ -2531,7 +2547,7 @@ public partial class CombatParser
             PgPower ItemPower = Entry.Key;
             List<PgEffect> ItemEffectList = Entry.Value;
 
-            AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList, out string[] stringKeyArray, out PgModEffect[] ModEffectArray);
+            AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, ItemPower, ItemEffectList, out string[] stringKeyArray, out PgModEffectCollection ModEffectArray);
 
             stringKeyTable.Add(stringKeyArray);
             powerKeyToCompleteEffectTable.Add(ModEffectArray);
@@ -2587,7 +2603,7 @@ public partial class CombatParser
         return CombatEffectString;
     }
 
-    private void CompareWithPowerKeyToCompleteEffectTable(List<string[]> stringKeyTable, List<PgModEffect[]> analyzedPowerKeyToCompleteEffectTable, List<string> effectKeyList, Dictionary<string, PgModEffect> existingPowerKeyToCompleteEffectTable, Dictionary<string, PgModEffect> existingEffectKeyToCompleteEffectTable)
+    private void CompareWithPowerKeyToCompleteEffectTable(List<string[]> stringKeyTable, List<PgModEffectCollection> analyzedPowerKeyToCompleteEffectTable, List<string> effectKeyList, Dictionary<string, PgModEffect> existingPowerKeyToCompleteEffectTable, Dictionary<string, PgModEffect> existingEffectKeyToCompleteEffectTable)
     {
         Debug.Assert(stringKeyTable.Count + effectKeyList.Count == analyzedPowerKeyToCompleteEffectTable.Count);
 
@@ -2600,14 +2616,14 @@ public partial class CombatParser
             else
                 StringKeyArray = new string[] { effectKeyList[i - stringKeyTable.Count] };
 
-            PgModEffect[] ModEffectArray = analyzedPowerKeyToCompleteEffectTable[i];
+            PgModEffectCollection ModEffectArray = analyzedPowerKeyToCompleteEffectTable[i];
 
-            Debug.Assert(StringKeyArray.Length == ModEffectArray.Length);
+            Debug.Assert(StringKeyArray.Length == ModEffectArray.Items.Length);
 
             for (int j = 0; j < StringKeyArray.Length; j++)
             {
                 string StringKey = StringKeyArray[j];
-                PgModEffect PgModEffect = ModEffectArray[j];
+                PgModEffect PgModEffect = ModEffectArray.Items[j];
 
                 if (i < stringKeyTable.Count)
                     CompareWithPowerKeyToCompleteEffectLine(i, StringKey, PgModEffect, existingPowerKeyToCompleteEffectTable);
@@ -2759,9 +2775,11 @@ public partial class CombatParser
         }
     }
 
-    private void AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> itemEffectList, out string[] stringKeyArray, out PgModEffect[] modEffectArray)
+    private void AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> itemEffectList, out string[] stringKeyArray, out PgModEffectCollection modEffectArray)
     {
         PgPowerTierCollection TierList = itemPower.TierList;
+        Debug.Assert(itemPower.Skill_Key is not null);
+        string skill_Key = itemPower.Skill_Key!;
 
         Debug.Assert(TierList.Count == itemEffectList.Count);
         Debug.Assert(TierList.Count > 0);
@@ -2777,19 +2795,19 @@ public partial class CombatParser
         List<CombatKeyword>[] PowerTierKeywordListArray = new List<CombatKeyword>[TierList.Count];
         List<CombatKeyword>[] EffectKeywordListArray = new List<CombatKeyword>[TierList.Count];
         stringKeyArray = new string[TierList.Count];
-        modEffectArray = new PgModEffect[TierList.Count];
+        modEffectArray = new PgModEffectCollection(skill_Key, TierList.Count);
 
         int LastTierIndex = TierList.Count - 1;
         PgPowerTier LastTier = TierList[LastTierIndex];
 
-        AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, LastTier, itemEffectList[LastTierIndex], out List<CombatKeyword> ExtractedPowerTierKeywordList, out List<CombatKeyword> ExtractedEffectKeywordList, out PgModEffect ExtractedModEffect, true);
+        AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, LastTier, itemEffectList[LastTierIndex], skill_Key, out List<CombatKeyword> ExtractedPowerTierKeywordList, out List<CombatKeyword> ExtractedEffectKeywordList, out PgModEffect ExtractedModEffect, true);
         PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
         EffectKeywordListArray[LastTierIndex] = ExtractedEffectKeywordList;
-        modEffectArray[LastTierIndex] = ExtractedModEffect;
+        modEffectArray.Items[LastTierIndex] = ExtractedModEffect;
 
         for (int i = 0; i + 1 < TierList.Count; i++)
         {
-            AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, TierList[i], itemEffectList[i], out List<CombatKeyword> ComparedPowerTierKeywordList, out List<CombatKeyword> ComparedEffectKeywordList, out PgModEffect ParsedModEffect, false);
+            AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, TierList[i], itemEffectList[i], skill_Key, out List<CombatKeyword> ComparedPowerTierKeywordList, out List<CombatKeyword> ComparedEffectKeywordList, out PgModEffect ParsedModEffect, false);
 
             bool AllowIncomplete = i < ValidationIndex;
 
@@ -2807,7 +2825,7 @@ public partial class CombatParser
 
             PowerTierKeywordListArray[i] = ComparedPowerTierKeywordList;
             EffectKeywordListArray[i] = ComparedEffectKeywordList;
-            modEffectArray[i] = ParsedModEffect;
+            modEffectArray.Items[i] = ParsedModEffect;
         }
 
         for (int i = 0; i < TierList.Count; i++)
@@ -2841,7 +2859,7 @@ public partial class CombatParser
         return false;
     }
 
-    private bool AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, PgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
+    private bool AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, PgEffect effect, string skill_Key, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
     {
         IList<PgPowerEffect> EffectList = powerTier.EffectList;
         Debug.Assert(EffectList.Count == 1);
@@ -2854,17 +2872,17 @@ public partial class CombatParser
             string[] Split = ModText.Split(new string[] { ";" }, StringSplitOptions.None);
             PgEffect NoEffect = new();
             bool Result = true;
-            Result &= AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, Split[0], NoEffect, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out modEffect, displayAnalysisResult);
-            Result &= AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, Split[1], effect, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out PgModEffect SecondaryModEffect, displayAnalysisResult);
+            Result &= AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, Split[0], NoEffect, skill_Key, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out modEffect, displayAnalysisResult);
+            Result &= AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, Split[1], effect, skill_Key, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out PgModEffect SecondaryModEffect, displayAnalysisResult);
 
             modEffect.SecondaryModEffect = SecondaryModEffect;
             return Result;
         }
 
-        return AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, ModText, effect, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out modEffect, displayAnalysisResult);
+        return AnalyzeMatchingPowersAndEffects(abilityNameList, nameToKeyword, powerTier, ModText, effect, skill_Key, out extractedPowerTierKeywordList, out extractedEffectKeywordList, out modEffect, displayAnalysisResult);
     }
 
-    private bool AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, string modText, PgEffect effect, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
+    private bool AnalyzeMatchingPowersAndEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPowerTier powerTier, string modText, PgEffect effect, string skill_Key, out List<CombatKeyword> extractedPowerTierKeywordList, out List<CombatKeyword> extractedEffectKeywordList, out PgModEffect modEffect, bool displayAnalysisResult)
     {
         modEffect = null!;
 
@@ -4532,7 +4550,7 @@ public partial class CombatParser
     #endregion
 
     #region Data Analysis, Remaining Powers
-    private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<PgPower> powerSimpleEffectList, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, List<PgEffect>> candidateEffectTable, List<string[]> stringKeyTable, List<PgModEffect[]> powerKeyToCompleteEffectTable)
+    private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<PgPower> powerSimpleEffectList, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, List<PgEffect>> candidateEffectTable, List<string[]> stringKeyTable, List<PgModEffectCollection> powerKeyToCompleteEffectTable)
     {
         int DebugIndex = 0;
         int SkipIndex = 0;
@@ -4553,16 +4571,17 @@ public partial class CombatParser
 
             // Debug.WriteLine("");
             // Debug.WriteLine($"Debug Index: {DebugIndex - 1} / {powerSimpleEffectList.Count} (Remaining)");
-            AnalyzeRemainingPowers(abilityNameList, nameToKeyword, ItemPower, unmatchedEffectList, candidateEffectTable, out string[] stringKeyArray, out PgModEffect[] ModEffectArray);
+            AnalyzeRemainingPowers(abilityNameList, nameToKeyword, ItemPower, unmatchedEffectList, candidateEffectTable, out string[] stringKeyArray, out PgModEffectCollection ModEffectArray);
 
             stringKeyTable.Add(stringKeyArray);
             powerKeyToCompleteEffectTable.Add(ModEffectArray);
         }
     }
 
-    private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, List<PgEffect>> candidateEffectTable, out string[] stringKeyArray, out PgModEffect[] modEffectArray)
+    private void AnalyzeRemainingPowers(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, PgPower itemPower, List<PgEffect> unmatchedEffectList, Dictionary<PgPower, List<PgEffect>> candidateEffectTable, out string[] stringKeyArray, out PgModEffectCollection modEffectArray)
     {
         PgPowerTierCollection TierList = itemPower.TierList;
+        string Skill_Key = itemPower.Skill_Key ?? string.Empty;
 
         Debug.Assert(TierList.Count > 0);
 
@@ -4574,7 +4593,7 @@ public partial class CombatParser
 
         List<CombatKeyword>[] PowerTierKeywordListArray = new List<CombatKeyword>[TierList.Count];
         stringKeyArray = new string[TierList.Count];
-        modEffectArray = new PgModEffect[TierList.Count];
+        modEffectArray = new PgModEffectCollection(Skill_Key, TierList.Count);
 
         int LastTierIndex = TierList.Count - 1;
         PgPowerTier LastTier = TierList[LastTierIndex];
@@ -4582,7 +4601,7 @@ public partial class CombatParser
         List<PgEffect>? CandidateEffectList = candidateEffectTable.ContainsKey(itemPower) ? candidateEffectTable[itemPower] : null;
         AnalyzeRemainingPowers(abilityNameList, nameToKeyword, LastTier, unmatchedEffectList, CandidateEffectList, out List<CombatKeyword> ExtractedPowerTierKeywordList, out PgModEffect ExtractedModEffect, true);
         PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
-        modEffectArray[LastTierIndex] = ExtractedModEffect;
+        modEffectArray.Items[LastTierIndex] = ExtractedModEffect;
 
         if (ExtractedModEffect.AbilityList.Count > 0 && ExtractedModEffect.TargetAbilityList.Count > 0)
         {
@@ -4602,7 +4621,7 @@ public partial class CombatParser
             }
 
             PowerTierKeywordListArray[i] = ComparedPowerTierKeywordList;
-            modEffectArray[i] = ParsedModEffect;
+            modEffectArray.Items[i] = ParsedModEffect;
         }
 
         for (int i = 0; i < TierList.Count; i++)
@@ -4818,7 +4837,7 @@ public partial class CombatParser
     #endregion
 
     #region Data Analysis, Remaining Effects
-    private void AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<PgEffect> unmatchedEffectList, List<PgModEffect[]> powerKeyToCompleteEffectTable, out List<string> effectKeyList)
+    private void AnalyzeRemainingEffects(List<string> abilityNameList, Dictionary<string, List<AbilityKeyword>> nameToKeyword, List<PgEffect> unmatchedEffectList, List<PgModEffectCollection> powerKeyToCompleteEffectTable, out List<string> effectKeyList)
     {
         effectKeyList = new List<string>();
 
@@ -4833,7 +4852,9 @@ public partial class CombatParser
             if (isSelected)
             {
                 PgModEffect NewModEffect = new PgModEffect() { EffectKey = Item.Key, Description = Item.Description, AbilityList = ExtractedAbilityList, StaticCombatEffectList = ExtractedCombatEffectList };
-                powerKeyToCompleteEffectTable.Add(new PgModEffect[] { NewModEffect });
+                PgModEffectCollection NewModEffectCollection = new PgModEffectCollection(string.Empty, 1);
+                NewModEffectCollection.Items[0] = NewModEffect;
+                powerKeyToCompleteEffectTable.Add(NewModEffectCollection);
                 effectKeyList.Add(Item.Key);
 
                 string ParsedEffectString = CombatEffectListToString(ExtractedCombatEffectList, out _);
