@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Xml.XPath;
 using PgObjects;
 using Translator;
 
@@ -1214,6 +1215,8 @@ internal partial class CombatParserEx
             case "12053":
             case "15303":
             case "9303":
+            case "12161":
+            case "9503":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10003":
@@ -1245,14 +1248,24 @@ internal partial class CombatParserEx
             case "6033":
             case "6151":
             case "9754":
+            case "1083":
+            case "16182":
+            case "21253":
+            case "21301":
+            case "22303":
+            case "23101":
+            case "4532":
+            case "9756":
                 BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             default:
                 if (dynamicCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                            item.Keyword == CombatKeywordEx.AddSprintSpeed ||
+                                                           item.Keyword == CombatKeywordEx.RestorePower ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.AddSprintSpeed ||
+                                                          item.Keyword == CombatKeywordEx.RestorePower ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -1267,15 +1280,14 @@ internal partial class CombatParserEx
                     };
                 }
                 break;
-            case "12161":
+            case "13004":
             case "1303":
             case "16082":
             case "17022":
             case "20009":
-            case "23101":
             case "24062":
             case "24242":
-            case "4532":
+            case "25073":
             case "25074":
             case "25223":
             case "4471":
@@ -1305,18 +1317,14 @@ internal partial class CombatParserEx
         float DurationInSeconds = AllEffects.Find(item => item.Keyword == CombatKeywordEx.EffectDuration) is PgCombatEffectEx effectWithDuration
                                ? effectWithDuration.Data.Value
                                : float.NaN;
-        CombatTarget Target = CombatTarget.Internal_None;
-        foreach (PgCombatEffectEx CombatEffect in AllEffects)
-            if (CombatEffect.Keyword == CombatKeywordEx.ApplyToSelf)
-                Target = CombatTarget.Self;
-            else if (CombatEffect.Keyword == CombatKeywordEx.ApplyToPet)
-                Target = CombatTarget.AnimalHandlingPet;
 
         List<PgCombatModEffectEx> StaticEffects = new();
 
         List<PgCombatModEffectEx> DynamicEffects = new();
-        foreach (PgCombatEffectEx CombatEffect in dynamicCombatEffectList)
+        for (int i = 0; i < dynamicCombatEffectList.Count; i++)
         {
+            PgCombatEffectEx CombatEffect = dynamicCombatEffectList[i];
+
             if (CombatEffect.Keyword == CombatKeywordEx.ApplyWithChance ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelf ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToPet ||
@@ -1333,6 +1341,16 @@ internal partial class CombatParserEx
                 Value = CombatEffect.Data.RawValue.HasValue ? CombatEffect.Data.RawValue.Value : float.NaN,
                 IsPercent = CombatEffect.Data.RawIsPercent.HasValue ? CombatEffect.Data.RawIsPercent.Value : false,
             };
+
+            CombatTarget Target = CombatTarget.Internal_None;
+            if (i + 1 < dynamicCombatEffectList.Count)
+            {
+                PgCombatEffectEx NextCombatEffect = dynamicCombatEffectList[i + 1];
+                if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelf)
+                    Target = CombatTarget.Self;
+                else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToPet)
+                    Target = CombatTarget.AnimalHandlingPet;
+            }
 
             PgCombatModEffectEx pgCombatModEffectEx = new()
             {

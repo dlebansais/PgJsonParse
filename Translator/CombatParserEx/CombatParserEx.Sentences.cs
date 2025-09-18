@@ -13,6 +13,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f Health to your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Restore %f Health to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("You regain %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f Power to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
         new SentenceEx("After a %f second delay", CombatKeywordEx.EffectDelay),
         new SentenceEx("After an %f second delay", CombatKeywordEx.EffectDelay),

@@ -1949,6 +1949,214 @@ internal partial class CombatParserEx
                 },
             }
         },
+        { "1083", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 12 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 19 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 26 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 33 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 40 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 49 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 58 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +58F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 67 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +67F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 76 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 85 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 94 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +94F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Finishing Blow restores 103 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishingBlow },
+                            Data = new PgNumericValueEx() { Value = +103F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
         { "11501", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -3280,6 +3488,610 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealthOrArmor,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.UnnaturalWrath },
                             Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        { "12161", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 12 Health to your pet and 2 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 16 Health to your pet and 4 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 20 Health to your pet and 6 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 24 Health to your pet and 8 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 28 Health to your pet and 10 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 32 Health to your pet and 12 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 36 Health to your pet and 14 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 40 Health to your pet and 16 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 44 Health to your pet and 18 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 48 Health to your pet and 20 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 52 Health to your pet and 22 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 56 Health to your pet and 24 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 60 Health to your pet and 26 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 64 Health to your pet and 28 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 68 Health to your pet and 30 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 72 Health to your pet and 32 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 76 Health to your pet and 34 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 80 Health to your pet and 36 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 84 Health to your pet and 38 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 88 Health to your pet and 40 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +88F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 92 Health to your pet and 42 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +92F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 96 Health to your pet and 44 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +96F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 100 Health to your pet and 46 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 104 Health to your pet and 48 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +104F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 108 Health to your pet and 50 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +108F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +50F },
                             Target = CombatTarget.Self,
                         },
                     },
@@ -6093,6 +6905,435 @@ internal partial class CombatParserEx
                 },
             }
         },
+        { "16182", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 4 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 6 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 8 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 11 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 14 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 17 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 20 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 24 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 28 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 32 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 36 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 39 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 43 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 46 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 50 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 53 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 57 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +57F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 60 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 64 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 67 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +67F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 70 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 73 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 76 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 79 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +79F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Surge Cut restores 82 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SurgeCut },
+                            Data = new PgNumericValueEx() { Value = +82F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
         { "2052", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -7105,6 +8346,524 @@ internal partial class CombatParserEx
                 },
             }
         },
+        { "21253", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 3 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 6 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 9 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 12 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 15 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 18 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 21 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 24 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 27 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 30 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 33 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 36 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 38 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 40 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 42 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 44 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 46 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 48 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 50 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 52 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        { "21301", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 1 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 2 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 3 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 4 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 5 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 6 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 7 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 8 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 9 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Antler Slash restores 10 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.AntlerSlash },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
         { "21303", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -7793,6 +9552,350 @@ internal partial class CombatParserEx
                 },
             }
         },
+        { "22303", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 10 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 15 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 20 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 25 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 30 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 35 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 40 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 45 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 50 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 55 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 60 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 65 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 70 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 75 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +75F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 80 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 85 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 90 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +90F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 95 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 100 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 105 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
         { "23023", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -8131,6 +10234,190 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealth,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InjectVenom },
                             Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        { "23101", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 2 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 3 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 4 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 6 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 7 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 7.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +7.5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 8 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 8.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +8.5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Web Trap boosts your movement speed by 9 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            DurationInSeconds = 10,
                             Target = CombatTarget.Self,
                         },
                     },
@@ -9996,6 +12283,207 @@ internal partial class CombatParserEx
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FastTalk },
                             Data = new PgNumericValueEx() { Value = +64F },
                             Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        { "4532", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 1 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 1.5 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +1.5F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 2 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 2.5 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +2.5F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 3 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 3.5 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +3.5F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 4 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 4.5 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +4.5F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 5 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 5.5 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +5.5F },
+                            DurationInSeconds = 6,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 6 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ridicule boosts movement speed by 6.5 for 6 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
+                            Data = new PgNumericValueEx() { Value = +6.5F },
+                            DurationInSeconds = 6,
                         },
                     },
                 },
@@ -12133,6 +14621,214 @@ internal partial class CombatParserEx
                 },
             }
         },
+        { "9503", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 15 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 19 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 23 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 28 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 33 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 39 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 45 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 52 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 59 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +59F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 66 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +66F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 73 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 80 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
         { "9754", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -12554,6 +15250,435 @@ internal partial class CombatParserEx
                         new PgCombatModEffectEx()
                         {
                             Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        { "9756", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 4 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 8 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 12 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 16 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 20 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 24 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 28 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 32 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 36 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 40 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 44 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 48 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 52 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 56 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 60 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 64 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 68 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 72 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 76 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 80 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 84 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 88 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +88F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 92 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +92F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 96 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
+                            Data = new PgNumericValueEx() { Value = +96F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Electrify restores 100 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Electrify },
                             Data = new PgNumericValueEx() { Value = +100F },
                             Target = CombatTarget.Self,
