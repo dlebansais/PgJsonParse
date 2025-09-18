@@ -3,6 +3,15 @@
     public enum CombatKeywordEx
     {
         Internal_None,
-        RestoreHealthToSelf
+        RestoreHealthOrArmor,
+        RestoreHealth,
+        AddSprintSpeed,
+
+        // Other effects
+        ApplyWithChance,
+        EffectDelay,
+        EffectDuration,
+        ApplyToSelf,
+        ApplyToPet,
     }
 }
