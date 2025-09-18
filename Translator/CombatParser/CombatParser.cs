@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Encodings.Web;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public partial class CombatParser
 {
@@ -335,7 +336,7 @@ public partial class CombatParser
 
     private void InitValidAbilityList(Dictionary<string, PgSkill> skillTable)
     {
-        ValidAbilityList = new List<PgAbility>();
+        CombatAbilityList = new List<PgAbility>();
 
         foreach (string Key in AbilityObjectKeyList)
         {
@@ -346,7 +347,7 @@ public partial class CombatParser
             if (!Generate.IsCombatSkill(AbilitySkill, skillTable) && AbilitySkill.Key != "Crossbow")
                 continue;
 
-            ValidAbilityList.Add(Ability);
+            CombatAbilityList.Add(Ability);
         }
     }
 
@@ -501,7 +502,7 @@ public partial class CombatParser
             if (Entry.Value.Item is PgEffect AsEffect && AsEffect.Name.Length > 0)
                 EffectList.Add(AsEffect);
 
-        foreach (PgAbility Ability in ValidAbilityList)
+        foreach (PgAbility Ability in CombatAbilityList)
             FindAbilityWithMatchingEffect(Ability, EffectList);
     }
 
@@ -540,7 +541,7 @@ public partial class CombatParser
 
             int SameNameCount = 0;
             int ThisAbilityIndex = 0;
-            foreach (PgAbility Item in ValidAbilityList)
+            foreach (PgAbility Item in CombatAbilityList)
                 if (Item.DigitStrippedName == ability.DigitStrippedName)
                 {
                     if (Item == ability)
@@ -837,7 +838,7 @@ public partial class CombatParser
                 continue;
 
             AbilityKeyword EffectAbilityKeyword = Item.AbilityKeywordList[0];
-            if (GenericAbilityList.Contains(EffectAbilityKeyword) || BuffOrPetAbilityList.Contains(EffectAbilityKeyword))
+            if (GenericAbilityList.Contains(EffectAbilityKeyword))
                 continue;
 
             List<PgEffect> TierList = new List<PgEffect>() { Item };
@@ -933,7 +934,7 @@ public partial class CombatParser
                 PowerIconList.Add(108);
         }
 
-        foreach (PgAbility AbilityItem in ValidAbilityList)
+        foreach (PgAbility AbilityItem in CombatAbilityList)
         {
             bool KeywordMatch = false;
 
@@ -966,7 +967,7 @@ public partial class CombatParser
                 { AbilityPetType.SummonedColdSphere, AbilityKeyword.SummonedColdSphere },
                 { AbilityPetType.StunTrap, AbilityKeyword.StunTrap },
                 { AbilityPetType.PowerGlyph, AbilityKeyword.PowerGlyph },
-                { AbilityPetType.SummonedTornado, AbilityKeyword.SummonedTornado },
+                //{ AbilityPetType.SummonedTornado, AbilityKeyword.SummonedTornado },
             };
 
             AbilityPetType PetType = AbilityItem.PetTypeTagRequirement;
@@ -1106,8 +1107,15 @@ public partial class CombatParser
         { "Slicing Ice", "Slice" },
         { "Pouncing Rend", "Pouncing Rake" },
         { "Pinning Slash", "Pin" },
-        { "Free-Summon Skeletal Archer", "Raise Skeletal Archer" },
+        //{ "Free-Summon Skeletal Archer", "Raise Skeletal Archer" },
         { "Rotflesh", "Rotskin" },
+        { "Wall of Coldfire", "Wall of Fire" },
+        { "Wall of Healing Flame", "Wall of Fire" },
+        { "Wall of Smarmy Flame", "Wall of Fire" },
+        { "Charring Fireball", "Super Fireball" },
+        { "Summon Sandstorm", "Summon Tornado" },
+        { "Summon Doomstorm", "Summon Tornado" },
+        { "Raise Flapskull", "Raise Zombie" },
     };
 
     private Dictionary<string, List<AbilityKeyword>> WideAbilityTable = new Dictionary<string, List<AbilityKeyword>>()
@@ -1249,28 +1257,6 @@ public partial class CombatParser
         Internal_NonBasic,
     };
 
-    private List<AbilityKeyword> BuffOrPetAbilityList = new List<AbilityKeyword>()
-    {
-        AbilityKeyword.SummonDeer,
-        AbilityKeyword.SummonedColdSphere,
-        AbilityKeyword.SummonedFireWall,
-        AbilityKeyword.SummonSkeleton,
-        AbilityKeyword.SummonSkeletonArcher,
-        AbilityKeyword.SummonSkeletonArcherOrMage,
-        AbilityKeyword.SummonSkeletonArcherOrSwordsman,
-        AbilityKeyword.SummonSkeletonMage,
-        AbilityKeyword.SummonSkeletonSwordsman,
-        AbilityKeyword.SummonSkeletonSwordsmanOrMage,
-        AbilityKeyword.SummonZombie,
-        AbilityKeyword.WebTrap,
-        AbilityKeyword.ConfusingDouble,
-        AbilityKeyword.StunTrap,
-        AbilityKeyword.SicEm,
-        AbilityKeyword.CleverTrick,
-        AbilityKeyword.FillWithBile,
-        AbilityKeyword.IceArmor,
-    };
-
     private List<AbilityKeyword> AbilitySpecificKeywordList = new List<AbilityKeyword>()
     {
         AbilityKeyword.StrikeANerve,
@@ -1288,10 +1274,10 @@ public partial class CombatParser
         AbilityKeyword.SpiderIncubate,
         AbilityKeyword.RingOfFire,
         AbilityKeyword.CrushingBall,
-        AbilityKeyword.SummonTornado,
+        //AbilityKeyword.SummonTornado,
         AbilityKeyword.EmbraceOfDespair,
         AbilityKeyword.RippleOfAmnesia,
-        AbilityKeyword.BloodMistBurst,
+        //AbilityKeyword.BloodMistBurst,
         AbilityKeyword.PulseOfLife,
         AbilityKeyword.IceSpear,
         AbilityKeyword.FanOfBlades,
@@ -1308,12 +1294,8 @@ public partial class CombatParser
 
         abilityNameList = new List<string>();
 
-        foreach (PgAbility Item in ValidAbilityList)
+        foreach (PgAbility Item in CombatAbilityList)
         {
-            if (Item.Name == "Windstrike")
-            {
-            }
-
             string Skill_Key = FromSkillKey(Item.Skill_Key ?? throw new NullReferenceException());
             PgSkill AbilitySkill = (PgSkill)(Skill_Key.Length == 0 ? PgSkill.Unknown : (Skill_Key == "AnySkill" ? PgSkill.AnySkill : ParsingContext.ObjectKeyTable[typeof(PgSkill)][Skill_Key].Item));
 
@@ -1334,7 +1316,8 @@ public partial class CombatParser
                 continue;
             if (Name.EndsWith(" (Purple)"))
                 continue;
-            if (Name == "Cold Protection")
+            if (Name == "Cold Protection" ||
+                Name == "Webspin")
                 continue;
 
             if (KnownBaseAbilityNameTable.ContainsKey(Name))
@@ -1512,6 +1495,9 @@ public partial class CombatParser
 
     public static string AbilityBaseName(PgAbility ability)
     {
+        if (IsBloodMistBurstAbility(ability.Name))
+            return "Blood Mist Burst";
+
         string Result = ability.Name;
         bool HasDigit = false;
 
@@ -1520,13 +1506,7 @@ public partial class CombatParser
             char c = Result[Result.Length - 1];
             if (char.IsDigit(c))
                 HasDigit = true;
-            else if (c == '#')
-            {
-            }
-            else if (c == '-' && HasDigit)
-            {
-            }
-            else
+            else if (c != '#' && (c != '-' || !HasDigit))
                 break;
 
             Result = Result.Substring(0, Result.Length - 1);
@@ -1535,6 +1515,13 @@ public partial class CombatParser
         Result = Result.Trim();
 
         return Result;
+    }
+
+    private static bool IsBloodMistBurstAbility(string name)
+    {
+        string pattern = @"^Blood Mist (\d+) Burst$";
+        Match match = Regex.Match(name, pattern);
+        return match.Success;
     }
 
     private void AddAbilityToNameList(List<string> abilityNameList, string abilityName)
@@ -1731,7 +1718,7 @@ public partial class CombatParser
 
         int UnverifiedCount = 0;
 
-        foreach (PgAbility Ability in ValidAbilityList)
+        foreach (PgAbility Ability in CombatAbilityList)
             if (Ability.KeywordList.Contains(keyword))
             {
                 int VerificationCount = 0;
@@ -1764,7 +1751,7 @@ public partial class CombatParser
                 UnverifiedTable.Add(combatKeyword, new List<KeyValuePair<string, string>>());
             List<KeyValuePair<string, string>> SpecificUnverifiedTable = UnverifiedTable[combatKeyword];
 
-            foreach (PgAbility Ability in ValidAbilityList)
+            foreach (PgAbility Ability in CombatAbilityList)
                 if (Ability.KeywordList.Contains(keyword))
                 {
                     int VerificationCount = 0;
@@ -1803,7 +1790,7 @@ public partial class CombatParser
     };
 
     public static AbilityKeyword Internal_NonBasic { get; } = (AbilityKeyword)0xFFFF;
-    private List<PgAbility> ValidAbilityList = null!;
+    private List<PgAbility> CombatAbilityList = null!;
     private List<string> AbilityObjectKeyList = new List<string>();
     private List<string> EffectObjectKeyList = new List<string>();
     private List<string> PowerObjectKeyList = new List<string>();

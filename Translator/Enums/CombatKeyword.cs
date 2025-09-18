@@ -238,5 +238,11 @@
         MultiplyArmorRestauration,
         MultiplyPowerRestauration,
         CanPhrenoCrit,
+
+        CrushingBoost,
+        SprintBoost,
+        SlashingBoost,
+        HealingAugment,
+        ArmorRegenerationAugment,
     }
 }
