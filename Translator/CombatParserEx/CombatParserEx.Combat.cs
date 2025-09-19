@@ -1311,6 +1311,8 @@ internal partial class CombatParserEx
             case "22203":
             case "23501":
             case "23554":
+            case "18103":
+            case "20061":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10003":
@@ -1354,6 +1356,8 @@ internal partial class CombatParserEx
                 BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "11502":
+            case "2022":
+            case "4201":
                 BuildModEffect_003(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             default:
@@ -1489,10 +1493,6 @@ internal partial class CombatParserEx
                 };
                 break;
             case "XXX":
-            case "18103":
-            case "20061":
-            case "2022":
-            case "4201":
                 pgCombatModEx = new PgCombatModEx()
                 {
                     Description = description,

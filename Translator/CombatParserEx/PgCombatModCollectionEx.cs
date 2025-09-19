@@ -6,82 +6,72 @@ using System.Globalization;
 
 public class PgCombatModCollectionEx : List<PgCombatModEx>
 {
+    public static bool DebugMode { get; set; } = false;
+
     public void Display(string powerKey)
     {
         if (!TrueForAll(item => item.StaticEffects.Count == 0 && item.DynamicEffects.Count == 0))
         {
-            Debug.WriteLine("        /*");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         *");
-            Debug.WriteLine("         */");
-            Debug.WriteLine($"        {{ \"{powerKey}\", new {GetType().Name}()");
-            Debug.WriteLine("            {");
+            Write("  ", $"{{ \"{powerKey}\", new {GetType().Name}()");
+            Write("     ", " {");
 
             foreach (PgCombatModEx Item in this)
                 Display(Item);
 
-            Debug.WriteLine("            }");
-            Debug.WriteLine("        },");
+            Write("     ", " }");
+            Write(" ", " },", newLine: true);
         }
     }
 
     private static void Display(PgCombatModEx pgCombatModEx)
     {
-        Debug.WriteLine($"                new {pgCombatModEx.GetType().Name}()");
-        Debug.WriteLine("                {");
-        Debug.WriteLine($"                    Description = \"{pgCombatModEx.Description.Replace("\"", "\\\"")}\",");
-        Debug.WriteLine($"                    StaticEffects = new List<{typeof(PgCombatModEffectEx).Name}>()");
-        Debug.WriteLine("                    {");
+        Write("         ", $" new {pgCombatModEx.GetType().Name}()");
+        Write("         ", " {");
+        Write("             ", $" Description = \"{pgCombatModEx.Description.Replace("\"", "\\\"")}\",");
+        Write("             ", $" StaticEffects = new List<{typeof(PgCombatModEffectEx).Name}>()");
+        Write("             ", " {");
 
         foreach (PgCombatModEffectEx Item in pgCombatModEx.StaticEffects)
             Display(Item);
 
-        Debug.WriteLine("                    },");
-        Debug.WriteLine($"                    DynamicEffects = new List<{typeof(PgCombatModEffectEx).Name}>()");
-        Debug.WriteLine("                    {");
+        Write("             ", " },");
+        Write("             ", $" DynamicEffects = new List<{typeof(PgCombatModEffectEx).Name}>()");
+        Write("             ", " {");
 
         foreach (PgCombatModEffectEx Item in pgCombatModEx.DynamicEffects)
             Display(Item);
 
-        Debug.WriteLine("                    },");
-        Debug.WriteLine("                },");
+        Write("             ", " },");
+        Write("         ", " },");
     }
 
     private static void Display(PgCombatModEffectEx pgCombatModEffectEx)
     {
-        Debug.WriteLine($"                        new {pgCombatModEffectEx.GetType().Name}()");
-        Debug.WriteLine("                        {");
-        Debug.WriteLine($"                            Keyword = {pgCombatModEffectEx.Keyword.GetType().Name}.{pgCombatModEffectEx.Keyword},");
-        Debug.WriteLine($"                            AbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.AbilityList)} }},");
-        Debug.WriteLine($"                            Data = {NumericValueToString(pgCombatModEffectEx.Data)},");
+        Write("                 ", $" new {pgCombatModEffectEx.GetType().Name}()");
+        Write("                 ", " {");
+        Write("                     ", $" Keyword = {pgCombatModEffectEx.Keyword.GetType().Name}.{pgCombatModEffectEx.Keyword},");
+        Write("                     ", $" AbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.AbilityList)} }},");
+        Write("                     ", $" Data = {NumericValueToString(pgCombatModEffectEx.Data)},");
 
         if (pgCombatModEffectEx.DamageType != GameDamageType.Internal_None)
-            Debug.WriteLine($"                            DamageType = GameDamageType.{pgCombatModEffectEx.DamageType},");
+            Write("                     ", $" DamageType = GameDamageType.{pgCombatModEffectEx.DamageType},");
 
         if (pgCombatModEffectEx.CombatSkill != GameCombatSkill.Internal_None)
-            Debug.WriteLine($"                            CombatSkill = GameCombatSkill.{pgCombatModEffectEx.CombatSkill},");
+            Write("                     ", $" CombatSkill = GameCombatSkill.{pgCombatModEffectEx.CombatSkill},");
 
         if (!float.IsNaN(pgCombatModEffectEx.RandomChance))
-            Debug.WriteLine($"                            RandomChance = {pgCombatModEffectEx.RandomChance.ToString(CultureInfo.InvariantCulture)}F,");
+            Write("                     ", $" RandomChance = {pgCombatModEffectEx.RandomChance.ToString(CultureInfo.InvariantCulture)}F,");
 
         if (!float.IsNaN(pgCombatModEffectEx.DelayInSeconds))
-            Debug.WriteLine($"                            DelayInSeconds = {pgCombatModEffectEx.DelayInSeconds.ToString(CultureInfo.InvariantCulture)},");
+            Write("                     ", $" DelayInSeconds = {pgCombatModEffectEx.DelayInSeconds.ToString(CultureInfo.InvariantCulture)},");
 
         if (!float.IsNaN(pgCombatModEffectEx.DurationInSeconds))
-            Debug.WriteLine($"                            DurationInSeconds = {pgCombatModEffectEx.DurationInSeconds.ToString(CultureInfo.InvariantCulture)},");
+            Write("                     ", $" DurationInSeconds = {pgCombatModEffectEx.DurationInSeconds.ToString(CultureInfo.InvariantCulture)},");
 
         if (pgCombatModEffectEx.Target != CombatTarget.Internal_None)
-            Debug.WriteLine($"                            Target = CombatTarget.{pgCombatModEffectEx.Target},");
+            Write("                     ", $" Target = CombatTarget.{pgCombatModEffectEx.Target},");
 
-        Debug.WriteLine("                        },");
+        Write("                 ", " },");
     }
 
     private static string AbilityKeywordListToString(List<AbilityKeyword> list)
@@ -117,5 +107,15 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         Result += " }";
 
         return Result;
+    }
+
+    private static void Write(string indent, string text, bool newLine = false)
+    {
+        if (DebugMode)
+            Debug.WriteLine($"{indent}{text}");
+        else if (newLine)
+            Debug.WriteLine(text);
+        else
+            Debug.Write(text);
     }
 }
