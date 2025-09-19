@@ -15,5 +15,6 @@
         EffectDuration,
         ApplyToSelf,
         ApplyToPet,
+        ApplyToSelfAndPet,
     }
 }

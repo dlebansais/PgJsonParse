@@ -2072,6 +2072,334 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "11502", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +1 and you recover 15 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +1 and you recover 24 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +1.5 and you recover 33 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +1.5F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +1.5 and you recover 42 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +1.5F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +2 and you recover 51 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +2 and you recover 60 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +2.5 and you recover 69 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +2.5F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +2.5 and you recover 78 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +2.5F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +78F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +3 and you recover 87 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +87F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +3 and you recover 96 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +96F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +3 and you recover 105 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Take the Lead boosts your movement speed +3 and you recover 114 Power after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TakeTheLead },
+                            Data = new PgNumericValueEx() { Value = +114F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "11603", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -2263,6 +2591,622 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealth,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FinishIt },
                             Data = new PgNumericValueEx() { Value = +92F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "12026", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 5 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 7 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 9 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 11 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 13 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 16 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 19 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 22 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 25 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 28 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 31 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 34 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 37 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 40 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 43 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 46 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 49 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 52 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 55 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 58 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +58F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +58F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 61 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 64 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 67 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +67F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +67F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 70 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sic 'Em restores 73 Health to both you and your pet",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                            Target = CombatTarget.AnimalHandlingPet,
                         },
                     },
                 },
@@ -4077,6 +5021,622 @@ internal partial class CombatParserEx
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.NimbleLimbs },
                             Data = new PgNumericValueEx() { Value = +164F },
                             Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "12161", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 12 Health to your pet and 2 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 16 Health to your pet and 4 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 20 Health to your pet and 6 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 24 Health to your pet and 8 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 28 Health to your pet and 10 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 32 Health to your pet and 12 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 36 Health to your pet and 14 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 40 Health to your pet and 16 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 44 Health to your pet and 18 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 48 Health to your pet and 20 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 52 Health to your pet and 22 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 56 Health to your pet and 24 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 60 Health to your pet and 26 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 64 Health to your pet and 28 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 68 Health to your pet and 30 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 72 Health to your pet and 32 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 76 Health to your pet and 34 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 80 Health to your pet and 36 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 84 Health to your pet and 38 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 88 Health to your pet and 40 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +88F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 92 Health to your pet and 42 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +92F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 96 Health to your pet and 44 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +96F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 100 Health to your pet and 46 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 104 Health to your pet and 48 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +104F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "That'll Do restores 108 Health to your pet and 50 Power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +108F },
+                            Target = CombatTarget.AnimalHandlingPet,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ThatllDo },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },

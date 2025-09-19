@@ -16,6 +16,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f health or Armor", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Heal you for %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f Health to your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("Restore %f Health to both you and your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelfAndPet }),
         new SentenceEx("Restore %f Health to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("You regain %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f health", CombatKeywordEx.RestoreHealth),
@@ -32,8 +33,10 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("And %f armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("Recover %f Armor", CombatKeywordEx.RestoreArmor),
+        new SentenceEx("And %f Power to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Power to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f power", CombatKeywordEx.RestorePower),
+        new SentenceEx("You recover %f power", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Recover %f power", CombatKeywordEx.RestorePower),
         new SentenceEx("Power Restoration %f", CombatKeywordEx.RestorePower),
         new SentenceEx("You regain %f power", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
@@ -48,6 +51,7 @@ internal partial class CombatParserEx
         new SentenceEx("For %f second", CombatKeywordEx.EffectDuration),
 
         new SentenceEx("Boost your movement speed by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Boost your movement speed %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Boost movement speed by %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("Increase your movement speed by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
     };
