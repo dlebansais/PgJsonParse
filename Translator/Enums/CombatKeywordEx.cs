@@ -3,10 +3,10 @@
     public enum CombatKeywordEx
     {
         Internal_None,
-        RestoreHealthOrArmor,
         RestoreHealth,
         RestoreArmor,
         RestorePower,
+        RestoreHealthOrArmor,
         AddSprintSpeed,
 
         // Other effects

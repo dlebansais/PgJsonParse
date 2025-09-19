@@ -30,6 +30,7 @@ internal partial class CombatParserEx
         new SentenceEx("Heal %f", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Recover %f Armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("Heal %f armor", CombatKeywordEx.RestoreArmor),
+        new SentenceEx("Restore %f armor to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreArmor, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("And %f armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("Recover %f Armor", CombatKeywordEx.RestoreArmor),

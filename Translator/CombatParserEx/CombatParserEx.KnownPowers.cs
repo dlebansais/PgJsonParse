@@ -19,6 +19,230 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "1004", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 4 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 6 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 8 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 10 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 12 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 14 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 16 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 18 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 20 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 22 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 24 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 26 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Sword Slash and Thrusting Blade restore 28 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SwordSlash, AbilityKeyword.ThrustingBlade },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "1006", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -1198,6 +1422,422 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealth,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Parry },
                             Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "1045", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 5 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 8 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 11 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 14 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 17 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 20 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 23 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 26 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 29 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 32 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 35 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 38 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 41 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 45 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 49 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 53 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 57 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +57F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 61 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 65 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 69 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 73 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 77 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 81 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +81F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 85 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Riposte restores 89 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Riposte },
+                            Data = new PgNumericValueEx() { Value = +89F },
                         },
                     },
                 },
@@ -3207,6 +3847,447 @@ internal partial class CombatParserEx
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
                             Data = new PgNumericValueEx() { Value = +73F },
                             Target = CombatTarget.AnimalHandlingPet,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "12052", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 20 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 26 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 32 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 38 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 44 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 50 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 56 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 62 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +62F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 68 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 74 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +74F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 80 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 86 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +86F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 93 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +93F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 100 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 107 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +107F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 114 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +114F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 121 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +121F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 128 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +128F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 135 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +135F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 142 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +142F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 149 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +149F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 156 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +156F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 163 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +163F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 170 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +170F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Get It Off Me restores 177 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GetItOffMe },
+                            Data = new PgNumericValueEx() { Value = +177F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },
@@ -5654,6 +6735,422 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "13044", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 16 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 20 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 24 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 28 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 32 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 36 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 40 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 44 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 48 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 52 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 56 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 60 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 65 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 70 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 75 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +75F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 80 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 85 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 90 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +90F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 95 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 100 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 105 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 110 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +110F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 115 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +115F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 120 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +120F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Way of the Hammer restores 125 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WayOfTheHammer },
+                            Data = new PgNumericValueEx() { Value = +125F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "14352", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -5845,6 +7342,863 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Regrowth },
                             Data = new PgNumericValueEx() { Value = +114F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "14401", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 9 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 18 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 27 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 36 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 45 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 54 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +54F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 63 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 72 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 81 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +81F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 90 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +90F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 99 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +99F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 108 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +108F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 117 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +117F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 126 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +126F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 135 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +135F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 144 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +144F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 153 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +153F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 162 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +162F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 171 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +171F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 180 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +180F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 189 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +189F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 198 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +198F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 207 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +207F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 216 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +216F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Energize restores 225 armor to each target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Energize },
+                            Data = new PgNumericValueEx() { Value = +225F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "15054", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 7 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 10 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 13 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 16 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 19 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 22 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 25 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 28 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 32 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 36 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 40 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 44 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 48 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 52 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 56 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 60 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 64 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 68 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 72 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 76 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 80 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 84 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 88 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +88F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 92 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +92F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Ice Nova restores 96 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceNova },
+                            Data = new PgNumericValueEx() { Value = +96F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },
@@ -6261,6 +8615,447 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealth,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.IceArmor },
                             Data = new PgNumericValueEx() { Value = +125F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "15152", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 7 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 14 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 21 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 28 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 35 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 42 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 49 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 56 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 63 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 70 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 77 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 84 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 91 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +91F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 98 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +98F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 105 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 112 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +112F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 119 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +119F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 126 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +126F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 133 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +133F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 140 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +140F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 147 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +147F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 154 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +154F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 161 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +161F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 168 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +168F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freeze Solid restores 175 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezeSolid },
+                            Data = new PgNumericValueEx() { Value = +175F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },
@@ -7342,6 +10137,422 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealth,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
                             Data = new PgNumericValueEx() { Value = +176F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "15402", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 11 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 21 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 31 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 41 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 51 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 61 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 71 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +71F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 81 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +81F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 91 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +91F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 102 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +102F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 113 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +113F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 124 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +124F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 135 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +135F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 146 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +146F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 157 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +157F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 168 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +168F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 179 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +179F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 190 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +190F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 201 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +201F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 212 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +212F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 223 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +223F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 234 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +234F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 245 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +245F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 256 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +256F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cryogenic Freeze restores 267 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CryogenicFreeze },
+                            Data = new PgNumericValueEx() { Value = +267F },
                         },
                     },
                 },
@@ -8607,6 +11818,358 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "161", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 35 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 42 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 49 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 56 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 63 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 70 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 77 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 84 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 91 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +91F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 98 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +98F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 105 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 112 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +112F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 118 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +118F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 124 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +124F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 130 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +130F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 136 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +136F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 142 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +142F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 148 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +148F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 154 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +154F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 160 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +160F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Major Healing abilities also restore 166 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MajorHeal },
+                            Data = new PgNumericValueEx() { Value = +166F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "162", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -8980,6 +12543,778 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "164", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 11 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 15 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 19 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 23 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 27 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 31 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 35 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 39 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 43 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 47 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +47F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 51 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 55 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 59 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +59F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 63 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 67 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +67F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 71 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +71F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 75 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +75F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 79 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +79F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 83 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +83F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 87 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +87F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 91 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +91F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 95 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 99 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +99F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 103 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +103F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Minor Heals restore 107 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MinorHeal },
+                            Data = new PgNumericValueEx() { Value = +107F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "17163", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 4 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 6 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 8 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 10 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 12 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 14 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 16 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 18 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 20 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 22 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 24 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 26 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 28 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 30 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 32 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 34 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 36 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 38 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 40 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Blast of Despair restores 42 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BlastOfDespair },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "17222", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -9299,6 +13634,362 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
                             Data = new PgNumericValueEx() { Value = +101F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "17223", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 20 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 30 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 40 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 50 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 60 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 70 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 80 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 90 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +90F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 100 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 110 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +110F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 120 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +120F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 130 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +130F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 140 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +140F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 150 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +150F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 160 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +160F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 170 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +170F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 180 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +180F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 190 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +190F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 200 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +200F },
+                            DelayInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rally restores 210 Armor after a 20 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rally },
+                            Data = new PgNumericValueEx() { Value = +210F },
+                            DelayInSeconds = 20,
                         },
                     },
                 },
@@ -9971,6 +14662,1430 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
                             Data = new PgNumericValueEx() { Value = +100F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "20043", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +6 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +12 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +18 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +24 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +30 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +36 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +42 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +48 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +54 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +54F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +60 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +66 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +66F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +72 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +79 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +79F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +86 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +86F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +93 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +93F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +100 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +107 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +107F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +114 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +114F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +121 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +121F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Calm restores +128 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfCalm },
+                            Data = new PgNumericValueEx() { Value = +128F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "2020", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +15 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +18 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +21 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +24 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +27 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +30 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +33 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +36 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +39 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +42 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +45 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +48 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +51 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +54 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +54F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +58 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +58F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +62 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +62F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +66 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +66F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +70 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +74 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +74F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +78 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +78F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +82 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +82F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +86 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +86F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +90 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +90F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +94 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +94F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Flesh to Fuel restores +98 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FleshToFuel },
+                            Data = new PgNumericValueEx() { Value = +98F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "20301", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +6 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +12 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +19 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +26 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +33 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +40 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +47 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +47F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +54 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +54F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +61 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +68 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +75 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +75F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +82 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +82F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +89 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +89F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +96 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +96F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +103 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +103F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +110 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +110F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +117 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +117F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +124 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +124F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +131 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +131F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moo of Determination restores +138 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MooOfDetermination },
+                            Data = new PgNumericValueEx() { Value = +138F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "20352", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 13 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 17 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 21 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 25 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 29 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 33 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 37 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 41 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 45 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 49 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 53 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 57 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +57F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 61 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 65 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 69 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 73 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 77 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 81 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +81F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 85 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tough Hoof immediately restores 89 armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ToughHoof },
+                            Data = new PgNumericValueEx() { Value = +89F },
                         },
                     },
                 },
@@ -10845,6 +16960,422 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "2059", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 5 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 7 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 9 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 10 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 11 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 13 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 14 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 16 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 17 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 19 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 21 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 23 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 25 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 27 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 29 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 31 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 33 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 35 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 37 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 39 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 41 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 43 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 45 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 47 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +47F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Scintillating Frost and Defensive Chill restore 49 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ScintillatingFrost, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "21024", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -11181,6 +17712,422 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "2103", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 10 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 13 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 16 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 19 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 22 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 25 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 28 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 31 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 34 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 37 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 40 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 43 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 46 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 49 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 52 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 55 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 58 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +58F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 61 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 64 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 67 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +67F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 70 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 73 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 76 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 79 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +79F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Molten Veins restores 82 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MoltenVeins },
+                            Data = new PgNumericValueEx() { Value = +82F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "21043", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -11500,6 +18447,718 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DoeEyes },
                             Data = new PgNumericValueEx() { Value = +92F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "21065", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 15 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 23 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 31 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 39 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 47 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +47F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 55 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 63 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 71 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +71F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 79 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +79F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 87 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +87F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 95 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 103 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +103F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 111 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +111F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 119 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +119F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 127 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +127F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 135 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +135F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 143 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +143F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 151 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +151F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 159 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +159F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cuteness Overload restores 167 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CutenessOverload },
+                            Data = new PgNumericValueEx() { Value = +167F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "21252", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 5 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 13 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 21 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 29 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 37 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 45 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 53 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 61 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 69 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 77 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 85 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 93 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +93F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 99 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +99F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 105 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 111 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +111F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 117 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +117F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 123 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +123F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 129 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +129F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 135 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +135F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Bounding Escape restores 141 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.BoundingEscape },
+                            Data = new PgNumericValueEx() { Value = +141F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },
@@ -12269,6 +19928,783 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "22043", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 4 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 7 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 10 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 13 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 17 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 21 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 25 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 29 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 33 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 37 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 41 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 45 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 49 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 53 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 57 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +57F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 61 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 65 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 69 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 73 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 77 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "2208", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 10 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 12 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 14 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 16 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 18 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 20 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 22 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 24 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 26 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 28 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 30 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 32 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 34 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 36 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 39 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 42 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 45 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 48 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 51 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 54 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +54F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 57 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +57F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 60 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 63 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 66 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +66F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Defensive Burst and Defensive Chill restore 69 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.DefensiveBurst, AbilityKeyword.DefensiveChill },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "22083", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -12428,6 +20864,1034 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PigChomp },
                             Data = new PgNumericValueEx() { Value = +44F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "22252", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 7 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 14 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 21 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 28 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 35 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 42 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 49 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 57 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +57F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 65 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 73 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 81 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +81F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 89 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +89F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 97 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +97F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 105 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 113 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +113F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 121 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +121F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 129 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +129F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 137 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +137F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 145 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +145F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Mudbath restores 153 armor to the target",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Mudbath },
+                            Data = new PgNumericValueEx() { Value = +153F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "22302", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 21 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 28 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 35 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 42 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 49 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 56 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 63 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 70 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 77 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 84 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 91 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +91F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 98 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +98F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 105 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 112 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +112F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 119 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +119F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 126 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +126F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 133 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +133F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 140 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +140F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 147 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +147F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Harmlessness restores 154 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
+                            Data = new PgNumericValueEx() { Value = +154F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "22452", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 10 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 13 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 16 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 19 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 22 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 25 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 28 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 31 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 34 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 37 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 40 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 43 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 46 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 49 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 52 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 55 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 58 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +58F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 61 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 64 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Porcine Alertness restores 67 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PorcineAlertness },
+                            Data = new PgNumericValueEx() { Value = +67F },
                         },
                     },
                 },
@@ -12977,6 +22441,342 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "24003", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 5 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 6 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 7 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 8 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 9 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 10 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 11 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 12 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 13 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 14 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 15 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 16 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 17 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 18 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 19 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 20 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 21 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 22 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 23 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rip restores 24 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Rip },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "24151", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -13482,6 +23282,718 @@ internal partial class CombatParserEx
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.ConfusingDouble },
                             Data = new PgNumericValueEx() { Value = +200F },
                             DelayInSeconds = 10,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "25012", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 1 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 2 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 3 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 4 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 5 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 6 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 7 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 8 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 9 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 10 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 11 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 12 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 13 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 14 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 15 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 16 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 17 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 18 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 19 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit Scratch restores 20 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitScratch },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "25101", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 8 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 14 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 20 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 26 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 32 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 38 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 44 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 50 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 56 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 62 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +62F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 68 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 74 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +74F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 81 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +81F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 88 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +88F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 95 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 102 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +102F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 109 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +109F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 116 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +116F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 123 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +123F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Hare Dash restores 130 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.HareDash },
+                            Data = new PgNumericValueEx() { Value = +130F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },
@@ -14191,6 +24703,342 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "25193", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 9 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 18 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 27 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 36 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 45 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 55 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 65 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 75 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +75F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 85 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 95 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 105 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 115 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +115F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 125 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +125F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 135 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +135F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 145 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +145F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 155 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +155F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 165 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +165F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 175 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +175F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 185 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +185F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Carrot Power restores 195 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CarrotPower },
+                            Data = new PgNumericValueEx() { Value = +195F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "257", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -14632,6 +25480,447 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "258", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 17 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 34 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 51 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 68 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 85 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 102 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +102F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 119 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +119F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 136 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +136F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 153 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +153F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 170 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +170F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 187 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +187F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 200 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +200F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 213 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +213F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 226 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +226F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 239 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +239F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 252 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +252F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 265 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +265F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 278 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +278F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 291 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +291F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 304 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +304F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 317 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +317F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 330 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +330F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 343 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +343F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 356 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +356F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Crossbow abilities restore 369 armor after a 12 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Crossbow },
+                            Data = new PgNumericValueEx() { Value = +369F },
+                            DelayInSeconds = 12,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "28184", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -14951,6 +26240,863 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PowerGlyph, AbilityKeyword.Galvanize },
                             Data = new PgNumericValueEx() { Value = +71F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "3022", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 12 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 14 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 16 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 18 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 20 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 22 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 24 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 26 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 28 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 30 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 32 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 34 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 36 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 38 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 40 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 42 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 44 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 46 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 48 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 50 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 52 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 54 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +54F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 56 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 58 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +58F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Kick attacks restore 60 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Kick },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "3203", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 10 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 12 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 14 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 16 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 18 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +18F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 20 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 22 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 24 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 26 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 28 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 30 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 32 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 34 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 36 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 39 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 42 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 45 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 48 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 51 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 54 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +54F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 57 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +57F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 60 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 63 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 66 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +66F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Cobra Strike and Mamba Strike restore 69 Armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.CobraStrike, AbilityKeyword.MambaStrike },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },
@@ -15783,6 +27929,838 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
                             Data = new PgNumericValueEx() { Value = +110F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "4085", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 7 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 14 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 21 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 28 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 35 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 42 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 49 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 56 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 63 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 70 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 77 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 84 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 91 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +91F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 98 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +98F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 105 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +105F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 112 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +112F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 119 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +119F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 126 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +126F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 133 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +133F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 140 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +140F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 147 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +147F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 154 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +154F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 161 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +161F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 168 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +168F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pep Talk restores 175 Armor",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PepTalk },
+                            Data = new PgNumericValueEx() { Value = +175F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "4305", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +7 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +14 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +14F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +21 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +28 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +35 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +42 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +49 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +56 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +63 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +70 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +78 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +78F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +86 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +86F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +94 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +94F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +102 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +102F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +110 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +110F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +118 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +118F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +126 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +126F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +134 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +134F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +142 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +142F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +150 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +150F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +158 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +158F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +166 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +166F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +174 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +174F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +182 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +182F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Inspire Confidence restores +190 Armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.InspireConfidence },
+                            Data = new PgNumericValueEx() { Value = +190F },
                         },
                     },
                 },
@@ -18975,6 +31953,447 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "9088", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 7 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 11 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 15 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 19 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 23 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 27 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 31 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 35 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 39 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 43 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 47 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +47F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 51 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 55 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 59 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +59F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 63 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 67 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +67F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 71 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +71F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 75 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +75F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 79 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +79F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 83 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +83F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 87 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +87F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 91 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +91F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 95 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 99 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +99F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Revitalize restores 103 armor to YOU (regardless of the target of the ability)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Revitalize },
+                            Data = new PgNumericValueEx() { Value = +103F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "9303", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -19177,6 +32596,1083 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealth,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
                             Data = new PgNumericValueEx() { Value = +71F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "9401", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 7 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 10 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 13 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 16 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 19 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 22 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 25 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 28 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 31 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 34 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 37 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 40 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 43 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 46 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 49 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 52 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 56 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 60 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 64 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 68 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 72 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 76 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 80 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 84 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave instantly restores 88 armor to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +88F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "9402", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 6 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 13 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 20 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 27 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 34 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 41 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 48 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 55 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 62 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +62F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 69 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 76 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 83 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +83F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 90 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +90F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 97 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +97F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 104 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +104F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 111 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +111F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 118 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +118F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 125 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +125F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 132 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +132F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 139 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +139F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 146 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +146F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 153 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +153F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 160 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +160F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 167 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +167F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Armor Wave and Psi Adrenaline Wave restore 174 armor to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +174F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "9403", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 10 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 20 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 30 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 40 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 50 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 60 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 72 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 84 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +84F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 96 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +96F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 106 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +106F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 116 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +116F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Health Wave and Psi Armor Wave instantly restore 126 armor to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
+                            Data = new PgNumericValueEx() { Value = +126F },
                             Target = CombatTarget.Self,
                         },
                     },

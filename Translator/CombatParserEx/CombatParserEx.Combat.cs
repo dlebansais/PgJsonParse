@@ -1256,6 +1256,44 @@ internal partial class CombatParserEx
             case "9085":
             case "12026":
             case "12161":
+            case "1004":
+            case "1045":
+            case "14401":
+            case "12052":
+            case "13044":
+            case "15054":
+            case "15152":
+            case "15402":
+            case "161":
+            case "164":
+            case "17163":
+            case "17223":
+            case "20043":
+            case "2020":
+            case "20301":
+            case "20352":
+            case "2059":
+            case "2103":
+            case "21065":
+            case "21252":
+            case "22043":
+            case "2208":
+            case "22252":
+            case "22302":
+            case "22452":
+            case "24003":
+            case "25012":
+            case "25101":
+            case "25193":
+            case "258":
+            case "3022":
+            case "3203":
+            case "4085":
+            case "4305":
+            case "9088":
+            case "9401":
+            case "9402":
+            case "9403":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10003":
@@ -1303,12 +1341,14 @@ internal partial class CombatParserEx
                 break;
             default:
                 if (dynamicCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
-                                                           item.Keyword == CombatKeywordEx.AddSprintSpeed ||
                                                            item.Keyword == CombatKeywordEx.RestorePower ||
+                                                           item.Keyword == CombatKeywordEx.RestoreArmor ||
+                                                           item.Keyword == CombatKeywordEx.AddSprintSpeed ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
-                                                          item.Keyword == CombatKeywordEx.AddSprintSpeed ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
+                                                          item.Keyword == CombatKeywordEx.RestoreArmor ||
+                                                          item.Keyword == CombatKeywordEx.AddSprintSpeed ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -1410,6 +1450,26 @@ internal partial class CombatParserEx
             case "9503":
             case "9881":
             case "9883":
+            case "12092":
+            case "14153":
+            case "14154":
+            case "14602":
+            case "159":
+            case "16102":
+            case "163":
+            case "17023":
+            case "17083":
+            case "20066":
+            case "23201":
+            case "26053":
+            case "26223":
+            case "27033":
+            case "3047":
+            case "4004":
+            case "7216":
+            case "8022":
+            case "9703":
+            case "9752":
                 pgCombatModEx = new PgCombatModEx()
                 {
                     Description = description,
