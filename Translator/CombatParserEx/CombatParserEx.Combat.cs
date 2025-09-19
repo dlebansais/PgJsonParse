@@ -1294,6 +1294,10 @@ internal partial class CombatParserEx
             case "9401":
             case "9402":
             case "9403":
+            case "22041":
+            case "22402":
+            case "9501":
+            case "9502":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10003":
@@ -1407,9 +1411,7 @@ internal partial class CombatParserEx
             case "2021":
             case "20302":
             case "21353":
-            case "22041":
             case "22401":
-            case "22402":
             case "24002":
             case "25105":
             case "26052":
@@ -1445,8 +1447,6 @@ internal partial class CombatParserEx
             case "9084":
             case "9086":
             case "9087":
-            case "9501":
-            case "9502":
             case "9503":
             case "9881":
             case "9883":

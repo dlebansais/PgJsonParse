@@ -19928,6 +19928,342 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "22041", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 3 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 5 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 7 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 9 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 11 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 13 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 15 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 17 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 19 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 22 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 25 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 28 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 31 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 34 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 37 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 40 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 43 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +43F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 46 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 49 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +49F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Grunt of Abeyance restores 52 Power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.GruntOfAbeyance },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "22043", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -21556,6 +21892,342 @@ internal partial class CombatParserEx
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Harmlessness },
                             Data = new PgNumericValueEx() { Value = +154F },
                             Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "22402", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 3 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 6 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 9 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 12 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +12F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 16 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 20 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 24 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 28 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 32 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 36 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +36F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 40 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 44 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 48 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 52 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 56 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 60 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 64 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 68 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 72 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Frenzy restores 76 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Frenzy },
+                            Data = new PgNumericValueEx() { Value = +76F },
                         },
                     },
                 },
@@ -33674,6 +34346,863 @@ internal partial class CombatParserEx
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave },
                             Data = new PgNumericValueEx() { Value = +126F },
                             Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "9501", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 10 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 13 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 16 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 19 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 22 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 26 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 30 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 34 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 38 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 42 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +42F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 46 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +46F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 50 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 54 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +54F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 58 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +58F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 64 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 70 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +70F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 76 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 82 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +82F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 88 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +88F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 94 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +94F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 100 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +100F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 106 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +106F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 112 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +112F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 118 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +118F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave restore 124 power to all targets after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +124F },
+                            DelayInSeconds = 15,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "9502", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 5 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 6 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 7 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 8 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 9 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 11 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 13 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 15 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 17 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 19 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 21 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 23 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 26 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 29 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 32 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 35 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 38 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 41 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 44 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 47 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +47F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 50 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 53 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 56 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 59 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +59F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave instantly restores 62 power to all targets",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
+                            Data = new PgNumericValueEx() { Value = +62F },
                         },
                     },
                 },
