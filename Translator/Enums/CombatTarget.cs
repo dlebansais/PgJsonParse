@@ -4,5 +4,6 @@ public enum CombatTarget
 {
     Internal_None,
     Self,
+    Allies,
     AnimalHandlingPet,
 }

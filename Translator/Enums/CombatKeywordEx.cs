@@ -14,6 +14,7 @@
         EffectDelay,
         EffectDuration,
         ApplyToSelf,
+        ApplyToSelfAndAllies,
         ApplyToPet,
         ApplyToSelfAndPet,
     }

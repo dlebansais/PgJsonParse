@@ -7151,6 +7151,422 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "13053", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 8 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 16 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 24 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +24F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 32 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 40 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 48 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 56 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 64 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 72 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 80 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 88 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +88F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 96 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +96F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 102 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +102F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 108 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +108F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 114 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +114F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 120 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +120F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 126 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +126F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 132 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +132F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 138 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +138F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 144 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +144F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 150 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +150F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 156 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +156F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 162 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +162F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 168 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +168F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Pound To Slag restores 174 Health (or Armor, if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PoundToSlag },
+                            Data = new PgNumericValueEx() { Value = +174F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "14352", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -24327,6 +24743,1038 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "25073", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 7 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 9 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 11 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 13 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 15 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 17 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +17F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 20 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 23 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 26 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 29 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 32 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 35 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 38 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 41 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +41F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 44 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 47 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +47F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +47F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 50 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 53 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 56 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 59 Power to you and nearby allies",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +59F },
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +59F },
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "25074", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 10 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 15 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 20 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 25 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 30 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +30F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 35 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +35F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 40 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 45 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 50 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 55 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +55F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 60 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 65 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +65F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 71 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +71F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +71F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 77 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 83 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +83F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +83F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 89 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +89F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +89F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 95 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +95F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 101 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +101F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +101F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 107 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +107F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +107F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rabbit's Foot restores 113 Health to you and nearby allies after a 15 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +113F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Self,
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealth,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RabbitsFoot },
+                            Data = new PgNumericValueEx() { Value = +113F },
+                            DelayInSeconds = 15,
+                            Target = CombatTarget.Allies,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "25101", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -28202,6 +29650,214 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "4034", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 15 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 27 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +27F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 39 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 51 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +51F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 63 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +63F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 75 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +75F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 87 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +87F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 99 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +99F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 111 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +111F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 123 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +123F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 135 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +135F },
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Tell Me About Your Mother restores 147 Health (or Armor if Health is full)",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.TellMeAboutYourMother },
+                            Data = new PgNumericValueEx() { Value = +147F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "4082", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -30062,6 +31718,447 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealth,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Claw, AbilityKeyword.DoubleClaw },
                             Data = new PgNumericValueEx() { Value = +30F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "7102", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 13 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 21 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +21F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 29 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +29F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 37 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 45 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 53 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +53F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 61 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +61F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 69 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +69F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 77 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +77F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 85 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +85F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 93 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +93F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 101 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +101F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 109 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +109F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 117 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +117F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 125 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +125F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 133 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +133F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 141 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +141F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 149 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +149F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 157 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +157F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 165 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +165F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 173 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +173F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 181 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +181F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 189 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +189F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 197 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +197F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Freezing Mist restores 205 Health (or Armor if Health is full) to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.FreezingMist },
+                            Data = new PgNumericValueEx() { Value = +205F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },
@@ -35203,6 +37300,226 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave },
                             Data = new PgNumericValueEx() { Value = +62F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "9503", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 15 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +15F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 19 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 23 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +23F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 28 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 33 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +33F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 39 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +39F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 45 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +45F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 52 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 59 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +59F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 66 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +66F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 73 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +73F },
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Psi Power Wave and Psi Adrenaline Wave instantly restore 80 power to you",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PsiPowerWave, AbilityKeyword.PsiAdrenalineWave },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            Target = CombatTarget.Self,
                         },
                     },
                 },

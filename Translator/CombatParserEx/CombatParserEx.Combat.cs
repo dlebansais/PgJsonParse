@@ -62,7 +62,7 @@ internal partial class CombatParserEx
         int LastTierIndex = TierList.Count - 1;
         PgPowerTier LastTier = TierList[LastTierIndex];
 
-        if (itemPower.Key == "12161")
+        if (itemPower.Key == "25073")
         {
         }
 
@@ -1298,6 +1298,12 @@ internal partial class CombatParserEx
             case "22402":
             case "9501":
             case "9502":
+            case "4034":
+            case "7102":
+            case "9503":
+            case "13053":
+            case "25073":
+            case "25074":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10003":
@@ -1378,8 +1384,6 @@ internal partial class CombatParserEx
             case "20009":
             case "24062":
             case "24242":
-            case "25073":
-            case "25074":
             case "25223":
             case "4471":
             case "5203":
@@ -1387,7 +1391,6 @@ internal partial class CombatParserEx
             case "12121":
             case "12122":
             case "12313":
-            case "13053":
             case "14151":
             case "14152":
             case "14155":
@@ -1422,7 +1425,6 @@ internal partial class CombatParserEx
             case "28143":
             case "28612":
             case "28686":
-            case "4034":
             case "4304":
             case "4502":
             case "5124":
@@ -1430,7 +1432,6 @@ internal partial class CombatParserEx
             case "6088":
             case "6306":
             case "7009":
-            case "7102":
             case "7202":
             case "7215":
             case "7306":
@@ -1447,7 +1448,6 @@ internal partial class CombatParserEx
             case "9084":
             case "9086":
             case "9087":
-            case "9503":
             case "9881":
             case "9883":
             case "12092":
@@ -1470,6 +1470,14 @@ internal partial class CombatParserEx
             case "8022":
             case "9703":
             case "9752":
+                pgCombatModEx = new PgCombatModEx()
+                {
+                    Description = description,
+                    StaticEffects = new List<PgCombatModEffectEx>(),
+                    DynamicEffects = new List<PgCombatModEffectEx>(),
+                };
+                break;
+            case "XXX":
                 pgCombatModEx = new PgCombatModEx()
                 {
                     Description = description,
@@ -1502,6 +1510,7 @@ internal partial class CombatParserEx
 
             if (CombatEffect.Keyword == CombatKeywordEx.ApplyWithChance ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelf ||
+                CombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndAllies ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToPet ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndPet ||
                 CombatEffect.Keyword == CombatKeywordEx.EffectDuration ||
@@ -1531,6 +1540,11 @@ internal partial class CombatParserEx
                 {
                     Target = CombatTarget.Self;
                     OtherTarget = CombatTarget.AnimalHandlingPet;
+                }
+                else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndAllies)
+                {
+                    Target = CombatTarget.Self;
+                    OtherTarget = CombatTarget.Allies;
                 }
             }
 
