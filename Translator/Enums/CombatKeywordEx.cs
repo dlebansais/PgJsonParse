@@ -5,6 +5,7 @@
         Internal_None,
         RestoreHealthOrArmor,
         RestoreHealth,
+        RestoreArmor,
         RestorePower,
         AddSprintSpeed,
 

@@ -10,6 +10,18 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
     {
         if (!TrueForAll(item => item.StaticEffects.Count == 0 && item.DynamicEffects.Count == 0))
         {
+            Debug.WriteLine("        /*");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         *");
+            Debug.WriteLine("         */");
             Debug.WriteLine($"        {{ \"{powerKey}\", new {GetType().Name}()");
             Debug.WriteLine("            {");
 

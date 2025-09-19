@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Xml.XPath;
 using PgObjects;
 using Translator;
 
@@ -1215,8 +1214,46 @@ internal partial class CombatParserEx
             case "12053":
             case "15303":
             case "9303":
-            case "12161":
-            case "9503":
+            case "10404":
+            case "1042":
+            case "10507":
+            case "11603":
+            case "12091":
+            case "12102":
+            case "12103":
+            case "14352":
+            case "15106":
+            case "154":
+            case "15401":
+            case "15403":
+            case "16042":
+            case "16083":
+            case "162":
+            case "17222":
+            case "20041":
+            case "20042":
+            case "2051":
+            case "2054":
+            case "21024":
+            case "21043":
+            case "2153":
+            case "22004":
+            case "22083":
+            case "23252":
+            case "24151":
+            case "24244":
+            case "25131":
+            case "25192":
+            case "257":
+            case "3253":
+            case "4082":
+            case "6003":
+            case "7201":
+            case "7205":
+            case "7206":
+            case "8005":
+            case "9005":
+            case "9085":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10003":
@@ -1256,6 +1293,7 @@ internal partial class CombatParserEx
             case "23101":
             case "4532":
             case "9756":
+            case "28184":
                 BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             default:
@@ -1280,6 +1318,12 @@ internal partial class CombatParserEx
                     };
                 }
                 break;
+            case "10401":
+            case "10509":
+            case "11404":
+            case "11502":
+            case "1202":
+            case "12026":
             case "13004":
             case "1303":
             case "16082":
@@ -1293,6 +1337,77 @@ internal partial class CombatParserEx
             case "4471":
             case "5203":
             case "5401":
+            case "12121":
+            case "12122":
+            case "12161":
+            case "12313":
+            case "13053":
+            case "14151":
+            case "14152":
+            case "14155":
+            case "14156":
+            case "14205":
+            case "14353":
+            case "14354":
+            case "14601":
+            case "14603":
+            case "14605":
+            case "15102":
+            case "15452":
+            case "15454":
+            case "157":
+            case "16004":
+            case "16009":
+            case "16223":
+            case "17063":
+            case "18064":
+            case "18065":
+            case "2021":
+            case "20302":
+            case "21353":
+            case "22041":
+            case "22401":
+            case "22402":
+            case "24002":
+            case "25105":
+            case "26052":
+            case "26094":
+            case "26205":
+            case "28141":
+            case "28142":
+            case "28143":
+            case "28612":
+            case "28686":
+            case "4034":
+            case "4304":
+            case "4502":
+            case "5124":
+            case "5152":
+            case "6088":
+            case "6306":
+            case "7009":
+            case "7102":
+            case "7202":
+            case "7215":
+            case "7306":
+            case "7307":
+            case "7308":
+            case "7309":
+            case "7310":
+            case "7401":
+            case "7431":
+            case "8103":
+            case "8313":
+            case "8318":
+            case "9008":
+            case "9084":
+            case "9086":
+            case "9087":
+            case "9501":
+            case "9502":
+            case "9503":
+            case "9881":
+            case "9883":
                 pgCombatModEx = new PgCombatModEx()
                 {
                     Description = description,
