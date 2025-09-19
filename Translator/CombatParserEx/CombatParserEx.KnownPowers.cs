@@ -3248,6 +3248,472 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "12021", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +1 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +2 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +3 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +4 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +4.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +4.5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +5.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +5.5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +6 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +6.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +6.5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +7 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +7.3 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +7.3F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +7.6 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +7.6F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +7.9 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +7.9F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +8.2 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +8.2F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +8.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +8.5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +8.8 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +8.8F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +9.1 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +9.1F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +9.4 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +9.4F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +9.7 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +9.7F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +10 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +10.3 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +10.3F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +10.6 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +10.6F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +10.9 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +10.9F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +11.2 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +11.2F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "When you use Sic 'Em, your sprint speed increases by +11.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SicEm },
+                            Data = new PgNumericValueEx() { Value = +11.5F },
+                            DurationInSeconds = 10,
+                            Target = CombatTarget.Self,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "12026", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -14423,6 +14889,107 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "17304", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Moment of Resolve boosts targets' Movement Speed +1 for 8 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MomentOfResolve },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DurationInSeconds = 8,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moment of Resolve boosts targets' Movement Speed +2 for 8 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MomentOfResolve },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 8,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moment of Resolve boosts targets' Movement Speed +3 for 8 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MomentOfResolve },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DurationInSeconds = 8,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moment of Resolve boosts targets' Movement Speed +3.5 for 8 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MomentOfResolve },
+                            Data = new PgNumericValueEx() { Value = +3.5F },
+                            DurationInSeconds = 8,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Moment of Resolve boosts targets' Movement Speed +4 for 8 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.MomentOfResolve },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 8,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "20041", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -21633,6 +22200,192 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "22203", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 2 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 4 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 6 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 7 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 9 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 9.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +9.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 10 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 10.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +10.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Squeal boosts sprint speed by 11 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Squeal },
+                            Data = new PgNumericValueEx() { Value = +11F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "22252", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -22997,202 +23750,6 @@ internal partial class CombatParserEx
          *
          *
          */
-        { "23101", new PgCombatModCollectionEx()
-            {
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 2 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +2F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 3 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +3F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 4 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +4F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 5 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +5F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 6 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +6F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 7 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +7F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 7.5 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +7.5F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 8 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +8F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 8.5 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +8.5F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Web Trap boosts your movement speed by 9 for 10 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.WebTrap },
-                            Data = new PgNumericValueEx() { Value = +9F },
-                            DurationInSeconds = 10,
-                            Target = CombatTarget.Self,
-                        },
-                    },
-                },
-            }
-        },
-        /*
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         */
         { "23252", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -23512,6 +24069,378 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestoreHealth,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderBite, AbilityKeyword.InfiniteLegs },
                             Data = new PgNumericValueEx() { Value = +20F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "23501", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +1 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +2 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +3 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +4 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +6 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +7 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +7F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +8 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +9 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +9F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Terrifying Bite boosts sprint speed +10 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.SpiderFear },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "23554", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +1 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +1.5 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +1.5F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +2 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +2.5 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +2.5F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +3 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +3.5 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +3.5F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +4 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +4.5 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +4.5F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +5 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 20,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Premeditated Doom boosts sprint speed +5.5 for 20 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.PremeditatedDoom },
+                            Data = new PgNumericValueEx() { Value = +5.5F },
+                            DurationInSeconds = 20,
                         },
                     },
                 },
@@ -31106,219 +32035,6 @@ internal partial class CombatParserEx
          *
          *
          */
-        { "4532", new PgCombatModCollectionEx()
-            {
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 1 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +1F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 1.5 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +1.5F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 2 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +2F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 2.5 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +2.5F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 3 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +3F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 3.5 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +3.5F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 4 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +4F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 4.5 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +4.5F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 5 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +5F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 5.5 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +5.5F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 6 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                },
-                new PgCombatModEx()
-                {
-                    Description = "Ridicule boosts movement speed by 6.5 for 6 seconds",
-                    StaticEffects = new List<PgCombatModEffectEx>()
-                    {
-                    },
-                    DynamicEffects = new List<PgCombatModEffectEx>()
-                    {
-                        new PgCombatModEffectEx()
-                        {
-                            Keyword = CombatKeywordEx.AddSprintSpeed,
-                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Ridicule },
-                            Data = new PgNumericValueEx() { Value = +6.5F },
-                            DurationInSeconds = 6,
-                        },
-                    },
-                },
-            }
-        },
-        /*
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         */
         { "6003", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -33865,6 +34581,472 @@ internal partial class CombatParserEx
          *
          *
          */
+        { "8103", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 20 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +20F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 26 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +26F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 32 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +32F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 38 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +38F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 44 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 50 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +50F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 56 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 62 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +62F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 68 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 74 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +74F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 80 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 86 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +86F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 92 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +92F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 98 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +98F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 104 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +104F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 110 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +110F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 117 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +117F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 124 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +124F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 131 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +131F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 138 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +138F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 145 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +145F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 152 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +152F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 159 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +159F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 166 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +166F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Rebuild Undead restores 173 health/armor to your undead after a 10 second delay",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestoreHealthOrArmor,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.RebuildUndead },
+                            Data = new PgNumericValueEx() { Value = +173F },
+                            DelayInSeconds = 10,
+                            Target = CombatTarget.NecromancyPet,
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         { "9005", new PgCombatModCollectionEx()
             {
                 new PgCombatModEx()
@@ -34705,6 +35887,597 @@ internal partial class CombatParserEx
                             Keyword = CombatKeywordEx.RestorePower,
                             AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
                             Data = new PgNumericValueEx() { Value = +126F },
+                        },
+                    },
+                },
+            }
+        },
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
+        { "9087", new PgCombatModCollectionEx()
+            {
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 2 power and boosts target's sprint speed by 1 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 4 power and boosts target's sprint speed by 1 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +1F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 6 power and boosts target's sprint speed by 1.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +6F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +1.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 8 power and boosts target's sprint speed by 1.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +8F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +1.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 10 power and boosts target's sprint speed by 2 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +10F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 13 power and boosts target's sprint speed by 2 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +13F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +2F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 16 power and boosts target's sprint speed by 2.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +16F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +2.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 19 power and boosts target's sprint speed by 2.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +19F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +2.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 22 power and boosts target's sprint speed by 3 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +22F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 25 power and boosts target's sprint speed by 3 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +25F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +3F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 28 power and boosts target's sprint speed by 3.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +28F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +3.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 31 power and boosts target's sprint speed by 3.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +31F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +3.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 34 power and boosts target's sprint speed by 4 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +34F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 37 power and boosts target's sprint speed by 4 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +37F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +4F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 40 power and boosts target's sprint speed by 4.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +40F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +4.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 44 power and boosts target's sprint speed by 4.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +44F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +4.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 48 power and boosts target's sprint speed by 4.5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +48F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +4.5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 52 power and boosts target's sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +52F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 56 power and boosts target's sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +56F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 60 power and boosts target's sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +60F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 64 power and boosts target's sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +64F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 68 power and boosts target's sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +68F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 72 power and boosts target's sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +72F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 76 power and boosts target's sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +76F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
+                        },
+                    },
+                },
+                new PgCombatModEx()
+                {
+                    Description = "Reconstruct restores 80 power and boosts target's sprint speed by 5 for 10 seconds",
+                    StaticEffects = new List<PgCombatModEffectEx>()
+                    {
+                    },
+                    DynamicEffects = new List<PgCombatModEffectEx>()
+                    {
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.RestorePower,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +80F },
+                        },
+                        new PgCombatModEffectEx()
+                        {
+                            Keyword = CombatKeywordEx.AddSprintSpeed,
+                            AbilityList = new List<AbilityKeyword>() { AbilityKeyword.Reconstruct },
+                            Data = new PgNumericValueEx() { Value = +5F },
+                            DurationInSeconds = 10,
                         },
                     },
                 },

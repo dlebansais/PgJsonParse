@@ -1304,6 +1304,13 @@ internal partial class CombatParserEx
             case "13053":
             case "25073":
             case "25074":
+            case "8103":
+            case "9087":
+            case "12021":
+            case "17304":
+            case "22203":
+            case "23501":
+            case "23554":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10003":
@@ -1441,13 +1448,11 @@ internal partial class CombatParserEx
             case "7310":
             case "7401":
             case "7431":
-            case "8103":
             case "8313":
             case "8318":
             case "9008":
             case "9084":
             case "9086":
-            case "9087":
             case "9881":
             case "9883":
             case "12092":
@@ -1470,6 +1475,12 @@ internal partial class CombatParserEx
             case "8022":
             case "9703":
             case "9752":
+            case "13206":
+            case "15107":
+            case "18115":
+            case "28221":
+            case "8023":
+            case "8353":
                 pgCombatModEx = new PgCombatModEx()
                 {
                     Description = description,
@@ -1478,6 +1489,10 @@ internal partial class CombatParserEx
                 };
                 break;
             case "XXX":
+            case "18103":
+            case "20061":
+            case "2022":
+            case "4201":
                 pgCombatModEx = new PgCombatModEx()
                 {
                     Description = description,
@@ -1535,11 +1550,11 @@ internal partial class CombatParserEx
                 if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelf)
                     Target = CombatTarget.Self;
                 else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToPet)
-                    Target = CombatTarget.AnimalHandlingPet;
+                    Target = SelectPetType(abilityList);
                 else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndPet)
                 {
                     Target = CombatTarget.Self;
-                    OtherTarget = CombatTarget.AnimalHandlingPet;
+                    OtherTarget = SelectPetType(abilityList);
                 }
                 else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndAllies)
                 {
@@ -1604,5 +1619,18 @@ internal partial class CombatParserEx
 
         // Concatenate static & dynamic to dynamic
         BuildModEffect_001(description, abilityList, combatEffectList, new PgCombatEffectCollectionEx(), targetAbilityList, out pgCombatModEx);
+    }
+
+    private static CombatTarget SelectPetType(List<AbilityKeyword> abilityList)
+    {
+        bool IsAnimalHandlingPet = abilityList.TrueForAll(Keyword => AnimalHandlingKeywordList.Contains(Keyword));
+        bool IsNecromancyPet = abilityList.TrueForAll(Keyword => NecromancyKeywordList.Contains(Keyword));
+
+        if (IsAnimalHandlingPet && !IsNecromancyPet)
+            return CombatTarget.AnimalHandlingPet;
+        else if (!IsAnimalHandlingPet && IsNecromancyPet)
+            return CombatTarget.NecromancyPet;
+        else
+            return CombatTarget.Internal_None;
     }
 }

@@ -826,7 +826,14 @@ internal partial class CombatParserEx
                                 Debug.WriteLine($"Keyword {FinalMatchingKeyword} for {Name} is already used by {KeywordToName[FinalMatchingKeyword]}.");
                         }
                         else
+                        {
                             KeywordToName.Add(FinalMatchingKeyword, Name);
+
+                            if (Item.Skill_Key == "SAnimalHandling")
+                                AnimalHandlingKeywordList.Add(FinalMatchingKeyword);
+                            if (Item.Skill_Key == "SNecromancy")
+                                NecromancyKeywordList.Add(FinalMatchingKeyword);
+                        }
                     }
                 }
 
@@ -961,4 +968,6 @@ internal partial class CombatParserEx
     private Dictionary<PgPower, List<PgEffect>> candidateEffectTable = new();
     private List<string> abilityNameList = new(); // TODO: check used
     private Dictionary<string, List<AbilityKeyword>> nameToKeyword = new(); // TODO: check used
+    private static readonly List<AbilityKeyword> AnimalHandlingKeywordList = new();
+    private static readonly List<AbilityKeyword> NecromancyKeywordList = new();
 }

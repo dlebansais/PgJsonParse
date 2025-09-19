@@ -12,6 +12,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f Health/Armor healing", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Heal your pet for %f Health/Armor", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Restore %f Health/Armor to your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("Restore %f Health/Armor to your undead", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Restore %f Health/Armor to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f Health/Armor", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health (or Armor)", CombatKeywordEx.RestoreHealthOrArmor),
@@ -56,9 +57,18 @@ internal partial class CombatParserEx
 
         new SentenceEx("For %f second", CombatKeywordEx.EffectDuration),
 
+        new SentenceEx("Your Sprint Speed increase by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Sprint Speed increase by %f", CombatKeywordEx.AddSprintSpeed),
+        new SentenceEx("Sprint Speed is increased %f", CombatKeywordEx.AddSprintSpeed),
+        new SentenceEx("%f Sprint Speed", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("Boost your movement speed by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Boost your movement speed %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Boost movement speed by %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("Increase your movement speed by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Speed is %f", CombatKeywordEx.AddSprintSpeed),
+        new SentenceEx("Movement speed %f", CombatKeywordEx.AddSprintSpeed),
+        new SentenceEx("Sprint speed %f", CombatKeywordEx.AddSprintSpeed),
+        new SentenceEx("Sprint speed by %f", CombatKeywordEx.AddSprintSpeed),
+        new SentenceEx("%f Movement Speed", CombatKeywordEx.AddSprintSpeed),
     };
 }
