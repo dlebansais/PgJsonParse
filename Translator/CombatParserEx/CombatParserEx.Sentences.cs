@@ -67,6 +67,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant the target %f Max Power", CombatKeywordEx.IncreaseMaxPower),
 
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
+        new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
 
         new SentenceEx("After a %f second delay", CombatKeywordEx.EffectDelay),
         new SentenceEx("After an %f second delay", CombatKeywordEx.EffectDelay),
