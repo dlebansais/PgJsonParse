@@ -4,4 +4,7 @@ public enum CombatCondition
 {
     Internal_None,
     WieldingTwoKnives,
+    WithoutFocus,
+    WhilePlayingSong,
+    WhileInSpecialForm,
 }

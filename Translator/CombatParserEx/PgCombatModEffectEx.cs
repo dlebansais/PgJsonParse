@@ -25,4 +25,6 @@ public class PgCombatModEffectEx
     public float TargetRange { get; init; } = float.NaN;
 
     public CombatCondition Condition { get; init; } = CombatCondition.Internal_None;
+
+    public AbilityKeyword ActiveAbilityCondition { get; init; } = AbilityKeyword.Internal_None;
 }

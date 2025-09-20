@@ -54,6 +54,13 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         Write("                     ", $" Keyword = {pgPermanentModEffectEx.Keyword.GetType().Name}.{pgPermanentModEffectEx.Keyword},");
         Write("                     ", $" Data = {NumericValueToString(pgPermanentModEffectEx.Data)},");
         Write("                     ", $" Target = CombatTarget.{pgPermanentModEffectEx.Target},");
+
+        if (pgPermanentModEffectEx.Condition != CombatCondition.Internal_None)
+            Write("                     ", $" Condition = CombatCondition.{pgPermanentModEffectEx.Condition},");
+
+        if (pgPermanentModEffectEx.ActiveAbilityCondition != AbilityKeyword.Internal_None)
+            Write("                     ", $" ActiveAbilityCondition = AbilityKeyword.{pgPermanentModEffectEx.ActiveAbilityCondition},");
+
         Write("                 ", " },");
     }
 
@@ -88,6 +95,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
         if (pgCombatModEffectEx.Condition != CombatCondition.Internal_None)
             Write("                     ", $" Condition = CombatCondition.{pgCombatModEffectEx.Condition},");
+
+        if (pgCombatModEffectEx.ActiveAbilityCondition != AbilityKeyword.Internal_None)
+            Write("                     ", $" ActiveAbilityCondition = AbilityKeyword.{pgCombatModEffectEx.ActiveAbilityCondition},");
 
         Write("                 ", " },");
     }

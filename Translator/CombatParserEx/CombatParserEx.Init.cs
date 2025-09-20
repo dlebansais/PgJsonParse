@@ -456,5 +456,14 @@ internal partial class CombatParserEx
     private Dictionary<CombatKeywordEx, CombatCondition> KeywordToCondition = new()
     {
         { CombatKeywordEx.RequireTwoKnives, CombatCondition.WieldingTwoKnives },
+        { CombatKeywordEx.RequireNoAggro, CombatCondition.WithoutFocus },
+        { CombatKeywordEx.RequirePlayingSong, CombatCondition.WhilePlayingSong },
+        { CombatKeywordEx.RequireSpecialForm, CombatCondition.WhileInSpecialForm },
+    };
+    private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
+    {
+        { CombatKeywordEx.RestoreHealth, CombatKeywordEx.RestoreHealthOverTime },
+        { CombatKeywordEx.RestorePower, CombatKeywordEx.RestorePowerOverTime },
+        { CombatKeywordEx.RestoreArmor, CombatKeywordEx.RestoreArmorOverTime },
     };
 }

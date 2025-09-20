@@ -4,8 +4,11 @@
     {
         Internal_None,
         RestoreHealth,
+        RestoreHealthOverTime,
         RestoreArmor,
+        RestoreArmorOverTime,
         RestorePower,
+        RestorePowerOverTime,
         RestoreHealthOrArmor,
         AddSprintSpeed,
         IncreaseMaxHealth,
@@ -18,6 +21,7 @@
         ApplyWithChance,
         EffectDelay,
         EffectDuration,
+        EffecOverTime,
         ApplyToSelf,
         ApplyToAllies,
         ApplyToSelfAndAllies,
@@ -26,6 +30,9 @@
         NextUse,
         TargetRange,
         RequireTwoKnives,
+        RequireNoAggro,
+        RequirePlayingSong,
+        RequireSpecialForm,
 
         // Synthetic
         GiveBuff,

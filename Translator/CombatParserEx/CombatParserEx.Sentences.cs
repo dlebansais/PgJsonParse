@@ -108,5 +108,14 @@ internal partial class CombatParserEx
         new SentenceEx("And your allies' attack", CombatKeywordEx.ApplyToAllies),
 
         new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
+
+        new SentenceEx("Over %f second", CombatKeywordEx.EffecOverTime),
+
+        new SentenceEx("If the target is not focused on you", CombatKeywordEx.RequireNoAggro),
+        new SentenceEx("If they are not focused on you", CombatKeywordEx.RequireNoAggro),
+        new SentenceEx("If target is not focused on you", CombatKeywordEx.RequireNoAggro),
+
+        new SentenceEx("While in @ form", CombatKeywordEx.RequireSpecialForm),
+        new SentenceEx("While playing", CombatKeywordEx.RequirePlayingSong),
     };
 }
