@@ -18,6 +18,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f health (or Armor)", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health or Armor", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Heal you for %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Heal you for %f", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f Health to you and nearby allies", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelfAndAllies }),
         new SentenceEx("Restore %f Health to your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Restore %f Health to both you and your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelfAndPet }),
@@ -51,6 +52,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f", CombatKeywordEx.RestoreHealth),
 
         new SentenceEx("Increase your Max Health by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxHealth, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Increase your Max Health %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Max Health %f", CombatKeywordEx.IncreaseMaxHealth),
         new SentenceEx("Max Health is %f", CombatKeywordEx.IncreaseMaxHealth),
         new SentenceEx("Max Health by %f", CombatKeywordEx.IncreaseMaxHealth),

@@ -186,6 +186,8 @@ internal partial class CombatParserEx
         AbilityKeyword.EclipseOfShadows,
         AbilityKeyword.EmbraceOfDespair,
         AbilityKeyword.Willbreaker,
+        AbilityKeyword.TrickFox,
+        AbilityKeyword.SummonedTornado,
         Internal_NonBasic,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
@@ -393,6 +395,8 @@ internal partial class CombatParserEx
         { "All Druid ability except Shillelagh", new List<AbilityKeyword>() { AbilityKeyword.DruidNonBasic } },
         { "ability that fire a projectile, such as Toxinball, Fireball, or most Archery abilities", new List<AbilityKeyword>() { AbilityKeyword.Projectile } },
         { "@ , Willbreaker, and Embrace of Despair", new List<AbilityKeyword>() { AbilityKeyword.EclipseOfShadows, AbilityKeyword.Willbreaker, AbilityKeyword.EmbraceOfDespair } },
+        { "Trick Foxes", new List<AbilityKeyword>() { AbilityKeyword.TrickFox } },
+        { "Summoned Tornadoes", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {
