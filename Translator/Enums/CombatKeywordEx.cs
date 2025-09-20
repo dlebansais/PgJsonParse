@@ -9,6 +9,10 @@
         RestoreHealthOrArmor,
         AddSprintSpeed,
         IncreaseMaxHealth,
+        IncreaseMaxArmor,
+        IncreaseMaxPower,
+        RegenPercentageOfArmor,
+        IncreaseHealEfficiency,
 
         // Other effects
         ApplyWithChance,

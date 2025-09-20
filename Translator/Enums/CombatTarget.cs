@@ -13,4 +13,5 @@ public enum CombatTarget
     SummonedSpider,
     SummonedTrickFox,
     WeatherWitchingTornado,
+    DruidHealingSanctuary,
 }

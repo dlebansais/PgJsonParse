@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Windows;
 using PgObjects;
 using Translator;
 
@@ -317,7 +318,7 @@ internal partial class CombatParserEx
 
     private static bool IsEndingSentenceIndex(string text, int index)
     {
-        return index + 1 >= text.Length || text[index] == ' ' || text[index] == ',' || text[index] == '.' || (index + 1 < text.Length && text[index] == '\'' && text[index + 1] == 's');
+        return index + 1 >= text.Length || text[index] == ' ' || text[index] == ',' || text[index] == '.' || (index + 1 < text.Length && text[index] == '\'' && (text[index + 1] == 's' || text[index - 1] == 's'));
     }
 
     private static void ReplaceCaseInsensitive(ref string text, string searchPattern, string replacementPattern)
@@ -458,6 +459,10 @@ internal partial class CombatParserEx
         foreach (string AbilityName in abilityNameList)
             if (nameToKeyword.ContainsKey(AbilityName))
             {
+                if (AbilityName.StartsWith("Animal Handling pets"))
+                {
+                }
+
                 string NewText = text;
                 int NewIndex = -1;
 
@@ -1315,8 +1320,13 @@ internal partial class CombatParserEx
             case "20061":
             case "1202":
             case "5122":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
-                break;
+            case "14151":
+            case "14152":
+            case "14153":
+            case "14154":
+            case "14155":
+            case "14156":
+
             case "10003":
             case "10082":
             case "10124":
@@ -1354,6 +1364,10 @@ internal partial class CombatParserEx
             case "23101":
             case "4532":
             case "9756":
+            case "7473":
+            case "7474":
+                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
+                break;
             case "28184":
                 BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
                 break;
@@ -1367,16 +1381,24 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.RestorePower ||
                                                            item.Keyword == CombatKeywordEx.RestoreArmor ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseMaxPower ||
                                                            item.Keyword == CombatKeywordEx.AddSprintSpeed ||
+                                                           item.Keyword == CombatKeywordEx.RegenPercentageOfArmor ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseHealEfficiency ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
                                                           item.Keyword == CombatKeywordEx.RestoreArmor ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseMaxPower ||
                                                           item.Keyword == CombatKeywordEx.AddSprintSpeed ||
+                                                          item.Keyword == CombatKeywordEx.RegenPercentageOfArmor ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseHealEfficiency ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
-                    BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
+                    BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
                 }
                 else
                 {
@@ -1388,10 +1410,16 @@ internal partial class CombatParserEx
             case "12122":
                 BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
+            case "12313":
+                BuildModEffect_005(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
+                break;
             case "12301":
             case "21201":
             case "28644":
-                BuildModEffect_005(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
+            case "12302":
+            case "12312":
+            case "23302":
+                BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
                 break;
             case "10509":
             case "13004":
@@ -1406,16 +1434,8 @@ internal partial class CombatParserEx
             case "5203":
             case "5401":
             case "12121":
-            case "12313":
-            case "14151":
-            case "14152":
-            case "14155":
-            case "14156":
             case "14205":
             case "14353":
-            case "14354":
-            case "14601":
-            case "14603":
             case "14605":
             case "15102":
             case "15452":
@@ -1465,9 +1485,6 @@ internal partial class CombatParserEx
             case "9881":
             case "9883":
             case "12092":
-            case "14153":
-            case "14154":
-            case "14602":
             case "159":
             case "16102":
             case "163":
@@ -1500,9 +1517,16 @@ internal partial class CombatParserEx
             case "28201":
             case "28202":
             case "28203":
+            case "27173":
+            case "8302":
+            case "8304":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
+            case "14601":
+            case "14602":
+            case "14603":
+            case "14354":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
         }
@@ -1513,20 +1537,14 @@ internal partial class CombatParserEx
         List<PgCombatEffectEx> AllEffects = new(dynamicCombatEffectList);
         AllEffects.AddRange(staticCombatEffectList);
 
-        float RandomChance = AllEffects.Find(item => item.Keyword == CombatKeywordEx.ApplyWithChance) is PgCombatEffectEx effectWithRandomChance
-                             ? effectWithRandomChance.Data.Value / 100
-                             : float.NaN;
-        float DelayInSeconds = AllEffects.Find(item => item.Keyword == CombatKeywordEx.EffectDelay) is PgCombatEffectEx effectWithDelay
-                               ? effectWithDelay.Data.Value
-                               : float.NaN;
-        float DurationInSeconds = AllEffects.Find(item => item.Keyword == CombatKeywordEx.EffectDuration) is PgCombatEffectEx effectWithDuration
-                               ? effectWithDuration.Data.Value
-                               : float.NaN;
+        float RandomChance = GetValueAndRemove(AllEffects, CombatKeywordEx.ApplyWithChance, asProbability: true);
+        float DelayInSeconds = GetValueAndRemove(AllEffects, CombatKeywordEx.EffectDelay);
+        float DurationInSeconds = GetValueAndRemove(AllEffects, CombatKeywordEx.EffectDuration);
 
         List<PgCombatModEffectEx> DynamicEffects = new();
-        for (int i = 0; i < dynamicCombatEffectList.Count; i++)
+        for (int i = 0; i < AllEffects.Count; i++)
         {
-            PgCombatEffectEx CombatEffect = dynamicCombatEffectList[i];
+            PgCombatEffectEx CombatEffect = AllEffects[i];
 
             if (CombatEffect.Keyword == CombatKeywordEx.ApplyWithChance ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelf ||
@@ -1540,7 +1558,9 @@ internal partial class CombatParserEx
             }
 
             bool CanHaveDuration = CombatEffect.Keyword == CombatKeywordEx.AddSprintSpeed ||
-                                   CombatEffect.Keyword == CombatKeywordEx.IncreaseMaxHealth;
+                                   CombatEffect.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
+                                   CombatEffect.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
+                                   CombatEffect.Keyword == CombatKeywordEx.IncreaseMaxPower;
 
             PgNumericValueEx pgNumericValueEx = new()
             {
@@ -1611,6 +1631,19 @@ internal partial class CombatParserEx
         };
     }
 
+    private static float GetValueAndRemove(List<PgCombatEffectEx> effects, CombatKeywordEx keyword, bool asProbability = false)
+    {
+        if (effects.Find(item => item.Keyword == keyword) is not PgCombatEffectEx effectWithKeyword)
+            return float.NaN;
+
+        float Value = asProbability
+                        ? effectWithKeyword.Data.Value / 100
+                        : effectWithKeyword.Data.Value;
+        effects.Remove(effectWithKeyword);
+
+        return Value;
+    }
+
     private void BuildModEffect_002(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCcombatEffectList, out PgCombatModEx pgCombatModEx)
     {
         // Inverse static & dynamic
@@ -1671,6 +1704,12 @@ internal partial class CombatParserEx
         BuildModEffect_001(description, abilityList, combatEffectList, new PgCombatEffectCollectionEx(), out pgCombatModEx);
     }
 
+    private void BuildModEffect_006(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, out PgCombatModEx pgCombatModEx)
+    {
+        // Inverse static & dynamic
+        BuildModEffect_005(description, abilityList, staticCombatEffectList, dynamicCombatEffectList, out pgCombatModEx);
+    }
+
     private void BuildModEffect_005(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, out PgCombatModEx pgCombatModEx)
     {
         Debug.Assert(abilityList.Count == 1);
@@ -1699,14 +1738,17 @@ internal partial class CombatParserEx
             case AbilityKeyword.SummonedTornado:
                 Target = CombatTarget.WeatherWitchingTornado;
                 break;
+            case AbilityKeyword.HealingSanctuary:
+                Target = CombatTarget.DruidHealingSanctuary;
+                break;
         }
 
         Debug.Assert(Target != CombatTarget.Internal_None);
 
         List<PgPermanentModEffectEx> PermanentEffects = new();
-        for (int i = 0; i < staticCombatEffectList.Count; i++)
+        for (int i = 0; i < dynamicCombatEffectList.Count; i++)
         {
-            PgCombatEffectEx CombatEffect = staticCombatEffectList[i];
+            PgCombatEffectEx CombatEffect = dynamicCombatEffectList[i];
 
             if (CombatEffect.Keyword == CombatKeywordEx.ApplyWithChance ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelf ||

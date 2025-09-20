@@ -58,6 +58,13 @@ internal partial class CombatParserEx
         new SentenceEx("Max Health by %f", CombatKeywordEx.IncreaseMaxHealth),
         new SentenceEx("%f Max Health", CombatKeywordEx.IncreaseMaxHealth),
         new SentenceEx("Have %f health", CombatKeywordEx.IncreaseMaxHealth),
+        new SentenceEx("Max Armor %f", CombatKeywordEx.IncreaseMaxArmor),
+        new SentenceEx("Increase your Max Armor by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxArmor, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f Max Armor", CombatKeywordEx.IncreaseMaxArmor),
+        new SentenceEx("Have %f Armor", CombatKeywordEx.IncreaseMaxArmor),
+        new SentenceEx("Increase your Max Power by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxPower, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Max Power %f", CombatKeywordEx.IncreaseMaxPower),
+        new SentenceEx("Grant the target %f Max Power", CombatKeywordEx.IncreaseMaxPower),
 
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
 
@@ -84,5 +91,9 @@ internal partial class CombatParserEx
         new SentenceEx("%f Movement Speed", CombatKeywordEx.AddSprintSpeed),
 
         new SentenceEx("Your next use", CombatKeywordEx.NextUse),
+
+        new SentenceEx("Armor Recovery Per Second: %f of Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
+        new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
+        new SentenceEx("Healing abilities, if any, restore %f health", CombatKeywordEx.IncreaseHealEfficiency),
     };
 }
