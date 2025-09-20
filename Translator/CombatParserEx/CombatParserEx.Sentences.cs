@@ -50,6 +50,13 @@ internal partial class CombatParserEx
         new SentenceEx("And %f power", CombatKeywordEx.RestorePower),
         new SentenceEx("Restore %f", CombatKeywordEx.RestoreHealth),
 
+        new SentenceEx("Increase your Max Health by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxHealth, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Max Health %f", CombatKeywordEx.IncreaseMaxHealth),
+        new SentenceEx("Max Health is %f", CombatKeywordEx.IncreaseMaxHealth),
+        new SentenceEx("Max Health by %f", CombatKeywordEx.IncreaseMaxHealth),
+        new SentenceEx("%f Max Health", CombatKeywordEx.IncreaseMaxHealth),
+        new SentenceEx("Have %f health", CombatKeywordEx.IncreaseMaxHealth),
+
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
 
         new SentenceEx("After a %f second delay", CombatKeywordEx.EffectDelay),
@@ -73,5 +80,7 @@ internal partial class CombatParserEx
         new SentenceEx("Sprint speed %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("Sprint speed by %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("%f Movement Speed", CombatKeywordEx.AddSprintSpeed),
+
+        new SentenceEx("Your next use", CombatKeywordEx.NextUse),
     };
 }

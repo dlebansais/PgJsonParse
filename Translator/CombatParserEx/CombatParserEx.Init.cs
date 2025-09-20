@@ -64,7 +64,20 @@ internal partial class CombatParserEx
             PgSkill AbilitySkill = AbilitySkillFromKey(Skill_Key);
 
             if (Generate.IsCombatSkill(AbilitySkill, skillTable) || AbilitySkill.Key == "Crossbow")
+            {
                 CombatAbilityList.Add(Ability);
+
+                foreach (AbilityKeyword Keyword in Ability.KeywordList)
+                {
+                    if (!KeywordToAbilities.TryGetValue(Keyword, out List<PgAbility> Abilities))
+                    {
+                        Abilities = new List<PgAbility>();
+                        KeywordToAbilities.Add(Keyword, Abilities);
+                    }
+
+                    Abilities.Add(Ability);
+                }
+            }
         }
     }
 
@@ -434,4 +447,5 @@ internal partial class CombatParserEx
         { (int)AbilityKeyword.SongOfDiscord, "Song Of Discord" },
         { (int)AbilityKeyword.SongOfResurgence, "Song Of Resurgence" },
     };
+    private Dictionary<AbilityKeyword, List<PgAbility>> KeywordToAbilities = new();
 }

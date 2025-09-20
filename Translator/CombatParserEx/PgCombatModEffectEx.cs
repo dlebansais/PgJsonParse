@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace PgObjects;
 
-namespace PgObjects;
+using System.Collections.Generic;
 
 public class PgCombatModEffectEx
 {

@@ -8,6 +8,7 @@
         RestorePower,
         RestoreHealthOrArmor,
         AddSprintSpeed,
+        IncreaseMaxHealth,
 
         // Other effects
         ApplyWithChance,
@@ -17,5 +18,10 @@
         ApplyToSelfAndAllies,
         ApplyToPet,
         ApplyToSelfAndPet,
+        NextUse,
+
+        // Synthetic
+        GiveBuff,
+        GiveBuffOneUse,
     }
 }

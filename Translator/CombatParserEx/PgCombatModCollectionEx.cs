@@ -10,7 +10,7 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
     public void Display(string powerKey)
     {
-        if (!TrueForAll(item => item.StaticEffects.Count == 0 && item.DynamicEffects.Count == 0))
+        if (!TrueForAll(item => item.PermanentEffects.Count == 0 && item.DynamicEffects.Count == 0))
         {
             Write("  ", $"{{ \"{powerKey}\", new {GetType().Name}()");
             Write("     ", " {");
@@ -28,10 +28,10 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         Write("         ", $" new {pgCombatModEx.GetType().Name}()");
         Write("         ", " {");
         Write("             ", $" Description = \"{pgCombatModEx.Description.Replace("\"", "\\\"")}\",");
-        Write("             ", $" StaticEffects = new List<{typeof(PgCombatModEffectEx).Name}>()");
+        Write("             ", $" PermanentEffects = new List<{typeof(PgPermanentModEffectEx).Name}>()");
         Write("             ", " {");
 
-        foreach (PgCombatModEffectEx Item in pgCombatModEx.StaticEffects)
+        foreach (PgPermanentModEffectEx Item in pgCombatModEx.PermanentEffects)
             Display(Item);
 
         Write("             ", " },");
@@ -43,6 +43,18 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
         Write("             ", " },");
         Write("         ", " },");
+    }
+
+    private static void Display(PgPermanentModEffectEx pgPermanentModEffectEx)
+    {
+        Debug.Assert(pgPermanentModEffectEx.Target != CombatTarget.Internal_None);
+
+        Write("                 ", $" new {pgPermanentModEffectEx.GetType().Name}()");
+        Write("                 ", " {");
+        Write("                     ", $" Keyword = {pgPermanentModEffectEx.Keyword.GetType().Name}.{pgPermanentModEffectEx.Keyword},");
+        Write("                     ", $" Data = {NumericValueToString(pgPermanentModEffectEx.Data)},");
+        Write("                     ", $" Target = CombatTarget.{pgPermanentModEffectEx.Target},");
+        Write("                 ", " },");
     }
 
     private static void Display(PgCombatModEffectEx pgCombatModEffectEx)
