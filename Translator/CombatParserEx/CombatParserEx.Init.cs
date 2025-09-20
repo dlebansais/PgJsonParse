@@ -369,6 +369,7 @@ internal partial class CombatParserEx
         { "Knife ability with 'Cut'", new List<AbilityKeyword>() { AbilityKeyword.KnifeCut } },
         { "All Knife ability WITHOUT 'Cut'", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
         { "All Knife Fighting attack", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
+        { "All Knife ability", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
         { "Bard Songs", new List<AbilityKeyword>() { AbilityKeyword.BardSong } },
         { "All Major Healing ability targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
         { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },
@@ -452,4 +453,8 @@ internal partial class CombatParserEx
         { (int)AbilityKeyword.SongOfResurgence, "Song Of Resurgence" },
     };
     private Dictionary<AbilityKeyword, List<PgAbility>> KeywordToAbilities = new();
+    private Dictionary<CombatKeywordEx, CombatCondition> KeywordToCondition = new()
+    {
+        { CombatKeywordEx.RequireTwoKnives, CombatCondition.WieldingTwoKnives },
+    };
 }

@@ -19,10 +19,13 @@
         EffectDelay,
         EffectDuration,
         ApplyToSelf,
+        ApplyToAllies,
         ApplyToSelfAndAllies,
         ApplyToPet,
         ApplyToSelfAndPet,
         NextUse,
+        TargetRange,
+        RequireTwoKnives,
 
         // Synthetic
         GiveBuff,

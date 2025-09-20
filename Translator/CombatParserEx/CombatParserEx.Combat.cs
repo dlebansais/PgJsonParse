@@ -1365,6 +1365,9 @@ internal partial class CombatParserEx
             case "7473":
             case "7474":
             case "5122":
+            case "157":
+            case "159":
+            case "16004":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
                 break;
             case "28184":
@@ -1448,8 +1451,6 @@ internal partial class CombatParserEx
             case "15102":
             case "15452":
             case "15454":
-            case "157":
-            case "16004":
             case "16009":
             case "16223":
             case "17063":
@@ -1493,7 +1494,6 @@ internal partial class CombatParserEx
             case "9881":
             case "9883":
             case "12092":
-            case "159":
             case "16102":
             case "163":
             case "17023":
@@ -1544,6 +1544,16 @@ internal partial class CombatParserEx
         float RandomChance = GetValueAndRemove(AllEffects, CombatKeywordEx.ApplyWithChance, asProbability: true);
         float DelayInSeconds = GetValueAndRemove(AllEffects, CombatKeywordEx.EffectDelay);
         float DurationInSeconds = GetValueAndRemove(AllEffects, CombatKeywordEx.EffectDuration);
+        float TargetRange = GetValueAndRemove(AllEffects, CombatKeywordEx.TargetRange);
+
+        CombatCondition Condition = CombatCondition.Internal_None;
+        foreach (PgCombatEffectEx CombatEffect in AllEffects)
+            if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
+            {
+                Debug.Assert(Condition == CombatCondition.Internal_None);
+                Debug.Assert(NewCondition != CombatCondition.Internal_None);
+                Condition = NewCondition;
+            }
 
         List<PgCombatModEffectEx> DynamicEffects = new();
         for (int i = 0; i < AllEffects.Count; i++)
@@ -1552,11 +1562,18 @@ internal partial class CombatParserEx
 
             if (CombatEffect.Keyword == CombatKeywordEx.ApplyWithChance ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelf ||
+                CombatEffect.Keyword == CombatKeywordEx.ApplyToAllies ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndAllies ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToPet ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndPet ||
+                CombatEffect.Keyword == CombatKeywordEx.TargetRange ||
                 CombatEffect.Keyword == CombatKeywordEx.EffectDuration ||
                 CombatEffect.Keyword == CombatKeywordEx.EffectDelay)
+            {
+                continue;
+            }
+
+            if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
             {
                 continue;
             }
@@ -1579,6 +1596,8 @@ internal partial class CombatParserEx
                 PgCombatEffectEx NextCombatEffect = AllEffects[i + 1];
                 if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelf)
                     Target = CombatTarget.Self;
+                else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToAllies)
+                    Target = CombatTarget.Allies;
                 else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToPet)
                     Target = SelectPetType(abilityList);
                 else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndPet)
@@ -1604,6 +1623,8 @@ internal partial class CombatParserEx
                 DelayInSeconds = DelayInSeconds,
                 DurationInSeconds = CanHaveDuration ? DurationInSeconds : float.NaN,
                 Target = Target,
+                TargetRange = TargetRange,
+                Condition = Condition,
             };
 
             DynamicEffects.Add(pgCombatModEffectEx);
@@ -1621,6 +1642,8 @@ internal partial class CombatParserEx
                     DelayInSeconds = DelayInSeconds,
                     DurationInSeconds = CanHaveDuration ? DurationInSeconds : float.NaN,
                     Target = OtherTarget,
+                    TargetRange = TargetRange,
+                    Condition = Condition,
                 };
 
                 DynamicEffects.Add(pgOtherCombatModEffectEx);
@@ -1773,6 +1796,7 @@ internal partial class CombatParserEx
 
             if (CombatEffect.Keyword == CombatKeywordEx.ApplyWithChance ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelf ||
+                CombatEffect.Keyword == CombatKeywordEx.ApplyToAllies ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndAllies ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToPet ||
                 CombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndPet ||

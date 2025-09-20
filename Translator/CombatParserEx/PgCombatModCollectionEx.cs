@@ -6,7 +6,7 @@ using System.Globalization;
 
 public class PgCombatModCollectionEx : List<PgCombatModEx>
 {
-    public static bool DebugMode { get; set; } = true;
+    public static bool DebugMode { get; set; } = false;
 
     public void Display(string powerKey)
     {
@@ -82,6 +82,12 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
         if (pgCombatModEffectEx.Target != CombatTarget.Internal_None)
             Write("                     ", $" Target = CombatTarget.{pgCombatModEffectEx.Target},");
+
+        if (!float.IsNaN(pgCombatModEffectEx.TargetRange))
+            Write("                     ", $" TargetRange = {pgCombatModEffectEx.TargetRange.ToString(CultureInfo.InvariantCulture)},");
+
+        if (pgCombatModEffectEx.Condition != CombatCondition.Internal_None)
+            Write("                     ", $" Condition = CombatCondition.{pgCombatModEffectEx.Condition},");
 
         Write("                 ", " },");
     }

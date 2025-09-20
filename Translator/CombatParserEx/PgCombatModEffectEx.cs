@@ -21,4 +21,8 @@ public class PgCombatModEffectEx
     public float DurationInSeconds { get; init; } = float.NaN;
 
     public CombatTarget Target { get; init; }
+
+    public float TargetRange { get; init; } = float.NaN;
+
+    public CombatCondition Condition { get; init; } = CombatCondition.Internal_None;
 }

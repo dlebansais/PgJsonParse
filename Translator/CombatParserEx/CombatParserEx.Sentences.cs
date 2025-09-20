@@ -67,6 +67,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant the target %f Max Power", CombatKeywordEx.IncreaseMaxPower),
 
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
+
         new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
 
         new SentenceEx("After a %f second delay", CombatKeywordEx.EffectDelay),
@@ -96,5 +97,16 @@ internal partial class CombatParserEx
         new SentenceEx("Armor Recovery Per Second: %f of Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("Healing abilities, if any, restore %f health", CombatKeywordEx.IncreaseHealEfficiency),
+
+        new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
+
+        new SentenceEx("To you and your allies", CombatKeywordEx.ApplyToAllies),
+        new SentenceEx("Affects caster as well as allies", CombatKeywordEx.ApplyToAllies),
+        new SentenceEx("To all allies", CombatKeywordEx.ApplyToAllies),
+        new SentenceEx("All allies gain", CombatKeywordEx.ApplyToAllies),
+        new SentenceEx("Grant all allies", CombatKeywordEx.ApplyToAllies),
+        new SentenceEx("And your allies' attack", CombatKeywordEx.ApplyToAllies),
+
+        new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
     };
 }
