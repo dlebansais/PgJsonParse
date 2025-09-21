@@ -24,7 +24,7 @@ internal partial class CombatParserEx
             PgPower ItemPower = Entry.Key;
             List<PgEffect> ItemEffectList = Entry.Value;
 
-            if (!KnownPowers.ContainsKey(ItemPower.Key))
+            if (!KnownCombatPowers.KnownPowers.ContainsKey(ItemPower.Key))
             {
                 if (AnalyzeMatchingPowersAndEffects(ItemPower, ItemEffectList, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
                 {
