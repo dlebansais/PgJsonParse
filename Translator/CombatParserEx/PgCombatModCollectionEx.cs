@@ -112,6 +112,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (pgCombatModEffectEx.ActiveAbilityCondition != AbilityKeyword.Internal_None)
             Write("                     ", $" ActiveAbilityCondition = AbilityKeyword.{pgCombatModEffectEx.ActiveAbilityCondition},");
 
+        if (!float.IsNaN(pgCombatModEffectEx.ConditionPercentage))
+            Write("                     ", $" ConditionPercentage = {pgCombatModEffectEx.ConditionPercentage.ToString(CultureInfo.InvariantCulture)},");
+
         Write("                 ", " },");
     }
 

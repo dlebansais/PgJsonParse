@@ -31,4 +31,6 @@ public class PgCombatModEffectEx
     public CombatCondition Condition { get; init; } = CombatCondition.Internal_None;
 
     public AbilityKeyword ActiveAbilityCondition { get; init; } = AbilityKeyword.Internal_None;
+
+    public float ConditionPercentage { get; init; } = float.NaN;
 }

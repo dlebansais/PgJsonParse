@@ -485,6 +485,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireSameTarget, CombatCondition.SpecificTarget },
         { CombatKeywordEx.RequireTargetOfAbility, CombatCondition.TargetOfAbility },
         { CombatKeywordEx.RequireDirectDamageKillShot, CombatCondition.DirectDamageKillShot },
+        { CombatKeywordEx.RequireLowRage, CombatCondition.TargetHasLowRage },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

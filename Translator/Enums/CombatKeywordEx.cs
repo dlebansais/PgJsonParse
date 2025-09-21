@@ -15,6 +15,8 @@
         IncreaseHealEfficiency,
         IncreaseRefreshTime,
         StunImmunity,
+        Knockback,
+        DamageBoost,
 
         // Other effects
         ApplyWithChance,
@@ -38,6 +40,7 @@
         ToKickerTarget,
         RequireTargetOfAbility,
         RequireDirectDamageKillShot,
+        RequireLowRage,
 
         // Synthetic
         GiveBuff,
