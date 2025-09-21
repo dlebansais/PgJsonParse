@@ -459,6 +459,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireNoAggro, CombatCondition.WithoutFocus },
         { CombatKeywordEx.RequirePlayingSong, CombatCondition.WhilePlayingSong },
         { CombatKeywordEx.RequireSpecialForm, CombatCondition.WhileInSpecialForm },
+        { CombatKeywordEx.RequireSameTarget, CombatCondition.SpecificTarget },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

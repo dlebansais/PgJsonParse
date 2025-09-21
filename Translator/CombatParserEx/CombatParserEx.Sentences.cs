@@ -32,7 +32,6 @@ internal partial class CombatParserEx
         new SentenceEx("Heal %f health", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Healing %f", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Heal you %f", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
-        new SentenceEx("Heal %f", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Recover %f Armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("Heal %f armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("Restore %f armor to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreArmor, CombatKeywordEx.ApplyToSelf }),
@@ -50,6 +49,7 @@ internal partial class CombatParserEx
         new SentenceEx("You regain %f power", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("And %f power", CombatKeywordEx.RestorePower),
         new SentenceEx("Restore %f", CombatKeywordEx.RestoreHealth),
+        new SentenceEx("Heal %f", CombatKeywordEx.RestoreHealth),
 
         new SentenceEx("Increase your Max Health by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Increase your Max Health %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxHealth, CombatKeywordEx.ApplyToSelf }),
@@ -100,12 +100,13 @@ internal partial class CombatParserEx
 
         new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
 
-        new SentenceEx("To you and your allies", CombatKeywordEx.ApplyToAllies),
-        new SentenceEx("Affects caster as well as allies", CombatKeywordEx.ApplyToAllies),
+        new SentenceEx("To you and your allies", CombatKeywordEx.ApplyToSelfAndAllies),
+        new SentenceEx("Affects caster as well as allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("To all allies", CombatKeywordEx.ApplyToAllies),
         new SentenceEx("All allies gain", CombatKeywordEx.ApplyToAllies),
         new SentenceEx("Grant all allies", CombatKeywordEx.ApplyToAllies),
         new SentenceEx("And your allies' attack", CombatKeywordEx.ApplyToAllies),
+        new SentenceEx("All allies", CombatKeywordEx.ApplyToAllies),
 
         new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
 

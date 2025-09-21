@@ -33,6 +33,7 @@
         RequireNoAggro,
         RequirePlayingSong,
         RequireSpecialForm,
+        RequireSameTarget,
 
         // Synthetic
         GiveBuff,

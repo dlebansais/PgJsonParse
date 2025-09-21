@@ -53,6 +53,10 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         Write("                 ", " {");
         Write("                     ", $" Keyword = {pgPermanentModEffectEx.Keyword.GetType().Name}.{pgPermanentModEffectEx.Keyword},");
         Write("                     ", $" Data = {NumericValueToString(pgPermanentModEffectEx.Data)},");
+
+        if (!float.IsNaN(pgPermanentModEffectEx.DelayInSeconds))
+            Write("                     ", $" DelayInSeconds = {pgPermanentModEffectEx.DelayInSeconds.ToString(CultureInfo.InvariantCulture)},");
+
         Write("                     ", $" Target = CombatTarget.{pgPermanentModEffectEx.Target},");
 
         if (pgPermanentModEffectEx.Condition != CombatCondition.Internal_None)

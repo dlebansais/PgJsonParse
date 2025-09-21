@@ -7,4 +7,5 @@ public enum CombatCondition
     WithoutFocus,
     WhilePlayingSong,
     WhileInSpecialForm,
+    SpecificTarget,
 }
