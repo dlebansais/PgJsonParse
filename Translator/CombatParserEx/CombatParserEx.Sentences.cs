@@ -34,9 +34,10 @@ internal partial class CombatParserEx
         new SentenceEx("Heal you %f", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Recover %f Armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("Heal %f armor", CombatKeywordEx.RestoreArmor),
-        new SentenceEx("Restore %f armor to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreArmor, CombatKeywordEx.ApplyToSelf }),
-        new SentenceEx("Restore %f armor", CombatKeywordEx.RestoreArmor),
-        new SentenceEx("And %f armor", CombatKeywordEx.RestoreArmor),
+        new SentenceEx("Restore %f Armor to your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreArmor, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("Restore %f Armor to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreArmor, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Restore %f Armor", CombatKeywordEx.RestoreArmor),
+        new SentenceEx("And %f Armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("Recover %f Armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("And %f Power to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f Power to you and nearby allies", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelfAndAllies }),
@@ -103,6 +104,7 @@ internal partial class CombatParserEx
         new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
 
         new SentenceEx("To you and your allies", CombatKeywordEx.ApplyToSelfAndAllies),
+        new SentenceEx("Yourself and all allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("Affects caster as well as allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("To all allies", CombatKeywordEx.ApplyToAllies),
         new SentenceEx("All allies gain", CombatKeywordEx.ApplyToAllies),
@@ -112,7 +114,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
 
-        new SentenceEx("Over %f second", CombatKeywordEx.EffecOverTime),
+        new SentenceEx("Over %f second", CombatKeywordEx.EffectOverTime),
+        new SentenceEx("Per second", CombatKeywordEx.EffectEverySecond),
 
         new SentenceEx("If the target is not focused on you", CombatKeywordEx.RequireNoAggro),
         new SentenceEx("If they are not focused on you", CombatKeywordEx.RequireNoAggro),
@@ -123,5 +126,36 @@ internal partial class CombatParserEx
 
         new SentenceEx("To the kicker", CombatKeywordEx.ToKickerTarget),
         new SentenceEx("Cause kicks", CombatKeywordEx.ToKickerTarget),
+
+        new SentenceEx("Reuse Time %f second", CombatKeywordEx.IncreaseRefreshTime),
+        new SentenceEx("Reuse Time is %f second faster", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reuse Time is %f second sooner", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reuse Time is %f second", CombatKeywordEx.IncreaseRefreshTime),
+        new SentenceEx("Reuse Time is %f sec", CombatKeywordEx.IncreaseRefreshTime),
+        new SentenceEx("Hasten current reuse time of @ by %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Hasten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Hasten the current reuse time of @ %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Hasten the current reset time of @ by %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Shorten the remaining reset time of @ by %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Shorten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reuse time of @ is hastened by %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reuse time on @ is hastened %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("@ reuse time is hastened %f second", CombatKeywordEx.IncreaseRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reuse time is increased %f second", CombatKeywordEx.IncreaseRefreshTime),
+
+        new SentenceEx("Complete stun immunity", CombatKeywordEx.StunImmunity),
+        new SentenceEx("Grant immunity to new stun", CombatKeywordEx.StunImmunity),
+        new SentenceEx("Grant them immunity to stun", CombatKeywordEx.StunImmunity),
+
+        new SentenceEx("Both you and your pet", CombatKeywordEx.ApplyToSelfAndPet),
+
+        new SentenceEx("Your pet's", CombatKeywordEx.ApplyToPet),
+        new SentenceEx("Your pet gain", CombatKeywordEx.ApplyToPet),
+        new SentenceEx("Give your pet", CombatKeywordEx.ApplyToPet),
+        new SentenceEx("Grant your pet", CombatKeywordEx.ApplyToPet),
+        new SentenceEx("To your pet", CombatKeywordEx.ApplyToPet),
+        new SentenceEx("To your undead", CombatKeywordEx.ApplyToPet),
+
+        new SentenceEx("Kill an enemy via direct damage", CombatKeywordEx.RequireDirectDamageKillShot),
     };
 }

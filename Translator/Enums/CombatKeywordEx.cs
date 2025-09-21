@@ -4,11 +4,8 @@
     {
         Internal_None,
         RestoreHealth,
-        RestoreHealthOverTime,
         RestoreArmor,
-        RestoreArmorOverTime,
         RestorePower,
-        RestorePowerOverTime,
         RestoreHealthOrArmor,
         AddSprintSpeed,
         IncreaseMaxHealth,
@@ -16,12 +13,15 @@
         IncreaseMaxPower,
         RegenPercentageOfArmor,
         IncreaseHealEfficiency,
+        IncreaseRefreshTime,
+        StunImmunity,
 
         // Other effects
         ApplyWithChance,
         EffectDelay,
         EffectDuration,
-        EffecOverTime,
+        EffectOverTime,
+        EffectEverySecond,
         RecurringEffect,
         ApplyToSelf,
         ApplyToAllies,
@@ -37,9 +37,14 @@
         RequireSameTarget,
         ToKickerTarget,
         RequireTargetOfAbility,
+        RequireDirectDamageKillShot,
 
         // Synthetic
         GiveBuff,
         GiveBuffOneUse,
+        RestoreHealthOverTime,
+        RestoreArmorOverTime,
+        RestorePowerOverTime,
+        RestoreHealthOrArmorOverTime,
     }
 }

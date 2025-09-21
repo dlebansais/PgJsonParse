@@ -9,4 +9,5 @@ public enum CombatCondition
     WhileInSpecialForm,
     SpecificTarget,
     TargetOfAbility,
+    DirectDamageKillShot,
 }

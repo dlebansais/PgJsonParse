@@ -484,12 +484,14 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireSpecialForm, CombatCondition.WhileInSpecialForm },
         { CombatKeywordEx.RequireSameTarget, CombatCondition.SpecificTarget },
         { CombatKeywordEx.RequireTargetOfAbility, CombatCondition.TargetOfAbility },
+        { CombatKeywordEx.RequireDirectDamageKillShot, CombatCondition.DirectDamageKillShot },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
         { CombatKeywordEx.RestoreHealth, CombatKeywordEx.RestoreHealthOverTime },
         { CombatKeywordEx.RestorePower, CombatKeywordEx.RestorePowerOverTime },
         { CombatKeywordEx.RestoreArmor, CombatKeywordEx.RestoreArmorOverTime },
+        { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.RestoreHealthOrArmorOverTime },
     };
     private float MutationDuration;
 }
