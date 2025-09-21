@@ -53,6 +53,7 @@ internal partial class CombatParserEx
                 Debug.Assert(GenericAbilityList.Contains(Keyword));
 
         InitValidAbilityList(SkillTable);
+        InitMutationDuration();
     }
 
     private void InitValidAbilityList(Dictionary<string, PgSkill> skillTable)
@@ -96,6 +97,28 @@ internal partial class CombatParserEx
                 return true;
 
         return false;
+    }
+
+    private void InitMutationDuration()
+    {
+        MutationDuration = float.NaN;
+
+        foreach (string Key in EffectObjectKeyList)
+        {
+            PgEffect Effect = EffectFromKey(Key);
+            if (Effect.KeywordList.Contains(EffectKeyword.Mutation))
+            {
+                float NewDuration = Effect.Duration;
+                if (float.IsNaN(MutationDuration))
+                    MutationDuration = NewDuration;
+                else if (MutationDuration != NewDuration)
+                {
+                    Debug.WriteLine("Incompatible mutation durations detected");
+                }
+            }
+        }
+
+        Debug.Assert(!float.IsNaN(MutationDuration));
     }
 
     private PgAbility AbilityFromKey(string key) => (PgAbility)ParsingContext.ObjectKeyTable[typeof(PgAbility)][key].Item;
@@ -460,6 +483,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequirePlayingSong, CombatCondition.WhilePlayingSong },
         { CombatKeywordEx.RequireSpecialForm, CombatCondition.WhileInSpecialForm },
         { CombatKeywordEx.RequireSameTarget, CombatCondition.SpecificTarget },
+        { CombatKeywordEx.RequireTargetOfAbility, CombatCondition.TargetOfAbility },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
@@ -467,4 +491,5 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RestorePower, CombatKeywordEx.RestorePowerOverTime },
         { CombatKeywordEx.RestoreArmor, CombatKeywordEx.RestoreArmorOverTime },
     };
+    private float MutationDuration;
 }

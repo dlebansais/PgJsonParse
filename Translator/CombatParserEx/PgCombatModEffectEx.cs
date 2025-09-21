@@ -20,6 +20,8 @@ public class PgCombatModEffectEx
 
     public float DurationInSeconds { get; init; } = float.NaN;
 
+    public float RecurringDelay { get; init; } = float.NaN;
+
     public CombatTarget Target { get; init; }
 
     public float TargetRange { get; init; } = float.NaN;

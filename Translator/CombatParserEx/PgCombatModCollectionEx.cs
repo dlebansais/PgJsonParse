@@ -57,6 +57,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (!float.IsNaN(pgPermanentModEffectEx.DelayInSeconds))
             Write("                     ", $" DelayInSeconds = {pgPermanentModEffectEx.DelayInSeconds.ToString(CultureInfo.InvariantCulture)},");
 
+        if (!float.IsNaN(pgPermanentModEffectEx.RecurringDelay))
+            Write("                     ", $" RecurringDelay = {pgPermanentModEffectEx.RecurringDelay.ToString(CultureInfo.InvariantCulture)},");
+
         Write("                     ", $" Target = CombatTarget.{pgPermanentModEffectEx.Target},");
 
         if (pgPermanentModEffectEx.Condition != CombatCondition.Internal_None)
@@ -90,6 +93,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
         if (!float.IsNaN(pgCombatModEffectEx.DurationInSeconds))
             Write("                     ", $" DurationInSeconds = {pgCombatModEffectEx.DurationInSeconds.ToString(CultureInfo.InvariantCulture)},");
+
+        if (!float.IsNaN(pgCombatModEffectEx.RecurringDelay))
+            Write("                     ", $" RecurringDelay = {pgCombatModEffectEx.RecurringDelay.ToString(CultureInfo.InvariantCulture)},");
 
         if (pgCombatModEffectEx.Target != CombatTarget.Internal_None)
             Write("                     ", $" Target = CombatTarget.{pgCombatModEffectEx.Target},");

@@ -15,4 +15,5 @@ public enum CombatTarget
     WeatherWitchingTornado,
     DruidHealingSanctuary,
     SpiritFoxPowerGlyph,
+    FairyFaeConduit,
 }

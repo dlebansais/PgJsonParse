@@ -8,6 +8,8 @@ public class PgPermanentModEffectEx
 
     public float DelayInSeconds { get; init; } = float.NaN;
 
+    public float RecurringDelay { get; init; } = float.NaN;
+
     public CombatTarget Target { get; init; }
 
     public CombatCondition Condition { get; init; } = CombatCondition.Internal_None;

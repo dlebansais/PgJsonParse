@@ -8,4 +8,5 @@ public enum CombatCondition
     WhilePlayingSong,
     WhileInSpecialForm,
     SpecificTarget,
+    TargetOfAbility,
 }

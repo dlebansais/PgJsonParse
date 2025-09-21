@@ -75,6 +75,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("For %f second", CombatKeywordEx.EffectDuration),
 
+        new SentenceEx("Every %f second", CombatKeywordEx.RecurringEffect),
+
         new SentenceEx("Your Sprint Speed increase by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Sprint Speed increase by %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("Sprint Speed is increased %f", CombatKeywordEx.AddSprintSpeed),
@@ -118,5 +120,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("While in @ form", CombatKeywordEx.RequireSpecialForm),
         new SentenceEx("While playing", CombatKeywordEx.RequirePlayingSong),
+
+        new SentenceEx("To the kicker", CombatKeywordEx.ToKickerTarget),
+        new SentenceEx("Cause kicks", CombatKeywordEx.ToKickerTarget),
     };
 }

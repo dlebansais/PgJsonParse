@@ -1434,9 +1434,9 @@ internal partial class CombatParserEx
             case "9008":
                 BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
-            case "22401": //TODO
-                //BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
-                pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
+            case "22401":
+                BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.RequireTargetOfAbility }, staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
+                pgCombatModEx.DynamicEffects[1].AbilityList.Clear();
                 break;
             case "14354":
                 if (staticCombatEffectList.Count == 4)
@@ -1449,6 +1449,15 @@ internal partial class CombatParserEx
                 break;
             case "5401":
                 BuildModEffect_004(description, effect, abilityList, new(), new() { dynamicCombatEffectList[0], staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.ApplyToSelf } }, targetAbilityList, out pgCombatModEx);
+                break;
+            case "7401":
+                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[1] }, new() { AbilityKeyword.Kick }, out pgCombatModEx);
+                break;
+            case "7431":
+                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[0], staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
+                break;
+            case "7472":
+                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "12313":
             case "28141":
@@ -1470,6 +1479,8 @@ internal partial class CombatParserEx
             case "14603":
             case "23301":
             case "28202":
+            case "9881":
+            case "9883":
                 BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10509":
@@ -1540,11 +1551,6 @@ internal partial class CombatParserEx
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
-            case "7401":
-            case "7431":
-            case "7472":
-            case "9881":
-            case "9883":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
         }
@@ -1559,6 +1565,7 @@ internal partial class CombatParserEx
         float DelayInSeconds = GetValueAndRemove(AllEffects, CombatKeywordEx.EffectDelay);
         float DurationInSeconds = GetValueAndRemove(AllEffects, CombatKeywordEx.EffectDuration);
         float DurationOverTime = GetValueAndRemove(AllEffects, CombatKeywordEx.EffecOverTime);
+        float RecurringDelay = GetValueAndRemove(AllEffects, CombatKeywordEx.RecurringEffect);
         float TargetRange = GetValueAndRemove(AllEffects, CombatKeywordEx.TargetRange);
 
         CombatCondition Condition = CombatCondition.Internal_None;
@@ -1571,7 +1578,8 @@ internal partial class CombatParserEx
                 Condition = NewCondition;
 
                 if (Condition == CombatCondition.WhilePlayingSong ||
-                    Condition == CombatCondition.WhileInSpecialForm)
+                    Condition == CombatCondition.WhileInSpecialForm ||
+                    Condition == CombatCondition.TargetOfAbility)
                 {
                     Debug.Assert(targetAbilityList.Count == 1);
                     ActiveAbilityCondition = targetAbilityList[0];
@@ -1593,6 +1601,7 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.TargetRange ||
                 CombatKeyword == CombatKeywordEx.EffectDuration ||
                 CombatKeyword == CombatKeywordEx.EffecOverTime ||
+                CombatKeyword == CombatKeywordEx.RecurringEffect ||
                 CombatKeyword == CombatKeywordEx.EffectDelay)
             {
                 continue;
@@ -1637,6 +1646,7 @@ internal partial class CombatParserEx
                 RandomChance = RandomChance,
                 DelayInSeconds = DelayInSeconds,
                 DurationInSeconds = CanHaveDuration ? DurationInSeconds : float.NaN,
+                RecurringDelay = RecurringDelay,
                 Target = Target,
                 TargetRange = TargetRange,
                 Condition = Condition,
@@ -1803,6 +1813,7 @@ internal partial class CombatParserEx
         Debug.Assert(abilityList.Count <= 1);
 
         float DelayInSeconds = GetValueAndRemove(dynamicCombatEffectList, CombatKeywordEx.EffectDelay);
+        float RecurringDelay = GetValueAndRemove(dynamicCombatEffectList, CombatKeywordEx.RecurringEffect);
 
         CombatTarget Target = CombatTarget.Internal_None;
 
@@ -1837,6 +1848,9 @@ internal partial class CombatParserEx
                 case AbilityKeyword.PowerGlyph:
                     Target = CombatTarget.SpiritFoxPowerGlyph;
                     break;
+                case AbilityKeyword.FaeConduit:
+                    Target = CombatTarget.FairyFaeConduit;
+                    break;
             }
         }
         else
@@ -1854,7 +1868,8 @@ internal partial class CombatParserEx
                 Condition = NewCondition;
 
                 if (Condition == CombatCondition.WhilePlayingSong ||
-                    Condition == CombatCondition.WhileInSpecialForm)
+                    Condition == CombatCondition.WhileInSpecialForm ||
+                    Condition == CombatCondition.TargetOfAbility)
                 {
                     Debug.Assert(targetAbilityList.Count == 1);
                     ActiveAbilityCondition = targetAbilityList[0];
@@ -1876,6 +1891,7 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.TargetRange ||
                 CombatKeyword == CombatKeywordEx.EffectDuration ||
                 CombatKeyword == CombatKeywordEx.EffecOverTime ||
+                CombatKeyword == CombatKeywordEx.RecurringEffect ||
                 CombatKeyword == CombatKeywordEx.EffectDelay)
             {
                 continue;
@@ -1897,6 +1913,7 @@ internal partial class CombatParserEx
                 Keyword = CombatKeyword,
                 Data = pgNumericValueEx,
                 DelayInSeconds = DelayInSeconds,
+                RecurringDelay = RecurringDelay,
                 Target = Target,
                 Condition = Condition,
                 ActiveAbilityCondition = ActiveAbilityCondition,

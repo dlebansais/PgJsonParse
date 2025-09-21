@@ -22,6 +22,7 @@
         EffectDelay,
         EffectDuration,
         EffecOverTime,
+        RecurringEffect,
         ApplyToSelf,
         ApplyToAllies,
         ApplyToSelfAndAllies,
@@ -34,6 +35,8 @@
         RequirePlayingSong,
         RequireSpecialForm,
         RequireSameTarget,
+        ToKickerTarget,
+        RequireTargetOfAbility,
 
         // Synthetic
         GiveBuff,
