@@ -615,5 +615,6 @@
         BugBomb,
         SummonFlapskull,
         Empty,
+        ShieldBash,
     }
 }

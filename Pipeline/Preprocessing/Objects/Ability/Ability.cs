@@ -103,6 +103,8 @@ public class Ability
             Keywords = AddKeyword(Keywords, "KnifeSlashing");
         if (Skill == "Staff" && DamageType == "Crushing")
             Keywords = AddKeyword(Keywords, "StaffCrushing");
+        if (Keywords is not null && Keywords.Contains("Bash") && Keywords.Contains("Shield"))
+            Keywords = AddKeyword(Keywords, "ShieldBash");
 
         if (Name is not null && Name.StartsWith("Life Steal") && SpecialInfo is not null && SpecialInfo.StartsWith("Steals "))
         {
@@ -427,6 +429,8 @@ public class Ability
                 Result.Keywords = RemoveKeyword(Result.Keywords, "KnifeSlashing");
             if (Skill == "Staff" && DamageType == "Crushing")
                 Result.Keywords = RemoveKeyword(Result.Keywords, "StaffCrushing");
+            if (Keywords is not null && Keywords.Contains("ShieldBash"))
+                Result.Keywords = RemoveKeyword(Result.Keywords, "ShieldBash");
         }
 
         if (Result.Name is not null && Result.Name.StartsWith("Life Steal") && Result.PvE?.SpecialValues is not null && Result.PvE.SpecialValues.Length == 1)

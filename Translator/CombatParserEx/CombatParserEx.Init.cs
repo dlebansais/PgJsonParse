@@ -174,7 +174,6 @@ internal partial class CombatParserEx
         AbilityKeyword.PsiHealthWave,
         AbilityKeyword.PsiArmorWave,
         AbilityKeyword.PsiPowerWave,
-        AbilityKeyword.Bash,
         AbilityKeyword.HammerAttack,
         AbilityKeyword.Druid,
         AbilityKeyword.StaffAttack,
@@ -211,6 +210,7 @@ internal partial class CombatParserEx
         AbilityKeyword.Willbreaker,
         AbilityKeyword.TrickFox,
         AbilityKeyword.SummonedTornado,
+        AbilityKeyword.ShieldBash,
         Internal_NonBasic,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
@@ -380,8 +380,8 @@ internal partial class CombatParserEx
         { "Bomb attack", new List<AbilityKeyword>() { AbilityKeyword.Bomb } },
         { "Psi Health Wave, Armor Wave, and Power Wave", new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiPowerWave } },
         { "All Psi Wave Ability", new List<AbilityKeyword>() { AbilityKeyword.PsiWave } },
-        { "All types of shield Bash", new List<AbilityKeyword>() { AbilityKeyword.Bash } },
-        { "All Shield Bash ability", new List<AbilityKeyword>() { AbilityKeyword.Bash } },
+        { "All types of shield Bash", new List<AbilityKeyword>() { AbilityKeyword.ShieldBash } },
+        { "All Shield Bash ability", new List<AbilityKeyword>() { AbilityKeyword.ShieldBash } },
         { "All Shield ability", new List<AbilityKeyword>() { AbilityKeyword.Shield } },
         { "Hammer attack", new List<AbilityKeyword>() { AbilityKeyword.HammerAttack } },
         { "All Druid ability", new List<AbilityKeyword>() { AbilityKeyword.Druid } },

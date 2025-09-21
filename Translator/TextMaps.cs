@@ -960,6 +960,7 @@
             { AbilityKeyword.BugBomb, "Bug Bomb" },
             { AbilityKeyword.SummonFlapskull, "Summon Flapskull" },
             { AbilityKeyword.Empty, "(Empty)" },
+            { AbilityKeyword.ShieldBash, "Shield Bash" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()

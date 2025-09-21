@@ -14,6 +14,7 @@
         RegenPercentageOfArmor,
         IncreaseHealEfficiency,
         IncreaseRefreshTime,
+        IncreaseCurrentRefreshTime,
         StunImmunity,
         Knockback,
         DamageBoost,

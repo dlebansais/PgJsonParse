@@ -1329,7 +1329,6 @@ internal partial class CombatParserEx
             case "14054":
             case "17244":
             case "25352":
-            case "10509":
             case "10454":
             case "12008":
             case "12009":
@@ -1355,17 +1354,8 @@ internal partial class CombatParserEx
             case "5040":
             case "5065":
             case "7207":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
-                break;
-            case "1202":
-            case "14151":
-            case "14152":
-            case "14153":
-            case "14154":
-            case "14155":
-            case "14156":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget: true);
-                break;
+            case "11701":
+            case "11605":
             case "10003":
             case "10082":
             case "10124":
@@ -1422,10 +1412,29 @@ internal partial class CombatParserEx
             case "27173":
             case "6088":
             case "7202":
+            case "9703":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
+            case "1202":
+            case "14151":
+            case "14152":
+            case "14153":
+            case "14154":
+            case "14155":
+            case "14156":
+                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget: true);
+                break;
             case "1023":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, minConditionIndex: 1);
+            case "163":
+                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                break;
+            case "25223":
+            case "4004":
+            case "4471":
+            case "8022":
+            case "8023":
+            case "9752":
+                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "12092":
             case "13004":
@@ -1457,6 +1466,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.RegenPercentageOfArmor ||
                                                            item.Keyword == CombatKeywordEx.IncreaseHealEfficiency ||
                                                            item.Keyword == CombatKeywordEx.IncreaseRefreshTime ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
                                                            item.Keyword == CombatKeywordEx.StunImmunity ||
                                                            item.Keyword == CombatKeywordEx.Knockback ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
@@ -1470,6 +1480,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.RegenPercentageOfArmor ||
                                                           item.Keyword == CombatKeywordEx.IncreaseHealEfficiency ||
                                                           item.Keyword == CombatKeywordEx.IncreaseRefreshTime ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
                                                           item.Keyword == CombatKeywordEx.StunImmunity ||
                                                           item.Keyword == CombatKeywordEx.Knockback ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
@@ -1536,6 +1547,7 @@ internal partial class CombatParserEx
             case "28202":
             case "9881":
             case "9883":
+            case "15505":
                 BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1303":
@@ -1601,29 +1613,22 @@ internal partial class CombatParserEx
             case "8006":
             case "9605":
             case "9862":
+            case "23201":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
-            case "11605":
-            case "11701":
-            case "15505":
-            case "163":
-            case "20009":
-            case "23201":
-            case "25223":
-            case "4004":
-            case "4471":
-            case "8022":
-            case "8023":
             case "8318":
-            case "9703":
-            case "9752":
+            case "10509":
+            case "20009":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
+                break;
+            case "ZZZ":
+                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
         }
     }
 
-    private void BuildModEffect_001(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int minConditionIndex = 0)
+    private void BuildModEffect_001(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
     {
         List<PgCombatEffectEx> AllEffects = new(dynamicCombatEffectList);
         AllEffects.AddRange(staticCombatEffectList);
@@ -1667,7 +1672,7 @@ internal partial class CombatParserEx
         {
             PgCombatEffectEx CombatEffect = AllEffects[i];
             CombatKeywordEx CombatKeyword = CombatEffect.Keyword;
-            bool CanApplyCondition = i >= minConditionIndex;
+            bool CanApplyModifier = i != ignoreModifierIndex;
 
             if (CombatKeyword == CombatKeywordEx.ApplyWithChance ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelf ||
@@ -1713,7 +1718,8 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxHealth ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxArmor ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxPower;
-            bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseRefreshTime;
+            bool CanHaveRange = (CombatKeyword != CombatKeywordEx.IncreaseRefreshTime) &&
+                                (CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime);
 
             float EffectValue = CombatEffect.Data.RawValue.HasValue ? CombatEffect.Data.RawValue.Value : float.NaN;
             bool EffectIsPercent = CombatEffect.Data.RawIsPercent.HasValue ? CombatEffect.Data.RawIsPercent.Value : false;
@@ -1729,8 +1735,12 @@ internal partial class CombatParserEx
             if (Target == CombatTarget.Internal_None && !disallowPrevioustarget)
                 GetTargets(AllEffects, i - 1, abilityList, out Target, out OtherTarget);
 
+            bool CanHaveTarget = (CombatKeyword != CombatKeywordEx.IncreaseRefreshTime || Target != CombatTarget.Self) &&
+                                 (CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime || Target != CombatTarget.Self) &&
+                                 (CombatKeyword != CombatKeywordEx.DamageBoost || CanApplyModifier);
+
             AbilityKeyword TargetAbility = AbilityKeyword.Internal_None;
-            if (Target == CombatTarget.Internal_None && CombatKeyword == CombatKeywordEx.IncreaseRefreshTime)
+            if (Target == CombatTarget.Internal_None && (CombatKeyword == CombatKeywordEx.IncreaseRefreshTime || CombatKeyword == CombatKeywordEx.IncreaseCurrentRefreshTime))
             {
                 if (targetAbilityList.Count > 0)
                 {
@@ -1751,16 +1761,16 @@ internal partial class CombatParserEx
                 Data = pgNumericValueEx,
                 DamageType = CombatEffect.DamageType,
                 CombatSkill = CombatEffect.CombatSkill,
-                RandomChance = RandomChance,
-                DelayInSeconds = DelayInSeconds,
-                DurationInSeconds = CanHaveDuration ? DurationInSeconds : float.NaN,
+                RandomChance = CanApplyModifier ? RandomChance : float.NaN,
+                DelayInSeconds = CanApplyModifier ? DelayInSeconds : float.NaN,
+                DurationInSeconds = CanHaveDuration && CanApplyModifier ? DurationInSeconds : float.NaN,
                 RecurringDelay = RecurringDelay,
-                Target = Target,
-                TargetRange = CanHaveRange ? TargetRange : float.NaN,
+                Target = CanHaveTarget ? Target : CombatTarget.Internal_None,
+                TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbility= TargetAbility,
-                Condition = CanApplyCondition ? Condition : CombatCondition.Internal_None,
-                ActiveAbilityCondition = CanApplyCondition ? ActiveAbilityCondition : AbilityKeyword.Internal_None,
-                ConditionPercentage = CanApplyCondition ? ConditionPercentage : float.NaN,
+                Condition = CanApplyModifier ? Condition : CombatCondition.Internal_None,
+                ActiveAbilityCondition = CanApplyModifier ? ActiveAbilityCondition : AbilityKeyword.Internal_None,
+                ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
             };
 
             DynamicEffects.Add(pgCombatModEffectEx);
@@ -1774,14 +1784,14 @@ internal partial class CombatParserEx
                     Data = pgNumericValueEx,
                     DamageType = CombatEffect.DamageType,
                     CombatSkill = CombatEffect.CombatSkill,
-                    RandomChance = RandomChance,
-                    DelayInSeconds = DelayInSeconds,
-                    DurationInSeconds = CanHaveDuration ? DurationInSeconds : float.NaN,
-                    Target = OtherTarget,
-                    TargetRange = CanHaveRange ? TargetRange : float.NaN,
-                    Condition = CanApplyCondition ? Condition : CombatCondition.Internal_None,
-                    ActiveAbilityCondition = CanApplyCondition ? ActiveAbilityCondition : AbilityKeyword.Internal_None,
-                    ConditionPercentage = CanApplyCondition ? ConditionPercentage : float.NaN,
+                    RandomChance = CanApplyModifier ? RandomChance : float.NaN,
+                    DelayInSeconds = CanApplyModifier ? DelayInSeconds : float.NaN,
+                    DurationInSeconds = CanHaveDuration && CanApplyModifier ? DurationInSeconds : float.NaN,
+                    Target = CanHaveTarget ? OtherTarget : CombatTarget.Internal_None,
+                    TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
+                    Condition = CanApplyModifier ? Condition : CombatCondition.Internal_None,
+                    ActiveAbilityCondition = CanApplyModifier ? ActiveAbilityCondition : AbilityKeyword.Internal_None,
+                    ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
                 };
 
                 DynamicEffects.Add(pgOtherCombatModEffectEx);
@@ -1836,10 +1846,10 @@ internal partial class CombatParserEx
         }
     }
 
-    private void BuildModEffect_002(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int minConditionIndex = 0)
+    private void BuildModEffect_002(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
     {
         // Inverse static & dynamic
-        BuildModEffect_001(description, abilityList, staticCombatEffectList, dynamicCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget, minConditionIndex);
+        BuildModEffect_001(description, abilityList, staticCombatEffectList, dynamicCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget, ignoreModifierIndex);
     }
 
     private void BuildModEffect_004(string description, PgEffect effect, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx)
@@ -1903,14 +1913,14 @@ internal partial class CombatParserEx
         }
     }
 
-    private void BuildModEffect_003(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int minConditionIndex = 0)
+    private void BuildModEffect_003(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
     {
         PgCombatEffectCollectionEx combatEffectList = new();
         combatEffectList.AddRange(dynamicCombatEffectList);
         combatEffectList.AddRange(staticCombatEffectList);
 
         // Concatenate static & dynamic to dynamic
-        BuildModEffect_001(description, abilityList, combatEffectList, new PgCombatEffectCollectionEx(), targetAbilityList, out pgCombatModEx, disallowPrevioustarget, minConditionIndex);
+        BuildModEffect_001(description, abilityList, combatEffectList, new PgCombatEffectCollectionEx(), targetAbilityList, out pgCombatModEx, disallowPrevioustarget, ignoreModifierIndex);
     }
 
     private void BuildModEffect_006(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx)
