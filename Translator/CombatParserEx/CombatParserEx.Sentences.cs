@@ -102,6 +102,9 @@ internal partial class CombatParserEx
         new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("Healing abilities, if any, restore %f health", CombatKeywordEx.IncreaseHealEfficiency),
 
+        new SentenceEx("Hit all enemies", CombatKeywordEx.BecomeBurst),
+        new SentenceEx("Hit all target", CombatKeywordEx.BecomeBurst),
+
         new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
 
         new SentenceEx("To you and your allies", CombatKeywordEx.ApplyToSelfAndAllies),

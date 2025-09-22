@@ -22,6 +22,7 @@
         AddSprintPowerCost,
         AddMeleeAccuracy,
         IncreasePowerCost,
+        BecomeBurst,
 
         // Other effects
         ApplyWithChance,
