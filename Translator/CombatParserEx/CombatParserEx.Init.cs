@@ -80,6 +80,22 @@ internal partial class CombatParserEx
                 }
             }
         }
+
+        foreach (KeyValuePair<AbilityKeyword, List<PgAbility>> Entry in KeywordToAbilities)
+        {
+            bool AllHaveDamage = true;
+            bool SomeHaveDamage = false;
+            foreach (PgAbility Ability in Entry.Value)
+            {
+                if (Ability.PvE.RawDamage.HasValue)
+                    SomeHaveDamage = true;
+                else
+                    AllHaveDamage = false;
+            }
+
+            if (AllHaveDamage && SomeHaveDamage)
+                AbilitiesDealingDirectDamage.Add(Entry.Key);
+        }
     }
 
     public static string FromSkillKey(string? key)
@@ -421,6 +437,7 @@ internal partial class CombatParserEx
         { "@ , Willbreaker, and Embrace of Despair", new List<AbilityKeyword>() { AbilityKeyword.EclipseOfShadows, AbilityKeyword.Willbreaker, AbilityKeyword.EmbraceOfDespair } },
         { "Trick Foxes", new List<AbilityKeyword>() { AbilityKeyword.TrickFox } },
         { "Summoned Tornadoes", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
+        { "All targets' melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {
@@ -486,6 +503,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireTargetOfAbility, CombatCondition.TargetOfAbility },
         { CombatKeywordEx.RequireDirectDamageKillShot, CombatCondition.DirectDamageKillShot },
         { CombatKeywordEx.RequireLowRage, CombatCondition.TargetHasLowRage },
+        { CombatKeywordEx.RequireKillTarget, CombatCondition.TargetIsKilled },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
@@ -495,4 +513,5 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.RestoreHealthOrArmorOverTime },
     };
     private float MutationDuration;
+    private List<AbilityKeyword> AbilitiesDealingDirectDamage = new();
 }

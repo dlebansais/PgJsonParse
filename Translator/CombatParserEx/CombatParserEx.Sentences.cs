@@ -212,5 +212,28 @@ internal partial class CombatParserEx
         new SentenceEx("Damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Damage is %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("#S damage %f", CombatKeywordEx.DamageBoost),
+
+        new SentenceEx("Deal %f direct damage", CombatKeywordEx.DirectDamageBoost),
+        new SentenceEx("Gain %f Direct", CombatKeywordEx.DirectDamageBoost),
+        new SentenceEx("Deal %f Direct", CombatKeywordEx.DirectDamageBoost),
+        new SentenceEx("Direct #D Damage %f", CombatKeywordEx.DirectDamageBoost),
+        new SentenceEx("%f Direct Damage", CombatKeywordEx.DirectDamageBoost),
+        new SentenceEx("Direct Damage %f", CombatKeywordEx.DirectDamageBoost),
+
+        new SentenceEx("Dispel any roots or slow you are currently suffering", CombatKeywordEx.DispelRootSlow),
+
+        new SentenceEx("Power cost to sprint in combat is reduced %f", CombatKeywordEx.AddSprintPowerCost),
+
+        new SentenceEx("If it kills your target", CombatKeywordEx.RequireKillTarget),
+
+        new SentenceEx("Melee Accuracy %f", CombatKeywordEx.AddMeleeAccuracy),
+        new SentenceEx("You gain Accuracy %f with melee attack", CombatKeywordEx.AddMeleeAccuracy),
+
+        new SentenceEx("Power Cost %f", CombatKeywordEx.IncreasePowerCost),
+        new SentenceEx("Power Cost is %f", CombatKeywordEx.IncreasePowerCost),
+        new SentenceEx("Reduce the Power cost of your @ %f", CombatKeywordEx.IncreasePowerCost),
+        new SentenceEx("Further reduce ability cost %f", CombatKeywordEx.IncreasePowerCost),
+        new SentenceEx("Reduce the Power cost of @ %f", CombatKeywordEx.IncreasePowerCost),
+        new SentenceEx("Cost %f Power", CombatKeywordEx.IncreasePowerCost),
     };
 }

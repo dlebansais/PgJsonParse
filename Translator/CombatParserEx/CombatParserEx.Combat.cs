@@ -1355,7 +1355,6 @@ internal partial class CombatParserEx
             case "5065":
             case "7207":
             case "11701":
-            case "11605":
             case "10003":
             case "10082":
             case "10124":
@@ -1413,9 +1412,15 @@ internal partial class CombatParserEx
             case "6088":
             case "7202":
             case "9703":
-            case "8318":
             case "10509":
             case "20009":
+            case "13206":
+            case "13104":
+            case "13105":
+            case "13106":
+            case "4036":
+            case "9504":
+            case "11605":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1431,12 +1436,18 @@ internal partial class CombatParserEx
             case "163":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
+            case "5006":
+            case "8318":
+                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
+                break;
             case "25223":
             case "4004":
             case "4471":
             case "8022":
             case "8023":
             case "9752":
+            case "1303":
+            case "14205":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "12092":
@@ -1472,6 +1483,11 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
                                                            item.Keyword == CombatKeywordEx.StunImmunity ||
                                                            item.Keyword == CombatKeywordEx.Knockback ||
+                                                           /*item.Keyword == CombatKeywordEx.DamageBoost ||*/
+                                                           item.Keyword == CombatKeywordEx.DispelRootSlow ||
+                                                           item.Keyword == CombatKeywordEx.AddSprintPowerCost ||
+                                                           item.Keyword == CombatKeywordEx.AddMeleeAccuracy ||
+                                                           item.Keyword == CombatKeywordEx.IncreasePowerCost ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -1486,6 +1502,11 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
                                                           item.Keyword == CombatKeywordEx.StunImmunity ||
                                                           item.Keyword == CombatKeywordEx.Knockback ||
+                                                          /*item.Keyword == CombatKeywordEx.DamageBoost ||*/
+                                                          item.Keyword == CombatKeywordEx.DispelRootSlow ||
+                                                          item.Keyword == CombatKeywordEx.AddSprintPowerCost ||
+                                                          item.Keyword == CombatKeywordEx.AddMeleeAccuracy ||
+                                                          item.Keyword == CombatKeywordEx.IncreasePowerCost ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -1551,14 +1572,10 @@ internal partial class CombatParserEx
             case "9881":
             case "9883":
             case "15505":
+            case "14605":
                 BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
-            case "1303":
-            case "14205":
             case "14353":
-            case "14605":
-            case "15102":
-            case "13206":
             case "15107":
             case "15454":
             case "16009":
@@ -1617,9 +1634,19 @@ internal partial class CombatParserEx
             case "9605":
             case "9862":
             case "23201":
+            case "1067":
+            case "13054":
+            case "15153":
+            case "20353":
+            case "27171":
+            case "17084":
+            case "3084":
+            case "4114":
+            case "5035":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
+            case "15102": // TODO
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
@@ -1668,6 +1695,7 @@ internal partial class CombatParserEx
             }
 
         List<PgCombatModEffectEx> DynamicEffects = new();
+        bool IsTargetAbilityListUsed = false;
         for (int i = 0; i < AllEffects.Count; i++)
         {
             PgCombatEffectEx CombatEffect = AllEffects[i];
@@ -1695,6 +1723,14 @@ internal partial class CombatParserEx
                 continue;
             }
 
+            if (CombatKeyword == CombatKeywordEx.DirectDamageBoost && CombatEffect.DamageType == GameDamageType.Internal_None)
+            {
+                foreach (AbilityKeyword Keyword in abilityList)
+                    Debug.Assert(AbilitiesDealingDirectDamage.Contains(Keyword));
+
+                CombatKeyword = CombatKeywordEx.DamageBoost;
+            }
+
             if (OverTimeEffects.TryGetValue(CombatKeyword, out CombatKeywordEx CombatKeywordOverTime))
             {
                 if (float.IsNaN(DurationInSeconds) && !float.IsNaN(DurationOverTime))
@@ -1713,11 +1749,20 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.RestorePowerOverTime ||
                                    CombatKeyword == CombatKeywordEx.RestoreArmorOverTime ||
                                    CombatKeyword == CombatKeywordEx.RestoreHealthOrArmorOverTime ||
-                                   CombatKeyword == CombatKeywordEx.StunImmunity ||
-                                   CombatKeyword == CombatKeywordEx.IncreaseRefreshTime ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxHealth ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxArmor ||
-                                   CombatKeyword == CombatKeywordEx.IncreaseMaxPower;
+                                   CombatKeyword == CombatKeywordEx.IncreaseMaxPower ||
+                                   CombatKeyword == CombatKeywordEx.RegenPercentageOfArmor ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseHealEfficiency ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseRefreshTime ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
+                                   CombatKeyword == CombatKeywordEx.StunImmunity ||
+                                   CombatKeyword == CombatKeywordEx.Knockback ||
+                                   CombatKeyword == CombatKeywordEx.AddSprintPowerCost ||
+                                   CombatKeyword == CombatKeywordEx.AddMeleeAccuracy ||
+                                   CombatKeyword == CombatKeywordEx.DamageBoost ||
+                                   CombatKeyword == CombatKeywordEx.DirectDamageBoost ||
+                                   CombatKeyword == CombatKeywordEx.IncreasePowerCost;
             bool CanHaveRange = (CombatKeyword != CombatKeywordEx.IncreaseRefreshTime) &&
                                 (CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime);
 
@@ -1740,18 +1785,27 @@ internal partial class CombatParserEx
                                  (CombatKeyword != CombatKeywordEx.DamageBoost || CanApplyModifier);
 
             AbilityKeyword TargetAbility = AbilityKeyword.Internal_None;
-            if (Target == CombatTarget.Internal_None && (CombatKeyword == CombatKeywordEx.IncreaseRefreshTime || CombatKeyword == CombatKeywordEx.IncreaseCurrentRefreshTime))
+            if (Target == CombatTarget.Internal_None &&
+                (CombatKeyword == CombatKeywordEx.IncreaseRefreshTime ||
+                 CombatKeyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
+                 CombatKeyword == CombatKeywordEx.IncreasePowerCost))
             {
                 if (targetAbilityList.Count > 0)
                 {
                     Debug.Assert(targetAbilityList.Count == 1);
                     TargetAbility = targetAbilityList[0];
+                    IsTargetAbilityListUsed = true;
                 }
                 else if (abilityList.Count > 0)
                 {
                     Debug.Assert(abilityList.Count == 1);
                     TargetAbility = abilityList[0];
                 }
+            }
+            else if (Target == CombatTarget.Internal_None && CombatKeyword == CombatKeywordEx.DamageBoost && targetAbilityList.Count > 0 && !IsTargetAbilityListUsed)
+            {
+                Debug.Assert(targetAbilityList.Count == 1);
+                TargetAbility = targetAbilityList[0];
             }
 
             PgCombatModEffectEx pgCombatModEffectEx = new()

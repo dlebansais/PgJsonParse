@@ -11,4 +11,5 @@ public enum CombatCondition
     TargetOfAbility,
     DirectDamageKillShot,
     TargetHasLowRage,
+    TargetIsKilled,
 }

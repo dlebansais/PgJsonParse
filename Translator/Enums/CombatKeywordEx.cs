@@ -18,6 +18,10 @@
         StunImmunity,
         Knockback,
         DamageBoost,
+        DispelRootSlow,
+        AddSprintPowerCost,
+        AddMeleeAccuracy,
+        IncreasePowerCost,
 
         // Other effects
         ApplyWithChance,
@@ -42,6 +46,8 @@
         RequireTargetOfAbility,
         RequireDirectDamageKillShot,
         RequireLowRage,
+        DirectDamageBoost,
+        RequireKillTarget,
 
         // Synthetic
         GiveBuff,
