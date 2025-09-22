@@ -41,7 +41,7 @@
         RequireTwoKnives,
         RequireNoAggro,
         RequirePlayingSong,
-        RequireSpecialForm,
+        RequireBloodMistForm,
         RequireSameTarget,
         ToKickerTarget,
         RequireTargetOfAbility,

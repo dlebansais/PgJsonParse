@@ -1574,7 +1574,7 @@ internal partial class CombatParserEx
                 BuildModEffect_005(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "18115":
-                BuildModEffect_005(description, targetAbilityList, new() { dynamicCombatEffectList[0], staticCombatEffectList[0] }, new() , abilityList, out pgCombatModEx);
+                BuildModEffect_005(description, new(), new() { staticCombatEffectList[0], new PgCombatEffectEx() { Keyword = CombatKeywordEx.RequireBloodMistForm } }, new() , new(), out pgCombatModEx);
                 break;
             case "12301":
             case "21201":
@@ -2086,7 +2086,6 @@ internal partial class CombatParserEx
                 Condition = NewCondition;
 
                 if (Condition == CombatCondition.WhilePlayingSong ||
-                    Condition == CombatCondition.WhileInSpecialForm ||
                     Condition == CombatCondition.TargetOfAbility)
                 {
                     Debug.Assert(targetAbilityList.Count == 1);

@@ -125,7 +125,7 @@ internal partial class CombatParserEx
         new SentenceEx("If they are not focused on you", CombatKeywordEx.RequireNoAggro),
         new SentenceEx("If target is not focused on you", CombatKeywordEx.RequireNoAggro),
 
-        new SentenceEx("While in @ form", CombatKeywordEx.RequireSpecialForm),
+        new SentenceEx("While in Blood Mist form", CombatKeywordEx.RequireBloodMistForm),
         new SentenceEx("While playing", CombatKeywordEx.RequirePlayingSong),
 
         new SentenceEx("To the kicker", CombatKeywordEx.ToKickerTarget),

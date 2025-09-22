@@ -6,7 +6,7 @@ public enum CombatCondition
     WieldingTwoKnives,
     WithoutFocus,
     WhilePlayingSong,
-    WhileInSpecialForm,
+    WhileInBloodMistForm,
     SpecificTarget,
     TargetOfAbility,
     DirectDamageKillShot,

@@ -498,7 +498,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireTwoKnives, CombatCondition.WieldingTwoKnives },
         { CombatKeywordEx.RequireNoAggro, CombatCondition.WithoutFocus },
         { CombatKeywordEx.RequirePlayingSong, CombatCondition.WhilePlayingSong },
-        { CombatKeywordEx.RequireSpecialForm, CombatCondition.WhileInSpecialForm },
+        { CombatKeywordEx.RequireBloodMistForm, CombatCondition.WhileInBloodMistForm },
         { CombatKeywordEx.RequireSameTarget, CombatCondition.SpecificTarget },
         { CombatKeywordEx.RequireTargetOfAbility, CombatCondition.TargetOfAbility },
         { CombatKeywordEx.RequireDirectDamageKillShot, CombatCondition.DirectDamageKillShot },
