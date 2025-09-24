@@ -103,6 +103,7 @@ internal partial class CombatParserEx
         new SentenceEx("Healing abilities, if any, restore %f health", CombatKeywordEx.IncreaseHealEfficiency),
 
         new SentenceEx("Hit all enemies", CombatKeywordEx.BecomeBurst),
+        new SentenceEx("Targets all enemies", CombatKeywordEx.BecomeBurst),
         new SentenceEx("Hit all target", CombatKeywordEx.BecomeBurst),
 
         new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
@@ -238,5 +239,12 @@ internal partial class CombatParserEx
         new SentenceEx("Further reduce ability cost %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Reduce the Power cost of @ %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Cost %f Power", CombatKeywordEx.IncreasePowerCost),
+
+        new SentenceEx("Reset the time on", CombatKeywordEx.ResetRefreshTime),
+
+        new SentenceEx("Deal %f Armor damage", CombatKeywordEx.DealArmorDamage),
+        new SentenceEx("Deal %f damage to Armor", CombatKeywordEx.DealArmorDamage),
+        new SentenceEx("%f damage to Armor", CombatKeywordEx.DealArmorDamage),
+        new SentenceEx("%f armor damage", CombatKeywordEx.DealArmorDamage),
     };
 }
