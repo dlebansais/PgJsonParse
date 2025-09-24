@@ -23,7 +23,10 @@
         AddSprintPowerCost,
         AddMeleeAccuracy,
         IncreasePowerCost,
+        IncreaseMeleePowerCost,
         BecomeBurst,
+        NoYellForHelp,
+        RepairBrokenBone,
 
         // Other effects
         ApplyWithChance,

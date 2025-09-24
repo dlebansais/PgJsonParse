@@ -7,6 +7,7 @@ public enum CombatTarget
     Allies,
     AnimalHandlingPet,
     NecromancyPet,
+    NecromancyZombie,
     IceMagicColdSphere,
     SummonedDeer,
     FireMagicFirewall,

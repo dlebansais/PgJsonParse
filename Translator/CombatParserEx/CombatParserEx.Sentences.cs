@@ -240,11 +240,21 @@ internal partial class CombatParserEx
         new SentenceEx("Reduce the Power cost of @ %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Cost %f Power", CombatKeywordEx.IncreasePowerCost),
 
+        new SentenceEx("Cause all allies' Melee attack to cost %f Power", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMeleePowerCost, CombatKeywordEx.ApplyToAllies }),
+
         new SentenceEx("Reset the time on", CombatKeywordEx.ResetRefreshTime),
 
         new SentenceEx("Deal %f Armor damage", CombatKeywordEx.DealArmorDamage),
         new SentenceEx("Deal %f damage to Armor", CombatKeywordEx.DealArmorDamage),
         new SentenceEx("%f damage to Armor", CombatKeywordEx.DealArmorDamage),
         new SentenceEx("%f armor damage", CombatKeywordEx.DealArmorDamage),
+
+        new SentenceEx("Target does not yell for help because of this attack", CombatKeywordEx.NoYellForHelp),
+        new SentenceEx("Doesn't cause the target to yell for help", CombatKeywordEx.NoYellForHelp),
+        new SentenceEx("This attack does not cause the target to shout for help", CombatKeywordEx.NoYellForHelp),
+        new SentenceEx("Does not cause the target to shout for help", CombatKeywordEx.NoYellForHelp),
+
+        new SentenceEx("Mend a broken bone", CombatKeywordEx.RepairBrokenBone),
+        new SentenceEx("Randomly repair broken bones", CombatKeywordEx.RepairBrokenBone),
     };
 }
