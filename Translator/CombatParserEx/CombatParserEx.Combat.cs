@@ -1446,6 +1446,8 @@ internal partial class CombatParserEx
             case "27171":
             case "3006":
             case "4114":
+            case "28612":
+            case "5203":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1460,6 +1462,7 @@ internal partial class CombatParserEx
             case "1023":
             case "163":
             case "15551":
+            case "28762":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -1689,9 +1692,6 @@ internal partial class CombatParserEx
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
-            case "28612":
-            case "5203":
-            case "28762":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
@@ -1775,10 +1775,6 @@ internal partial class CombatParserEx
             bool CanApplyModifier = ignoreModifierIndex < 0 ||
                                     ((i != (ignoreModifierIndex % 1000)) &&
                                      (ignoreModifierIndex < 1000 || (i != ((ignoreModifierIndex / 1000) % 1000))));
-            bool OtherCanApplyModifier = i != ignoreModifierIndex;
-            if (OtherCanApplyModifier != CanApplyModifier && !description.StartsWith("Remedy costs"))
-            {
-            }
 
             Debug.Assert(CombatKeyword != CombatKeywordEx.BecomeBurst);
 
@@ -1793,7 +1789,8 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.EffectOverTime ||
                 CombatKeyword == CombatKeywordEx.RecurringEffect ||
                 CombatKeyword == CombatKeywordEx.EffectEverySecond ||
-                CombatKeyword == CombatKeywordEx.EffectDelay)
+                CombatKeyword == CombatKeywordEx.EffectDelay ||
+                CombatKeyword == CombatKeywordEx.EveryOtherUse)
             {
                 continue;
             }
@@ -1858,9 +1855,9 @@ internal partial class CombatParserEx
 
             PgNumericValueEx pgNumericValueEx = new() { Value = EffectValue, IsPercent = EffectIsPercent };
 
-            GetTargets(AllEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget);
+            GetTargets(AllEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget, out bool IsEveryOtherUse);
             if (Target == CombatTarget.Internal_None && !disallowPrevioustarget)
-                GetTargets(AllEffects, i - 1, abilityList, out Target, out OtherTarget);
+                GetTargets(AllEffects, i - 1, abilityList, out Target, out OtherTarget, out IsEveryOtherUse);
 
             bool CanHaveTarget = (CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime || Target != CombatTarget.Self) &&
                                  (CombatKeyword != CombatKeywordEx.ResetRefreshTime || Target != CombatTarget.Self) &&
@@ -1916,6 +1913,7 @@ internal partial class CombatParserEx
                 Condition = CanApplyModifier ? Condition : CombatCondition.Internal_None,
                 ActiveAbilityCondition = CanApplyModifier ? ActiveAbilityCondition : AbilityKeyword.Internal_None,
                 ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
+                IsEveryOtherUse = IsEveryOtherUse,
             };
 
             DynamicEffects.Add(pgCombatModEffectEx);
@@ -1964,10 +1962,11 @@ internal partial class CombatParserEx
         return Value;
     }
 
-    private static void GetTargets(List<PgCombatEffectEx> effects, int index, List<AbilityKeyword> abilityList, out CombatTarget target, out CombatTarget otherTarget)
+    private static void GetTargets(List<PgCombatEffectEx> effects, int index, List<AbilityKeyword> abilityList, out CombatTarget target, out CombatTarget otherTarget, out bool isEveryOtherUse)
     {
         target = CombatTarget.Internal_None;
         otherTarget = CombatTarget.Internal_None;
+        isEveryOtherUse = false;
 
         if (0 <= index && index < effects.Count)
         {
@@ -1988,6 +1987,8 @@ internal partial class CombatParserEx
                 target = CombatTarget.Self;
                 otherTarget = CombatTarget.Allies;
             }
+            else if (NextCombatEffect.Keyword == CombatKeywordEx.EveryOtherUse)
+                isEveryOtherUse = true;
         }
     }
 
@@ -2161,7 +2162,8 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.EffectOverTime ||
                 CombatKeyword == CombatKeywordEx.RecurringEffect ||
                 CombatKeyword == CombatKeywordEx.EffectEverySecond ||
-                CombatKeyword == CombatKeywordEx.EffectDelay)
+                CombatKeyword == CombatKeywordEx.EffectDelay ||
+                CombatKeyword == CombatKeywordEx.EveryOtherUse)
             {
                 continue;
             }

@@ -256,5 +256,12 @@ internal partial class CombatParserEx
 
         new SentenceEx("Mend a broken bone", CombatKeywordEx.RepairBrokenBone),
         new SentenceEx("Randomly repair broken bones", CombatKeywordEx.RepairBrokenBone),
+
+        new SentenceEx("Every other", CombatKeywordEx.EveryOtherUse),
+
+        new SentenceEx("To Vulnerable target", CombatKeywordEx.RequireVulnerableTarget),
+        new SentenceEx("If the target is Vulnerable", CombatKeywordEx.RequireVulnerableTarget),
+        new SentenceEx("If target is Vulnerable", CombatKeywordEx.RequireVulnerableTarget),
+        new SentenceEx("Is used on a Vulnerable target", CombatKeywordEx.RequireVulnerableTarget),
     };
 }

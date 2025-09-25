@@ -504,6 +504,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireDirectDamageKillShot, CombatCondition.DirectDamageKillShot },
         { CombatKeywordEx.RequireLowRage, CombatCondition.TargetHasLowRage },
         { CombatKeywordEx.RequireKillTarget, CombatCondition.TargetIsKilled },
+        { CombatKeywordEx.RequireVulnerableTarget, CombatCondition.TargetIsVulnerable },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

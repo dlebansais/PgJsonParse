@@ -33,4 +33,6 @@ public class PgCombatModEffectEx
     public AbilityKeyword ActiveAbilityCondition { get; init; } = AbilityKeyword.Internal_None;
 
     public float ConditionPercentage { get; init; } = float.NaN;
+
+    public bool IsEveryOtherUse { get; init; }
 }

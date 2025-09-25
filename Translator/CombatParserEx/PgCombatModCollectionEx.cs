@@ -6,7 +6,7 @@ using System.Globalization;
 
 public class PgCombatModCollectionEx : List<PgCombatModEx>
 {
-    public static bool DebugMode { get; set; } = false;
+    public static bool DebugMode { get; set; } = true;
 
     public void Display(string powerKey)
     {
@@ -114,6 +114,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
         if (!float.IsNaN(pgCombatModEffectEx.ConditionPercentage))
             Write("                     ", $" ConditionPercentage = {pgCombatModEffectEx.ConditionPercentage.ToString(CultureInfo.InvariantCulture)},");
+
+        if (pgCombatModEffectEx.IsEveryOtherUse)
+            Write("                     ", $" IsEveryOtherUse = true,");
 
         Write("                 ", " },");
     }

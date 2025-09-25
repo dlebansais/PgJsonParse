@@ -53,6 +53,8 @@
         RequireLowRage,
         DirectDamageBoost,
         RequireKillTarget,
+        EveryOtherUse,
+        RequireVulnerableTarget,
 
         // Synthetic
         GiveBuff,
