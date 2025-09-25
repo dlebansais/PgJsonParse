@@ -1,12 +1,13 @@
 ﻿namespace PgObjects;
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 
 public class PgCombatModCollectionEx : List<PgCombatModEx>
 {
-    public static bool DebugMode { get; set; } = true;
+    public static bool DebugMode { get; set; } = false;
 
     public void Display(string powerKey)
     {
@@ -80,7 +81,7 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         Write("                     ", $" Data = {NumericValueToString(pgCombatModEffectEx.Data)},");
 
         if (pgCombatModEffectEx.DamageType != GameDamageType.Internal_None)
-            Write("                     ", $" DamageType = GameDamageType.{pgCombatModEffectEx.DamageType},");
+            Write("                     ", $" DamageType = {DamageTypeToString(pgCombatModEffectEx.DamageType)},");
 
         if (pgCombatModEffectEx.CombatSkill != GameCombatSkill.Internal_None)
             Write("                     ", $" CombatSkill = GameCombatSkill.{pgCombatModEffectEx.CombatSkill},");
@@ -132,6 +133,21 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
             Result += $"AbilityKeyword.{Keyword}";
         }
+
+        return Result;
+    }
+
+    private static string DamageTypeToString(GameDamageType damageType)
+    {
+        string Result = string.Empty;
+
+        foreach (GameDamageType EnumValue in Enum.GetValues(typeof(GameDamageType)))
+            if (EnumValue != GameDamageType.Internal_None && (damageType & EnumValue) == EnumValue)
+            {
+                if (Result.Length > 0)
+                    Result += " | ";
+                Result += $"GameDamageType.{EnumValue}";
+            }
 
         return Result;
     }
