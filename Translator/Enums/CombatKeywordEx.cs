@@ -27,6 +27,12 @@
         BecomeBurst,
         NoYellForHelp,
         RepairBrokenBone,
+        ZeroPowerCost,
+        BestowProtectiveBubble,
+        CancelSlowdown,
+        NullifyIgnoreKnockback,
+        GenerateTaunt,
+        NextAttackMiss,
 
         // Other effects
         ApplyWithChance,
@@ -55,6 +61,7 @@
         RequireKillTarget,
         EveryOtherUse,
         RequireVulnerableTarget,
+        RequireAttackAbility,
 
         // Synthetic
         GiveBuff,

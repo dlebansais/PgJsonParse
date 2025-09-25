@@ -97,6 +97,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f Movement Speed", CombatKeywordEx.AddSprintSpeed),
 
         new SentenceEx("Your next use", CombatKeywordEx.NextUse),
+        new SentenceEx("Your next ability", CombatKeywordEx.NextUse),
 
         new SentenceEx("Armor Recovery Per Second: %f of Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
@@ -263,5 +264,31 @@ internal partial class CombatParserEx
         new SentenceEx("If the target is Vulnerable", CombatKeywordEx.RequireVulnerableTarget),
         new SentenceEx("If target is Vulnerable", CombatKeywordEx.RequireVulnerableTarget),
         new SentenceEx("Is used on a Vulnerable target", CombatKeywordEx.RequireVulnerableTarget),
+
+        new SentenceEx("If it is an Attack ability", CombatKeywordEx.RequireAttackAbility),
+
+        new SentenceEx("To cost 0 Power", CombatKeywordEx.ZeroPowerCost),
+
+        new SentenceEx("Conjures a magical field on the target", CombatKeywordEx.BestowProtectiveBubble),
+
+        new SentenceEx("Slowdown Cancelled", CombatKeywordEx.CancelSlowdown),
+        new SentenceEx("has no slowdown effect", CombatKeywordEx.CancelSlowdown),
+
+        new SentenceEx("Knockback Ignore Chance Ignored", CombatKeywordEx.NullifyIgnoreKnockback),
+        new SentenceEx("any Knockback Ingore Chance is nullified", CombatKeywordEx.NullifyIgnoreKnockback),
+
+        new SentenceEx("Reduce the taunt of all your attack by %f", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
+        new SentenceEx("Taunt %f", CombatKeywordEx.GenerateTaunt),
+        new SentenceEx("Taunted %f", CombatKeywordEx.GenerateTaunt),
+        new SentenceEx("Taunt as if they did %f more damage", CombatKeywordEx.GenerateTaunt),
+        new SentenceEx("Taunt as if they did %f damage", CombatKeywordEx.GenerateTaunt),
+        new SentenceEx("Taunt their opponents %f less", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
+        new SentenceEx("Taunt of all your attack %f", CombatKeywordEx.GenerateTaunt),
+        new SentenceEx("Your Taunt is %f", CombatKeywordEx.GenerateTaunt),
+        new SentenceEx("%f Taunt", CombatKeywordEx.GenerateTaunt),
+        new SentenceEx("Lower target's aggro toward you by %f", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
+
+        new SentenceEx("Target's next attack has a %f chance to automatically miss", CombatKeywordEx.NextAttackMiss),
+        //@ taunt +40 and 
     };
 }

@@ -13,4 +13,6 @@ public enum CombatCondition
     TargetHasLowRage,
     TargetIsKilled,
     TargetIsVulnerable,
+    AttackAbility,
+    PetAttackType,
 }
