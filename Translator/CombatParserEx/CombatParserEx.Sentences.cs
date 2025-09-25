@@ -289,6 +289,28 @@ internal partial class CombatParserEx
         new SentenceEx("Lower target's aggro toward you by %f", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
 
         new SentenceEx("Target's next attack has a %f chance to automatically miss", CombatKeywordEx.NextAttackMiss),
-        //@ taunt +40 and 
+
+        new SentenceEx("You mitigate %f from all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Grant %f Universal #D Mitigation", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Universal Damage Mitigation %f", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Reduce the damage you take from #D attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Take %f less damage from all attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Target take %f less damage from attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Target take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Target to take %f less damage from attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Target to take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Mitigate %f of all #D damage", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Mitigate %f damage from #D attacks", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Increase your mitigation vs #D attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Further debuff their mitigation %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Grant you %f mitigation against all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f Mitigation from attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("You gain %f mitigation vs #D", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("#D mitigation %f", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Your Direct and Indirect #D mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f #D mitigation", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Increase your #D Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f Damage Mitigation", CombatKeywordEx.AddMitigation),
     };
 }

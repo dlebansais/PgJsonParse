@@ -33,6 +33,7 @@
         NullifyIgnoreKnockback,
         GenerateTaunt,
         NextAttackMiss,
+        AddMitigation,
 
         // Other effects
         ApplyWithChance,
