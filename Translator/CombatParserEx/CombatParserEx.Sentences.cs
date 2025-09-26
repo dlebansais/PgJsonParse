@@ -331,6 +331,7 @@ internal partial class CombatParserEx
         new SentenceEx("Against Elite enemies, mitigate %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Mitigate %f of all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("%f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
 
         new SentenceEx("Make the target %f more vulnerable to direct #D damage", CombatKeywordEx.AddMitigationDirect, SignInterpretation.AlwaysNegative),
         new SentenceEx("Gain %f Direct Elite Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
@@ -345,6 +346,8 @@ internal partial class CombatParserEx
         new SentenceEx("%f direct damage mitigation", CombatKeywordEx.AddMitigationDirect),
         new SentenceEx("Boost your direct damage mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Direct Mitigation", CombatKeywordEx.AddMitigationDirect),
+
+        new SentenceEx("Suffer %f damage from Burst attacks", CombatKeywordEx.AddMitigationBurst, SignInterpretation.Opposite),
 
         new SentenceEx("Vs Elite", CombatKeywordEx.RequireEliteTarget),
         new SentenceEx("If target is Elite or Boss", CombatKeywordEx.RequireEliteTarget),
@@ -364,5 +367,9 @@ internal partial class CombatParserEx
         new SentenceEx("Rage attack deal %f", CombatKeywordEx.RageAttackBoost),
         new SentenceEx("Pet's Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
         new SentenceEx("Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
+
+        new SentenceEx("Remove ongoing #D effects (up to %f dmg/sec)", CombatKeywordEx.RemoveEffect),
+
+        new SentenceEx("Target pet's Non-Rage attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.NonRageAttackBoost, CombatKeywordEx.ApplyToPet }),
     };
 }

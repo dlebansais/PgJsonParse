@@ -1483,6 +1483,13 @@ internal partial class CombatParserEx
             case "5062":
             case "15104":
             case "8313":
+            case "26221":
+            case "4083":
+            case "4084":
+            case "9086":
+            case "9862":
+            case "28242":
+            case "29942":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1501,6 +1508,7 @@ internal partial class CombatParserEx
             case "2021":
             case "20353":
             case "5035":
+            case "21002":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -1592,9 +1600,13 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.NextAttackMiss ||
                                                            item.Keyword == CombatKeywordEx.AddMitigation ||
                                                            item.Keyword == CombatKeywordEx.AddMitigationDirect ||
+                                                           item.Keyword == CombatKeywordEx.AddMitigationBurst ||
                                                            item.Keyword == CombatKeywordEx.ChanceToConsume ||
                                                            item.Keyword == CombatKeywordEx.SelfStun ||
                                                            item.Keyword == CombatKeywordEx.MaxMitigatedDamageLimit ||
+                                                           item.Keyword == CombatKeywordEx.RageAttackBoost ||
+                                                           item.Keyword == CombatKeywordEx.NonRageAttackBoost ||
+                                                           item.Keyword == CombatKeywordEx.RemoveEffect ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -1627,9 +1639,13 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.NextAttackMiss ||
                                                           item.Keyword == CombatKeywordEx.AddMitigation ||
                                                           item.Keyword == CombatKeywordEx.AddMitigationDirect ||
+                                                          item.Keyword == CombatKeywordEx.AddMitigationBurst ||
                                                           item.Keyword == CombatKeywordEx.ChanceToConsume ||
                                                           item.Keyword == CombatKeywordEx.SelfStun ||
                                                           item.Keyword == CombatKeywordEx.MaxMitigatedDamageLimit ||
+                                                          item.Keyword == CombatKeywordEx.RageAttackBoost ||
+                                                          item.Keyword == CombatKeywordEx.NonRageAttackBoost ||
+                                                          item.Keyword == CombatKeywordEx.RemoveEffect ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -1709,6 +1725,10 @@ internal partial class CombatParserEx
             case "8352":
             case "28201":
             case "28203":
+            case "15503":
+            case "8301":
+            case "8302":
+            case "8304":
                 BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "11503":
@@ -1748,13 +1768,10 @@ internal partial class CombatParserEx
             case "7310":
             case "7491":
             case "8006":
-            case "8301":
-            case "8302":
-            case "8304":
-            case "9086":
-            case "9605":
-            case "9862":
             case "16082":
+            case "9605":
+            case "21204":
+            case "23305":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
@@ -1922,8 +1939,11 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreasePowerCost ||
                                    CombatKeyword == CombatKeywordEx.AddMitigation ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationDirect ||
+                                   CombatKeyword == CombatKeywordEx.AddMitigationBurst ||
                                    CombatKeyword == CombatKeywordEx.BestowProtectiveBubble ||
                                    CombatKeyword == CombatKeywordEx.GenerateTaunt ||
+                                   CombatKeyword == CombatKeywordEx.RageAttackBoost ||
+                                   CombatKeyword == CombatKeywordEx.NonRageAttackBoost ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMeleePowerCost;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -1953,6 +1973,7 @@ internal partial class CombatParserEx
                                  (CombatKeyword != CombatKeywordEx.NextAttackMiss || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigation || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationDirect || CanApplyModifier) &&
+                                 (CombatKeyword != CombatKeywordEx.AddMitigationBurst || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.IncreaseMeleePowerCost || CanApplyModifier);
 
             AbilityKeyword TargetAbility = AbilityKeyword.Internal_None;
@@ -2262,6 +2283,9 @@ internal partial class CombatParserEx
                 case AbilityKeyword.SummonZombie:
                     Target = CombatTarget.NecromancyZombie;
                     break;
+                case AbilityKeyword.SummonSkeleton:
+                    Target = CombatTarget.NecromancySkeleton;
+                    break;
                 case AbilityKeyword.SummonSkeletonSwordsman:
                     Target = CombatTarget.NecromancySkeletonSwordsman;
                     break;
@@ -2337,6 +2361,7 @@ internal partial class CombatParserEx
             {
                 Keyword = CombatKeyword,
                 Data = pgNumericValueEx,
+                DamageType = CombatEffect.DamageType,
                 DelayInSeconds = DelayInSeconds,
                 RecurringDelay = RecurringDelay,
                 Target = Target,
@@ -2360,11 +2385,13 @@ internal partial class CombatParserEx
         bool IsAnimalHandlingPet = abilityList.TrueForAll(Keyword => AnimalHandlingKeywordList.Contains(Keyword));
         bool IsNecromancyPet = abilityList.TrueForAll(Keyword => NecromancyKeywordList.Contains(Keyword));
 
+        Debug.Assert(!IsAnimalHandlingPet || !IsNecromancyPet);
+
         if (IsAnimalHandlingPet && !IsNecromancyPet)
             return CombatTarget.AnimalHandlingPet;
         else if (!IsAnimalHandlingPet && IsNecromancyPet)
             return CombatTarget.NecromancyPet;
         else
-            return CombatTarget.Internal_None;
+            return CombatTarget.AnyPet;
     }
 }

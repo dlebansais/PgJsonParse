@@ -36,10 +36,13 @@
         NextAttackMiss,
         AddMitigation,
         AddMitigationDirect,
+        AddMitigationBurst,
         ChanceToConsume,
         SelfStun,
         MaxMitigatedDamageLimit,
         RageAttackBoost,
+        NonRageAttackBoost,
+        RemoveEffect,
 
         // Other effects
         ApplyWithChance,

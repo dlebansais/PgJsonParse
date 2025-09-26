@@ -6,6 +6,8 @@ public class PgPermanentModEffectEx
 
     public required PgNumericValueEx Data { get; init; }
 
+    public GameDamageType DamageType { get; init; } = GameDamageType.Internal_None;
+
     public float DelayInSeconds { get; init; } = float.NaN;
 
     public float RecurringDelay { get; init; } = float.NaN;

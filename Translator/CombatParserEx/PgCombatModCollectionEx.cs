@@ -55,6 +55,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         Write("                     ", $" Keyword = {pgPermanentModEffectEx.Keyword.GetType().Name}.{pgPermanentModEffectEx.Keyword},");
         Write("                     ", $" Data = {NumericValueToString(pgPermanentModEffectEx.Data)},");
 
+        if (pgPermanentModEffectEx.DamageType != GameDamageType.Internal_None)
+            Write("                     ", $" DamageType = {DamageTypeToString(pgPermanentModEffectEx.DamageType)},");
+
         if (!float.IsNaN(pgPermanentModEffectEx.DelayInSeconds))
             Write("                     ", $" DelayInSeconds = {pgPermanentModEffectEx.DelayInSeconds.ToString(CultureInfo.InvariantCulture)},");
 
