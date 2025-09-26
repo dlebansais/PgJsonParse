@@ -1481,9 +1481,8 @@ internal partial class CombatParserEx
             case "13351":
             case "5254":
             case "5062":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
-                break;
             case "15104":
+            case "8313":
                 BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1674,6 +1673,9 @@ internal partial class CombatParserEx
             case "7472":
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
                 break;
+            case "7009":
+                BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0] }, new() { dynamicCombatEffectList[2], dynamicCombatEffectList[1], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                break;
             case "12313":
             case "28141":
             case "28142":
@@ -1756,8 +1758,6 @@ internal partial class CombatParserEx
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
-            case "7009":
-            case "8313":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
@@ -1923,6 +1923,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.AddMitigation ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationDirect ||
                                    CombatKeyword == CombatKeywordEx.BestowProtectiveBubble ||
+                                   CombatKeyword == CombatKeywordEx.GenerateTaunt ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMeleePowerCost;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -2112,7 +2113,7 @@ internal partial class CombatParserEx
         BuildModEffect_001(description, abilityList, combatEffectList, new PgCombatEffectCollectionEx(), targetAbilityList, out pgCombatModEx, disallowPrevioustarget, ignoreModifierIndex);
     }
 
-    private void BuildModEffect_004(string description, PgEffect effect, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx)
+    private void BuildModEffect_004(string description, PgEffect effect, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, int ignoreModifierIndex = -1)
     {
         float DurationInSeconds = float.NaN;
         CombatKeywordEx Keyword = CombatKeywordEx.Internal_None;
@@ -2179,7 +2180,7 @@ internal partial class CombatParserEx
 
         // Inverse static & dynamic
         BuildModEffect_001(description, targetAbilityList, staticCombatEffectList, new(), targetAbilityList, out pgCombatModEx);
-        BuildModEffect_001(description, abilityList, new(), dynamicCombatEffectList, targetAbilityList, out PgCombatModEx pgOtherCombatModEx);
+        BuildModEffect_001(description, abilityList, new(), dynamicCombatEffectList, targetAbilityList, out PgCombatModEx pgOtherCombatModEx, ignoreModifierIndex: ignoreModifierIndex);
 
         PgCombatModEffectEx pgApplyBuff = new()
         {

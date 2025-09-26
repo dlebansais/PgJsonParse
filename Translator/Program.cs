@@ -1772,6 +1772,7 @@ public class Program
         LycanOnly,
         FaeOnly,
         Hunting,
+        Vampire,
     };
 
     private static Dictionary<MapAreaName, Dictionary<string, QuestSpecifics>> KnownUniqueQuests = new()
@@ -2539,12 +2540,18 @@ public class Program
                 { "Angling: Radiant Muskie", QuestSpecifics.None }, //?
                 { "Angling: Vidarian Pickerel", QuestSpecifics.None }, //?
                 { "Blood of Lost Thralls", QuestSpecifics.None }, //?
+                { "Cleen Up Te Streetz", QuestSpecifics.None },
                 { "Collaborative Ice Fishing", QuestSpecifics.None }, //?
                 { "Crystal Mobility Analysis", QuestSpecifics.None },
+                { "Death and Destruction", QuestSpecifics.None },
                 { "Deciphering the Planar Planner", QuestSpecifics.None }, //?
                 { "Demon Soldiers", QuestSpecifics.None },
                 { "Demonic Gems", QuestSpecifics.None },
                 { "Droach Pineal Juice", QuestSpecifics.None }, //?
+                { "Fancying the Frostbelches", QuestSpecifics.None },
+                { "Fancying the Frostbelches, part 2", QuestSpecifics.None },
+                { "Fancying the Frostbelches, part 3", QuestSpecifics.None },
+                { "Fancying the Frostbelches, part 4", QuestSpecifics.None },
                 { "Fire and Darkness From the Hole", QuestSpecifics.None },
                 { "Flapskull Blood", QuestSpecifics.None },
                 { "Fluxic Quartz", QuestSpecifics.None },
@@ -2553,26 +2560,32 @@ public class Program
                 { "Grasuul the Butler", QuestSpecifics.None }, //?
                 { "Hole Bulwarks", QuestSpecifics.None },
                 { "Infernal Recipes", QuestSpecifics.None },
+                { "Investigate Korbok's Poisons", QuestSpecifics.None },
                 { "Khyrulek's Planar Planner", QuestSpecifics.None }, //?
                 { "Lesser of Two Evils", QuestSpecifics.None },
                 { "Lonely at the Top", QuestSpecifics.None },
                 { "Lost Strength", QuestSpecifics.None }, //?
                 { "Magma Testing", QuestSpecifics.None }, //?
+                { "Mindful Massacre", QuestSpecifics.None },
+                { "Pain and Suffering", QuestSpecifics.None },
                 { "Pocket Magma", QuestSpecifics.None }, //?
                 { "Realigning the Planar Planner", QuestSpecifics.None }, //?
                 { "Recover Engineering Notes", QuestSpecifics.None }, //?
                 { "Reinvigorating the Mind", QuestSpecifics.None }, //?
                 { "Remnants of the First Thrall", QuestSpecifics.None }, //?
+                { "Sentience Slaughter", QuestSpecifics.None },
                 { "Spectracite", QuestSpecifics.None },
                 { "Swarmer Brains", QuestSpecifics.None },
                 { "Testing Your Demon-Killing Mettle", QuestSpecifics.None },
-                { "The Man In The Coffin", QuestSpecifics.None }, //???????
+                { "The Korbok Investigation", QuestSpecifics.None },
+                { "The Man In The Coffin", QuestSpecifics.Vampire },
                 { "The Mind Made Anew", QuestSpecifics.None }, //?
                 { "The Power of the Bat", QuestSpecifics.None }, //?
                 { "The Stonecurl Clan", QuestSpecifics.None }, //?
                 { "The Strength Potion's Strength", QuestSpecifics.None }, //?
                 { "The Swarmer Hypothesis", QuestSpecifics.None },
                 { "Undead Memories", QuestSpecifics.None }, //?
+                { "Undercover Poison Collection", QuestSpecifics.None },
             }
         },
         {

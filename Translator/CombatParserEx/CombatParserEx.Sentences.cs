@@ -69,8 +69,6 @@ internal partial class CombatParserEx
 
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
 
-        new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
-
         new SentenceEx("After a %f second delay", CombatKeywordEx.EffectDelay),
         new SentenceEx("After an %f second delay", CombatKeywordEx.EffectDelay),
 
@@ -97,8 +95,11 @@ internal partial class CombatParserEx
         new SentenceEx("Sprint speed by %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("%f Movement Speed", CombatKeywordEx.AddSprintSpeed),
 
+        new SentenceEx("Cause your next", new List<CombatKeywordEx>() { CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Your next use", CombatKeywordEx.NextUse),
         new SentenceEx("Your next ability", CombatKeywordEx.NextUse),
+
+        new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
 
         new SentenceEx("Armor Recovery Per Second: %f of Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
