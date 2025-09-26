@@ -178,6 +178,8 @@ internal partial class CombatParserEx
         new SentenceEx("Have less than %f of their Max Rage", CombatKeywordEx.RequireLowRage),
         new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireLowRage),
 
+        new SentenceEx("Deal %f damage to Health and Armor", CombatKeywordEx.DealHealthAndArmorDamage),
+
         new SentenceEx("Boost the damage of @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Boost the #D damage of @ and @ %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Increase the damage of all targets' attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToAllies }),
@@ -313,6 +315,7 @@ internal partial class CombatParserEx
         new SentenceEx("#D mitigation %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Your Direct and Indirect #D mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Direct and Indirect #D mitigation %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("%f #D mitigation", CombatKeywordEx.AddMitigation),
         new SentenceEx("Increase your #D Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Damage Mitigation", CombatKeywordEx.AddMitigation),
@@ -328,6 +331,20 @@ internal partial class CombatParserEx
         new SentenceEx("Mitigate %f of all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
 
+        new SentenceEx("Make the target %f more vulnerable to direct #D damage", CombatKeywordEx.AddMitigationDirect, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Gain %f Direct Elite Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
+        new SentenceEx("%f Vulnerability to Elite Direct Damage", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
+        new SentenceEx("Universal Direct Mitigation %f", CombatKeywordEx.AddMitigationDirect),
+        new SentenceEx("Universal Direct Elite Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Universal Elite Direct Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Give you %f mitigation from direct attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f mitigation vs direct attack", CombatKeywordEx.AddMitigationDirect),
+        new SentenceEx("Direct #D mitigation %f", CombatKeywordEx.AddMitigationDirect),
+        new SentenceEx("%f mitigation from Direct #D damage", CombatKeywordEx.AddMitigationDirect),
+        new SentenceEx("%f direct damage mitigation", CombatKeywordEx.AddMitigationDirect),
+        new SentenceEx("Boost your direct damage mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f Direct Mitigation", CombatKeywordEx.AddMitigationDirect),
+
         new SentenceEx("Vs Elite", CombatKeywordEx.RequireEliteTarget),
         new SentenceEx("If target is Elite or Boss", CombatKeywordEx.RequireEliteTarget),
         new SentenceEx("If target is Elite", CombatKeywordEx.RequireEliteTarget),
@@ -342,5 +359,9 @@ internal partial class CombatParserEx
         new SentenceEx("Until it has absorbed a total of %f damage", CombatKeywordEx.MaxMitigatedDamageLimit),
         new SentenceEx("Until it has absorbed %f total damage", CombatKeywordEx.MaxMitigatedDamageLimit),
         new SentenceEx ("Up to a maximum of %f total mitigated damage", CombatKeywordEx.MaxMitigatedDamageLimit),
+
+        new SentenceEx("Rage attack deal %f", CombatKeywordEx.RageAttackBoost),
+        new SentenceEx("Pet's Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
+        new SentenceEx("Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
     };
 }

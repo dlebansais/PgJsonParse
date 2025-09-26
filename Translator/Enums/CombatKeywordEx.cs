@@ -19,6 +19,7 @@
         Knockback,
         DamageBoost,
         DealArmorDamage,
+        DealHealthAndArmorDamage,
         DispelRootSlow,
         AddSprintPowerCost,
         AddMeleeAccuracy,
@@ -34,9 +35,11 @@
         GenerateTaunt,
         NextAttackMiss,
         AddMitigation,
+        AddMitigationDirect,
         ChanceToConsume,
         SelfStun,
         MaxMitigatedDamageLimit,
+        RageAttackBoost,
 
         // Other effects
         ApplyWithChance,
