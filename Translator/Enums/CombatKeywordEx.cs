@@ -34,6 +34,7 @@
         GenerateTaunt,
         NextAttackMiss,
         AddMitigation,
+        ChanceToConsume,
 
         // Other effects
         ApplyWithChance,
@@ -63,6 +64,7 @@
         EveryOtherUse,
         RequireVulnerableTarget,
         RequireAttackAbility,
+        RequireEliteTarget,
 
         // Synthetic
         GiveBuff,

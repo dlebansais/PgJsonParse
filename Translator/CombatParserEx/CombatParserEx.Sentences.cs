@@ -8,6 +8,8 @@ internal partial class CombatParserEx
 {
     private static List<SentenceEx> SentenceList = new List<SentenceEx>()
     {
+        new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
+
         new SentenceEx("Heal you for %f Health/Armor", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Health/Armor healing", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Heal your pet for %f Health/Armor", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToPet }),
@@ -301,16 +303,35 @@ internal partial class CombatParserEx
         new SentenceEx("Target to take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f of all #D damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f damage from #D attacks", CombatKeywordEx.AddMitigation),
+        //
         new SentenceEx("Increase your mitigation vs #D attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Further debuff their mitigation %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Grant you %f mitigation against all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Mitigation from attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("You gain %f mitigation vs #D", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("#D mitigation %f", CombatKeywordEx.AddMitigation),
-        new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Your Direct and Indirect #D mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f #D mitigation", CombatKeywordEx.AddMitigation),
         new SentenceEx("Increase your #D Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Damage Mitigation", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Elite #D mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Take %f damage from elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
+        new SentenceEx("#D Mitigation vs Elites %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Mitigation vs Elite attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Resist %f damage from Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("A further %f from Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Mitigate %f more against Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Mitigation vs all attack by Elites %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Against Elite enemies, mitigate %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Mitigate %f of all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+
+        new SentenceEx("Vs Elite", CombatKeywordEx.RequireEliteTarget),
+        new SentenceEx("If target is Elite or Boss", CombatKeywordEx.RequireEliteTarget),
+        new SentenceEx("If target is Elite", CombatKeywordEx.RequireEliteTarget),
+        new SentenceEx("To Elite targets", CombatKeywordEx.RequireEliteTarget),
+
+        new SentenceEx("Chance to consume grass is %f", CombatKeywordEx.ChanceToConsume),
+        new SentenceEx("Chance to consume carrot is %f", CombatKeywordEx.ChanceToConsume),
     };
 }

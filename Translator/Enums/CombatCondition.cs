@@ -15,4 +15,5 @@ public enum CombatCondition
     TargetIsVulnerable,
     AttackAbility,
     PetAttackType,
+    TargetIsElite,
 }
