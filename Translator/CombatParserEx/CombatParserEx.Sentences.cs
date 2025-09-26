@@ -8,8 +8,6 @@ internal partial class CombatParserEx
 {
     private static List<SentenceEx> SentenceList = new List<SentenceEx>()
     {
-        new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
-
         new SentenceEx("Heal you for %f Health/Armor", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Health/Armor healing", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Heal your pet for %f Health/Armor", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToPet }),
@@ -77,6 +75,7 @@ internal partial class CombatParserEx
         new SentenceEx("After an %f second delay", CombatKeywordEx.EffectDelay),
 
         new SentenceEx("For %f second", CombatKeywordEx.EffectDuration),
+        new SentenceEx("For %f minute", CombatKeywordEx.EffectDurationInMinutes),
 
         new SentenceEx("Every %f second", CombatKeywordEx.RecurringEffect),
 
@@ -272,6 +271,9 @@ internal partial class CombatParserEx
         new SentenceEx("To cost 0 Power", CombatKeywordEx.ZeroPowerCost),
 
         new SentenceEx("Conjures a magical field on the target", CombatKeywordEx.BestowProtectiveBubble),
+        new SentenceEx("Covers the target in a barrier that mitigate %f damage from #D attack", CombatKeywordEx.BestowProtectiveBubble),
+        new SentenceEx("Conjures a magical field around each target that mitigate %f of all physical damage they take", CombatKeywordEx.BestowProtectiveBubble),
+        new SentenceEx("Conjures a magical field that mitigate %f of all physical damage you take", new List<CombatKeywordEx>() { CombatKeywordEx.BestowProtectiveBubble, CombatKeywordEx.ApplyToSelf}),
 
         new SentenceEx("Slowdown Cancelled", CombatKeywordEx.CancelSlowdown),
         new SentenceEx("has no slowdown effect", CombatKeywordEx.CancelSlowdown),
@@ -303,13 +305,13 @@ internal partial class CombatParserEx
         new SentenceEx("Target to take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f of all #D damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f damage from #D attacks", CombatKeywordEx.AddMitigation),
-        //
         new SentenceEx("Increase your mitigation vs #D attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Further debuff their mitigation %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Grant you %f mitigation against all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Mitigation from attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("You gain %f mitigation vs #D", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("#D mitigation %f", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Your Direct and Indirect #D mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f #D mitigation", CombatKeywordEx.AddMitigation),
         new SentenceEx("Increase your #D Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
@@ -333,5 +335,12 @@ internal partial class CombatParserEx
 
         new SentenceEx("Chance to consume grass is %f", CombatKeywordEx.ChanceToConsume),
         new SentenceEx("Chance to consume carrot is %f", CombatKeywordEx.ChanceToConsume),
+
+        new SentenceEx("Stun you", CombatKeywordEx.SelfStun),
+
+        new SentenceEx("Until %f damage is mitigated", CombatKeywordEx.MaxMitigatedDamageLimit),
+        new SentenceEx("Until it has absorbed a total of %f damage", CombatKeywordEx.MaxMitigatedDamageLimit),
+        new SentenceEx("Until it has absorbed %f total damage", CombatKeywordEx.MaxMitigatedDamageLimit),
+        new SentenceEx ("Up to a maximum of %f total mitigated damage", CombatKeywordEx.MaxMitigatedDamageLimit),
     };
 }

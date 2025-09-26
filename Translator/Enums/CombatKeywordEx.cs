@@ -35,11 +35,14 @@
         NextAttackMiss,
         AddMitigation,
         ChanceToConsume,
+        SelfStun,
+        MaxMitigatedDamageLimit,
 
         // Other effects
         ApplyWithChance,
         EffectDelay,
         EffectDuration,
+        EffectDurationInMinutes,
         EffectOverTime,
         EffectEverySecond,
         RecurringEffect,
