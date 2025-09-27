@@ -79,6 +79,7 @@
         RequireAttackAbility,
         RequireEliteTarget,
         LastingMark,
+        IfTargetDies,
 
         // Synthetic
         GiveBuff,

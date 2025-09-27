@@ -1720,7 +1720,16 @@ internal partial class CombatParserEx
                 BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0], dynamicCombatEffectList[1] }, new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, dynamicCombatEffectList[2] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "16009":
-                BuildModEffect_004(description, effect, abilityList, new(), new() { dynamicCombatEffectList[0], new() { Keyword = CombatKeywordEx.LastingMark, Data = new() }, staticCombatEffectList[0], staticCombatEffectList[1] }, new(), out pgCombatModEx);
+                if (staticCombatEffectList.Count == 4)
+                    BuildModEffect_004(description, effect, abilityList, new(), new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.LastingMark, Data = new() }, staticCombatEffectList[2], staticCombatEffectList[3] }, new(), out pgCombatModEx);
+                else
+                    BuildModEffect_004(description, effect, abilityList, new(), new() { dynamicCombatEffectList[0], new() { Keyword = CombatKeywordEx.LastingMark, Data = new() }, staticCombatEffectList[0], staticCombatEffectList[1] }, new(), out pgCombatModEx);
+                break;
+            case "17083":
+                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.ApplyToAllies, Data = new() }, new() { Keyword = CombatKeywordEx.WhilePlayingSong, Data = new() }, staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
+                break;
+            case "17084":
+                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.WhilePlayingSong, Data = new() }, dynamicCombatEffectList[0], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "12313":
             case "28141":
@@ -1765,14 +1774,10 @@ internal partial class CombatParserEx
             case "11503":
                 BuildModEffect_007(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
-            case "17083":
-                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.ApplyToAllies, Data = new() }, new() { Keyword = CombatKeywordEx.WhilePlayingSong, Data = new() }, staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
-                break;
-            case "17084":
-                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.WhilePlayingSong, Data = new() }, dynamicCombatEffectList[0], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
-                break;
             case "18064":
             case "18065":
+                BuildModEffect_007(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                break;
             case "21041":
             case "2301":
             case "2302":
@@ -2198,7 +2203,9 @@ internal partial class CombatParserEx
                 float? RawValue = CombatEffect.Data.RawValue;
                 Debug.Assert(RawValue != null);
                 DurationInSeconds = RawValue!.Value;
-                Keyword = CombatKeywordEx.GiveBuff;
+
+                if (Keyword == CombatKeywordEx.Internal_None)
+                    Keyword = CombatKeywordEx.GiveBuff;
 
                 staticCombatEffectList.RemoveAt(i);
                 break;
@@ -2220,6 +2227,10 @@ internal partial class CombatParserEx
 
                 staticCombatEffectList.RemoveAt(i);
                 break;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.IfTargetDies)
+            {
+                Keyword = CombatKeywordEx.GiveBuffOneUse;
             }
             else if (CombatEffect.Keyword == CombatKeywordEx.WhilePlayingSong)
             {

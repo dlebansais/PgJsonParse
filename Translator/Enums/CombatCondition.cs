@@ -16,4 +16,5 @@ public enum CombatCondition
     AttackAbility,
     PetAttackType,
     TargetIsElite,
+    TargetKilled,
 }

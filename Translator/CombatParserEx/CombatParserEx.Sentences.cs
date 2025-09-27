@@ -29,6 +29,7 @@ internal partial class CombatParserEx
         new SentenceEx("You regenerate %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Recover %f health", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Restoration %f", CombatKeywordEx.RestoreHealth),
+        new SentenceEx("You heal %f health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Heal %f health", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Healing %f", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Heal you %f", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
@@ -74,6 +75,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("For %f second", CombatKeywordEx.EffectDuration),
         new SentenceEx("For %f minute", CombatKeywordEx.EffectDurationInMinutes),
+        new SentenceEx("Within %f second", CombatKeywordEx.EffectDuration),
 
         new SentenceEx("Every %f second", CombatKeywordEx.RecurringEffect),
 
@@ -386,5 +388,7 @@ internal partial class CombatParserEx
         new SentenceEx("Doing so remove the stun effect from you", new List<CombatKeywordEx>() { CombatKeywordEx.RemoveStun, CombatKeywordEx.ApplyToSelf }),
 
         new SentenceEx("Can be used while stunned", CombatKeywordEx.AllowedWhileStunned),
+
+        new SentenceEx("If the target of @ dies", CombatKeywordEx.IfTargetDies),
     };
 }
