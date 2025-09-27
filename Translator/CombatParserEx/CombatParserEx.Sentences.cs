@@ -208,6 +208,12 @@ internal partial class CombatParserEx
         new SentenceEx("Boost the damage from @ %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost the damage of all your attack %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost #D damage %f", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Boost your next attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Future @ attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Boost the damage of future @ attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Increase the damage of your next attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Reduce the damage of the target's next attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reduce targets' next attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }, SignInterpretation.AlwaysNegative),
         new SentenceEx("Increase the damage of your @ by %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your direct and indirect #D damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Direct and Indirect #D Damage %f", CombatKeywordEx.DamageBoost),
@@ -305,6 +311,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant %f Universal #D Mitigation", CombatKeywordEx.AddMitigation),
         new SentenceEx("Universal Damage Mitigation %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("Reduce the damage you take from #D attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Reduce the damage of the next attack that hit the target by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.NextAttack }),
         new SentenceEx("Take %f less damage from all attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Target take %f less damage from attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Target take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
@@ -390,5 +397,10 @@ internal partial class CombatParserEx
         new SentenceEx("Can be used while stunned", CombatKeywordEx.AllowedWhileStunned),
 
         new SentenceEx("If the target of @ dies", CombatKeywordEx.IfTargetDies),
+
+        new SentenceEx("Your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Next attack", CombatKeywordEx.NextAttack),
+        new SentenceEx("Next ability", CombatKeywordEx.NextAttack),
+        new SentenceEx("For one attack", CombatKeywordEx.NextAttack),
     };
 }

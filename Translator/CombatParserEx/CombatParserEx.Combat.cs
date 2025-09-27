@@ -273,6 +273,7 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "have less than a third of their Max Rage", "have less than 33% of their Max Rage", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "has less than a third of their Max Rage", "have less than 33% of their Max Rage", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "physical damage (Crushing, Slashing, Piercing)", "Crushing, Slashing, and Piercing damage", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "Fire Wall reuse time", "Wall of Fire reuse time", out _, ref IndexFound);
         ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
@@ -1731,6 +1732,9 @@ internal partial class CombatParserEx
             case "17084":
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.WhilePlayingSong, Data = new() }, dynamicCombatEffectList[0], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
                 break;
+            case "21041":
+                BuildModEffect_004(description, effect, abilityList, new() { staticCombatEffectList[0] }, new() { staticCombatEffectList[1], staticCombatEffectList[2], staticCombatEffectList[3] }, targetAbilityList, out pgCombatModEx);
+                break;
             case "12313":
             case "28141":
             case "28142":
@@ -1778,10 +1782,6 @@ internal partial class CombatParserEx
             case "18065":
                 BuildModEffect_007(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
-            case "21041":
-            case "2301":
-            case "2302":
-            case "2303":
             case "25225":
             case "26223":
             case "27075":
@@ -2224,6 +2224,14 @@ internal partial class CombatParserEx
             {
                 DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
                 Keyword = CombatKeywordEx.GiveBuffOneUse;
+
+                staticCombatEffectList.RemoveAt(i);
+                break;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.NextAttack)
+            {
+                DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
+                Keyword = CombatKeywordEx.GiveBuffOneAttack;
 
                 staticCombatEffectList.RemoveAt(i);
                 break;

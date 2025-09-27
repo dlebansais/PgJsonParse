@@ -62,6 +62,7 @@
         ApplyToPet,
         ApplyToSelfAndPet,
         NextUse,
+        NextAttack,
         TargetRange,
         RequireTwoKnives,
         RequireNoAggro,
@@ -84,6 +85,7 @@
         // Synthetic
         GiveBuff,
         GiveBuffOneUse,
+        GiveBuffOneAttack,
         RestoreHealthOverTime,
         RestoreArmorOverTime,
         RestorePowerOverTime,
