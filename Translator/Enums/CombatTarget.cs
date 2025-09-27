@@ -20,4 +20,5 @@ public enum CombatTarget
     DruidHealingSanctuary,
     SpiritFoxPowerGlyph,
     FairyFaeConduit,
+    BattleChemistryGolem,
 }

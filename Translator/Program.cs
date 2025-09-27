@@ -2530,8 +2530,8 @@ public class Program
         {
             MapAreaName.Vidaria, new Dictionary<string, QuestSpecifics>()
             {
-                { "A Dwarf in the Swamp", QuestSpecifics.None }, //?
-                { "A New Mining Pick", QuestSpecifics.None }, //?
+                { "A Dwarf in the Swamp", QuestSpecifics.None },
+                { "A New Mining Pick", QuestSpecifics.None },
                 { "A New Strength Potion", QuestSpecifics.None }, //?
                 { "Accessing the Safehouse", QuestSpecifics.None }, //?
                 { "An Orc in the Mountains", QuestSpecifics.None }, //?

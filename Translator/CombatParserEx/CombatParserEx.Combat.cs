@@ -226,7 +226,7 @@ internal partial class CombatParserEx
             TargetAbilityList = ModTargetAbilityList,
         };
 
-        BuildModEffect(powerKey, effect, powerSimpleEffect.Description, ModAbilityList, DynamicCombatEffectList, StaticCombatEffectList, ModTargetAbilityList, out pgCombatModEx);
+        BuildModEffect(powerKey, effect, powerSimpleEffect.Description, IsGolemAbility, ModAbilityList, DynamicCombatEffectList, StaticCombatEffectList, ModTargetAbilityList, out pgCombatModEx);
 
         return true;
     }
@@ -465,7 +465,7 @@ internal partial class CombatParserEx
         foreach (string AbilityName in abilityNameList)
             if (nameToKeyword.ContainsKey(AbilityName))
             {
-                if (AbilityName.StartsWith("Animal Handling pets"))
+                if (AbilityName.Contains("minion"))
                 {
                 }
 
@@ -1216,7 +1216,7 @@ internal partial class CombatParserEx
         return true;
     }
 
-    private void BuildModEffect(string powerKey, PgEffect effect, string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx)
+    private void BuildModEffect(string powerKey, PgEffect effect, string description, bool isGolemMinion, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx)
     {
         switch (powerKey)
         {
@@ -1490,7 +1490,12 @@ internal partial class CombatParserEx
             case "9862":
             case "28242":
             case "29942":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+            case "7306":
+            case "7307":
+            case "7308":
+            case "7309":
+            case "7310":
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
             case "14151":
@@ -1499,7 +1504,7 @@ internal partial class CombatParserEx
             case "14154":
             case "14155":
             case "14156":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget: true);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget: true);
                 break;
             case "1023":
             case "163":
@@ -1509,13 +1514,13 @@ internal partial class CombatParserEx
             case "20353":
             case "5035":
             case "21002":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
             case "8318":
             case "13054":
             case "15102":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
                 break;
             case "25223":
             case "4004":
@@ -1525,31 +1530,31 @@ internal partial class CombatParserEx
             case "9752":
             case "1303":
             case "3047":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "26224":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1000);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1000);
                 break;
             case "12092":
             case "13004":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget: true);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget: true);
                 break;
             case "12121":
                 staticCombatEffectList.Insert(2, staticCombatEffectList[0]);
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "17063":
-                BuildModEffect_002(description, targetAbilityList, dynamicCombatEffectList, staticCombatEffectList, abilityList, out pgCombatModEx);
+                BuildModEffect_002(description, isGolemMinion, targetAbilityList, dynamicCombatEffectList, staticCombatEffectList, abilityList, out pgCombatModEx);
                 break;
             case "28184":
-                BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                BuildModEffect_001(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "3043":
             case "9404":
-                BuildModEffect_001(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                BuildModEffect_001(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "24033":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 pgCombatModEx.DynamicEffects[0] = new()
                 {
                     AbilityList = pgCombatModEx.DynamicEffects[0].AbilityList,
@@ -1563,10 +1568,10 @@ internal partial class CombatParserEx
             case "4201":
             case "21083":
             case "14402":
-                BuildModEffect_003(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                BuildModEffect_003(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "14205":
-                BuildModEffect_003(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                BuildModEffect_003(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             default:
                 if (dynamicCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
@@ -1648,7 +1653,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.RemoveEffect ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
-                    BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                    BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 }
                 else
                 {
@@ -1729,6 +1734,7 @@ internal partial class CombatParserEx
             case "8301":
             case "8302":
             case "8304":
+            case "7301":
                 BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "11503":
@@ -1760,12 +1766,6 @@ internal partial class CombatParserEx
             case "6306":
             case "7215":
             case "7216":
-            case "7301":
-            case "7306":
-            case "7307":
-            case "7308":
-            case "7309":
-            case "7310":
             case "7491":
             case "8006":
             case "16082":
@@ -1778,7 +1778,7 @@ internal partial class CombatParserEx
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
-                BuildModEffect_002(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "KKK":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
@@ -1786,7 +1786,7 @@ internal partial class CombatParserEx
         }
     }
 
-    private void BuildModEffect_001(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
+    private void BuildModEffect_001(string description, bool isGolemMinion, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
     {
         List<PgCombatEffectEx> AllEffects = new(dynamicCombatEffectList);
         AllEffects.AddRange(staticCombatEffectList);
@@ -2019,6 +2019,14 @@ internal partial class CombatParserEx
             if (CombatKeyword == CombatKeywordEx.MaxMitigatedDamageLimit && Target == CombatTarget.Self)
                 Target = CombatTarget.Internal_None;
 
+            if (abilityList.Count == 1 && isGolemMinion)
+            {
+                if (abilityList[0] == AbilityKeyword.HealingMist)
+                    abilityList[0] = AbilityKeyword.GolemHealingMist;
+                else if (abilityList[0] == AbilityKeyword.HealingInjection)
+                    abilityList[0] = AbilityKeyword.GolemHealingInjection;
+            }
+
             PgCombatModEffectEx pgCombatModEffectEx = new()
             {
                 Keyword = CombatKeyword,
@@ -2118,20 +2126,20 @@ internal partial class CombatParserEx
         }
     }
 
-    private void BuildModEffect_002(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
+    private void BuildModEffect_002(string description, bool isGolemMinion, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
     {
         // Inverse static & dynamic
-        BuildModEffect_001(description, abilityList, staticCombatEffectList, dynamicCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget, ignoreModifierIndex);
+        BuildModEffect_001(description, isGolemMinion, abilityList, staticCombatEffectList, dynamicCombatEffectList, targetAbilityList, out pgCombatModEx, disallowPrevioustarget, ignoreModifierIndex);
     }
 
-    private void BuildModEffect_003(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
+    private void BuildModEffect_003(string description, bool isGolemMinion, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, bool disallowPrevioustarget = false, int ignoreModifierIndex = -1)
     {
         PgCombatEffectCollectionEx combatEffectList = new();
         combatEffectList.AddRange(dynamicCombatEffectList);
         combatEffectList.AddRange(staticCombatEffectList);
 
         // Concatenate static & dynamic to dynamic
-        BuildModEffect_001(description, abilityList, combatEffectList, new PgCombatEffectCollectionEx(), targetAbilityList, out pgCombatModEx, disallowPrevioustarget, ignoreModifierIndex);
+        BuildModEffect_001(description, isGolemMinion, abilityList, combatEffectList, new PgCombatEffectCollectionEx(), targetAbilityList, out pgCombatModEx, disallowPrevioustarget, ignoreModifierIndex);
     }
 
     private void BuildModEffect_004(string description, PgEffect effect, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, int ignoreModifierIndex = -1)
@@ -2200,8 +2208,8 @@ internal partial class CombatParserEx
         Debug.Assert(Keyword != CombatKeywordEx.Internal_None);
 
         // Inverse static & dynamic
-        BuildModEffect_001(description, targetAbilityList, staticCombatEffectList, new(), targetAbilityList, out pgCombatModEx);
-        BuildModEffect_001(description, abilityList, new(), dynamicCombatEffectList, targetAbilityList, out PgCombatModEx pgOtherCombatModEx, ignoreModifierIndex: ignoreModifierIndex);
+        BuildModEffect_001(description, isGolemMinion: false, targetAbilityList, staticCombatEffectList, new(), targetAbilityList, out pgCombatModEx);
+        BuildModEffect_001(description, isGolemMinion: false, abilityList, new(), dynamicCombatEffectList, targetAbilityList, out PgCombatModEx pgOtherCombatModEx, ignoreModifierIndex: ignoreModifierIndex);
 
         PgCombatModEffectEx pgApplyBuff = new()
         {
@@ -2288,6 +2296,9 @@ internal partial class CombatParserEx
                     break;
                 case AbilityKeyword.SummonSkeletonSwordsman:
                     Target = CombatTarget.NecromancySkeletonSwordsman;
+                    break;
+                case AbilityKeyword.Minigolem:
+                    Target = CombatTarget.BattleChemistryGolem;
                     break;
             }
         }

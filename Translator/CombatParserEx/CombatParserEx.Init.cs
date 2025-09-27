@@ -227,6 +227,7 @@ internal partial class CombatParserEx
         AbilityKeyword.TrickFox,
         AbilityKeyword.SummonedTornado,
         AbilityKeyword.ShieldBash,
+        AbilityKeyword.Minigolem,
         Internal_NonBasic,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
@@ -438,6 +439,7 @@ internal partial class CombatParserEx
         { "Trick Foxes", new List<AbilityKeyword>() { AbilityKeyword.TrickFox } },
         { "Summoned Tornadoes", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
         { "All targets' melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
+        { "Your golem minion has", new List<AbilityKeyword>() { AbilityKeyword.Minigolem } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {
