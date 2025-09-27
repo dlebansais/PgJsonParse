@@ -260,7 +260,7 @@ internal partial class CombatParserEx
         new SentenceEx("Does not cause the target to shout for help", CombatKeywordEx.NoYellForHelp),
 
         new SentenceEx("Mend a broken bone", CombatKeywordEx.RepairBrokenBone),
-        new SentenceEx("Randomly repair broken bones", CombatKeywordEx.RepairBrokenBone),
+        new SentenceEx("Randomly repair broken bones over time", CombatKeywordEx.RepairBrokenBoneOverTime),
 
         new SentenceEx("Every other", CombatKeywordEx.EveryOtherUse),
 
@@ -371,5 +371,12 @@ internal partial class CombatParserEx
         new SentenceEx("Remove ongoing #D effects (up to %f dmg/sec)", CombatKeywordEx.RemoveEffect),
 
         new SentenceEx("Target pet's Non-Rage attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.NonRageAttackBoost, CombatKeywordEx.ApplyToPet }),
+
+        new SentenceEx("Target take %f indirect #D damage", CombatKeywordEx.AddMitigationIndirect),
+        new SentenceEx("Cause the target to take %f damage from indirect #D", CombatKeywordEx.AddMitigationIndirect),
+        new SentenceEx("Universal Indirect Mitigation %f", CombatKeywordEx.AddMitigationIndirect),
+        new SentenceEx("Mitigate all damage over time by %f per tick", CombatKeywordEx.AddMitigationIndirect),
+        new SentenceEx("Indirect #D mitigation %f", CombatKeywordEx.AddMitigationIndirect),
+        new SentenceEx("Grant you %f Indirect #D Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationIndirect, CombatKeywordEx.ApplyToSelf}, SignInterpretation.Opposite),
     };
 }

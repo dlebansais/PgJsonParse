@@ -1497,6 +1497,9 @@ internal partial class CombatParserEx
             case "7310":
                 BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
+            case "2018":// todo: effect duration
+                BuildModEffect_002(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                break;
             case "1202":
             case "14151":
             case "14152":
@@ -1598,6 +1601,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.BecomeBurst ||
                                                            item.Keyword == CombatKeywordEx.NoYellForHelp ||
                                                            item.Keyword == CombatKeywordEx.RepairBrokenBone ||
+                                                           item.Keyword == CombatKeywordEx.RepairBrokenBoneOverTime ||
                                                            item.Keyword == CombatKeywordEx.ZeroPowerCost ||
                                                            item.Keyword == CombatKeywordEx.CancelSlowdown ||
                                                            item.Keyword == CombatKeywordEx.NullifyIgnoreKnockback ||
@@ -1605,6 +1609,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.NextAttackMiss ||
                                                            item.Keyword == CombatKeywordEx.AddMitigation ||
                                                            item.Keyword == CombatKeywordEx.AddMitigationDirect ||
+                                                           item.Keyword == CombatKeywordEx.AddMitigationIndirect ||
                                                            item.Keyword == CombatKeywordEx.AddMitigationBurst ||
                                                            item.Keyword == CombatKeywordEx.ChanceToConsume ||
                                                            item.Keyword == CombatKeywordEx.SelfStun ||
@@ -1637,6 +1642,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.BecomeBurst ||
                                                           item.Keyword == CombatKeywordEx.NoYellForHelp ||
                                                           item.Keyword == CombatKeywordEx.RepairBrokenBone ||
+                                                          item.Keyword == CombatKeywordEx.RepairBrokenBoneOverTime ||
                                                           item.Keyword == CombatKeywordEx.ZeroPowerCost ||
                                                           item.Keyword == CombatKeywordEx.CancelSlowdown ||
                                                           item.Keyword == CombatKeywordEx.NullifyIgnoreKnockback ||
@@ -1644,6 +1650,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.NextAttackMiss ||
                                                           item.Keyword == CombatKeywordEx.AddMitigation ||
                                                           item.Keyword == CombatKeywordEx.AddMitigationDirect ||
+                                                          item.Keyword == CombatKeywordEx.AddMitigationIndirect ||
                                                           item.Keyword == CombatKeywordEx.AddMitigationBurst ||
                                                           item.Keyword == CombatKeywordEx.ChanceToConsume ||
                                                           item.Keyword == CombatKeywordEx.SelfStun ||
@@ -1696,6 +1703,16 @@ internal partial class CombatParserEx
                 break;
             case "7009":
                 BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0] }, new() { dynamicCombatEffectList[2], dynamicCombatEffectList[1], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                break;
+            case "7215":
+            case "7216":
+                if (staticCombatEffectList.Count == 5)
+                    BuildModEffect_004(description, effect, abilityList, new() { staticCombatEffectList[0] }, new() { staticCombatEffectList[2], staticCombatEffectList[1], staticCombatEffectList[3], staticCombatEffectList[4] }, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                else
+                    BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0] }, new() { dynamicCombatEffectList[2], dynamicCombatEffectList[1], staticCombatEffectList[0], staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                break;
+            case "7491":
+                BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0], dynamicCombatEffectList[1] }, new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, dynamicCombatEffectList[2] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "12313":
             case "28141":
@@ -1764,9 +1781,6 @@ internal partial class CombatParserEx
             case "4064":
             case "4502":
             case "6306":
-            case "7215":
-            case "7216":
-            case "7491":
             case "8006":
             case "16082":
             case "9605":
@@ -1939,6 +1953,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreasePowerCost ||
                                    CombatKeyword == CombatKeywordEx.AddMitigation ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationDirect ||
+                                   CombatKeyword == CombatKeywordEx.AddMitigationIndirect ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationBurst ||
                                    CombatKeyword == CombatKeywordEx.BestowProtectiveBubble ||
                                    CombatKeyword == CombatKeywordEx.GenerateTaunt ||
@@ -1973,6 +1988,7 @@ internal partial class CombatParserEx
                                  (CombatKeyword != CombatKeywordEx.NextAttackMiss || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigation || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationDirect || CanApplyModifier) &&
+                                 (CombatKeyword != CombatKeywordEx.AddMitigationIndirect || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationBurst || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.IncreaseMeleePowerCost || CanApplyModifier);
 
