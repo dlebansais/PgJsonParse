@@ -373,7 +373,7 @@ internal partial class CombatParserEx
         new SentenceEx("Target pet's Non-Rage attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.NonRageAttackBoost, CombatKeywordEx.ApplyToPet }),
 
         new SentenceEx("Target take %f indirect #D damage", CombatKeywordEx.AddMitigationIndirect),
-        new SentenceEx("Cause the target to take %f damage from indirect #D", CombatKeywordEx.AddMitigationIndirect),
+        new SentenceEx("Cause the target to take %f damage from indirect #D", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.Opposite),
         new SentenceEx("Universal Indirect Mitigation %f", CombatKeywordEx.AddMitigationIndirect),
         new SentenceEx("Mitigate all damage over time by %f per tick", CombatKeywordEx.AddMitigationIndirect),
         new SentenceEx("Indirect #D mitigation %f", CombatKeywordEx.AddMitigationIndirect),
