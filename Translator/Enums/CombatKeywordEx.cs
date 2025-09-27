@@ -16,6 +16,8 @@
         IncreaseCurrentRefreshTime,
         ResetRefreshTime,
         StunImmunity,
+        RemoveStun,
+        AllowedWhileStunned,
         Knockback,
         DamageBoost,
         DealArmorDamage,
@@ -76,6 +78,7 @@
         RequireVulnerableTarget,
         RequireAttackAbility,
         RequireEliteTarget,
+        LastingMark,
 
         // Synthetic
         GiveBuff,
@@ -84,5 +87,6 @@
         RestoreArmorOverTime,
         RestorePowerOverTime,
         RestoreHealthOrArmorOverTime,
+        WhilePlayingSong,
     }
 }

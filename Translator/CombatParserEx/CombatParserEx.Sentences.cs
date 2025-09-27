@@ -119,6 +119,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant all allies", CombatKeywordEx.ApplyToAllies),
         new SentenceEx("And your allies' attack", CombatKeywordEx.ApplyToAllies),
         new SentenceEx("All allies", CombatKeywordEx.ApplyToAllies),
+        new SentenceEx("Effects on allies", CombatKeywordEx.ApplyToAllies),
 
         new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
 
@@ -150,6 +151,7 @@ internal partial class CombatParserEx
         new SentenceEx("Hasten the current reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the remaining reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Hasten the active reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Complete stun immunity", CombatKeywordEx.StunImmunity),
         new SentenceEx("Grant immunity to new stun", CombatKeywordEx.StunImmunity),
@@ -378,5 +380,11 @@ internal partial class CombatParserEx
         new SentenceEx("Mitigate all damage over time by %f per tick", CombatKeywordEx.AddMitigationIndirect),
         new SentenceEx("Indirect #D mitigation %f", CombatKeywordEx.AddMitigationIndirect),
         new SentenceEx("Grant you %f Indirect #D Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationIndirect, CombatKeywordEx.ApplyToSelf}, SignInterpretation.Opposite),
+
+        new SentenceEx("Dispel stun", CombatKeywordEx.RemoveStun),
+        new SentenceEx("Dispel any stun", CombatKeywordEx.RemoveStun),
+        new SentenceEx("Doing so remove the stun effect from you", new List<CombatKeywordEx>() { CombatKeywordEx.RemoveStun, CombatKeywordEx.ApplyToSelf }),
+
+        new SentenceEx("Can be used while stunned", CombatKeywordEx.AllowedWhileStunned),
     };
 }

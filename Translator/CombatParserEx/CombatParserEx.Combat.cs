@@ -1495,9 +1495,10 @@ internal partial class CombatParserEx
             case "7308":
             case "7309":
             case "7310":
-                BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
-                break;
-            case "2018":// todo: effect duration
+            case "17022":
+            case "17023":
+            case "17302":
+            case "3305":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1589,6 +1590,8 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
                                                            item.Keyword == CombatKeywordEx.ResetRefreshTime ||
                                                            item.Keyword == CombatKeywordEx.StunImmunity ||
+                                                           item.Keyword == CombatKeywordEx.RemoveStun ||
+                                                           item.Keyword == CombatKeywordEx.AllowedWhileStunned ||
                                                            item.Keyword == CombatKeywordEx.Knockback ||
                                                            /*item.Keyword == CombatKeywordEx.DamageBoost ||*/
                                                            item.Keyword == CombatKeywordEx.DealArmorDamage ||
@@ -1630,6 +1633,8 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
                                                           item.Keyword == CombatKeywordEx.ResetRefreshTime ||
                                                           item.Keyword == CombatKeywordEx.StunImmunity ||
+                                                          item.Keyword == CombatKeywordEx.RemoveStun ||
+                                                          item.Keyword == CombatKeywordEx.AllowedWhileStunned ||
                                                           item.Keyword == CombatKeywordEx.Knockback ||
                                                           /*item.Keyword == CombatKeywordEx.DamageBoost ||*/
                                                           item.Keyword == CombatKeywordEx.DealArmorDamage ||
@@ -1714,6 +1719,9 @@ internal partial class CombatParserEx
             case "7491":
                 BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0], dynamicCombatEffectList[1] }, new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, dynamicCombatEffectList[2] }, targetAbilityList, out pgCombatModEx);
                 break;
+            case "16009":
+                BuildModEffect_004(description, effect, abilityList, new(), new() { dynamicCombatEffectList[0], new() { Keyword = CombatKeywordEx.LastingMark, Data = new() }, staticCombatEffectList[0], staticCombatEffectList[1] }, new(), out pgCombatModEx);
+                break;
             case "12313":
             case "28141":
             case "28142":
@@ -1757,12 +1765,12 @@ internal partial class CombatParserEx
             case "11503":
                 BuildModEffect_007(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
-            case "16009":
-            case "17022":
-            case "17023":
             case "17083":
+                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.ApplyToAllies, Data = new() }, new() { Keyword = CombatKeywordEx.WhilePlayingSong, Data = new() }, staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
+                break;
             case "17084":
-            case "17302":
+                BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.WhilePlayingSong, Data = new() }, dynamicCombatEffectList[0], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
+                break;
             case "18064":
             case "18065":
             case "21041":
@@ -2213,6 +2221,13 @@ internal partial class CombatParserEx
                 staticCombatEffectList.RemoveAt(i);
                 break;
             }
+            else if (CombatEffect.Keyword == CombatKeywordEx.WhilePlayingSong)
+            {
+                Keyword = CombatEffect.Keyword;
+
+                staticCombatEffectList.RemoveAt(i);
+                break;
+            }
             else if (CombatEffect.Keyword == CombatKeywordEx.GenerateTaunt)
             {
                 DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
@@ -2235,10 +2250,16 @@ internal partial class CombatParserEx
                 staticCombatEffectList.RemoveAt(i);
                 i--;
             }
+            else if (CombatEffect.Keyword == CombatKeywordEx.ApplyToAllies)
+            {
+                Target = CombatTarget.Allies;
+                staticCombatEffectList.RemoveAt(i);
+                i--;
+            }
         }
 
-        Debug.Assert(!float.IsNaN(DurationInSeconds));
         Debug.Assert(Keyword != CombatKeywordEx.Internal_None);
+        Debug.Assert(!float.IsNaN(DurationInSeconds) || Keyword == CombatKeywordEx.WhilePlayingSong);
 
         // Inverse static & dynamic
         BuildModEffect_001(description, effect, isGolemMinion: false, targetAbilityList, staticCombatEffectList, new(), targetAbilityList, out pgCombatModEx);
