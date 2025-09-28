@@ -409,5 +409,18 @@ internal partial class CombatParserEx
         new SentenceEx("Damage type is #D instead", CombatKeywordEx.ChangeDamageType),
         new SentenceEx("Damage become #D", CombatKeywordEx.ChangeDamageType),
         new SentenceEx("Damage type is changed to #D", CombatKeywordEx.ChangeDamageType),
+
+        new SentenceEx("Max Breath %f", CombatKeywordEx.IncreaseMaxBreath),
+
+        new SentenceEx("Radiation Protection %f", CombatKeywordEx.IncreaseRadiationProtection),
+
+        new SentenceEx("If target is more than %f meter away", CombatKeywordEx.RequireMinimumDistance),
+
+        new SentenceEx("Before you teleport", CombatKeywordEx.BeforeTrigger),
+        new SentenceEx("While @ is active", CombatKeywordEx.BeforeTrigger),
+
+        new SentenceEx("Absorb %f damage before dissipating", CombatKeywordEx.AbsorbDamage),
+
+        new SentenceEx("The next attacker that hit the pet will be stunned", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToPet, CombatKeywordEx.RequireBeingHit, CombatKeywordEx.Stun }),
     };
 }

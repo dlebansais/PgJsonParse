@@ -28,7 +28,7 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
     {
         Write("         ", $" new {pgCombatModEx.GetType().Name}()");
         Write("         ", " {");
-        Write("             ", $" Description = \"{pgCombatModEx.Description.Replace("\"", "\\\"")}\",");
+        Write("             ", $" Description = \"{Encoded(pgCombatModEx.Description)}\",");
         Write("             ", $" PermanentEffects = new List<{typeof(PgPermanentModEffectEx).Name}>()");
         Write("             ", " {");
 
@@ -116,6 +116,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (pgCombatModEffectEx.ActiveAbilityCondition != AbilityKeyword.Internal_None)
             Write("                     ", $" ActiveAbilityCondition = AbilityKeyword.{pgCombatModEffectEx.ActiveAbilityCondition},");
 
+        if (!float.IsNaN(pgCombatModEffectEx.ConditionValue))
+            Write("                     ", $" ConditionValue = {pgCombatModEffectEx.ConditionValue.ToString(CultureInfo.InvariantCulture)},");
+
         if (!float.IsNaN(pgCombatModEffectEx.ConditionPercentage))
             Write("                     ", $" ConditionPercentage = {pgCombatModEffectEx.ConditionPercentage.ToString(CultureInfo.InvariantCulture)},");
 
@@ -123,6 +126,13 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
             Write("                     ", $" IsEveryOtherUse = true,");
 
         Write("                 ", " },");
+    }
+
+    private static string Encoded(string text)
+    {
+        return text.Replace("\"", "\\\"")
+                   .Replace("\r", string.Empty)
+                   .Replace("\n", " ");
     }
 
     private static string AbilityKeywordListToString(List<AbilityKeyword> list)

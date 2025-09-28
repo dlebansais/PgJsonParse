@@ -11,6 +11,7 @@
         IncreaseMaxHealth,
         IncreaseMaxArmor,
         IncreaseMaxPower,
+        IncreaseMaxBreath,
         RegenPercentageOfArmor,
         IncreaseHealEfficiency,
         IncreaseCurrentRefreshTime,
@@ -48,6 +49,9 @@
         NonRageAttackBoost,
         RemoveEffect,
         ChangeDamageType,
+        IncreaseRadiationProtection,
+        AbsorbDamage,
+        Stun,
 
         // Other effects
         ApplyWithChance,
@@ -82,6 +86,9 @@
         RequireEliteTarget,
         LastingMark,
         IfTargetDies,
+        RequireMinimumDistance,
+        BeforeTrigger,
+        RequireBeingHit,
 
         // Synthetic
         GiveBuff,

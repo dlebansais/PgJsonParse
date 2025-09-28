@@ -17,4 +17,7 @@ public enum CombatCondition
     PetAttackType,
     TargetIsElite,
     TargetKilled,
+    MinimumDistance,
+    AbilityNotTriggered,
+    OnHit,
 }

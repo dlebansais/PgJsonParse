@@ -440,6 +440,7 @@ internal partial class CombatParserEx
         { "Summoned Tornadoes", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
         { "All targets' melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "Your golem minion has", new List<AbilityKeyword>() { AbilityKeyword.Minigolem } },
+        { "Combat Refreshes", new List<AbilityKeyword>() { AbilityKeyword.CombatRefresh } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {
@@ -510,6 +511,9 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireAttackAbility, CombatCondition.AttackAbility },
         { CombatKeywordEx.RequireEliteTarget, CombatCondition.TargetIsElite },
         { CombatKeywordEx.IfTargetDies, CombatCondition.TargetKilled },
+        { CombatKeywordEx.RequireMinimumDistance, CombatCondition.MinimumDistance},
+        { CombatKeywordEx.BeforeTrigger, CombatCondition.AbilityNotTriggered},
+        { CombatKeywordEx.RequireBeingHit, CombatCondition.OnHit},
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
