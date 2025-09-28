@@ -47,6 +47,7 @@
         RageAttackBoost,
         NonRageAttackBoost,
         RemoveEffect,
+        ChangeDamageType,
 
         // Other effects
         ApplyWithChance,

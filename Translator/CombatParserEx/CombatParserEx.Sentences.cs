@@ -402,5 +402,12 @@ internal partial class CombatParserEx
         new SentenceEx("Next attack", CombatKeywordEx.NextAttack),
         new SentenceEx("Next ability", CombatKeywordEx.NextAttack),
         new SentenceEx("For one attack", CombatKeywordEx.NextAttack),
+
+        new SentenceEx("Deal #D damage", CombatKeywordEx.ChangeDamageType),
+        new SentenceEx("Deal direct #D damage", CombatKeywordEx.ChangeDamageType),
+        new SentenceEx("Damage type become #D", CombatKeywordEx.ChangeDamageType),
+        new SentenceEx("Damage type is #D instead", CombatKeywordEx.ChangeDamageType),
+        new SentenceEx("Damage become #D", CombatKeywordEx.ChangeDamageType),
+        new SentenceEx("Damage type is changed to #D", CombatKeywordEx.ChangeDamageType),
     };
 }
