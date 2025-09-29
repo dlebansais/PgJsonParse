@@ -21,4 +21,5 @@ public enum CombatCondition
     AbilityNotTriggered,
     OnHit,
     DoingDamageOverTime,
+    SpecificDirectDamageType,
 }

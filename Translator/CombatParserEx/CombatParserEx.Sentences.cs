@@ -97,10 +97,6 @@ internal partial class CombatParserEx
         new SentenceEx("Sprint speed by %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("%f Movement Speed", CombatKeywordEx.AddSprintSpeed),
 
-        new SentenceEx("Cause your next", new List<CombatKeywordEx>() { CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
-        new SentenceEx("Your next use", CombatKeywordEx.NextUse),
-        new SentenceEx("Your next ability", CombatKeywordEx.NextUse),
-
         new SentenceEx("Armor Recovery Per Second: %f of Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("Healing abilities, if any, restore %f health", CombatKeywordEx.IncreaseHealEfficiency),
@@ -396,10 +392,15 @@ internal partial class CombatParserEx
 
         new SentenceEx("If the target of @ dies", CombatKeywordEx.IfTargetDies),
 
+        new SentenceEx("Cause your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Next attack", CombatKeywordEx.NextAttack),
         new SentenceEx("Next ability", CombatKeywordEx.NextAttack),
         new SentenceEx("For one attack", CombatKeywordEx.NextAttack),
+
+        new SentenceEx("Cause your next", new List<CombatKeywordEx>() { CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Your next use", CombatKeywordEx.NextUse),
+        new SentenceEx("Your next ability", CombatKeywordEx.NextUse),
 
         new SentenceEx("Deal #D damage", CombatKeywordEx.ChangeDamageType),
         new SentenceEx("Deal direct #D damage", CombatKeywordEx.ChangeDamageType),
@@ -450,5 +451,9 @@ internal partial class CombatParserEx
         new SentenceEx("Deal %f health damage to you", new List<CombatKeywordEx>() { CombatKeywordEx.DealHealthDamage, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f health damage", CombatKeywordEx.DealHealthDamage),
         new SentenceEx("%f #D health damage", CombatKeywordEx.DealHealthDamage),
+
+        new SentenceEx("If it deal direct #D damage", CombatKeywordEx.RequireDirectDamageType),
+
+        new SentenceEx("In addition, the target take a second full blast of delayed #D damage", CombatKeywordEx.DelayedSecondAttack),
     };
 }

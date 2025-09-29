@@ -57,6 +57,7 @@
         IncreaseRage,
         DrainHealth,
         IncreaseDrainHealthMax,
+        DelayedSecondAttack,
 
         // Other effects
         ApplyWithChance,
@@ -96,6 +97,7 @@
         BeforeTrigger,
         RequireBeingHit,
         RequireDoingDamageOverTime,
+        RequireDirectDamageType,
 
         // Synthetic
         GiveBuff,
@@ -107,5 +109,6 @@
         RestoreHealthOrArmorOverTime,
         WhilePlayingSong,
         RageAttackBoostOverTime,
+        DamageOverTimeBoost,
     }
 }
