@@ -52,6 +52,10 @@
         IncreaseRadiationProtection,
         AbsorbDamage,
         Stun,
+        GenerateNoRage,
+        IncreaseRage,
+        DrainHealth,
+        IncreaseDrainHealthMax,
 
         // Other effects
         ApplyWithChance,

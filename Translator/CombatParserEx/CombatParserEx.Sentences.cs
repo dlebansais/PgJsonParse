@@ -101,8 +101,6 @@ internal partial class CombatParserEx
         new SentenceEx("Your next use", CombatKeywordEx.NextUse),
         new SentenceEx("Your next ability", CombatKeywordEx.NextUse),
 
-        new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
-
         new SentenceEx("Armor Recovery Per Second: %f of Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("Healing abilities, if any, restore %f health", CombatKeywordEx.IncreaseHealEfficiency),
@@ -422,5 +420,28 @@ internal partial class CombatParserEx
         new SentenceEx("Absorb %f damage before dissipating", CombatKeywordEx.AbsorbDamage),
 
         new SentenceEx("The next attacker that hit the pet will be stunned", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToPet, CombatKeywordEx.RequireBeingHit, CombatKeywordEx.Stun }),
+
+        new SentenceEx("Generate no Rage", CombatKeywordEx.GenerateNoRage),
+
+        new SentenceEx("Remove (up to) %f more Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
+        new SentenceEx("Reduce Rage by %f", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
+        new SentenceEx("Reduce %f more Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
+        new SentenceEx("Reduce the target's Rage by %f", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reduce target's Rage by %f", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reduce targets' Rage by %f", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
+        new SentenceEx("%f Rage reduction", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Generate %f Rage", CombatKeywordEx.IncreaseRage),
+        new SentenceEx("Remove %f Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
+        new SentenceEx("Deplete %f Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
+        new SentenceEx("Cause targets to lose %f Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Cause your pet's attack to generate %f Rage", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseRage, CombatKeywordEx.ApplyToPet }),
+
+        new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
+
+        new SentenceEx("Reap %f health", CombatKeywordEx.DrainHealth),
+        new SentenceEx("Steal %f health", CombatKeywordEx.DrainHealth),
+        new SentenceEx("Steal %f more health", CombatKeywordEx.DrainHealth),
+
+        new SentenceEx("The reap cap is %f", CombatKeywordEx.IncreaseDrainHealthMax),
     };
 }

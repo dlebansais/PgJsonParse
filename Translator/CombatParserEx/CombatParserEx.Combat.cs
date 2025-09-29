@@ -1505,6 +1505,13 @@ internal partial class CombatParserEx
             case "25225":
             case "26223":
             case "28221":
+            case "12011":
+            case "12025":
+            case "21005":
+            case "4064":
+            case "6306":
+            case "8006":
+            case "8007":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1531,6 +1538,7 @@ internal partial class CombatParserEx
             case "8318":
             case "13054":
             case "15102":
+            case "17043":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
                 break;
             case "25223":
@@ -1635,6 +1643,10 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
                                                            item.Keyword == CombatKeywordEx.IncreaseRadiationProtection ||
                                                            item.Keyword == CombatKeywordEx.AbsorbDamage ||
+                                                           item.Keyword == CombatKeywordEx.GenerateNoRage ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseRage ||
+                                                           item.Keyword == CombatKeywordEx.DrainHealth ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseDrainHealthMax ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -1682,6 +1694,10 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
                                                           item.Keyword == CombatKeywordEx.IncreaseRadiationProtection ||
                                                           item.Keyword == CombatKeywordEx.AbsorbDamage ||
+                                                          item.Keyword == CombatKeywordEx.GenerateNoRage ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseRage ||
+                                                          item.Keyword == CombatKeywordEx.DrainHealth ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseDrainHealthMax ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -1698,6 +1714,7 @@ internal partial class CombatParserEx
             case "5152":
             case "9008":
             case "12051":
+            case "4502":
                 BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "22401":
@@ -1809,10 +1826,6 @@ internal partial class CombatParserEx
             case "28841":
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[1], new() { Keyword = CombatKeywordEx.GiveBuffOneUse, Data = new() }, staticCombatEffectList[2], staticCombatEffectList[3], staticCombatEffectList[4] }, targetAbilityList, new() { 0, 1, 3 }, new() { 2, 3, 4, 5 }, inverseTargets: false, out pgCombatModEx);
                 break;
-            case "4064":
-            case "4502":
-            case "6306":
-            case "8006":
             case "16082":
             case "9605":
             case "21204":
@@ -1826,6 +1839,7 @@ internal partial class CombatParserEx
             case "28685":
             case "3254":
             case "27075":
+            case "1302":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
@@ -2008,6 +2022,8 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.GenerateTaunt ||
                                    CombatKeyword == CombatKeywordEx.RageAttackBoost ||
                                    CombatKeyword == CombatKeywordEx.NonRageAttackBoost ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseRage ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseDrainHealthMax ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMeleePowerCost;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -2119,7 +2135,7 @@ internal partial class CombatParserEx
                 RandomChance = CanApplyModifier ? RandomChance : float.NaN,
                 DelayInSeconds = CanHaveDelay && CanApplyModifier ? DelayInSeconds : float.NaN,
                 DurationInSeconds = CanHaveDuration && CanApplyModifier ? DurationInSeconds : float.NaN,
-                RecurringDelay = RecurringDelay,
+                RecurringDelay = CanApplyModifier ? RecurringDelay : float.NaN,
                 Target = CanHaveTarget ? Target : CombatTarget.Internal_None,
                 TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbility = TargetAbility,
