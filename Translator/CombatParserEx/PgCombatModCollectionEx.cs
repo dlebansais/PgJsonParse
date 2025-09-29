@@ -61,6 +61,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (!float.IsNaN(pgPermanentModEffectEx.DelayInSeconds))
             Write("                     ", $" DelayInSeconds = {pgPermanentModEffectEx.DelayInSeconds.ToString(CultureInfo.InvariantCulture)},");
 
+        if (!float.IsNaN(pgPermanentModEffectEx.DurationInSeconds))
+            Write("                     ", $" DurationInSeconds = {pgPermanentModEffectEx.DurationInSeconds.ToString(CultureInfo.InvariantCulture)},");
+
         if (!float.IsNaN(pgPermanentModEffectEx.RecurringDelay))
             Write("                     ", $" RecurringDelay = {pgPermanentModEffectEx.RecurringDelay.ToString(CultureInfo.InvariantCulture)},");
 

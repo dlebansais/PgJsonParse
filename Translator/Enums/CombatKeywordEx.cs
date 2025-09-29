@@ -22,6 +22,7 @@
         Knockback,
         DamageBoost,
         DealArmorDamage,
+        DealHealthDamage,
         DealHealthAndArmorDamage,
         DispelRootSlow,
         AddSprintPowerCost,
@@ -83,6 +84,7 @@
         RequireDirectDamageKillShot,
         RequireLowRage,
         DirectDamageBoost,
+        IndirectDamageBoost,
         RequireKillTarget,
         EveryOtherUse,
         RequireVulnerableTarget,
@@ -93,6 +95,7 @@
         RequireMinimumDistance,
         BeforeTrigger,
         RequireBeingHit,
+        RequireDoingDamageOverTime,
 
         // Synthetic
         GiveBuff,
@@ -103,5 +106,6 @@
         RestorePowerOverTime,
         RestoreHealthOrArmorOverTime,
         WhilePlayingSong,
+        RageAttackBoostOverTime,
     }
 }

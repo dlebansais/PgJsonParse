@@ -20,4 +20,5 @@ public enum CombatCondition
     MinimumDistance,
     AbilityNotTriggered,
     OnHit,
+    DoingDamageOverTime,
 }

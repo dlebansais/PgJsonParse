@@ -443,5 +443,12 @@ internal partial class CombatParserEx
         new SentenceEx("Steal %f more health", CombatKeywordEx.DrainHealth),
 
         new SentenceEx("The reap cap is %f", CombatKeywordEx.IncreaseDrainHealthMax),
+
+        new SentenceEx("In addition, if it deal Indirect #D damage is %f per tick", new List<CombatKeywordEx>() { CombatKeywordEx.IndirectDamageBoost, CombatKeywordEx.RequireDoingDamageOverTime }),
+
+        new SentenceEx("%f Direct health damage", CombatKeywordEx.DealHealthDamage),
+        new SentenceEx("Deal %f health damage to you", new List<CombatKeywordEx>() { CombatKeywordEx.DealHealthDamage, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f health damage", CombatKeywordEx.DealHealthDamage),
+        new SentenceEx("%f #D health damage", CombatKeywordEx.DealHealthDamage),
     };
 }

@@ -514,6 +514,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireMinimumDistance, CombatCondition.MinimumDistance},
         { CombatKeywordEx.BeforeTrigger, CombatCondition.AbilityNotTriggered},
         { CombatKeywordEx.RequireBeingHit, CombatCondition.OnHit},
+        { CombatKeywordEx.RequireDoingDamageOverTime, CombatCondition.DoingDamageOverTime},
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
@@ -521,6 +522,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RestorePower, CombatKeywordEx.RestorePowerOverTime },
         { CombatKeywordEx.RestoreArmor, CombatKeywordEx.RestoreArmorOverTime },
         { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.RestoreHealthOrArmorOverTime },
+        { CombatKeywordEx.RageAttackBoost, CombatKeywordEx.RageAttackBoostOverTime },
     };
     private float MutationDuration;
     private List<AbilityKeyword> AbilitiesDealingDirectDamage = new();

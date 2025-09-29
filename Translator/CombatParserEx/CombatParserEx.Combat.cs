@@ -1549,6 +1549,8 @@ internal partial class CombatParserEx
             case "9752":
             case "1303":
             case "3047":
+            case "16082":
+            case "9605":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "26224":
@@ -1614,6 +1616,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.Knockback ||
                                                            /*item.Keyword == CombatKeywordEx.DamageBoost ||*/
                                                            item.Keyword == CombatKeywordEx.DealArmorDamage ||
+                                                           item.Keyword == CombatKeywordEx.DealHealthDamage ||
                                                            item.Keyword == CombatKeywordEx.DealHealthAndArmorDamage ||
                                                            item.Keyword == CombatKeywordEx.DispelRootSlow ||
                                                            item.Keyword == CombatKeywordEx.AddSprintPowerCost ||
@@ -1665,6 +1668,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.Knockback ||
                                                           /*item.Keyword == CombatKeywordEx.DamageBoost ||*/
                                                           item.Keyword == CombatKeywordEx.DealArmorDamage ||
+                                                          item.Keyword == CombatKeywordEx.DealHealthDamage ||
                                                           item.Keyword == CombatKeywordEx.DealHealthAndArmorDamage ||
                                                           item.Keyword == CombatKeywordEx.DispelRootSlow ||
                                                           item.Keyword == CombatKeywordEx.AddSprintPowerCost ||
@@ -1808,7 +1812,11 @@ internal partial class CombatParserEx
             case "8302":
             case "8304":
             case "7301":
+            case "23305":
                 BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                break;
+            case "21204":
+                BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "11503":
                 BuildModEffect_007(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -1826,10 +1834,6 @@ internal partial class CombatParserEx
             case "28841":
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[1], new() { Keyword = CombatKeywordEx.GiveBuffOneUse, Data = new() }, staticCombatEffectList[2], staticCombatEffectList[3], staticCombatEffectList[4] }, targetAbilityList, new() { 0, 1, 3 }, new() { 2, 3, 4, 5 }, inverseTargets: false, out pgCombatModEx);
                 break;
-            case "16082":
-            case "9605":
-            case "21204":
-            case "23305":
             case "1086":
             case "13403":
             case "2023":
@@ -2011,6 +2015,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.AddMeleeAccuracy ||
                                    CombatKeyword == CombatKeywordEx.DamageBoost ||
                                    CombatKeyword == CombatKeywordEx.DealArmorDamage ||
+                                   CombatKeyword == CombatKeywordEx.DealHealthDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthAndArmorDamage ||
                                    CombatKeyword == CombatKeywordEx.DirectDamageBoost ||
                                    CombatKeyword == CombatKeywordEx.IncreasePowerCost ||
@@ -2065,6 +2070,7 @@ internal partial class CombatParserEx
                                  (CombatKeyword != CombatKeywordEx.ZeroPowerCost || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.DamageBoost || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.DealArmorDamage || CanApplyModifier) &&
+                                 (CombatKeyword != CombatKeywordEx.DealHealthDamage || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.DealHealthAndArmorDamage || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.IncreasePowerCost || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.NextAttackMiss || CanApplyModifier) &&
@@ -2098,6 +2104,7 @@ internal partial class CombatParserEx
             else if (Target == CombatTarget.Internal_None &&
                      (CombatKeyword == CombatKeywordEx.DamageBoost ||
                       CombatKeyword == CombatKeywordEx.DealArmorDamage ||
+                      CombatKeyword == CombatKeywordEx.DealHealthDamage ||
                       CombatKeyword == CombatKeywordEx.DealHealthAndArmorDamage) &&
                      targetAbilityList.Count > 0 &&
                      !IsTargetAbilityListUsed &&
@@ -2136,7 +2143,7 @@ internal partial class CombatParserEx
                 DelayInSeconds = CanHaveDelay && CanApplyModifier ? DelayInSeconds : float.NaN,
                 DurationInSeconds = CanHaveDuration && CanApplyModifier ? DurationInSeconds : float.NaN,
                 RecurringDelay = CanApplyModifier ? RecurringDelay : float.NaN,
-                Target = CanHaveTarget ? Target : CombatTarget.Internal_None,
+                Target = CanHaveTarget && CanApplyModifier ? Target : CombatTarget.Internal_None,
                 TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbility = TargetAbility,
                 Condition = CanApplyModifier && (ConditionIndex < 0 || i + 1 >= ConditionIndex) ? Condition : CombatCondition.Internal_None,
@@ -2356,18 +2363,20 @@ internal partial class CombatParserEx
         }
     }
 
-    private void BuildModEffect_006(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx)
+    private void BuildModEffect_006(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, int ignoreModifierIndex = -1)
     {
         // Inverse static & dynamic
-        BuildModEffect_005(description, abilityList, staticCombatEffectList, dynamicCombatEffectList, targetAbilityList, out pgCombatModEx);
+        BuildModEffect_005(description, abilityList, staticCombatEffectList, dynamicCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex);
     }
 
-    private void BuildModEffect_005(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx)
+    private void BuildModEffect_005(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, int ignoreModifierIndex = -1)
     {
         Debug.Assert(abilityList.Count <= 1);
 
         float DelayInSeconds = GetValueAndRemove(dynamicCombatEffectList, CombatKeywordEx.EffectDelay);
+        float DurationInSeconds = GetValueAndRemove(dynamicCombatEffectList, CombatKeywordEx.EffectDuration);
         float RecurringDelay = GetValueAndRemove(dynamicCombatEffectList, CombatKeywordEx.RecurringEffect);
+        float DurationOverTime = GetValueAndRemove(dynamicCombatEffectList, CombatKeywordEx.EffectOverTime);
 
         CombatTarget Target = CombatTarget.Internal_None;
 
@@ -2455,6 +2464,9 @@ internal partial class CombatParserEx
         {
             PgCombatEffectEx CombatEffect = dynamicCombatEffectList[i];
             CombatKeywordEx CombatKeyword = CombatEffect.Keyword;
+            bool CanApplyModifier = ignoreModifierIndex < 0 ||
+                                    ((i != (ignoreModifierIndex % 1000)) &&
+                                     (ignoreModifierIndex < 1000 || (i != ((ignoreModifierIndex / 1000) % 1000))));
 
             if (CombatKeyword == CombatKeywordEx.ApplyWithChance ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelf ||
@@ -2485,15 +2497,25 @@ internal partial class CombatParserEx
                 IsPercent = CombatEffect.Data.RawIsPercent.HasValue ? CombatEffect.Data.RawIsPercent.Value : false,
             };
 
+            if (OverTimeEffects.TryGetValue(CombatKeyword, out CombatKeywordEx CombatKeywordOverTime))
+            {
+                if (float.IsNaN(DurationInSeconds) && !float.IsNaN(DurationOverTime))
+                {
+                    DurationInSeconds = DurationOverTime;
+                    CombatKeyword = CombatKeywordOverTime;
+                }
+            }
+
             PgPermanentModEffectEx pgPermanentModEffectEx = new()
             {
                 Keyword = CombatKeyword,
                 Data = pgNumericValueEx,
                 DamageType = CombatEffect.DamageType,
                 DelayInSeconds = DelayInSeconds,
+                DurationInSeconds = CanApplyModifier ? DurationInSeconds : float.NaN,
                 RecurringDelay = RecurringDelay,
                 Target = Target,
-                Condition = Condition,
+                Condition = CanApplyModifier ? Condition : CombatCondition.Internal_None,
                 ActiveAbilityCondition = ActiveAbilityCondition,
             };
 
