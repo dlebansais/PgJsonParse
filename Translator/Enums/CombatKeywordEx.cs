@@ -58,6 +58,7 @@
         DrainHealth,
         IncreaseDrainHealthMax,
         DelayedSecondAttack,
+        TurnRageToDamage,
 
         // Other effects
         ApplyWithChance,
@@ -95,9 +96,13 @@
         IfTargetDies,
         RequireMinimumDistance,
         BeforeTrigger,
+        OnTrigger,
         RequireBeingHit,
         RequireDoingDamageOverTime,
+        RequireDamageType,
         RequireDirectDamageType,
+        RandomDamage,
+        RequireAnatomyAberration,
 
         // Synthetic
         GiveBuff,
@@ -110,5 +115,6 @@
         WhilePlayingSong,
         RageAttackBoostOverTime,
         DamageOverTimeBoost,
+        RandomDamageBoost,
     }
 }

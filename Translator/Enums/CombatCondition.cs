@@ -19,7 +19,10 @@ public enum CombatCondition
     TargetKilled,
     MinimumDistance,
     AbilityNotTriggered,
+    AbilityTriggered,
     OnHit,
     DoingDamageOverTime,
+    SpecificDamageType,
     SpecificDirectDamageType,
+    TargetAnatomyIsAberration,
 }

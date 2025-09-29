@@ -337,6 +337,8 @@ internal partial class CombatParserEx
         new SentenceEx("Mitigate %f of all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("%f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
+        new SentenceEx("Debuff the target so that it take %f damage from future #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
+        new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
 
         new SentenceEx("Make the target %f more vulnerable to direct #D damage", CombatKeywordEx.AddMitigationDirect, SignInterpretation.AlwaysNegative),
         new SentenceEx("Gain %f Direct Elite Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
@@ -455,5 +457,15 @@ internal partial class CombatParserEx
         new SentenceEx("If it deal direct #D damage", CombatKeywordEx.RequireDirectDamageType),
 
         new SentenceEx("In addition, the target take a second full blast of delayed #D damage", CombatKeywordEx.DelayedSecondAttack),
+
+        new SentenceEx("Turning half of that into #D damage", CombatKeywordEx.TurnRageToDamage),
+
+        new SentenceEx("(Randomly determined for each attack)", CombatKeywordEx.RandomDamage),
+        new SentenceEx("(Randomly determined)", CombatKeywordEx.RandomDamage),
+        new SentenceEx("(Random)", CombatKeywordEx.RandomDamage),
+        new SentenceEx("+Up to %f extra damage", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.RandomDamage }),
+        new SentenceEx("%f random damage", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.RandomDamage }),
+
+        new SentenceEx("To Aberration", CombatKeywordEx.RequireAnatomyAberration),
     };
 }

@@ -513,9 +513,12 @@ internal partial class CombatParserEx
         { CombatKeywordEx.IfTargetDies, CombatCondition.TargetKilled },
         { CombatKeywordEx.RequireMinimumDistance, CombatCondition.MinimumDistance},
         { CombatKeywordEx.BeforeTrigger, CombatCondition.AbilityNotTriggered},
+        { CombatKeywordEx.OnTrigger, CombatCondition.AbilityTriggered},
         { CombatKeywordEx.RequireBeingHit, CombatCondition.OnHit},
         { CombatKeywordEx.RequireDoingDamageOverTime, CombatCondition.DoingDamageOverTime},
+        { CombatKeywordEx.RequireDamageType, CombatCondition.SpecificDirectDamageType},
         { CombatKeywordEx.RequireDirectDamageType, CombatCondition.SpecificDirectDamageType},
+        { CombatKeywordEx.RequireAnatomyAberration, CombatCondition.TargetAnatomyIsAberration},
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
