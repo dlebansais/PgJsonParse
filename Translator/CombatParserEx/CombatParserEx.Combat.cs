@@ -1600,6 +1600,8 @@ internal partial class CombatParserEx
             case "9604":
             case "10045":
             case "1022":
+            case "1024":
+            case "10307":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -2145,8 +2147,6 @@ internal partial class CombatParserEx
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
-            case "1024":
-            case "10307":
             case "10456":
             case "10501":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };

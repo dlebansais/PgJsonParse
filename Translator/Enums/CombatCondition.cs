@@ -27,4 +27,5 @@ public enum CombatCondition
     TargetAnatomyIsAberration,
     BelowMaxArmor,
     BelowMaxRage,
+    ArthropodTarget,
 }

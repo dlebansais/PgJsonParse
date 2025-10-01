@@ -521,6 +521,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireAnatomyAberration, CombatCondition.TargetAnatomyIsAberration},
         { CombatKeywordEx.RequireBelowMaxArmor, CombatCondition.BelowMaxArmor},
         { CombatKeywordEx.RequireBelowMaxRage, CombatCondition.BelowMaxRage},
+        { CombatKeywordEx.RequireArthropodTarget, CombatCondition.ArthropodTarget},
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

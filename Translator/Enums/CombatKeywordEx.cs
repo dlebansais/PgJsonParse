@@ -109,6 +109,7 @@
         RequireAnatomyAberration,
         RequireBelowMaxArmor,
         RequireBelowMaxRage,
+        RequireArthropodTarget,
 
         // Synthetic
         GiveBuff,

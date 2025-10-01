@@ -179,6 +179,11 @@ internal partial class CombatParserEx
 
         new SentenceEx("Deal %f damage to Health and Armor", CombatKeywordEx.DealHealthAndArmorDamage),
 
+        new SentenceEx("Deal %f Armor damage", CombatKeywordEx.DealArmorDamage),
+        new SentenceEx("Deal %f damage to Armor", CombatKeywordEx.DealArmorDamage),
+        new SentenceEx("%f damage to Armor", CombatKeywordEx.DealArmorDamage),
+        new SentenceEx("%f armor damage", CombatKeywordEx.DealArmorDamage),
+
         new SentenceEx("Boost the damage of @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Boost the #D damage of @ and @ %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Increase the damage of all targets' attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToAllies }),
@@ -262,11 +267,6 @@ internal partial class CombatParserEx
         new SentenceEx("Cause all allies' Melee attack to cost %f Power", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMeleePowerCost, CombatKeywordEx.ApplyToAllies }),
 
         new SentenceEx("Reset the time on", CombatKeywordEx.ResetRefreshTime),
-
-        new SentenceEx("Deal %f Armor damage", CombatKeywordEx.DealArmorDamage),
-        new SentenceEx("Deal %f damage to Armor", CombatKeywordEx.DealArmorDamage),
-        new SentenceEx("%f damage to Armor", CombatKeywordEx.DealArmorDamage),
-        new SentenceEx("%f armor damage", CombatKeywordEx.DealArmorDamage),
 
         new SentenceEx("Target does not yell for help because of this attack", CombatKeywordEx.NoYellForHelp),
         new SentenceEx("Doesn't cause the target to yell for help", CombatKeywordEx.NoYellForHelp),
@@ -492,5 +492,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f Crit Chance", CombatKeywordEx.IncreaseCriticalChance),
 
         new SentenceEx("Grant this Critical Hit Chance bonus to your next #S attack", new List<CombatKeywordEx>() { CombatKeywordEx.NextAttack, CombatKeywordEx.GrantCriticalChance }),
+
+        new SentenceEx("To Arthropods", CombatKeywordEx.RequireArthropodTarget),
     };
 }
