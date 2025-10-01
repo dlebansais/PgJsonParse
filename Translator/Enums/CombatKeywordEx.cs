@@ -26,7 +26,9 @@
         DealHealthAndArmorDamage,
         DispelRootSlow,
         AddSprintPowerCost,
+        IncreaseAccuracy,
         AddMeleeAccuracy,
+        IncreaseBurstAccuracy,
         IncreasePowerCost,
         IncreaseMeleePowerCost,
         BecomeBurst,
@@ -103,6 +105,8 @@
         RequireDirectDamageType,
         RandomDamage,
         RequireAnatomyAberration,
+        RequireBelowMaxArmor,
+        RequireBelowMaxRage,
 
         // Synthetic
         GiveBuff,

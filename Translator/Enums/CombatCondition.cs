@@ -25,4 +25,6 @@ public enum CombatCondition
     SpecificDamageType,
     SpecificDirectDamageType,
     TargetAnatomyIsAberration,
+    BelowMaxArmor,
+    BelowMaxRage,
 }

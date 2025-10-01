@@ -1517,6 +1517,87 @@ internal partial class CombatParserEx
             case "25011":
             case "26034":
             case "27075":
+            case "1002":
+            case "10043":
+            case "1009":
+            case "1010":
+            case "10122":
+            case "10309":
+            case "11353":
+            case "11456":
+            case "11652":
+            case "12012":
+            case "12013":
+            case "12014":
+            case "12022":
+            case "12023":
+            case "12024":
+            case "13015":
+            case "13056":
+            case "13152":
+            case "13303":
+            case "13356":
+            case "15031":
+            case "15032":
+            case "15105":
+            case "15203":
+            case "15352":
+            case "16002":
+            case "16224":
+            case "17047":
+            case "17322":
+            case "18034":
+            case "20003":
+            case "20013":
+            case "2003":
+            case "2005":
+            case "20102":
+            case "2015":
+            case "2017":
+            case "2019":
+            case "2201":
+            case "22451":
+            case "23004":
+            case "23022":
+            case "23203":
+            case "23453":
+            case "23552":
+            case "24032":
+            case "24064":
+            case "24094":
+            case "24182":
+            case "24212":
+            case "25132":
+            case "25134":
+            case "25194":
+            case "25197":
+            case "256":
+            case "26012":
+            case "26035":
+            case "27054":
+            case "28041":
+            case "28805":
+            case "28806":
+            case "3005":
+            case "3007":
+            case "3026":
+            case "4035":
+            case "4203":
+            case "4302":
+            case "5010":
+            case "5039":
+            case "5092":
+            case "5121":
+            case "5123":
+            case "5201":
+            case "5353":
+            case "7021":
+            case "8021":
+            case "9034":
+            case "9601":
+            case "9602":
+            case "9603":
+            case "9604":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1537,6 +1618,7 @@ internal partial class CombatParserEx
             case "5035":
             case "21002":
             case "28611":
+            case "1061":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -1544,6 +1626,12 @@ internal partial class CombatParserEx
             case "13054":
             case "15102":
             case "17043":
+            case "10044":
+            case "1063":
+            case "14055":
+            case "1502":
+            case "28062":
+            case "6002":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
                 break;
             case "25223":
@@ -1620,13 +1708,15 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.RemoveStun ||
                                                            item.Keyword == CombatKeywordEx.AllowedWhileStunned ||
                                                            item.Keyword == CombatKeywordEx.Knockback ||
-                                                           /*item.Keyword == CombatKeywordEx.DamageBoost ||*/
+                                                           item.Keyword == CombatKeywordEx.DamageBoost ||
                                                            item.Keyword == CombatKeywordEx.DealArmorDamage ||
                                                            item.Keyword == CombatKeywordEx.DealHealthDamage ||
                                                            item.Keyword == CombatKeywordEx.DealHealthAndArmorDamage ||
                                                            item.Keyword == CombatKeywordEx.DispelRootSlow ||
                                                            item.Keyword == CombatKeywordEx.AddSprintPowerCost ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseAccuracy ||
                                                            item.Keyword == CombatKeywordEx.AddMeleeAccuracy ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseBurstAccuracy ||
                                                            item.Keyword == CombatKeywordEx.IncreasePowerCost ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMeleePowerCost ||
                                                            item.Keyword == CombatKeywordEx.BecomeBurst ||
@@ -1674,13 +1764,15 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.RemoveStun ||
                                                           item.Keyword == CombatKeywordEx.AllowedWhileStunned ||
                                                           item.Keyword == CombatKeywordEx.Knockback ||
-                                                          /*item.Keyword == CombatKeywordEx.DamageBoost ||*/
+                                                          item.Keyword == CombatKeywordEx.DamageBoost ||
                                                           item.Keyword == CombatKeywordEx.DealArmorDamage ||
                                                           item.Keyword == CombatKeywordEx.DealHealthDamage ||
                                                           item.Keyword == CombatKeywordEx.DealHealthAndArmorDamage ||
                                                           item.Keyword == CombatKeywordEx.DispelRootSlow ||
                                                           item.Keyword == CombatKeywordEx.AddSprintPowerCost ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseAccuracy ||
                                                           item.Keyword == CombatKeywordEx.AddMeleeAccuracy ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseBurstAccuracy ||
                                                           item.Keyword == CombatKeywordEx.IncreasePowerCost ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMeleePowerCost ||
                                                           item.Keyword == CombatKeywordEx.BecomeBurst ||
@@ -1831,6 +1923,8 @@ internal partial class CombatParserEx
             case "8304":
             case "7301":
             case "23305":
+            case "21203":
+            case "8351":
                 BuildModEffect_006(description, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "21204":
@@ -1856,6 +1950,198 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[2], new() { Keyword = CombatKeywordEx.OnTrigger, Data = new() }, new() { Keyword = CombatKeywordEx.GiveBuffOneAttack, Data = new() }, new() { Keyword = CombatKeywordEx.RequireDamageType, DamageType = staticCombatEffectList[3].DamageType } }, targetAbilityList, new() { 0, 2, 3 }, new() { 4, 1 }, inverseTargets: false, out pgCombatModEx);
                 break;
             case "Other":
+            case "10045":
+            case "1022":
+            case "1024":
+            case "10307":
+            case "10456":
+            case "10501":
+            case "10503":
+            case "10504":
+            case "10551":
+            case "10553":
+            case "1081":
+            case "1082":
+            case "11254":
+            case "11303":
+            case "11452":
+            case "1203":
+            case "12105":
+            case "12303":
+            case "12304":
+            case "12306":
+            case "12309":
+            case "12315":
+            case "12316":
+            case "12335":
+            case "13012":
+            case "13018":
+            case "13057":
+            case "13204":
+            case "13251":
+            case "13302":
+            case "13305":
+            case "1354":
+            case "14018":
+            case "14104":
+            case "14158":
+            case "14202":
+            case "15012":
+            case "1503":
+            case "15033":
+            case "151":
+            case "152":
+            case "15202":
+            case "15254":
+            case "153":
+            case "15305":
+            case "155":
+            case "15504":
+            case "16008":
+            case "16012":
+            case "16022":
+            case "16024":
+            case "16062":
+            case "16103":
+            case "16104":
+            case "16112":
+            case "16123":
+            case "16222":
+            case "16243":
+            case "17042":
+            case "17044":
+            case "17081":
+            case "17082":
+            case "17162":
+            case "17203":
+            case "18035":
+            case "18036":
+            case "18083":
+            case "18085":
+            case "18094":
+            case "18095":
+            case "18114":
+            case "20012":
+            case "20020":
+            case "20105":
+            case "2016":
+            case "20406":
+            case "2055":
+            case "2057":
+            case "2058":
+            case "21004":
+            case "21007":
+            case "21023":
+            case "21081":
+            case "21154":
+            case "21202":
+            case "22002":
+            case "2203":
+            case "2204":
+            case "22082":
+            case "22085":
+            case "2209":
+            case "22355":
+            case "23005":
+            case "23401":
+            case "23504":
+            case "23604":
+            case "24063":
+            case "24122":
+            case "24245":
+            case "24246":
+            case "24247":
+            case "24282":
+            case "25007":
+            case "25008":
+            case "25023":
+            case "25053":
+            case "25102":
+            case "25355":
+            case "26033":
+            case "26113":
+            case "26262":
+            case "27055":
+            case "27073":
+            case "27076":
+            case "27131":
+            case "27132":
+            case "27134":
+            case "27135":
+            case "27174":
+            case "28042":
+            case "28043":
+            case "28063":
+            case "28103":
+            case "28104":
+            case "28105":
+            case "28615":
+            case "28625":
+            case "28626":
+            case "28641":
+            case "28642":
+            case "28643":
+            case "28645":
+            case "28741":
+            case "28765":
+            case "28766":
+            case "3016":
+            case "3023":
+            case "3025":
+            case "3082":
+            case "3132":
+            case "3133":
+            case "3134":
+            case "3202":
+            case "3204":
+            case "3303":
+            case "3306":
+            case "3403":
+            case "4002":
+            case "4006":
+            case "4062":
+            case "4063":
+            case "4401":
+            case "4402":
+            case "4433":
+            case "4534":
+            case "5007":
+            case "5009":
+            case "5154":
+            case "6035":
+            case "6112":
+            case "6115":
+            case "6116":
+            case "6133":
+            case "6136":
+            case "6153":
+            case "6154":
+            case "6302":
+            case "6307":
+            case "7022":
+            case "7302":
+            case "7303":
+            case "7304":
+            case "7305":
+            case "7311":
+            case "7402":
+            case "8001":
+            case "8003":
+            case "8042":
+            case "8043":
+            case "8044":
+            case "8254":
+            case "8317":
+            case "8321":
+            case "8322":
+            case "9004":
+            case "9854":
+            case "9863":
+            case "9873":
+            case "5402":
+            case "9702":
+            case "9802":
+            case "4303":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
@@ -1911,7 +2197,9 @@ internal partial class CombatParserEx
                     ActiveAbilityCondition = targetAbilityList[0];
                 }
 
-                if (Condition == CombatCondition.TargetHasLowRage)
+                if (Condition == CombatCondition.TargetHasLowRage ||
+                    Condition == CombatCondition.BelowMaxArmor ||
+                    Condition == CombatCondition.BelowMaxRage)
                 {
                     Debug.Assert(CombatEffect.Data.RawValue.HasValue);
                     Debug.Assert(CombatEffect.Data.RawIsPercent.HasValue);
@@ -2034,7 +2322,9 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.StunImmunity ||
                                    CombatKeyword == CombatKeywordEx.Knockback ||
                                    CombatKeyword == CombatKeywordEx.AddSprintPowerCost ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseAccuracy ||
                                    CombatKeyword == CombatKeywordEx.AddMeleeAccuracy ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseBurstAccuracy ||
                                    CombatKeyword == CombatKeywordEx.DamageBoost ||
                                    CombatKeyword == CombatKeywordEx.DealArmorDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthDamage ||
@@ -2130,7 +2420,9 @@ internal partial class CombatParserEx
                       CombatKeyword == CombatKeywordEx.DealHealthAndArmorDamage) &&
                      targetAbilityList.Count > 0 &&
                      !IsTargetAbilityListUsed &&
-                     CanApplyModifier)
+                     CanApplyModifier
+                     
+                     && targetAbilityList.Count == 1)
             {
                 Debug.Assert(targetAbilityList.Count == 1);
                 TargetAbility = targetAbilityList[0];

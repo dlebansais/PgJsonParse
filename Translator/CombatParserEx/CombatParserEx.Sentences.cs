@@ -239,8 +239,18 @@ internal partial class CombatParserEx
 
         new SentenceEx("If it kills your target", CombatKeywordEx.RequireKillTarget),
 
+        new SentenceEx("%f of target's attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
+        new SentenceEx("%f of their attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
+        new SentenceEx("Give you %f Accuracy", CombatKeywordEx.IncreaseAccuracy),
+        new SentenceEx("Accuracy %f", CombatKeywordEx.IncreaseAccuracy),
+        new SentenceEx("%f Accuracy", CombatKeywordEx.IncreaseAccuracy),
+        new SentenceEx("%f more chance of missing", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
+        new SentenceEx("%f Miss Chance", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
+
         new SentenceEx("Melee Accuracy %f", CombatKeywordEx.AddMeleeAccuracy),
         new SentenceEx("You gain Accuracy %f with melee attack", CombatKeywordEx.AddMeleeAccuracy),
+
+        new SentenceEx("Burst Accuracy %f", CombatKeywordEx.IncreaseBurstAccuracy),
 
         new SentenceEx("Power Cost %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Power Cost is %f", CombatKeywordEx.IncreasePowerCost),
@@ -467,5 +477,10 @@ internal partial class CombatParserEx
         new SentenceEx("%f random damage", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.RandomDamage }),
 
         new SentenceEx("To Aberration", CombatKeywordEx.RequireAnatomyAberration),
+
+        new SentenceEx("When you have %f or less of your Armor left", CombatKeywordEx.RequireBelowMaxArmor),
+
+        new SentenceEx("Have less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
+        new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
     };
 }
