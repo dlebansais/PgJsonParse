@@ -433,6 +433,8 @@ internal partial class CombatParserEx
         new SentenceEx("Absorb %f damage before dissipating", CombatKeywordEx.AbsorbDamage),
 
         new SentenceEx("The next attacker that hit the pet will be stunned", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToPet, CombatKeywordEx.RequireBeingHit, CombatKeywordEx.Stun }),
+        new SentenceEx("Stun targets", CombatKeywordEx.Stun),
+        new SentenceEx("Stun", CombatKeywordEx.Stun),
 
         new SentenceEx("Generate no Rage", CombatKeywordEx.GenerateNoRage),
 
@@ -482,5 +484,13 @@ internal partial class CombatParserEx
 
         new SentenceEx("Have less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
         new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
+
+        new SentenceEx("Target's Critical Hit Chance reduced by %f", CombatKeywordEx.IncreaseCriticalChance, SignInterpretation.Opposite),
+        new SentenceEx("Chance to critically-hit is reduced by %f", CombatKeywordEx.IncreaseCriticalChance, SignInterpretation.Opposite),
+        new SentenceEx("%f chance to crit", CombatKeywordEx.IncreaseCriticalChance),
+        new SentenceEx("%f Critical Hit Chance", CombatKeywordEx.IncreaseCriticalChance),
+        new SentenceEx("%f Crit Chance", CombatKeywordEx.IncreaseCriticalChance),
+
+        new SentenceEx("Grant this Critical Hit Chance bonus to your next #S attack", new List<CombatKeywordEx>() { CombatKeywordEx.NextAttack, CombatKeywordEx.GrantCriticalChance }),
     };
 }

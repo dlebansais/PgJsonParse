@@ -61,6 +61,8 @@
         IncreaseDrainHealthMax,
         DelayedSecondAttack,
         TurnRageToDamage,
+        IncreaseCriticalChance,
+        GrantCriticalChance,
 
         // Other effects
         ApplyWithChance,
