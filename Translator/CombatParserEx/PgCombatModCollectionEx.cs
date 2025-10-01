@@ -83,7 +83,10 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         Write("                 ", $" new {pgCombatModEffectEx.GetType().Name}()");
         Write("                 ", " {");
         Write("                     ", $" Keyword = {pgCombatModEffectEx.Keyword.GetType().Name}.{pgCombatModEffectEx.Keyword},");
-        Write("                     ", $" AbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.AbilityList)} }},");
+
+        if (pgCombatModEffectEx.AbilityList.Count > 0)
+            Write("                     ", $" AbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.AbilityList)} }},");
+
         Write("                     ", $" Data = {NumericValueToString(pgCombatModEffectEx.Data)},");
 
         if (pgCombatModEffectEx.DamageType != GameDamageType.Internal_None)

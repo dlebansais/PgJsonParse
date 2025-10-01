@@ -6,7 +6,7 @@ public class PgCombatModEffectEx
 {
     public required CombatKeywordEx Keyword { get; init; }
 
-    public required List<AbilityKeyword> AbilityList { get; init; }
+    public List<AbilityKeyword> AbilityList { get; init; } = new();
 
     public required PgNumericValueEx Data { get; init; }
 
