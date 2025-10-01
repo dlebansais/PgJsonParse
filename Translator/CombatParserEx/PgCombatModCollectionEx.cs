@@ -113,8 +113,8 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (!float.IsNaN(pgCombatModEffectEx.TargetRange))
             Write("                     ", $" TargetRange = {pgCombatModEffectEx.TargetRange.ToString(CultureInfo.InvariantCulture)},");
 
-        if (pgCombatModEffectEx.TargetAbility != AbilityKeyword.Internal_None)
-            Write("                     ", $" TargetAbility = AbilityKeyword.{pgCombatModEffectEx.TargetAbility},");
+        if (pgCombatModEffectEx.TargetAbilityList.Count > 0)
+            Write("                     ", $" TargetAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.TargetAbilityList)} }},");
 
         if (pgCombatModEffectEx.Condition != CombatCondition.Internal_None)
             Write("                     ", $" Condition = CombatCondition.{pgCombatModEffectEx.Condition},");

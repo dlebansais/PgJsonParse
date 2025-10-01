@@ -12,7 +12,7 @@ internal partial class CombatParserEx
     public void AnalyzeMods()
     {
         AnalyzeMatchingPowersAndEffects(out List<string[]> StringKeyTable, out List<PgModEffectCollectionEx> AnalyzedPowerKeyToCompleteEffectTable);
-    }
+     }
 
     private void AnalyzeMatchingPowersAndEffects(out List<string[]> stringKeyTable, out List<PgModEffectCollectionEx> powerKeyToCompleteEffectTable)
     {
@@ -2397,7 +2397,7 @@ internal partial class CombatParserEx
                                  (CombatKeyword != CombatKeywordEx.AddMitigationBurst || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.IncreaseMeleePowerCost || CanApplyModifier);
 
-            AbilityKeyword TargetAbility = AbilityKeyword.Internal_None;
+            List<AbilityKeyword> TargetAbilityList = new();
             if (Target == CombatTarget.Internal_None &&
                 (CombatKeyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
                  CombatKeyword == CombatKeywordEx.ResetRefreshTime ||
@@ -2408,14 +2408,13 @@ internal partial class CombatParserEx
             {
                 if (targetAbilityList.Count > 0)
                 {
-                    Debug.Assert(targetAbilityList.Count == 1);
-                    TargetAbility = targetAbilityList[0];
+                    TargetAbilityList = targetAbilityList;
                     IsTargetAbilityListUsed = true;
                 }
                 else if (abilityList.Count > 0)
                 {
                     Debug.Assert(abilityList.Count == 1);
-                    TargetAbility = abilityList[0];
+                    TargetAbilityList = new() { abilityList[0] };
                 }
             }
             else if (Target == CombatTarget.Internal_None &&
@@ -2429,8 +2428,7 @@ internal partial class CombatParserEx
                      
                      && targetAbilityList.Count == 1)
             {
-                Debug.Assert(targetAbilityList.Count == 1);
-                TargetAbility = targetAbilityList[0];
+                TargetAbilityList = targetAbilityList;
             }
 
             if (PreviousDamageType != GameDamageType.Internal_None &&
@@ -2482,7 +2480,7 @@ internal partial class CombatParserEx
                 RecurringDelay = CanApplyModifier ? RecurringDelay : float.NaN,
                 Target = CanHaveTarget && CanApplyModifier ? Target : CombatTarget.Internal_None,
                 TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
-                TargetAbility = TargetAbility,
+                TargetAbilityList = TargetAbilityList,
                 Condition = CanApplyModifier && (ConditionIndex < 0 || i + 1 >= ConditionIndex) ? Condition : CombatCondition.Internal_None,
                 ActiveAbilityCondition = CanApplyModifier ? ActiveAbilityCondition : AbilityKeyword.Internal_None,
                 ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
