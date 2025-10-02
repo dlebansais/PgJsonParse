@@ -1655,6 +1655,7 @@ internal partial class CombatParserEx
             case "28614":
             case "28613":
             case "3254":
+            case "10553":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1677,6 +1678,8 @@ internal partial class CombatParserEx
             case "1061":
             case "16123":
             case "17042":
+            case "10551":
+            case "1081":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -1699,6 +1702,7 @@ internal partial class CombatParserEx
             case "22085":
             case "3306":
             case "6116":
+            case "1082":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
                 break;
             case "25223":
@@ -1715,6 +1719,8 @@ internal partial class CombatParserEx
                 break;
             case "26224":
             case "13403":
+            case "15404":
+            case "15405":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1000);
                 break;
             case "12092":
@@ -2016,10 +2022,6 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[2], new() { Keyword = CombatKeywordEx.OnTrigger, Data = new() }, new() { Keyword = CombatKeywordEx.GiveBuffOneAttack, Data = new() }, new() { Keyword = CombatKeywordEx.RequireDamageType, DamageType = staticCombatEffectList[3].DamageType } }, targetAbilityList, new() { 0, 2, 3 }, new() { 4, 1 }, inverseTargets: false, out pgCombatModEx);
                 break;
             case "Other":
-            case "10551":
-            case "10553":
-            case "1081":
-            case "1082":
             case "11254":
             case "11303":
             case "1203":

@@ -97,6 +97,7 @@
         RequireVulnerableTarget,
         RequireAttackAbility,
         RequireEliteTarget,
+        RequireNonEliteTarget,
         LastingMark,
         IfTargetDies,
         RequireMinimumDistance,
@@ -111,6 +112,7 @@
         RequireBelowMaxArmor,
         RequireBelowMaxRage,
         RequireArthropodTarget,
+        RequireStunnedTarget,
 
         // Synthetic
         GiveBuff,

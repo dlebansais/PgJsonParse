@@ -457,6 +457,7 @@ internal partial class CombatParserEx
         { (int)GameDamageType.Poison, "Poison" },
         { (int)GameDamageType.Acid, "Acid" },
         { (int)GameDamageType.Darkness, "Darkness" },
+        { (int)GameDamageType.Demonic, "Demonic" },
     };
     private static readonly Dictionary<int, string> SkillTextMap = new Dictionary<int, string>()
     {
@@ -510,6 +511,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireVulnerableTarget, CombatCondition.TargetIsVulnerable },
         { CombatKeywordEx.RequireAttackAbility, CombatCondition.AttackAbility },
         { CombatKeywordEx.RequireEliteTarget, CombatCondition.TargetIsElite },
+        { CombatKeywordEx.RequireNonEliteTarget, CombatCondition.TargetIsNotElite },
         { CombatKeywordEx.IfTargetDies, CombatCondition.TargetKilled },
         { CombatKeywordEx.RequireMinimumDistance, CombatCondition.MinimumDistance},
         { CombatKeywordEx.BeforeTrigger, CombatCondition.AbilityNotTriggered},
@@ -522,6 +524,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireBelowMaxArmor, CombatCondition.BelowMaxArmor},
         { CombatKeywordEx.RequireBelowMaxRage, CombatCondition.BelowMaxRage},
         { CombatKeywordEx.RequireArthropodTarget, CombatCondition.ArthropodTarget},
+        { CombatKeywordEx.RequireStunnedTarget, CombatCondition.TargetIsStunned },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

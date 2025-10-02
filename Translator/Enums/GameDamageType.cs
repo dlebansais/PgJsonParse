@@ -16,7 +16,7 @@
         Poison      = 0x0200,
         Acid        = 0x0400,
         Darkness    = 0x0800,
-        //Demonic     = 0x1000,
+        Demonic     = 0x1000,
     }
 #pragma warning restore SA1025 // Code should not contain multiple whitespace in a row
 }

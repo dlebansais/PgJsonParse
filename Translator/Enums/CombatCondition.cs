@@ -16,6 +16,7 @@ public enum CombatCondition
     AttackAbility,
     PetAttackType,
     TargetIsElite,
+    TargetIsNotElite,
     TargetKilled,
     MinimumDistance,
     AbilityNotTriggered,
@@ -28,4 +29,5 @@ public enum CombatCondition
     BelowMaxArmor,
     BelowMaxRage,
     ArthropodTarget,
+    TargetIsStunned,
 }

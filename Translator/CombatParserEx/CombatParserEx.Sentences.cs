@@ -272,6 +272,7 @@ internal partial class CombatParserEx
         new SentenceEx("Doesn't cause the target to yell for help", CombatKeywordEx.NoYellForHelp),
         new SentenceEx("This attack does not cause the target to shout for help", CombatKeywordEx.NoYellForHelp),
         new SentenceEx("Does not cause the target to shout for help", CombatKeywordEx.NoYellForHelp),
+        new SentenceEx("Do not call for help", CombatKeywordEx.NoYellForHelp),
 
         new SentenceEx("Mend a broken bone", CombatKeywordEx.RepairBrokenBone),
         new SentenceEx("Randomly repair broken bones over time", CombatKeywordEx.RepairBrokenBoneOverTime),
@@ -349,6 +350,9 @@ internal partial class CombatParserEx
         new SentenceEx("%f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Debuff the target so that it take %f damage from future #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
+        new SentenceEx("%f resistance to #D damage", CombatKeywordEx.AddMitigation),
+        new SentenceEx("#D resistance %f", CombatKeywordEx.AddMitigation),
+        new SentenceEx("%f resistant to #D damage", CombatKeywordEx.AddMitigation),
 
         new SentenceEx("Cause the target to take %f more damage from #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target is %f more vulnerable to #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
@@ -428,6 +432,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("Cause your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("The next attack you use", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Next attack", CombatKeywordEx.NextAttack),
         new SentenceEx("Next ability", CombatKeywordEx.NextAttack),
         new SentenceEx("For one attack", CombatKeywordEx.NextAttack),
@@ -519,5 +524,10 @@ internal partial class CombatParserEx
 
         new SentenceEx("Slow target's movement by %f", CombatKeywordEx.Slow),
         new SentenceEx("Slow target's movement speed by %f", CombatKeywordEx.Slow),
+
+        new SentenceEx("Non-Elite target", CombatKeywordEx.RequireNonEliteTarget),
+        new SentenceEx("Non-Elite enemies", CombatKeywordEx.RequireNonEliteTarget),
+
+        new SentenceEx("To Stunned targets", CombatKeywordEx.RequireStunnedTarget),
     };
 }
