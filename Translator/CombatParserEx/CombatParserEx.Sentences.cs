@@ -350,6 +350,28 @@ internal partial class CombatParserEx
         new SentenceEx("Debuff the target so that it take %f damage from future #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
 
+        new SentenceEx("Cause the target to take %f more damage from #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Target is %f more vulnerable to #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Target %f more vulnerable to #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Make the target %f more vulnerable to #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Make the target %f more vulnerable to direct #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Cause the target to become %f more vulnerable to #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Target take %f more damage from #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Target take %f #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Take %f damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Take %f more damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("#D Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Target's #D Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Target's #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Target's vulnerability to #D %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Suffer %f damage from all Indirect Damage sources", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Indirect Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Cause the target to suffer %f #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Cause target to be %f more vulnerable to #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Take %f damage from #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Grant you %f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
+
         new SentenceEx("Make the target %f more vulnerable to direct #D damage", CombatKeywordEx.AddMitigationDirect, SignInterpretation.AlwaysNegative),
         new SentenceEx("Gain %f Direct Elite Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
         new SentenceEx("%f Vulnerability to Elite Direct Damage", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
@@ -494,5 +516,8 @@ internal partial class CombatParserEx
         new SentenceEx("Grant this Critical Hit Chance bonus to your next #S attack", new List<CombatKeywordEx>() { CombatKeywordEx.NextAttack, CombatKeywordEx.GrantCriticalChance }),
 
         new SentenceEx("To Arthropods", CombatKeywordEx.RequireArthropodTarget),
+
+        new SentenceEx("Slow target's movement by %f", CombatKeywordEx.Slow),
+        new SentenceEx("Slow target's movement speed by %f", CombatKeywordEx.Slow),
     };
 }

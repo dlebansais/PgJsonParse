@@ -63,6 +63,7 @@
         TurnRageToDamage,
         IncreaseCriticalChance,
         GrantCriticalChance,
+        Slow,
 
         // Other effects
         ApplyWithChance,
