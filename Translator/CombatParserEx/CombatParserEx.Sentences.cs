@@ -153,6 +153,8 @@ internal partial class CombatParserEx
         new SentenceEx("Grant immunity to new stun", CombatKeywordEx.StunImmunity),
         new SentenceEx("Grant them immunity to stun", CombatKeywordEx.StunImmunity),
 
+        new SentenceEx("Cause your pet to bleed for %f #D damage", new List<CombatKeywordEx>() { CombatKeywordEx.SelfDamage, CombatKeywordEx.ApplyToPet }),
+
         new SentenceEx("Both you and your pet", CombatKeywordEx.ApplyToSelfAndPet),
 
         new SentenceEx("Your pet's", CombatKeywordEx.ApplyToPet),
@@ -194,6 +196,7 @@ internal partial class CombatParserEx
         new SentenceEx("Deal %f immediate #D damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f #D damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal direct #D damage to deal %f damage", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Deal %f damage if it is a #D attack", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f more damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Plus %f more damage", CombatKeywordEx.DamageBoost),

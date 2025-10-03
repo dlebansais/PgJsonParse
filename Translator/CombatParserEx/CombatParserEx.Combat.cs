@@ -1658,6 +1658,8 @@ internal partial class CombatParserEx
             case "10553":
             case "1046":
             case "11301":
+            case "11303":
+            case "1203":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1827,6 +1829,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseCriticalChance ||
                                                            item.Keyword == CombatKeywordEx.GrantCriticalChance ||
                                                            item.Keyword == CombatKeywordEx.Slow ||
+                                                           item.Keyword == CombatKeywordEx.SelfDamage ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -1886,6 +1889,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseCriticalChance ||
                                                           item.Keyword == CombatKeywordEx.GrantCriticalChance ||
                                                           item.Keyword == CombatKeywordEx.Slow ||
+                                                          item.Keyword == CombatKeywordEx.SelfDamage ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2025,8 +2029,6 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[2], new() { Keyword = CombatKeywordEx.OnTrigger, Data = new() }, new() { Keyword = CombatKeywordEx.GiveBuffOneAttack, Data = new() }, new() { Keyword = CombatKeywordEx.RequireDamageType, DamageType = staticCombatEffectList[3].DamageType } }, targetAbilityList, new() { 0, 2, 3 }, new() { 4, 1 }, inverseTargets: false, out pgCombatModEx);
                 break;
             case "Other":
-            case "11303":
-            case "1203":
             case "12105":
             case "12303":
             case "12304":
@@ -2361,6 +2363,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.NonRageAttackBoost ||
                                    CombatKeyword == CombatKeywordEx.IncreaseRage ||
                                    CombatKeyword == CombatKeywordEx.IncreaseDrainHealthMax ||
+                                   CombatKeyword == CombatKeywordEx.SelfDamageOverTime ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMeleePowerCost;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -2376,6 +2379,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.AddMitigationDirect ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationIndirect ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationBurst ||
+                                   CombatKeyword == CombatKeywordEx.SelfDamageOverTime ||
                                    CombatKeyword == CombatKeywordEx.BestowProtectiveBubble;
             if (MustHaveDuration && float.IsNaN(DurationInSeconds) && Condition != CombatCondition.AbilityNotTriggered && effect.RawDuration.HasValue)
             {

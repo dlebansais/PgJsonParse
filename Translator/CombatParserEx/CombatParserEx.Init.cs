@@ -534,6 +534,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.RestoreHealthOrArmorOverTime },
         { CombatKeywordEx.RageAttackBoost, CombatKeywordEx.RageAttackBoostOverTime },
         { CombatKeywordEx.DamageBoost, CombatKeywordEx.DamageOverTimeBoost },
+        { CombatKeywordEx.SelfDamage, CombatKeywordEx.SelfDamageOverTime },
     };
     private float MutationDuration;
     private List<AbilityKeyword> AbilitiesDealingDirectDamage = new();

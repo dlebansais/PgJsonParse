@@ -64,6 +64,7 @@
         IncreaseCriticalChance,
         GrantCriticalChance,
         Slow,
+        SelfDamage,
 
         // Other effects
         ApplyWithChance,
@@ -127,5 +128,6 @@
         RageAttackBoostOverTime,
         DamageOverTimeBoost,
         RandomDamageBoost,
+        SelfDamageOverTime,
     }
 }
