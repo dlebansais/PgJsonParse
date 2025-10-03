@@ -32,7 +32,7 @@ public class PgCombatModEffectEx
 
     public CombatCondition Condition { get; init; } = CombatCondition.Internal_None;
 
-    public AbilityKeyword ActiveAbilityCondition { get; init; } = AbilityKeyword.Internal_None;
+    public List<AbilityKeyword> ConditionAbilityList { get; init; } = new();
 
     public float ConditionValue { get; init; } = float.NaN;
 

@@ -2193,7 +2193,7 @@ internal partial class CombatParserEx
         bool IsPerSecond = AllEffects.Exists(Item => Item.Keyword == CombatKeywordEx.EffectEverySecond);
 
         CombatCondition Condition = CombatCondition.Internal_None;
-        AbilityKeyword ActiveAbilityCondition = AbilityKeyword.Internal_None;
+        List<AbilityKeyword> ConditionAbilityList = new();
         float ConditionValue = float.NaN;
         float ConditionPercentage = float.NaN;
         int ConditionIndex = -1;
@@ -2213,8 +2213,7 @@ internal partial class CombatParserEx
                     Condition == CombatCondition.AbilityNotTriggered ||
                     Condition == CombatCondition.AbilityTriggered)
                 {
-                    Debug.Assert(targetAbilityList.Count == 1);
-                    ActiveAbilityCondition = targetAbilityList[0];
+                    ConditionAbilityList = targetAbilityList;
                 }
 
                 if (Condition == CombatCondition.TargetHasLowRage ||
@@ -2251,14 +2250,12 @@ internal partial class CombatParserEx
             {
                 if (float.IsNaN(RandomChance))
                 {
-                    Debug.Assert(abilityList.Count == 1);
-
                     PgPermanentModEffectEx pgPermanentModEffectEx = new()
                     {
                         Keyword = CombatKeyword,
                         Data = new() { Value = TargetRange, IsPercent = false },
                         Target = CombatTarget.Self,
-                        ActiveAbilityCondition = abilityList[0],
+                        ConditionAbilityList = abilityList,
                     };
 
                     PermanentEffects.Add(pgPermanentModEffectEx);
@@ -2504,7 +2501,7 @@ internal partial class CombatParserEx
                 TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbilityList = TargetAbilityList,
                 Condition = CanApplyModifier && (ConditionIndex < 0 || i + 1 >= ConditionIndex) ? Condition : CombatCondition.Internal_None,
-                ActiveAbilityCondition = CanApplyModifier ? ActiveAbilityCondition : AbilityKeyword.Internal_None,
+                ConditionAbilityList = CanApplyModifier ? ConditionAbilityList : new(),
                 ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
                 ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
                 IsEveryOtherUse = IsEveryOtherUse,
@@ -2527,7 +2524,7 @@ internal partial class CombatParserEx
                     Target = CanHaveTarget ? OtherTarget : CombatTarget.Internal_None,
                     TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
                     Condition = CanApplyModifier ? Condition : CombatCondition.Internal_None,
-                    ActiveAbilityCondition = CanApplyModifier ? ActiveAbilityCondition : AbilityKeyword.Internal_None,
+                    ConditionAbilityList = CanApplyModifier ? ConditionAbilityList : new(),
                     ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
                     ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
                 };
@@ -2803,7 +2800,7 @@ internal partial class CombatParserEx
         Debug.Assert(Target != CombatTarget.Internal_None);
 
         CombatCondition Condition = CombatCondition.Internal_None;
-        AbilityKeyword ActiveAbilityCondition = AbilityKeyword.Internal_None;
+        List<AbilityKeyword> ConditionAbilityList = new();
         foreach (PgCombatEffectEx CombatEffect in dynamicCombatEffectList)
             if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
             {
@@ -2814,17 +2811,19 @@ internal partial class CombatParserEx
                 if (Condition == CombatCondition.WhilePlayingSong ||
                     Condition == CombatCondition.TargetOfAbility)
                 {
-                    Debug.Assert(targetAbilityList.Count == 1);
-                    ActiveAbilityCondition = targetAbilityList[0];
+                    ConditionAbilityList = targetAbilityList;
                 }
             }
 
-        if (Target == CombatTarget.AnimalHandlingPet && targetAbilityList.Count == 1 && Condition == CombatCondition.Internal_None)
+        if (Target == CombatTarget.AnimalHandlingPet && Condition == CombatCondition.Internal_None)
         {
-            if (targetAbilityList[0] == AbilityKeyword.SicEm)
+            if (targetAbilityList.TrueForAll(keyword => keyword == AbilityKeyword.SicEm ||
+                                                        keyword == AbilityKeyword.CleverTrick ||
+                                                        keyword == AbilityKeyword.GetItOffMe ||
+                                                        keyword == AbilityKeyword.UnnaturalWrath))
             {
                 Condition = CombatCondition.PetAttackType;
-                ActiveAbilityCondition = targetAbilityList[0];
+                ConditionAbilityList = targetAbilityList;
             }
         }
 
@@ -2887,7 +2886,7 @@ internal partial class CombatParserEx
                 RecurringDelay = RecurringDelay,
                 Target = Target,
                 Condition = CanApplyModifier ? Condition : CombatCondition.Internal_None,
-                ActiveAbilityCondition = ActiveAbilityCondition,
+                ConditionAbilityList = ConditionAbilityList,
             };
 
             PermanentEffects.Add(pgPermanentModEffectEx);

@@ -1,4 +1,6 @@
-﻿namespace PgObjects;
+﻿using System.Collections.Generic;
+
+namespace PgObjects;
 
 public class PgPermanentModEffectEx
 {
@@ -18,5 +20,5 @@ public class PgPermanentModEffectEx
 
     public CombatCondition Condition { get; init; } = CombatCondition.Internal_None;
 
-    public AbilityKeyword ActiveAbilityCondition { get; init; } = AbilityKeyword.Internal_None;
+    public List<AbilityKeyword> ConditionAbilityList { get; init; } = new();
 }

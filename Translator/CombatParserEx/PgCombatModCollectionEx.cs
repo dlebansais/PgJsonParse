@@ -7,7 +7,7 @@ using System.Globalization;
 
 public class PgCombatModCollectionEx : List<PgCombatModEx>
 {
-    public static bool DebugMode { get; set; } = false;
+    public static bool DebugMode { get; set; } = true;
 
     public void Display(string powerKey)
     {
@@ -72,8 +72,8 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (pgPermanentModEffectEx.Condition != CombatCondition.Internal_None)
             Write("                     ", $" Condition = CombatCondition.{pgPermanentModEffectEx.Condition},");
 
-        if (pgPermanentModEffectEx.ActiveAbilityCondition != AbilityKeyword.Internal_None)
-            Write("                     ", $" ActiveAbilityCondition = AbilityKeyword.{pgPermanentModEffectEx.ActiveAbilityCondition},");
+        if (pgPermanentModEffectEx.ConditionAbilityList.Count > 0)
+            Write("                     ", $" ConditionAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgPermanentModEffectEx.ConditionAbilityList)} }},");
 
         Write("                 ", " },");
     }
@@ -122,8 +122,8 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (pgCombatModEffectEx.Condition != CombatCondition.Internal_None)
             Write("                     ", $" Condition = CombatCondition.{pgCombatModEffectEx.Condition},");
 
-        if (pgCombatModEffectEx.ActiveAbilityCondition != AbilityKeyword.Internal_None)
-            Write("                     ", $" ActiveAbilityCondition = AbilityKeyword.{pgCombatModEffectEx.ActiveAbilityCondition},");
+        if (pgCombatModEffectEx.ConditionAbilityList.Count > 0)
+            Write("                     ", $" ConditionAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.ConditionAbilityList)} }},");
 
         if (!float.IsNaN(pgCombatModEffectEx.ConditionValue))
             Write("                     ", $" ConditionValue = {pgCombatModEffectEx.ConditionValue.ToString(CultureInfo.InvariantCulture)},");
