@@ -91,6 +91,7 @@
         RequireTargetOfAbility,
         RequireDirectDamageKillShot,
         RequireLowRage,
+        RequireHighRage,
         DirectDamageBoost,
         IndirectDamageBoost,
         RequireKillTarget,
@@ -114,6 +115,7 @@
         RequireBelowMaxRage,
         RequireArthropodTarget,
         RequireStunnedTarget,
+        RequireKnockedDownTarget,
         ApplyToIndirect,
 
         // Synthetic

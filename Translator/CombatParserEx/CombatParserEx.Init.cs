@@ -507,6 +507,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireTargetOfAbility, CombatCondition.TargetOfAbility },
         { CombatKeywordEx.RequireDirectDamageKillShot, CombatCondition.DirectDamageKillShot },
         { CombatKeywordEx.RequireLowRage, CombatCondition.TargetHasLowRage },
+        { CombatKeywordEx.RequireHighRage, CombatCondition.TargetHasHighRage },
         { CombatKeywordEx.RequireKillTarget, CombatCondition.TargetIsKilled },
         { CombatKeywordEx.RequireVulnerableTarget, CombatCondition.TargetIsVulnerable },
         { CombatKeywordEx.RequireAttackAbility, CombatCondition.AttackAbility },
@@ -525,6 +526,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireBelowMaxRage, CombatCondition.BelowMaxRage},
         { CombatKeywordEx.RequireArthropodTarget, CombatCondition.ArthropodTarget},
         { CombatKeywordEx.RequireStunnedTarget, CombatCondition.TargetIsStunned },
+        { CombatKeywordEx.RequireKnockedDownTarget, CombatCondition.TargetIsKnockedDown },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

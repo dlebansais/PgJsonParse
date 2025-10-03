@@ -11,6 +11,7 @@ public enum CombatCondition
     TargetOfAbility,
     DirectDamageKillShot,
     TargetHasLowRage,
+    TargetHasHighRage,
     TargetIsKilled,
     TargetIsVulnerable,
     AttackAbility,
@@ -30,4 +31,5 @@ public enum CombatCondition
     BelowMaxRage,
     ArthropodTarget,
     TargetIsStunned,
+    TargetIsKnockedDown,
 }

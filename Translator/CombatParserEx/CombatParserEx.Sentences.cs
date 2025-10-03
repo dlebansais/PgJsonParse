@@ -179,12 +179,26 @@ internal partial class CombatParserEx
         new SentenceEx("Have less than %f of their Max Rage", CombatKeywordEx.RequireLowRage),
         new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireLowRage),
 
+        new SentenceEx("Targets whose Rage meter are at least %f full", CombatKeywordEx.RequireHighRage),
+        new SentenceEx("Targets whose Rage meter is at least %f full", CombatKeywordEx.RequireHighRage),
+        new SentenceEx("If target's Rage is at least %f full", CombatKeywordEx.RequireHighRage),
+        new SentenceEx("If target's Rage meter is at least %f full", CombatKeywordEx.RequireHighRage),
+
         new SentenceEx("Deal %f damage to Health and Armor", CombatKeywordEx.DealHealthAndArmorDamage),
 
         new SentenceEx("Deal %f Armor damage", CombatKeywordEx.DealArmorDamage),
         new SentenceEx("Deal %f damage to Armor", CombatKeywordEx.DealArmorDamage),
         new SentenceEx("%f damage to Armor", CombatKeywordEx.DealArmorDamage),
         new SentenceEx("%f armor damage", CombatKeywordEx.DealArmorDamage),
+
+        new SentenceEx("Target's Critical Hit Chance reduced by %f", CombatKeywordEx.IncreaseCriticalChance, SignInterpretation.Opposite),
+        new SentenceEx("Chance to critically-hit is reduced by %f", CombatKeywordEx.IncreaseCriticalChance, SignInterpretation.Opposite),
+        new SentenceEx("%f chance to crit", CombatKeywordEx.IncreaseCriticalChance),
+        new SentenceEx("%f Critical Hit Chance", CombatKeywordEx.IncreaseCriticalChance),
+        new SentenceEx("%f Crit Chance", CombatKeywordEx.IncreaseCriticalChance),
+        new SentenceEx("Deal %f damage when they critically hit", CombatKeywordEx.IncreaseCriticalChance),
+
+        new SentenceEx("Damage-over-time effects deal %f damage per tick", CombatKeywordEx.DamageOverTimeBoost),
 
         new SentenceEx("Boost the damage of @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Boost the #D damage of @ and @ %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
@@ -516,12 +530,6 @@ internal partial class CombatParserEx
         new SentenceEx("Have less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
         new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
 
-        new SentenceEx("Target's Critical Hit Chance reduced by %f", CombatKeywordEx.IncreaseCriticalChance, SignInterpretation.Opposite),
-        new SentenceEx("Chance to critically-hit is reduced by %f", CombatKeywordEx.IncreaseCriticalChance, SignInterpretation.Opposite),
-        new SentenceEx("%f chance to crit", CombatKeywordEx.IncreaseCriticalChance),
-        new SentenceEx("%f Critical Hit Chance", CombatKeywordEx.IncreaseCriticalChance),
-        new SentenceEx("%f Crit Chance", CombatKeywordEx.IncreaseCriticalChance),
-
         new SentenceEx("Grant this Critical Hit Chance bonus to your next #S attack", new List<CombatKeywordEx>() { CombatKeywordEx.NextAttack, CombatKeywordEx.GrantCriticalChance }),
 
         new SentenceEx("To Arthropods", CombatKeywordEx.RequireArthropodTarget),
@@ -533,5 +541,8 @@ internal partial class CombatParserEx
         new SentenceEx("Non-Elite enemies", CombatKeywordEx.RequireNonEliteTarget),
 
         new SentenceEx("To Stunned targets", CombatKeywordEx.RequireStunnedTarget),
+
+        new SentenceEx("To targets that are Knock Down", CombatKeywordEx.RequireKnockedDownTarget),
+        new SentenceEx("If target is Knock Down", CombatKeywordEx.RequireKnockedDownTarget),
     };
 }
