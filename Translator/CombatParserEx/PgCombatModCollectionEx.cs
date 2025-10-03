@@ -92,6 +92,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (pgCombatModEffectEx.DamageType != GameDamageType.Internal_None)
             Write("                     ", $" DamageType = {DamageTypeToString(pgCombatModEffectEx.DamageType)},");
 
+        if (pgCombatModEffectEx.DamageCategory != GameDamageCategory.Internal_None)
+            Write("                     ", $" DamageCategory = {DamageCategoryToString(pgCombatModEffectEx.DamageCategory)},");
+
         if (pgCombatModEffectEx.CombatSkill != GameCombatSkill.Internal_None)
             Write("                     ", $" CombatSkill = GameCombatSkill.{pgCombatModEffectEx.CombatSkill},");
 
@@ -166,6 +169,21 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
                 if (Result.Length > 0)
                     Result += " | ";
                 Result += $"GameDamageType.{EnumValue}";
+            }
+
+        return Result;
+    }
+
+    private static string DamageCategoryToString(GameDamageCategory damageCategory)
+    {
+        string Result = string.Empty;
+
+        foreach (GameDamageCategory EnumValue in Enum.GetValues(typeof(GameDamageCategory)))
+            if (EnumValue != GameDamageCategory.Internal_None && (damageCategory & EnumValue) == EnumValue)
+            {
+                if (Result.Length > 0)
+                    Result += " | ";
+                Result += $"GameDamageCategory.{EnumValue}";
             }
 
         return Result;

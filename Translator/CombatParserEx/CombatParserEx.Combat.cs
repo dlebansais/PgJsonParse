@@ -1656,6 +1656,8 @@ internal partial class CombatParserEx
             case "28613":
             case "3254":
             case "10553":
+            case "1046":
+            case "11301":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1715,6 +1717,7 @@ internal partial class CombatParserEx
             case "3047":
             case "16082":
             case "9605":
+            case "11254":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "26224":
@@ -2022,7 +2025,6 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[2], new() { Keyword = CombatKeywordEx.OnTrigger, Data = new() }, new() { Keyword = CombatKeywordEx.GiveBuffOneAttack, Data = new() }, new() { Keyword = CombatKeywordEx.RequireDamageType, DamageType = staticCombatEffectList[3].DamageType } }, targetAbilityList, new() { 0, 2, 3 }, new() { 4, 1 }, inverseTargets: false, out pgCombatModEx);
                 break;
             case "Other":
-            case "11254":
             case "11303":
             case "1203":
             case "12105":
@@ -2157,6 +2159,7 @@ internal partial class CombatParserEx
             case "14056":
             case "28741":
             case "5035":
+            case "23003":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
@@ -2292,6 +2295,7 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.EffectEverySecond ||
                 CombatKeyword == CombatKeywordEx.EffectDelay ||
                 CombatKeyword == CombatKeywordEx.RandomDamage ||
+                CombatKeyword == CombatKeywordEx.ApplyToIndirect ||
                 CombatKeyword == CombatKeywordEx.EveryOtherUse)
             {
                 continue;
@@ -2440,6 +2444,10 @@ internal partial class CombatParserEx
                 TargetAbilityList = targetAbilityList;
             }
 
+            GetDamageCategory(AllEffects, i + 1, out GameDamageCategory DamageCategory);
+            if (DamageCategory == GameDamageCategory.Internal_None)
+                GetDamageCategory(AllEffects, i - 1, out DamageCategory);
+
             if (PreviousDamageType != GameDamageType.Internal_None &&
                 CombatEffect.DamageType == GameDamageType.Internal_None &&
                 Condition == CombatCondition.TargetIsElite)
@@ -2482,6 +2490,7 @@ internal partial class CombatParserEx
                 AbilityList = new List<AbilityKeyword>(abilityList),
                 Data = pgNumericValueEx,
                 DamageType = CombatEffect.DamageType,
+                DamageCategory = CanApplyModifier ? DamageCategory : GameDamageCategory.Internal_None,
                 CombatSkill = CombatEffect.CombatSkill,
                 RandomChance = CanApplyModifier ? RandomChance : float.NaN,
                 DelayInSeconds = CanHaveDelay && CanApplyModifier ? DelayInSeconds : float.NaN,
@@ -2574,6 +2583,18 @@ internal partial class CombatParserEx
             }
             else if (NextCombatEffect.Keyword == CombatKeywordEx.EveryOtherUse)
                 isEveryOtherUse = true;
+        }
+    }
+
+    private static void GetDamageCategory(List<PgCombatEffectEx> effects, int index, out GameDamageCategory damageCategory)
+    {
+        damageCategory = GameDamageCategory.Internal_None;
+
+        if (0 <= index && index < effects.Count)
+        {
+            PgCombatEffectEx NextCombatEffect = effects[index];
+            if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToIndirect)
+                damageCategory = GameDamageCategory.Indirect;
         }
     }
 
@@ -2825,6 +2846,8 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.RecurringEffect ||
                 CombatKeyword == CombatKeywordEx.EffectEverySecond ||
                 CombatKeyword == CombatKeywordEx.EffectDelay ||
+                CombatKeyword == CombatKeywordEx.RandomDamage ||
+                CombatKeyword == CombatKeywordEx.ApplyToIndirect ||
                 CombatKeyword == CombatKeywordEx.EveryOtherUse)
             {
                 continue;

@@ -12,6 +12,8 @@ public class PgCombatModEffectEx
 
     public GameDamageType DamageType { get; init; } = GameDamageType.Internal_None;
 
+    public GameDamageCategory DamageCategory { get; init; } = GameDamageCategory.Internal_None;
+
     public GameCombatSkill CombatSkill { get; init; } = GameCombatSkill.Internal_None;
 
     public float RandomChance { get; init; } = float.NaN;

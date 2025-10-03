@@ -113,6 +113,7 @@
         RequireBelowMaxRage,
         RequireArthropodTarget,
         RequireStunnedTarget,
+        ApplyToIndirect,
 
         // Synthetic
         GiveBuff,

@@ -208,6 +208,7 @@ internal partial class CombatParserEx
         new SentenceEx("Boost the damage of all your attack %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost #D damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your next attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Boost your Indirect #D Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToIndirect }),
         new SentenceEx("Future @ attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }),
         new SentenceEx("Boost the damage of future @ attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }),
         new SentenceEx("Increase the damage of your next attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
