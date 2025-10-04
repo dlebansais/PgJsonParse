@@ -276,7 +276,7 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "physical damage (Crushing, Slashing, Piercing)", "Crushing, Slashing, and Piercing damage", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Fire Wall reuse time", "Wall of Fire reuse time", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Electricity Mitigation and Nature Mitigation (both direct and indirect)", "Electricity and Nature Mitigation", out _, ref IndexFound);
-        ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor");
+        ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor to you");
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
     }
@@ -1489,7 +1489,6 @@ internal partial class CombatParserEx
             case "5254":
             case "5062":
             case "15104":
-            case "8313":
             case "26221":
             case "4083":
             case "4084":
@@ -1704,6 +1703,7 @@ internal partial class CombatParserEx
             case "16008":
             case "16103":
             case "16202":
+            case "8313":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1994,10 +1994,10 @@ internal partial class CombatParserEx
                 pgCombatModEx.DynamicEffects[1].AbilityList.Clear();
                 break;
             case "14354":
-                if (staticCombatEffectList.Count == 4)
-                    BuildModEffect_004(description, effect, abilityList, new() { staticCombatEffectList[0] }, new() { staticCombatEffectList[2], staticCombatEffectList[1], staticCombatEffectList[3] }, targetAbilityList, out pgCombatModEx);
+                if (staticCombatEffectList.Count == 3)
+                    BuildModEffect_004(description, effect, abilityList, new() { staticCombatEffectList[0] }, new() { staticCombatEffectList[1], new() { Keyword = CombatKeywordEx.ApplyToSelf }, staticCombatEffectList[2] }, targetAbilityList, out pgCombatModEx);
                 else
-                    BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0] }, new() { staticCombatEffectList[0], dynamicCombatEffectList[1], staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
+                    BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0] }, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.ApplyToSelf }, staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "26052":
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.ApplyToSelf }, dynamicCombatEffectList[0], staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.RequireSameTarget } }, abilityList, out pgCombatModEx);

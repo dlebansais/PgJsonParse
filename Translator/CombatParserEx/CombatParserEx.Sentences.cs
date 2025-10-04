@@ -514,7 +514,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cause targets to lose %f Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cause your pet's attack to generate %f Rage", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseRage, CombatKeywordEx.ApplyToPet }),
 
-        new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
+        //new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
 
         new SentenceEx("Reap %f health", CombatKeywordEx.DrainHealth),
         new SentenceEx("Steal %f health", CombatKeywordEx.DrainHealth),
