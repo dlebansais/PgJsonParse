@@ -12,9 +12,11 @@
         IncreaseMaxArmor,
         IncreaseMaxPower,
         IncreaseMaxBreath,
+        IncreaseMaxRage,
         RegenPercentageOfArmor,
         IncreaseHealEfficiency,
         IncreaseCurrentRefreshTime,
+        IncreaseCombatRefreshTime,
         ResetRefreshTime,
         StunImmunity,
         RemoveStun,
@@ -66,6 +68,11 @@
         Slow,
         SelfDamage,
         Concussion,
+        IncreaseEvasion,
+        IncreaseEvasionBurst,
+        IncreaseEvasionProjectile,
+        IncreaseEvasionMelee,
+        IncreaseEvasionRanged,
 
         // Other effects
         ApplyWithChance,

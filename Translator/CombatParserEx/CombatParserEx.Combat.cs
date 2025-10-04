@@ -12,7 +12,7 @@ internal partial class CombatParserEx
     public void AnalyzeMods()
     {
         AnalyzeMatchingPowersAndEffects(out List<string[]> StringKeyTable, out List<PgModEffectCollectionEx> AnalyzedPowerKeyToCompleteEffectTable);
-     }
+    }
 
     private void AnalyzeMatchingPowersAndEffects(out List<string[]> stringKeyTable, out List<PgModEffectCollectionEx> powerKeyToCompleteEffectTable)
     {
@@ -1671,6 +1671,29 @@ internal partial class CombatParserEx
             case "14056":
             case "14104":
             case "14158":
+            case "15012":
+            case "151":
+            case "152":
+            case "15202":
+            case "1065":
+            case "12314":
+            case "16043":
+            case "17241":
+            case "17242":
+            case "24154":
+            case "26202":
+            case "26203":
+            case "28683":
+            case "28782":
+            case "28783":
+            case "28784":
+            case "6308":
+            case "21254":
+            case "25161":
+            case "25354":
+            case "3015":
+            case "5094":
+            case "6155":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1720,6 +1743,7 @@ internal partial class CombatParserEx
             case "3306":
             case "6116":
             case "1082":
+            case "15033":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
                 break;
             case "25223":
@@ -1741,6 +1765,9 @@ internal partial class CombatParserEx
             case "15404":
             case "15405":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1000);
+                break;
+            case "15254":
+                BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2000);
                 break;
             case "12092":
             case "13004":
@@ -1792,9 +1819,12 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxPower ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseMaxBreath ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseMaxRage ||
                                                            item.Keyword == CombatKeywordEx.RegenPercentageOfArmor ||
                                                            item.Keyword == CombatKeywordEx.IncreaseHealEfficiency ||
                                                            item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseCombatRefreshTime ||
                                                            item.Keyword == CombatKeywordEx.ResetRefreshTime ||
                                                            item.Keyword == CombatKeywordEx.StunImmunity ||
                                                            item.Keyword == CombatKeywordEx.RemoveStun ||
@@ -1845,6 +1875,11 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.Slow ||
                                                            item.Keyword == CombatKeywordEx.SelfDamage ||
                                                            item.Keyword == CombatKeywordEx.Concussion ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseEvasion ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionBurst ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionProjectile ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionMelee ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -1853,9 +1888,12 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxPower ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseMaxBreath ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseMaxRage ||
                                                           item.Keyword == CombatKeywordEx.RegenPercentageOfArmor ||
                                                           item.Keyword == CombatKeywordEx.IncreaseHealEfficiency ||
                                                           item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseCombatRefreshTime ||
                                                           item.Keyword == CombatKeywordEx.ResetRefreshTime ||
                                                           item.Keyword == CombatKeywordEx.StunImmunity ||
                                                           item.Keyword == CombatKeywordEx.RemoveStun ||
@@ -1906,6 +1944,11 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.Slow ||
                                                           item.Keyword == CombatKeywordEx.SelfDamage ||
                                                           item.Keyword == CombatKeywordEx.Concussion ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseEvasion ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionBurst ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionProjectile ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionMelee ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -1924,6 +1967,7 @@ internal partial class CombatParserEx
             case "12051":
             case "4502":
             case "1086":
+            case "1503":
                 BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "22401":
@@ -2057,13 +2101,6 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[2], new() { Keyword = CombatKeywordEx.OnTrigger, Data = new() }, new() { Keyword = CombatKeywordEx.GiveBuffOneAttack, Data = new() }, new() { Keyword = CombatKeywordEx.RequireDamageType, DamageType = staticCombatEffectList[3].DamageType } }, targetAbilityList, new() { 0, 2, 3 }, new() { 4, 1 }, inverseTargets: false, out pgCombatModEx);
                 break;
             case "Other":
-            case "15012":
-            case "1503":
-            case "15033":
-            case "151":
-            case "152":
-            case "15202":
-            case "15254":
             case "153":
             case "15305":
             case "155":
@@ -2169,6 +2206,11 @@ internal partial class CombatParserEx
             case "28741":
             case "5035":
             case "23003":
+            case "25006":
+            case "25071":
+            case "25103":
+            case "29943":
+            case "7483":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
@@ -2343,6 +2385,8 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxHealth ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxArmor ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxPower ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseMaxBreath ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseMaxRage ||
                                    CombatKeyword == CombatKeywordEx.RegenPercentageOfArmor ||
                                    CombatKeyword == CombatKeywordEx.IncreaseHealEfficiency ||
                                    CombatKeyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
@@ -2370,6 +2414,11 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseDrainHealthMax ||
                                    CombatKeyword == CombatKeywordEx.SelfDamageOverTime ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMeleePowerCost ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasion ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionBurst ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionProjectile ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionMelee ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -2386,6 +2435,11 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.AddMitigationIndirect ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationBurst ||
                                    CombatKeyword == CombatKeywordEx.SelfDamageOverTime ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasion ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionBurst ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionProjectile ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionMelee ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                    CombatKeyword == CombatKeywordEx.BestowProtectiveBubble;
             if (MustHaveDuration && float.IsNaN(DurationInSeconds) && Condition != CombatCondition.AbilityNotTriggered && effect.RawDuration.HasValue)
             {

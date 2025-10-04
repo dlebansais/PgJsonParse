@@ -151,6 +151,9 @@ internal partial class CombatParserEx
         new SentenceEx("Shorten the remaining reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Hasten the active reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reset time of @ is increased %f second", CombatKeywordEx.IncreaseCurrentRefreshTime),
+
+        new SentenceEx("Hasten your current Combat Refresh delay by %f second", CombatKeywordEx.IncreaseCombatRefreshTime, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Complete stun immunity", CombatKeywordEx.StunImmunity),
         new SentenceEx("Grant immunity to new stun", CombatKeywordEx.StunImmunity),
@@ -186,6 +189,11 @@ internal partial class CombatParserEx
         new SentenceEx("Targets whose Rage meter is at least %f full", CombatKeywordEx.RequireHighRage),
         new SentenceEx("If target's Rage is at least %f full", CombatKeywordEx.RequireHighRage),
         new SentenceEx("If target's Rage meter is at least %f full", CombatKeywordEx.RequireHighRage),
+
+        new SentenceEx("Rage attack deal %f", CombatKeywordEx.RageAttackBoost),
+        new SentenceEx("Rage attack to deal %f", CombatKeywordEx.RageAttackBoost),
+        new SentenceEx("Pet's Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
+        new SentenceEx("Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
 
         new SentenceEx("Deal %f damage to Health and Armor", CombatKeywordEx.DealHealthAndArmorDamage),
 
@@ -429,10 +437,6 @@ internal partial class CombatParserEx
         new SentenceEx("Until it has absorbed %f total damage", CombatKeywordEx.MaxMitigatedDamageLimit),
         new SentenceEx ("Up to a maximum of %f total mitigated damage", CombatKeywordEx.MaxMitigatedDamageLimit),
 
-        new SentenceEx("Rage attack deal %f", CombatKeywordEx.RageAttackBoost),
-        new SentenceEx("Pet's Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
-        new SentenceEx("Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
-
         new SentenceEx("Remove ongoing #D effects (up to %f dmg/sec)", CombatKeywordEx.RemoveEffect),
 
         new SentenceEx("Target pet's Non-Rage attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.NonRageAttackBoost, CombatKeywordEx.ApplyToPet }),
@@ -550,5 +554,29 @@ internal partial class CombatParserEx
         new SentenceEx("If target is Knock Down", CombatKeywordEx.RequireKnockedDownTarget),
 
         new SentenceEx("Target is prone to random self-stuns", CombatKeywordEx.Concussion),
+
+        new SentenceEx("Raise the target's Max Rage by %f", CombatKeywordEx.IncreaseMaxRage),
+        new SentenceEx("Raise target's Max Rage by %f", CombatKeywordEx.IncreaseMaxRage),
+        new SentenceEx("Increase target's Max Rage by%f", CombatKeywordEx.IncreaseMaxRage),
+
+        new SentenceEx("Burst Evasion and Projectile evasion %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionBurst, CombatKeywordEx.IncreaseEvasionProjectile }),
+        new SentenceEx("%f chance to avoid being hit by burst attack", CombatKeywordEx.IncreaseEvasionBurst),
+        new SentenceEx("%f evasion of burst attack", CombatKeywordEx.IncreaseEvasionBurst),
+        new SentenceEx("Burst Evasion %f", CombatKeywordEx.IncreaseEvasionBurst),
+        new SentenceEx("%f Burst Evasion", CombatKeywordEx.IncreaseEvasionBurst),
+        new SentenceEx("Boost Burst Evasion by %f", CombatKeywordEx.IncreaseEvasionBurst),
+        new SentenceEx("Projectile Evasion %f", CombatKeywordEx.IncreaseEvasionProjectile),
+        new SentenceEx("Give you %f Projectile Evasion", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionProjectile, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Grant you %f Projectile Evasion", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionProjectile, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f Projectile Evasion", CombatKeywordEx.IncreaseEvasionProjectile),
+        new SentenceEx("Melee Evasion %f", CombatKeywordEx.IncreaseEvasionMelee),
+        new SentenceEx("Boost your Melee Evasion %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionMelee, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Grant you %f Melee Evasion", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionMelee, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Give pet %f Melee Evasion", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionMelee, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("%f Melee Evasion", CombatKeywordEx.IncreaseEvasionMelee),
+        new SentenceEx("%f Ranged Evasion", CombatKeywordEx.IncreaseEvasionRanged),
+        new SentenceEx("Boost melee evasion %f", CombatKeywordEx.IncreaseEvasionMelee),
+        new SentenceEx("Melee Evasion is %f", CombatKeywordEx.IncreaseEvasionMelee),
+        new SentenceEx("Lower targets' Evasion by %f", CombatKeywordEx.IncreaseEvasion, SignInterpretation.AlwaysNegative),
     };
 }
