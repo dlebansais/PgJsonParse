@@ -73,6 +73,8 @@
         IncreaseEvasionProjectile,
         IncreaseEvasionMelee,
         IncreaseEvasionRanged,
+        IncreaseEliteResistance,
+        IgnoreArmor,
 
         // Other effects
         ApplyWithChance,
@@ -130,6 +132,7 @@
         GiveBuff,
         GiveBuffOneUse,
         GiveBuffOneAttack,
+        GiveBuffEachAttack,
         RestoreHealthOverTime,
         RestoreArmorOverTime,
         RestorePowerOverTime,

@@ -275,12 +275,12 @@ internal partial class CombatParserEx
 
         new SentenceEx("%f of target's attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("%f of their attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
+        new SentenceEx("Grant %f Accuracy to your next #S ability", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseAccuracy, CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Give you %f Accuracy", CombatKeywordEx.IncreaseAccuracy),
         new SentenceEx("Accuracy %f", CombatKeywordEx.IncreaseAccuracy),
         new SentenceEx("%f Accuracy", CombatKeywordEx.IncreaseAccuracy),
         new SentenceEx("%f more chance of missing", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("%f Miss Chance", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
-
         new SentenceEx("Melee Accuracy %f", CombatKeywordEx.AddMeleeAccuracy),
         new SentenceEx("You gain Accuracy %f with melee attack", CombatKeywordEx.AddMeleeAccuracy),
 
@@ -289,6 +289,7 @@ internal partial class CombatParserEx
         new SentenceEx("Power Cost %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Power Cost is %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Reduce the Power cost of your @ %f", CombatKeywordEx.IncreasePowerCost),
+        new SentenceEx("Reduce the Power cost of your next @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreasePowerCost, CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Further reduce ability cost %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Reduce the Power cost of @ %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Cost %f Power", CombatKeywordEx.IncreasePowerCost),
@@ -379,6 +380,8 @@ internal partial class CombatParserEx
         new SentenceEx("%f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Debuff the target so that it take %f damage from future #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
+        new SentenceEx("Cause the targets to suffer %f damage from future #D attack (non-stacking)", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.GiveBuffEachAttack }, SignInterpretation.Opposite),
+        new SentenceEx("Cause target to suffer %f damage from future attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("%f resistance to #D damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("#D resistance %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("%f resistant to #D damage", CombatKeywordEx.AddMitigation),
@@ -466,6 +469,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cause your next", new List<CombatKeywordEx>() { CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Your next use", CombatKeywordEx.NextUse),
         new SentenceEx("Your next ability", CombatKeywordEx.NextUse),
+        new SentenceEx("Next #S attack", CombatKeywordEx.NextUse),
 
         new SentenceEx("Deal #D damage", CombatKeywordEx.ChangeDamageType),
         new SentenceEx("Deal direct #D damage", CombatKeywordEx.ChangeDamageType),
@@ -578,5 +582,9 @@ internal partial class CombatParserEx
         new SentenceEx("Boost melee evasion %f", CombatKeywordEx.IncreaseEvasionMelee),
         new SentenceEx("Melee Evasion is %f", CombatKeywordEx.IncreaseEvasionMelee),
         new SentenceEx("Lower targets' Evasion by %f", CombatKeywordEx.IncreaseEvasion, SignInterpretation.AlwaysNegative),
+
+        new SentenceEx("You gain Elite Resistance %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEliteResistance, CombatKeywordEx.ApplyToSelf }),
+
+        new SentenceEx("Ignore mitigation from armor", CombatKeywordEx.IgnoreArmor),
     };
 }
