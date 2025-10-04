@@ -26,6 +26,7 @@ internal partial class CombatParserEx
         new SentenceEx("You regain %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f health", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Boost the healing of your @ %f", CombatKeywordEx.RestoreHealth),
+        new SentenceEx("Boost your @ %f", CombatKeywordEx.RestoreHealth),
         new SentenceEx("You regenerate %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Recover %f health", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Restoration %f", CombatKeywordEx.RestoreHealth),
@@ -104,6 +105,7 @@ internal partial class CombatParserEx
         new SentenceEx("Hit all enemies", CombatKeywordEx.BecomeBurst),
         new SentenceEx("Targets all enemies", CombatKeywordEx.BecomeBurst),
         new SentenceEx("Hit all target", CombatKeywordEx.BecomeBurst),
+        new SentenceEx("Become a %fm Burst attack", new List<CombatKeywordEx>() { CombatKeywordEx.TargetRange, CombatKeywordEx.BecomeBurst }),
 
         new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
 
@@ -125,6 +127,7 @@ internal partial class CombatParserEx
         new SentenceEx("If the target is not focused on you", CombatKeywordEx.RequireNoAggro),
         new SentenceEx("If they are not focused on you", CombatKeywordEx.RequireNoAggro),
         new SentenceEx("If target is not focused on you", CombatKeywordEx.RequireNoAggro),
+        new SentenceEx("To targets that are not focused on you", CombatKeywordEx.RequireNoAggro),
 
         new SentenceEx("While in Blood Mist form", CombatKeywordEx.RequireBloodMistForm),
         new SentenceEx("While playing", CombatKeywordEx.RequirePlayingSong),
@@ -382,12 +385,13 @@ internal partial class CombatParserEx
         new SentenceEx("Target take %f #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Take %f damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Take %f more damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Indirect #D Vulnerability %f", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.AlwaysNegative),
         new SentenceEx("#D Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target's #D Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target's #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target's vulnerability to #D %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
-        new SentenceEx("Suffer %f damage from all Indirect Damage sources", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
-        new SentenceEx("Indirect Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Suffer %f damage from all Indirect Damage sources", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Indirect Vulnerability %f", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.AlwaysNegative),
         new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cause the target to suffer %f #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cause target to be %f more vulnerable to #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
@@ -544,5 +548,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("To targets that are Knock Down", CombatKeywordEx.RequireKnockedDownTarget),
         new SentenceEx("If target is Knock Down", CombatKeywordEx.RequireKnockedDownTarget),
+
+        new SentenceEx("Target is prone to random self-stuns", CombatKeywordEx.Concussion),
     };
 }

@@ -65,6 +65,7 @@
         GrantCriticalChance,
         Slow,
         SelfDamage,
+        Concussion,
 
         // Other effects
         ApplyWithChance,
