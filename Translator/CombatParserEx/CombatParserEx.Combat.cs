@@ -1703,6 +1703,7 @@ internal partial class CombatParserEx
             case "153":
             case "16008":
             case "16103":
+            case "16202":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1731,6 +1732,7 @@ internal partial class CombatParserEx
             case "13204":
             case "16104":
             case "15305":
+            case "16203":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -1984,6 +1986,7 @@ internal partial class CombatParserEx
             case "1086":
             case "1503":
             case "16012":
+            case "17081":
                 BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "22401":
@@ -2132,7 +2135,6 @@ internal partial class CombatParserEx
                 break;
             case "Other":
             case "16112":
-            case "17081":
             case "17162":
             case "17203":
             case "18083":
@@ -2222,7 +2224,6 @@ internal partial class CombatParserEx
             case "9873":
             case "5402":
             case "4303":
-            case "16203":
             case "8319":
             case "28741":
             case "5035":
@@ -2441,6 +2442,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionMelee ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEliteResistance ||
+                                   CombatKeyword == CombatKeywordEx.GrantCriticalChance ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -2707,6 +2709,7 @@ internal partial class CombatParserEx
     private void BuildModEffect_004(string description, PgEffect effect, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, int ignoreModifierIndex = -1)
     {
         float DurationInSeconds = float.NaN;
+        float RecurringDelay = float.NaN;
         CombatKeywordEx Keyword = CombatKeywordEx.Internal_None;
         CombatTarget Target = CombatTarget.Internal_None;
 
@@ -2732,6 +2735,18 @@ internal partial class CombatParserEx
                 Debug.Assert(RawValue != null);
                 DurationInSeconds = RawValue!.Value * 60;
                 Keyword = CombatKeywordEx.GiveBuff;
+
+                staticCombatEffectList.RemoveAt(i);
+                break;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.RecurringEffect)
+            {
+                float? RawValue = CombatEffect.Data.RawValue;
+                Debug.Assert(RawValue != null);
+                RecurringDelay = RawValue!.Value;
+
+                if (Keyword == CombatKeywordEx.Internal_None)
+                    Keyword = CombatKeywordEx.GiveBuff;
 
                 staticCombatEffectList.RemoveAt(i);
                 break;
@@ -2794,7 +2809,7 @@ internal partial class CombatParserEx
         }
 
         Debug.Assert(Keyword != CombatKeywordEx.Internal_None);
-        Debug.Assert(!float.IsNaN(DurationInSeconds) || Keyword == CombatKeywordEx.WhilePlayingSong);
+        Debug.Assert(!float.IsNaN(DurationInSeconds) || !float.IsNaN(RecurringDelay) || Keyword == CombatKeywordEx.WhilePlayingSong);
 
         // Inverse static & dynamic
         BuildModEffect_001(description, effect, isGolemMinion: false, targetAbilityList, staticCombatEffectList, new(), targetAbilityList, out pgCombatModEx);
@@ -2806,6 +2821,7 @@ internal partial class CombatParserEx
             AbilityList = new List<AbilityKeyword>(abilityList),
             Data = PgNumericValueEx.Empty,
             DurationInSeconds = DurationInSeconds,
+            RecurringDelay = RecurringDelay,
             Target = Target,
         };
 

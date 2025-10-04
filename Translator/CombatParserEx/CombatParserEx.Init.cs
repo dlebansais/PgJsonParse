@@ -228,6 +228,7 @@ internal partial class CombatParserEx
         AbilityKeyword.SummonedTornado,
         AbilityKeyword.ShieldBash,
         AbilityKeyword.Minigolem,
+        AbilityKeyword.MeleeKnife,
         Internal_NonBasic,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
@@ -410,6 +411,7 @@ internal partial class CombatParserEx
         { "All Knife ability WITHOUT 'Cut'", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
         { "All Knife Fighting attack", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
         { "All Knife ability", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
+        { "All melee Knife", new List<AbilityKeyword>() { AbilityKeyword.MeleeKnife } },
         { "Bard Songs", new List<AbilityKeyword>() { AbilityKeyword.BardSong } },
         { "All Major Healing ability targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
         { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },

@@ -260,6 +260,12 @@ internal partial class CombatParserEx
         new SentenceEx("Damage is %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("#S damage %f", CombatKeywordEx.DamageBoost),
 
+        new SentenceEx("Deal %f Direct health damage", CombatKeywordEx.DealHealthDamage),
+        new SentenceEx("%f Direct health damage", CombatKeywordEx.DealHealthDamage),
+        new SentenceEx("Deal %f health damage to you", new List<CombatKeywordEx>() { CombatKeywordEx.DealHealthDamage, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("%f health damage", CombatKeywordEx.DealHealthDamage),
+        new SentenceEx("%f #D health damage", CombatKeywordEx.DealHealthDamage),
+
         new SentenceEx("Deal %f direct damage", CombatKeywordEx.DirectDamageBoost),
         new SentenceEx("Gain %f Direct", CombatKeywordEx.DirectDamageBoost),
         new SentenceEx("Deal %f Direct", CombatKeywordEx.DirectDamageBoost),
@@ -518,11 +524,6 @@ internal partial class CombatParserEx
 
         new SentenceEx("In addition, if it deal Indirect #D damage is %f per tick", new List<CombatKeywordEx>() { CombatKeywordEx.IndirectDamageBoost, CombatKeywordEx.RequireDoingDamageOverTime }),
 
-        new SentenceEx("%f Direct health damage", CombatKeywordEx.DealHealthDamage),
-        new SentenceEx("Deal %f health damage to you", new List<CombatKeywordEx>() { CombatKeywordEx.DealHealthDamage, CombatKeywordEx.ApplyToSelf }),
-        new SentenceEx("%f health damage", CombatKeywordEx.DealHealthDamage),
-        new SentenceEx("%f #D health damage", CombatKeywordEx.DealHealthDamage),
-
         new SentenceEx("If it deal direct #D damage", CombatKeywordEx.RequireDirectDamageType),
 
         new SentenceEx("In addition, the target take a second full blast of delayed #D damage", CombatKeywordEx.DelayedSecondAttack),
@@ -543,6 +544,7 @@ internal partial class CombatParserEx
         new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
 
         new SentenceEx("Grant this Critical Hit Chance bonus to your next #S attack", new List<CombatKeywordEx>() { CombatKeywordEx.NextAttack, CombatKeywordEx.GrantCriticalChance }),
+        new SentenceEx("Can Critically Hit based on your Anatomy skill levels", CombatKeywordEx.GrantCriticalChance),
 
         new SentenceEx("To Arthropods", CombatKeywordEx.RequireArthropodTarget),
 
