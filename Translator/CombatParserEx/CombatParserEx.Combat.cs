@@ -1704,6 +1704,9 @@ internal partial class CombatParserEx
             case "16103":
             case "16202":
             case "8313":
+            case "17162":
+            case "17203":
+            case "18083":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -2135,9 +2138,6 @@ internal partial class CombatParserEx
                 break;
             case "Other":
             case "16112":
-            case "17162":
-            case "17203":
-            case "18083":
             case "18085":
             case "18094":
             case "18095":
@@ -2763,6 +2763,14 @@ internal partial class CombatParserEx
             {
                 DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
                 Keyword = CombatKeywordEx.GiveBuffOneAttack;
+
+                staticCombatEffectList.RemoveAt(i);
+                break;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.NextEvade)
+            {
+                DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
+                Keyword = CombatKeywordEx.GiveBuffOneEvade;
 
                 staticCombatEffectList.RemoveAt(i);
                 break;

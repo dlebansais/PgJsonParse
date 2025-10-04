@@ -386,6 +386,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Debuff the target so that it take %f damage from future #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
+        new SentenceEx("Increase target's vulnerability to future #D attack %f", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Cause the targets to suffer %f damage from future #D attack (non-stacking)", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.GiveBuffEachAttack }, SignInterpretation.Opposite),
         new SentenceEx("Cause target to suffer %f damage from future attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("%f resistance to #D damage", CombatKeywordEx.AddMitigation),
@@ -416,6 +417,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant you %f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
 
         new SentenceEx("Make the target %f more vulnerable to direct #D damage", CombatKeywordEx.AddMitigationDirect, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Cause the target to take %f damage from direct #D attack", CombatKeywordEx.AddMitigationDirect, SignInterpretation.Opposite),
         new SentenceEx("Gain %f Direct Elite Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
         new SentenceEx("%f Vulnerability to Elite Direct Damage", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
         new SentenceEx("Universal Direct Mitigation %f", CombatKeywordEx.AddMitigationDirect),
@@ -588,5 +590,7 @@ internal partial class CombatParserEx
         new SentenceEx("You gain Elite Resistance %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEliteResistance, CombatKeywordEx.ApplyToSelf }),
 
         new SentenceEx("Ignore mitigation from armor", CombatKeywordEx.IgnoreArmor),
+
+        new SentenceEx("The next time the victim Evades an attack", CombatKeywordEx.NextEvade),
     };
 }
