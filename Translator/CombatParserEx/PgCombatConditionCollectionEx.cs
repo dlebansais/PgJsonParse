@@ -1,21 +1,26 @@
 ﻿namespace PgObjects;
 
 using System.Collections.Generic;
+using System.Diagnostics;
 
+[DebuggerDisplay("{AsString,nq}")]
 public class PgCombatConditionCollectionEx : List<CombatCondition>
 {
-    public override string ToString()
+    public string AsString
     {
-        string Result = string.Empty;
-
-        foreach (CombatCondition Condition in this)
+        get
         {
-            if (Result.Length > 0)
-                Result += ", ";
+            string Result = string.Empty;
 
-            Result += $"{Condition}";
+            foreach (CombatCondition Condition in this)
+            {
+                if (Result.Length > 0)
+                    Result += ", ";
+
+                Result += $"{Condition}";
+            }
+
+            return Result;
         }
-
-        return Result;
     }
 }

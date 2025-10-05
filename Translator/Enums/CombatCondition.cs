@@ -34,4 +34,5 @@ public enum CombatCondition
     TargetIsKnockedDown,
     IncomingMeleeAttack,
     Stunned,
+    ActiveSkill,
 }

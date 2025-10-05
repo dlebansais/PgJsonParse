@@ -21,4 +21,5 @@ public enum CombatTarget
     SpiritFoxPowerGlyph,
     FairyFaeConduit,
     BattleChemistryGolem,
+    GiantBatDouble,
 }

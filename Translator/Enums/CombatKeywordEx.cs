@@ -17,12 +17,15 @@
         IncreaseHealEfficiency,
         IncreaseCurrentRefreshTime,
         IncreaseCombatRefreshTime,
+        IncreaseChannelingTime,
         ResetRefreshTime,
         StunImmunity,
         RemoveStun,
         AllowedWhileStunned,
         Knockback,
         DamageBoost,
+        BaseDamageBoost,
+        DamageBoostDouble,
         DealArmorDamage,
         DealHealthDamage,
         DealHealthAndArmorDamage,
@@ -47,6 +50,7 @@
         AddMitigationDirect,
         AddMitigationIndirect,
         AddMitigationBurst,
+        AddMitigationPhysical,
         ChanceToConsume,
         SelfStun,
         MaxMitigatedDamageLimit,
@@ -79,6 +83,9 @@
         VileBloodAttack,
         ImplantDeerEgg,
         SummonDeer,
+        IgnoreKnockback,
+        SummonFigment,
+        IncreaseJumpHeight,
 
         // Other effects
         ApplyWithChance,
@@ -135,6 +142,7 @@
         RequireKnockedDownTarget,
         ApplyToIndirect,
         RequireBeingStunned,
+        RequireActiveSkill,
 
         // Synthetic
         GiveBuff,

@@ -108,6 +108,7 @@ internal partial class CombatParserEx
         new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
 
         new SentenceEx("To you and your allies", CombatKeywordEx.ApplyToSelfAndAllies),
+        new SentenceEx("You and nearby allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("Yourself and all allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("Affects caster as well as allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("To all allies", CombatKeywordEx.ApplyToAllies),
@@ -211,6 +212,8 @@ internal partial class CombatParserEx
         new SentenceEx("Deal %f damage when they critically hit", CombatKeywordEx.IncreaseCriticalChance),
 
         new SentenceEx("Damage-over-time effects deal %f damage per tick", CombatKeywordEx.DamageOverTimeBoost),
+
+        new SentenceEx("boost #S Skill Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
 
         new SentenceEx("Boost the damage of @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Boost the #D damage of @ and @ %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
@@ -610,5 +613,33 @@ internal partial class CombatParserEx
         new SentenceEx("Summon a deer ally", CombatKeywordEx.SummonDeer),
 
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
+
+        new SentenceEx("Boost your mitigation vs physical damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationPhysical, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Mitigation vs physical damage %f", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("Elite Physical Damage Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationPhysical, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Physical Damage Mitigation %f", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("%f absorption of any physical damage", CombatKeywordEx.AddMitigationPhysical),
+
+        new SentenceEx("Ignore Knockback effect", CombatKeywordEx.IgnoreKnockback),
+        new SentenceEx("Immunity to Knockback", CombatKeywordEx.IgnoreKnockback),
+        new SentenceEx("Grant all targets immunity to Knockback", CombatKeywordEx.IgnoreKnockback),
+        new SentenceEx("Grant Knockback Immunity", CombatKeywordEx.IgnoreKnockback),
+        new SentenceEx("Immune to Knockback effects", CombatKeywordEx.IgnoreKnockback),
+
+        new SentenceEx("Take %f second to channel", CombatKeywordEx.IncreaseChannelingTime),
+        new SentenceEx("Channeling time is %f second", CombatKeywordEx.IncreaseChannelingTime),
+
+        new SentenceEx("Summon figment", CombatKeywordEx.SummonFigment),
+
+        new SentenceEx("If you are using the #S skill", CombatKeywordEx.RequireActiveSkill),
+        new SentenceEx("While the #S skill is active", CombatKeywordEx.RequireActiveSkill),
+        new SentenceEx("While #S skill is active", CombatKeywordEx.RequireActiveSkill),
+        new SentenceEx("While #S skill active", CombatKeywordEx.RequireActiveSkill),
+        new SentenceEx("When #S skill active", CombatKeywordEx.RequireActiveSkill),
+        new SentenceEx("(If #S skill is active)", CombatKeywordEx.RequireActiveSkill),
+
+        new SentenceEx("Deal double damage", CombatKeywordEx.DamageBoostDouble),
+
+        new SentenceEx("Boost Jump Height", CombatKeywordEx.IncreaseJumpHeight),
     };
 }

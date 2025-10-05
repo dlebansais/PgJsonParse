@@ -393,6 +393,7 @@ internal partial class CombatParserEx
         { "Unarmed attack", new List<AbilityKeyword>() { AbilityKeyword.Unarmed } },
         { "Kick attack", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
         { "Any Kick ability", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
+        { "All kick ability", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
         { "All kicks", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
         { "Cow's Front Kick", new List<AbilityKeyword>() { AbilityKeyword.CowFrontKick } },
         { "Bomb attack", new List<AbilityKeyword>() { AbilityKeyword.Bomb } },
@@ -531,6 +532,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireKnockedDownTarget, CombatCondition.TargetIsKnockedDown },
         { CombatKeywordEx.OnIncomingMeleeAttack, CombatCondition.IncomingMeleeAttack },
         { CombatKeywordEx.RequireBeingStunned, CombatCondition.Stunned },
+        { CombatKeywordEx.RequireActiveSkill, CombatCondition.ActiveSkill },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
