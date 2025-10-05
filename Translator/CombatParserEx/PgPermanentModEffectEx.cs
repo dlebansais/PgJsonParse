@@ -10,6 +10,8 @@ public class PgPermanentModEffectEx
 
     public GameDamageType DamageType { get; init; } = GameDamageType.Internal_None;
 
+    public float RandomChance { get; init; } = float.NaN;
+
     public float DelayInSeconds { get; init; } = float.NaN;
 
     public float DurationInSeconds { get; init; } = float.NaN;
@@ -18,7 +20,7 @@ public class PgPermanentModEffectEx
 
     public CombatTarget Target { get; init; }
 
-    public CombatCondition Condition { get; init; } = CombatCondition.Internal_None;
+    public List<CombatCondition> ConditionList { get; init; } = new();
 
     public List<AbilityKeyword> ConditionAbilityList { get; init; } = new();
 }

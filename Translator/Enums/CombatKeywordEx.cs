@@ -66,6 +66,7 @@
         IncreaseCriticalChance,
         GrantCriticalChance,
         Slow,
+        Fear,
         SelfDamage,
         Concussion,
         IncreaseEvasion,
@@ -75,6 +76,7 @@
         IncreaseEvasionRanged,
         IncreaseEliteResistance,
         IgnoreArmor,
+        VileBloodAttack,
 
         // Other effects
         ApplyWithChance,
@@ -92,6 +94,7 @@
         NextUse,
         NextAttack,
         NextEvade,
+        OnIncomingMeleeAttack,
         TargetRange,
         RequireTwoKnives,
         RequireNoAggro,

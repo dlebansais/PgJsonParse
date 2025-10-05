@@ -121,6 +121,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
 
+        new SentenceEx("React to incoming Melee attack with an eruption of vile blood: a Burst #D attack with Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.VileBloodAttack, CombatKeywordEx.OnIncomingMeleeAttack }),
+
         new SentenceEx("Over %f second", CombatKeywordEx.EffectOverTime),
         new SentenceEx("Per second", CombatKeywordEx.EffectEverySecond),
 
@@ -129,7 +131,7 @@ internal partial class CombatParserEx
         new SentenceEx("If target is not focused on you", CombatKeywordEx.RequireNoAggro),
         new SentenceEx("To targets that are not focused on you", CombatKeywordEx.RequireNoAggro),
 
-        new SentenceEx("While in Blood Mist form", CombatKeywordEx.RequireBloodMistForm),
+        new SentenceEx("While in Blood-Mist form", CombatKeywordEx.RequireBloodMistForm),
         new SentenceEx("While playing", CombatKeywordEx.RequirePlayingSong),
 
         new SentenceEx("To the kicker", CombatKeywordEx.ToKickerTarget),
@@ -592,5 +594,9 @@ internal partial class CombatParserEx
         new SentenceEx("Ignore mitigation from armor", CombatKeywordEx.IgnoreArmor),
 
         new SentenceEx("The next time the victim Evades an attack", CombatKeywordEx.NextEvade),
+
+        new SentenceEx("Induces Fear in the target", CombatKeywordEx.Fear),
+
+        new SentenceEx("Cause you to erupt in a fountain of vile blood: a Burst Trauma attack with Base Damage %f", CombatKeywordEx.VileBloodAttack),
     };
 }

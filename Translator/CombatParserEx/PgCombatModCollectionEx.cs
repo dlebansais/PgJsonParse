@@ -58,6 +58,9 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (pgPermanentModEffectEx.DamageType != GameDamageType.Internal_None)
             Write("                     ", $" DamageType = {DamageTypeToString(pgPermanentModEffectEx.DamageType)},");
 
+        if (!float.IsNaN(pgPermanentModEffectEx.RandomChance))
+            Write("                     ", $" RandomChance = {pgPermanentModEffectEx.RandomChance.ToString(CultureInfo.InvariantCulture)}F,");
+
         if (!float.IsNaN(pgPermanentModEffectEx.DelayInSeconds))
             Write("                     ", $" DelayInSeconds = {pgPermanentModEffectEx.DelayInSeconds.ToString(CultureInfo.InvariantCulture)},");
 
@@ -69,8 +72,8 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
         Write("                     ", $" Target = CombatTarget.{pgPermanentModEffectEx.Target},");
 
-        if (pgPermanentModEffectEx.Condition != CombatCondition.Internal_None)
-            Write("                     ", $" Condition = CombatCondition.{pgPermanentModEffectEx.Condition},");
+        if (pgPermanentModEffectEx.ConditionList.Count > 0)
+            Write("                     ", $" ConditionList = new List<CombatCondition>() {{ {ConditionListToString(pgPermanentModEffectEx.ConditionList)} }},");
 
         if (pgPermanentModEffectEx.ConditionAbilityList.Count > 0)
             Write("                     ", $" ConditionAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgPermanentModEffectEx.ConditionAbilityList)} }},");
@@ -119,8 +122,8 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         if (pgCombatModEffectEx.TargetAbilityList.Count > 0)
             Write("                     ", $" TargetAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.TargetAbilityList)} }},");
 
-        if (pgCombatModEffectEx.Condition != CombatCondition.Internal_None)
-            Write("                     ", $" Condition = CombatCondition.{pgCombatModEffectEx.Condition},");
+        if (pgCombatModEffectEx.ConditionList.Count > 0)
+            Write("                     ", $" ConditionList = new List<CombatCondition>() {{ {ConditionListToString(pgCombatModEffectEx.ConditionList)} }},");
 
         if (pgCombatModEffectEx.ConditionAbilityList.Count > 0)
             Write("                     ", $" ConditionAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.ConditionAbilityList)} }},");
@@ -154,6 +157,21 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
                 Result += ", ";
 
             Result += $"AbilityKeyword.{Keyword}";
+        }
+
+        return Result;
+    }
+
+    private static string ConditionListToString(List<CombatCondition> list)
+    {
+        string Result = string.Empty;
+
+        foreach (CombatCondition Condition in list)
+        {
+            if (Result.Length > 0)
+                Result += ", ";
+
+            Result += $"CombatCondition.{Condition}";
         }
 
         return Result;

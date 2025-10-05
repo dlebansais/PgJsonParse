@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Navigation;
 using PgObjects;
 using Translator;
 
@@ -276,6 +277,9 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "physical damage (Crushing, Slashing, Piercing)", "Crushing, Slashing, and Piercing damage", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Fire Wall reuse time", "Wall of Fire reuse time", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Electricity Mitigation and Nature Mitigation (both direct and indirect)", "Electricity and Nature Mitigation", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "while in Blood Mist form", "while in Blood-Mist form", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "(This cannot happen more than once per second", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "vile blood: a 5m Burst", "vile blood: a Burst", out _, ref IndexFound);
         ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor to you");
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
@@ -1707,6 +1711,7 @@ internal partial class CombatParserEx
             case "17162":
             case "17203":
             case "18083":
+            case "18095":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1736,6 +1741,8 @@ internal partial class CombatParserEx
             case "16104":
             case "15305":
             case "16203":
+            case "18085":
+            case "18094":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -1889,6 +1896,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseCriticalChance ||
                                                            item.Keyword == CombatKeywordEx.GrantCriticalChance ||
                                                            item.Keyword == CombatKeywordEx.Slow ||
+                                                           item.Keyword == CombatKeywordEx.Fear ||
                                                            item.Keyword == CombatKeywordEx.SelfDamage ||
                                                            item.Keyword == CombatKeywordEx.Concussion ||
                                                            item.Keyword == CombatKeywordEx.IncreaseEvasion ||
@@ -1898,6 +1906,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                                            item.Keyword == CombatKeywordEx.IncreaseEliteResistance ||
                                                            item.Keyword == CombatKeywordEx.IgnoreArmor ||
+                                                           item.Keyword == CombatKeywordEx.VileBloodAttack ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -1960,6 +1969,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseCriticalChance ||
                                                           item.Keyword == CombatKeywordEx.GrantCriticalChance ||
                                                           item.Keyword == CombatKeywordEx.Slow ||
+                                                          item.Keyword == CombatKeywordEx.Fear ||
                                                           item.Keyword == CombatKeywordEx.SelfDamage ||
                                                           item.Keyword == CombatKeywordEx.Concussion ||
                                                           item.Keyword == CombatKeywordEx.IncreaseEvasion ||
@@ -1969,6 +1979,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                                           item.Keyword == CombatKeywordEx.IncreaseEliteResistance ||
                                                           item.Keyword == CombatKeywordEx.IgnoreArmor ||
+                                                          item.Keyword == CombatKeywordEx.VileBloodAttack ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2136,12 +2147,12 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, new() { 0 }, new() { 3, 2, 1 }, inverseTargets: false, out pgCombatModEx);
                 pgCombatModEx.DynamicEffects[2].AbilityList.Clear();
                 break;
+            case "18114":
+                //BuildModEffect_009(description, dynamicCombatEffectList, staticCombatEffectList, out pgCombatModEx);
+                pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
+                break;
             case "Other":
             case "16112":
-            case "18085":
-            case "18094":
-            case "18095":
-            case "18114":
             case "20012":
             case "20020":
             case "20105":
@@ -2263,7 +2274,7 @@ internal partial class CombatParserEx
         float TargetRange = GetValueAndRemove(AllEffects, CombatKeywordEx.TargetRange);
         bool IsPerSecond = AllEffects.Exists(Item => Item.Keyword == CombatKeywordEx.EffectEverySecond);
 
-        CombatCondition Condition = CombatCondition.Internal_None;
+        List<CombatCondition> ConditionList = new();
         List<AbilityKeyword> ConditionAbilityList = new();
         float ConditionValue = float.NaN;
         float ConditionPercentage = float.NaN;
@@ -2274,37 +2285,37 @@ internal partial class CombatParserEx
             PgCombatEffectEx CombatEffect = AllEffects[i];
             if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
             {
-                Debug.Assert(Condition == CombatCondition.Internal_None);
+                Debug.Assert(ConditionList.Count == 0);
                 Debug.Assert(NewCondition != CombatCondition.Internal_None);
-                Condition = NewCondition;
+                ConditionList.Add(NewCondition);
                 ConditionIndex = i;
 
-                if (Condition == CombatCondition.WhilePlayingSong ||
-                    Condition == CombatCondition.TargetOfAbility ||
-                    Condition == CombatCondition.AbilityNotTriggered ||
-                    Condition == CombatCondition.AbilityTriggered)
+                if (NewCondition == CombatCondition.WhilePlayingSong ||
+                    NewCondition == CombatCondition.TargetOfAbility ||
+                    NewCondition == CombatCondition.AbilityNotTriggered ||
+                    NewCondition == CombatCondition.AbilityTriggered)
                 {
                     ConditionAbilityList = targetAbilityList;
                 }
 
-                if (Condition == CombatCondition.TargetHasLowRage ||
-                    Condition == CombatCondition.TargetHasHighRage ||
-                    Condition == CombatCondition.BelowMaxArmor ||
-                    Condition == CombatCondition.BelowMaxRage)
+                if (NewCondition == CombatCondition.TargetHasLowRage ||
+                    NewCondition == CombatCondition.TargetHasHighRage ||
+                    NewCondition == CombatCondition.BelowMaxArmor ||
+                    NewCondition == CombatCondition.BelowMaxRage)
                 {
                     Debug.Assert(CombatEffect.Data.RawValue.HasValue);
                     Debug.Assert(CombatEffect.Data.RawIsPercent.HasValue);
                     ConditionPercentage = CombatEffect.Data.Value;
                 }
 
-                if (Condition == CombatCondition.MinimumDistance)
+                if (NewCondition == CombatCondition.MinimumDistance)
                 {
                     Debug.Assert(CombatEffect.Data.RawValue.HasValue);
                     Debug.Assert(CombatEffect.Data.RawIsPercent.HasValue);
                     ConditionValue = CombatEffect.Data.Value;
                 }
 
-                if (Condition == CombatCondition.SpecificDirectDamageType)
+                if (NewCondition == CombatCondition.SpecificDirectDamageType)
                 {
                     Debug.Assert(CombatEffect.DamageType != GameDamageType.Internal_None);
                     ConditionDamageType = CombatEffect.DamageType;
@@ -2318,7 +2329,7 @@ internal partial class CombatParserEx
             PgCombatEffectEx CombatEffect = AllEffects[i];
             CombatKeywordEx CombatKeyword = CombatEffect.Keyword;
 
-            if (CombatKeyword == CombatKeywordEx.BecomeBurst && !float.IsNaN(TargetRange) && Condition != CombatCondition.MinimumDistance)
+            if (CombatKeyword == CombatKeywordEx.BecomeBurst && !float.IsNaN(TargetRange) && ConditionList.TrueForAll(condition => condition != CombatCondition.MinimumDistance))
             {
                 if (float.IsNaN(RandomChance))
                 {
@@ -2350,7 +2361,7 @@ internal partial class CombatParserEx
                                     ((i != (ignoreModifierIndex % 1000)) &&
                                      (ignoreModifierIndex < 1000 || (i != ((ignoreModifierIndex / 1000) % 1000))));
 
-            Debug.Assert(CombatKeyword != CombatKeywordEx.BecomeBurst || Condition == CombatCondition.MinimumDistance);
+            Debug.Assert(CombatKeyword != CombatKeywordEx.BecomeBurst || ConditionList.Exists(condition => condition == CombatCondition.MinimumDistance));
 
             if (CombatKeyword == CombatKeywordEx.ApplyWithChance ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelf ||
@@ -2443,6 +2454,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEliteResistance ||
                                    CombatKeyword == CombatKeywordEx.GrantCriticalChance ||
+                                   CombatKeyword == CombatKeywordEx.Fear ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -2466,7 +2478,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEliteResistance ||
                                    CombatKeyword == CombatKeywordEx.BestowProtectiveBubble;
-            if (MustHaveDuration && float.IsNaN(DurationInSeconds) && Condition != CombatCondition.AbilityNotTriggered && effect.RawDuration.HasValue)
+            if (MustHaveDuration && float.IsNaN(DurationInSeconds) && ConditionList.TrueForAll(condition => condition != CombatCondition.AbilityNotTriggered) && effect.RawDuration.HasValue)
             {
                 Debug.Assert(effect.Duration == -2);
                 DurationInSeconds = 30;
@@ -2542,7 +2554,7 @@ internal partial class CombatParserEx
 
             if (PreviousDamageType != GameDamageType.Internal_None &&
                 CombatEffect.DamageType == GameDamageType.Internal_None &&
-                Condition == CombatCondition.TargetIsElite)
+                ConditionList.Exists(condition => condition == CombatCondition.TargetIsElite))
             {
                 CombatEffect.DamageType = PreviousDamageType;
             }
@@ -2558,7 +2570,7 @@ internal partial class CombatParserEx
                     abilityList[0] = AbilityKeyword.GolemHealingInjection;
             }
 
-            if (Condition == CombatCondition.SpecificDirectDamageType && CombatKeyword == CombatKeywordEx.DamageBoost)
+            if (ConditionList.Exists(condition => condition == CombatCondition.SpecificDirectDamageType) && CombatKeyword == CombatKeywordEx.DamageBoost)
             {
                 Debug.Assert(CombatEffect.DamageType == GameDamageType.Internal_None);
                 CombatEffect.DamageType = ConditionDamageType;
@@ -2591,7 +2603,7 @@ internal partial class CombatParserEx
                 Target = CanHaveTarget && CanApplyModifier ? Target : CombatTarget.Internal_None,
                 TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbilityList = TargetAbilityList,
-                Condition = CanApplyModifier && (ConditionIndex < 0 || i + 1 >= ConditionIndex) ? Condition : CombatCondition.Internal_None,
+                ConditionList = CanApplyModifier && (ConditionIndex < 0 || i + 1 >= ConditionIndex) ? ConditionList : new(),
                 ConditionAbilityList = CanApplyModifier ? ConditionAbilityList : new(),
                 ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
                 ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
@@ -2614,7 +2626,7 @@ internal partial class CombatParserEx
                     DurationInSeconds = CanHaveDuration && CanApplyModifier ? DurationInSeconds : float.NaN,
                     Target = CanHaveTarget ? OtherTarget : CombatTarget.Internal_None,
                     TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
-                    Condition = CanApplyModifier ? Condition : CombatCondition.Internal_None,
+                    ConditionList = CanApplyModifier ? ConditionList : new(),
                     ConditionAbilityList = CanApplyModifier ? ConditionAbilityList : new(),
                     ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
                     ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
@@ -2912,30 +2924,30 @@ internal partial class CombatParserEx
 
         Debug.Assert(Target != CombatTarget.Internal_None);
 
-        CombatCondition Condition = CombatCondition.Internal_None;
+        List<CombatCondition> ConditionList = new();
         List<AbilityKeyword> ConditionAbilityList = new();
         foreach (PgCombatEffectEx CombatEffect in dynamicCombatEffectList)
             if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
             {
-                Debug.Assert(Condition == CombatCondition.Internal_None);
+                Debug.Assert(ConditionList.Count == 0);
                 Debug.Assert(NewCondition != CombatCondition.Internal_None);
-                Condition = NewCondition;
+                ConditionList.Add(NewCondition);
 
-                if (Condition == CombatCondition.WhilePlayingSong ||
-                    Condition == CombatCondition.TargetOfAbility)
+                if (NewCondition == CombatCondition.WhilePlayingSong ||
+                    NewCondition == CombatCondition.TargetOfAbility)
                 {
                     ConditionAbilityList = targetAbilityList;
                 }
             }
 
-        if (Target == CombatTarget.AnimalHandlingPet && Condition == CombatCondition.Internal_None)
+        if (Target == CombatTarget.AnimalHandlingPet && ConditionList.Count == 0)
         {
             if (targetAbilityList.TrueForAll(keyword => keyword == AbilityKeyword.SicEm ||
                                                         keyword == AbilityKeyword.CleverTrick ||
                                                         keyword == AbilityKeyword.GetItOffMe ||
                                                         keyword == AbilityKeyword.UnnaturalWrath))
             {
-                Condition = CombatCondition.PetAttackType;
+                ConditionList.Add(CombatCondition.PetAttackType);
                 ConditionAbilityList = targetAbilityList;
             }
         }
@@ -2998,7 +3010,7 @@ internal partial class CombatParserEx
                 DurationInSeconds = CanApplyModifier ? DurationInSeconds : float.NaN,
                 RecurringDelay = RecurringDelay,
                 Target = Target,
-                Condition = CanApplyModifier ? Condition : CombatCondition.Internal_None,
+                ConditionList = CanApplyModifier ? ConditionList : new(),
                 ConditionAbilityList = ConditionAbilityList,
             };
 
@@ -3049,6 +3061,77 @@ internal partial class CombatParserEx
             PgCombatModEffectEx OtherEffect = pgOtherCombatModEx.DynamicEffects[i];
             pgCombatModEx.DynamicEffects.Add(OtherEffect);
         }
+    }
+
+    private void BuildModEffect_009(string description, PgCombatEffectCollectionEx dynamicCombatEffectList, PgCombatEffectCollectionEx staticCombatEffectList, out PgCombatModEx pgCombatModEx)
+    {
+        PgCombatEffectCollectionEx combatEffectList = new();
+        combatEffectList.AddRange(dynamicCombatEffectList);
+        combatEffectList.AddRange(staticCombatEffectList);
+
+        List<CombatCondition> ConditionList = new();
+        foreach (PgCombatEffectEx CombatEffect in combatEffectList)
+            if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
+            {
+                Debug.Assert(ConditionList.Count == 0);
+                Debug.Assert(NewCondition != CombatCondition.Internal_None);
+                ConditionList.Add(NewCondition);
+            }
+
+        List<PgPermanentModEffectEx> PermanentEffects = new();
+        for (int i = 0; i < combatEffectList.Count; i++)
+        {
+            PgCombatEffectEx CombatEffect = combatEffectList[i];
+            CombatKeywordEx CombatKeyword = CombatEffect.Keyword;
+
+            if (CombatKeyword == CombatKeywordEx.ApplyWithChance ||
+                CombatKeyword == CombatKeywordEx.ApplyToSelf ||
+                CombatKeyword == CombatKeywordEx.ApplyToAllies ||
+                CombatKeyword == CombatKeywordEx.ApplyToSelfAndAllies ||
+                CombatKeyword == CombatKeywordEx.ApplyToPet ||
+                CombatKeyword == CombatKeywordEx.ApplyToSelfAndPet ||
+                CombatKeyword == CombatKeywordEx.TargetRange ||
+                CombatKeyword == CombatKeywordEx.EffectDuration ||
+                CombatKeyword == CombatKeywordEx.EffectDurationInMinutes ||
+                CombatKeyword == CombatKeywordEx.EffectOverTime ||
+                CombatKeyword == CombatKeywordEx.RecurringEffect ||
+                CombatKeyword == CombatKeywordEx.EffectEverySecond ||
+                CombatKeyword == CombatKeywordEx.EffectDelay ||
+                CombatKeyword == CombatKeywordEx.RandomDamage ||
+                CombatKeyword == CombatKeywordEx.ApplyToIndirect ||
+                CombatKeyword == CombatKeywordEx.EveryOtherUse)
+            {
+                continue;
+            }
+
+            if (KeywordToCondition.TryGetValue(CombatKeyword, out CombatCondition NewCondition))
+            {
+                continue;
+            }
+
+            PgNumericValueEx pgNumericValueEx = new()
+            {
+                Value = CombatEffect.Data.RawValue.HasValue ? CombatEffect.Data.RawValue.Value : float.NaN,
+                IsPercent = CombatEffect.Data.RawIsPercent.HasValue ? CombatEffect.Data.RawIsPercent.Value : false,
+            };
+
+            PgPermanentModEffectEx pgPermanentModEffectEx = new()
+            {
+                Keyword = CombatKeyword,
+                Data = pgNumericValueEx,
+                DamageType = CombatEffect.DamageType,
+                ConditionList = ConditionList,
+            };
+
+            PermanentEffects.Add(pgPermanentModEffectEx);
+        }
+
+        pgCombatModEx = new()
+        {
+            Description = description,
+            PermanentEffects = PermanentEffects,
+            DynamicEffects = new(),
+        };
     }
 
     private static CombatTarget SelectPetType(List<AbilityKeyword> abilityList)
