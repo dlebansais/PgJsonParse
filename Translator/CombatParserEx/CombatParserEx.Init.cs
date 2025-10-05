@@ -529,6 +529,8 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireArthropodTarget, CombatCondition.ArthropodTarget},
         { CombatKeywordEx.RequireStunnedTarget, CombatCondition.TargetIsStunned },
         { CombatKeywordEx.RequireKnockedDownTarget, CombatCondition.TargetIsKnockedDown },
+        { CombatKeywordEx.OnIncomingMeleeAttack, CombatCondition.IncomingMeleeAttack },
+        { CombatKeywordEx.RequireBeingStunned, CombatCondition.Stunned },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

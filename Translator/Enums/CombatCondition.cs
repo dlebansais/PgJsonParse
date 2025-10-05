@@ -32,4 +32,6 @@ public enum CombatCondition
     ArthropodTarget,
     TargetIsStunned,
     TargetIsKnockedDown,
+    IncomingMeleeAttack,
+    Stunned,
 }

@@ -69,8 +69,6 @@ internal partial class CombatParserEx
         new SentenceEx("Max Power %f", CombatKeywordEx.IncreaseMaxPower),
         new SentenceEx("Grant the target %f Max Power", CombatKeywordEx.IncreaseMaxPower),
 
-        new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
-
         new SentenceEx("After a %f second delay", CombatKeywordEx.EffectDelay),
         new SentenceEx("After an %f second delay", CombatKeywordEx.EffectDelay),
 
@@ -162,6 +160,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant them immunity to stun", CombatKeywordEx.StunImmunity),
 
         new SentenceEx("Cause your pet to bleed for %f #D damage", new List<CombatKeywordEx>() { CombatKeywordEx.SelfDamage, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("Deal %f #D damage to YOU", CombatKeywordEx.SelfDamage),
 
         new SentenceEx("Both you and your pet", CombatKeywordEx.ApplyToSelfAndPet),
 
@@ -244,6 +243,7 @@ internal partial class CombatParserEx
         new SentenceEx("Increase the damage of your next attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Reduce the damage of the target's next attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }, SignInterpretation.AlwaysNegative),
         new SentenceEx("Reduce targets' next attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reduce their attack damage %f", CombatKeywordEx.DamageBoost, SignInterpretation.AlwaysNegative),
         new SentenceEx("Increase the damage of your @ by %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your direct and indirect #D damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Direct and Indirect #D Damage %f", CombatKeywordEx.DamageBoost),
@@ -469,6 +469,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("If the target of @ dies", CombatKeywordEx.IfTargetDies),
 
+        new SentenceEx("Next attack that hit you", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextHit }),
+
         new SentenceEx("Cause your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("The next attack you use", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
@@ -598,5 +600,15 @@ internal partial class CombatParserEx
         new SentenceEx("Induces Fear in the target", CombatKeywordEx.Fear),
 
         new SentenceEx("Cause you to erupt in a fountain of vile blood: a Burst Trauma attack with Base Damage %f", CombatKeywordEx.VileBloodAttack),
+
+        new SentenceEx("When used while stunned", CombatKeywordEx.RequireBeingStunned),
+        new SentenceEx("If used while you are stunned", CombatKeywordEx.RequireBeingStunned),
+
+        new SentenceEx("Implant insect eggs in the target. (Max 4 stacks.) Future Deer Kicks by any pet deer or player deer will cause target to take %f #D damage over 5 second", CombatKeywordEx.ImplantDeerEgg),
+        new SentenceEx("Subsequent Deer Kicks to this target", CombatKeywordEx.ImplantDeerEgg),
+
+        new SentenceEx("Summon a deer ally", CombatKeywordEx.SummonDeer),
+
+        new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
     };
 }

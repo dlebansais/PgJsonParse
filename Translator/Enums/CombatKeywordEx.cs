@@ -77,6 +77,8 @@
         IncreaseEliteResistance,
         IgnoreArmor,
         VileBloodAttack,
+        ImplantDeerEgg,
+        SummonDeer,
 
         // Other effects
         ApplyWithChance,
@@ -93,6 +95,7 @@
         ApplyToSelfAndPet,
         NextUse,
         NextAttack,
+        NextHit,
         NextEvade,
         OnIncomingMeleeAttack,
         TargetRange,
@@ -131,12 +134,14 @@
         RequireStunnedTarget,
         RequireKnockedDownTarget,
         ApplyToIndirect,
+        RequireBeingStunned,
 
         // Synthetic
         GiveBuff,
         GiveBuffOneUse,
         GiveBuffOneAttack,
         GiveBuffEachAttack,
+        GiveBuffOneHit,
         GiveBuffOneEvade,
         RestoreHealthOverTime,
         RestoreArmorOverTime,
