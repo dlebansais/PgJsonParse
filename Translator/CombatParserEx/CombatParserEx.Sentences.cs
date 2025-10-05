@@ -95,6 +95,7 @@ internal partial class CombatParserEx
         new SentenceEx("Sprint speed %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("Sprint speed by %f", CombatKeywordEx.AddSprintSpeed),
         new SentenceEx("%f Movement Speed", CombatKeywordEx.AddSprintSpeed),
+        new SentenceEx("Move much faster", CombatKeywordEx.AddSprintSpeed),
 
         new SentenceEx("Armor Recovery Per Second: %f of Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
@@ -152,7 +153,7 @@ internal partial class CombatParserEx
         new SentenceEx("Shorten the remaining reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Hasten the active reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
-        new SentenceEx("Reset time of @ is increased %f second", CombatKeywordEx.IncreaseCurrentRefreshTime),
+        new SentenceEx("Reset time %f", CombatKeywordEx.IncreaseCurrentRefreshTime),
 
         new SentenceEx("Hasten your current Combat Refresh delay by %f second", CombatKeywordEx.IncreaseCombatRefreshTime, SignInterpretation.AlwaysNegative),
 
@@ -294,6 +295,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f Miss Chance", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("Melee Accuracy %f", CombatKeywordEx.AddMeleeAccuracy),
         new SentenceEx("You gain Accuracy %f with melee attack", CombatKeywordEx.AddMeleeAccuracy),
+        new SentenceEx("Target has a %f chance to Miss with any Melee attack", CombatKeywordEx.AddMeleeAccuracy, SignInterpretation.Opposite),
 
         new SentenceEx("Burst Accuracy %f", CombatKeywordEx.IncreaseBurstAccuracy),
 
@@ -613,12 +615,14 @@ internal partial class CombatParserEx
         new SentenceEx("Summon a deer ally", CombatKeywordEx.SummonDeer),
 
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
+        new SentenceEx("There's a %f chance", CombatKeywordEx.ApplyWithChance),
 
         new SentenceEx("Boost your mitigation vs physical damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationPhysical, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Mitigation vs physical damage %f", CombatKeywordEx.AddMitigationPhysical),
         new SentenceEx("Elite Physical Damage Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationPhysical, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Physical Damage Mitigation %f", CombatKeywordEx.AddMitigationPhysical),
         new SentenceEx("%f absorption of any physical damage", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("Cause target to suffer %f damage from future physical attack", CombatKeywordEx.AddMitigationPhysical, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Ignore Knockback effect", CombatKeywordEx.IgnoreKnockback),
         new SentenceEx("Immunity to Knockback", CombatKeywordEx.IgnoreKnockback),
@@ -631,6 +635,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("Summon figment", CombatKeywordEx.SummonFigment),
 
+        new SentenceEx("Place an extra trap", CombatKeywordEx.SummonStunTrap),
+
         new SentenceEx("If you are using the #S skill", CombatKeywordEx.RequireActiveSkill),
         new SentenceEx("While the #S skill is active", CombatKeywordEx.RequireActiveSkill),
         new SentenceEx("While #S skill is active", CombatKeywordEx.RequireActiveSkill),
@@ -641,5 +647,13 @@ internal partial class CombatParserEx
         new SentenceEx("Deal double damage", CombatKeywordEx.DamageBoostDouble),
 
         new SentenceEx("Boost Jump Height", CombatKeywordEx.IncreaseJumpHeight),
+
+        new SentenceEx("To Undead", CombatKeywordEx.RequireUndeadTarget),
+        new SentenceEx("On an undead target", CombatKeywordEx.RequireUndeadTarget),
+        new SentenceEx("Vs Undead", CombatKeywordEx.RequireUndeadTarget),
+
+        new SentenceEx("Cause the target to deal %f #D damage to themselves the next time they use a Rage attack", new List<CombatKeywordEx>() { CombatKeywordEx.SelfDamage, CombatKeywordEx.NextRageAttack }),
+
+        new SentenceEx("While simultaneously channeling a different #S ability", CombatKeywordEx.RequireChanneling),
     };
 }

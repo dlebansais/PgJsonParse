@@ -85,6 +85,7 @@
         SummonDeer,
         IgnoreKnockback,
         SummonFigment,
+        SummonStunTrap,
         IncreaseJumpHeight,
 
         // Other effects
@@ -102,6 +103,7 @@
         ApplyToSelfAndPet,
         NextUse,
         NextAttack,
+        NextRageAttack,
         NextHit,
         NextEvade,
         OnIncomingMeleeAttack,
@@ -143,11 +145,14 @@
         ApplyToIndirect,
         RequireBeingStunned,
         RequireActiveSkill,
+        RequireUndeadTarget,
+        RequireChanneling,
 
         // Synthetic
         GiveBuff,
         GiveBuffOneUse,
         GiveBuffOneAttack,
+        GiveBuffOneRageAttack,
         GiveBuffEachAttack,
         GiveBuffOneHit,
         GiveBuffOneEvade,

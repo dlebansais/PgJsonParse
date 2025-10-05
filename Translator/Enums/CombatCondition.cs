@@ -35,4 +35,6 @@ public enum CombatCondition
     IncomingMeleeAttack,
     Stunned,
     ActiveSkill,
+    UndeadTarget,
+    WhileChanneling,
 }

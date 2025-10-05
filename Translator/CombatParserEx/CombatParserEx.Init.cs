@@ -492,6 +492,9 @@ internal partial class CombatParserEx
         { (int)GameCombatSkill.Warden, "Warden" },
         { (int)GameCombatSkill.Lycanthropy, "Lycanthropy" },
         { (int)GameCombatSkill.SpiritFox, "Spirit Fox" },
+        { (int)GameCombatSkill.WeatherWitching, "Weather Witching" },
+        { (int)GameCombatSkill.Vampirism, "Vampirism" },
+        //{ (int)GameCombatSkill.FairyMagic, "Fairy Magic" },
     };
     private static readonly Dictionary<int, string> SongMap = new Dictionary<int, string>()
     {
@@ -533,6 +536,8 @@ internal partial class CombatParserEx
         { CombatKeywordEx.OnIncomingMeleeAttack, CombatCondition.IncomingMeleeAttack },
         { CombatKeywordEx.RequireBeingStunned, CombatCondition.Stunned },
         { CombatKeywordEx.RequireActiveSkill, CombatCondition.ActiveSkill },
+        { CombatKeywordEx.RequireUndeadTarget, CombatCondition.UndeadTarget },
+        { CombatKeywordEx.RequireChanneling, CombatCondition.WhileChanneling },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

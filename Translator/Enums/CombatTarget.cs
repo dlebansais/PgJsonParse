@@ -22,4 +22,5 @@ public enum CombatTarget
     FairyFaeConduit,
     BattleChemistryGolem,
     GiantBatDouble,
+    WardenStunTrap,
 }
