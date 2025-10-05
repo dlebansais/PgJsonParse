@@ -2281,7 +2281,7 @@ internal partial class CombatParserEx
         float TargetRange = GetValueAndRemove(AllEffects, CombatKeywordEx.TargetRange);
         bool IsPerSecond = AllEffects.Exists(Item => Item.Keyword == CombatKeywordEx.EffectEverySecond);
 
-        List<CombatCondition> ConditionList = new();
+        PgCombatConditionCollectionEx ConditionList = new();
         List<AbilityKeyword> ConditionAbilityList = new();
         float ConditionValue = float.NaN;
         float ConditionPercentage = float.NaN;
@@ -2940,7 +2940,7 @@ internal partial class CombatParserEx
 
         Debug.Assert(Target != CombatTarget.Internal_None);
 
-        List<CombatCondition> ConditionList = new();
+        PgCombatConditionCollectionEx ConditionList = new();
         List<AbilityKeyword> ConditionAbilityList = new();
         foreach (PgCombatEffectEx CombatEffect in dynamicCombatEffectList)
             if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
@@ -3087,7 +3087,7 @@ internal partial class CombatParserEx
 
         float RandomChance = GetValueAndRemove(combatEffectList, CombatKeywordEx.ApplyWithChance, asProbability: true);
 
-        List<CombatCondition> ConditionList = new();
+        PgCombatConditionCollectionEx ConditionList = new();
         foreach (PgCombatEffectEx CombatEffect in combatEffectList)
             if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
             {

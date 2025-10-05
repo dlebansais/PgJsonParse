@@ -7,7 +7,7 @@ using System.Globalization;
 
 public class PgCombatModCollectionEx : List<PgCombatModEx>
 {
-    public static bool DebugMode { get; set; } = false;
+    public static bool DebugMode { get; set; } = true;
 
     public void Display(string powerKey)
     {
@@ -73,7 +73,7 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         Write("                     ", $" Target = CombatTarget.{pgPermanentModEffectEx.Target},");
 
         if (pgPermanentModEffectEx.ConditionList.Count > 0)
-            Write("                     ", $" ConditionList = new List<CombatCondition>() {{ {ConditionListToString(pgPermanentModEffectEx.ConditionList)} }},");
+            Write("                     ", $" ConditionList = new PgCombatConditionCollectionEx() {{ {ConditionListToString(pgPermanentModEffectEx.ConditionList)} }},");
 
         if (pgPermanentModEffectEx.ConditionAbilityList.Count > 0)
             Write("                     ", $" ConditionAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgPermanentModEffectEx.ConditionAbilityList)} }},");
@@ -123,7 +123,7 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
             Write("                     ", $" TargetAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.TargetAbilityList)} }},");
 
         if (pgCombatModEffectEx.ConditionList.Count > 0)
-            Write("                     ", $" ConditionList = new List<CombatCondition>() {{ {ConditionListToString(pgCombatModEffectEx.ConditionList)} }},");
+            Write("                     ", $" ConditionList = new PgCombatConditionCollectionEx() {{ {ConditionListToString(pgCombatModEffectEx.ConditionList)} }},");
 
         if (pgCombatModEffectEx.ConditionAbilityList.Count > 0)
             Write("                     ", $" ConditionAbilityList = new List<AbilityKeyword>() {{ {AbilityKeywordListToString(pgCombatModEffectEx.ConditionAbilityList)} }},");
@@ -162,7 +162,7 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
         return Result;
     }
 
-    private static string ConditionListToString(List<CombatCondition> list)
+    private static string ConditionListToString(PgCombatConditionCollectionEx list)
     {
         string Result = string.Empty;
 

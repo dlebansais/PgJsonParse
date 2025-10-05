@@ -30,7 +30,7 @@ public class PgCombatModEffectEx
 
     public List<AbilityKeyword> TargetAbilityList { get; init; } = new();
 
-    public List<CombatCondition> ConditionList { get; init; } = new();
+    public PgCombatConditionCollectionEx ConditionList { get; init; } = new();
 
     public List<AbilityKeyword> ConditionAbilityList { get; init; } = new();
 

@@ -20,7 +20,7 @@ public class PgPermanentModEffectEx
 
     public CombatTarget Target { get; init; }
 
-    public List<CombatCondition> ConditionList { get; init; } = new();
+    public PgCombatConditionCollectionEx ConditionList { get; init; } = new();
 
     public List<AbilityKeyword> ConditionAbilityList { get; init; } = new();
 }
