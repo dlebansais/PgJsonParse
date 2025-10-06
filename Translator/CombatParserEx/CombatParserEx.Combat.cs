@@ -1501,8 +1501,8 @@ internal partial class CombatParserEx
             case "4084":
             case "9086":
             case "9862":
-            case "28242":
-            case "29942":
+            //case "28242":
+            //case "29942":
             case "7306":
             case "7307":
             case "7308":
@@ -1732,6 +1732,9 @@ internal partial class CombatParserEx
             case "26262":
             case "27073":
             case "27174":
+            case "29943":
+            case "3082":
+            case "3134":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1770,6 +1773,8 @@ internal partial class CombatParserEx
             case "25006":
             case "27076":
             case "28625":
+            case "28741":
+            case "3132":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -1796,6 +1801,10 @@ internal partial class CombatParserEx
             case "2058":
             case "27055":
             case "28124":
+            case "15033":
+            case "28765":
+            case "28766":
+            case "3023":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
                 break;
             case "25007":
@@ -1816,6 +1825,10 @@ internal partial class CombatParserEx
             case "11254":
             case "13302":
             case "23003":
+            case "3016":
+            case "3204":
+            case "3303":
+            case "3403":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "28615":
@@ -1964,6 +1977,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseEvasion ||
                                                            item.Keyword == CombatKeywordEx.IncreaseEvasionBurst ||
                                                            item.Keyword == CombatKeywordEx.IncreaseEvasionProjectile ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionBurstAndProjectile ||
                                                            item.Keyword == CombatKeywordEx.IncreaseEvasionMelee ||
                                                            item.Keyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                                            item.Keyword == CombatKeywordEx.IncreaseEliteResistance ||
@@ -1971,9 +1985,15 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.ImplantDeerEgg ||
                                                            item.Keyword == CombatKeywordEx.SummonDeer ||
                                                            item.Keyword == CombatKeywordEx.SummonFigment ||
+                                                           item.Keyword == CombatKeywordEx.SummonStunTrap ||
+                                                           item.Keyword == CombatKeywordEx.SummonTornado ||
                                                            item.Keyword == CombatKeywordEx.VileBloodAttack ||
                                                            item.Keyword == CombatKeywordEx.IgnoreKnockback ||
                                                            item.Keyword == CombatKeywordEx.IncreaseJumpHeight ||
+                                                           item.Keyword == CombatKeywordEx.TornadoVulnerability ||
+                                                           item.Keyword == CombatKeywordEx.IncreasePhysicalReflection ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseArmorSpecificReflection ||
+                                                           item.Keyword == CombatKeywordEx.DirectDamageImmunity ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -2046,6 +2066,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseEvasion ||
                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionBurst ||
                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionProjectile ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionBurstAndProjectile ||
                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionMelee ||
                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                                           item.Keyword == CombatKeywordEx.IncreaseEliteResistance ||
@@ -2053,9 +2074,15 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.ImplantDeerEgg ||
                                                           item.Keyword == CombatKeywordEx.SummonDeer ||
                                                           item.Keyword == CombatKeywordEx.SummonFigment ||
+                                                          item.Keyword == CombatKeywordEx.SummonStunTrap ||
+                                                          item.Keyword == CombatKeywordEx.SummonTornado ||
                                                           item.Keyword == CombatKeywordEx.VileBloodAttack ||
                                                           item.Keyword == CombatKeywordEx.IgnoreKnockback ||
                                                           item.Keyword == CombatKeywordEx.IncreaseJumpHeight ||
+                                                          item.Keyword == CombatKeywordEx.TornadoVulnerability ||
+                                                          item.Keyword == CombatKeywordEx.IncreasePhysicalReflection ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseArmorSpecificReflection ||
+                                                          item.Keyword == CombatKeywordEx.DirectDamageImmunity ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2157,6 +2184,7 @@ internal partial class CombatParserEx
                 pgCombatModEx.PermanentEffects.AddRange(pgExtraCombatModEx.PermanentEffects);
                 break;
             case "28641":
+            case "28645":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, new(), targetAbilityList, out pgCombatModEx);
                 BuildModEffect_005(description, new() { AbilityKeyword.SummonedTornado }, staticCombatEffectList, new(), targetAbilityList, out pgExtraCombatModEx);
                 pgCombatModEx.PermanentEffects.AddRange(pgExtraCombatModEx.PermanentEffects);
@@ -2264,17 +2292,6 @@ internal partial class CombatParserEx
                 break;
             case "Other":
             case "28642":
-            case "28645":
-            case "28765":
-            case "28766":
-            case "3016":
-            case "3023":
-            case "3082":
-            case "3132":
-            case "3134":
-            case "3204":
-            case "3303":
-            case "3403":
             case "4002":
             case "4062":
             case "4063":
@@ -2306,9 +2323,7 @@ internal partial class CombatParserEx
             case "5402":
             case "4303":
             case "8319":
-            case "28741":
             case "5035":
-            case "29943":
             case "7483":
             case "16112":
             case "21004":
@@ -2316,11 +2331,12 @@ internal partial class CombatParserEx
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "XXX":
+            case "28242":
+            case "29942":
+            case "26113":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
-            case "15033":
-            case "26113":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "OOO":
@@ -2446,6 +2462,7 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndAllies ||
                 CombatKeyword == CombatKeywordEx.ApplyToPet ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndPet ||
+                CombatKeyword == CombatKeywordEx.ApplyToPetOfTarget ||
                 CombatKeyword == CombatKeywordEx.TargetRange ||
                 CombatKeyword == CombatKeywordEx.EffectDuration ||
                 CombatKeyword == CombatKeywordEx.EffectDurationInMinutes ||
@@ -2531,6 +2548,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasion ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionBurst ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionProjectile ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionBurstAndProjectile ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionMelee ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEliteResistance ||
@@ -2540,6 +2558,9 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.SummonDeer ||
                                    CombatKeyword == CombatKeywordEx.IgnoreKnockback ||
                                    CombatKeyword == CombatKeywordEx.IncreaseJumpHeight ||
+                                   CombatKeyword == CombatKeywordEx.TornadoVulnerability ||
+                                   CombatKeyword == CombatKeywordEx.IncreasePhysicalReflection ||
+                                   CombatKeyword == CombatKeywordEx.DirectDamageImmunity ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -2560,6 +2581,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasion ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionBurst ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionProjectile ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseEvasionBurstAndProjectile ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionMelee ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEliteResistance ||
@@ -2763,6 +2785,8 @@ internal partial class CombatParserEx
                 target = CombatTarget.Allies;
             else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToPet)
                 target = SelectPetType(abilityList);
+            else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToPetOfTarget)
+                target = CombatTarget.PetOfTarget;
             else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndPet)
             {
                 target = CombatTarget.Self;
@@ -3077,6 +3101,7 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndAllies ||
                 CombatKeyword == CombatKeywordEx.ApplyToPet ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndPet ||
+                CombatKeyword == CombatKeywordEx.ApplyToPetOfTarget ||
                 CombatKeyword == CombatKeywordEx.TargetRange ||
                 CombatKeyword == CombatKeywordEx.EffectDuration ||
                 CombatKeyword == CombatKeywordEx.EffectDurationInMinutes ||
@@ -3201,6 +3226,7 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndAllies ||
                 CombatKeyword == CombatKeywordEx.ApplyToPet ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndPet ||
+                CombatKeyword == CombatKeywordEx.ApplyToPetOfTarget ||
                 CombatKeyword == CombatKeywordEx.TargetRange ||
                 CombatKeyword == CombatKeywordEx.EffectDuration ||
                 CombatKeyword == CombatKeywordEx.EffectDurationInMinutes ||

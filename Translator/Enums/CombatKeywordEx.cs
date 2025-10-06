@@ -76,6 +76,7 @@
         IncreaseEvasion,
         IncreaseEvasionBurst,
         IncreaseEvasionProjectile,
+        IncreaseEvasionBurstAndProjectile,
         IncreaseEvasionMelee,
         IncreaseEvasionRanged,
         IncreaseEliteResistance,
@@ -86,7 +87,12 @@
         IgnoreKnockback,
         SummonFigment,
         SummonStunTrap,
+        SummonTornado,
         IncreaseJumpHeight,
+        TornadoVulnerability,
+        IncreasePhysicalReflection,
+        IncreaseArmorSpecificReflection,
+        DirectDamageImmunity,
 
         // Other effects
         ApplyWithChance,
@@ -101,6 +107,7 @@
         ApplyToSelfAndAllies,
         ApplyToPet,
         ApplyToSelfAndPet,
+        ApplyToPetOfTarget,
         NextUse,
         NextAttack,
         NextRageAttack,

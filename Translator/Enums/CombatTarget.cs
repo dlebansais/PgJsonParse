@@ -6,6 +6,7 @@ public enum CombatTarget
     Self,
     Allies,
     AnyPet,
+    PetOfTarget,
     AnimalHandlingPet,
     NecromancyPet,
     NecromancyZombie,

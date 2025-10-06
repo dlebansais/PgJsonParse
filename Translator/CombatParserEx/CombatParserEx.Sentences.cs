@@ -153,6 +153,7 @@ internal partial class CombatParserEx
         new SentenceEx("Shorten the remaining reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Hasten the active reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reset time of @ is increased %f second", CombatKeywordEx.IncreaseCurrentRefreshTime),
         new SentenceEx("Reset time %f", CombatKeywordEx.IncreaseCurrentRefreshTime),
 
         new SentenceEx("Hasten your current Combat Refresh delay by %f second", CombatKeywordEx.IncreaseCombatRefreshTime, SignInterpretation.AlwaysNegative),
@@ -172,6 +173,8 @@ internal partial class CombatParserEx
         new SentenceEx("Grant your pet", CombatKeywordEx.ApplyToPet),
         new SentenceEx("To your pet", CombatKeywordEx.ApplyToPet),
         new SentenceEx("To your undead", CombatKeywordEx.ApplyToPet),
+
+        new SentenceEx("Boost target pet's", CombatKeywordEx.ApplyToPetOfTarget),
 
         new SentenceEx("Kill an enemy via direct damage", CombatKeywordEx.RequireDirectDamageKillShot),
 
@@ -390,6 +393,7 @@ internal partial class CombatParserEx
         new SentenceEx("Against Elite enemies, mitigate %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Mitigate %f of all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("All Elite attack deal %f damage to you.", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
         new SentenceEx("%f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Debuff the target so that it take %f damage from future #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
@@ -576,7 +580,8 @@ internal partial class CombatParserEx
         new SentenceEx("Raise target's Max Rage by %f", CombatKeywordEx.IncreaseMaxRage),
         new SentenceEx("Increase target's Max Rage by%f", CombatKeywordEx.IncreaseMaxRage),
 
-        new SentenceEx("Burst Evasion and Projectile evasion %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionBurst, CombatKeywordEx.IncreaseEvasionProjectile }),
+        new SentenceEx("Burst Evasion and Projectile evasion %f", CombatKeywordEx.IncreaseEvasionBurstAndProjectile),
+
         new SentenceEx("%f chance to avoid being hit by burst attack", CombatKeywordEx.IncreaseEvasionBurst),
         new SentenceEx("%f evasion of burst attack", CombatKeywordEx.IncreaseEvasionBurst),
         new SentenceEx("Burst Evasion %f", CombatKeywordEx.IncreaseEvasionBurst),
@@ -637,6 +642,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("Place an extra trap", CombatKeywordEx.SummonStunTrap),
 
+        new SentenceEx("Summon a second tornado", CombatKeywordEx.SummonTornado),
+
         new SentenceEx("If you are using the #S skill", CombatKeywordEx.RequireActiveSkill),
         new SentenceEx("While the #S skill is active", CombatKeywordEx.RequireActiveSkill),
         new SentenceEx("While #S skill is active", CombatKeywordEx.RequireActiveSkill),
@@ -655,5 +662,13 @@ internal partial class CombatParserEx
         new SentenceEx("Cause the target to deal %f #D damage to themselves the next time they use a Rage attack", new List<CombatKeywordEx>() { CombatKeywordEx.SelfDamage, CombatKeywordEx.NextRageAttack }),
 
         new SentenceEx("While simultaneously channeling a different #S ability", CombatKeywordEx.RequireChanneling),
+
+        new SentenceEx("Targets also take %f damage from sentient weather phenomena", CombatKeywordEx.TornadoVulnerability),
+
+        new SentenceEx("%f Physical Damage Reflection", CombatKeywordEx.IncreasePhysicalReflection),
+
+        new SentenceEx("Plus bonus Armor-specific damage equal to %f of the attack's total regular damage", CombatKeywordEx.IncreasePhysicalReflection),
+
+        new SentenceEx("Grant you immunity to direct damage", CombatKeywordEx.DirectDamageImmunity),
     };
 }
