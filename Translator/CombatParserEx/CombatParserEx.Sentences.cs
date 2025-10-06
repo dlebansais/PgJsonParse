@@ -108,7 +108,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
 
-        new SentenceEx("To you and your allies", CombatKeywordEx.ApplyToSelfAndAllies),
+        new SentenceEx("You and your allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("You and nearby allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("Yourself and all allies", CombatKeywordEx.ApplyToSelfAndAllies),
         new SentenceEx("Affects caster as well as allies", CombatKeywordEx.ApplyToSelfAndAllies),
@@ -150,6 +150,7 @@ internal partial class CombatParserEx
         new SentenceEx("Hasten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Hasten the current reuse time of @ %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Hasten the current reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Hasten the reuse time of @ %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the remaining reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Hasten the active reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
@@ -221,8 +222,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("Boost the damage of @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Boost the #D damage of @ and @ %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
-        new SentenceEx("Increase the damage of all targets' attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToAllies }),
-        new SentenceEx("%f damage from all attack", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToAllies }),
+        new SentenceEx("Increase the damage of all targets' attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelfAndAllies }),
+        new SentenceEx("%f damage from all attack", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelfAndAllies }),
         new SentenceEx("#D attack Deal %f damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal up to %f damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Add up to %f extra damage", CombatKeywordEx.DamageBoost),
@@ -318,6 +319,7 @@ internal partial class CombatParserEx
         new SentenceEx("Doesn't cause the target to yell for help", CombatKeywordEx.NoYellForHelp),
         new SentenceEx("This attack does not cause the target to shout for help", CombatKeywordEx.NoYellForHelp),
         new SentenceEx("Does not cause the target to shout for help", CombatKeywordEx.NoYellForHelp),
+        new SentenceEx("Does not call for help", CombatKeywordEx.NoYellForHelp),
         new SentenceEx("Do not call for help", CombatKeywordEx.NoYellForHelp),
 
         new SentenceEx("Mend a broken bone", CombatKeywordEx.RepairBrokenBone),
@@ -408,7 +410,6 @@ internal partial class CombatParserEx
         new SentenceEx("Target is %f more vulnerable to #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target %f more vulnerable to #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Make the target %f more vulnerable to #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
-        new SentenceEx("Make the target %f more vulnerable to direct #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cause the target to become %f more vulnerable to #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target take %f more damage from #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target take %f #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
@@ -461,7 +462,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("Remove ongoing #D effects (up to %f dmg/sec)", CombatKeywordEx.RemoveEffect),
 
-        new SentenceEx("Target pet's Non-Rage attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.NonRageAttackBoost, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("Non-Rage attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.NonRageAttackBoost }),
 
         new SentenceEx("Target take %f indirect #D damage", CombatKeywordEx.AddMitigationIndirect),
         new SentenceEx("Cause the target to take %f damage from indirect #D", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.Opposite),
@@ -670,5 +671,7 @@ internal partial class CombatParserEx
         new SentenceEx("Plus bonus Armor-specific damage equal to %f of the attack's total regular damage", CombatKeywordEx.IncreasePhysicalReflection),
 
         new SentenceEx("Grant you immunity to direct damage", CombatKeywordEx.DirectDamageImmunity),
+
+        new SentenceEx("Trigger the target's Vulnerability", CombatKeywordEx.MakeVulnerable),
     };
 }

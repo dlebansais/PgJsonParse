@@ -93,6 +93,7 @@
         IncreasePhysicalReflection,
         IncreaseArmorSpecificReflection,
         DirectDamageImmunity,
+        MakeVulnerable,
 
         // Other effects
         ApplyWithChance,
