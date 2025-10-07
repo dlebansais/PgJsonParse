@@ -155,6 +155,9 @@
         RequireActiveSkill,
         RequireUndeadTarget,
         RequireChanneling,
+        RequireRepeatedAttack,
+        RequireUsingCombatSkill,
+        RequireDebuffedTarget,
 
         // Synthetic
         GiveBuff,

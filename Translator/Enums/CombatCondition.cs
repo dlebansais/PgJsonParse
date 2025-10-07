@@ -37,4 +37,7 @@ public enum CombatCondition
     ActiveSkill,
     UndeadTarget,
     WhileChanneling,
+    RepeatedAttack,
+    UsingCombatSkill,
+    DebuffedTarget,
 }

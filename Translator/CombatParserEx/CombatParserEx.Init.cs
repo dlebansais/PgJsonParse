@@ -538,6 +538,9 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireActiveSkill, CombatCondition.ActiveSkill },
         { CombatKeywordEx.RequireUndeadTarget, CombatCondition.UndeadTarget },
         { CombatKeywordEx.RequireChanneling, CombatCondition.WhileChanneling },
+        { CombatKeywordEx.RequireRepeatedAttack, CombatCondition.RepeatedAttack },
+        { CombatKeywordEx.RequireUsingCombatSkill, CombatCondition.UsingCombatSkill },
+        { CombatKeywordEx.RequireDebuffedTarget, CombatCondition.DebuffedTarget },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

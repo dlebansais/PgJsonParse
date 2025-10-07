@@ -673,5 +673,12 @@ internal partial class CombatParserEx
         new SentenceEx("Grant you immunity to direct damage", CombatKeywordEx.DirectDamageImmunity),
 
         new SentenceEx("Trigger the target's Vulnerability", CombatKeywordEx.MakeVulnerable),
+
+        new SentenceEx("Future @ to the same target", CombatKeywordEx.RequireRepeatedAttack),
+
+        new SentenceEx("All other #S attack", CombatKeywordEx.RequireUsingCombatSkill),
+        new SentenceEx("If it is a #S ability", CombatKeywordEx.RequireUsingCombatSkill),
+
+        new SentenceEx("If target has %f or more Damage-over-Time effects", CombatKeywordEx.RequireDebuffedTarget),
     };
 }
