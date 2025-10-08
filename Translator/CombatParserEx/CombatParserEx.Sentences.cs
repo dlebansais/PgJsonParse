@@ -694,5 +694,10 @@ internal partial class CombatParserEx
 
         new SentenceEx("If target is covered", CombatKeywordEx.RequireTargetUnderEffect),
         new SentenceEx("To targets that are covered", CombatKeywordEx.RequireTargetUnderEffect),
+
+        new SentenceEx("Combat Refreshes restore %f power", CombatKeywordEx.IncreaseCombatRefreshPowerRestore),
+
+        //new SentenceEx("Combat Refresh restore %f health", CombatKeywordEx.IncreaseCombatRefreshHealing),
+        //new SentenceEx("Healing from Combat Refreshes %f", CombatKeywordEx.IncreaseCombatRefreshHealing),
     };
 }

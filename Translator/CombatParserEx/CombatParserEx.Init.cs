@@ -443,7 +443,7 @@ internal partial class CombatParserEx
         { "Summoned Tornadoes", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
         { "All targets' melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "Your golem minion has", new List<AbilityKeyword>() { AbilityKeyword.Minigolem } },
-        { "Combat Refreshes", new List<AbilityKeyword>() { AbilityKeyword.CombatRefresh } },
+        //{ "Combat Refreshes", new List<AbilityKeyword>() { AbilityKeyword.CombatRefresh } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {

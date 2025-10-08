@@ -16,7 +16,6 @@
         RegenPercentageOfArmor,
         IncreaseHealEfficiency,
         IncreaseCurrentRefreshTime,
-        IncreaseCombatRefreshTime,
         IncreaseChannelingTime,
         ResetRefreshTime,
         StunImmunity,
@@ -95,6 +94,9 @@
         DirectDamageImmunity,
         MakeVulnerable,
         IncreaseRange,
+        IncreaseCombatRefreshTime,
+        IncreaseCombatRefreshHealing,
+        IncreaseCombatRefreshPowerRestore,
 
         // Other effects
         ApplyWithChance,
