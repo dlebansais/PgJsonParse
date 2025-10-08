@@ -12,6 +12,7 @@ public enum CombatTarget
     NecromancyZombie,
     NecromancySkeleton,
     NecromancySkeletonSwordsman,
+    NecromancySkeletonArcherOrMage,
     IceMagicColdSphere,
     SummonedDeer,
     FireMagicFirewall,

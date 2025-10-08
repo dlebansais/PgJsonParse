@@ -94,6 +94,7 @@
         IncreaseArmorSpecificReflection,
         DirectDamageImmunity,
         MakeVulnerable,
+        IncreaseRange,
 
         // Other effects
         ApplyWithChance,
@@ -158,6 +159,8 @@
         RequireRepeatedAttack,
         RequireUsingCombatSkill,
         RequireDebuffedTarget,
+        RequireSentientTarget,
+        RequireTargetUnderEffect,
 
         // Synthetic
         GiveBuff,

@@ -40,4 +40,6 @@ public enum CombatCondition
     RepeatedAttack,
     UsingCombatSkill,
     DebuffedTarget,
+    SentientTarget,
+    TargetUnderEffect,
 }

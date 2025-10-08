@@ -1744,6 +1744,9 @@ internal partial class CombatParserEx
             case "6035":
             case "6115":
             case "6112":
+            case "7311":
+            case "8254":
+            case "9873":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -2007,6 +2010,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseArmorSpecificReflection ||
                                                            item.Keyword == CombatKeywordEx.DirectDamageImmunity ||
                                                            item.Keyword == CombatKeywordEx.MakeVulnerable ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseRange ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -2097,6 +2101,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseArmorSpecificReflection ||
                                                           item.Keyword == CombatKeywordEx.DirectDamageImmunity ||
                                                           item.Keyword == CombatKeywordEx.MakeVulnerable ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseRange ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2125,6 +2130,8 @@ internal partial class CombatParserEx
             case "6154":
             case "6307":
             case "6302":
+            case "8317":
+            case "9854":
                 BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "22401":
@@ -2144,6 +2151,7 @@ internal partial class CombatParserEx
                 BuildModEffect_004(description, effect, abilityList, new(), new() { dynamicCombatEffectList[0], staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.ApplyToSelf } }, targetAbilityList, out pgCombatModEx);
                 break;
             case "7401":
+            case "7402":
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[1] }, new() { AbilityKeyword.Kick }, out pgCombatModEx);
                 break;
             case "7431":
@@ -2151,6 +2159,12 @@ internal partial class CombatParserEx
                 break;
             case "7472":
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
+                break;
+            case "7483":
+                BuildModEffect_004(description, effect, abilityList, new() { staticCombatEffectList[0] }, new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } } }, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                pgCombatModEx.DynamicEffects.Add(pgCombatModEx.DynamicEffects[0]);
+                pgCombatModEx.DynamicEffects.RemoveAt(0);
+                pgCombatModEx.DynamicEffects[1].AbilityList.Clear();
                 break;
             case "7009":
                 BuildModEffect_004(description, effect, abilityList, new() { dynamicCombatEffectList[0] }, new() { dynamicCombatEffectList[2], dynamicCombatEffectList[1], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
@@ -2260,6 +2274,9 @@ internal partial class CombatParserEx
             case "27131":
             case "27132":
             case "7302":
+            case "8319":
+            case "8321":
+            case "8322":
                 BuildModEffect_006(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "21204":
@@ -2274,8 +2291,15 @@ internal partial class CombatParserEx
                 BuildModEffect_006(description, isGolemMinion, abilityList, dynamicCombatEffectList, new() { dynamicCombatEffectList[0], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "7303":
+            case "7304":
+            case "7305":
                 BuildModEffect_006(description, isGolemMinion, new(), dynamicCombatEffectList, new() { staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[1] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "8001":
+                BuildModEffect_002(description, effect, isGolemMinion, new(), dynamicCombatEffectList, new(), targetAbilityList, out pgExtraCombatModEx);
+                BuildModEffect_006(description, isGolemMinion, abilityList, new(), staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "11503":
@@ -2321,19 +2345,6 @@ internal partial class CombatParserEx
                 break;
             case "Other":
             case "28642":
-            case "7304":
-            case "7305":
-            case "7311":
-            case "7402":
-            case "8001":
-            case "8254":
-            case "8317":
-            case "8321":
-            case "8322":
-            case "9854":
-            case "9873":
-            case "8319":
-            case "7483":
             case "16112":
             case "21004":
             case "21007":
@@ -2567,6 +2578,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.TornadoVulnerability ||
                                    CombatKeyword == CombatKeywordEx.IncreasePhysicalReflection ||
                                    CombatKeyword == CombatKeywordEx.DirectDamageImmunity ||
+                                   CombatKeyword == CombatKeywordEx.AbsorbDamage ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -3051,6 +3063,9 @@ internal partial class CombatParserEx
                     break;
                 case AbilityKeyword.SummonSkeletonSwordsman:
                     Target = CombatTarget.NecromancySkeletonSwordsman;
+                    break;
+                case AbilityKeyword.SummonSkeletonArcherOrMage:
+                    Target = CombatTarget.NecromancySkeletonArcherOrMage;
                     break;
                 case AbilityKeyword.Minigolem:
                     Target = CombatTarget.BattleChemistryGolem;

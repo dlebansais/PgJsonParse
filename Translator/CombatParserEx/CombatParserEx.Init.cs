@@ -541,6 +541,8 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireRepeatedAttack, CombatCondition.RepeatedAttack },
         { CombatKeywordEx.RequireUsingCombatSkill, CombatCondition.UsingCombatSkill },
         { CombatKeywordEx.RequireDebuffedTarget, CombatCondition.DebuffedTarget },
+        { CombatKeywordEx.RequireSentientTarget, CombatCondition.SentientTarget },
+        { CombatKeywordEx.RequireTargetUnderEffect, CombatCondition.TargetUnderEffect },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

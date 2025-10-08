@@ -219,6 +219,7 @@ internal partial class CombatParserEx
         new SentenceEx("Damage-over-time effects deal %f damage per tick", CombatKeywordEx.DamageOverTimeBoost),
 
         new SentenceEx("boost #S Skill Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
+        new SentenceEx("#S Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
 
         new SentenceEx("Boost the damage of @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Boost the #D damage of @ and @ %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
@@ -244,6 +245,7 @@ internal partial class CombatParserEx
         new SentenceEx("Boost the damage from @ %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost the damage of all your attack %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost #D damage %f", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Boost your next attack %f if it is a #D attack", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Boost your next attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Boost your Indirect #D Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToIndirect }),
         new SentenceEx("Future @ attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }),
@@ -510,6 +512,7 @@ internal partial class CombatParserEx
         new SentenceEx("While @ is active", CombatKeywordEx.BeforeTrigger),
 
         new SentenceEx("Absorb %f damage before dissipating", CombatKeywordEx.AbsorbDamage),
+        new SentenceEx("Absorb the first %f #D damage you suffer", CombatKeywordEx.AbsorbDamage),
 
         new SentenceEx("The next attacker that hit the pet will be stunned", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToPet, CombatKeywordEx.RequireBeingHit, CombatKeywordEx.Stun }),
         new SentenceEx("Stun targets", CombatKeywordEx.Stun),
@@ -680,5 +683,16 @@ internal partial class CombatParserEx
         new SentenceEx("If it is a #S ability", CombatKeywordEx.RequireUsingCombatSkill),
 
         new SentenceEx("If target has %f or more Damage-over-Time effects", CombatKeywordEx.RequireDebuffedTarget),
+
+        new SentenceEx("To sentient creatures", CombatKeywordEx.RequireSentientTarget),
+
+        new SentenceEx("Attack Range is %f", CombatKeywordEx.IncreaseRange),
+        new SentenceEx("Range is %f meter", CombatKeywordEx.IncreaseRange),
+        new SentenceEx("Range is increased %f meter", CombatKeywordEx.IncreaseRange),
+        new SentenceEx("Range is reduced %f meter", CombatKeywordEx.IncreaseRange, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Range %f", CombatKeywordEx.IncreaseRange),
+
+        new SentenceEx("If target is covered", CombatKeywordEx.RequireTargetUnderEffect),
+        new SentenceEx("To targets that are covered", CombatKeywordEx.RequireTargetUnderEffect),
     };
 }
