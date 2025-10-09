@@ -280,6 +280,8 @@ internal partial class CombatParserEx
         new SentenceEx("%f health damage", CombatKeywordEx.DealHealthDamage),
         new SentenceEx("%f #D health damage", CombatKeywordEx.DealHealthDamage),
 
+        new SentenceEx("%f Direct damage mitigation", CombatKeywordEx.AddMitigationDirect),
+
         new SentenceEx("Deal %f direct damage", CombatKeywordEx.DirectDamageBoost),
         new SentenceEx("Gain %f Direct", CombatKeywordEx.DirectDamageBoost),
         new SentenceEx("Deal %f Direct", CombatKeywordEx.DirectDamageBoost),
@@ -546,6 +548,16 @@ internal partial class CombatParserEx
         new SentenceEx("The reap cap is %f", CombatKeywordEx.IncreaseDrainHealthMax),
 
         new SentenceEx("In addition, if it deal Indirect #D damage is %f per tick", new List<CombatKeywordEx>() { CombatKeywordEx.IndirectDamageBoost, CombatKeywordEx.RequireDoingDamageOverTime }),
+        new SentenceEx("Boost the target's #D damage-over-time by %f per tick", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("Universal Indirect Damage %f", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("Boost targets' indirect damage %f", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("Indirect #D damage %f", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("Indirect #D %f (per tick)", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("Indirect #D damage is %f per tick", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("%f indirect damage per tick", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("Deal indirect #D damage is %f per tick", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("Indirect #D damage", CombatKeywordEx.IndirectDamageBoost),
+        new SentenceEx("Deal %f indirect #D damage", CombatKeywordEx.IndirectDamageBoost),
 
         new SentenceEx("If it deal direct #D damage", CombatKeywordEx.RequireDirectDamageType),
 
@@ -578,6 +590,7 @@ internal partial class CombatParserEx
         new SentenceEx("Non-Elite enemies", CombatKeywordEx.RequireNonEliteTarget),
 
         new SentenceEx("To Stunned targets", CombatKeywordEx.RequireStunnedTarget),
+        new SentenceEx("If target is stunned", CombatKeywordEx.RequireStunnedTarget),
 
         new SentenceEx("To targets that are Knock Down", CombatKeywordEx.RequireKnockedDownTarget),
         new SentenceEx("If target is Knock Down", CombatKeywordEx.RequireKnockedDownTarget),
@@ -717,5 +730,13 @@ internal partial class CombatParserEx
         new SentenceEx("It trigger again, targeting an enemy", CombatKeywordEx.TargetAnotherEnnemy),
 
         new SentenceEx("Knock Down targets", CombatKeywordEx.Knockdown),
+
+        new SentenceEx("Chance to ignore Stun %f", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyWithChance, CombatKeywordEx.IgnoreStun }),
+        new SentenceEx("Ignore Stun", CombatKeywordEx.IgnoreStun),
+
+        new SentenceEx("Out of Combat Sprint Speed %f", CombatKeywordEx.AddOutOfCombatSpeed),
+        new SentenceEx("%f Out of Combat Sprint Speed", CombatKeywordEx.AddOutOfCombatSpeed),
+        new SentenceEx("Your Out of Combat Sprint speed %f", CombatKeywordEx.AddOutOfCombatSpeed),
+        new SentenceEx("Your Out of Combat Sprint speed by %f", CombatKeywordEx.AddOutOfCombatSpeed),
     };
 }

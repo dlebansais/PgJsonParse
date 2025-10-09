@@ -165,6 +165,7 @@ internal partial class CombatParserEx
         ItemSlot.Waist,
     };
     private List<PgAbility> CombatAbilityList = new();
+    private const AbilityKeyword Internal_VileBlood = (AbilityKeyword)0xFFFE;
     private const AbilityKeyword Internal_NonBasic = (AbilityKeyword)0xFFFF;
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
     {
@@ -229,6 +230,7 @@ internal partial class CombatParserEx
         AbilityKeyword.ShieldBash,
         AbilityKeyword.Minigolem,
         AbilityKeyword.MeleeKnife,
+        Internal_VileBlood,
         Internal_NonBasic,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
@@ -443,7 +445,7 @@ internal partial class CombatParserEx
         { "Summoned Tornadoes", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
         { "All targets' melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "Your golem minion has", new List<AbilityKeyword>() { AbilityKeyword.Minigolem } },
-        //{ "Combat Refreshes", new List<AbilityKeyword>() { AbilityKeyword.CombatRefresh } },
+        { "Any vile blood eruptions from Blood Mist", new List<AbilityKeyword>() { Internal_VileBlood } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {

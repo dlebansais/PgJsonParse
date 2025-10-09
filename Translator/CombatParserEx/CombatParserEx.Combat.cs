@@ -1761,6 +1761,11 @@ internal partial class CombatParserEx
             case "23555":
             case "26073":
             case "5066":
+            case "16044":
+            case "16165":
+            case "22404":
+            case "22453":
+            case "26263":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1888,6 +1893,11 @@ internal partial class CombatParserEx
             case "17063":
                 BuildModEffect_002(description, effect, isGolemMinion, targetAbilityList, dynamicCombatEffectList, staticCombatEffectList, abilityList, out pgCombatModEx);
                 break;
+            case "27175":
+                staticCombatEffectList.Insert(2, staticCombatEffectList[0]);
+                staticCombatEffectList.RemoveAt(0);
+                BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                break;
             case "28184":
                 BuildModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
@@ -1940,6 +1950,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.RestorePower ||
                                                            item.Keyword == CombatKeywordEx.RestoreArmor ||
                                                            item.Keyword == CombatKeywordEx.AddSprintSpeed ||
+                                                           item.Keyword == CombatKeywordEx.AddOutOfCombatSpeed ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxPower ||
@@ -2021,6 +2032,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.SummonTornado ||
                                                            item.Keyword == CombatKeywordEx.VileBloodAttack ||
                                                            item.Keyword == CombatKeywordEx.IgnoreKnockback ||
+                                                           item.Keyword == CombatKeywordEx.IgnoreStun ||
                                                            item.Keyword == CombatKeywordEx.IncreaseJumpHeight ||
                                                            item.Keyword == CombatKeywordEx.TornadoVulnerability ||
                                                            item.Keyword == CombatKeywordEx.IncreasePhysicalReflection ||
@@ -2040,6 +2052,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
                                                           item.Keyword == CombatKeywordEx.RestoreArmor ||
                                                           item.Keyword == CombatKeywordEx.AddSprintSpeed ||
+                                                          item.Keyword == CombatKeywordEx.AddOutOfCombatSpeed ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxPower ||
@@ -2121,6 +2134,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.SummonTornado ||
                                                           item.Keyword == CombatKeywordEx.VileBloodAttack ||
                                                           item.Keyword == CombatKeywordEx.IgnoreKnockback ||
+                                                          item.Keyword == CombatKeywordEx.IgnoreStun ||
                                                           item.Keyword == CombatKeywordEx.IncreaseJumpHeight ||
                                                           item.Keyword == CombatKeywordEx.TornadoVulnerability ||
                                                           item.Keyword == CombatKeywordEx.IncreasePhysicalReflection ||
@@ -2310,6 +2324,9 @@ internal partial class CombatParserEx
             case "8319":
             case "8321":
             case "8322":
+            case "23303":
+            case "8004":
+            case "8303":
                 BuildModEffect_006(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "21204":
@@ -2377,15 +2394,6 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.GiveBuff, Data = new() }, staticCombatEffectList[1], staticCombatEffectList[2], staticCombatEffectList[3] }, targetAbilityList, new() { 0, 1 }, new() { 2, 3, 4 }, inverseTargets: true, out pgCombatModEx);
                 break;
             case "Other":
-            case "16044":
-            case "16165":
-            case "18122":
-            case "22404":
-            case "22453":
-            case "23303":
-            case "27175":
-            case "8004":
-            case "8303":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
@@ -2556,6 +2564,7 @@ internal partial class CombatParserEx
             }
 
             bool CanHaveDuration = CombatKeyword == CombatKeywordEx.AddSprintSpeed ||
+                                   CombatKeyword == CombatKeywordEx.AddOutOfCombatSpeed ||
                                    CombatKeyword == CombatKeywordEx.RestoreHealthOverTime ||
                                    CombatKeyword == CombatKeywordEx.RestorePowerOverTime ||
                                    CombatKeyword == CombatKeywordEx.RestoreArmorOverTime ||
@@ -2583,6 +2592,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.DealHealthDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthAndArmorDamage ||
                                    CombatKeyword == CombatKeywordEx.DirectDamageBoost ||
+                                   CombatKeyword == CombatKeywordEx.IndirectDamageBoost ||
                                    CombatKeyword == CombatKeywordEx.IncreasePowerCost ||
                                    CombatKeyword == CombatKeywordEx.AddMitigation ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationDirect ||
@@ -2610,6 +2620,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.Fear ||
                                    CombatKeyword == CombatKeywordEx.SummonDeer ||
                                    CombatKeyword == CombatKeywordEx.IgnoreKnockback ||
+                                   CombatKeyword == CombatKeywordEx.IgnoreStun ||
                                    CombatKeyword == CombatKeywordEx.IncreaseJumpHeight ||
                                    CombatKeyword == CombatKeywordEx.TornadoVulnerability ||
                                    CombatKeyword == CombatKeywordEx.IncreasePhysicalReflection ||
@@ -2624,6 +2635,7 @@ internal partial class CombatParserEx
                                 CombatKeyword != CombatKeywordEx.IncreaseMeleePowerCost;
             bool CanHaveDelay = CombatKeyword != CombatKeywordEx.AddSprintSpeed;
             bool MustHaveDuration = CombatKeyword == CombatKeywordEx.AddSprintSpeed ||
+                                   CombatKeyword == CombatKeywordEx.AddOutOfCombatSpeed ||
                                    CombatKeyword == CombatKeywordEx.RestoreHealthOverTime ||
                                    CombatKeyword == CombatKeywordEx.RestorePowerOverTime ||
                                    CombatKeyword == CombatKeywordEx.RestoreArmorOverTime ||
@@ -2644,6 +2656,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionRanged ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEliteResistance ||
                                    CombatKeyword == CombatKeywordEx.IgnoreKnockback ||
+                                   CombatKeyword == CombatKeywordEx.IgnoreStun ||
                                    CombatKeyword == CombatKeywordEx.BestowProtectiveBubble;
             if (MustHaveDuration && float.IsNaN(DurationInSeconds) && ConditionList.TrueForAll(condition => condition != CombatCondition.AbilityNotTriggered) && effect.RawDuration.HasValue)
             {
@@ -2676,6 +2689,7 @@ internal partial class CombatParserEx
                                  (CombatKeyword != CombatKeywordEx.DealHealthDamage || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.DealHealthAndArmorDamage || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.IncreasePowerCost || CanApplyModifier) &&
+                                 (CombatKeyword != CombatKeywordEx.AddOutOfCombatSpeed || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.NextAttackMiss || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigation || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationDirect || CanApplyModifier) &&
