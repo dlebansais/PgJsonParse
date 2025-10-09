@@ -190,10 +190,11 @@ internal partial class CombatParserEx
         new SentenceEx("Knock targets backward", CombatKeywordEx.Knockback),
 
         new SentenceEx("Have less than %f of their Max Rage", CombatKeywordEx.RequireLowRage),
+        new SentenceEx("Has less than %f of their Max Rage", CombatKeywordEx.RequireLowRage),
         new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireLowRage),
 
-        new SentenceEx("Targets whose Rage meter are at least %f full", CombatKeywordEx.RequireHighRage),
-        new SentenceEx("Targets whose Rage meter is at least %f full", CombatKeywordEx.RequireHighRage),
+        new SentenceEx("Whose Rage meter are at least %f full", CombatKeywordEx.RequireHighRage),
+        new SentenceEx("Whose Rage meter is at least %f full", CombatKeywordEx.RequireHighRage),
         new SentenceEx("If target's Rage is at least %f full", CombatKeywordEx.RequireHighRage),
         new SentenceEx("If target's Rage meter is at least %f full", CombatKeywordEx.RequireHighRage),
 
@@ -233,6 +234,7 @@ internal partial class CombatParserEx
         new SentenceEx("Deal direct #D damage to deal %f damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f damage if it is a #D attack", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f damage", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Deal %f less damage", CombatKeywordEx.DamageBoost, SignInterpretation.AlwaysNegative),
         new SentenceEx("Deal %f more damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Plus %f more damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your #S damage %f", CombatKeywordEx.DamageBoost),
@@ -290,6 +292,7 @@ internal partial class CombatParserEx
         new SentenceEx("Power cost to sprint in combat is reduced %f", CombatKeywordEx.AddSprintPowerCost),
 
         new SentenceEx("If it kills your target", CombatKeywordEx.RequireKillTarget),
+        new SentenceEx("Kills its target", CombatKeywordEx.RequireKillTarget),
 
         new SentenceEx("%f of target's attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("%f of their attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
@@ -314,6 +317,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cost %f Power", CombatKeywordEx.IncreasePowerCost),
 
         new SentenceEx("Cause all allies' Melee attack to cost %f Power", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMeleePowerCost, CombatKeywordEx.ApplyToAllies }),
+        new SentenceEx("Reduce the Power cost of melee attack by %f", CombatKeywordEx.IncreaseMeleePowerCost, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Reset the time on", CombatKeywordEx.ResetRefreshTime),
 
@@ -631,7 +635,13 @@ internal partial class CombatParserEx
         new SentenceEx("Elite Physical Damage Mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationPhysical, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Physical Damage Mitigation %f", CombatKeywordEx.AddMitigationPhysical),
         new SentenceEx("%f absorption of any physical damage", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("%f mitigation of all physical attack", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("%f mitigation of any physical damage", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("%f mitigation against physical attack", CombatKeywordEx.AddMitigationPhysical),
         new SentenceEx("Cause target to suffer %f damage from future physical attack", CombatKeywordEx.AddMitigationPhysical, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Mitigate %f of all physical damage", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("Mitigate %f physical damage", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("%f Mitigation vs physical (slashing, piercing, and crushing) attack", CombatKeywordEx.AddMitigationPhysical),
 
         new SentenceEx("Ignore Knockback effect", CombatKeywordEx.IgnoreKnockback),
         new SentenceEx("Immunity to Knockback", CombatKeywordEx.IgnoreKnockback),
@@ -697,7 +707,15 @@ internal partial class CombatParserEx
 
         new SentenceEx("Combat Refreshes restore %f power", CombatKeywordEx.IncreaseCombatRefreshPowerRestore),
 
-        //new SentenceEx("Combat Refresh restore %f health", CombatKeywordEx.IncreaseCombatRefreshHealing),
-        //new SentenceEx("Healing from Combat Refreshes %f", CombatKeywordEx.IncreaseCombatRefreshHealing),
+        new SentenceEx("Combat Refresh restore %f health", CombatKeywordEx.IncreaseCombatRefreshHealing),
+        new SentenceEx("Healing from Combat Refreshes %f", CombatKeywordEx.IncreaseCombatRefreshHealing),
+
+        new SentenceEx("%f resistance to Elemental damage (Fire, Cold, Electricity)", CombatKeywordEx.AddMitigationElemental),
+
+        new SentenceEx("In-Combat Armor Regeneration %f", CombatKeywordEx.IncreaseArmorRegeneration),
+
+        new SentenceEx("It trigger again, targeting an enemy", CombatKeywordEx.TargetAnotherEnnemy),
+
+        new SentenceEx("Knock Down targets", CombatKeywordEx.Knockdown),
     };
 }

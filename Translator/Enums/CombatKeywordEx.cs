@@ -50,6 +50,7 @@
         AddMitigationIndirect,
         AddMitigationBurst,
         AddMitigationPhysical,
+        AddMitigationElemental,
         ChanceToConsume,
         SelfStun,
         MaxMitigatedDamageLimit,
@@ -60,6 +61,7 @@
         IncreaseRadiationProtection,
         AbsorbDamage,
         Stun,
+        Knockdown,
         GenerateNoRage,
         IncreaseRage,
         DrainHealth,
@@ -97,6 +99,8 @@
         IncreaseCombatRefreshTime,
         IncreaseCombatRefreshHealing,
         IncreaseCombatRefreshPowerRestore,
+        IncreaseArmorRegeneration,
+        TargetAnotherEnnemy,
 
         // Other effects
         ApplyWithChance,

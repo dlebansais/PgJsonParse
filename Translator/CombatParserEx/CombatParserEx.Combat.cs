@@ -1465,7 +1465,6 @@ internal partial class CombatParserEx
             case "5203":
             case "15252":
             case "4531":
-            case "14353":
             case "11702":
             case "11703":
             case "14017":
@@ -1747,6 +1746,21 @@ internal partial class CombatParserEx
             case "7311":
             case "8254":
             case "9873":
+            case "10162":
+            case "10451":
+            case "1064":
+            case "1087":
+            case "11203":
+            case "11251":
+            case "11302":
+            case "12141":
+            case "12333":
+            case "13013":
+            case "15253":
+            case "16164":
+            case "23555":
+            case "26073":
+            case "5066":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1844,6 +1858,7 @@ internal partial class CombatParserEx
             case "3204":
             case "3303":
             case "3403":
+            case "14353":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "28615":
@@ -1966,6 +1981,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.AddMitigationIndirect ||
                                                            item.Keyword == CombatKeywordEx.AddMitigationBurst ||
                                                            item.Keyword == CombatKeywordEx.AddMitigationPhysical ||
+                                                           item.Keyword == CombatKeywordEx.AddMitigationElemental ||
                                                            item.Keyword == CombatKeywordEx.ChanceToConsume ||
                                                            item.Keyword == CombatKeywordEx.SelfStun ||
                                                            item.Keyword == CombatKeywordEx.MaxMitigatedDamageLimit ||
@@ -1986,6 +2002,8 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.GrantCriticalChance ||
                                                            item.Keyword == CombatKeywordEx.Slow ||
                                                            item.Keyword == CombatKeywordEx.Fear ||
+                                                           item.Keyword == CombatKeywordEx.Stun||
+                                                           item.Keyword == CombatKeywordEx.Knockdown ||
                                                            item.Keyword == CombatKeywordEx.SelfDamage ||
                                                            item.Keyword == CombatKeywordEx.Concussion ||
                                                            item.Keyword == CombatKeywordEx.IncreaseEvasion ||
@@ -2010,9 +2028,13 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.DirectDamageImmunity ||
                                                            item.Keyword == CombatKeywordEx.MakeVulnerable ||
                                                            item.Keyword == CombatKeywordEx.IncreaseRange ||
+                                                           item.Keyword == CombatKeywordEx.DirectDamageBoost ||
+                                                           item.Keyword == CombatKeywordEx.IndirectDamageBoost ||
                                                            item.Keyword == CombatKeywordEx.IncreaseCombatRefreshTime ||
                                                            item.Keyword == CombatKeywordEx.IncreaseCombatRefreshHealing ||
                                                            item.Keyword == CombatKeywordEx.IncreaseCombatRefreshPowerRestore ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseArmorRegeneration ||
+                                                           item.Keyword == CombatKeywordEx.TargetAnotherEnnemy ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -2059,6 +2081,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.AddMitigationIndirect ||
                                                           item.Keyword == CombatKeywordEx.AddMitigationBurst ||
                                                           item.Keyword == CombatKeywordEx.AddMitigationPhysical ||
+                                                          item.Keyword == CombatKeywordEx.AddMitigationElemental ||
                                                           item.Keyword == CombatKeywordEx.ChanceToConsume ||
                                                           item.Keyword == CombatKeywordEx.SelfStun ||
                                                           item.Keyword == CombatKeywordEx.MaxMitigatedDamageLimit ||
@@ -2079,6 +2102,8 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.GrantCriticalChance ||
                                                           item.Keyword == CombatKeywordEx.Slow ||
                                                           item.Keyword == CombatKeywordEx.Fear ||
+                                                          item.Keyword == CombatKeywordEx.Stun ||
+                                                          item.Keyword == CombatKeywordEx.Knockdown ||
                                                           item.Keyword == CombatKeywordEx.SelfDamage ||
                                                           item.Keyword == CombatKeywordEx.Concussion ||
                                                           item.Keyword == CombatKeywordEx.IncreaseEvasion ||
@@ -2103,9 +2128,13 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.DirectDamageImmunity ||
                                                           item.Keyword == CombatKeywordEx.MakeVulnerable ||
                                                           item.Keyword == CombatKeywordEx.IncreaseRange ||
+                                                          item.Keyword == CombatKeywordEx.DirectDamageBoost ||
+                                                          item.Keyword == CombatKeywordEx.IndirectDamageBoost ||
                                                           item.Keyword == CombatKeywordEx.IncreaseCombatRefreshTime ||
                                                           item.Keyword == CombatKeywordEx.IncreaseCombatRefreshHealing ||
                                                           item.Keyword == CombatKeywordEx.IncreaseCombatRefreshPowerRestore ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseArmorRegeneration ||
+                                                          item.Keyword == CombatKeywordEx.TargetAnotherEnnemy ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2348,6 +2377,15 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.GiveBuff, Data = new() }, staticCombatEffectList[1], staticCombatEffectList[2], staticCombatEffectList[3] }, targetAbilityList, new() { 0, 1 }, new() { 2, 3, 4 }, inverseTargets: true, out pgCombatModEx);
                 break;
             case "Other":
+            case "16044":
+            case "16165":
+            case "18122":
+            case "22404":
+            case "22453":
+            case "23303":
+            case "27175":
+            case "8004":
+            case "8303":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
@@ -2551,6 +2589,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.AddMitigationIndirect ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationBurst ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationPhysical ||
+                                   CombatKeyword == CombatKeywordEx.AddMitigationElemental ||
                                    CombatKeyword == CombatKeywordEx.BestowProtectiveBubble ||
                                    CombatKeyword == CombatKeywordEx.GenerateTaunt ||
                                    CombatKeyword == CombatKeywordEx.RageAttackBoost ||
@@ -2576,6 +2615,9 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreasePhysicalReflection ||
                                    CombatKeyword == CombatKeywordEx.DirectDamageImmunity ||
                                    CombatKeyword == CombatKeywordEx.AbsorbDamage ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseCombatRefreshHealing ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseCombatRefreshPowerRestore ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseArmorRegeneration ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
@@ -2592,6 +2634,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.AddMitigationIndirect ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationBurst ||
                                    CombatKeyword == CombatKeywordEx.AddMitigationPhysical ||
+                                   CombatKeyword == CombatKeywordEx.AddMitigationElemental ||
                                    CombatKeyword == CombatKeywordEx.SelfDamageOverTime ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasion ||
                                    CombatKeyword == CombatKeywordEx.IncreaseEvasionBurst ||
@@ -2639,6 +2682,7 @@ internal partial class CombatParserEx
                                  (CombatKeyword != CombatKeywordEx.AddMitigationIndirect || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationBurst || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationPhysical || CanApplyModifier) &&
+                                 (CombatKeyword != CombatKeywordEx.AddMitigationElemental || CanApplyModifier) &&
                                  (CombatKeyword != CombatKeywordEx.IncreaseMeleePowerCost || CanApplyModifier);
 
             List<AbilityKeyword> TargetAbilityList = new();
