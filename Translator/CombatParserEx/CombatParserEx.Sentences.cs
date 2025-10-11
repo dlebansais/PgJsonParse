@@ -219,7 +219,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("Damage-over-time effects deal %f damage per tick", CombatKeywordEx.DamageOverTimeBoost),
 
-        new SentenceEx("boost #S Skill Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
+        new SentenceEx("Boost #S Skill Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
+        new SentenceEx("Gain %f #S Skill Base Damage", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
         new SentenceEx("#S Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
 
         new SentenceEx("Boost the damage of @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
@@ -295,6 +296,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("If it kills your target", CombatKeywordEx.RequireKillTarget),
         new SentenceEx("Kills its target", CombatKeywordEx.RequireKillTarget),
+        new SentenceEx("If slain", CombatKeywordEx.RequireKillTarget),
 
         new SentenceEx("%f of target's attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("%f of their attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
@@ -367,12 +369,14 @@ internal partial class CombatParserEx
         new SentenceEx("Lower target's aggro toward you by %f", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
 
         new SentenceEx("Target's next attack has a %f chance to automatically miss", CombatKeywordEx.NextAttackMiss),
+        new SentenceEx("Target's next attack to have a %f chance to automatically Miss", CombatKeywordEx.NextAttackMiss),
 
         new SentenceEx("You mitigate %f from all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Grant %f Universal #D Mitigation", CombatKeywordEx.AddMitigation),
         new SentenceEx("Universal Damage Mitigation %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("Reduce the damage you take from #D attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Reduce the damage of the next attack that hit the target by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.NextAttack }),
+        new SentenceEx("(#D) attack that hit you are reduced by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Take %f less damage from all attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Target take %f less damage from attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Target take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
@@ -564,6 +568,8 @@ internal partial class CombatParserEx
         new SentenceEx("In addition, the target take a second full blast of delayed #D damage", CombatKeywordEx.DelayedSecondAttack),
 
         new SentenceEx("Turning half of that into #D damage", CombatKeywordEx.TurnRageToDamage),
+        new SentenceEx("This absorbed damage is added to your next @ attack at a %f rate", CombatKeywordEx.TurnMitigationToDamage),
+        new SentenceEx("This absorbed damage is added to your next @", CombatKeywordEx.TurnMitigationToDamage),
 
         new SentenceEx("(Randomly determined for each attack)", CombatKeywordEx.RandomDamage),
         new SentenceEx("(Randomly determined)", CombatKeywordEx.RandomDamage),
@@ -629,6 +635,7 @@ internal partial class CombatParserEx
         new SentenceEx("The next time the victim Evades an attack", CombatKeywordEx.NextEvade),
 
         new SentenceEx("Induces Fear in the target", CombatKeywordEx.Fear),
+        new SentenceEx("Cause all sentient targets to flee in terror", new List<CombatKeywordEx>() { CombatKeywordEx.Fear, CombatKeywordEx.RequireSentientTarget }),
 
         new SentenceEx("Cause you to erupt in a fountain of vile blood: a Burst Trauma attack with Base Damage %f", CombatKeywordEx.VileBloodAttack),
 
@@ -679,6 +686,8 @@ internal partial class CombatParserEx
         new SentenceEx("(If #S skill is active)", CombatKeywordEx.RequireActiveSkill),
 
         new SentenceEx("Deal double damage", CombatKeywordEx.DamageBoostDouble),
+
+        new SentenceEx("Deal double direct damage", CombatKeywordEx.DamageBoostDouble),
 
         new SentenceEx("Boost Jump Height", CombatKeywordEx.IncreaseJumpHeight),
 
@@ -738,5 +747,27 @@ internal partial class CombatParserEx
         new SentenceEx("%f Out of Combat Sprint Speed", CombatKeywordEx.AddOutOfCombatSpeed),
         new SentenceEx("Your Out of Combat Sprint speed %f", CombatKeywordEx.AddOutOfCombatSpeed),
         new SentenceEx("Your Out of Combat Sprint speed by %f", CombatKeywordEx.AddOutOfCombatSpeed),
+
+        new SentenceEx("Dispel slow and root", CombatKeywordEx.RemoveSlowRoot),
+        new SentenceEx("Dispel any Slow or Root", CombatKeywordEx.RemoveSlowRoot),
+        new SentenceEx("Dispel any active Slow or Root", CombatKeywordEx.RemoveSlowRoot),
+        new SentenceEx("Grant immunity to new slow and root", CombatKeywordEx.GrantSlowRootImmunity),
+        new SentenceEx("Grant them immunity to Slow and Root", CombatKeywordEx.GrantSlowRootImmunity),
+        new SentenceEx("Grant you immunity to similar effects", CombatKeywordEx.GrantSlowRootImmunity),
+        new SentenceEx("Slow/Root Ignore Chance %f", new List<CombatKeywordEx>() { CombatKeywordEx.RemoveSlowRoot, CombatKeywordEx.GrantSlowRootImmunity }),
+        new SentenceEx("Grant the target %f Slow/Root Ignore Chance", CombatKeywordEx.GrantSlowRootImmunity),
+
+        new SentenceEx("%f Cold Protection (Direct and Indirect)", CombatKeywordEx.IncreaseProtectionCold),
+        new SentenceEx("%f Direct and Indirect Cold Protection", CombatKeywordEx.IncreaseProtectionCold),
+
+        new SentenceEx("Target ignore you", CombatKeywordEx.GetIgnored),
+        new SentenceEx("Cause the target to ignore you", CombatKeywordEx.GetIgnored),
+
+        new SentenceEx("Shuffling their hatred", CombatKeywordEx.ShuffleTaunt),
+
+        new SentenceEx("While standing near your @", CombatKeywordEx.RequireStandingSomewhere),
+
+        new SentenceEx("Worth %f more XP", CombatKeywordEx.IncreaseXpGain),
+        new SentenceEx("%f Earned Combat XP", CombatKeywordEx.IncreaseXpGain),
     };
 }

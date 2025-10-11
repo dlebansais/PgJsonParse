@@ -42,4 +42,5 @@ public enum CombatCondition
     DebuffedTarget,
     SentientTarget,
     TargetUnderEffect,
+    StandingSomewhere,
 }

@@ -1429,7 +1429,7 @@ internal partial class CombatParserEx
             case "9703":
             case "10509":
             case "20009":
-            case "13206":
+            //case "13206":
             case "13104":
             case "13105":
             case "13106":
@@ -1766,6 +1766,16 @@ internal partial class CombatParserEx
             case "22404":
             case "22453":
             case "26263":
+            case "15301":
+            case "17303":
+            case "17321":
+            case "2207":
+            case "22353":
+            case "22304":
+            case "22354":
+            case "23553":
+            case "25072":
+            case "4005":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1864,6 +1874,7 @@ internal partial class CombatParserEx
             case "3303":
             case "3403":
             case "14353":
+            case "13107":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "28615":
@@ -1968,6 +1979,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.DamageBoost ||
                                                            item.Keyword == CombatKeywordEx.BaseDamageBoost ||
                                                            item.Keyword == CombatKeywordEx.DamageBoostDouble ||
+                                                           item.Keyword == CombatKeywordEx.DamageBoostDoubleDirect ||
                                                            item.Keyword == CombatKeywordEx.DealArmorDamage ||
                                                            item.Keyword == CombatKeywordEx.DealHealthDamage ||
                                                            item.Keyword == CombatKeywordEx.DealHealthAndArmorDamage ||
@@ -2009,6 +2021,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseDrainHealthMax ||
                                                            item.Keyword == CombatKeywordEx.DelayedSecondAttack ||
                                                            item.Keyword == CombatKeywordEx.TurnRageToDamage ||
+                                                           item.Keyword == CombatKeywordEx.TurnMitigationToDamage ||
                                                            item.Keyword == CombatKeywordEx.IncreaseCriticalChance ||
                                                            item.Keyword == CombatKeywordEx.GrantCriticalChance ||
                                                            item.Keyword == CombatKeywordEx.Slow ||
@@ -2047,6 +2060,12 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseCombatRefreshPowerRestore ||
                                                            item.Keyword == CombatKeywordEx.IncreaseArmorRegeneration ||
                                                            item.Keyword == CombatKeywordEx.TargetAnotherEnnemy ||
+                                                           item.Keyword == CombatKeywordEx.RemoveSlowRoot ||
+                                                           item.Keyword == CombatKeywordEx.GrantSlowRootImmunity ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseProtectionCold ||
+                                                           item.Keyword == CombatKeywordEx.GetIgnored ||
+                                                           item.Keyword == CombatKeywordEx.ShuffleTaunt ||
+                                                           item.Keyword == CombatKeywordEx.IncreaseXpGain ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -2070,6 +2089,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.DamageBoost ||
                                                           item.Keyword == CombatKeywordEx.BaseDamageBoost ||
                                                           item.Keyword == CombatKeywordEx.DamageBoostDouble ||
+                                                          item.Keyword == CombatKeywordEx.DamageBoostDoubleDirect ||
                                                           item.Keyword == CombatKeywordEx.DealArmorDamage ||
                                                           item.Keyword == CombatKeywordEx.DealHealthDamage ||
                                                           item.Keyword == CombatKeywordEx.DealHealthAndArmorDamage ||
@@ -2111,6 +2131,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseDrainHealthMax ||
                                                           item.Keyword == CombatKeywordEx.DelayedSecondAttack ||
                                                           item.Keyword == CombatKeywordEx.TurnRageToDamage ||
+                                                          item.Keyword == CombatKeywordEx.TurnMitigationToDamage ||
                                                           item.Keyword == CombatKeywordEx.IncreaseCriticalChance ||
                                                           item.Keyword == CombatKeywordEx.GrantCriticalChance ||
                                                           item.Keyword == CombatKeywordEx.Slow ||
@@ -2149,6 +2170,12 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseCombatRefreshPowerRestore ||
                                                           item.Keyword == CombatKeywordEx.IncreaseArmorRegeneration ||
                                                           item.Keyword == CombatKeywordEx.TargetAnotherEnnemy ||
+                                                          item.Keyword == CombatKeywordEx.RemoveSlowRoot ||
+                                                          item.Keyword == CombatKeywordEx.GrantSlowRootImmunity ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseProtectionCold ||
+                                                          item.Keyword == CombatKeywordEx.GetIgnored ||
+                                                          item.Keyword == CombatKeywordEx.ShuffleTaunt ||
+                                                          item.Keyword == CombatKeywordEx.IncreaseXpGain ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2205,6 +2232,7 @@ internal partial class CombatParserEx
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[0], staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "7472":
+            case "7482":
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "7483":
@@ -2394,6 +2422,9 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.GiveBuff, Data = new() }, staticCombatEffectList[1], staticCombatEffectList[2], staticCombatEffectList[3] }, targetAbilityList, new() { 0, 1 }, new() { 2, 3, 4 }, inverseTargets: true, out pgCombatModEx);
                 break;
             case "Other":
+            case "20044":
+            case "20303":
+            case "13206":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
@@ -2441,7 +2472,8 @@ internal partial class CombatParserEx
                 if (NewCondition == CombatCondition.WhilePlayingSong ||
                     NewCondition == CombatCondition.TargetOfAbility ||
                     NewCondition == CombatCondition.AbilityNotTriggered ||
-                    NewCondition == CombatCondition.AbilityTriggered)
+                    NewCondition == CombatCondition.AbilityTriggered ||
+                    NewCondition == CombatCondition.StandingSomewhere)
                 {
                     ConditionAbilityList = targetAbilityList;
                 }
@@ -2588,6 +2620,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.DamageBoost ||
                                    CombatKeyword == CombatKeywordEx.BaseDamageBoost ||
                                    CombatKeyword == CombatKeywordEx.DamageBoostDouble ||
+                                   CombatKeyword == CombatKeywordEx.DamageBoostDoubleDirect ||
                                    CombatKeyword == CombatKeywordEx.DealArmorDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthAndArmorDamage ||
@@ -2629,6 +2662,10 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseCombatRefreshHealing ||
                                    CombatKeyword == CombatKeywordEx.IncreaseCombatRefreshPowerRestore ||
                                    CombatKeyword == CombatKeywordEx.IncreaseArmorRegeneration ||
+                                   CombatKeyword == CombatKeywordEx.GrantSlowRootImmunity ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseProtectionCold ||
+                                   CombatKeyword == CombatKeywordEx.GetIgnored ||
+                                   CombatKeyword == CombatKeywordEx.IncreaseXpGain ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&

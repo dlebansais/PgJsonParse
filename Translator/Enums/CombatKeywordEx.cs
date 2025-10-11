@@ -26,6 +26,7 @@
         DamageBoost,
         BaseDamageBoost,
         DamageBoostDouble,
+        DamageBoostDoubleDirect,
         DealArmorDamage,
         DealHealthDamage,
         DealHealthAndArmorDamage,
@@ -69,6 +70,7 @@
         IncreaseDrainHealthMax,
         DelayedSecondAttack,
         TurnRageToDamage,
+        TurnMitigationToDamage,
         IncreaseCriticalChance,
         GrantCriticalChance,
         Slow,
@@ -103,6 +105,12 @@
         IncreaseCombatRefreshPowerRestore,
         IncreaseArmorRegeneration,
         TargetAnotherEnnemy,
+        RemoveSlowRoot,
+        GrantSlowRootImmunity,
+        IncreaseProtectionCold,
+        GetIgnored,
+        ShuffleTaunt,
+        IncreaseXpGain,
 
         // Other effects
         ApplyWithChance,
@@ -169,6 +177,7 @@
         RequireDebuffedTarget,
         RequireSentientTarget,
         RequireTargetUnderEffect,
+        RequireStandingSomewhere,
 
         // Synthetic
         GiveBuff,
