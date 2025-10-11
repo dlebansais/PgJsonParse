@@ -48,6 +48,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f Power to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("You recover %f power", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Recover %f power", CombatKeywordEx.RestorePower),
+        new SentenceEx("Regain %f power", CombatKeywordEx.RestorePower),
         new SentenceEx("Power Restoration %f", CombatKeywordEx.RestorePower),
         new SentenceEx("You regain %f power", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("And %f power", CombatKeywordEx.RestorePower),
@@ -176,6 +177,7 @@ internal partial class CombatParserEx
         new SentenceEx("To your undead", CombatKeywordEx.ApplyToPet),
 
         new SentenceEx("Boost target pet's", CombatKeywordEx.ApplyToPetOfTarget),
+        new SentenceEx("Grant target pet", CombatKeywordEx.ApplyToPetOfTarget),
 
         new SentenceEx("Kill an enemy via direct damage", CombatKeywordEx.RequireDirectDamageKillShot),
 
@@ -290,7 +292,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f Direct Damage", CombatKeywordEx.DirectDamageBoost),
         new SentenceEx("Direct Damage %f", CombatKeywordEx.DirectDamageBoost),
 
-        new SentenceEx("Dispel any roots or slow you are currently suffering", CombatKeywordEx.DispelRootSlow),
+        new SentenceEx("Dispel any roots or slow you are currently suffering", new List<CombatKeywordEx>() { CombatKeywordEx.DispelRootSlow, CombatKeywordEx.ApplyToSelf }),
 
         new SentenceEx("Power cost to sprint in combat is reduced %f", CombatKeywordEx.AddSprintPowerCost),
 
@@ -374,6 +376,7 @@ internal partial class CombatParserEx
         new SentenceEx("You mitigate %f from all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Grant %f Universal #D Mitigation", CombatKeywordEx.AddMitigation),
         new SentenceEx("Universal Damage Mitigation %f", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Grant targets %f Universal Damage Resistance", CombatKeywordEx.AddMitigation),
         new SentenceEx("Reduce the damage you take from #D attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Reduce the damage of the next attack that hit the target by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.NextAttack }),
         new SentenceEx("(#D) attack that hit you are reduced by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
@@ -384,6 +387,7 @@ internal partial class CombatParserEx
         new SentenceEx("Target to take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f of all #D damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f damage from #D attacks", CombatKeywordEx.AddMitigation),
+        new SentenceEx("%f Mitigation vs #D attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Increase your mitigation vs #D attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Further debuff their mitigation %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Grant you %f mitigation against all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
@@ -662,6 +666,7 @@ internal partial class CombatParserEx
         new SentenceEx("Mitigate %f of all physical damage", CombatKeywordEx.AddMitigationPhysical),
         new SentenceEx("Mitigate %f physical damage", CombatKeywordEx.AddMitigationPhysical),
         new SentenceEx("%f Mitigation vs physical (slashing, piercing, and crushing) attack", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("%f Mitigation vs physical (slashing, crushing, and piercing) damage", CombatKeywordEx.AddMitigationPhysical),
 
         new SentenceEx("Ignore Knockback effect", CombatKeywordEx.IgnoreKnockback),
         new SentenceEx("Immunity to Knockback", CombatKeywordEx.IgnoreKnockback),
@@ -732,11 +737,13 @@ internal partial class CombatParserEx
         new SentenceEx("Combat Refresh restore %f health", CombatKeywordEx.IncreaseCombatRefreshHealing),
         new SentenceEx("Healing from Combat Refreshes %f", CombatKeywordEx.IncreaseCombatRefreshHealing),
 
-        new SentenceEx("%f resistance to Elemental damage (Fire, Cold, Electricity)", CombatKeywordEx.AddMitigationElemental),
+        new SentenceEx("%f Resistance to Elemental damage (Fire, Cold, Electricity)", CombatKeywordEx.AddMitigationElemental),
+        new SentenceEx("%f Mitigation vs elemental (fire, cold, and electricity) damage", CombatKeywordEx.AddMitigationElemental),
 
         new SentenceEx("In-Combat Armor Regeneration %f", CombatKeywordEx.IncreaseArmorRegeneration),
 
         new SentenceEx("It trigger again, targeting an enemy", CombatKeywordEx.TargetAnotherEnnemy),
+        new SentenceEx("Also attack another enemy", CombatKeywordEx.TargetAnotherEnnemy),
 
         new SentenceEx("Knock Down targets", CombatKeywordEx.Knockdown),
 
@@ -769,5 +776,13 @@ internal partial class CombatParserEx
 
         new SentenceEx("Worth %f more XP", CombatKeywordEx.IncreaseXpGain),
         new SentenceEx("%f Earned Combat XP", CombatKeywordEx.IncreaseXpGain),
+
+        new SentenceEx("Fly speed is boosted %f", CombatKeywordEx.AddFlySpeed),
+        new SentenceEx("Fly Speed %f", CombatKeywordEx.AddFlySpeed),
+
+        new SentenceEx("Turn while leaping", CombatKeywordEx.FreeMovementWhileLeaping),
+        new SentenceEx("Free-form movement while leaping", CombatKeywordEx.FreeMovementWhileLeaping),
+
+        new SentenceEx("Swim Speed %f", CombatKeywordEx.AddSwimSpeed),
     };
 }

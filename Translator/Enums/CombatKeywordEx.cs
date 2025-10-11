@@ -8,6 +8,8 @@
         RestorePower,
         RestoreHealthOrArmor,
         AddSprintSpeed,
+        AddFlySpeed,
+        AddSwimSpeed,
         AddOutOfCombatSpeed,
         IncreaseMaxHealth,
         IncreaseMaxArmor,
@@ -111,6 +113,7 @@
         GetIgnored,
         ShuffleTaunt,
         IncreaseXpGain,
+        FreeMovementWhileLeaping,
 
         // Other effects
         ApplyWithChance,

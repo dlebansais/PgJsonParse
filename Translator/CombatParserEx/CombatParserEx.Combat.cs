@@ -229,7 +229,10 @@ internal partial class CombatParserEx
 
         BuildModEffect(powerKey, effect, powerSimpleEffect.Description, IsGolemAbility, ModAbilityList, DynamicCombatEffectList, StaticCombatEffectList, ModTargetAbilityList, out pgCombatModEx);
 
-        return true;
+        if (pgCombatModEx.DynamicEffects.Count > 0 || pgCombatModEx.PermanentEffects.Count > 0)
+            return true;
+        else
+            return false;
     }
 
     private void AnalyzeText(string text, bool isMod, bool isGolemAbility, out List<AbilityKeyword> extractedAbilityList, out PgCombatEffectCollectionEx extractedCombatEffectList, out List<AbilityKeyword> extractedTargetAbilityList)
@@ -1429,7 +1432,7 @@ internal partial class CombatParserEx
             case "9703":
             case "10509":
             case "20009":
-            //case "13206":
+            case "13206":
             case "13104":
             case "13105":
             case "13106":
@@ -1776,6 +1779,15 @@ internal partial class CombatParserEx
             case "23553":
             case "25072":
             case "4005":
+            case "20044":
+            case "20303":
+            case "26092":
+            case "26093":
+            case "28243":
+            case "28244":
+            case "8102":
+            case "9304":
+            case "9814":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1961,6 +1973,8 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.RestorePower ||
                                                            item.Keyword == CombatKeywordEx.RestoreArmor ||
                                                            item.Keyword == CombatKeywordEx.AddSprintSpeed ||
+                                                           item.Keyword == CombatKeywordEx.AddFlySpeed ||
+                                                           item.Keyword == CombatKeywordEx.AddSwimSpeed ||
                                                            item.Keyword == CombatKeywordEx.AddOutOfCombatSpeed ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
                                                            item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
@@ -2066,11 +2080,14 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.GetIgnored ||
                                                            item.Keyword == CombatKeywordEx.ShuffleTaunt ||
                                                            item.Keyword == CombatKeywordEx.IncreaseXpGain ||
+                                                           item.Keyword == CombatKeywordEx.FreeMovementWhileLeaping ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
                                                           item.Keyword == CombatKeywordEx.RestoreArmor ||
                                                           item.Keyword == CombatKeywordEx.AddSprintSpeed ||
+                                                          item.Keyword == CombatKeywordEx.AddFlySpeed ||
+                                                          item.Keyword == CombatKeywordEx.AddSwimSpeed ||
                                                           item.Keyword == CombatKeywordEx.AddOutOfCombatSpeed ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
                                                           item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
@@ -2176,6 +2193,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.GetIgnored ||
                                                           item.Keyword == CombatKeywordEx.ShuffleTaunt ||
                                                           item.Keyword == CombatKeywordEx.IncreaseXpGain ||
+                                                          item.Keyword == CombatKeywordEx.FreeMovementWhileLeaping ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2229,6 +2247,7 @@ internal partial class CombatParserEx
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[1] }, new() { AbilityKeyword.Kick }, out pgCombatModEx);
                 break;
             case "7431":
+            case "7471":
                 BuildModEffect_004(description, effect, abilityList, new(), new() { new() { Keyword = CombatKeywordEx.EffectDuration, Data = new() { RawValue = MutationDuration } }, staticCombatEffectList[0], staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "7472":
@@ -2394,7 +2413,10 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.RequireBeingHit, Data = new() }, new() { Keyword = CombatKeywordEx.GiveBuff, Data = new() } }, targetAbilityList, new() { 0, 1, 4 }, new() { 3, 2 }, inverseTargets: false, out pgCombatModEx);
                 break;
             case "28841":
-                BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[1], new() { Keyword = CombatKeywordEx.GiveBuffOneUse, Data = new() }, staticCombatEffectList[2], staticCombatEffectList[3], staticCombatEffectList[4] }, targetAbilityList, new() { 0, 1, 3 }, new() { 2, 3, 4, 5 }, inverseTargets: false, out pgCombatModEx);
+                BuildModEffect_001(description, effect, isGolemMinion, abilityList, new() { staticCombatEffectList[0], staticCombatEffectList[1], staticCombatEffectList[2] }, new(), targetAbilityList, out pgCombatModEx);
+                BuildModEffect_004(description, effect, abilityList, new(), new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.NextHit, Data = new() }, staticCombatEffectList[5] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                //BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[1], staticCombatEffectList[2], new() { Keyword = CombatKeywordEx.GiveBuffOneUse, Data = new() }, staticCombatEffectList[3], staticCombatEffectList[4], staticCombatEffectList[5] }, targetAbilityList, new() { 0, 1, 2 }, new() { 0, 3, 4, 5 }, inverseTargets: false, out pgCombatModEx);
                 break;
             case "28685":
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[2], new() { Keyword = CombatKeywordEx.OnTrigger, Data = new() }, new() { Keyword = CombatKeywordEx.GiveBuffOneAttack, Data = new() }, new() { Keyword = CombatKeywordEx.RequireDamageType, DamageType = staticCombatEffectList[3].DamageType } }, targetAbilityList, new() { 0, 2, 3 }, new() { 4, 1 }, inverseTargets: false, out pgCombatModEx);
@@ -2422,9 +2444,6 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.GiveBuff, Data = new() }, staticCombatEffectList[1], staticCombatEffectList[2], staticCombatEffectList[3] }, targetAbilityList, new() { 0, 1 }, new() { 2, 3, 4 }, inverseTargets: true, out pgCombatModEx);
                 break;
             case "Other":
-            case "20044":
-            case "20303":
-            case "13206":
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
             case "ZZZ":
@@ -2596,6 +2615,8 @@ internal partial class CombatParserEx
             }
 
             bool CanHaveDuration = CombatKeyword == CombatKeywordEx.AddSprintSpeed ||
+                                   CombatKeyword == CombatKeywordEx.AddFlySpeed ||
+                                   CombatKeyword == CombatKeywordEx.AddSwimSpeed ||
                                    CombatKeyword == CombatKeywordEx.AddOutOfCombatSpeed ||
                                    CombatKeyword == CombatKeywordEx.RestoreHealthOverTime ||
                                    CombatKeyword == CombatKeywordEx.RestorePowerOverTime ||
@@ -2666,12 +2687,15 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseProtectionCold ||
                                    CombatKeyword == CombatKeywordEx.GetIgnored ||
                                    CombatKeyword == CombatKeywordEx.IncreaseXpGain ||
+                                   CombatKeyword == CombatKeywordEx.FreeMovementWhileLeaping ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&
                                 CombatKeyword != CombatKeywordEx.IncreaseMeleePowerCost;
             bool CanHaveDelay = CombatKeyword != CombatKeywordEx.AddSprintSpeed;
             bool MustHaveDuration = CombatKeyword == CombatKeywordEx.AddSprintSpeed ||
+                                   CombatKeyword == CombatKeywordEx.AddFlySpeed ||
+                                   CombatKeyword == CombatKeywordEx.AddSwimSpeed ||
                                    CombatKeyword == CombatKeywordEx.AddOutOfCombatSpeed ||
                                    CombatKeyword == CombatKeywordEx.RestoreHealthOverTime ||
                                    CombatKeyword == CombatKeywordEx.RestorePowerOverTime ||
@@ -2764,6 +2788,10 @@ internal partial class CombatParserEx
                      targetAbilityList.Count > 0 &&
                      !IsTargetAbilityListUsed &&
                      CanApplyModifier)
+            {
+                TargetAbilityList = targetAbilityList;
+            }
+            else if (Target == CombatTarget.Self && CombatKeyword == CombatKeywordEx.TurnMitigationToDamage)
             {
                 TargetAbilityList = targetAbilityList;
             }
@@ -3061,6 +3089,12 @@ internal partial class CombatParserEx
             else if (CombatEffect.Keyword == CombatKeywordEx.ApplyToAllies)
             {
                 Target = CombatTarget.Allies;
+                staticCombatEffectList.RemoveAt(i);
+                i--;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.ApplyToPetOfTarget)
+            {
+                Target = CombatTarget.PetOfTarget;
                 staticCombatEffectList.RemoveAt(i);
                 i--;
             }
