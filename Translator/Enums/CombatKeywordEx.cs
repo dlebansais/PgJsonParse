@@ -22,6 +22,7 @@
         IncreaseChannelingTime,
         ResetRefreshTime,
         StunImmunity,
+        StunResistance,
         RemoveStun,
         AllowedWhileStunned,
         Knockback,
@@ -120,6 +121,8 @@
         TurnPowerToHealth,
         NoDispel,
         RestoreCrystalIce,
+        VileBloodDamage,
+        CancelDamage,
 
         // Other effects
         ApplyWithChance,
@@ -188,6 +191,7 @@
         RequireTargetUnderEffect,
         RequireStandingSomewhere,
         RequirePetTarget,
+        RequireLowHealth,
 
         // Synthetic
         GiveBuff,

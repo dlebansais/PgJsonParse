@@ -44,4 +44,5 @@ public enum CombatCondition
     TargetUnderEffect,
     StandingSomewhere,
     PetTarget,
+    LowHealth,
 }

@@ -194,6 +194,54 @@ internal partial class CombatParserEx
             EffectTargetAbilityList = ModTargetAbilityList;
         }
 
+        // Hask for Cow Stampede
+        if (EffectTargetAbilityList.Count == 1 && EffectTargetAbilityList[0] == AbilityKeyword.CowStampede &&
+            ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.CowStampede &&
+            ModTargetAbilityList.Count == 0)
+        {
+            ModTargetAbilityList = EffectTargetAbilityList;
+        }
+
+        // Hask for Shadow Feint
+        if (EffectTargetAbilityList.Count == 1 && EffectTargetAbilityList[0] == AbilityKeyword.ShadowFeint &&
+            ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.ShadowFeint &&
+            ModTargetAbilityList.Count == 0)
+        {
+            ModTargetAbilityList = EffectTargetAbilityList;
+        }
+
+        // Hack for fire walls
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.SummonedFireWall &&
+            ModTargetAbilityList.Count == 1 && ModTargetAbilityList[0] == AbilityKeyword.FireWall &&
+            EffectTargetAbilityList.Count == 0)
+        {
+            EffectTargetAbilityList = ModTargetAbilityList;
+        }
+
+        // Hack for Carrot Power
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.CarrotPower &&
+            ModTargetAbilityList.Count == 1 && ModTargetAbilityList[0] == AbilityKeyword.Kick &&
+            EffectTargetAbilityList.Count == 0)
+        {
+            EffectTargetAbilityList = ModTargetAbilityList;
+        }
+
+        // Hack for Blur Step
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.BlurStep &&
+            ModTargetAbilityList.Count == 1 && (ModTargetAbilityList[0] == AbilityKeyword.SoulBite || ModTargetAbilityList[0] == AbilityKeyword.ParadoxTrot) &&
+            (EffectTargetAbilityList.Count == 0 || (EffectTargetAbilityList.Count == 1 && EffectTargetAbilityList[0] == AbilityKeyword.BlurStep)))
+        {
+            EffectTargetAbilityList = ModTargetAbilityList;
+        }
+
+        // Hack for Cloud Trick
+        if (ModAbilityList.Count == 1 && ModAbilityList[0] == AbilityKeyword.CloudTrick &&
+            ModTargetAbilityList.Count == 1 && ModTargetAbilityList[0] == AbilityKeyword.SummonTornado &&
+            EffectTargetAbilityList.Count == 2 && EffectTargetAbilityList[0] == AbilityKeyword.CloudTrick && EffectTargetAbilityList[1] == AbilityKeyword.SummonTornado)
+        {
+            EffectTargetAbilityList = ModTargetAbilityList;
+        }
+
         if (EffectCombatList.Count == 0 && ModCombatList.Count == 0)
             return false;
 
@@ -206,14 +254,12 @@ internal partial class CombatParserEx
         bool IsSameTarget = IsSameAbilityKeywordList(ModTargetAbilityList, EffectTargetAbilityList);
         if (!IsSameTarget)
         {
-            /*
             Debug.WriteLine(string.Empty);
             Debug.WriteLine("BAD TARGET!");
             Debug.WriteLine($"   Effect: {effect.Description}");
             Debug.WriteLine($"Parsed as: {ParsedEffectString}, Target: {ParsedEffectTargetAbilityList}");
             Debug.WriteLine($"    Power: {powerSimpleEffect.Description}");
             Debug.WriteLine($"Parsed as: {{{ParsedAbilityList}}} {ParsedPowerString}, Target: {ParsedModTargetAbilityList}");
-            */
             return false;
         }
 
@@ -294,6 +340,8 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "Fire Wall reuse time", "Wall of Fire reuse time", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Electricity Mitigation and Nature Mitigation (both direct and indirect)", "Electricity and Nature Mitigation", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "while in Blood Mist form", "while in Blood-Mist form", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "vile blood eruptions from Blood Mist", "vile blood eruptions from Blood-Mist", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "Blood Mist Eruption", "Blood-Mist Eruption", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "(This cannot happen more than once per second", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "vile blood: a 5m Burst", "vile blood: a Burst", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Poison Vulnerability and Electricity Vulnerability", "Poison and Electricity Vulnerability", out _, ref IndexFound);
@@ -1821,6 +1869,9 @@ internal partial class CombatParserEx
             case "22204":
             case "28187":
             case "15103":
+            case "18122":
+            case "25196":
+            case "6309":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -1948,6 +1999,7 @@ internal partial class CombatParserEx
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, abilityList, out pgCombatModEx);
                 break;
             case "17063":
+            case "28064":
                 BuildModEffect_002(description, effect, isGolemMinion, targetAbilityList, dynamicCombatEffectList, staticCombatEffectList, abilityList, out pgCombatModEx);
                 break;
             case "27175":
@@ -1972,9 +2024,23 @@ internal partial class CombatParserEx
                     RandomChance = pgCombatModEx.DynamicEffects[0].RandomChance,
                 };
                 break;
+            case "28687":
+                BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, new() { new() { Keyword = CombatKeywordEx.OnTrigger, Data = new() }, staticCombatEffectList[0], staticCombatEffectList[1] }, abilityList, out pgCombatModEx);
+                BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, new() { new() { Keyword = CombatKeywordEx.OnTrigger, Data = new() }, staticCombatEffectList[2] }, targetAbilityList, out pgExtraCombatModEx);
+                pgExtraCombatModEx.DynamicEffects[0].ConditionAbilityList.Clear();
+                pgExtraCombatModEx.DynamicEffects[0].ConditionAbilityList.AddRange(pgCombatModEx.DynamicEffects[0].ConditionAbilityList);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
             case "25103":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[2], staticCombatEffectList[3] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "28161":
+            case "28162":
+            case "28164":
+                BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], staticCombatEffectList[1] }, new(), out pgCombatModEx);
+                BuildModEffect_002(description, effect, isGolemMinion, targetAbilityList, dynamicCombatEffectList, new() { staticCombatEffectList[2] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "10045":
@@ -2031,6 +2097,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.IncreaseChannelingTime ||
                                                            item.Keyword == CombatKeywordEx.ResetRefreshTime ||
                                                            item.Keyword == CombatKeywordEx.StunImmunity ||
+                                                           item.Keyword == CombatKeywordEx.StunResistance ||
                                                            item.Keyword == CombatKeywordEx.RemoveStun ||
                                                            item.Keyword == CombatKeywordEx.AllowedWhileStunned ||
                                                            item.Keyword == CombatKeywordEx.Knockback ||
@@ -2130,6 +2197,8 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.TurnPowerToHealth ||
                                                            item.Keyword == CombatKeywordEx.NoDispel ||
                                                            item.Keyword == CombatKeywordEx.RestoreCrystalIce ||
+                                                           item.Keyword == CombatKeywordEx.VileBloodDamage ||
+                                                           item.Keyword == CombatKeywordEx.CancelDamage ||
                                                            item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
                     staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
                                                           item.Keyword == CombatKeywordEx.RestorePower ||
@@ -2149,6 +2218,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.IncreaseChannelingTime ||
                                                           item.Keyword == CombatKeywordEx.ResetRefreshTime ||
                                                           item.Keyword == CombatKeywordEx.StunImmunity ||
+                                                          item.Keyword == CombatKeywordEx.StunResistance ||
                                                           item.Keyword == CombatKeywordEx.RemoveStun ||
                                                           item.Keyword == CombatKeywordEx.AllowedWhileStunned ||
                                                           item.Keyword == CombatKeywordEx.Knockback ||
@@ -2248,6 +2318,8 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.TurnPowerToHealth ||
                                                           item.Keyword == CombatKeywordEx.NoDispel ||
                                                           item.Keyword == CombatKeywordEx.RestoreCrystalIce ||
+                                                          item.Keyword == CombatKeywordEx.VileBloodDamage ||
+                                                          item.Keyword == CombatKeywordEx.CancelDamage ||
                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
                 {
                     BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2286,6 +2358,9 @@ internal partial class CombatParserEx
             case "22401":
                 BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.RequireTargetOfAbility }, staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
                 pgCombatModEx.DynamicEffects[1].AbilityList.Clear();
+                break;
+            case "20004":
+                BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[2], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "14354":
                 if (staticCombatEffectList.Count == 3)
@@ -2482,6 +2557,13 @@ internal partial class CombatParserEx
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[1] }, targetAbilityList, out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
+            case "2301":
+            case "2302":
+            case "2303":
+                BuildModEffect_006(description, isGolemMinion, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0] }, new(), out pgCombatModEx);
+                BuildModEffect_002(description, effect, isGolemMinion, targetAbilityList, dynamicCombatEffectList, new() { staticCombatEffectList[1] }, new(), out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
             case "8001":
                 BuildModEffect_002(description, effect, isGolemMinion, new(), dynamicCombatEffectList, new(), targetAbilityList, out pgExtraCombatModEx);
                 BuildModEffect_006(description, isGolemMinion, abilityList, new(), staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2578,7 +2660,6 @@ internal partial class CombatParserEx
             PgCombatEffectEx CombatEffect = AllEffects[i];
             if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
             {
-                Debug.Assert(ConditionList.Count == 0);
                 Debug.Assert(NewCondition != CombatCondition.Internal_None);
                 ConditionList.Add(NewCondition);
                 ConditionIndex = i;
@@ -2589,7 +2670,7 @@ internal partial class CombatParserEx
                     NewCondition == CombatCondition.AbilityTriggered ||
                     NewCondition == CombatCondition.StandingSomewhere)
                 {
-                    ConditionAbilityList = targetAbilityList;
+                    ConditionAbilityList = new(targetAbilityList);
                 }
 
                 if (NewCondition == CombatCondition.TargetHasLowRage ||
@@ -2728,6 +2809,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
                                    CombatKeyword == CombatKeywordEx.IncreaseChannelingTime ||
                                    CombatKeyword == CombatKeywordEx.StunImmunity ||
+                                   CombatKeyword == CombatKeywordEx.StunResistance ||
                                    CombatKeyword == CombatKeywordEx.Knockback ||
                                    CombatKeyword == CombatKeywordEx.AddSprintPowerCost ||
                                    CombatKeyword == CombatKeywordEx.IncreaseAccuracy ||
@@ -2783,6 +2865,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.GetIgnored ||
                                    CombatKeyword == CombatKeywordEx.IncreaseXpGain ||
                                    CombatKeyword == CombatKeywordEx.FreeMovementWhileLeaping ||
+                                   CombatKeyword == CombatKeywordEx.VileBloodDamage ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveRange = CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime &&
                                 CombatKeyword != CombatKeywordEx.IncreasePowerCost &&

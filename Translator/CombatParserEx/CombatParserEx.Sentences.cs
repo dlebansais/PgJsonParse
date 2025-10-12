@@ -530,9 +530,12 @@ internal partial class CombatParserEx
 
         new SentenceEx("Before you teleport", CombatKeywordEx.BeforeTrigger),
         new SentenceEx("While @ is active", CombatKeywordEx.BeforeTrigger),
+        new SentenceEx("When @ active", CombatKeywordEx.BeforeTrigger),
 
         new SentenceEx("Absorb %f damage before dissipating", CombatKeywordEx.AbsorbDamage),
         new SentenceEx("Absorb the first %f #D damage you suffer", CombatKeywordEx.AbsorbDamage),
+
+        new SentenceEx("%f Stun Resistance", CombatKeywordEx.StunResistance),
 
         new SentenceEx("The next attacker that hit the pet will be stunned", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToPet, CombatKeywordEx.RequireBeingHit, CombatKeywordEx.Stun }),
         new SentenceEx("Stun targets", CombatKeywordEx.Stun),
@@ -809,5 +812,12 @@ internal partial class CombatParserEx
 
         new SentenceEx("Add %f Crystal Ice to your inventory", CombatKeywordEx.RestoreCrystalIce),
         new SentenceEx("Gain %f Crystal Ice", CombatKeywordEx.RestoreCrystalIce),
+
+        new SentenceEx("Any vile blood eruptions from Blood-Mist deal %f direct damage", CombatKeywordEx.VileBloodDamage),
+        new SentenceEx("Blood-Mist Eruption Damage %f", CombatKeywordEx.VileBloodDamage),
+
+        new SentenceEx("If you are reduced to %f health", CombatKeywordEx.RequireLowHealth),
+
+        new SentenceEx("Cancels the damage", CombatKeywordEx.CancelDamage),
     };
 }
