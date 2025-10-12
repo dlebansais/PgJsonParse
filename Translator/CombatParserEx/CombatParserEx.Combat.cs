@@ -283,6 +283,12 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "(This cannot happen more than once per second", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "vile blood: a 5m Burst", "vile blood: a Burst", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Poison Vulnerability and Electricity Vulnerability", "Poison and Electricity Vulnerability", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "This extra Fire Arrow consumes ammunition as normal.", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "will also shoot a Fire Arrow", "will also shoot", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "will simultaneously shoot a Fire Arrow", "will simultaneously shoot", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "will also fire a Mangling Shot", "will also fire", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "will simultaneously shoot a Mangling Shot", "will simultaneously shoot", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "(You can negate the latent psychic damage by using First Aid 4+ on your pet.)", "(You can negate the latent psychic damage.)", out _, ref IndexFound);
         ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor to you");
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
@@ -1788,6 +1794,7 @@ internal partial class CombatParserEx
             case "8102":
             case "9304":
             case "9814":
+            case "1047":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -2012,6 +2019,7 @@ internal partial class CombatParserEx
                                                            item.Keyword == CombatKeywordEx.CancelSlowdown ||
                                                            item.Keyword == CombatKeywordEx.NullifyIgnoreKnockback ||
                                                            item.Keyword == CombatKeywordEx.GenerateTaunt ||
+                                                           item.Keyword == CombatKeywordEx.GenerateTemporaryTaunt ||
                                                            item.Keyword == CombatKeywordEx.NextAttackMiss ||
                                                            item.Keyword == CombatKeywordEx.AddMitigation ||
                                                            item.Keyword == CombatKeywordEx.AddMitigationDirect ||
@@ -2125,6 +2133,7 @@ internal partial class CombatParserEx
                                                           item.Keyword == CombatKeywordEx.CancelSlowdown ||
                                                           item.Keyword == CombatKeywordEx.NullifyIgnoreKnockback ||
                                                           item.Keyword == CombatKeywordEx.GenerateTaunt ||
+                                                          item.Keyword == CombatKeywordEx.GenerateTemporaryTaunt ||
                                                           item.Keyword == CombatKeywordEx.NextAttackMiss ||
                                                           item.Keyword == CombatKeywordEx.AddMitigation ||
                                                           item.Keyword == CombatKeywordEx.AddMitigationDirect ||
@@ -2224,6 +2233,8 @@ internal partial class CombatParserEx
             case "6302":
             case "8317":
             case "9854":
+            case "10313":
+            case "10510":
                 BuildModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "22401":
@@ -2300,9 +2311,11 @@ internal partial class CombatParserEx
             case "12313":
             case "28141":
             case "28142":
-            case "28143":
             case "12309":
                 BuildModEffect_005(description, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                break;
+            case "28143":
+                BuildModEffect_005(description, isGolemMinion, abilityList, new PgCombatEffectCollectionEx() { dynamicCombatEffectList[0], staticCombatEffectList[0] }, new(), targetAbilityList, out pgCombatModEx);
                 break;
             case "24246":
             case "24247":
@@ -2438,6 +2451,9 @@ internal partial class CombatParserEx
                 break;
             case "28063":
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, new() { 2, 1 }, new() { 0 }, inverseTargets: false, out pgCombatModEx);
+                break;
+            case "12106":
+                BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, new() { 0, 1, 2 }, new() { 3, 4, 5 }, inverseTargets: false, out pgCombatModEx);
                 break;
             case "6136":
             case "6153":

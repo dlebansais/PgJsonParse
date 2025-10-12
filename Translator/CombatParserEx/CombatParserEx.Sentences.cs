@@ -72,6 +72,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("After a %f second delay", CombatKeywordEx.EffectDelay),
         new SentenceEx("After an %f second delay", CombatKeywordEx.EffectDelay),
+        new SentenceEx("After %f second", CombatKeywordEx.EffectDelay),
 
         new SentenceEx("For %f second", CombatKeywordEx.EffectDuration),
         new SentenceEx("For %f minute", CombatKeywordEx.EffectDurationInMinutes),
@@ -165,6 +166,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant them immunity to stun", CombatKeywordEx.StunImmunity),
 
         new SentenceEx("Cause your pet to bleed for %f #D damage", new List<CombatKeywordEx>() { CombatKeywordEx.SelfDamage, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("The pet take %f #D damage", new List<CombatKeywordEx>() { CombatKeywordEx.SelfDamage, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Deal %f #D damage to YOU", CombatKeywordEx.SelfDamage),
 
         new SentenceEx("Both you and your pet", CombatKeywordEx.ApplyToSelfAndPet),
@@ -744,6 +746,9 @@ internal partial class CombatParserEx
 
         new SentenceEx("It trigger again, targeting an enemy", CombatKeywordEx.TargetAnotherEnnemy),
         new SentenceEx("Also attack another enemy", CombatKeywordEx.TargetAnotherEnnemy),
+        new SentenceEx("Your next #S attack will simultaneously shoot", new List<CombatKeywordEx>() { CombatKeywordEx.TargetAnotherEnnemy, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Subsequent #S attack will also shoot", new List<CombatKeywordEx>() { CombatKeywordEx.TargetAnotherEnnemy, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Subsequent #S attack will also fire", new List<CombatKeywordEx>() { CombatKeywordEx.TargetAnotherEnnemy, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
 
         new SentenceEx("Knock Down targets", CombatKeywordEx.Knockdown),
 
@@ -784,5 +789,9 @@ internal partial class CombatParserEx
         new SentenceEx("Free-form movement while leaping", CombatKeywordEx.FreeMovementWhileLeaping),
 
         new SentenceEx("Swim Speed %f", CombatKeywordEx.AddSwimSpeed),
+
+        new SentenceEx("Temp-taunt the target %f", CombatKeywordEx.GenerateTemporaryTaunt),
+        new SentenceEx("Taunt (Temporary) %f", CombatKeywordEx.GenerateTemporaryTaunt),
+        //
     };
 }

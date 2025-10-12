@@ -48,6 +48,7 @@
         CancelSlowdown,
         NullifyIgnoreKnockback,
         GenerateTaunt,
+        GenerateTemporaryTaunt,
         NextAttackMiss,
         AddMitigation,
         AddMitigationDirect,
