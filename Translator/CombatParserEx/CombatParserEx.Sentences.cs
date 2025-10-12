@@ -62,6 +62,8 @@ internal partial class CombatParserEx
         new SentenceEx("Max Health by %f", CombatKeywordEx.IncreaseMaxHealth),
         new SentenceEx("%f Max Health", CombatKeywordEx.IncreaseMaxHealth),
         new SentenceEx("Have %f health", CombatKeywordEx.IncreaseMaxHealth),
+        new SentenceEx("%f Pet Max Health", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxHealth, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("Gain %f Health", CombatKeywordEx.IncreaseMaxHealth),
         new SentenceEx("Max Armor %f", CombatKeywordEx.IncreaseMaxArmor),
         new SentenceEx("Increase your Max Armor by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMaxArmor, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Max Armor", CombatKeywordEx.IncreaseMaxArmor),
@@ -394,6 +396,7 @@ internal partial class CombatParserEx
         new SentenceEx("Further debuff their mitigation %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Grant you %f mitigation against all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Mitigation from attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("%f Mitigation from #D damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("You gain %f mitigation vs #D", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("#D mitigation %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
@@ -675,6 +678,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant all targets immunity to Knockback", CombatKeywordEx.IgnoreKnockback),
         new SentenceEx("Grant Knockback Immunity", CombatKeywordEx.IgnoreKnockback),
         new SentenceEx("Immune to Knockback effects", CombatKeywordEx.IgnoreKnockback),
+        new SentenceEx("Grant the target %f Knockback Ignore Chance", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyWithChance, CombatKeywordEx.IgnoreKnockback }),
 
         new SentenceEx("Take %f second to channel", CombatKeywordEx.IncreaseChannelingTime),
         new SentenceEx("Channeling time is %f second", CombatKeywordEx.IncreaseChannelingTime),
@@ -792,6 +796,12 @@ internal partial class CombatParserEx
 
         new SentenceEx("Temp-taunt the target %f", CombatKeywordEx.GenerateTemporaryTaunt),
         new SentenceEx("Taunt (Temporary) %f", CombatKeywordEx.GenerateTemporaryTaunt),
-        //
+
+        new SentenceEx("%f Death Avoidance", CombatKeywordEx.IncreaseDeathAvoidance),
+
+        new SentenceEx("Uniformly diminishes all targets' entire aggro lists by %f", CombatKeywordEx.ReduceAggro),
+
+        new SentenceEx("Grant pets Health/Armor equal to the amount of Power generated %f", new List<CombatKeywordEx>() { CombatKeywordEx.TurnPowerToHealth, CombatKeywordEx.RequirePetTarget }),
+        new SentenceEx("Targeted pets recover Health/Armor equal to the amount of Power generated %f", new List<CombatKeywordEx>() { CombatKeywordEx.TurnPowerToHealth, CombatKeywordEx.RequirePetTarget }),
     };
 }

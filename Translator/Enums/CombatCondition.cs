@@ -43,4 +43,5 @@ public enum CombatCondition
     SentientTarget,
     TargetUnderEffect,
     StandingSomewhere,
+    PetTarget,
 }

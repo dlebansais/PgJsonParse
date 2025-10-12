@@ -546,6 +546,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireSentientTarget, CombatCondition.SentientTarget },
         { CombatKeywordEx.RequireTargetUnderEffect, CombatCondition.TargetUnderEffect },
         { CombatKeywordEx.RequireStandingSomewhere, CombatCondition.StandingSomewhere },
+        { CombatKeywordEx.RequirePetTarget, CombatCondition.PetTarget },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

@@ -49,6 +49,7 @@
         NullifyIgnoreKnockback,
         GenerateTaunt,
         GenerateTemporaryTaunt,
+        ReduceAggro,
         NextAttackMiss,
         AddMitigation,
         AddMitigationDirect,
@@ -115,6 +116,8 @@
         ShuffleTaunt,
         IncreaseXpGain,
         FreeMovementWhileLeaping,
+        IncreaseDeathAvoidance,
+        TurnPowerToHealth,
 
         // Other effects
         ApplyWithChance,
@@ -182,6 +185,7 @@
         RequireSentientTarget,
         RequireTargetUnderEffect,
         RequireStandingSomewhere,
+        RequirePetTarget,
 
         // Synthetic
         GiveBuff,
