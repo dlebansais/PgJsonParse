@@ -118,6 +118,8 @@
         FreeMovementWhileLeaping,
         IncreaseDeathAvoidance,
         TurnPowerToHealth,
+        NoDispel,
+        RestoreCrystalIce,
 
         // Other effects
         ApplyWithChance,

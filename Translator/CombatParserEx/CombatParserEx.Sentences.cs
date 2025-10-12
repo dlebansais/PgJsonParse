@@ -513,6 +513,7 @@ internal partial class CombatParserEx
         new SentenceEx("Your next use", CombatKeywordEx.NextUse),
         new SentenceEx("Your next ability", CombatKeywordEx.NextUse),
         new SentenceEx("Next #S attack", CombatKeywordEx.NextUse),
+        new SentenceEx("The next use of", CombatKeywordEx.NextUse),
 
         new SentenceEx("Deal #D damage", CombatKeywordEx.ChangeDamageType),
         new SentenceEx("Deal direct #D damage", CombatKeywordEx.ChangeDamageType),
@@ -593,7 +594,7 @@ internal partial class CombatParserEx
         new SentenceEx("Have less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
         new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
 
-        new SentenceEx("Grant this Critical Hit Chance bonus to your next #S attack", new List<CombatKeywordEx>() { CombatKeywordEx.NextAttack, CombatKeywordEx.GrantCriticalChance }),
+        new SentenceEx("Grant this Critical Hit Chance bonus to your next #S attack", new List<CombatKeywordEx>() { CombatKeywordEx.GrantCriticalChance, CombatKeywordEx.NextAttack }),
         new SentenceEx("Can Critically Hit based on your Anatomy skill levels", CombatKeywordEx.GrantCriticalChance),
 
         new SentenceEx("To Arthropods", CombatKeywordEx.RequireArthropodTarget),
@@ -803,5 +804,10 @@ internal partial class CombatParserEx
 
         new SentenceEx("Grant pets Health/Armor equal to the amount of Power generated %f", new List<CombatKeywordEx>() { CombatKeywordEx.TurnPowerToHealth, CombatKeywordEx.RequirePetTarget }),
         new SentenceEx("Targeted pets recover Health/Armor equal to the amount of Power generated %f", new List<CombatKeywordEx>() { CombatKeywordEx.TurnPowerToHealth, CombatKeywordEx.RequirePetTarget }),
+
+        new SentenceEx("#D damage no longer dispel", CombatKeywordEx.NoDispel),
+
+        new SentenceEx("Add %f Crystal Ice to your inventory", CombatKeywordEx.RestoreCrystalIce),
+        new SentenceEx("Gain %f Crystal Ice", CombatKeywordEx.RestoreCrystalIce),
     };
 }
