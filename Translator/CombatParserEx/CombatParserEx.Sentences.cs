@@ -260,6 +260,7 @@ internal partial class CombatParserEx
         new SentenceEx("Boost the damage of your @ %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost the damage from @ %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost the damage of all your attack %f", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Boost your #D damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Boost #D damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your next attack %f if it is a #D attack", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Boost your next attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
@@ -403,13 +404,14 @@ internal partial class CombatParserEx
         new SentenceEx("Target to take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f of all #D damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f damage from #D attacks", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Grant you %f mitigation vs #D", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("You gain %f mitigation vs #D", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Mitigation vs #D", CombatKeywordEx.AddMitigation),
         new SentenceEx("Increase your mitigation vs #D attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Further debuff their mitigation %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Grant you %f mitigation against all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Mitigation from attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("%f Mitigation from #D damage", CombatKeywordEx.AddMitigation),
-        new SentenceEx("You gain %f mitigation vs #D", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("#D mitigation %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Your Direct and Indirect #D mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
@@ -429,6 +431,7 @@ internal partial class CombatParserEx
         new SentenceEx("Mitigate %f of all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("All Elite attack deal %f damage to you.", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
+        new SentenceEx("Grant you %f #D Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf}, SignInterpretation.Opposite),
         new SentenceEx("%f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Debuff the target so that it take %f damage from future #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Targets suffer %f damage from other #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
@@ -446,6 +449,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cause the target to become %f more vulnerable to #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target take %f more damage from #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target take %f #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("You take %f damage from #D attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }, SignInterpretation.Opposite),
         new SentenceEx("Take %f damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Take %f more damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Indirect #D Vulnerability %f", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.AlwaysNegative),
@@ -459,7 +463,6 @@ internal partial class CombatParserEx
         new SentenceEx("Cause the target to suffer %f #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cause target to be %f more vulnerable to #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Take %f damage from #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
-        new SentenceEx("Grant you %f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
 
         new SentenceEx("Make the target %f more vulnerable to direct #D damage", CombatKeywordEx.AddMitigationDirect, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cause the target to take %f damage from direct #D attack", CombatKeywordEx.AddMitigationDirect, SignInterpretation.Opposite),
@@ -541,6 +544,7 @@ internal partial class CombatParserEx
         new SentenceEx("If target is more than %f meter away", CombatKeywordEx.RequireMinimumDistance),
 
         new SentenceEx("Before you teleport", CombatKeywordEx.BeforeTrigger),
+        new SentenceEx("Until you trigger the teleport", CombatKeywordEx.BeforeTrigger),
         new SentenceEx("While @ is active", CombatKeywordEx.BeforeTrigger),
         new SentenceEx("When @ active", CombatKeywordEx.BeforeTrigger),
 
@@ -834,5 +838,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cancels the damage", CombatKeywordEx.CancelDamage),
 
         new SentenceEx("%f Body Heat", CombatKeywordEx.RestoreBodyHeat),
+
+        new SentenceEx("Or until you are attacked", CombatKeywordEx.RequireNotAttacked),
     };
 }

@@ -5,6 +5,7 @@ public enum CombatCondition
     Internal_None,
     WieldingTwoKnives,
     WithoutFocus,
+    UntilAttacked,
     WhilePlayingSong,
     WhileInBloodMistForm,
     SpecificTarget,

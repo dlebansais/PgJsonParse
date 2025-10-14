@@ -1925,6 +1925,12 @@ internal partial class CombatParserEx
             case "9302":
             case "9867":
             case "9885":
+            case "5303":
+            case "17303":
+            case "6113":
+            case "6301":
+            case "6305":
+            case "7024":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -2025,6 +2031,8 @@ internal partial class CombatParserEx
             case "3403":
             case "14353":
             case "13107":
+            case "2009":
+            case "21002":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 2);
                 break;
             case "28615":
@@ -2136,261 +2144,6 @@ internal partial class CombatParserEx
             case "14205":
             case "28661":
                 BuildModEffect_003(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
-                break;
-            default:
-                if (dynamicCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
-                                                           item.Keyword == CombatKeywordEx.RestorePower ||
-                                                           item.Keyword == CombatKeywordEx.RestoreArmor ||
-                                                           item.Keyword == CombatKeywordEx.AddSprintSpeed ||
-                                                           item.Keyword == CombatKeywordEx.AddFlySpeed ||
-                                                           item.Keyword == CombatKeywordEx.AddSwimSpeed ||
-                                                           item.Keyword == CombatKeywordEx.AddOutOfCombatSpeed ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseMaxPower ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseMaxBreath ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseMaxRage ||
-                                                           item.Keyword == CombatKeywordEx.RegenPercentageOfArmor ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseHealEfficiency ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseChannelingTime ||
-                                                           item.Keyword == CombatKeywordEx.ResetRefreshTime ||
-                                                           item.Keyword == CombatKeywordEx.StunImmunity ||
-                                                           item.Keyword == CombatKeywordEx.StunResistance ||
-                                                           item.Keyword == CombatKeywordEx.RemoveStun ||
-                                                           item.Keyword == CombatKeywordEx.AllowedWhileStunned ||
-                                                           item.Keyword == CombatKeywordEx.Knockback ||
-                                                           item.Keyword == CombatKeywordEx.DamageBoost ||
-                                                           item.Keyword == CombatKeywordEx.BaseDamageBoost ||
-                                                           item.Keyword == CombatKeywordEx.DamageBoostDouble ||
-                                                           item.Keyword == CombatKeywordEx.DamageBoostDoubleDirect ||
-                                                           item.Keyword == CombatKeywordEx.DealArmorDamage ||
-                                                           item.Keyword == CombatKeywordEx.DealHealthDamage ||
-                                                           item.Keyword == CombatKeywordEx.DealHealthAndArmorDamage ||
-                                                           item.Keyword == CombatKeywordEx.DispelRootSlow ||
-                                                           item.Keyword == CombatKeywordEx.AddSprintPowerCost ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseAccuracy ||
-                                                           item.Keyword == CombatKeywordEx.AddMeleeAccuracy ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseBurstAccuracy ||
-                                                           item.Keyword == CombatKeywordEx.IncreasePowerCost ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseMeleePowerCost ||
-                                                           item.Keyword == CombatKeywordEx.BecomeBurst ||
-                                                           item.Keyword == CombatKeywordEx.NoYellForHelp ||
-                                                           item.Keyword == CombatKeywordEx.RepairBrokenBone ||
-                                                           item.Keyword == CombatKeywordEx.RepairBrokenBoneOverTime ||
-                                                           item.Keyword == CombatKeywordEx.ZeroPowerCost ||
-                                                           item.Keyword == CombatKeywordEx.CancelSlowdown ||
-                                                           item.Keyword == CombatKeywordEx.NullifyIgnoreKnockback ||
-                                                           item.Keyword == CombatKeywordEx.GenerateTaunt ||
-                                                           item.Keyword == CombatKeywordEx.GenerateTemporaryTaunt ||
-                                                           item.Keyword == CombatKeywordEx.NextAttackMiss ||
-                                                           item.Keyword == CombatKeywordEx.AddMitigation ||
-                                                           item.Keyword == CombatKeywordEx.AddMitigationDirect ||
-                                                           item.Keyword == CombatKeywordEx.AddMitigationIndirect ||
-                                                           item.Keyword == CombatKeywordEx.AddMitigationBurst ||
-                                                           item.Keyword == CombatKeywordEx.AddMitigationPhysical ||
-                                                           item.Keyword == CombatKeywordEx.AddMitigationElemental ||
-                                                           item.Keyword == CombatKeywordEx.AddArmorBasedMitigation ||
-                                                           item.Keyword == CombatKeywordEx.ChanceToConsume ||
-                                                           item.Keyword == CombatKeywordEx.SelfStun ||
-                                                           item.Keyword == CombatKeywordEx.MaxMitigatedDamageLimit ||
-                                                           item.Keyword == CombatKeywordEx.RageAttackBoost ||
-                                                           item.Keyword == CombatKeywordEx.NonRageAttackBoost ||
-                                                           item.Keyword == CombatKeywordEx.RemoveEffect ||
-                                                           item.Keyword == CombatKeywordEx.ChangeDamageType ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseRadiationProtection ||
-                                                           item.Keyword == CombatKeywordEx.AbsorbDamage ||
-                                                           item.Keyword == CombatKeywordEx.GenerateNoRage ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseRage ||
-                                                           item.Keyword == CombatKeywordEx.DrainHealth ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseDrainHealthMax ||
-                                                           item.Keyword == CombatKeywordEx.DelayedSecondAttack ||
-                                                           item.Keyword == CombatKeywordEx.TurnRageToDamage ||
-                                                           item.Keyword == CombatKeywordEx.TurnMitigationToDamage ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseCriticalChance ||
-                                                           item.Keyword == CombatKeywordEx.GrantCriticalChance ||
-                                                           item.Keyword == CombatKeywordEx.Slow ||
-                                                           item.Keyword == CombatKeywordEx.Fear ||
-                                                           item.Keyword == CombatKeywordEx.Stun||
-                                                           item.Keyword == CombatKeywordEx.Knockdown ||
-                                                           item.Keyword == CombatKeywordEx.SelfDamage ||
-                                                           item.Keyword == CombatKeywordEx.Concussion ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseEvasion ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionBurst ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionProjectile ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionBurstAndProjectile ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionMelee ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseEvasionRanged ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseEliteResistance ||
-                                                           item.Keyword == CombatKeywordEx.IgnoreArmor ||
-                                                           item.Keyword == CombatKeywordEx.ImplantDeerEgg ||
-                                                           item.Keyword == CombatKeywordEx.SummonDeer ||
-                                                           item.Keyword == CombatKeywordEx.SummonFigment ||
-                                                           item.Keyword == CombatKeywordEx.SummonStunTrap ||
-                                                           item.Keyword == CombatKeywordEx.SummonTornado ||
-                                                           item.Keyword == CombatKeywordEx.VileBloodAttack ||
-                                                           item.Keyword == CombatKeywordEx.IgnoreKnockback ||
-                                                           item.Keyword == CombatKeywordEx.IgnoreStun ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseJumpHeight ||
-                                                           item.Keyword == CombatKeywordEx.TornadoVulnerability ||
-                                                           item.Keyword == CombatKeywordEx.IncreasePhysicalReflection ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseArmorSpecificReflection ||
-                                                           item.Keyword == CombatKeywordEx.DirectDamageImmunity ||
-                                                           item.Keyword == CombatKeywordEx.MakeVulnerable ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseRange ||
-                                                           item.Keyword == CombatKeywordEx.DirectDamageBoost ||
-                                                           item.Keyword == CombatKeywordEx.IndirectDamageBoost ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseCombatRefreshTime ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseCombatRefreshHealing ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseCombatRefreshPowerRestore ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseArmorRegeneration ||
-                                                           item.Keyword == CombatKeywordEx.TargetAnotherEnnemy ||
-                                                           item.Keyword == CombatKeywordEx.RemoveSlowRoot ||
-                                                           item.Keyword == CombatKeywordEx.GrantSlowRootImmunity ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseProtectionCold ||
-                                                           item.Keyword == CombatKeywordEx.GetIgnored ||
-                                                           item.Keyword == CombatKeywordEx.ShuffleTaunt ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseXpGain ||
-                                                           item.Keyword == CombatKeywordEx.RestoreBodyHeat ||
-                                                           item.Keyword == CombatKeywordEx.FreeMovementWhileLeaping ||
-                                                           item.Keyword == CombatKeywordEx.IncreaseDeathAvoidance ||
-                                                           item.Keyword == CombatKeywordEx.TurnPowerToHealth ||
-                                                           item.Keyword == CombatKeywordEx.NoDispel ||
-                                                           item.Keyword == CombatKeywordEx.RestoreCrystalIce ||
-                                                           item.Keyword == CombatKeywordEx.VileBloodDamage ||
-                                                           item.Keyword == CombatKeywordEx.CancelDamage ||
-                                                           item.Keyword == CombatKeywordEx.RestoreHealthOrArmor) ||
-                    staticCombatEffectList.Exists(item => item.Keyword == CombatKeywordEx.RestoreHealth ||
-                                                          item.Keyword == CombatKeywordEx.RestorePower ||
-                                                          item.Keyword == CombatKeywordEx.RestoreArmor ||
-                                                          item.Keyword == CombatKeywordEx.AddSprintSpeed ||
-                                                          item.Keyword == CombatKeywordEx.AddFlySpeed ||
-                                                          item.Keyword == CombatKeywordEx.AddSwimSpeed ||
-                                                          item.Keyword == CombatKeywordEx.AddOutOfCombatSpeed ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseMaxArmor ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseMaxPower ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseMaxBreath ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseMaxRage ||
-                                                          item.Keyword == CombatKeywordEx.RegenPercentageOfArmor ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseHealEfficiency ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseCurrentRefreshTime ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseChannelingTime ||
-                                                          item.Keyword == CombatKeywordEx.ResetRefreshTime ||
-                                                          item.Keyword == CombatKeywordEx.StunImmunity ||
-                                                          item.Keyword == CombatKeywordEx.StunResistance ||
-                                                          item.Keyword == CombatKeywordEx.RemoveStun ||
-                                                          item.Keyword == CombatKeywordEx.AllowedWhileStunned ||
-                                                          item.Keyword == CombatKeywordEx.Knockback ||
-                                                          item.Keyword == CombatKeywordEx.DamageBoost ||
-                                                          item.Keyword == CombatKeywordEx.BaseDamageBoost ||
-                                                          item.Keyword == CombatKeywordEx.DamageBoostDouble ||
-                                                          item.Keyword == CombatKeywordEx.DamageBoostDoubleDirect ||
-                                                          item.Keyword == CombatKeywordEx.DealArmorDamage ||
-                                                          item.Keyword == CombatKeywordEx.DealHealthDamage ||
-                                                          item.Keyword == CombatKeywordEx.DealHealthAndArmorDamage ||
-                                                          item.Keyword == CombatKeywordEx.DispelRootSlow ||
-                                                          item.Keyword == CombatKeywordEx.AddSprintPowerCost ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseAccuracy ||
-                                                          item.Keyword == CombatKeywordEx.AddMeleeAccuracy ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseBurstAccuracy ||
-                                                          item.Keyword == CombatKeywordEx.IncreasePowerCost ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseMeleePowerCost ||
-                                                          item.Keyword == CombatKeywordEx.BecomeBurst ||
-                                                          item.Keyword == CombatKeywordEx.NoYellForHelp ||
-                                                          item.Keyword == CombatKeywordEx.RepairBrokenBone ||
-                                                          item.Keyword == CombatKeywordEx.RepairBrokenBoneOverTime ||
-                                                          item.Keyword == CombatKeywordEx.ZeroPowerCost ||
-                                                          item.Keyword == CombatKeywordEx.CancelSlowdown ||
-                                                          item.Keyword == CombatKeywordEx.NullifyIgnoreKnockback ||
-                                                          item.Keyword == CombatKeywordEx.GenerateTaunt ||
-                                                          item.Keyword == CombatKeywordEx.GenerateTemporaryTaunt ||
-                                                          item.Keyword == CombatKeywordEx.NextAttackMiss ||
-                                                          item.Keyword == CombatKeywordEx.AddMitigation ||
-                                                          item.Keyword == CombatKeywordEx.AddMitigationDirect ||
-                                                          item.Keyword == CombatKeywordEx.AddMitigationIndirect ||
-                                                          item.Keyword == CombatKeywordEx.AddMitigationBurst ||
-                                                          item.Keyword == CombatKeywordEx.AddMitigationPhysical ||
-                                                          item.Keyword == CombatKeywordEx.AddMitigationElemental ||
-                                                          item.Keyword == CombatKeywordEx.AddArmorBasedMitigation ||
-                                                          item.Keyword == CombatKeywordEx.ChanceToConsume ||
-                                                          item.Keyword == CombatKeywordEx.SelfStun ||
-                                                          item.Keyword == CombatKeywordEx.MaxMitigatedDamageLimit ||
-                                                          item.Keyword == CombatKeywordEx.RageAttackBoost ||
-                                                          item.Keyword == CombatKeywordEx.NonRageAttackBoost ||
-                                                          item.Keyword == CombatKeywordEx.RemoveEffect ||
-                                                          item.Keyword == CombatKeywordEx.ChangeDamageType ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseMaxHealth ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseRadiationProtection ||
-                                                          item.Keyword == CombatKeywordEx.AbsorbDamage ||
-                                                          item.Keyword == CombatKeywordEx.GenerateNoRage ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseRage ||
-                                                          item.Keyword == CombatKeywordEx.DrainHealth ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseDrainHealthMax ||
-                                                          item.Keyword == CombatKeywordEx.DelayedSecondAttack ||
-                                                          item.Keyword == CombatKeywordEx.TurnRageToDamage ||
-                                                          item.Keyword == CombatKeywordEx.TurnMitigationToDamage ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseCriticalChance ||
-                                                          item.Keyword == CombatKeywordEx.GrantCriticalChance ||
-                                                          item.Keyword == CombatKeywordEx.Slow ||
-                                                          item.Keyword == CombatKeywordEx.Fear ||
-                                                          item.Keyword == CombatKeywordEx.Stun ||
-                                                          item.Keyword == CombatKeywordEx.Knockdown ||
-                                                          item.Keyword == CombatKeywordEx.SelfDamage ||
-                                                          item.Keyword == CombatKeywordEx.Concussion ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseEvasion ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionBurst ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionProjectile ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionBurstAndProjectile ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionMelee ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseEvasionRanged ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseEliteResistance ||
-                                                          item.Keyword == CombatKeywordEx.IgnoreArmor ||
-                                                          item.Keyword == CombatKeywordEx.ImplantDeerEgg ||
-                                                          item.Keyword == CombatKeywordEx.SummonDeer ||
-                                                          item.Keyword == CombatKeywordEx.SummonFigment ||
-                                                          item.Keyword == CombatKeywordEx.SummonStunTrap ||
-                                                          item.Keyword == CombatKeywordEx.SummonTornado ||
-                                                          item.Keyword == CombatKeywordEx.VileBloodAttack ||
-                                                          item.Keyword == CombatKeywordEx.IgnoreKnockback ||
-                                                          item.Keyword == CombatKeywordEx.IgnoreStun ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseJumpHeight ||
-                                                          item.Keyword == CombatKeywordEx.TornadoVulnerability ||
-                                                          item.Keyword == CombatKeywordEx.IncreasePhysicalReflection ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseArmorSpecificReflection ||
-                                                          item.Keyword == CombatKeywordEx.DirectDamageImmunity ||
-                                                          item.Keyword == CombatKeywordEx.MakeVulnerable ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseRange ||
-                                                          item.Keyword == CombatKeywordEx.DirectDamageBoost ||
-                                                          item.Keyword == CombatKeywordEx.IndirectDamageBoost ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseCombatRefreshTime ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseCombatRefreshHealing ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseCombatRefreshPowerRestore ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseArmorRegeneration ||
-                                                          item.Keyword == CombatKeywordEx.TargetAnotherEnnemy ||
-                                                          item.Keyword == CombatKeywordEx.RemoveSlowRoot ||
-                                                          item.Keyword == CombatKeywordEx.GrantSlowRootImmunity ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseProtectionCold ||
-                                                          item.Keyword == CombatKeywordEx.GetIgnored ||
-                                                          item.Keyword == CombatKeywordEx.ShuffleTaunt ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseXpGain ||
-                                                          item.Keyword == CombatKeywordEx.RestoreBodyHeat ||
-                                                          item.Keyword == CombatKeywordEx.FreeMovementWhileLeaping ||
-                                                          item.Keyword == CombatKeywordEx.IncreaseDeathAvoidance ||
-                                                          item.Keyword == CombatKeywordEx.TurnPowerToHealth ||
-                                                          item.Keyword == CombatKeywordEx.NoDispel ||
-                                                          item.Keyword == CombatKeywordEx.RestoreCrystalIce ||
-                                                          item.Keyword == CombatKeywordEx.VileBloodDamage ||
-                                                          item.Keyword == CombatKeywordEx.CancelDamage ||
-                                                          item.Keyword == CombatKeywordEx.RestoreHealthOrArmor))
-                {
-                    BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
-                }
-                else
-                {
-                    pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
-                }
                 break;
             case "10401":
             case "11404":
@@ -2687,20 +2440,9 @@ internal partial class CombatParserEx
                 BuildModEffect_008(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.GiveBuff, Data = new() }, staticCombatEffectList[1], staticCombatEffectList[2], staticCombatEffectList[3] }, targetAbilityList, new() { 0, 1 }, new() { 2, 3, 4 }, inverseTargets: true, out pgCombatModEx);
                 break;
             case "Other":
-            case "5303":
-            case "6113":
-            case "6301":
-            case "6305":
-            case "7024":
-            case "2009":
-            case "21002":
-            case "17303":
-                pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
-                break;
-            case "ZZZ":
                 BuildModEffect_002(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
-            case "XXX":
+            default:
                 pgCombatModEx = new PgCombatModEx() { Description = description, PermanentEffects = new(), DynamicEffects = new() };
                 break;
         }

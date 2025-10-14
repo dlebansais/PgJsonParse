@@ -149,6 +149,7 @@
         TargetRange,
         RequireTwoKnives,
         RequireNoAggro,
+        RequireNotAttacked,
         RequirePlayingSong,
         RequireBloodMistForm,
         RequireSameTarget,
