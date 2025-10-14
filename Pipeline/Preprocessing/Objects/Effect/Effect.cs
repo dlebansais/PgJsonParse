@@ -4,6 +4,11 @@ namespace Preprocessor;
 
 public class Effect
 {
+    const string MaxRagePattern = "Increases target's Max Rage by";
+    const string LookAtMyHammerPattern = "Boosts Slashing, Piercing, and Crushing Mitigation";
+    const string DeflectiveSpinPattern = "Universal Direct Elite Mitigation";
+    const string TornadoAttackPattern = "and increase target's Electricity Vulnerability";
+
     public Effect(RawEffect rawEffect)
     {
         AbilityKeywords = rawEffect.AbilityKeywords;
@@ -53,6 +58,14 @@ public class Effect
             Result = rawDescription.Replace(" anf  ", " and ");
             effectDescriptionFix = EffectDescriptionFix.TypoAnf;
         }
+        else if (rawDescription.StartsWith(MaxRagePattern) && rawDescription[MaxRagePattern.Length] != ' ')
+            Result = rawDescription.Substring(0, MaxRagePattern.Length) + " " + rawDescription.Substring(MaxRagePattern.Length);
+        else if (rawDescription.StartsWith(LookAtMyHammerPattern))
+            Result = rawDescription.Replace("for 12 seconds", "for 15 seconds");
+        else if (rawDescription.StartsWith(DeflectiveSpinPattern))
+            Result = rawDescription.Replace("for 15 seconds", "for 10 seconds");
+        else if (rawDescription.Contains(TornadoAttackPattern))
+            Result = rawDescription.Replace("+10% for 10 seconds", "+15% for 10 seconds");
         else
             Result = rawDescription;
 
@@ -130,7 +143,16 @@ public class Effect
         switch (effectDescriptionFix)
         {
             default:
-                Result = description;
+                if (description is not null && description.StartsWith(MaxRagePattern + " "))
+                    Result = description.Substring(0, MaxRagePattern.Length) + description.Substring(MaxRagePattern.Length + 1);
+                else if (description is not null && description.StartsWith(LookAtMyHammerPattern))
+                    Result = description.Replace("for 15 seconds", "for 12 seconds");
+                else if (description is not null && description.StartsWith(DeflectiveSpinPattern))
+                    Result = description.Replace("for 10 seconds", "for 15 seconds");
+                else if (description is not null && description.Contains(TornadoAttackPattern))
+                    Result = description.Replace("+15% for 10 seconds", "+10% for 10 seconds");
+                else
+                    Result = description;
                 break;
             case EffectDescriptionFix.TypoAnf:
                 Result = description?.Replace(" and ", " anf  ");

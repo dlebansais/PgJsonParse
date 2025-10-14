@@ -444,6 +444,7 @@ internal partial class CombatParserEx
         { "@ , Willbreaker, and Embrace of Despair", new List<AbilityKeyword>() { AbilityKeyword.EclipseOfShadows, AbilityKeyword.Willbreaker, AbilityKeyword.EmbraceOfDespair } },
         { "Trick Foxes", new List<AbilityKeyword>() { AbilityKeyword.TrickFox } },
         { "Summoned Tornadoes", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
+        { "Summoned Tornado attack", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
         { "All targets' melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "Your golem minion has", new List<AbilityKeyword>() { AbilityKeyword.Minigolem } },
         { "Any vile blood eruptions from Blood Mist", new List<AbilityKeyword>() { Internal_VileBlood } },

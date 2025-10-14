@@ -58,6 +58,7 @@
         AddMitigationBurst,
         AddMitigationPhysical,
         AddMitigationElemental,
+        AddArmorBasedMitigation,
         ChanceToConsume,
         SelfStun,
         MaxMitigatedDamageLimit,
@@ -123,6 +124,7 @@
         RestoreCrystalIce,
         VileBloodDamage,
         CancelDamage,
+        RestoreBodyHeat,
 
         // Other effects
         ApplyWithChance,

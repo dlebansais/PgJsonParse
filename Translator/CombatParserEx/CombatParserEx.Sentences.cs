@@ -18,6 +18,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f health (or Armor)", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health or Armor", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Heal you for %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("Heal all targets for %f health", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Heal you for %f", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f Health to you and nearby allies", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelfAndAllies }),
         new SentenceEx("Restore %f Health to your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToPet }),
@@ -79,6 +80,7 @@ internal partial class CombatParserEx
         new SentenceEx("For %f second", CombatKeywordEx.EffectDuration),
         new SentenceEx("For %f minute", CombatKeywordEx.EffectDurationInMinutes),
         new SentenceEx("Within %f second", CombatKeywordEx.EffectDuration),
+        new SentenceEx("Lasts %f second", CombatKeywordEx.EffectDuration),
 
         new SentenceEx("Every %f second", CombatKeywordEx.RecurringEffect),
 
@@ -156,6 +158,7 @@ internal partial class CombatParserEx
         new SentenceEx("Hasten the current reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Hasten the reuse time of @ %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the remaining reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Shorten by %f second the remaining reset time of @", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Shorten the current reuse time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Hasten the active reset time of @ by %f second", CombatKeywordEx.IncreaseCurrentRefreshTime, SignInterpretation.AlwaysNegative),
         new SentenceEx("Reset time of @ is increased %f second", CombatKeywordEx.IncreaseCurrentRefreshTime),
@@ -182,6 +185,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("Boost target pet's", CombatKeywordEx.ApplyToPetOfTarget),
         new SentenceEx("Grant target pet", CombatKeywordEx.ApplyToPetOfTarget),
+        new SentenceEx("Increase target pet's", CombatKeywordEx.ApplyToPetOfTarget),
 
         new SentenceEx("Kill an enemy via direct damage", CombatKeywordEx.RequireDirectDamageKillShot),
 
@@ -208,6 +212,7 @@ internal partial class CombatParserEx
         new SentenceEx("Rage attack to deal %f", CombatKeywordEx.RageAttackBoost),
         new SentenceEx("Pet's Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
         new SentenceEx("Rage Attack Damage %f", CombatKeywordEx.RageAttackBoost),
+        new SentenceEx("Rage attack are further reduced by %f", CombatKeywordEx.RageAttackBoost, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Deal %f damage to Health and Armor", CombatKeywordEx.DealHealthAndArmorDamage),
 
@@ -225,9 +230,11 @@ internal partial class CombatParserEx
 
         new SentenceEx("Damage-over-time effects deal %f damage per tick", CombatKeywordEx.DamageOverTimeBoost),
 
-        new SentenceEx("Boost #S Skill Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
-        new SentenceEx("Gain %f #S Skill Base Damage", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
-        new SentenceEx("#S Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.BaseDamageBoost }),
+        new SentenceEx("Boost #S Skill Base Damage %f", CombatKeywordEx.BaseDamageBoost),
+        new SentenceEx("Gain %f #S Skill Base Damage", CombatKeywordEx.BaseDamageBoost),
+        new SentenceEx("Your #S Base Damage by %f", CombatKeywordEx.BaseDamageBoost),
+        new SentenceEx("Your #S Base Damage increase %f", CombatKeywordEx.BaseDamageBoost),
+        new SentenceEx("#S Base Damage %f", CombatKeywordEx.BaseDamageBoost),
 
         new SentenceEx("Boost the damage of @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
         new SentenceEx("Boost the #D damage of @ and @ %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost }),
@@ -287,7 +294,12 @@ internal partial class CombatParserEx
         new SentenceEx("%f health damage", CombatKeywordEx.DealHealthDamage),
         new SentenceEx("%f #D health damage", CombatKeywordEx.DealHealthDamage),
 
+        new SentenceEx("%f Direct damage mitigation based on remaining Armor", CombatKeywordEx.AddArmorBasedMitigation),
+        new SentenceEx("Absorb some direct damage based on their remaining Armor (absorbing zero when armor is empty, up to %f when armor is full", CombatKeywordEx.AddArmorBasedMitigation),
+
         new SentenceEx("%f Direct damage mitigation", CombatKeywordEx.AddMitigationDirect),
+        new SentenceEx("Gain %f Direct Elite Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
+        new SentenceEx("Suffer %f damage from direct #D attack", CombatKeywordEx.AddMitigationDirect, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Deal %f direct damage", CombatKeywordEx.DirectDamageBoost),
         new SentenceEx("Gain %f Direct", CombatKeywordEx.DirectDamageBoost),
@@ -391,7 +403,7 @@ internal partial class CombatParserEx
         new SentenceEx("Target to take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f of all #D damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f damage from #D attacks", CombatKeywordEx.AddMitigation),
-        new SentenceEx("%f Mitigation vs #D attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("%f Mitigation vs #D", CombatKeywordEx.AddMitigation),
         new SentenceEx("Increase your mitigation vs #D attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Further debuff their mitigation %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Grant you %f mitigation against all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
@@ -415,7 +427,7 @@ internal partial class CombatParserEx
         new SentenceEx("Mitigation vs all attack by Elites %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Against Elite enemies, mitigate %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Mitigate %f of all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
-        new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("All Elite attack deal %f damage to you.", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
         new SentenceEx("%f #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Debuff the target so that it take %f damage from future #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
@@ -434,10 +446,10 @@ internal partial class CombatParserEx
         new SentenceEx("Cause the target to become %f more vulnerable to #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target take %f more damage from #D", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target take %f #D damage", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
-        new SentenceEx("Take %f damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Take %f damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Take %f more damage from #D attack", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Indirect #D Vulnerability %f", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.AlwaysNegative),
-        new SentenceEx("#D Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
+        new SentenceEx("#D Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.Opposite),
         new SentenceEx("Target's #D Vulnerability %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target's #D Vulnerability", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
         new SentenceEx("Target's vulnerability to #D %f", CombatKeywordEx.AddMitigation, SignInterpretation.AlwaysNegative),
@@ -485,7 +497,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("Non-Rage attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.NonRageAttackBoost }),
 
-        new SentenceEx("Target take %f indirect #D damage", CombatKeywordEx.AddMitigationIndirect),
+        new SentenceEx("Target take %f indirect #D damage", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.Opposite),
         new SentenceEx("Cause the target to take %f damage from indirect #D", CombatKeywordEx.AddMitigationIndirect, SignInterpretation.Opposite),
         new SentenceEx("Universal Indirect Mitigation %f", CombatKeywordEx.AddMitigationIndirect),
         new SentenceEx("Mitigate all damage over time by %f per tick", CombatKeywordEx.AddMitigationIndirect),
@@ -546,6 +558,7 @@ internal partial class CombatParserEx
         new SentenceEx("Remove (up to) %f more Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
         new SentenceEx("Reduce Rage by %f", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
         new SentenceEx("Reduce %f more Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
+        new SentenceEx("Then reduce it by %f more", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
         new SentenceEx("Reduce the target's Rage by %f", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
         new SentenceEx("Reduce target's Rage by %f", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
         new SentenceEx("Reduce targets' Rage by %f", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
@@ -618,7 +631,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("Raise the target's Max Rage by %f", CombatKeywordEx.IncreaseMaxRage),
         new SentenceEx("Raise target's Max Rage by %f", CombatKeywordEx.IncreaseMaxRage),
-        new SentenceEx("Increase target's Max Rage by%f", CombatKeywordEx.IncreaseMaxRage),
+        new SentenceEx("Increase target's Max Rage by %f", CombatKeywordEx.IncreaseMaxRage),
 
         new SentenceEx("Burst Evasion and Projectile evasion %f", CombatKeywordEx.IncreaseEvasionBurstAndProjectile),
 
@@ -655,7 +668,7 @@ internal partial class CombatParserEx
         new SentenceEx("When used while stunned", CombatKeywordEx.RequireBeingStunned),
         new SentenceEx("If used while you are stunned", CombatKeywordEx.RequireBeingStunned),
 
-        new SentenceEx("Implant insect eggs in the target. (Max 4 stacks.) Future Deer Kicks by any pet deer or player deer will cause target to take %f #D damage over 5 second", CombatKeywordEx.ImplantDeerEgg),
+        new SentenceEx("Implant insect eggs in the target. (Max 4 stacks.) Future Deer Kicks by any pet deer or player deer will cause target to take %f #D damage", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ImplantDeerEgg}),
         new SentenceEx("Subsequent Deer Kicks to this target", CombatKeywordEx.ImplantDeerEgg),
 
         new SentenceEx("Summon a deer ally", CombatKeywordEx.SummonDeer),
@@ -774,7 +787,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant immunity to new slow and root", CombatKeywordEx.GrantSlowRootImmunity),
         new SentenceEx("Grant them immunity to Slow and Root", CombatKeywordEx.GrantSlowRootImmunity),
         new SentenceEx("Grant you immunity to similar effects", CombatKeywordEx.GrantSlowRootImmunity),
-        new SentenceEx("Slow/Root Ignore Chance %f", new List<CombatKeywordEx>() { CombatKeywordEx.RemoveSlowRoot, CombatKeywordEx.GrantSlowRootImmunity }),
+        new SentenceEx("Slow/Root Ignore Chance %f", new List<CombatKeywordEx>() { CombatKeywordEx.GrantSlowRootImmunity, CombatKeywordEx.RemoveSlowRoot }),
         new SentenceEx("Grant the target %f Slow/Root Ignore Chance", CombatKeywordEx.GrantSlowRootImmunity),
 
         new SentenceEx("%f Cold Protection (Direct and Indirect)", CombatKeywordEx.IncreaseProtectionCold),
@@ -819,5 +832,7 @@ internal partial class CombatParserEx
         new SentenceEx("If you are reduced to %f health", CombatKeywordEx.RequireLowHealth),
 
         new SentenceEx("Cancels the damage", CombatKeywordEx.CancelDamage),
+
+        new SentenceEx("%f Body Heat", CombatKeywordEx.RestoreBodyHeat),
     };
 }
