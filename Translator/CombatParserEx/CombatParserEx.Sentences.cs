@@ -888,5 +888,6 @@ internal partial class CombatParserEx
         new SentenceEx("Critically Hit", CombatKeywordEx.RequireCriticalHit),
 
         new SentenceEx("This effect is increased by treasure that boost", CombatKeywordEx.ApplyOtherMods),
+        new SentenceEx("This amount is further increased by treasure that boost", CombatKeywordEx.ApplyOtherMods),
     };
 }

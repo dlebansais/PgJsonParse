@@ -397,6 +397,12 @@ internal partial class CombatParserEx
             case "Item_40404_0":
                 BuildUnmatchedMod_004(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
+            case "10010":
+                BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
+                pgCombatModEx.DynamicEffects.Insert(0, pgCombatModEx.DynamicEffects[1]);
+                pgCombatModEx.DynamicEffects.RemoveAt(2);
+                pgCombatModEx.DynamicEffects[0].ConditionList.Clear();
+                break;
             case "Item_55613_0":
             case "Item_55619_0":
             case "Item_55620_0":
@@ -517,10 +523,8 @@ internal partial class CombatParserEx
             case "Item_42352_0":
             case "Item_42351_0":
             case "Item_42094_0":
-            case "Item_42095_0":
             case "Item_42091_0":
             case "Item_42087_0":
-            case "Item_42085_0":
             case "Item_42058_0":
             case "Item_42057_0":
             case "Item_41310_0":
@@ -531,7 +535,6 @@ internal partial class CombatParserEx
             case "10005":
             case "10007":
             case "10008":
-            case "10010":
             case "10042":
             case "1005":
             case "1007":
@@ -549,6 +552,8 @@ internal partial class CombatParserEx
             case "10311":
             case "10312":
             case "10402":
+            case "Item_42095_0":
+            case "Item_42085_0":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
@@ -687,7 +692,7 @@ internal partial class CombatParserEx
                     DurationInSeconds = DurationOverTime;
                     CombatKeyword = CombatKeywordOverTime;
                 }
-                else if (!float.IsNaN(DurationInSeconds) && IsPerSecond)
+                else if (IsPerSecond)
                 {
                     CombatKeyword = CombatKeywordOverTime;
                 }
@@ -849,7 +854,7 @@ internal partial class CombatParserEx
                 Target = CanHaveTarget && CanApplyModifier ? Target : CombatTarget.Internal_None,
                 TargetRange = CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbilityList = TargetAbilityList,
-                ConditionList = CanApplyModifier ? ConditionList : new(),
+                ConditionList = CanApplyModifier ? new(ConditionList) : new(),
                 ConditionAbilityList = CanApplyModifier ? ConditionAbilityList : new(),
                 ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
                 ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
