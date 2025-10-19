@@ -8,6 +8,8 @@ internal partial class CombatParserEx
 {
     private static List<SentenceEx> SentenceList = new List<SentenceEx>()
     {
+        new SentenceEx("%f Body Heat", CombatKeywordEx.RestoreBodyHeat),
+
         new SentenceEx("Heal you for %f Health/Armor", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Health/Armor healing", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Heal your pet for %f Health/Armor", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToPet }),
@@ -18,6 +20,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f health (or Armor)", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health or Armor", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health and Armor", CombatKeywordEx.RestoreHealthAndArmor),
+        new SentenceEx("Recover %f health and Armor", CombatKeywordEx.RestoreHealthAndArmor),
         new SentenceEx("Heal you for %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Heal all targets for %f health", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Heal you for %f", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
@@ -111,7 +114,7 @@ internal partial class CombatParserEx
         new SentenceEx("Hit all enemies", CombatKeywordEx.BecomeBurst),
         new SentenceEx("Targets all enemies", CombatKeywordEx.BecomeBurst),
         new SentenceEx("Hit all target", CombatKeywordEx.BecomeBurst),
-        new SentenceEx("Become a %fm Burst attack", new List<CombatKeywordEx>() { CombatKeywordEx.TargetRange, CombatKeywordEx.BecomeBurst }),
+        new SentenceEx("Become a %fm Burst", new List<CombatKeywordEx>() { CombatKeywordEx.TargetRange, CombatKeywordEx.BecomeBurst }),
 
         new SentenceEx("Within %f meter", CombatKeywordEx.TargetRange),
 
@@ -128,7 +131,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
 
-        new SentenceEx("React to incoming Melee attack with an eruption of vile blood: a Burst #D attack with Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.VileBloodAttack, CombatKeywordEx.OnIncomingMeleeAttack }),
+        new SentenceEx("React to incoming Melee with an eruption of vile blood: a Burst #D attack with Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.VileBloodAttack, CombatKeywordEx.OnIncomingMeleeAttack }),
 
         new SentenceEx("Over %f second", CombatKeywordEx.EffectOverTime),
         new SentenceEx("Per second", CombatKeywordEx.EffectEverySecond),
@@ -136,6 +139,7 @@ internal partial class CombatParserEx
         new SentenceEx("If the target is not focused on you", CombatKeywordEx.RequireNoAggro),
         new SentenceEx("If they are not focused on you", CombatKeywordEx.RequireNoAggro),
         new SentenceEx("If target is not focused on you", CombatKeywordEx.RequireNoAggro),
+        new SentenceEx("To targets not focused on you", CombatKeywordEx.RequireNoAggro),
         new SentenceEx("To targets that are not focused on you", CombatKeywordEx.RequireNoAggro),
 
         new SentenceEx("While in Blood-Mist form", CombatKeywordEx.RequireBloodMistForm),
@@ -331,21 +335,22 @@ internal partial class CombatParserEx
         new SentenceEx("%f more chance of missing", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("%f Miss Chance", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("Melee Accuracy %f", CombatKeywordEx.AddMeleeAccuracy),
-        new SentenceEx("You gain Accuracy %f with melee attack", CombatKeywordEx.AddMeleeAccuracy),
-        new SentenceEx("Target has a %f chance to Miss with any Melee attack", CombatKeywordEx.AddMeleeAccuracy, SignInterpretation.Opposite),
+        new SentenceEx("You gain Accuracy %f with melee", CombatKeywordEx.AddMeleeAccuracy),
+        new SentenceEx("Target has a %f chance to Miss with any Melee", CombatKeywordEx.AddMeleeAccuracy, SignInterpretation.Opposite),
 
         new SentenceEx("Burst Accuracy %f", CombatKeywordEx.IncreaseBurstAccuracy),
 
         new SentenceEx("Power Cost %f", CombatKeywordEx.IncreasePowerCost),
         new SentenceEx("Power Cost is %f", CombatKeywordEx.IncreasePowerCost),
-        new SentenceEx("Reduce the Power cost of your @ %f", CombatKeywordEx.IncreasePowerCost),
-        new SentenceEx("Reduce the Power cost of your next @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreasePowerCost, CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
-        new SentenceEx("Further reduce ability cost %f", CombatKeywordEx.IncreasePowerCost),
-        new SentenceEx("Reduce the Power cost of @ %f", CombatKeywordEx.IncreasePowerCost),
+        new SentenceEx("Reduce the Power cost of your @ %f", CombatKeywordEx.IncreasePowerCost, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reduce the Power cost of your next @ by %f", new List<CombatKeywordEx>() { CombatKeywordEx.IncreasePowerCost, CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Further reduce ability cost %f", CombatKeywordEx.IncreasePowerCost, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reduce the Power cost of @ by %f", CombatKeywordEx.IncreasePowerCost, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Reduce the Power cost of @ %f", CombatKeywordEx.IncreasePowerCost, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cost %f Power", CombatKeywordEx.IncreasePowerCost),
 
-        new SentenceEx("Cause all allies' Melee attack to cost %f Power", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMeleePowerCost, CombatKeywordEx.ApplyToAllies }),
-        new SentenceEx("Reduce the Power cost of melee attack by %f", CombatKeywordEx.IncreaseMeleePowerCost, SignInterpretation.AlwaysNegative),
+        new SentenceEx("Cause all allies' Melee to cost %f Power", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseMeleePowerCost, CombatKeywordEx.ApplyToAllies }),
+        new SentenceEx("Reduce the Power cost of melee by %f", CombatKeywordEx.IncreaseMeleePowerCost, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Reset the time on", CombatKeywordEx.ResetRefreshTime),
 
@@ -484,7 +489,7 @@ internal partial class CombatParserEx
         new SentenceEx("Boost your direct damage mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Direct Mitigation", CombatKeywordEx.AddMitigationDirect),
 
-        new SentenceEx("Suffer %f damage from Burst attacks", CombatKeywordEx.AddMitigationBurst, SignInterpretation.Opposite),
+        new SentenceEx("Suffer %f damage from Burst", CombatKeywordEx.AddMitigationBurst, SignInterpretation.Opposite),
 
         new SentenceEx("Vs Elite", CombatKeywordEx.RequireEliteTarget),
         new SentenceEx("If target is Elite or Boss", CombatKeywordEx.RequireEliteTarget),
@@ -646,11 +651,12 @@ internal partial class CombatParserEx
 
         new SentenceEx("Burst Evasion and Projectile evasion %f", CombatKeywordEx.IncreaseEvasionBurstAndProjectile),
 
-        new SentenceEx("%f chance to avoid being hit by burst attack", CombatKeywordEx.IncreaseEvasionBurst),
-        new SentenceEx("%f evasion of burst attack", CombatKeywordEx.IncreaseEvasionBurst),
+        new SentenceEx("%f chance to avoid being hit by burst", CombatKeywordEx.IncreaseEvasionBurst),
+        new SentenceEx("%f evasion of burst", CombatKeywordEx.IncreaseEvasionBurst),
         new SentenceEx("Burst Evasion %f", CombatKeywordEx.IncreaseEvasionBurst),
         new SentenceEx("%f Burst Evasion", CombatKeywordEx.IncreaseEvasionBurst),
         new SentenceEx("Boost Burst Evasion by %f", CombatKeywordEx.IncreaseEvasionBurst),
+        new SentenceEx("%f Direct Burst Vulnerability", CombatKeywordEx.IncreaseEvasionBurst, SignInterpretation.Opposite),
         new SentenceEx("Projectile Evasion %f", CombatKeywordEx.IncreaseEvasionProjectile),
         new SentenceEx("Give you %f Projectile Evasion", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionProjectile, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Grant you %f Projectile Evasion", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseEvasionProjectile, CombatKeywordEx.ApplyToSelf }),
@@ -779,7 +785,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("It trigger again, targeting an enemy", CombatKeywordEx.TargetAnotherEnnemy),
         new SentenceEx("Also attack another enemy", CombatKeywordEx.TargetAnotherEnnemy),
-        new SentenceEx("Your next #S attack will simultaneously shoot", new List<CombatKeywordEx>() { CombatKeywordEx.TargetAnotherEnnemy, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Your next @ will simultaneously shoot", new List<CombatKeywordEx>() { CombatKeywordEx.TargetAnotherEnnemy, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Subsequent #S attack will also shoot", new List<CombatKeywordEx>() { CombatKeywordEx.TargetAnotherEnnemy, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Subsequent #S attack will also fire", new List<CombatKeywordEx>() { CombatKeywordEx.TargetAnotherEnnemy, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
 
@@ -845,8 +851,6 @@ internal partial class CombatParserEx
         new SentenceEx("If you are reduced to %f health", CombatKeywordEx.RequireLowHealth),
 
         new SentenceEx("Cancels the damage", CombatKeywordEx.CancelDamage),
-
-        new SentenceEx("%f Body Heat", CombatKeywordEx.RestoreBodyHeat),
 
         new SentenceEx("Or until you are attacked", CombatKeywordEx.RequireNotAttacked),
 

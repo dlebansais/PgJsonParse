@@ -386,6 +386,15 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "remaining Armor (absorbing 0% when armor is empty, up", "remaining Armor (absorbing zero when armor is empty, up", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "until you trigger the teleport", "for 20 second until you trigger the teleport", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "accelerates the current reuse time of", "Shortens by 10 seconds the remaining reset time of", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "becomes a 10m Burst attack", "becomes a 10m Burst", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "react to incoming Melee attacks with", "react to incoming Melee with", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "with melee attack", "with melee", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "with any Melee attack", "with any Melee", out _, ref IndexFound);
+        //RemoveDecorativeText(ref text, "all allies' Melee attacks", "all allies' Melee", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "cost of melee attack", "cost of melee", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "avoid being hit by burst attacks", "avoid being hit by burst", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "evasion of burst attacks", "evasion of burst", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "damage from Burst attacks", "damage from Burst", out _, ref IndexFound);
         ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor to you");
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
@@ -573,6 +582,9 @@ internal partial class CombatParserEx
 
     private static void SimplifyDuplicate(ref string text)
     {
+        if (text.Contains(" Body Heat"))
+            return;
+
         int Index = text.IndexOf(" Health and ");
         if (Index < 0)
             return;
@@ -749,6 +761,8 @@ internal partial class CombatParserEx
 
                 extractedAbilityList.AddRange(nameToKeyword[Key]);
             }
+
+            extractedAbilityList = extractedAbilityList.Distinct().ToList();
         }
     }
 
@@ -1613,7 +1627,6 @@ internal partial class CombatParserEx
             case "23451":
             case "6083":
             case "16023":
-            case "27171":
             case "3006":
             case "4114":
             case "28612":
@@ -1638,7 +1651,6 @@ internal partial class CombatParserEx
             case "20065":
             case "20066":
             case "20067":
-            case "21357":
             case "21044":
             case "21302":
             case "22061":
@@ -1652,7 +1664,6 @@ internal partial class CombatParserEx
             case "4083":
             case "4084":
             case "9086":
-            case "9862":
             case "28242":
             case "29942":
             case "7306":
@@ -1679,7 +1690,6 @@ internal partial class CombatParserEx
             case "8007":
             case "1302":
             case "25011":
-            case "26034":
             case "27075":
             case "1002":
             case "10043":
@@ -1753,7 +1763,6 @@ internal partial class CombatParserEx
             case "5092":
             case "5121":
             case "5123":
-            case "5201":
             case "5353":
             case "7021":
             case "8021":
@@ -1762,7 +1771,6 @@ internal partial class CombatParserEx
             case "9602":
             case "9603":
             case "9604":
-            case "1022":
             case "1024":
             case "10307":
             case "10456":
@@ -1774,13 +1782,11 @@ internal partial class CombatParserEx
             case "11452":
             case "16022":
             case "16062":
-            case "16222":
             case "17044":
             case "17082":
             case "18102":
             case "2016":
             case "2055":
-            case "2057":
             case "22002":
             case "2203":
             case "22089":
@@ -1832,7 +1838,6 @@ internal partial class CombatParserEx
             case "1354":
             case "14018":
             case "14056":
-            case "14104":
             case "14158":
             case "15012":
             case "151":
@@ -1898,7 +1903,6 @@ internal partial class CombatParserEx
             case "6112":
             case "7311":
             case "8254":
-            case "9873":
             case "10162":
             case "10451":
             case "1064":
@@ -1954,7 +1958,6 @@ internal partial class CombatParserEx
             case "26261":
             case "29944":
             case "29945":
-            case "5093":
             case "7208":
             case "7209":
             case "7210":
@@ -1970,6 +1973,8 @@ internal partial class CombatParserEx
             case "6301":
             case "6305":
             case "7024":
+            case "14104":
+            case "27171":
                 BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -2012,6 +2017,15 @@ internal partial class CombatParserEx
             case "4062":
             case "7022":
             case "16112":
+            case "1022":
+            case "16222":
+            case "2057":
+            case "21357":
+            case "26034":
+            case "5093":
+            case "5201":
+            case "9862":
+            case "9873":
                 BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -2096,7 +2110,7 @@ internal partial class CombatParserEx
                 BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "15107":
-                BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, abilityList, out pgCombatModEx);
+                BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, abilityList, out pgCombatModEx, ignoreModifierIndex: 1000);
                 break;
             case "1067":
                 BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
@@ -2185,12 +2199,12 @@ internal partial class CombatParserEx
             case "11502":
             case "2022":
             case "4201":
-            case "21083":
             case "14402":
                 BuildMatchingModEffect_003(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "14205":
             case "28661":
+            case "21083":
                 BuildMatchingModEffect_003(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "10401":
@@ -2214,13 +2228,13 @@ internal partial class CombatParserEx
             case "6302":
             case "8317":
             case "9854":
-            case "10510":
             case "12317":
             case "11455":
                 BuildMatchingModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "10313":
-                BuildMatchingModEffect_004(description, effect, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+            case "10510":
+                BuildMatchingModEffect_004(description, effect, abilityList, staticCombatEffectList, dynamicCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "22401":
                 BuildMatchingModEffect_004(description, effect, abilityList, dynamicCombatEffectList, new() { staticCombatEffectList[0], new() { Keyword = CombatKeywordEx.RequireTargetOfAbility }, staticCombatEffectList[1] }, targetAbilityList, out pgCombatModEx);
@@ -2841,6 +2855,10 @@ internal partial class CombatParserEx
             {
                 TargetAbilityList = targetAbilityList;
             }
+            else if (Target == CombatTarget.Allies && CombatKeyword == CombatKeywordEx.IncreasePowerCost)
+            {
+                TargetAbilityList = targetAbilityList;
+            }
 
             GetDamageCategory(AllEffects, i + 1, out GameDamageCategory DamageCategory);
             if (DamageCategory == GameDamageCategory.Internal_None)
@@ -2897,7 +2915,7 @@ internal partial class CombatParserEx
                 Target = CanHaveTarget && CanApplyModifier ? Target : CombatTarget.Internal_None,
                 TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbilityList = TargetAbilityList,
-                ConditionList = CanApplyModifier && (ConditionIndex < 0 || i + 1 >= ConditionIndex) ? ConditionList : new(),
+                ConditionList = CanApplyModifier && (ConditionIndex < 0 || i + 2 >= ConditionIndex) ? ConditionList : new(),
                 ConditionAbilityList = CanApplyModifier ? ConditionAbilityList : new(),
                 ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
                 ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
