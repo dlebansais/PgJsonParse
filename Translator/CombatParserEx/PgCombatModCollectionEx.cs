@@ -7,7 +7,7 @@ using System.Globalization;
 
 public class PgCombatModCollectionEx : List<PgCombatModEx>
 {
-    public static bool DebugMode { get; set; } = false;
+    public static bool DebugMode { get; set; } = true;
 
     public void Display(string powerKey)
     {
@@ -156,7 +156,12 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
             if (Result.Length > 0)
                 Result += ", ";
 
-            Result += $"AbilityKeyword.{Keyword}";
+            string keywordString = Keyword.ToString();
+
+            if (char.IsDigit(keywordString[0]))
+                Result += $"(AbilityKeyword){keywordString}";
+            else
+                Result += $"AbilityKeyword.{keywordString}";
         }
 
         return Result;

@@ -16,11 +16,13 @@ internal partial class CombatParserEx
         {
             if (!KnownCombatPowers.KnownUnmatchedPowers.ContainsKey(ItemPower.Key))
             {
-                AnalyzeRemainingPowers(ItemPower, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx);
+                if (AnalyzeRemainingPowers(ItemPower, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
+                {
+                    stringKeyTable.Add(stringKeyArray);
+                    analyzedPowerKeyToCompleteEffectTable.Add(ModEffectArray);
+                    pgCombatModCollectionEx.Display(ItemPower.Key);
+                }
 
-                stringKeyTable.Add(stringKeyArray);
-                analyzedPowerKeyToCompleteEffectTable.Add(ModEffectArray);
-                pgCombatModCollectionEx.Display(ItemPower.Key);
             }
         }
     }
@@ -48,14 +50,17 @@ internal partial class CombatParserEx
         PgPowerTier LastTier = TierList[LastTierIndex];
 
         List<PgEffect>? CandidateEffectList = candidateEffectTable.ContainsKey(itemPower) ? candidateEffectTable[itemPower] : null;
-        AnalyzeRemainingPowers(LastTier, powerKey, unmatchedEffectList, CandidateEffectList, out List<CombatKeywordEx> ExtractedPowerTierKeywordList, out PgModEffectEx ExtractedModEffect, out PgCombatModEx pgCombatModEx, true);
+        if (!AnalyzeRemainingPowers(LastTier, powerKey, unmatchedEffectList, CandidateEffectList, out List<CombatKeywordEx> ExtractedPowerTierKeywordList, out PgModEffectEx ExtractedModEffect, out PgCombatModEx pgCombatModEx, true))
+            return false;
+
         PowerTierKeywordListArray[LastTierIndex] = ExtractedPowerTierKeywordList;
         modEffectArray.Items[LastTierIndex] = ExtractedModEffect;
         pgCombatModCollectionEx.Insert(0, pgCombatModEx);
 
         for (int i = 0; i + 1 < TierList.Count; i++)
         {
-            AnalyzeRemainingPowers(TierList[i], powerKey, null, CandidateEffectList, out List<CombatKeywordEx> ComparedPowerTierKeywordList, out PgModEffectEx ParsedModEffect, out pgCombatModEx, false);
+            if (!AnalyzeRemainingPowers(TierList[i], powerKey, null, CandidateEffectList, out List<CombatKeywordEx> ComparedPowerTierKeywordList, out PgModEffectEx ParsedModEffect, out pgCombatModEx, false))
+                return false;
 
             bool AllowIncomplete = powerKey == "10402"
                 ? i < 10
@@ -83,6 +88,10 @@ internal partial class CombatParserEx
 
     private bool AnalyzeRemainingPowers(PgPowerTier powerTier, string powerKey, List<PgEffect>? unmatchedEffectList, List<PgEffect>? candidateEffectList, out List<CombatKeywordEx> extractedPowerTierKeywordList, out PgModEffectEx modEffect, out PgCombatModEx pgCombatModEx, bool displayAnalysisResult)
     {
+        extractedPowerTierKeywordList = new();
+        modEffect = null!;
+        pgCombatModEx = null!;
+
         IList<PgPowerEffect> EffectList = powerTier.EffectList;
         Debug.Assert(EffectList.Count == 1);
         PgPowerEffectSimple powerSimpleEffect = (PgPowerEffectSimple)EffectList[0];
@@ -141,6 +150,9 @@ internal partial class CombatParserEx
             ModTargetAbilityList.Clear();
         }
         */
+
+        if (EffectCombatList.Count == 0 && ModCombatList.Count == 0)
+            return false;
 
         string ParsedAbilityList = AbilityKeywordListToShortString(ModAbilityList);
         string ParsedPowerString = CombatEffectListToString(ModCombatList, out extractedPowerTierKeywordList);
@@ -275,7 +287,10 @@ internal partial class CombatParserEx
 
         BuildModEffect(powerKey, powerSimpleEffect.Description, ModAbilityList, ModCombatList, ModTargetAbilityList, out pgCombatModEx);
 
-        return true;
+        if (pgCombatModEx.DynamicEffects.Count > 0 || pgCombatModEx.PermanentEffects.Count > 0)
+            return true;
+        else
+            return false;
     }
 
     private void HackModText(ref string modText)
@@ -538,6 +553,9 @@ internal partial class CombatParserEx
                 break;
 
             default:
+                pgCombatModEx = new() { Description = description, DynamicEffects = new(), PermanentEffects = new() };
+                break;
+            case "Other":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
         }

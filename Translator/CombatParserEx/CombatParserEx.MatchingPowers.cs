@@ -244,9 +244,6 @@ internal partial class CombatParserEx
             ModCombatList.Add(SnareArrowDuration);
         }
 
-        if (EffectCombatList.Count == 0 && ModCombatList.Count == 0)
-            return false;
-
         // Hack for zero power cost increase
         if (EffectCombatList.Find(c => c.Keyword == CombatKeywordEx.IncreasePowerCost && c.Data.Value == 0) is PgCombatEffectEx ZeroPowerCostEffect)
         {
@@ -267,6 +264,9 @@ internal partial class CombatParserEx
         {
             ModCombatList.Add(EffectCombatList[EffectCombatList.Count - 1]);
         }
+
+        if (EffectCombatList.Count == 0 && ModCombatList.Count == 0)
+            return false;
 
         string ParsedEffectString = CombatEffectListToString(EffectCombatList, out extractedEffectKeywordList);
         string ParsedEffectTargetAbilityList = AbilityKeywordListToShortString(EffectTargetAbilityList);
