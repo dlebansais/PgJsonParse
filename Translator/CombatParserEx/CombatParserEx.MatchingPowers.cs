@@ -2204,8 +2204,11 @@ internal partial class CombatParserEx
                 break;
             case "14205":
             case "28661":
-            case "21083":
                 BuildMatchingModEffect_003(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                break;
+            case "21083":
+                BuildMatchingModEffect_003(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
+                pgCombatModEx.DynamicEffects[0].ConditionList.Clear();
                 break;
             case "10401":
             case "11404":
@@ -2915,7 +2918,7 @@ internal partial class CombatParserEx
                 Target = CanHaveTarget && CanApplyModifier ? Target : CombatTarget.Internal_None,
                 TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbilityList = TargetAbilityList,
-                ConditionList = CanApplyModifier && (ConditionIndex < 0 || i + 2 >= ConditionIndex) ? ConditionList : new(),
+                ConditionList = CanApplyModifier && (ConditionIndex < 0 || i + 2 >= ConditionIndex) ? new(ConditionList) : new(),
                 ConditionAbilityList = CanApplyModifier ? ConditionAbilityList : new(),
                 ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
                 ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,
@@ -2938,7 +2941,7 @@ internal partial class CombatParserEx
                     DurationInSeconds = CanHaveDuration && CanApplyModifier ? DurationInSeconds : float.NaN,
                     Target = CanHaveTarget ? OtherTarget : CombatTarget.Internal_None,
                     TargetRange = CanHaveRange && CanApplyModifier ? TargetRange : float.NaN,
-                    ConditionList = CanApplyModifier ? ConditionList : new(),
+                    ConditionList = CanApplyModifier ? new(ConditionList) : new(),
                     ConditionAbilityList = CanApplyModifier ? ConditionAbilityList : new(),
                     ConditionValue = CanApplyModifier ? ConditionValue : float.NaN,
                     ConditionPercentage = CanApplyModifier ? ConditionPercentage : float.NaN,

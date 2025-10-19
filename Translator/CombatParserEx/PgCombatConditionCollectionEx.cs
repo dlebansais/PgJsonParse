@@ -6,6 +6,15 @@ using System.Diagnostics;
 [DebuggerDisplay("{AsString,nq}")]
 public class PgCombatConditionCollectionEx : List<CombatCondition>
 {
+    public PgCombatConditionCollectionEx()
+    {
+    }
+
+    public PgCombatConditionCollectionEx(IEnumerable<CombatCondition> collection)
+        : base(collection)
+    {
+    }
+
     public string AsString
     {
         get
