@@ -710,6 +710,10 @@ internal partial class CombatParserEx
 
         foreach (PgAbility Item in CombatAbilityList)
         {
+            if (Item.Name.StartsWith("Ilth Hale"))
+            {
+            }
+
             Debug.Assert(Item.Skill_Key is not null);
             string Skill_Key = FromSkillKey(Item.Skill_Key);
             PgSkill AbilitySkill = AbilitySkillFromKey(Skill_Key);
@@ -722,6 +726,8 @@ internal partial class CombatParserEx
             if (Name.Length > 0 && Name[0] == '(')
                 continue;
             if (Name.EndsWith(" (Energy Bow)"))
+                continue;
+            if (Name.EndsWith(" (Orc)"))
                 continue;
             if (Name.EndsWith(" 3B"))
                 continue;

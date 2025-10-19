@@ -64,6 +64,10 @@ internal partial class CombatParserEx
             string Skill_Key = FromSkillKey(Ability.Skill_Key);
             PgSkill AbilitySkill = AbilitySkillFromKey(Skill_Key);
 
+            if (Ability.Name.StartsWith("Ilth Hale"))
+            {
+            }
+
             if (Generate.IsCombatSkill(AbilitySkill, skillTable) || AbilitySkill.Key == "Crossbow")
             {
                 CombatAbilityList.Add(Ability);
@@ -165,8 +169,16 @@ internal partial class CombatParserEx
         ItemSlot.Waist,
     };
     private List<PgAbility> CombatAbilityList = new();
-    private const AbilityKeyword Internal_VileBlood = (AbilityKeyword)0xFFFE;
     private const AbilityKeyword Internal_NonBasic = (AbilityKeyword)0xFFFF;
+    private const AbilityKeyword Internal_VileBlood = (AbilityKeyword)0xFFFE;
+    private const AbilityKeyword Internal_HammerExceptPound = (AbilityKeyword)0xFFFD;
+    private const AbilityKeyword Internal_IlthHalesKiss = (AbilityKeyword)0xFFFC;
+    private const AbilityKeyword Internal_FamiliarRecall = (AbilityKeyword)0xFFFB;
+    private const AbilityKeyword Internal_VisageOfKajich = (AbilityKeyword)0xFFFA;
+    private const AbilityKeyword Internal_OrcishSuitBonus = (AbilityKeyword)0xFFF9;
+    private const AbilityKeyword Internal_DwarvenSuitBonus = (AbilityKeyword)0xFFF8;
+    private const AbilityKeyword Internal_WereolfSuitBonus = (AbilityKeyword)0xFFF7;
+    private const AbilityKeyword Internal_JamesEltibuleSuitBonus = (AbilityKeyword)0xFFF6;
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
     {
         AbilityKeyword.NiceAttack,
@@ -180,6 +192,7 @@ internal partial class CombatParserEx
         AbilityKeyword.FirstAid,
         AbilityKeyword.Crossbow,
         AbilityKeyword.Ranged,
+        AbilityKeyword.Burst,
         AbilityKeyword.Sword,
         AbilityKeyword.FireSpell,
         AbilityKeyword.FireMagicAttack,
@@ -230,8 +243,17 @@ internal partial class CombatParserEx
         AbilityKeyword.ShieldBash,
         AbilityKeyword.Minigolem,
         AbilityKeyword.MeleeKnife,
+        AbilityKeyword.Archery,
         Internal_VileBlood,
         Internal_NonBasic,
+        Internal_HammerExceptPound,
+        Internal_IlthHalesKiss,
+        Internal_FamiliarRecall,
+        Internal_VisageOfKajich,
+        Internal_OrcishSuitBonus,
+        Internal_DwarvenSuitBonus,
+        Internal_WereolfSuitBonus,
+        Internal_JamesEltibuleSuitBonus,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
     {
@@ -389,6 +411,7 @@ internal partial class CombatParserEx
         { "First Aid", new List<AbilityKeyword>() { AbilityKeyword.FirstAid } },
         { "Crossbow", new List<AbilityKeyword>() { AbilityKeyword.Crossbow } },
         { "Ranged Attack", new List<AbilityKeyword>() { AbilityKeyword.Ranged } },
+        { "Burst Attack", new List<AbilityKeyword>() { AbilityKeyword.Burst } },
         { "All Sword", new List<AbilityKeyword>() { AbilityKeyword.Sword } },
         { "All Fire spell", new List<AbilityKeyword>() { AbilityKeyword.FireSpell } },
         { "All Fire Magic attack", new List<AbilityKeyword>() { AbilityKeyword.FireMagicAttack } },
@@ -404,6 +427,7 @@ internal partial class CombatParserEx
         { "All types of shield Bash", new List<AbilityKeyword>() { AbilityKeyword.ShieldBash } },
         { "All Shield Bash ability", new List<AbilityKeyword>() { AbilityKeyword.ShieldBash } },
         { "All Shield ability", new List<AbilityKeyword>() { AbilityKeyword.Shield } },
+        { "All Hammer attack except for Pound", new List<AbilityKeyword>() { Internal_HammerExceptPound } },
         { "Hammer attack", new List<AbilityKeyword>() { AbilityKeyword.HammerAttack } },
         { "All Druid ability", new List<AbilityKeyword>() { AbilityKeyword.Druid } },
         { "All Staff attack", new List<AbilityKeyword>() { AbilityKeyword.StaffAttack } },
@@ -439,6 +463,7 @@ internal partial class CombatParserEx
         { "Staff ability that normally deal Crushing damage", new List<AbilityKeyword>() { AbilityKeyword.StaffCrushing } },
         { "Bardic Blast", new List<AbilityKeyword>() { AbilityKeyword.BardBlast } },
         { "Melee ability", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
+        { "Melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "All Druid ability except Shillelagh", new List<AbilityKeyword>() { AbilityKeyword.DruidNonBasic } },
         { "ability that fire a projectile, such as Toxinball, Fireball, or most Archery abilities", new List<AbilityKeyword>() { AbilityKeyword.Projectile } },
         { "@ , Willbreaker, and Embrace of Despair", new List<AbilityKeyword>() { AbilityKeyword.EclipseOfShadows, AbilityKeyword.Willbreaker, AbilityKeyword.EmbraceOfDespair } },
@@ -448,6 +473,14 @@ internal partial class CombatParserEx
         { "All targets' melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "Your golem minion has", new List<AbilityKeyword>() { AbilityKeyword.Minigolem } },
         { "Any vile blood eruptions from Blood Mist", new List<AbilityKeyword>() { Internal_VileBlood } },
+        { "Ilth Hale's Kiss", new List<AbilityKeyword>() { Internal_IlthHalesKiss } },
+        { "Familiar's Recall", new List<AbilityKeyword>() { Internal_FamiliarRecall } },
+        { "Visage of Kajich", new List<AbilityKeyword>() { Internal_VisageOfKajich } },
+        { "Orcish Plate Armor suit bonus", new List<AbilityKeyword>() { Internal_OrcishSuitBonus } },
+        { "Dwarven Plate Armor suit bonus", new List<AbilityKeyword>() { Internal_DwarvenSuitBonus } },
+        { "Werewolf Armor suit bonus", new List<AbilityKeyword>() { Internal_WereolfSuitBonus } },
+        { "James Eltibule's Armors' suit bonus", new List<AbilityKeyword>() { Internal_JamesEltibuleSuitBonus } },
+        { "Archery attack", new List<AbilityKeyword>() { AbilityKeyword.Archery } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {
@@ -536,6 +569,10 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireBelowMaxArmor, CombatCondition.BelowMaxArmor},
         { CombatKeywordEx.RequireBelowMaxRage, CombatCondition.BelowMaxRage},
         { CombatKeywordEx.RequireArthropodTarget, CombatCondition.ArthropodTarget},
+        { CombatKeywordEx.RequirePlantTarget, CombatCondition.PlantTarget},
+        { CombatKeywordEx.RequirePigTarget, CombatCondition.PigTarget},
+        { CombatKeywordEx.RequireFeyTarget, CombatCondition.FeyTarget},
+        { CombatKeywordEx.RequireWerewolfTarget, CombatCondition.WerewolfTarget},
         { CombatKeywordEx.RequireStunnedTarget, CombatCondition.TargetIsStunned },
         { CombatKeywordEx.RequireKnockedDownTarget, CombatCondition.TargetIsKnockedDown },
         { CombatKeywordEx.OnIncomingMeleeAttack, CombatCondition.IncomingMeleeAttack },
@@ -550,7 +587,10 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireTargetUnderEffect, CombatCondition.TargetUnderEffect },
         { CombatKeywordEx.RequireStandingSomewhere, CombatCondition.StandingSomewhere },
         { CombatKeywordEx.RequirePetTarget, CombatCondition.PetTarget },
-        { CombatKeywordEx.RequireLowHealth, CombatCondition.LowHealth},
+        { CombatKeywordEx.RequireLowHealth, CombatCondition.LowHealth },
+        { CombatKeywordEx.RequireGolfBallUsedUp, CombatCondition.GolfBallUsedUp },
+        { CombatKeywordEx.RequireUnderwater, CombatCondition.Underwater },
+        { CombatKeywordEx.RequireCriticalHit, CombatCondition.CriticalHit },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
@@ -560,6 +600,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.RestoreHealthOrArmorOverTime },
         { CombatKeywordEx.RageAttackBoost, CombatKeywordEx.RageAttackBoostOverTime },
         { CombatKeywordEx.DamageBoost, CombatKeywordEx.DamageOverTimeBoost },
+        { CombatKeywordEx.DealHealthDamage, CombatKeywordEx.HealthDamageOverTimeBoost },
         { CombatKeywordEx.SelfDamage, CombatKeywordEx.SelfDamageOverTime },
     };
     private float MutationDuration;

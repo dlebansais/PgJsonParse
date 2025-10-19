@@ -17,6 +17,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f Health/Armor", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health (or Armor)", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health or Armor", CombatKeywordEx.RestoreHealthOrArmor),
+        new SentenceEx("Restore %f health and Armor", CombatKeywordEx.RestoreHealthAndArmor),
         new SentenceEx("Heal you for %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Heal all targets for %f health", CombatKeywordEx.RestoreHealth),
         new SentenceEx("Heal you for %f", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
@@ -215,6 +216,7 @@ internal partial class CombatParserEx
         new SentenceEx("Rage attack are further reduced by %f", CombatKeywordEx.RageAttackBoost, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Deal %f damage to Health and Armor", CombatKeywordEx.DealHealthAndArmorDamage),
+        new SentenceEx("Dealing %f Health and Armor damage", CombatKeywordEx.DealHealthAndArmorDamage),
 
         new SentenceEx("Deal %f Armor damage", CombatKeywordEx.DealArmorDamage),
         new SentenceEx("Deal %f damage to Armor", CombatKeywordEx.DealArmorDamage),
@@ -225,8 +227,10 @@ internal partial class CombatParserEx
         new SentenceEx("Chance to critically-hit is reduced by %f", CombatKeywordEx.IncreaseCriticalChance, SignInterpretation.Opposite),
         new SentenceEx("%f chance to crit", CombatKeywordEx.IncreaseCriticalChance),
         new SentenceEx("%f Critical Hit Chance", CombatKeywordEx.IncreaseCriticalChance),
+        new SentenceEx("Critical Hit Chance %f", CombatKeywordEx.IncreaseCriticalChance),
         new SentenceEx("%f Crit Chance", CombatKeywordEx.IncreaseCriticalChance),
         new SentenceEx("Deal %f damage when they critically hit", CombatKeywordEx.IncreaseCriticalChance),
+        new SentenceEx("Boost your Anatomy Critical Hit Chance %f", CombatKeywordEx.IncreaseCriticalChance),
 
         new SentenceEx("Damage-over-time effects deal %f damage per tick", CombatKeywordEx.DamageOverTimeBoost),
 
@@ -244,6 +248,7 @@ internal partial class CombatParserEx
         new SentenceEx("Deal up to %f damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Add up to %f extra damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f immediate #D damage", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Deal %f #D damage to health ", CombatKeywordEx.DealHealthDamage),
         new SentenceEx("Deal %f #D damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal direct #D damage to deal %f damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f damage if it is a #D attack", CombatKeywordEx.DamageBoost),
@@ -557,6 +562,8 @@ internal partial class CombatParserEx
         new SentenceEx("Stun targets", CombatKeywordEx.Stun),
         new SentenceEx("Stun", CombatKeywordEx.Stun),
 
+        new SentenceEx("Generate no Taunt", CombatKeywordEx.GenerateNoTaunt),
+
         new SentenceEx("Generate no Rage", CombatKeywordEx.GenerateNoRage),
 
         new SentenceEx("Remove (up to) %f more Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
@@ -614,7 +621,7 @@ internal partial class CombatParserEx
         new SentenceEx("Have less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
         new SentenceEx("With less than %f of their Max Rage", CombatKeywordEx.RequireBelowMaxRage),
 
-        new SentenceEx("Grant this Critical Hit Chance bonus to your next #S attack", new List<CombatKeywordEx>() { CombatKeywordEx.GrantCriticalChance, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Grant this Critical Hit Chance bonus to your next", new List<CombatKeywordEx>() { CombatKeywordEx.GrantCriticalChance, CombatKeywordEx.NextAttack }),
         new SentenceEx("Can Critically Hit based on your Anatomy skill levels", CombatKeywordEx.GrantCriticalChance),
 
         new SentenceEx("To Arthropods", CombatKeywordEx.RequireArthropodTarget),
@@ -679,6 +686,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("%f chance to", CombatKeywordEx.ApplyWithChance),
         new SentenceEx("There's a %f chance", CombatKeywordEx.ApplyWithChance),
+        new SentenceEx("%f of the time", CombatKeywordEx.ApplyWithChance),
 
         new SentenceEx("Boost your mitigation vs physical damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationPhysical, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Mitigation vs physical damage %f", CombatKeywordEx.AddMitigationPhysical),
@@ -734,8 +742,8 @@ internal partial class CombatParserEx
         new SentenceEx("Targets also take %f damage from sentient weather phenomena", CombatKeywordEx.TornadoVulnerability),
 
         new SentenceEx("%f Physical Damage Reflection", CombatKeywordEx.IncreasePhysicalReflection),
-
         new SentenceEx("Plus bonus Armor-specific damage equal to %f of the attack's total regular damage", CombatKeywordEx.IncreasePhysicalReflection),
+        new SentenceEx("You reflect %f of any physical attack damage (#D) back at the attacker.", CombatKeywordEx.IncreasePhysicalReflection),
 
         new SentenceEx("Grant you immunity to direct damage", CombatKeywordEx.DirectDamageImmunity),
 
@@ -784,6 +792,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f Out of Combat Sprint Speed", CombatKeywordEx.AddOutOfCombatSpeed),
         new SentenceEx("Your Out of Combat Sprint speed %f", CombatKeywordEx.AddOutOfCombatSpeed),
         new SentenceEx("Your Out of Combat Sprint speed by %f", CombatKeywordEx.AddOutOfCombatSpeed),
+        new SentenceEx("Non-combat Sprint Boost %f", CombatKeywordEx.AddOutOfCombatSpeed),
 
         new SentenceEx("Dispel slow and root", CombatKeywordEx.RemoveSlowRoot),
         new SentenceEx("Dispel any Slow or Root", CombatKeywordEx.RemoveSlowRoot),
@@ -840,5 +849,40 @@ internal partial class CombatParserEx
         new SentenceEx("%f Body Heat", CombatKeywordEx.RestoreBodyHeat),
 
         new SentenceEx("Or until you are attacked", CombatKeywordEx.RequireNotAttacked),
+
+        new SentenceEx("Plant creatures", CombatKeywordEx.RequirePlantTarget),
+
+        new SentenceEx("To pigs", CombatKeywordEx.RequirePigTarget),
+
+        new SentenceEx("To fey", CombatKeywordEx.RequireFeyTarget),
+
+        new SentenceEx("To lycanthropes", CombatKeywordEx.RequireWerewolfTarget),
+
+        new SentenceEx("Ignite the target", CombatKeywordEx.Ignite),
+
+        new SentenceEx("When you would have found non-magical equipment as loot, you'll find magical equipment instead", CombatKeywordEx.UpgradedLoot),
+        new SentenceEx("When you would have found non-magical equipment as loot, you'll find Rare (blue-label) equipment instead", CombatKeywordEx.UpgradedLoot),
+
+        new SentenceEx("Equipping this item grant you basic proficiency", CombatKeywordEx.GrantProficiency),
+        new SentenceEx("Equipping this allows you to use the ability", CombatKeywordEx.GrantProficiency),
+        new SentenceEx("Long-term animals that equip this can use the ability", CombatKeywordEx.GrantProficiency),
+        new SentenceEx("You can use the ability", CombatKeywordEx.GrantProficiency),
+        new SentenceEx("Equipping this armor teaches you", CombatKeywordEx.GrantProficiency),
+
+        new SentenceEx("Periodically creates Sugar", CombatKeywordEx.CreateSugar),
+
+        new SentenceEx("When your golf ball is used up", CombatKeywordEx.RequireGolfBallUsedUp),
+
+        new SentenceEx("Dispel one fire effect on you (up to %f damage/tick)", new List<CombatKeywordEx>() { CombatKeywordEx.DispelOneFireEffect, CombatKeywordEx.ApplyToSelf }),
+
+        new SentenceEx("Dispel lycanthropic regeneration effects", CombatKeywordEx.DispelLycanthropicEffects),
+
+        new SentenceEx("Automatically Evade the first @ aimed at you", new List<CombatKeywordEx>() { CombatKeywordEx.EvadeNextAttack, CombatKeywordEx.ApplyToSelf }),
+
+        new SentenceEx("While in water", CombatKeywordEx.RequireUnderwater),
+
+        new SentenceEx("Critically Hit", CombatKeywordEx.RequireCriticalHit),
+
+        new SentenceEx("This effect is increased by treasure that boost", CombatKeywordEx.ApplyOtherMods),
     };
 }

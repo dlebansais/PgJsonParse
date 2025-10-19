@@ -31,6 +31,10 @@ public enum CombatCondition
     BelowMaxArmor,
     BelowMaxRage,
     ArthropodTarget,
+    PlantTarget,
+    PigTarget,
+    FeyTarget,
+    WerewolfTarget,
     TargetIsStunned,
     TargetIsKnockedDown,
     IncomingMeleeAttack,
@@ -46,4 +50,7 @@ public enum CombatCondition
     StandingSomewhere,
     PetTarget,
     LowHealth,
+    GolfBallUsedUp,
+    Underwater,
+    CriticalHit,
 }

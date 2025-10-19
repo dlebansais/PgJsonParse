@@ -14,8 +14,8 @@ internal partial class CombatParserEx
     {
         List<string[]> StringKeyTable = new();
         List<PgModEffectCollectionEx> AnalyzedPowerKeyToCompleteEffectTable = new();
+
         AnalyzeMatchingPowersAndEffects(StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
-        
-        // AnalyzeRemainingPowers(StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
+        AnalyzeRemainingPowers(StringKeyTable, AnalyzedPowerKeyToCompleteEffectTable);
     }
 }
