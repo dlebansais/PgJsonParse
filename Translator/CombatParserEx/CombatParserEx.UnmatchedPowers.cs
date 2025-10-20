@@ -363,6 +363,11 @@ internal partial class CombatParserEx
 
         switch (powerKey)
         {
+            case "11014":
+            case "11015":
+                BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
+                break;
+
             case "Item_46059_0":
             case "Item_46052_0":
             case "Item_46051_0":
@@ -397,11 +402,21 @@ internal partial class CombatParserEx
             case "Item_40404_0":
                 BuildUnmatchedMod_004(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
+            case "11051":
+                BuildUnmatchedMod_001(description, targetAbilityList, new() { modCombatList[0], modCombatList[1] }, abilityList, out pgCombatModEx);
+                BuildUnmatchedMod_004(description, abilityList, new() { modCombatList[0], modCombatList[2], modCombatList[3], modCombatList[4] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
             case "10010":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 pgCombatModEx.DynamicEffects.Insert(0, pgCombatModEx.DynamicEffects[1]);
                 pgCombatModEx.DynamicEffects.RemoveAt(2);
                 pgCombatModEx.DynamicEffects[0].ConditionList.Clear();
+                break;
+            case "11102":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1], modCombatList[2], modCombatList[3] }, targetAbilityList, out pgCombatModEx);
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[4], modCombatList[5] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "Item_55613_0":
             case "Item_55619_0":
@@ -554,11 +569,27 @@ internal partial class CombatParserEx
             case "10402":
             case "Item_42095_0":
             case "Item_42085_0":
+            case "1041":
+            case "1043":
+            case "10455":
+            case "10502":
+            case "10554":
+            case "1066":
+            case "1085":
+            case "11012":
+            case "11013":
+            case "11103":
+            case "11105":
+            case "11201":
+            case "11253":
+            case "11351":
+            case "11352":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
             default:
                 pgCombatModEx = new() { Description = description, DynamicEffects = new(), PermanentEffects = new() };
+                //BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
             case "Other":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
@@ -874,7 +905,68 @@ internal partial class CombatParserEx
     private void BuildUnmatchedMod_004(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx allEffects, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx)
     {
         float RecurringDelay = float.NaN;
+        CombatKeywordEx Keyword = CombatKeywordEx.GiveBuff;
         CombatTarget Target = CombatTarget.Internal_None;
+
+        PgCombatConditionCollectionEx ConditionList = new();
+        List<AbilityKeyword> ConditionAbilityList = new();
+        float ConditionValue = float.NaN;
+        float ConditionPercentage = float.NaN;
+        int ConditionIndex = -1;
+        GameDamageType ConditionDamageType = GameDamageType.Internal_None;
+        GameCombatSkill ConditionSkill = GameCombatSkill.Internal_None;
+        for (int i = 0; i < allEffects.Count; i++)
+        {
+            PgCombatEffectEx CombatEffect = allEffects[i];
+            if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
+            {
+                Debug.Assert(NewCondition != CombatCondition.Internal_None);
+                ConditionList.Add(NewCondition);
+                ConditionIndex = i;
+
+                if (NewCondition == CombatCondition.WhilePlayingSong ||
+                    NewCondition == CombatCondition.TargetOfAbility ||
+                    NewCondition == CombatCondition.AbilityNotTriggered ||
+                    NewCondition == CombatCondition.AbilityTriggered ||
+                    NewCondition == CombatCondition.StandingSomewhere)
+                {
+                    ConditionAbilityList = new(targetAbilityList);
+                }
+
+                if (NewCondition == CombatCondition.TargetHasLowRage ||
+                    NewCondition == CombatCondition.TargetHasHighRage ||
+                    NewCondition == CombatCondition.BelowMaxArmor ||
+                    NewCondition == CombatCondition.BelowMaxRage)
+                {
+                    Debug.Assert(CombatEffect.Data.RawValue.HasValue);
+                    Debug.Assert(CombatEffect.Data.RawIsPercent.HasValue);
+                    ConditionPercentage = CombatEffect.Data.Value;
+                }
+
+                if (NewCondition == CombatCondition.MinimumDistance)
+                {
+                    Debug.Assert(CombatEffect.Data.RawValue.HasValue);
+                    Debug.Assert(CombatEffect.Data.RawIsPercent.HasValue);
+                    ConditionValue = CombatEffect.Data.Value;
+                }
+
+                if (NewCondition == CombatCondition.SpecificDirectDamageType)
+                {
+                    Debug.Assert(CombatEffect.DamageType != GameDamageType.Internal_None);
+                    ConditionDamageType = CombatEffect.DamageType;
+                }
+
+                if (NewCondition == CombatCondition.ActiveSkill ||
+                    NewCondition == CombatCondition.WhileChanneling ||
+                    NewCondition == CombatCondition.UsingCombatSkill)
+                {
+                    ConditionSkill = CombatEffect.CombatSkill;
+                }
+
+                allEffects.RemoveAt(i);
+                i--;
+            }
+        }
 
         for (int i = 0; i < allEffects.Count; i++)
         {
@@ -885,6 +977,13 @@ internal partial class CombatParserEx
                 float? RawValue = CombatEffect.Data.RawValue;
                 Debug.Assert(RawValue != null);
                 RecurringDelay = RawValue!.Value;
+                allEffects.RemoveAt(i);
+                i--;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.NextAttack)
+            {
+                Keyword = CombatKeywordEx.GiveBuffOneAttack;
+
                 allEffects.RemoveAt(i);
                 i--;
             }
@@ -900,10 +999,14 @@ internal partial class CombatParserEx
 
         PgCombatModEffectEx pgCombatModEffectEx = new()
         {
-            Keyword = CombatKeywordEx.GiveBuff,
+            Keyword = Keyword,
             Data = PgNumericValueEx.Empty,
             RecurringDelay = RecurringDelay,
             Target = Target,
+            ConditionList = new(ConditionList),
+            ConditionAbilityList = ConditionAbilityList,
+            ConditionValue = ConditionValue,
+            ConditionPercentage = ConditionPercentage,
         };
 
         pgCombatModEx.DynamicEffects.Insert(0, pgCombatModEffectEx);

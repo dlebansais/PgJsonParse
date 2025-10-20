@@ -273,6 +273,7 @@ internal partial class CombatParserEx
         new SentenceEx("Boost #D damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your next attack %f if it is a #D attack", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Boost your next attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Your next @ deal %f damage", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Boost your Indirect #D Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToIndirect }),
         new SentenceEx("Future @ attack damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }),
         new SentenceEx("Boost the damage of future @ attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.NextAttack }),
@@ -379,6 +380,7 @@ internal partial class CombatParserEx
         new SentenceEx("Covers the target in a barrier that mitigate %f damage from #D attack", CombatKeywordEx.BestowProtectiveBubble),
         new SentenceEx("Conjures a magical field around each target that mitigate %f of all physical damage they take", CombatKeywordEx.BestowProtectiveBubble),
         new SentenceEx("Conjures a magical field that mitigate %f of all physical damage you take", new List<CombatKeywordEx>() { CombatKeywordEx.BestowProtectiveBubble, CombatKeywordEx.ApplyToSelf}),
+        new SentenceEx("Conjure a force-shield that mitigate %f of all #D damage", CombatKeywordEx.BestowProtectiveBubble),
 
         new SentenceEx("Slowdown Cancelled", CombatKeywordEx.CancelSlowdown),
         new SentenceEx("has no slowdown effect", CombatKeywordEx.CancelSlowdown),
@@ -488,6 +490,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f direct damage mitigation", CombatKeywordEx.AddMitigationDirect),
         new SentenceEx("Boost your direct damage mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Direct Mitigation", CombatKeywordEx.AddMitigationDirect),
+        new SentenceEx("Mitigate %f Direct #D damage", CombatKeywordEx.AddMitigationDirect),
 
         new SentenceEx("Suffer %f damage from Burst", CombatKeywordEx.AddMitigationBurst, SignInterpretation.Opposite),
 
@@ -504,7 +507,8 @@ internal partial class CombatParserEx
         new SentenceEx("Until %f damage is mitigated", CombatKeywordEx.MaxMitigatedDamageLimit),
         new SentenceEx("Until it has absorbed a total of %f damage", CombatKeywordEx.MaxMitigatedDamageLimit),
         new SentenceEx("Until it has absorbed %f total damage", CombatKeywordEx.MaxMitigatedDamageLimit),
-        new SentenceEx ("Up to a maximum of %f total mitigated damage", CombatKeywordEx.MaxMitigatedDamageLimit),
+        new SentenceEx("Up to a maximum of %f total mitigated damage", CombatKeywordEx.MaxMitigatedDamageLimit),
+        new SentenceEx("Or until %f damage is absorbed", CombatKeywordEx.MaxMitigatedDamageLimit),
 
         new SentenceEx("Remove ongoing #D effects (up to %f dmg/sec)", CombatKeywordEx.RemoveEffect),
 
@@ -707,6 +711,7 @@ internal partial class CombatParserEx
         new SentenceEx("Mitigate %f physical damage", CombatKeywordEx.AddMitigationPhysical),
         new SentenceEx("%f Mitigation vs physical (slashing, piercing, and crushing) attack", CombatKeywordEx.AddMitigationPhysical),
         new SentenceEx("%f Mitigation vs physical (slashing, crushing, and piercing) damage", CombatKeywordEx.AddMitigationPhysical),
+        new SentenceEx("Mitigate #D %f", CombatKeywordEx.AddMitigation),
 
         new SentenceEx("Ignore Knockback effect", CombatKeywordEx.IgnoreKnockback),
         new SentenceEx("Immunity to Knockback", CombatKeywordEx.IgnoreKnockback),
@@ -889,5 +894,11 @@ internal partial class CombatParserEx
 
         new SentenceEx("This effect is increased by treasure that boost", CombatKeywordEx.ApplyOtherMods),
         new SentenceEx("This amount is further increased by treasure that boost", CombatKeywordEx.ApplyOtherMods),
+
+        new SentenceEx("You mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)", CombatKeywordEx.ImproveArmorMitigation),
+
+        new SentenceEx("When you are hit by a monster's Rage Attack", CombatKeywordEx.RequireHitByRageAttack),
+
+        new SentenceEx("These values are doubled", CombatKeywordEx.DoubleMitigation),
     };
 }

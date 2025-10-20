@@ -401,6 +401,12 @@ internal partial class CombatParserEx
 
         if (text.StartsWith("Look At My Hammer Power Restoration") && text.EndsWith("for 30 seconds") && text.Length <= 56)
             text = "Your next Core attacks Power Restoration" + text.Substring(35, text.Length - 50);
+
+        if (text.Contains("While Shield skill active: Mitigate Slashing"))
+        {
+            text = text.Replace(", Piercing +", ", Mitigate Piercing +");
+            text = text.Replace(", and Crushing +", ", Mitigate Crushing +");
+        }
     }
 
     private static void RemoveDecorativeText(ref string text, string pattern, out bool isRemoved, ref int indexFound)

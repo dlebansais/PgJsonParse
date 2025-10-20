@@ -53,4 +53,5 @@ public enum CombatCondition
     GolfBallUsedUp,
     Underwater,
     CriticalHit,
+    HitByRageAttack,
 }

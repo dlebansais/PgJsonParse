@@ -427,6 +427,7 @@ internal partial class CombatParserEx
         { "All types of shield Bash", new List<AbilityKeyword>() { AbilityKeyword.ShieldBash } },
         { "All Shield Bash ability", new List<AbilityKeyword>() { AbilityKeyword.ShieldBash } },
         { "All Shield ability", new List<AbilityKeyword>() { AbilityKeyword.Shield } },
+        { "All Shield attack", new List<AbilityKeyword>() { AbilityKeyword.Shield } },
         { "All Hammer attack except for Pound", new List<AbilityKeyword>() { Internal_HammerExceptPound } },
         { "Hammer attack", new List<AbilityKeyword>() { AbilityKeyword.HammerAttack } },
         { "All Druid ability", new List<AbilityKeyword>() { AbilityKeyword.Druid } },
@@ -591,6 +592,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireGolfBallUsedUp, CombatCondition.GolfBallUsedUp },
         { CombatKeywordEx.RequireUnderwater, CombatCondition.Underwater },
         { CombatKeywordEx.RequireCriticalHit, CombatCondition.CriticalHit },
+        { CombatKeywordEx.RequireHitByRageAttack, CombatCondition.HitByRageAttack },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

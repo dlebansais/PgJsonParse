@@ -134,6 +134,8 @@
         CreateSugar,
         DispelLycanthropicEffects,
         ApplyOtherMods,
+        ImproveArmorMitigation,
+        DoubleMitigation,
 
         // Other effects
         ApplyWithChance,
@@ -212,6 +214,7 @@
         RequireGolfBallUsedUp,
         RequireUnderwater,
         RequireCriticalHit,
+        RequireHitByRageAttack,
 
         // Synthetic
         GiveBuff,
