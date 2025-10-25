@@ -55,5 +55,6 @@
         FireNova,
         ColdSpit,
         NatureCloudHit,
+        OwlSkeletonBlast,
     }
 }

@@ -38,5 +38,6 @@
         MaxEnchanting,
         Lint_LevelTooHigh,
         Vampirism,
+        ProphesiedDamageBuffV1,
     }
 }

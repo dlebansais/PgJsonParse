@@ -724,6 +724,7 @@ public class FieldTableStore
         { "Skill", typeof(string) },
         { "SkillLevelRequirement", typeof(int) },
         { "ResultEffects", typeof(PgRecipeResultEffect[]) },
+        { "ResultEffectsThatCanFail", typeof(PgRecipeResultEffect[]) },
         { "SortSkill", typeof(string) },
         { "Keywords", typeof(string[]) },
         { "ActionLabel", typeof(string) },
@@ -852,6 +853,11 @@ public class FieldTableStore
         { "ActiveAdvancementTable", typeof(string) },
         { "PassiveAdvancementTable", typeof(string) },
         { "XpEarnedAttributes", typeof(string[]) },
+        { "AssociatedAppearances", typeof(string[]) },
+        { "AssociatedItemKeywords", typeof(string[]) },
+        { "DisallowedAppearances", typeof(string[]) },
+        { "DisallowedItemKeywords", typeof(string[]) },
+        { "ParagonEnabledInteractionFlag", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableLevelCapInteraction { get; } = new Dictionary<string, Type>()

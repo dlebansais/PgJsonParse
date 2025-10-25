@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using PgObjects;
 
 public static class Inserter<T>
@@ -39,7 +40,8 @@ public static class Inserter<T>
             {
             }
 
-            return Program.ReportFailure($"Key '{ValueKey}' is not a known key", errorControl);
+            Program.ReportFailure($"Key '{ValueKey}' is not a known key", errorControl);
+            ValueKey = KeyTable.Keys.First();
         }
 
         if (!(KeyTable[ValueKey].Item is T AsLink))

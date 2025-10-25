@@ -297,5 +297,6 @@
         RhinoThePerforator,
         RhinoThePuncturer,
         FrogCold90,
+        ZhiaWhim1,
     }
 }

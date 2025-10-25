@@ -169,5 +169,6 @@
         SteppedOnTrap,
         ScintillatingFlame,
         EmotionalDamage,
+        EvilHoot,
     }
 }

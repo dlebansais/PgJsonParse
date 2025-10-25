@@ -1451,5 +1451,12 @@
         GroundFlaxseed,
         OatFlour,
         MoonspeltFlour,
+        PigOrRabbitFoot,
+        ToxicFrogSkin,
+        TrophyCatSkin,
+        GoblinSkull,
+        ImpressiveSkull,
+        AstonishingSkull,
+        Dissolving,
     }
 }

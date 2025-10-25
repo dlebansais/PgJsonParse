@@ -59,6 +59,9 @@ public class ParserRecipe : Parser
                 case "ResultEffects":
                     Result = Inserter<PgRecipeResultEffect>.AddKeylessArray(item.ResultEffectList, Value);
                     break;
+                case "ResultEffectsThatCanFail":
+                    Result = Inserter<PgRecipeResultEffect>.AddKeylessArray(item.ResultEffectThatCanFailList, Value);
+                    break;
                 case "SortSkill":
                     Result = ParserSkill.Parse((PgSkill valueSkill) => item.SortSkill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
                     break;

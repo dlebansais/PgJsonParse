@@ -472,5 +472,9 @@
         CriticalHitDenialRakshasaAndDemons,
         Demonic,
         UnendingOnslaught,
+        LichlyResistance,
+        Buff_CandleNecromancy,
+        DarknessDoT,
+        Event_ZhiaWhim,
     }
 }

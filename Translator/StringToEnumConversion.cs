@@ -37,7 +37,7 @@ public static class StringToEnumConversion
             foreach (string Name in NameList)
                 Debug.WriteLine(Name);
 
-            return Program.ReportFailure($"Some enum types are not used anymore (Known: {KnownParsedEnumtable.Count})");
+            return Program.ReportFailure($"Some enum types are not used anymore (Known: {KnownParsedEnumtable.Count}, expected: {TextMaps.TotalEnumTypes})");
         }
 
         string Result = string.Empty;

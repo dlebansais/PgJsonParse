@@ -17,6 +17,7 @@
         public int SkillLevelReq { get { return RawSkillLevelReq.HasValue ? RawSkillLevelReq.Value : 0; } }
         public int? RawSkillLevelReq { get; set; }
         public PgRecipeResultEffectCollection ResultEffectList { get; set; } = new PgRecipeResultEffectCollection();
+        public PgRecipeResultEffectCollection ResultEffectThatCanFailList { get; set; } = new PgRecipeResultEffectCollection();
         public string? SortSkill_Key { get; set; }
         public List<RecipeKeyword> KeywordList { get; set; } = new List<RecipeKeyword>();
         public string ActionLabel { get; set; } = string.Empty;

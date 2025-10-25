@@ -616,5 +616,6 @@
         SummonFlapskull,
         Empty,
         ShieldBash,
+        SelfDestruct,
     }
 }

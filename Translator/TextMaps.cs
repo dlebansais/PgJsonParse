@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 81;
+        public const int TotalEnumTypes = 82;
 
         static TextMaps()
         {
@@ -961,6 +961,7 @@
             { AbilityKeyword.SummonFlapskull, "Summon Flapskull" },
             { AbilityKeyword.Empty, "(Empty)" },
             { AbilityKeyword.ShieldBash, "Shield Bash" },
+            { AbilityKeyword.SelfDestruct, "Self Destruct" },
         };
 
         public static Dictionary<AbilityPetType, string> AbilityPetTypeTextMap { get; } = new Dictionary<AbilityPetType, string>()
@@ -1109,6 +1110,7 @@
             { AbilitySelfParticle.FireNova, "Fire Nova" },
             { AbilitySelfParticle.ColdSpit, "Cold Spit" },
             { AbilitySelfParticle.NatureCloudHit, "Nature Cloud Hit" },
+            { AbilitySelfParticle.OwlSkeletonBlast, "Owl Skeleton Blast" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -1239,6 +1241,7 @@
             { Appearance.Rabbit, "Rabbit" },
             { Appearance.Fox, "Fox" },
             { Appearance.Butterfly, "Butterfly" },
+            { Appearance.Normal, "Normal" },
         };
 
         public static Dictionary<AppearanceSkin, string> AppearanceSkinTextMap { get; } = new Dictionary<AppearanceSkin, string>()
@@ -1589,6 +1592,7 @@
             { Deaths.SteppedOnTrap, "Stepped On Trap" },
             { Deaths.ScintillatingFlame, "Scintillating Flame" },
             { Deaths.EmotionalDamage, "Emotional Damage" },
+            { Deaths.EvilHoot, "Evil Hoot" },
         };
 
         public static Dictionary<Desire, string> DesireTextMap { get; } = new Dictionary<Desire, string>()
@@ -2121,6 +2125,10 @@
             { EffectKeyword.CriticalHitDenialRakshasaAndDemons, "Critical Hit Denial Rakshasa And Demons" },
             { EffectKeyword.Demonic, "Demonic" },
             { EffectKeyword.UnendingOnslaught, "Unending Onslaught" },
+            { EffectKeyword.LichlyResistance, "Lichly Resistance" },
+            { EffectKeyword.Buff_CandleNecromancy, "Buff (Candle Necromancy)" },
+            { EffectKeyword.DarknessDoT, "Darkness DoT" },
+            { EffectKeyword.Event_ZhiaWhim, "Event (Zhia Whim)" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -3031,6 +3039,41 @@
             { InteractionFlag.WizardSchool_Letter_IchinTheIceMaster, "Wizard School Letter (Ichin The Ice Master)" },
             { InteractionFlag.WizardSchool_Letter_LandriTheCold, "Wizard School Letter (Landri The Cold)" },
             */
+            { InteractionFlag.Paragon_AnimalHandling, "Paragon (Animal Handling)" },
+            { InteractionFlag.Paragon_Archery, "Paragon (Archery)" },
+            { InteractionFlag.Paragon_ArmorPatching, "Paragon (Armor Patching)" },
+            { InteractionFlag.Paragon_Bard, "Paragon (Bard)" },
+            { InteractionFlag.Paragon_BattleChemistry, "Paragon (Battle Chemistry)" },
+            { InteractionFlag.Paragon_Cow, "Paragon (Cow)" },
+            { InteractionFlag.Paragon_Crossbow, "Paragon (Crossbow)" },
+            { InteractionFlag.Paragon_Deer, "Paragon (Deer)" },
+            { InteractionFlag.Paragon_Druid, "Paragon (Druid)" },
+            { InteractionFlag.Paragon_FairyMagic, "Paragon (Fairy Magic)" },
+            { InteractionFlag.Paragon_FireMagic, "Paragon (Fire Magic)" },
+            { InteractionFlag.Paragon_FirstAid, "Paragon (First Aid)" },
+            { InteractionFlag.Paragon_GiantBat, "Paragon (Giant Bat)" },
+            { InteractionFlag.Paragon_Hammer, "Paragon (Hammer)" },
+            { InteractionFlag.Paragon_Hardcore, "Paragon (Hardcore)" },
+            { InteractionFlag.Paragon_IceMagic, "Paragon (Ice Magic)" },
+            { InteractionFlag.Paragon_Knife, "Paragon (Knife)" },
+            { InteractionFlag.Paragon_Mentalism, "Paragon (Mentalism)" },
+            { InteractionFlag.Paragon_Necromancy, "Paragon (Necromancy)" },
+            { InteractionFlag.Paragon_Pig, "Paragon (Pig)" },
+            { InteractionFlag.Paragon_Priest, "Paragon (Priest)" },
+            { InteractionFlag.Paragon_Psychology, "Paragon (Psychology)" },
+            { InteractionFlag.Paragon_Rabbit, "Paragon (Rabbit)" },
+            { InteractionFlag.Paragon_Shield, "Paragon (Shield)" },
+            { InteractionFlag.Paragon_SigilScripting, "Paragon (Sigil Scripting)" },
+            { InteractionFlag.Paragon_Spider, "Paragon (Spider)" },
+            { InteractionFlag.Paragon_SpiritFox, "Paragon (Spirit Fox)" },
+            { InteractionFlag.Paragon_Staff, "Paragon (Staff)" },
+            { InteractionFlag.Paragon_SurvivalInstincts, "Paragon (Survival Instincts)" },
+            { InteractionFlag.Paragon_Sword, "Paragon (Sword)" },
+            { InteractionFlag.Paragon_Unarmed, "Paragon (Unarmed)" },
+            { InteractionFlag.Paragon_Vampirism, "Paragon (Vampirism)" },
+            { InteractionFlag.Paragon_Warden, "Paragon (Warden)" },
+            { InteractionFlag.Paragon_WeatherWitching, "Paragon (Weather Witching)" },
+            { InteractionFlag.Paragon_Werewolf, "Paragon (Werewolf)" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -4584,6 +4627,13 @@
             { ItemKeyword.GroundFlaxseed, "Ground Flaxseed" },
             { ItemKeyword.OatFlour, "Oat Flour" },
             { ItemKeyword.MoonspeltFlour, "Moonspelt Flour" },
+            { ItemKeyword.PigOrRabbitFoot, "Pig Or Rabbit Foot" },
+            { ItemKeyword.ToxicFrogSkin, "Toxic Frog Skin" },
+            { ItemKeyword.TrophyCatSkin, "Trophy Cat Skin" },
+            { ItemKeyword.GoblinSkull, "Goblin Skull" },
+            { ItemKeyword.ImpressiveSkull, "Impressive Skull" },
+            { ItemKeyword.AstonishingSkull, "Astonishing Skull" },
+            { ItemKeyword.Dissolving, "Dissolving" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4715,7 +4765,7 @@
             { MapAreaName.Statehelm, "Statehelm" },
             { MapAreaName.Vidaria, "Vidaria" },
             { MapAreaName.VidariaCaves, "Vidaria Caves" },
-            //{ MapAreaName.BeneathStatehelm, "Beneath Statehelm" },
+            { MapAreaName.StatehelmCaves, "Statehelm Caves" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -5146,6 +5196,7 @@
             { QuestObjectiveTarget.RhinoThePerforator, "Rhino The Perforator" },
             { QuestObjectiveTarget.RhinoThePuncturer, "Rhino The Puncturer" },
             { QuestObjectiveTarget.FrogCold90, "Frog Cold 90" },
+            { QuestObjectiveTarget.ZhiaWhim1, "ZhiaWhim #1" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -5493,6 +5544,7 @@
             { RecipeEffect.ResearchIceMagic95, "Research Ice Magic 95" },
             { RecipeEffect.ResearchIceMagic100, "Research Ice Magic 100" },
             { RecipeEffect.DiscoverWordOfPower6, "Discover Word Of Power 6" },
+            { RecipeEffect.TryToStartStatehelmGraveyardEvent, "Try To Start Statehelm Graveyard Event" },
         };
 
         public static Dictionary<RecipeItemKey, string> RecipeItemKeyTextMap { get; } = new Dictionary<RecipeItemKey, string>()
@@ -5726,6 +5778,7 @@
             { RecipeKeyword.MaxEnchanting, "Max Enchanting" },
             { RecipeKeyword.Lint_LevelTooHigh, "Level Too High" },
             { RecipeKeyword.Vampirism, "Vampirism" },
+            { RecipeKeyword.ProphesiedDamageBuffV1, "Prophesied Damage Buff V1" },
         };
 
         public static Dictionary<RecipeParticle, string> RecipeParticleTextMap { get; } = new Dictionary<RecipeParticle, string>()
@@ -6010,6 +6063,7 @@
             { SpecialNpc.SummonedOats, "Summoned Oats" },
             { SpecialNpc.SummonedTundraRyePlant, "Summoned Tundra Rye Plant" },
             { SpecialNpc.CandleMakingBook_Fire, "Candle Making Book (Fire)" },
+            { SpecialNpc.UgilixavNotesB, "Ugilixav Notes B" },
         };
 
         public static Dictionary<Strategy, string> StrategyTextMap { get; } = new Dictionary<Strategy, string>()
@@ -6273,6 +6327,7 @@
             { Deaths.SteppedOnTrap, "Stepped On Trap" },
             { Deaths.ScintillatingFlame, "Scintillating Flame" },
             { Deaths.EmotionalDamage, "Emotional Damage" },
+            { Deaths.EvilHoot, "Evil Hoot" },
 
             // Many Cuts dots: "Discomfort"
         };

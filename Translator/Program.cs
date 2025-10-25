@@ -17,7 +17,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(435);
+        return ParseCurated(436);
     }
 
     private static int ParseCurated(int Version)
@@ -151,10 +151,13 @@ public class Program
         FindNpcSources(ObjectList);
         FindLinks(ObjectList);
 
+        foreach (SpecialNpc specialNpc in typeof(SpecialNpc).GetEnumValues())
+            StringToEnumConversion<SpecialNpc>.SetCustomParsedEnum(specialNpc);
+
         Debug.WriteLine("Running combat parser...");
 
-        // CombatParser CombatParser = new CombatParser();
-        // CombatParser.AnalyzeCachedData(ObjectList);
+        CombatParser CombatParser = new CombatParser();
+        CombatParser.AnalyzeCachedData(ObjectList);
 
         CombatParserEx CombatParserEx = new CombatParserEx(ObjectList);
         CombatParserEx.Analyze();
@@ -1671,7 +1674,7 @@ public class Program
             { MapAreaName.Statehelm, "Statehelm" },
             { MapAreaName.Vidaria, "Vidaria" },
             { MapAreaName.VidariaCaves, "Vidaria Caves" },
-            //{ MapAreaName.BeneathStatehelm, "Beneath Statehelm" },
+            { MapAreaName.StatehelmCaves, "Statehelm Caves" },
         };
 
         Dictionary<MapAreaName, List<PgQuest>> QuestAreaListedTable = new();

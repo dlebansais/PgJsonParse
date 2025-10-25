@@ -184,5 +184,6 @@
         SummonedOats,
         SummonedTundraRyePlant,
         CandleMakingBook_Fire,
+        UgilixavNotesB,
     }
 }

@@ -324,5 +324,6 @@
         ResearchIceMagic95,
         ResearchIceMagic100,
         DiscoverWordOfPower6,
+        TryToStartStatehelmGraveyardEvent,
     }
 }

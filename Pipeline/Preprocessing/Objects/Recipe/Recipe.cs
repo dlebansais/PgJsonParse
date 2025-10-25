@@ -41,6 +41,7 @@ public class Recipe
         RequiredAttributeNonZero = rawRecipe.RequiredAttributeNonZero;
         ResetTimeInSeconds = rawRecipe.ResetTimeInSeconds;
         ResultEffects = ParseResultEffects(rawRecipe.ResultEffects);
+        ResultEffectsThatCanFail = ParseResultEffects(rawRecipe.ResultEffectsThatCanFail);
         ResultItems = Preprocessor.ToSingleOrMultiple(rawRecipe.ResultItems, (RawRecipeItem rawRecipeItem) => new RecipeItem(rawRecipeItem), out ResultItemsFormat);
         RewardAllowBonusXp = rawRecipe.RewardAllowBonusXp;
         RewardSkill = rawRecipe.RewardSkill;
@@ -491,6 +492,7 @@ public class Recipe
     public string? RequiredAttributeNonZero { get; set; }
     public int? ResetTimeInSeconds { get; set; }
     public RecipeResultEffect[]? ResultEffects { get; set; }
+    public RecipeResultEffect[]? ResultEffectsThatCanFail { get; set; }
     public RecipeItem[]? ResultItems { get; set; }
     public bool? RewardAllowBonusXp { get; set; }
     public string? RewardSkill { get; set; }
@@ -537,6 +539,7 @@ public class Recipe
         Result.RequiredAttributeNonZero = RequiredAttributeNonZero;
         Result.ResetTimeInSeconds = ResetTimeInSeconds;
         Result.ResultEffects = ToRawResultEffects(ResultEffects);
+        Result.ResultEffectsThatCanFail = ToRawResultEffects(ResultEffectsThatCanFail);
         Result.ResultItems = Preprocessor.FromSingleOrMultiple(ResultItems, (RecipeItem recipeItem) => recipeItem.ToRawRecipeItem(), ResultItemsFormat);
         Result.RewardAllowBonusXp = RewardAllowBonusXp;
         Result.RewardSkill = RewardSkill;

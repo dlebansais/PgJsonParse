@@ -884,6 +884,27 @@ public class ParserQuestReward : Parser
                                         NewItem.Special = "Increment Aktaari Quest Counter";
                                         Result = true;
                                         break;
+
+                                    case "ZhiasBlessing1":
+                                        NewItem.Special = "Zhias Blessing #1";
+                                        Result = true;
+                                        break;
+
+                                    case "ZhiasBlessing2":
+                                        NewItem.Special = "Zhias Blessing #2";
+                                        Result = true;
+                                        break;
+
+                                    case "ZhiasBlessing3":
+                                        NewItem.Special = "Zhias Blessing #3";
+                                        Result = true;
+                                        break;
+
+                                    case "ZhiasBlessing4":
+                                        NewItem.Special = "Zhias Blessing #4";
+                                        Result = true;
+                                        break;
+
                                     default:
                                         Result = Program.ReportFailure($"Unknown effect: {ValueString}");
                                         break;

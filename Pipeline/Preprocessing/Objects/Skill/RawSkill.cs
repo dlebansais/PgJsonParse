@@ -4,9 +4,13 @@ public class RawSkill
 {
     public string? ActiveAdvancementTable { get; set; }
     public SkillAdvancementHintCollection? AdvancementHints { get; set; }
+    public string[]? AssociatedAppearances { get; set; }
+    public string[]? AssociatedItemKeywords { get; set; }
     public bool? AuxCombat { get; set; }
     public bool? Combat { get; set; }
     public string? Description { get; set; }
+    public string[]? DisallowedAppearances { get; set; }
+    public string[]? DisallowedItemKeywords { get; set; }
     public int? GuestLevelCap { get; set; }
     public bool? HideWhenZero { get; set; }
     public int? Id { get; set; }
@@ -15,6 +19,7 @@ public class RawSkill
     public bool? IsUmbrellaSkill { get; set; }
     public int? MaxBonusLevels { get; set; }
     public string? Name { get; set; }
+    public string? ParagonEnabledInteractionFlag { get; set; }
     public string[]? Parents { get; set; }
     public string? PassiveAdvancementTable { get; set; }
     public string[]? RecipeIngredientKeywords { get; set; }

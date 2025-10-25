@@ -57,6 +57,11 @@
         public bool SkillLevelDisparityApplies { get { return (BoolValues & (SkillLevelDisparityAppliesNotNull + SkillLevelDisparityAppliesIsTrue)) == (SkillLevelDisparityAppliesNotNull + SkillLevelDisparityAppliesIsTrue); } }
         public bool? RawSkillLevelDisparityApplies { get { return ((BoolValues & SkillLevelDisparityAppliesNotNull) != 0) ? (BoolValues & SkillLevelDisparityAppliesIsTrue) != 0 : null; } }
         public void SetSkillLevelDisparityApplies(bool value) { BoolValues |= (BoolValues & ~(SkillLevelDisparityAppliesNotNull + SkillLevelDisparityAppliesIsTrue)) | ((value ? SkillLevelDisparityAppliesIsTrue : 0) + SkillLevelDisparityAppliesNotNull); }
+        public List<Appearance> AssociatedAppearanceList { get; set; } = new List<Appearance>();
+        public List<ItemKeyword> AssociatedItemKeywordList { get; set; } = new List<ItemKeyword>();
+        public List<Appearance> DisallowedAppearanceList { get; set; } = new List<Appearance>();
+        public List<ItemKeyword> DisallowedItemKeywordList { get; set; } = new List<ItemKeyword>();
+        public InteractionFlag ParagonEnabledInteractionFlag { get; set; }
 
         public Dictionary<ItemSlot, List<string>> AssociationTablePower { get; set; } = new Dictionary<ItemSlot, List<string>>();
         public List<string> AssociationListAbility { get; set; } = new List<string>();

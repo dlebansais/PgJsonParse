@@ -283,6 +283,7 @@ public partial class CombatParser
         AnalyzeRemainingEffects(AbilityNameList, NameToKeyword, UnmatchedEffectList, AnalyzedPowerKeyToCompleteEffectTable, out List<string> EffectKeyList);
 
         StringToEnumConversion<GameCombatSkill>.SetCustomParsedEnum(GameCombatSkill.SpiritFox);
+        StringToEnumConversion<GameCombatSkill>.SetCustomParsedEnum(GameCombatSkill.WeatherWitching);
         CheckAllSentencesUsed();
 
         if (WriteFile)

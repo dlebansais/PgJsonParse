@@ -12,5 +12,6 @@
         Rabbit,
         Fox,
         Butterfly,
+        Normal,
     }
 }

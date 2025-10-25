@@ -120,6 +120,21 @@ public class ParserSkill : Parser
                 case "XpEarnedAttributes":
                     Result = Inserter<PgAttribute>.AddPgObjectArrayByKey<PgAttribute>(item.XpEarnedAttributeList, Value);
                     break;
+                case "AssociatedAppearances":
+                    Result = StringToEnumConversion<Appearance>.TryParseList(Value, item.AssociatedAppearanceList);
+                    break;
+                case "AssociatedItemKeywords":
+                    Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.AssociatedItemKeywordList);
+                    break;
+                case "DisallowedAppearances":
+                    Result = StringToEnumConversion<Appearance>.TryParseList(Value, item.DisallowedAppearanceList);
+                    break;
+                case "DisallowedItemKeywords":
+                    Result = StringToEnumConversion<ItemKeyword>.TryParseList(Value, item.DisallowedItemKeywordList);
+                    break;
+                case "ParagonEnabledInteractionFlag":
+                    Result = StringToEnumConversion<InteractionFlag>.SetEnum((InteractionFlag valueEnum) => item.ParagonEnabledInteractionFlag = valueEnum, Value);
+                    break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
                     break;

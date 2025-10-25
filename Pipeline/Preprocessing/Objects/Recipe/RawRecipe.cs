@@ -26,6 +26,7 @@ public class RawRecipe
     public int? ResetTimeInSeconds { get; set; }
     public string? RequiredAttributeNonZero { get; set; }
     public string[]? ResultEffects { get; set; }
+    public string[]? ResultEffectsThatCanFail { get; set; }
     public object? ResultItems { get; set; }
     public bool? RewardAllowBonusXp { get; set; }
     public string? RewardSkill { get; set; }

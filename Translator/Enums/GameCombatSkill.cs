@@ -32,7 +32,5 @@
         WeatherWitching,
         Werewolf,
         Lycanthropy,
-        // FairyMagic,
-        // Axe
     }
 }

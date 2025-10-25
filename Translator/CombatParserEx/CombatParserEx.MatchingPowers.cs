@@ -17,12 +17,21 @@ internal partial class CombatParserEx
             PgPower ItemPower = Entry.Key;
             List<PgEffect> ItemEffectList = Entry.Value;
 
-            if (!KnownCombatPowers.KnownMatchingPowers.ContainsKey(ItemPower.Key))
+            if (AnalyzeMatchingPowersAndEffects(ItemPower, ItemEffectList, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
             {
-                if (AnalyzeMatchingPowersAndEffects(ItemPower, ItemEffectList, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
+                stringKeyTable.Add(stringKeyArray);
+                powerKeyToCompleteEffectTable.Add(ModEffectArray);
+
+                foreach (PgCombatModEx pgCombatModEx in pgCombatModCollectionEx)
                 {
-                    stringKeyTable.Add(stringKeyArray);
-                    powerKeyToCompleteEffectTable.Add(ModEffectArray);
+                    foreach (PgPermanentModEffectEx pgPermanentModEffectEx in pgCombatModEx.PermanentEffects)
+                        StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(pgPermanentModEffectEx.Keyword);
+                    foreach (PgCombatModEffectEx pgCombatModEffectEx in pgCombatModEx.DynamicEffects)
+                        StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(pgCombatModEffectEx.Keyword);
+                }
+
+                if (!KnownCombatPowers.KnownMatchingPowers.ContainsKey(ItemPower.Key))
+                {
                     pgCombatModCollectionEx.Display(ItemPower.Key);
                 }
             }
@@ -2547,6 +2556,8 @@ internal partial class CombatParserEx
         for (int i = 0; i< AllEffects.Count; i++)
         {
             PgCombatEffectEx CombatEffect = AllEffects[i];
+            StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(CombatEffect.Keyword);
+
             if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
             {
                 Debug.Assert(NewCondition != CombatCondition.Internal_None);
@@ -2597,6 +2608,7 @@ internal partial class CombatParserEx
         {
             PgCombatEffectEx CombatEffect = AllEffects[i];
             CombatKeywordEx CombatKeyword = CombatEffect.Keyword;
+            StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(CombatKeyword);
 
             if (CombatKeyword == CombatKeywordEx.BecomeBurst && !float.IsNaN(TargetRange) && ConditionList.TrueForAll(condition => condition != CombatCondition.MinimumDistance))
             {
@@ -2708,7 +2720,6 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.DamageBoost ||
                                    CombatKeyword == CombatKeywordEx.BaseDamageBoost ||
                                    CombatKeyword == CombatKeywordEx.DamageBoostDouble ||
-                                   CombatKeyword == CombatKeywordEx.DamageBoostDoubleDirect ||
                                    CombatKeyword == CombatKeywordEx.DealArmorDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthAndArmorDamage ||
@@ -3045,6 +3056,7 @@ internal partial class CombatParserEx
         for (int i = 0; i < staticCombatEffectList.Count; i++)
         {
             PgCombatEffectEx CombatEffect = staticCombatEffectList[i];
+            StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(CombatEffect.Keyword);
 
             if (CombatEffect.Keyword == CombatKeywordEx.EffectDuration)
             {
@@ -3118,6 +3130,7 @@ internal partial class CombatParserEx
                 staticCombatEffectList.RemoveAt(i);
                 break;
             }
+            /*
             else if (CombatEffect.Keyword == CombatKeywordEx.NextEvade)
             {
                 DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
@@ -3125,7 +3138,7 @@ internal partial class CombatParserEx
 
                 staticCombatEffectList.RemoveAt(i);
                 break;
-            }
+            }*/
             else if (CombatEffect.Keyword == CombatKeywordEx.IfTargetDies)
             {
                 Keyword = CombatKeywordEx.GiveBuffOneUse;
@@ -3175,6 +3188,8 @@ internal partial class CombatParserEx
 
         Debug.Assert(Keyword != CombatKeywordEx.Internal_None);
         Debug.Assert(!float.IsNaN(DurationInSeconds) || !float.IsNaN(RecurringDelay) || Keyword == CombatKeywordEx.WhilePlayingSong);
+
+        StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(Keyword);
 
         // Inverse static & dynamic
         BuildMatchingModEffect_001(description, effect, isGolemMinion: false, targetAbilityList, staticCombatEffectList, new(), targetAbilityList, out pgCombatModEx);
@@ -3314,6 +3329,8 @@ internal partial class CombatParserEx
         {
             PgCombatEffectEx CombatEffect = dynamicCombatEffectList[i];
             CombatKeywordEx CombatKeyword = CombatEffect.Keyword;
+            StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(CombatKeyword);
+
             bool CanApplyModifier = ignoreModifierIndex < 0 ||
                                     ((i != (ignoreModifierIndex % 1000)) &&
                                      (ignoreModifierIndex < 1000 || (i != ((ignoreModifierIndex / 1000) % 1000))));
@@ -3442,6 +3459,7 @@ internal partial class CombatParserEx
         {
             PgCombatEffectEx CombatEffect = combatEffectList[i];
             CombatKeywordEx CombatKeyword = CombatEffect.Keyword;
+            StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(CombatKeyword);
 
             if (CombatKeyword == CombatKeywordEx.ApplyWithChance ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelf ||

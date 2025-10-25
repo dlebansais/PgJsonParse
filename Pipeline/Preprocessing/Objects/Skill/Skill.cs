@@ -9,9 +9,13 @@ public class Skill
     {
         ActiveAdvancementTable = rawSkill.ActiveAdvancementTable;
         AdvancementHints = rawSkill.AdvancementHints;
+        AssociatedAppearances = rawSkill.AssociatedAppearances;
+        AssociatedItemKeywords = rawSkill.AssociatedItemKeywords;
         AuxCombat = rawSkill.AuxCombat;
         Combat = rawSkill.Combat;
         Description = rawSkill.Description;
+        DisallowedAppearances = rawSkill.DisallowedAppearances;
+        DisallowedItemKeywords = rawSkill.DisallowedItemKeywords;
         GuestLevelCap = rawSkill.GuestLevelCap;
         HideWhenZero = rawSkill.HideWhenZero;
         Id = rawSkill.Id;
@@ -21,6 +25,7 @@ public class Skill
         MaxBonusLevels = rawSkill.MaxBonusLevels;
         Name = rawSkill.Name;
         Parents = rawSkill.Parents;
+        ParagonEnabledInteractionFlag = rawSkill.ParagonEnabledInteractionFlag;
         PassiveAdvancementTable = rawSkill.PassiveAdvancementTable;
         RecipeIngredientKeywords = rawSkill.RecipeIngredientKeywords;
         Reports = rawSkill.Reports;
@@ -53,9 +58,13 @@ public class Skill
 
     public string? ActiveAdvancementTable { get; set; }
     public SkillAdvancementHintCollection? AdvancementHints { get; set; }
+    public string[]? AssociatedAppearances { get; set; }
+    public string[]? AssociatedItemKeywords { get; set; }
     public bool? AuxCombat { get; set; }
     public bool? Combat { get; set; }
     public string? Description { get; set; }
+    public string[]? DisallowedAppearances { get; set; }
+    public string[]? DisallowedItemKeywords { get; set; }
     public int? GuestLevelCap { get; set; }
     public bool? HideWhenZero { get; set; }
     public int? Id { get; set; }
@@ -64,6 +73,7 @@ public class Skill
     public bool? IsUmbrellaSkill { get; set; }
     public int? MaxBonusLevels { get; set; }
     public string? Name { get; set; }
+    public string? ParagonEnabledInteractionFlag { get; set; }
     public string[]? Parents { get; set; }
     public string? PassiveAdvancementTable { get; set; }
     public string[]? RecipeIngredientKeywords { get; set; }
@@ -81,9 +91,13 @@ public class Skill
 
         Result.ActiveAdvancementTable = ActiveAdvancementTable;
         Result.AdvancementHints = AdvancementHints;
+        Result.AssociatedAppearances = AssociatedAppearances;
+        Result.AssociatedItemKeywords = AssociatedItemKeywords;
         Result.AuxCombat = AuxCombat;
         Result.Combat = Combat;
         Result.Description = Description;
+        Result.DisallowedAppearances = DisallowedAppearances;
+        Result.DisallowedItemKeywords = DisallowedItemKeywords;
         Result.GuestLevelCap = GuestLevelCap;
         Result.HideWhenZero = HideWhenZero;
         Result.Id = Id;
@@ -93,6 +107,7 @@ public class Skill
         Result.MaxBonusLevels = MaxBonusLevels;
         Result.Name = Name;
         Result.Parents = Parents;
+        Result.ParagonEnabledInteractionFlag = ParagonEnabledInteractionFlag;
         Result.PassiveAdvancementTable = PassiveAdvancementTable;
         Result.Reports = Reports;
         Result.Rewards = Rewards;

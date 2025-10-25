@@ -14,15 +14,21 @@ internal partial class CombatParserEx
     {
         foreach (PgPower ItemPower in unmatchedPowerList)
         {
-            if (!KnownCombatPowers.KnownUnmatchedPowers.ContainsKey(ItemPower.Key))
+            if (AnalyzeRemainingPowers(ItemPower, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
             {
-                if (AnalyzeRemainingPowers(ItemPower, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
+                stringKeyTable.Add(stringKeyArray);
+                analyzedPowerKeyToCompleteEffectTable.Add(ModEffectArray);
+
+                foreach (PgCombatModEx pgCombatModEx in pgCombatModCollectionEx)
                 {
-                    stringKeyTable.Add(stringKeyArray);
-                    analyzedPowerKeyToCompleteEffectTable.Add(ModEffectArray);
-                    pgCombatModCollectionEx.Display(ItemPower.Key);
+                    foreach (PgPermanentModEffectEx pgPermanentModEffectEx in pgCombatModEx.PermanentEffects)
+                        StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(pgPermanentModEffectEx.Keyword);
+                    foreach (PgCombatModEffectEx pgCombatModEffectEx in pgCombatModEx.DynamicEffects)
+                        StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(pgCombatModEffectEx.Keyword);
                 }
 
+                if (!KnownCombatPowers.KnownUnmatchedPowers.ContainsKey(ItemPower.Key))
+                    pgCombatModCollectionEx.Display(ItemPower.Key);
             }
         }
     }
@@ -758,7 +764,6 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.DamageBoost ||
                                    CombatKeyword == CombatKeywordEx.BaseDamageBoost ||
                                    CombatKeyword == CombatKeywordEx.DamageBoostDouble ||
-                                   CombatKeyword == CombatKeywordEx.DamageBoostDoubleDirect ||
                                    CombatKeyword == CombatKeywordEx.DealArmorDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthDamage ||
                                    CombatKeyword == CombatKeywordEx.DealHealthAndArmorDamage ||
