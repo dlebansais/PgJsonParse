@@ -531,7 +531,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("If the target of @ dies", CombatKeywordEx.IfTargetDies),
 
-        new SentenceEx("When you are hit by a monster's Rage Attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextRageAttackHit }),
+        new SentenceEx("When you are hit by a monster's Rage Attack", CombatKeywordEx.RequireHitByRageAttack),
 
         new SentenceEx("Next attack that hit you", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextHit }),
         new SentenceEx("When you are hit", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextHit }),
@@ -901,8 +901,6 @@ internal partial class CombatParserEx
         new SentenceEx("This amount is further increased by treasure that boost", CombatKeywordEx.ApplyOtherMods),
 
         new SentenceEx("You mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)", CombatKeywordEx.ImproveArmorMitigation),
-
-        new SentenceEx("When you are hit by a monster's Rage Attack", CombatKeywordEx.RequireHitByRageAttack),
 
         new SentenceEx("These values are doubled", CombatKeywordEx.DoubleMitigation),
 

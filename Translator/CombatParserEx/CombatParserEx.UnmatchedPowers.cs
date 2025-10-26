@@ -421,7 +421,6 @@ internal partial class CombatParserEx
             case "Item_40405_0":
             case "Item_40404_0":
             case "11403":
-            case "11405":
             case "11604":
                 BuildUnmatchedMod_004(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
@@ -630,6 +629,7 @@ internal partial class CombatParserEx
             case "11472":
             case "11552":
             case "11602":
+            case "11405":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
@@ -1043,13 +1043,6 @@ internal partial class CombatParserEx
             else if (CombatEffect.Keyword == CombatKeywordEx.NextHit)
             {
                 Keyword = CombatKeywordEx.GiveBuffOneHit;
-
-                allEffects.RemoveAt(i);
-                i--;
-            }
-            else if (CombatEffect.Keyword == CombatKeywordEx.NextRageAttackHit)
-            {
-                Keyword = CombatKeywordEx.GiveBuffOneRageAttackHit;
 
                 allEffects.RemoveAt(i);
                 i--;

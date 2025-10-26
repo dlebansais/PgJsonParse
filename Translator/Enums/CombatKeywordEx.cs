@@ -153,7 +153,6 @@
         NextAttack,
         NextRageAttack,
         NextHit,
-        NextRageAttackHit,
         NextEvade,
         OnIncomingMeleeAttack,
         TargetRange,

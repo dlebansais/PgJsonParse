@@ -3133,14 +3133,6 @@ internal partial class CombatParserEx
                 staticCombatEffectList.RemoveAt(i);
                 break;
             }
-            else if (CombatEffect.Keyword == CombatKeywordEx.NextRageAttackHit)
-            {
-                DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
-                Keyword = CombatKeywordEx.GiveBuffOneRageAttackHit;
-
-                staticCombatEffectList.RemoveAt(i);
-                break;
-            }
             /*
             else if (CombatEffect.Keyword == CombatKeywordEx.NextEvade)
             {
