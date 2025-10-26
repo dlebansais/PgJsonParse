@@ -179,6 +179,7 @@ internal partial class CombatParserEx
     private const AbilityKeyword Internal_DwarvenSuitBonus = (AbilityKeyword)0xFFF8;
     private const AbilityKeyword Internal_WereolfSuitBonus = (AbilityKeyword)0xFFF7;
     private const AbilityKeyword Internal_JamesEltibuleSuitBonus = (AbilityKeyword)0xFFF6;
+    private const AbilityKeyword Internal_OtherAbilities = (AbilityKeyword)0xFFF5;
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
     {
         AbilityKeyword.NiceAttack,
@@ -244,6 +245,7 @@ internal partial class CombatParserEx
         AbilityKeyword.Minigolem,
         AbilityKeyword.MeleeKnife,
         AbilityKeyword.Archery,
+        AbilityKeyword.Attack,
         Internal_VileBlood,
         Internal_NonBasic,
         Internal_HammerExceptPound,
@@ -254,6 +256,7 @@ internal partial class CombatParserEx
         Internal_DwarvenSuitBonus,
         Internal_WereolfSuitBonus,
         Internal_JamesEltibuleSuitBonus,
+        Internal_OtherAbilities,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
     {
@@ -482,6 +485,8 @@ internal partial class CombatParserEx
         { "Werewolf Armor suit bonus", new List<AbilityKeyword>() { Internal_WereolfSuitBonus } },
         { "James Eltibule's Armors' suit bonus", new List<AbilityKeyword>() { Internal_JamesEltibuleSuitBonus } },
         { "Archery attack", new List<AbilityKeyword>() { AbilityKeyword.Archery } },
+        { "Other ability", new List<AbilityKeyword>() { Internal_OtherAbilities } },
+        { "All your attack", new List<AbilityKeyword>() { AbilityKeyword.Attack } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {
@@ -548,6 +553,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireNotAttacked, CombatCondition.UntilAttacked },
         { CombatKeywordEx.RequirePlayingSong, CombatCondition.WhilePlayingSong },
         { CombatKeywordEx.RequireBloodMistForm, CombatCondition.WhileInBloodMistForm },
+        { CombatKeywordEx.RequireBulwarkMode, CombatCondition.WhileInBulwarkMode },
         { CombatKeywordEx.RequireSameTarget, CombatCondition.SpecificTarget },
         { CombatKeywordEx.RequireTargetOfAbility, CombatCondition.TargetOfAbility },
         { CombatKeywordEx.RequireDirectDamageKillShot, CombatCondition.DirectDamageKillShot },

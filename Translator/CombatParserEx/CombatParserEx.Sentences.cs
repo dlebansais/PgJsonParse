@@ -414,6 +414,7 @@ internal partial class CombatParserEx
         new SentenceEx("Target take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Target to take %f less damage from attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Target to take %f less damage from #D attack", CombatKeywordEx.AddMitigation),
+        new SentenceEx("Mitigate %f elemental damage (#D)", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f of all #D damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f damage from #D attacks", CombatKeywordEx.AddMitigation),
         new SentenceEx("Grant you %f mitigation vs #D", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
@@ -440,6 +441,7 @@ internal partial class CombatParserEx
         new SentenceEx("Mitigate %f more against Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Mitigation vs all attack by Elites %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Against Elite enemies, mitigate %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
+        new SentenceEx("Against Elite attackers, mitigate %f more", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("Mitigate %f of all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("%f Mitigation from all Elite attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }),
         new SentenceEx("All Elite attack deal %f damage to you.", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
@@ -529,7 +531,10 @@ internal partial class CombatParserEx
 
         new SentenceEx("If the target of @ dies", CombatKeywordEx.IfTargetDies),
 
+        new SentenceEx("When you are hit by a monster's Rage Attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextRageAttackHit }),
+
         new SentenceEx("Next attack that hit you", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextHit }),
+        new SentenceEx("When you are hit", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextHit }),
 
         new SentenceEx("Cause your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
         new SentenceEx("Your next attack", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
@@ -900,5 +905,7 @@ internal partial class CombatParserEx
         new SentenceEx("When you are hit by a monster's Rage Attack", CombatKeywordEx.RequireHitByRageAttack),
 
         new SentenceEx("These values are doubled", CombatKeywordEx.DoubleMitigation),
+
+        new SentenceEx("While Bulwark-Mode is active", CombatKeywordEx.RequireBulwarkMode),
     };
 }

@@ -10,11 +10,25 @@ using Translator;
 
 internal partial class CombatParserEx
 {
+    public static bool DebugMode = true;
+
     private void AnalyzeRemainingPowers(List<string[]> stringKeyTable, List<PgModEffectCollectionEx> analyzedPowerKeyToCompleteEffectTable)
     {
         foreach (PgPower ItemPower in unmatchedPowerList)
         {
-            if (AnalyzeRemainingPowers(ItemPower, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
+            if (DebugMode)
+            {
+                if (!KnownCombatPowers.KnownUnmatchedPowers.ContainsKey(ItemPower.Key))
+                {
+                    if (AnalyzeRemainingPowers(ItemPower, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
+                    {
+                        stringKeyTable.Add(stringKeyArray);
+                        analyzedPowerKeyToCompleteEffectTable.Add(ModEffectArray);
+                        pgCombatModCollectionEx.Display(ItemPower.Key);
+                    }
+                }
+            }
+            else if (AnalyzeRemainingPowers(ItemPower, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
             {
                 stringKeyTable.Add(stringKeyArray);
                 analyzedPowerKeyToCompleteEffectTable.Add(ModEffectArray);
@@ -406,6 +420,9 @@ internal partial class CombatParserEx
             case "Item_40406_0":
             case "Item_40405_0":
             case "Item_40404_0":
+            case "11403":
+            case "11405":
+            case "11604":
                 BuildUnmatchedMod_004(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
             case "11051":
@@ -422,6 +439,21 @@ internal partial class CombatParserEx
             case "11102":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1], modCombatList[2], modCombatList[3] }, targetAbilityList, out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[4], modCombatList[5] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "11354":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1] }, targetAbilityList, out pgCombatModEx);
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1], modCombatList[3] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "11401":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0] }, new(), out pgCombatModEx);
+                BuildUnmatchedMod_001(description, targetAbilityList, new() { modCombatList[1] }, new(), out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "11553":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0] }, new(), out pgCombatModEx);
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[1], modCombatList[2] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "Item_55613_0":
@@ -590,6 +622,14 @@ internal partial class CombatParserEx
             case "11253":
             case "11351":
             case "11352":
+            case "11402":
+            case "11451":
+            case "11453":
+            case "11454":
+            case "11471":
+            case "11472":
+            case "11552":
+            case "11602":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
@@ -616,6 +656,7 @@ internal partial class CombatParserEx
             DurationInSeconds = DurationInMinutes * 60;
         float DurationOverTime = GetValueAndRemove(allEffects, CombatKeywordEx.EffectOverTime);
         bool IsPerSecond = allEffects.Exists(Item => Item.Keyword == CombatKeywordEx.EffectEverySecond);
+        float RecurringDelay = GetValueAndRemove(allEffects, CombatKeywordEx.RecurringEffect);
         float TargetRange = GetValueAndRemove(allEffects, CombatKeywordEx.TargetRange);
 
         PgCombatConditionCollectionEx ConditionList = new();
@@ -722,6 +763,7 @@ internal partial class CombatParserEx
             if (DamageType == GameDamageType.Internal_None && IsFireDamage)
                 DamageType = GameDamageType.Fire;
 
+            bool CanHaveSpecialDuration = false;
             if (OverTimeEffects.TryGetValue(CombatKeyword, out CombatKeywordEx CombatKeywordOverTime))
             {
                 if (float.IsNaN(DurationInSeconds) && !float.IsNaN(DurationOverTime))
@@ -729,13 +771,18 @@ internal partial class CombatParserEx
                     DurationInSeconds = DurationOverTime;
                     CombatKeyword = CombatKeywordOverTime;
                 }
+                else if (CombatKeywordOverTime == CombatKeywordEx.RestoreArmorOverTime && !float.IsNaN(DurationInSeconds) && float.IsNaN(DurationOverTime))
+                {
+                    CanHaveSpecialDuration = true;
+                }
                 else if (IsPerSecond)
                 {
                     CombatKeyword = CombatKeywordOverTime;
                 }
             }
 
-            bool CanHaveDuration = CombatKeyword == CombatKeywordEx.AddSprintSpeed ||
+            bool CanHaveDuration = CanHaveSpecialDuration  ||
+                                   CombatKeyword == CombatKeywordEx.AddSprintSpeed ||
                                    CombatKeyword == CombatKeywordEx.AddFlySpeed ||
                                    CombatKeyword == CombatKeywordEx.AddSwimSpeed ||
                                    CombatKeyword == CombatKeywordEx.AddOutOfCombatSpeed ||
@@ -836,7 +883,7 @@ internal partial class CombatParserEx
                                  (CombatKeyword != CombatKeywordEx.AddMitigationDirect) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationIndirect) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationBurst) &&
-                                 (CombatKeyword != CombatKeywordEx.AddMitigationPhysical) &&
+                                 //(CombatKeyword != CombatKeywordEx.AddMitigationPhysical) &&
                                  (CombatKeyword != CombatKeywordEx.AddMitigationElemental) &&
                                  (CombatKeyword != CombatKeywordEx.IncreaseMeleePowerCost);
 
@@ -887,6 +934,7 @@ internal partial class CombatParserEx
                 RandomChance = CanApplyModifier ? RandomChance : float.NaN,
                 DelayInSeconds = CanHaveDelay && CanApplyModifier ? DelayInSeconds : float.NaN,
                 DurationInSeconds = CanHaveDuration && CanApplyModifier ? DurationInSeconds : float.NaN,
+                RecurringDelay = CanApplyModifier ? RecurringDelay : float.NaN,
                 Target = CanHaveTarget && CanApplyModifier ? Target : CombatTarget.Internal_None,
                 TargetRange = CanApplyModifier ? TargetRange : float.NaN,
                 TargetAbilityList = TargetAbilityList,
@@ -988,6 +1036,20 @@ internal partial class CombatParserEx
             else if (CombatEffect.Keyword == CombatKeywordEx.NextAttack)
             {
                 Keyword = CombatKeywordEx.GiveBuffOneAttack;
+
+                allEffects.RemoveAt(i);
+                i--;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.NextHit)
+            {
+                Keyword = CombatKeywordEx.GiveBuffOneHit;
+
+                allEffects.RemoveAt(i);
+                i--;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.NextRageAttackHit)
+            {
+                Keyword = CombatKeywordEx.GiveBuffOneRageAttackHit;
 
                 allEffects.RemoveAt(i);
                 i--;

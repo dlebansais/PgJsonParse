@@ -8,6 +8,7 @@ public enum CombatCondition
     UntilAttacked,
     WhilePlayingSong,
     WhileInBloodMistForm,
+    WhileInBulwarkMode,
     SpecificTarget,
     TargetOfAbility,
     DirectDamageKillShot,

@@ -376,6 +376,9 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "while in Blood Mist form", "while in Blood-Mist form", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "vile blood eruptions from Blood Mist", "vile blood eruptions from Blood-Mist", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Blood Mist Eruption", "Blood-Mist Eruption", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "while Bulwark Mode is active", "while Bulwark-Mode is active", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "while Bulwark Mode is enabled", "while Bulwark-Mode is active", out _, ref IndexFound);
+
         RemoveDecorativeText(ref text, "(This cannot happen more than once per second", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "vile blood: a 5m Burst", "vile blood: a Burst", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Poison Vulnerability and Electricity Vulnerability", "Poison and Electricity Vulnerability", out _, ref IndexFound);
@@ -633,7 +636,7 @@ internal partial class CombatParserEx
         foreach (string AbilityName in abilityNameList)
             if (nameToKeyword.ContainsKey(AbilityName))
             {
-                if (AbilityName.Contains("Ilth Hale"))
+                if (AbilityName.Contains("Other abilities"))
                 {
                 }
 
@@ -3126,6 +3129,14 @@ internal partial class CombatParserEx
             {
                 DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
                 Keyword = CombatKeywordEx.GiveBuffOneHit;
+
+                staticCombatEffectList.RemoveAt(i);
+                break;
+            }
+            else if (CombatEffect.Keyword == CombatKeywordEx.NextRageAttackHit)
+            {
+                DurationInSeconds = (effect.Duration == -2) ? 30 : throw new InvalidOperationException("Unknown effect duration");
+                Keyword = CombatKeywordEx.GiveBuffOneRageAttackHit;
 
                 staticCombatEffectList.RemoveAt(i);
                 break;
