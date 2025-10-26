@@ -40,8 +40,7 @@ public static class Inserter<T>
             {
             }
 
-            Program.ReportFailure($"Key '{ValueKey}' is not a known key", errorControl);
-            ValueKey = KeyTable.Keys.First();
+            return Program.ReportFailure($"Key '{ValueKey}' is not a known key", errorControl);
         }
 
         if (!(KeyTable[ValueKey].Item is T AsLink))
@@ -258,7 +257,10 @@ public static class Inserter<T>
         NpcLocation.NpcArea = areaName;
 
         if (Inserter<PgNpc>.SetItemByKey((PgNpc valueNpc) => ParsedNpc = valueNpc, npcId, ErrorControl.IgnoreIfNotFound))
+        {
             NpcLocation.Npc_Key = PgObject.GetItemKey(ParsedNpc);
+            NpcLocation.NpcName = ParsedNpc.Name;
+        }
         else if (StringToEnumConversion<SpecialNpc>.TryParse(npcId, out NpcEnum, ErrorControl.IgnoreIfNotFound))
             NpcLocation.NpcEnum = NpcEnum;
         else

@@ -151,9 +151,6 @@ public class Program
         FindNpcSources(ObjectList);
         FindLinks(ObjectList);
 
-        foreach (SpecialNpc specialNpc in typeof(SpecialNpc).GetEnumValues())
-            StringToEnumConversion<SpecialNpc>.SetCustomParsedEnum(specialNpc);
-
         Debug.WriteLine("Running combat parser...");
 
         CombatParser CombatParser = new CombatParser();

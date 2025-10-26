@@ -588,7 +588,7 @@ public class Generate
         if (!typeIndexTable.ContainsKey(Type))
             typeIndexTable.Add(Type, new List<string>());
 
-        if (GetObjectIndexContent(Item, Type, 2, out string Key, out string Content))
+        if (GetObjectIndexContent(Item, Type, 3, out string Key, out string Content))
         {
             Debug.Assert(Key != null);
 
