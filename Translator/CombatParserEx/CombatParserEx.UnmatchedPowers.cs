@@ -383,6 +383,13 @@ internal partial class CombatParserEx
 
         switch (powerKey)
         {
+            case "1204":
+            case "13017":
+            case "13153":
+            case "13202":
+            case "13252":
+                BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
+                break;
             case "11014":
             case "11015":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
@@ -453,6 +460,11 @@ internal partial class CombatParserEx
             case "11553":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0] }, new(), out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[1], modCombatList[2] }, new(), out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "11651":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1] }, new(), out pgCombatModEx);
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[2], modCombatList[3] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "Item_55613_0":
@@ -630,9 +642,32 @@ internal partial class CombatParserEx
             case "11552":
             case "11602":
             case "11405":
+            case "11704":
+            case "11705":
+            case "12334":
+            case "1253":
+            case "13005":
+            case "13007":
+            case "13011":
+            case "13052":
+            case "13058":
+            case "13101":
+            case "13102":
+            case "13203":
+            case "13401":
+            case "13402":
+            case "1353":
+            case "14004":
+            case "14006":
+            case "14007":
+            case "14012":
+            case "14013":
+            case "14015":
+            case "14016":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
+            case "13006":
             default:
                 pgCombatModEx = new() { Description = description, DynamicEffects = new(), PermanentEffects = new() };
                 //BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
@@ -792,6 +827,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.RestoreHealthOrArmorOverTime ||
                                    CombatKeyword == CombatKeywordEx.DamageOverTimeBoost ||
                                    CombatKeyword == CombatKeywordEx.HealthDamageOverTimeBoost ||
+                                   CombatKeyword == CombatKeywordEx.ArmorDamageOverTimeBoost ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxHealth ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxArmor ||
                                    CombatKeyword == CombatKeywordEx.IncreaseMaxPower ||

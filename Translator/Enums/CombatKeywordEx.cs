@@ -60,6 +60,7 @@
         AddMitigationPhysical,
         AddMitigationElemental,
         AddArmorBasedMitigation,
+        AddMitigationVsPets,
         ChanceToConsume,
         SelfStun,
         MaxMitigatedDamageLimit,
@@ -121,6 +122,7 @@
         FreeMovementWhileLeaping,
         IncreaseDeathAvoidance,
         TurnPowerToHealth,
+        TurnArmorToPower,
         NoDispel,
         RestoreCrystalIce,
         VileBloodDamage,
@@ -134,6 +136,7 @@
         ApplyOtherMods,
         ImproveArmorMitigation,
         DoubleMitigation,
+        CoverWithInsects,
 
         // Other effects
         ApplyWithChance,
@@ -232,6 +235,7 @@
         RageAttackBoostOverTime,
         DamageOverTimeBoost,
         HealthDamageOverTimeBoost,
+        ArmorDamageOverTimeBoost,
         RandomDamageBoost,
         SelfDamageOverTime,
         FlamingSwordDamageOverTime,

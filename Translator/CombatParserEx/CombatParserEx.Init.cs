@@ -180,6 +180,7 @@ internal partial class CombatParserEx
     private const AbilityKeyword Internal_WereolfSuitBonus = (AbilityKeyword)0xFFF7;
     private const AbilityKeyword Internal_JamesEltibuleSuitBonus = (AbilityKeyword)0xFFF6;
     private const AbilityKeyword Internal_OtherAbilities = (AbilityKeyword)0xFFF5;
+    private const AbilityKeyword Internal_HammerRestoreArmor = (AbilityKeyword)0xFFF4;
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
     {
         AbilityKeyword.NiceAttack,
@@ -257,6 +258,7 @@ internal partial class CombatParserEx
         Internal_WereolfSuitBonus,
         Internal_JamesEltibuleSuitBonus,
         Internal_OtherAbilities,
+        Internal_HammerRestoreArmor,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
     {
@@ -433,6 +435,7 @@ internal partial class CombatParserEx
         { "All Shield attack", new List<AbilityKeyword>() { AbilityKeyword.Shield } },
         { "All Hammer attack except for Pound", new List<AbilityKeyword>() { Internal_HammerExceptPound } },
         { "Hammer attack", new List<AbilityKeyword>() { AbilityKeyword.HammerAttack } },
+        { "Hammer ability that restore Armor after a 6 second delay", new List<AbilityKeyword>() { Internal_HammerRestoreArmor } },
         { "All Druid ability", new List<AbilityKeyword>() { AbilityKeyword.Druid } },
         { "All Staff attack", new List<AbilityKeyword>() { AbilityKeyword.StaffAttack } },
         { "All Ice Magic ability that hit multiple", new List<AbilityKeyword>() { AbilityKeyword.IceMagicAoE } },
@@ -470,6 +473,7 @@ internal partial class CombatParserEx
         { "Melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "All Druid ability except Shillelagh", new List<AbilityKeyword>() { AbilityKeyword.DruidNonBasic } },
         { "ability that fire a projectile, such as Toxinball, Fireball, or most Archery abilities", new List<AbilityKeyword>() { AbilityKeyword.Projectile } },
+        { "ability that have Burst targeting", new List<AbilityKeyword>() { AbilityKeyword.Burst } },
         { "@ , Willbreaker, and Embrace of Despair", new List<AbilityKeyword>() { AbilityKeyword.EclipseOfShadows, AbilityKeyword.Willbreaker, AbilityKeyword.EmbraceOfDespair } },
         { "Trick Foxes", new List<AbilityKeyword>() { AbilityKeyword.TrickFox } },
         { "Summoned Tornadoes", new List<AbilityKeyword>() { AbilityKeyword.SummonedTornado } },
@@ -609,6 +613,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RageAttackBoost, CombatKeywordEx.RageAttackBoostOverTime },
         { CombatKeywordEx.DamageBoost, CombatKeywordEx.DamageOverTimeBoost },
         { CombatKeywordEx.DealHealthDamage, CombatKeywordEx.HealthDamageOverTimeBoost },
+        { CombatKeywordEx.DealArmorDamage, CombatKeywordEx.ArmorDamageOverTimeBoost },
         { CombatKeywordEx.SelfDamage, CombatKeywordEx.SelfDamageOverTime },
     };
     private float MutationDuration;

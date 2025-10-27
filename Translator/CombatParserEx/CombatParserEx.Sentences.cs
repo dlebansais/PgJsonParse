@@ -46,6 +46,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f Armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("And %f Armor", CombatKeywordEx.RestoreArmor),
         new SentenceEx("Recover %f Armor", CombatKeywordEx.RestoreArmor),
+        new SentenceEx("Have %f Armor restoration", CombatKeywordEx.RestoreArmor),
         new SentenceEx("And %f Power to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f Power to you and nearby allies", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelfAndAllies }),
         new SentenceEx("Restore %f Power to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestorePower, CombatKeywordEx.ApplyToSelf }),
@@ -132,6 +133,7 @@ internal partial class CombatParserEx
         new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
 
         new SentenceEx("React to incoming Melee with an eruption of vile blood: a Burst #D attack with Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.VileBloodAttack, CombatKeywordEx.OnIncomingMeleeAttack }),
+        new SentenceEx("Cause melee attackers to ignite", CombatKeywordEx.OnIncomingMeleeAttack),
 
         new SentenceEx("Over %f second", CombatKeywordEx.EffectOverTime),
         new SentenceEx("Per second", CombatKeywordEx.EffectEverySecond),
@@ -326,6 +328,7 @@ internal partial class CombatParserEx
         new SentenceEx("If it kills your target", CombatKeywordEx.RequireKillTarget),
         new SentenceEx("Kills its target", CombatKeywordEx.RequireKillTarget),
         new SentenceEx("If slain", CombatKeywordEx.RequireKillTarget),
+        new SentenceEx("If the target is killed", CombatKeywordEx.RequireKillTarget),
 
         new SentenceEx("%f of target's attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("%f of their attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
@@ -354,6 +357,7 @@ internal partial class CombatParserEx
         new SentenceEx("Reduce the Power cost of melee by %f", CombatKeywordEx.IncreaseMeleePowerCost, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Reset the time on", CombatKeywordEx.ResetRefreshTime),
+        new SentenceEx("Can be used again immediately.", CombatKeywordEx.ResetRefreshTime),
 
         new SentenceEx("Target does not yell for help because of this attack", CombatKeywordEx.NoYellForHelp),
         new SentenceEx("Doesn't cause the target to yell for help", CombatKeywordEx.NoYellForHelp),
@@ -724,6 +728,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant Knockback Immunity", CombatKeywordEx.IgnoreKnockback),
         new SentenceEx("Immune to Knockback effects", CombatKeywordEx.IgnoreKnockback),
         new SentenceEx("Grant the target %f Knockback Ignore Chance", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyWithChance, CombatKeywordEx.IgnoreKnockback }),
+        new SentenceEx("Chance to Ignore Knockbacks %f", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyWithChance, CombatKeywordEx.IgnoreKnockback }),
 
         new SentenceEx("Take %f second to channel", CombatKeywordEx.IncreaseChannelingTime),
         new SentenceEx("Channeling time is %f second", CombatKeywordEx.IncreaseChannelingTime),
@@ -850,6 +855,8 @@ internal partial class CombatParserEx
         new SentenceEx("Grant pets Health/Armor equal to the amount of Power generated %f", new List<CombatKeywordEx>() { CombatKeywordEx.TurnPowerToHealth, CombatKeywordEx.RequirePetTarget }),
         new SentenceEx("Targeted pets recover Health/Armor equal to the amount of Power generated %f", new List<CombatKeywordEx>() { CombatKeywordEx.TurnPowerToHealth, CombatKeywordEx.RequirePetTarget }),
 
+        new SentenceEx("Increased by %f of the Armor restored", CombatKeywordEx.TurnArmorToPower),
+
         new SentenceEx("#D damage no longer dispel", CombatKeywordEx.NoDispel),
 
         new SentenceEx("Add %f Crystal Ice to your inventory", CombatKeywordEx.RestoreCrystalIce),
@@ -905,5 +912,9 @@ internal partial class CombatParserEx
         new SentenceEx("These values are doubled", CombatKeywordEx.DoubleMitigation),
 
         new SentenceEx("While Bulwark-Mode is active", CombatKeywordEx.RequireBulwarkMode),
+
+        new SentenceEx("Further increase target's Pet Vulnerability %f", CombatKeywordEx.AddMitigationVsPets, SignInterpretation.AlwaysNegative),
+
+        new SentenceEx("Coat the target in stinging insects", CombatKeywordEx.CoverWithInsects),
     };
 }
