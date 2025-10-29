@@ -38,6 +38,7 @@ public enum CombatCondition
     WerewolfTarget,
     TargetIsStunned,
     TargetIsKnockedDown,
+    IncomingAttack,
     IncomingMeleeAttack,
     Stunned,
     ActiveSkill,
@@ -55,4 +56,5 @@ public enum CombatCondition
     Underwater,
     CriticalHit,
     HitByRageAttack,
+    BardSongDoesDamage,
 }

@@ -157,6 +157,7 @@
         NextRageAttack,
         NextHit,
         NextEvade,
+        OnIncomingAttack,
         OnIncomingMeleeAttack,
         TargetRange,
         EvadeNextAttack,
@@ -217,6 +218,7 @@
         RequireUnderwater,
         RequireCriticalHit,
         RequireHitByRageAttack,
+        RequireBardSongDoesDamage,
 
         // Synthetic
         GiveBuff,

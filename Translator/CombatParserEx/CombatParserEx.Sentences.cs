@@ -16,6 +16,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f Health/Armor to your pet", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Restore %f Health/Armor to your undead", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Restore %f Health/Armor to you", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToSelf }),
+        new SentenceEx("You recover %f Health/Armor", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealthOrArmor, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Restore %f Health/Armor", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health (or Armor)", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health or Armor", CombatKeywordEx.RestoreHealthOrArmor),
@@ -131,6 +132,8 @@ internal partial class CombatParserEx
         new SentenceEx("Effects on allies", CombatKeywordEx.ApplyToAllies),
 
         new SentenceEx("When wielding two knives", CombatKeywordEx.RequireTwoKnives),
+
+        new SentenceEx("Whenever you take damage from an enemy", CombatKeywordEx.OnIncomingAttack),
 
         new SentenceEx("React to incoming Melee with an eruption of vile blood: a Burst #D attack with Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.VileBloodAttack, CombatKeywordEx.OnIncomingMeleeAttack }),
         new SentenceEx("Cause melee attackers to ignite", CombatKeywordEx.OnIncomingMeleeAttack),
@@ -401,8 +404,9 @@ internal partial class CombatParserEx
         new SentenceEx("Taunt their opponents %f less", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
         new SentenceEx("Taunt of all your attack %f", CombatKeywordEx.GenerateTaunt),
         new SentenceEx("Your Taunt is %f", CombatKeywordEx.GenerateTaunt),
-        new SentenceEx("%f Taunt", CombatKeywordEx.GenerateTaunt),
         new SentenceEx("Lower target's aggro toward you by %f", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
+        new SentenceEx("Taunt from Attack Damage %f", CombatKeywordEx.GenerateTaunt),
+        new SentenceEx("%f Taunt", CombatKeywordEx.GenerateTaunt),
 
         new SentenceEx("Target's next attack has a %f chance to automatically miss", CombatKeywordEx.NextAttackMiss),
         new SentenceEx("Target's next attack to have a %f chance to automatically Miss", CombatKeywordEx.NextAttackMiss),
@@ -598,6 +602,7 @@ internal partial class CombatParserEx
         new SentenceEx("Deplete %f Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.Opposite),
         new SentenceEx("Cause targets to lose %f Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cause your pet's attack to generate %f Rage", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseRage, CombatKeywordEx.ApplyToPet }),
+        new SentenceEx("Rage From Attack %f", CombatKeywordEx.IncreaseRage),
 
         //new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
 
@@ -744,6 +749,7 @@ internal partial class CombatParserEx
         new SentenceEx("While the #S skill is active", CombatKeywordEx.RequireActiveSkill),
         new SentenceEx("While #S skill is active", CombatKeywordEx.RequireActiveSkill),
         new SentenceEx("While #S skill active", CombatKeywordEx.RequireActiveSkill),
+        new SentenceEx("While #S Fighting skill active", CombatKeywordEx.RequireActiveSkill),
         new SentenceEx("When #S skill active", CombatKeywordEx.RequireActiveSkill),
         new SentenceEx("(If #S skill is active)", CombatKeywordEx.RequireActiveSkill),
 
@@ -917,5 +923,7 @@ internal partial class CombatParserEx
         new SentenceEx("Further increase target's Pet Vulnerability %f", CombatKeywordEx.AddMitigationVsPets, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Coat the target in stinging insects", CombatKeywordEx.CoverWithInsects),
+
+        new SentenceEx("When @ damages an enemy", CombatKeywordEx.RequireBardSongDoesDamage),
     };
 }

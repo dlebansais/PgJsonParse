@@ -586,6 +586,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireWerewolfTarget, CombatCondition.WerewolfTarget},
         { CombatKeywordEx.RequireStunnedTarget, CombatCondition.TargetIsStunned },
         { CombatKeywordEx.RequireKnockedDownTarget, CombatCondition.TargetIsKnockedDown },
+        { CombatKeywordEx.OnIncomingAttack, CombatCondition.IncomingAttack },
         { CombatKeywordEx.OnIncomingMeleeAttack, CombatCondition.IncomingMeleeAttack },
         { CombatKeywordEx.RequireBeingStunned, CombatCondition.Stunned },
         { CombatKeywordEx.RequireActiveSkill, CombatCondition.ActiveSkill },
@@ -603,6 +604,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireUnderwater, CombatCondition.Underwater },
         { CombatKeywordEx.RequireCriticalHit, CombatCondition.CriticalHit },
         { CombatKeywordEx.RequireHitByRageAttack, CombatCondition.HitByRageAttack },
+        { CombatKeywordEx.RequireBardSongDoesDamage, CombatCondition.BardSongDoesDamage },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
