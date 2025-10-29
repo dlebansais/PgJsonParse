@@ -134,6 +134,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("React to incoming Melee with an eruption of vile blood: a Burst #D attack with Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.VileBloodAttack, CombatKeywordEx.OnIncomingMeleeAttack }),
         new SentenceEx("Cause melee attackers to ignite", CombatKeywordEx.OnIncomingMeleeAttack),
+        new SentenceEx("To melee attackers", CombatKeywordEx.OnIncomingMeleeAttack),
 
         new SentenceEx("Over %f second", CombatKeywordEx.EffectOverTime),
         new SentenceEx("Per second", CombatKeywordEx.EffectEverySecond),
@@ -270,7 +271,7 @@ internal partial class CombatParserEx
         new SentenceEx("Boost the damage of your @ by %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost the damage of your @ %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost the damage from @ %f", CombatKeywordEx.DamageBoost),
-        new SentenceEx("Boost the damage of all your attack %f", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Boost damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your #D damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Boost #D damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your next attack %f if it is a #D attack", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.NextAttack }),
@@ -392,7 +393,7 @@ internal partial class CombatParserEx
         new SentenceEx("Knockback Ignore Chance Ignored", CombatKeywordEx.NullifyIgnoreKnockback),
         new SentenceEx("any Knockback Ingore Chance is nullified", CombatKeywordEx.NullifyIgnoreKnockback),
 
-        new SentenceEx("Reduce the taunt of all your attack by %f", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
+        new SentenceEx("Reduce taunt by %f", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
         new SentenceEx("Taunt %f", CombatKeywordEx.GenerateTaunt),
         new SentenceEx("Taunted %f", CombatKeywordEx.GenerateTaunt),
         new SentenceEx("Taunt as if they did %f more damage", CombatKeywordEx.GenerateTaunt),
@@ -411,7 +412,7 @@ internal partial class CombatParserEx
         new SentenceEx("Universal Damage Mitigation %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("Grant targets %f Universal Damage Resistance", CombatKeywordEx.AddMitigation),
         new SentenceEx("Reduce the damage you take from #D attack by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
-        new SentenceEx("Reduce the damage of the next attack that hit the target by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.NextAttack }),
+        new SentenceEx("Reduce the damage of the next attack that hit the target by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.NextHit }),
         new SentenceEx("(#D) attack that hit you are reduced by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Take %f less damage from all attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("Target take %f less damage from attack", CombatKeywordEx.AddMitigation),

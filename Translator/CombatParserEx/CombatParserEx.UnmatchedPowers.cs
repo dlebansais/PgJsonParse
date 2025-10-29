@@ -429,11 +429,16 @@ internal partial class CombatParserEx
             case "Item_40404_0":
             case "11403":
             case "11604":
-                BuildUnmatchedMod_004(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
+                BuildUnmatchedMod_004(description, new(), modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
             case "11051":
                 BuildUnmatchedMod_001(description, targetAbilityList, new() { modCombatList[0], modCombatList[1] }, abilityList, out pgCombatModEx);
-                BuildUnmatchedMod_004(description, abilityList, new() { modCombatList[0], modCombatList[2], modCombatList[3], modCombatList[4] }, targetAbilityList, out pgExtraCombatModEx);
+                BuildUnmatchedMod_004(description, new(), new() { modCombatList[0], modCombatList[2], modCombatList[3], modCombatList[4] }, abilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "156":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0] }, new(), out pgCombatModEx);
+                BuildUnmatchedMod_004(description, abilityList, new() { modCombatList[1], modCombatList[2] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "10010":
@@ -458,6 +463,7 @@ internal partial class CombatParserEx
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "11553":
+            case "15101":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0] }, new(), out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[1], modCombatList[2] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
@@ -643,7 +649,6 @@ internal partial class CombatParserEx
             case "11602":
             case "11405":
             case "11704":
-            case "11705":
             case "12334":
             case "1253":
             case "13005":
@@ -664,10 +669,44 @@ internal partial class CombatParserEx
             case "14013":
             case "14015":
             case "14016":
+            case "13006":
+            case "1402":
+            case "14052":
+            case "14102":
+            case "14103":
+            case "14157":
+            case "14159":
+            case "14203":
+            case "14204":
+            case "14251":
+            case "14252":
+            case "14253":
+            case "14254":
+            case "14255":
+            case "14355":
+            case "14501":
+            case "14502":
+            case "14504":
+            case "1452":
+            case "1453":
+            case "1454":
+            case "14552":
+            case "14604":
+            case "15051":
+            case "15053":
+            case "15151":
+            case "15154":
+            case "15251":
+            case "15302":
+            case "15304":
+            case "15354":
+            case "15453":
+            case "16005":
+            case "16007":
+            case "11705":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
-            case "13006":
             default:
                 pgCombatModEx = new() { Description = description, DynamicEffects = new(), PermanentEffects = new() };
                 //BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
@@ -1096,6 +1135,7 @@ internal partial class CombatParserEx
         PgCombatModEffectEx pgCombatModEffectEx = new()
         {
             Keyword = Keyword,
+            AbilityList = new List<AbilityKeyword>(abilityList),
             Data = PgNumericValueEx.Empty,
             RecurringDelay = RecurringDelay,
             Target = Target,

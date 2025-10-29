@@ -17,7 +17,19 @@ internal partial class CombatParserEx
             PgPower ItemPower = Entry.Key;
             List<PgEffect> ItemEffectList = Entry.Value;
 
-            if (AnalyzeMatchingPowersAndEffects(ItemPower, ItemEffectList, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
+            if (DebugMode)
+            {
+                if (!KnownCombatPowers.KnownMatchingPowers.ContainsKey(ItemPower.Key))
+                {
+                    if (AnalyzeMatchingPowersAndEffects(ItemPower, ItemEffectList, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
+                    {
+                        stringKeyTable.Add(stringKeyArray);
+                        powerKeyToCompleteEffectTable.Add(ModEffectArray);
+                        pgCombatModCollectionEx.Display(ItemPower.Key);
+                    }
+                }
+            }
+            else if (AnalyzeMatchingPowersAndEffects(ItemPower, ItemEffectList, out string[] stringKeyArray, out PgModEffectCollectionEx ModEffectArray, out PgCombatModCollectionEx pgCombatModCollectionEx))
             {
                 stringKeyTable.Add(stringKeyArray);
                 powerKeyToCompleteEffectTable.Add(ModEffectArray);
@@ -378,7 +390,8 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "Blood Mist Eruption", "Blood-Mist Eruption", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "while Bulwark Mode is active", "while Bulwark-Mode is active", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "while Bulwark Mode is enabled", "while Bulwark-Mode is active", out _, ref IndexFound);
-
+        RemoveDecorativeText(ref text, "Indirect Poison Damage, Indirect Trauma Damage, and Indirect Psychic Damage", "Indirect Poison, Trauma, and Psychic Damage", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "Indirect Poison Vulnerability and Indirect Acid Vulnerability", "Indirect Poison and Acid Vulnerability", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "(This cannot happen more than once per second", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "vile blood: a 5m Burst", "vile blood: a Burst", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Poison Vulnerability and Electricity Vulnerability", "Poison and Electricity Vulnerability", out _, ref IndexFound);
@@ -407,6 +420,8 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "avoid being hit by burst attacks", "avoid being hit by burst", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "evasion of burst attacks", "evasion of burst", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "damage from Burst attacks", "damage from Burst", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "the taunt of all your attacks", "taunt", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "the damage of all your attacks", "damage", out _, ref IndexFound);
         ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor to you");
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
