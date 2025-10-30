@@ -57,4 +57,5 @@ public enum CombatCondition
     CriticalHit,
     HitByRageAttack,
     BardSongDoesDamage,
+    WhenEruptingInVileBlood,
 }

@@ -247,6 +247,7 @@ internal partial class CombatParserEx
         AbilityKeyword.MeleeKnife,
         AbilityKeyword.Archery,
         AbilityKeyword.Attack,
+        AbilityKeyword.Sonic,
         Internal_VileBlood,
         Internal_NonBasic,
         Internal_HammerExceptPound,
@@ -468,6 +469,7 @@ internal partial class CombatParserEx
         { "All non-basic attack", new List<AbilityKeyword>() { Internal_NonBasic } },
         { "Knife ability that normally deal Slashing damage", new List<AbilityKeyword>() { AbilityKeyword.KnifeSlashing } },
         { "Staff ability that normally deal Crushing damage", new List<AbilityKeyword>() { AbilityKeyword.StaffCrushing } },
+        { "Bard Blast", new List<AbilityKeyword>() { AbilityKeyword.BardBlast } },
         { "Bardic Blast", new List<AbilityKeyword>() { AbilityKeyword.BardBlast } },
         { "Melee ability", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
         { "Melee attack", new List<AbilityKeyword>() { AbilityKeyword.Melee } },
@@ -490,6 +492,7 @@ internal partial class CombatParserEx
         { "James Eltibule's Armors' suit bonus", new List<AbilityKeyword>() { Internal_JamesEltibuleSuitBonus } },
         { "Archery attack", new List<AbilityKeyword>() { AbilityKeyword.Archery } },
         { "Other ability", new List<AbilityKeyword>() { Internal_OtherAbilities } },
+        { "Sonic ability", new List<AbilityKeyword>() { AbilityKeyword.Sonic } },
         { "All your attack", new List<AbilityKeyword>() { AbilityKeyword.Attack } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
@@ -605,6 +608,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireCriticalHit, CombatCondition.CriticalHit },
         { CombatKeywordEx.RequireHitByRageAttack, CombatCondition.HitByRageAttack },
         { CombatKeywordEx.RequireBardSongDoesDamage, CombatCondition.BardSongDoesDamage },
+        { CombatKeywordEx.RequireVileBlood, CombatCondition.WhenEruptingInVileBlood },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

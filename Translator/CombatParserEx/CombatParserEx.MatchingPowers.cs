@@ -388,6 +388,7 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "while in Blood Mist form", "while in Blood-Mist form", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "vile blood eruptions from Blood Mist", "vile blood eruptions from Blood-Mist", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Blood Mist Eruption", "Blood-Mist Eruption", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "If Blood Mist causes", "If Blood-Mist causes", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "while Bulwark Mode is active", "while Bulwark-Mode is active", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "while Bulwark Mode is enabled", "while Bulwark-Mode is active", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "Indirect Poison Damage, Indirect Trauma Damage, and Indirect Psychic Damage", "Indirect Poison, Trauma, and Psychic Damage", out _, ref IndexFound);

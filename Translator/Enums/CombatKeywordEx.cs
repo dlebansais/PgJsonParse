@@ -68,6 +68,7 @@
         NonRageAttackBoost,
         RemoveEffect,
         ChangeDamageType,
+        ChangeAbilityType,
         IncreaseRadiationProtection,
         AbsorbDamage,
         Stun,
@@ -219,6 +220,7 @@
         RequireCriticalHit,
         RequireHitByRageAttack,
         RequireBardSongDoesDamage,
+        RequireVileBlood,
 
         // Synthetic
         GiveBuff,

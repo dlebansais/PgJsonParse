@@ -609,6 +609,7 @@ internal partial class CombatParserEx
         new SentenceEx("Reap %f health", CombatKeywordEx.DrainHealth),
         new SentenceEx("Steal %f health", CombatKeywordEx.DrainHealth),
         new SentenceEx("Steal %f more health", CombatKeywordEx.DrainHealth),
+        new SentenceEx("Reap %f of the Health damage to you as health/Armor", CombatKeywordEx.DrainHealth),
 
         new SentenceEx("The reap cap is %f", CombatKeywordEx.IncreaseDrainHealthMax),
 
@@ -647,6 +648,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("Grant this Critical Hit Chance bonus to your next", new List<CombatKeywordEx>() { CombatKeywordEx.GrantCriticalChance, CombatKeywordEx.NextAttack }),
         new SentenceEx("Can Critically Hit based on your Anatomy skill levels", CombatKeywordEx.GrantCriticalChance),
+        new SentenceEx("Become eligible for Phrenology Critical Hits", CombatKeywordEx.GrantCriticalChance),
 
         new SentenceEx("To Arthropods", CombatKeywordEx.RequireArthropodTarget),
 
@@ -700,6 +702,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cause all sentient targets to flee in terror", new List<CombatKeywordEx>() { CombatKeywordEx.Fear, CombatKeywordEx.RequireSentientTarget }),
 
         new SentenceEx("Cause you to erupt in a fountain of vile blood: a Burst Trauma attack with Base Damage %f", CombatKeywordEx.VileBloodAttack),
+        new SentenceEx("You erupt in a fountain of vile blood", CombatKeywordEx.VileBloodAttack),
 
         new SentenceEx("When used while stunned", CombatKeywordEx.RequireBeingStunned),
         new SentenceEx("If used while you are stunned", CombatKeywordEx.RequireBeingStunned),
@@ -912,6 +915,7 @@ internal partial class CombatParserEx
         new SentenceEx("Critically Hit", CombatKeywordEx.RequireCriticalHit),
 
         new SentenceEx("This effect is increased by treasure that boost", CombatKeywordEx.ApplyOtherMods),
+        new SentenceEx("This amount is increased by treasure that increase", CombatKeywordEx.ApplyOtherMods),
         new SentenceEx("This amount is further increased by treasure that boost", CombatKeywordEx.ApplyOtherMods),
 
         new SentenceEx("You mitigate 1 point of attack damage for every 20 Armor you have remaining. (Normally, you would mitigate 1 for every 25 Armor remaining.)", CombatKeywordEx.ImproveArmorMitigation),
@@ -925,5 +929,9 @@ internal partial class CombatParserEx
         new SentenceEx("Coat the target in stinging insects", CombatKeywordEx.CoverWithInsects),
 
         new SentenceEx("When @ damages an enemy", CombatKeywordEx.RequireBardSongDoesDamage),
+
+        new SentenceEx("Is considered a @", CombatKeywordEx.ChangeAbilityType),
+
+        new SentenceEx("If Blood-Mist cause you to erupt in a fountain of vile blood", CombatKeywordEx.RequireVileBlood),
     };
 }
