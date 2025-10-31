@@ -111,6 +111,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("Armor Recovery Per Second: %f of Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
         new SentenceEx("They recover Armor equal to %f of their Max Armor", CombatKeywordEx.RegenPercentageOfArmor),
+
         new SentenceEx("Healing abilities, if any, restore %f health", CombatKeywordEx.IncreaseHealEfficiency),
 
         new SentenceEx("Hit all enemies", CombatKeywordEx.BecomeBurst),
@@ -193,6 +194,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant your pet", CombatKeywordEx.ApplyToPet),
         new SentenceEx("To your pet", CombatKeywordEx.ApplyToPet),
         new SentenceEx("To your undead", CombatKeywordEx.ApplyToPet),
+        new SentenceEx("While charmed", CombatKeywordEx.ApplyToCharmedPet),
 
         new SentenceEx("Boost target pet's", CombatKeywordEx.ApplyToPetOfTarget),
         new SentenceEx("Grant target pet", CombatKeywordEx.ApplyToPetOfTarget),
@@ -316,6 +318,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("%f Direct damage mitigation", CombatKeywordEx.AddMitigationDirect),
         new SentenceEx("Gain %f Direct Elite Vulnerability", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
+        new SentenceEx("Vulnerability to Elite attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigationDirect, CombatKeywordEx.RequireEliteTarget }, SignInterpretation.Opposite),
         new SentenceEx("Suffer %f damage from direct #D attack", CombatKeywordEx.AddMitigationDirect, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Deal %f direct damage", CombatKeywordEx.DirectDamageBoost),
@@ -933,5 +936,7 @@ internal partial class CombatParserEx
         new SentenceEx("Is considered a @", CombatKeywordEx.ChangeAbilityType),
 
         new SentenceEx("If Blood-Mist cause you to erupt in a fountain of vile blood", CombatKeywordEx.RequireVileBlood),
+
+        new SentenceEx("If you abort @ before it naturally expires, or if you use it on an Elite target", CombatKeywordEx.WhenAbortOrMisuse),
     };
 }

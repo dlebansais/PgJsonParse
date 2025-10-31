@@ -153,6 +153,7 @@
         ApplyToPet,
         ApplyToSelfAndPet,
         ApplyToPetOfTarget,
+        ApplyToCharmedPet,
         NextUse,
         NextAttack,
         NextRageAttack,
@@ -221,6 +222,7 @@
         RequireHitByRageAttack,
         RequireBardSongDoesDamage,
         RequireVileBlood,
+        WhenAbortOrMisuse,
 
         // Synthetic
         GiveBuff,

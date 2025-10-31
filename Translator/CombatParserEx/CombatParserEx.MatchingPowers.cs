@@ -3028,6 +3028,8 @@ internal partial class CombatParserEx
                 target = SelectPetType(abilityList);
             else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToPetOfTarget)
                 target = CombatTarget.PetOfTarget;
+            else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToCharmedPet)
+                target = CombatTarget.CharmedPet;
             else if (NextCombatEffect.Keyword == CombatKeywordEx.ApplyToSelfAndPet)
             {
                 target = CombatTarget.Self;

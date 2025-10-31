@@ -392,6 +392,7 @@ internal partial class CombatParserEx
                 break;
             case "11014":
             case "11015":
+            case "20403":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 1);
                 break;
 
@@ -408,6 +409,9 @@ internal partial class CombatParserEx
                 break;
             case "17046":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[1], modCombatList[2], modCombatList[3] }, targetAbilityList, out pgCombatModEx);
+                break;
+            case "18133":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[2], modCombatList[1] }, targetAbilityList, out pgCombatModEx);
                 break;
             case "Item_42390_0":
             case "Item_42389_0":
@@ -521,6 +525,21 @@ internal partial class CombatParserEx
             case "17045":
                 BuildUnmatchedMod_001(description, new(), new() { modCombatList[0], modCombatList[1], modCombatList[3] }, abilityList, out pgCombatModEx);
                 BuildUnmatchedMod_001(description, new(), new() { modCombatList[0], modCombatList[2], modCombatList[3] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "18132":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1], modCombatList[2] }, new(), out pgCombatModEx);
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[3], modCombatList[4] }, new(), out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "20018":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[3] }, new(), out pgCombatModEx);
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[1], modCombatList[2], modCombatList[3] }, new(), out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "20201":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1], modCombatList[2], modCombatList[3] }, new(), out pgCombatModEx);
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[4], modCombatList[5] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "Item_55613_0":
@@ -789,6 +808,23 @@ internal partial class CombatParserEx
             case "18111":
             case "18116":
             case "18121":
+            case "18134":
+            case "20008":
+            case "20010":
+            case "20014":
+            case "20015":
+            case "20017":
+            case "2004":
+            case "20063":
+            case "20064":
+            case "20104":
+            case "2012":
+            case "2024":
+            case "20351":
+            case "20356":
+            case "20402":
+            case "2053":
+            case "2060":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
@@ -891,6 +927,7 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.ApplyToAllies ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndAllies ||
                 CombatKeyword == CombatKeywordEx.ApplyToPet ||
+                CombatKeyword == CombatKeywordEx.ApplyToCharmedPet ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndPet ||
                 CombatKeyword == CombatKeywordEx.ApplyToPetOfTarget ||
                 CombatKeyword == CombatKeywordEx.TargetRange ||
@@ -1002,6 +1039,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseCriticalChance ||
                                    CombatKeyword == CombatKeywordEx.GrantCriticalChance ||
                                    CombatKeyword == CombatKeywordEx.Fear ||
+                                   CombatKeyword == CombatKeywordEx.Stun ||
                                    CombatKeyword == CombatKeywordEx.SummonDeer ||
                                    CombatKeyword == CombatKeywordEx.IgnoreKnockback ||
                                    CombatKeyword == CombatKeywordEx.IgnoreStun ||

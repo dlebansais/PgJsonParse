@@ -181,6 +181,7 @@ internal partial class CombatParserEx
     private const AbilityKeyword Internal_JamesEltibuleSuitBonus = (AbilityKeyword)0xFFF6;
     private const AbilityKeyword Internal_OtherAbilities = (AbilityKeyword)0xFFF5;
     private const AbilityKeyword Internal_HammerRestoreArmor = (AbilityKeyword)0xFFF4;
+    private const AbilityKeyword Internal_MajorHealToYou = (AbilityKeyword)0xFFF3;
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
     {
         AbilityKeyword.NiceAttack,
@@ -260,6 +261,7 @@ internal partial class CombatParserEx
         Internal_JamesEltibuleSuitBonus,
         Internal_OtherAbilities,
         Internal_HammerRestoreArmor,
+        Internal_MajorHealToYou,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
     {
@@ -449,7 +451,7 @@ internal partial class CombatParserEx
         { "Melee Knife", new List<AbilityKeyword>() { AbilityKeyword.MeleeKnife } },
         { "Subsequent Knife ability", new List<AbilityKeyword>() { AbilityKeyword.Knife } },
         { "Bard Songs", new List<AbilityKeyword>() { AbilityKeyword.BardSong } },
-        { "All Major Healing ability targeting you", new List<AbilityKeyword>() { AbilityKeyword.MajorHeal } },
+        { "All Major Healing ability targeting you", new List<AbilityKeyword>() { Internal_MajorHealToYou } },
         { "All Bun-Fu moves", new List<AbilityKeyword>() { AbilityKeyword.Rabbit } },
         { "Survival Utility", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility } },
         { "Survival Utility and Major Heal", new List<AbilityKeyword>() { AbilityKeyword.SurvivalUtility, AbilityKeyword.MajorHeal } },
@@ -609,6 +611,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireHitByRageAttack, CombatCondition.HitByRageAttack },
         { CombatKeywordEx.RequireBardSongDoesDamage, CombatCondition.BardSongDoesDamage },
         { CombatKeywordEx.RequireVileBlood, CombatCondition.WhenEruptingInVileBlood },
+        { CombatKeywordEx.WhenAbortOrMisuse, CombatCondition.AbortOrMisuse },
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {
