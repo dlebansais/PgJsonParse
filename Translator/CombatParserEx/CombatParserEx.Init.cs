@@ -182,6 +182,14 @@ internal partial class CombatParserEx
     private const AbilityKeyword Internal_OtherAbilities = (AbilityKeyword)0xFFF5;
     private const AbilityKeyword Internal_HammerRestoreArmor = (AbilityKeyword)0xFFF4;
     private const AbilityKeyword Internal_MajorHealToYou = (AbilityKeyword)0xFFF3;
+    private const AbilityKeyword Internal_Combo1 = (AbilityKeyword)0xFFF2;
+    private const AbilityKeyword Internal_Combo2 = (AbilityKeyword)0xFFF1;
+    private const AbilityKeyword Internal_Combo3 = (AbilityKeyword)0xFFF0;
+    private const AbilityKeyword Internal_Combo4 = (AbilityKeyword)0xFFEF;
+    private const AbilityKeyword Internal_Combo5 = (AbilityKeyword)0xFFEE;
+    private const AbilityKeyword Internal_Combo6 = (AbilityKeyword)0xFFED;
+    private const AbilityKeyword Internal_Combo7 = (AbilityKeyword)0xFFEC;
+    private const AbilityKeyword Internal_Combo8 = (AbilityKeyword)0xFFEB;
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
     {
         AbilityKeyword.NiceAttack,
@@ -262,6 +270,14 @@ internal partial class CombatParserEx
         Internal_OtherAbilities,
         Internal_HammerRestoreArmor,
         Internal_MajorHealToYou,
+        Internal_Combo1,
+        Internal_Combo2,
+        Internal_Combo3,
+        Internal_Combo4,
+        Internal_Combo5,
+        Internal_Combo6,
+        Internal_Combo7,
+        Internal_Combo8,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
     {
@@ -496,6 +512,14 @@ internal partial class CombatParserEx
         { "Other ability", new List<AbilityKeyword>() { Internal_OtherAbilities } },
         { "Sonic ability", new List<AbilityKeyword>() { AbilityKeyword.Sonic } },
         { "All your attack", new List<AbilityKeyword>() { AbilityKeyword.Attack } },
+        { "Combo: Deer Bash+Any Melee+Deer Kick:", new List<AbilityKeyword>() { Internal_Combo1 } },
+        { "Combo: Gripjaw+Any Spider+Any Spider+Inject Venom:", new List<AbilityKeyword>() { Internal_Combo2 } },
+        { "Combo: Rip+Any Melee+Any Giant Bat Attack+Tear:", new List<AbilityKeyword>() { Internal_Combo3 } },
+        { "Combo: Screech+Any Giant Bat Attack+Any Melee+Virulent Bite:", new List<AbilityKeyword>() { Internal_Combo4 } },
+        { "Combo: Rip+Any Melee+Any Melee+Bat Stability:", new List<AbilityKeyword>() { Internal_Combo5 } },
+        { "Combo: Sonic Burst+Any Giant Bat Attack+Any Ranged Attack+Any Ranged Attack:", new List<AbilityKeyword>() { Internal_Combo6 } },
+        { "Combo: Suppress+Any Melee+Any Melee+Headcracker:", new List<AbilityKeyword>() { Internal_Combo7 } },
+        { "Combo: Forest Challenge+Any Melee+Any Melee+Any Epic Attack:", new List<AbilityKeyword>() { Internal_Combo8 } },
     };
     private static readonly Dictionary<int, string> DamageTypeTextMap = new Dictionary<int, string>()
     {

@@ -399,6 +399,10 @@ internal partial class CombatParserEx
         new SentenceEx("Knockback Ignore Chance Ignored", CombatKeywordEx.NullifyIgnoreKnockback),
         new SentenceEx("any Knockback Ingore Chance is nullified", CombatKeywordEx.NullifyIgnoreKnockback),
 
+        new SentenceEx("Temp-taunt the target %f", CombatKeywordEx.GenerateTemporaryTaunt),
+        new SentenceEx("Temp-taunt %f", CombatKeywordEx.GenerateTemporaryTaunt),
+        new SentenceEx("Taunt (Temporary) %f", CombatKeywordEx.GenerateTemporaryTaunt),
+
         new SentenceEx("Reduce taunt by %f", CombatKeywordEx.GenerateTaunt, SignInterpretation.Opposite),
         new SentenceEx("Taunt %f", CombatKeywordEx.GenerateTaunt),
         new SentenceEx("Taunted %f", CombatKeywordEx.GenerateTaunt),
@@ -857,9 +861,6 @@ internal partial class CombatParserEx
         new SentenceEx("Free-form movement while leaping", CombatKeywordEx.FreeMovementWhileLeaping),
 
         new SentenceEx("Swim Speed %f", CombatKeywordEx.AddSwimSpeed),
-
-        new SentenceEx("Temp-taunt the target %f", CombatKeywordEx.GenerateTemporaryTaunt),
-        new SentenceEx("Taunt (Temporary) %f", CombatKeywordEx.GenerateTemporaryTaunt),
 
         new SentenceEx("%f Death Avoidance", CombatKeywordEx.IncreaseDeathAvoidance),
 
