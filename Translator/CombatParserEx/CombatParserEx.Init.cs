@@ -460,6 +460,7 @@ internal partial class CombatParserEx
         { "All Ice Magic ability that hit multiple", new List<AbilityKeyword>() { AbilityKeyword.IceMagicAoE } },
         { "All Ice Magic attack that hit a single", new List<AbilityKeyword>() { AbilityKeyword.IceMagicSingleTarget } },
         { "All Ice Magic ability", new List<AbilityKeyword>() { AbilityKeyword.IceMagic } },
+        { "Ice Magic attack", new List<AbilityKeyword>() { AbilityKeyword.IceMagic } },
         { "Knife ability with 'Cut'", new List<AbilityKeyword>() { AbilityKeyword.KnifeCut } },
         { "All Knife ability WITHOUT 'Cut'", new List<AbilityKeyword>() { AbilityKeyword.KnifeNonCut } },
         { "All Knife Fighting attack", new List<AbilityKeyword>() { AbilityKeyword.Knife } },

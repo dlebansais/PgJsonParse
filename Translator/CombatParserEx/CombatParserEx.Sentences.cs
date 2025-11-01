@@ -563,13 +563,15 @@ internal partial class CombatParserEx
         new SentenceEx("Next attack", CombatKeywordEx.NextAttack),
         new SentenceEx("Next ability", CombatKeywordEx.NextAttack),
         new SentenceEx("For one attack", CombatKeywordEx.NextAttack),
-        new SentenceEx("After using @ , @ attack", CombatKeywordEx.NextAttack),
+        new SentenceEx("After using @ , @ attack", CombatKeywordEx.GiveBuff),
 
         new SentenceEx("Cause your next", new List<CombatKeywordEx>() { CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Your next use", CombatKeywordEx.NextUse),
         new SentenceEx("Your next ability", CombatKeywordEx.NextUse),
         new SentenceEx("Next #S attack", CombatKeywordEx.NextUse),
         new SentenceEx("The next use of", CombatKeywordEx.NextUse),
+
+        new SentenceEx("If @ , @ , or @ deal #D damage", CombatKeywordEx.RequireDamageType),
 
         new SentenceEx("Deal #D damage", CombatKeywordEx.ChangeDamageType),
         new SentenceEx("Deal direct #D damage", CombatKeywordEx.ChangeDamageType),
@@ -808,6 +810,7 @@ internal partial class CombatParserEx
         new SentenceEx("Range is increased %f meter", CombatKeywordEx.IncreaseRange),
         new SentenceEx("Range is reduced %f meter", CombatKeywordEx.IncreaseRange, SignInterpretation.AlwaysNegative),
         new SentenceEx("Range %f", CombatKeywordEx.IncreaseRange),
+        new SentenceEx("Area of Effect %f meter", CombatKeywordEx.IncreaseRange),
 
         new SentenceEx("If target is covered", CombatKeywordEx.RequireTargetUnderEffect),
         new SentenceEx("To targets that are covered", CombatKeywordEx.RequireTargetUnderEffect),
