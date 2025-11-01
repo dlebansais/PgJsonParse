@@ -122,6 +122,8 @@ public class Recipe
                 return new RecipeResultEffect() { Type = EffectName };
             case "CraftSimpleTSysItem":
                 return ParseCraftSimpleTSysItem(EffectName, EffectParameter);
+            case "BoostItemEquipAdvancementTable":
+                return ParseBoostItemEquipAdvancementTable(EffectName, EffectParameter);
             case "CraftWaxItem":
                 return ParseCraftWaxItem(EffectName, EffectParameter);
             case "DeltaCurFairyEnergy":
@@ -273,6 +275,11 @@ public class Recipe
     private static RecipeResultEffect ParseCraftSimpleTSysItem(string effectName, string effectParameter)
     {
         return new RecipeResultEffect() { Type = effectName, Item = effectParameter };
+    }
+
+    private static RecipeResultEffect ParseBoostItemEquipAdvancementTable(string effectName, string effectParameter)
+    {
+        return new RecipeResultEffect() { Type = effectName, Advancement = effectParameter };
     }
 
     private static RecipeResultEffect ParseAddItemTSysPower(string effectName, string effectParameter)
@@ -602,6 +609,8 @@ public class Recipe
                 return $"{effect.Type}({effect.Keyword},{effect.ConsumedUses})";
             case "CraftSimpleTSysItem":
                 return $"{effect.Type}({effect.Item})";
+            case "BoostItemEquipAdvancementTable":
+                return $"{effect.Type}({effect.Advancement})";
             case "CraftWaxItem":
                 return $"{effect.Type}({effect.Item},{effect.PowerWaxType},{effect.BoostLevel},{effect.MaxHitCount})";
             case CreateGeologySurvey:

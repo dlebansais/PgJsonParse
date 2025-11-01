@@ -10,6 +10,7 @@
         CraftSimpleTSysItem,
         ConsumeItemUses,
         TSysCraftedEquipment,
+        BoostItemEquipAdvancementTable,
         CraftingEnhanceItem,
         GiveTSysItem,
         CreateMiningSurvey,

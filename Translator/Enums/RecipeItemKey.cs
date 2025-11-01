@@ -191,5 +191,7 @@
         BrewingFlowersX5,
         BrewingFlowersX4,
         SkillBoostPotion,
+        NotClub,
+        Club,
     }
 }

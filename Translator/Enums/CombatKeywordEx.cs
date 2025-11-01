@@ -231,7 +231,7 @@
         GiveBuffOneRageAttack,
         GiveBuffEachAttack,
         GiveBuffOneHit,
-        GiveBuffOneRageAttackHit,
+        //GiveBuffOneRageAttackHit,
         //GiveBuffOneEvade,
         RestoreHealthOverTime,
         RestoreArmorOverTime,

@@ -1458,5 +1458,9 @@
         ImpressiveSkull,
         AstonishingSkull,
         Dissolving,
+        Dust,
+        Voxite,
+        ForetoldRecipe,
+        Blowpipe,
     }
 }

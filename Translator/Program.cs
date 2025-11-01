@@ -17,7 +17,7 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(436);
+        return ParseCurated(437);
     }
 
     private static int ParseCurated(int Version)
@@ -153,8 +153,8 @@ public class Program
 
         Debug.WriteLine("Running combat parser...");
 
-        //CombatParser CombatParser = new CombatParser();
-        //CombatParser.AnalyzeCachedData(ObjectList);
+        CombatParser CombatParser = new CombatParser();
+        CombatParser.AnalyzeCachedData(ObjectList);
 
         CombatParserEx CombatParserEx = new CombatParserEx(ObjectList);
         CombatParserEx.Analyze();

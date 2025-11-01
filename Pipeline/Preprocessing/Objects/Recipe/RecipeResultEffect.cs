@@ -6,6 +6,7 @@ public class RecipeResultEffect
     public decimal? AddedQuantity { get; set; }
     public int? AdditionalEnchantments { get; set; }
     public Time? AdjustedReuseTime { get; set; }
+    public string? Advancement { get; set; }
     public string? AreaName { get; set; }
     public string? Augment { get; set; }
     public string? Boost { get; set; }

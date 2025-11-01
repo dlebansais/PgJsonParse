@@ -790,6 +790,7 @@ public class FieldTableStore
         { "AddedQuantity", typeof(float) },
         { "AdditionalEnchantments", typeof(int) },
         { "AdjustedReuseTime", typeof(PgQuestTime) },
+        { "Advancement", typeof(string) },
         { "AreaName", typeof(string) },
         { "Augment", typeof(string) },
         { "Boost", typeof(string) },
@@ -1044,6 +1045,7 @@ public class FieldTableStore
     {
         typeof(PgEffect),
         typeof(PgRecipe),
+        typeof(PgAdvancementTable),
     };
 
     private static List<Type> TypeWithInternalNameList = new List<Type>()

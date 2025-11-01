@@ -476,5 +476,6 @@
         Buff_CandleNecromancy,
         DarknessDoT,
         Event_ZhiaWhim,
+        GrosarkCurse,
     }
 }

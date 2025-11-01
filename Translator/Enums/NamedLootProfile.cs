@@ -27,5 +27,6 @@
         L90Jewelry,
         Custom_Orrrilund_1,
         Custom_Orrrilund_2,
+        L100Equipment,
     }
 }

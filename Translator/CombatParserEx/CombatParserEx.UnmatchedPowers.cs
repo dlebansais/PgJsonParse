@@ -10,7 +10,7 @@ using Translator;
 
 internal partial class CombatParserEx
 {
-    public static bool DebugMode = true;
+    public static bool DebugMode = false;
 
     private void AnalyzeRemainingPowers(List<string[]> stringKeyTable, List<PgModEffectCollectionEx> analyzedPowerKeyToCompleteEffectTable)
     {

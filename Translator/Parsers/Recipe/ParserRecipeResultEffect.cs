@@ -22,6 +22,7 @@ public class ParserRecipeResultEffect : Parser
         { RecipeResultEffectType.CraftSimpleTSysItem, FinishItemCraftSimpleTSysItem },
         { RecipeResultEffectType.ConsumeItemUses, FinishItemConsumeItemUses },
         { RecipeResultEffectType.TSysCraftedEquipment, FinishItemTSysCraftedEquipment },
+        { RecipeResultEffectType.BoostItemEquipAdvancementTable, FinishItemBoostItemEquipAdvancementTable },
         { RecipeResultEffectType.CraftingEnhanceItem, FinishItemCraftingEnhanceItem },
         { RecipeResultEffectType.GiveTSysItem, FinishItemGiveTSysItem },
         { RecipeResultEffectType.CreateMiningSurvey, FinishItemCreateMiningSurvey },
@@ -53,6 +54,7 @@ public class ParserRecipeResultEffect : Parser
         { RecipeResultEffectType.CraftSimpleTSysItem, new List<string>() { "Type", "Item" } },
         { RecipeResultEffectType.ConsumeItemUses, new List<string>() { "Type", "Keyword", "ConsumedUses" } },
         { RecipeResultEffectType.TSysCraftedEquipment, new List<string>() { "Type", "Boost", "IsCamouflaged", "BoostLevel", "AdditionalEnchantments", "BoostedAnimal" } },
+        { RecipeResultEffectType.BoostItemEquipAdvancementTable, new List<string>() { "Type", "Advancement" } },
         { RecipeResultEffectType.CraftingEnhanceItem, new List<string>() { "Type", "Enhancement", "AddedQuantity", "ConsumedEnhancementPoints" } },
         { RecipeResultEffectType.GiveTSysItem, new List<string>() { "Type", "Item" } },
         { RecipeResultEffectType.CreateMiningSurvey, new List<string>() { "Type", "Effect", "Item" } },
@@ -441,6 +443,49 @@ public class ParserRecipeResultEffect : Parser
                         break;
                     case "BoostedAnimal":
                         Result = StringToEnumConversion<Appearance>.SetEnum((Appearance valueEnum) => NewItem.BoostedAnimal = valueEnum, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemBoostItemEquipAdvancementTable(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgRecipeResultBoostItemEquipAdvancementTable NewItem = new PgRecipeResultBoostItemEquipAdvancementTable();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "Type":
+                        break;
+                    case "Advancement":
+                        Result = Inserter<PgAdvancementTable>.SetItemByName((PgAdvancementTable valueAdvancement) => NewItem.Advancement_Key = valueAdvancement.Key, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

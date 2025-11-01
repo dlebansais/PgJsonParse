@@ -48,12 +48,16 @@ public class Item
             rawItem.MacGuffinQuestName == "Elune4" ||
             rawItem.MacGuffinQuestName == "Fransesca2" ||
             rawItem.MacGuffinQuestName == "Fransesca3" ||
+            rawItem.MacGuffinQuestName == "Fransesca4" ||
             rawItem.MacGuffinQuestName == "DeliverSkittersSuit" ||
             rawItem.MacGuffinQuestName == "Skitters1" ||
             rawItem.MacGuffinQuestName == "TheLostTravelsOfRomast" ||
             rawItem.MacGuffinQuestName == "Elune5" ||
             rawItem.MacGuffinQuestName == "Elune6" ||
             rawItem.MacGuffinQuestName == "Elune7" ||
+            rawItem.MacGuffinQuestName == "AnaberylsScheme2" ||
+            rawItem.MacGuffinQuestName == "JustinSmoot1" ||
+            rawItem.MacGuffinQuestName == "JustinSmoot2" ||
             rawItem.MacGuffinQuestName == "TheHeartOfATinyStorm")
         {
             Debug.WriteLine("TODO: corriger");

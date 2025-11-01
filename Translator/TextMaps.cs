@@ -1376,6 +1376,10 @@
             { CraftedBoost.CraftedFaebow, "Crafted Faebow" },
             { CraftedBoost.CraftedOrcMiningPick, "Crafted Orc Mining Pick" },
             { CraftedBoost.CraftedOrcpick, "Crafted Orcpick" },
+            { CraftedBoost.CraftedMindFocus, "Crafted Mind Focus" },
+            { CraftedBoost.CraftedNecromancyOrb, "Crafted Necromancy Orb" },
+            { CraftedBoost.CraftedFireOrb, "Crafted Fire Orb" },
+            { CraftedBoost.CraftedFlask, "Crafted Flask" },
         };
 
         public static Dictionary<Currency, string> CurrencyTextMap { get; } = new Dictionary<Currency, string>()
@@ -2129,6 +2133,7 @@
             { EffectKeyword.Buff_CandleNecromancy, "Buff (Candle Necromancy)" },
             { EffectKeyword.DarknessDoT, "Darkness DoT" },
             { EffectKeyword.Event_ZhiaWhim, "Event (Zhia Whim)" },
+            { EffectKeyword.GrosarkCurse, "Grosark Curse" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -4634,6 +4639,10 @@
             { ItemKeyword.ImpressiveSkull, "Impressive Skull" },
             { ItemKeyword.AstonishingSkull, "Astonishing Skull" },
             { ItemKeyword.Dissolving, "Dissolving" },
+            { ItemKeyword.Dust, "Dust" },
+            { ItemKeyword.Voxite, "Voxite" },
+            { ItemKeyword.ForetoldRecipe, "Foretold Recipe" },
+            { ItemKeyword.Blowpipe, "Blowpipe" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4814,6 +4823,7 @@
             { NamedLootProfile.L90Jewelry, "L90 Jewelry" },
             { NamedLootProfile.Custom_Orrrilund_1, "Custom Loot: Orrrilund Tier 1" },
             { NamedLootProfile.Custom_Orrrilund_2, "Custom Loot: Orrrilund Tier 1" },
+            { NamedLootProfile.L100Equipment, "L100 Equipment" },
         };
 
         public static Dictionary<PowerWaxType, string> PowerWaxTypeTextMap { get; } = new Dictionary<PowerWaxType, string>()
@@ -5738,6 +5748,8 @@
             { RecipeItemKey.BrewingFlowersX5, "Brewing Flowers X5" },
             { RecipeItemKey.BrewingFlowersX4, "Brewing Flowers X4" },
             { RecipeItemKey.SkillBoostPotion, "Skill Boost Potion" },
+            { RecipeItemKey.NotClub, "Not Club" },
+            { RecipeItemKey.Club, "Club" },
         };
 
         public static Dictionary<RecipeKeyword, string> RecipeKeywordTextMap { get; } = new Dictionary<RecipeKeyword, string>()

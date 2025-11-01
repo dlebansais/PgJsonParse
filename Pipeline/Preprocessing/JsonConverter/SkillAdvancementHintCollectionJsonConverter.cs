@@ -114,6 +114,10 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
 
         if (EndIndex <= StartIndex)
         {
+            if (hint.Contains(" ??"))
+                return null;
+
+            Debug.WriteLine(string.Empty);
             Debug.WriteLine($"Bad advancement hint: {hint}");
             throw new PreprocessorException();
         }

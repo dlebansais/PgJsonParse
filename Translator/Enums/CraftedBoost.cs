@@ -102,5 +102,9 @@
         CraftedFaebow,
         CraftedOrcMiningPick,
         CraftedOrcpick,
+        CraftedMindFocus,
+        CraftedNecromancyOrb,
+        CraftedFireOrb,
+        CraftedFlask,
     }
 }
