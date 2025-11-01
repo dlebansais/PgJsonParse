@@ -194,6 +194,9 @@ internal partial class CombatParserEx
         new SentenceEx("Grant your pet", CombatKeywordEx.ApplyToPet),
         new SentenceEx("To your pet", CombatKeywordEx.ApplyToPet),
         new SentenceEx("To your undead", CombatKeywordEx.ApplyToPet),
+
+        new SentenceEx("To any @ or other pets", CombatKeywordEx.ApplyToConjuredAndPet),
+
         new SentenceEx("While charmed", CombatKeywordEx.ApplyToCharmedPet),
 
         new SentenceEx("Boost target pet's", CombatKeywordEx.ApplyToPetOfTarget),
@@ -415,6 +418,8 @@ internal partial class CombatParserEx
         new SentenceEx("Taunt from Attack Damage %f", CombatKeywordEx.GenerateTaunt),
         new SentenceEx("%f Taunt", CombatKeywordEx.GenerateTaunt),
 
+        new SentenceEx("Instead detaunting by %f of the ability's direct damage", CombatKeywordEx.GenerateDetaunt),
+
         new SentenceEx("Target's next attack has a %f chance to automatically miss", CombatKeywordEx.NextAttackMiss),
         new SentenceEx("Target's next attack to have a %f chance to automatically Miss", CombatKeywordEx.NextAttackMiss),
 
@@ -558,6 +563,7 @@ internal partial class CombatParserEx
         new SentenceEx("Next attack", CombatKeywordEx.NextAttack),
         new SentenceEx("Next ability", CombatKeywordEx.NextAttack),
         new SentenceEx("For one attack", CombatKeywordEx.NextAttack),
+        new SentenceEx("After using @ , @ attack", CombatKeywordEx.NextAttack),
 
         new SentenceEx("Cause your next", new List<CombatKeywordEx>() { CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Your next use", CombatKeywordEx.NextUse),
@@ -610,6 +616,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cause targets to lose %f Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
         new SentenceEx("Cause your pet's attack to generate %f Rage", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseRage, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Rage From Attack %f", CombatKeywordEx.IncreaseRage),
+        new SentenceEx("Generate %f less Rage", CombatKeywordEx.IncreaseRage, SignInterpretation.AlwaysNegative),
 
         //new SentenceEx("Cause your", CombatKeywordEx.ApplyToSelf),
 
@@ -850,6 +857,8 @@ internal partial class CombatParserEx
         new SentenceEx("Shuffling their hatred", CombatKeywordEx.ShuffleTaunt),
 
         new SentenceEx("While standing near your @", CombatKeywordEx.RequireStandingSomewhere),
+        new SentenceEx("When you are near @", CombatKeywordEx.RequireStandingSomewhere),
+        new SentenceEx("While you are near your @", CombatKeywordEx.RequireStandingSomewhere),
 
         new SentenceEx("Worth %f more XP", CombatKeywordEx.IncreaseXpGain),
         new SentenceEx("%f Earned Combat XP", CombatKeywordEx.IncreaseXpGain),

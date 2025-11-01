@@ -8,6 +8,7 @@ public enum CombatTarget
     AnyPet,
     PetOfTarget,
     CharmedPet,
+    ConjuredAndPet,
     AnimalHandlingPet,
     NecromancyPet,
     NecromancyZombie,

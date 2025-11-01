@@ -442,6 +442,9 @@ internal partial class CombatParserEx
             case "17104":
                 BuildUnmatchedMod_004(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
+            /*case "23254":
+                BuildUnmatchedMod_004(description, abilityList, modCombatList, abilityList, out pgCombatModEx);
+                break;*/
             case "17284":
                 BuildUnmatchedMod_004(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 pgCombatModEx.DynamicEffects[1].AbilityList.Clear();
@@ -547,6 +550,11 @@ internal partial class CombatParserEx
             case "20201":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1], modCombatList[2], modCombatList[3] }, new(), out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[4], modCombatList[5] }, new(), out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "2205":
+                BuildUnmatchedMod_001(description, new(), new() { modCombatList[0], modCombatList[1], modCombatList[2], modCombatList[3] }, abilityList, out pgCombatModEx);
+                BuildUnmatchedMod_001(description, targetAbilityList, new() { modCombatList[4] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "Item_55613_0":
@@ -847,6 +855,29 @@ internal partial class CombatParserEx
             case "21358":
             case "2152":
             case "2154":
+            case "22079":
+            case "22080":
+            case "22086":
+            case "22090":
+            case "22202":
+            case "22352":
+            case "23024":
+            case "23025":
+            case "2304":
+            case "23102":
+            case "23103":
+            case "23251":
+            case "23402":
+            case "23452":
+            case "23503":
+            case "23505":
+            case "23551":
+            case "23602":
+            case "24004":
+            case "24034":
+            case "24091":
+            case "24092":
+            case "24093":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
@@ -952,6 +983,7 @@ internal partial class CombatParserEx
                 CombatKeyword == CombatKeywordEx.ApplyToCharmedPet ||
                 CombatKeyword == CombatKeywordEx.ApplyToSelfAndPet ||
                 CombatKeyword == CombatKeywordEx.ApplyToPetOfTarget ||
+                CombatKeyword == CombatKeywordEx.ApplyToConjuredAndPet ||
                 CombatKeyword == CombatKeywordEx.TargetRange ||
                 CombatKeyword == CombatKeywordEx.EffectDuration ||
                 CombatKeyword == CombatKeywordEx.EffectDurationInMinutes ||
@@ -1079,6 +1111,7 @@ internal partial class CombatParserEx
                                    CombatKeyword == CombatKeywordEx.IncreaseXpGain ||
                                    CombatKeyword == CombatKeywordEx.FreeMovementWhileLeaping ||
                                    CombatKeyword == CombatKeywordEx.VileBloodDamage ||
+                                   CombatKeyword == CombatKeywordEx.DrainHealthOverTime ||
                                    CombatKeyword == CombatKeywordEx.GiveBuff;
             bool CanHaveDelay = CombatKeyword != CombatKeywordEx.AddSprintSpeed;
 
@@ -1293,5 +1326,181 @@ internal partial class CombatParserEx
         };
 
         pgCombatModEx.DynamicEffects.Insert(0, pgCombatModEffectEx);
+    }
+
+    private void BuildUnmatchedMod_006(string description, List<AbilityKeyword> abilityList, PgCombatEffectCollectionEx allEffectList, List<AbilityKeyword> targetAbilityList, out PgCombatModEx pgCombatModEx, int ignoreModifierIndex = -1)
+    {
+        float DelayInSeconds = GetValueAndRemove(allEffectList, CombatKeywordEx.EffectDelay);
+        float DurationInSeconds = GetValueAndRemove(allEffectList, CombatKeywordEx.EffectDuration);
+        float RecurringDelay = GetValueAndRemove(allEffectList, CombatKeywordEx.RecurringEffect);
+        float DurationOverTime = GetValueAndRemove(allEffectList, CombatKeywordEx.EffectOverTime);
+
+        CombatTarget Target = CombatTarget.Internal_None;
+
+        if (abilityList.Count >= 1)
+        {
+            switch (abilityList[0])
+            {
+                case AbilityKeyword.StabledPet:
+                    Target = CombatTarget.AnimalHandlingPet;
+                    break;
+                case AbilityKeyword.ColdSphere:
+                    Target = CombatTarget.IceMagicColdSphere;
+                    break;
+                case AbilityKeyword.SummonDeer:
+                    Target = CombatTarget.SummonedDeer;
+                    break;
+                case AbilityKeyword.SummonedFireWall:
+                    Target = CombatTarget.FireMagicFirewall;
+                    break;
+                case AbilityKeyword.SummonedSpider:
+                    Target = CombatTarget.SummonedSpider;
+                    break;
+                case AbilityKeyword.TrickFox:
+                    Target = CombatTarget.SummonedTrickFox;
+                    break;
+                case AbilityKeyword.SummonedTornado:
+                    Target = CombatTarget.WeatherWitchingTornado;
+                    break;
+                case AbilityKeyword.HealingSanctuary:
+                    Target = CombatTarget.DruidHealingSanctuary;
+                    break;
+                case AbilityKeyword.PowerGlyph:
+                    Target = CombatTarget.SpiritFoxPowerGlyph;
+                    break;
+                case AbilityKeyword.FaeConduit:
+                    Target = CombatTarget.FairyFaeConduit;
+                    break;
+                case AbilityKeyword.SummonZombie:
+                    Target = CombatTarget.NecromancyZombie;
+                    break;
+                case AbilityKeyword.SummonSkeleton:
+                    Target = CombatTarget.NecromancySkeleton;
+                    break;
+                case AbilityKeyword.SummonSkeletonSwordsman:
+                    Target = CombatTarget.NecromancySkeletonSwordsman;
+                    break;
+                case AbilityKeyword.SummonSkeletonArcherOrMage:
+                    Target = CombatTarget.NecromancySkeletonArcherOrMage;
+                    break;
+                case AbilityKeyword.Minigolem:
+                    Target = CombatTarget.BattleChemistryGolem;
+                    break;
+                case AbilityKeyword.ConfusingDouble:
+                    Target = CombatTarget.GiantBatDouble;
+                    break;
+                case AbilityKeyword.StunTrap:
+                    Target = CombatTarget.WardenStunTrap;
+                    break;
+            }
+        }
+        else
+            Target = CombatTarget.Self;
+
+        Debug.Assert(Target != CombatTarget.Internal_None);
+
+        PgCombatConditionCollectionEx ConditionList = new();
+        List<AbilityKeyword> ConditionAbilityList = new();
+        foreach (PgCombatEffectEx CombatEffect in allEffectList)
+            if (KeywordToCondition.TryGetValue(CombatEffect.Keyword, out CombatCondition NewCondition))
+            {
+                Debug.Assert(ConditionList.Count == 0);
+                Debug.Assert(NewCondition != CombatCondition.Internal_None);
+                ConditionList.Add(NewCondition);
+
+                if (NewCondition == CombatCondition.WhilePlayingSong ||
+                    NewCondition == CombatCondition.TargetOfAbility)
+                {
+                    ConditionAbilityList = targetAbilityList;
+                }
+            }
+
+        if (Target == CombatTarget.AnimalHandlingPet && ConditionList.Count == 0)
+        {
+            if (targetAbilityList.Count > 0 && targetAbilityList.TrueForAll(keyword => keyword == AbilityKeyword.SicEm ||
+                                                                                       keyword == AbilityKeyword.CleverTrick ||
+                                                                                       keyword == AbilityKeyword.GetItOffMe ||
+                                                                                       keyword == AbilityKeyword.UnnaturalWrath ||
+                                                                                       keyword == AbilityKeyword.BasicAttack))
+            {
+                ConditionList.Add(CombatCondition.PetAttackType);
+                ConditionAbilityList = targetAbilityList;
+            }
+        }
+
+        List<PgPermanentModEffectEx> PermanentEffects = new();
+        for (int i = 0; i < allEffectList.Count; i++)
+        {
+            PgCombatEffectEx CombatEffect = allEffectList[i];
+            CombatKeywordEx CombatKeyword = CombatEffect.Keyword;
+            StringToEnumConversion<CombatKeywordEx>.SetCustomParsedEnum(CombatKeyword);
+
+            bool CanApplyModifier = ignoreModifierIndex < 0 ||
+                                    ((i != (ignoreModifierIndex % 1000)) &&
+                                     (ignoreModifierIndex < 1000 || (i != ((ignoreModifierIndex / 1000) % 1000))));
+
+            if (CombatKeyword == CombatKeywordEx.ApplyWithChance ||
+                CombatKeyword == CombatKeywordEx.ApplyToSelf ||
+                CombatKeyword == CombatKeywordEx.ApplyToAllies ||
+                CombatKeyword == CombatKeywordEx.ApplyToSelfAndAllies ||
+                CombatKeyword == CombatKeywordEx.ApplyToPet ||
+                CombatKeyword == CombatKeywordEx.ApplyToSelfAndPet ||
+                CombatKeyword == CombatKeywordEx.ApplyToPetOfTarget ||
+                CombatKeyword == CombatKeywordEx.TargetRange ||
+                CombatKeyword == CombatKeywordEx.EffectDuration ||
+                CombatKeyword == CombatKeywordEx.EffectDurationInMinutes ||
+                CombatKeyword == CombatKeywordEx.EffectOverTime ||
+                CombatKeyword == CombatKeywordEx.RecurringEffect ||
+                CombatKeyword == CombatKeywordEx.EffectEverySecond ||
+                CombatKeyword == CombatKeywordEx.EffectDelay ||
+                CombatKeyword == CombatKeywordEx.RandomDamage ||
+                CombatKeyword == CombatKeywordEx.ApplyToIndirect ||
+                CombatKeyword == CombatKeywordEx.EveryOtherUse)
+            {
+                continue;
+            }
+
+            if (KeywordToCondition.TryGetValue(CombatKeyword, out CombatCondition NewCondition))
+            {
+                continue;
+            }
+
+            PgNumericValueEx pgNumericValueEx = new()
+            {
+                Value = CombatEffect.Data.RawValue.HasValue ? CombatEffect.Data.RawValue.Value : float.NaN,
+                IsPercent = CombatEffect.Data.RawIsPercent.HasValue ? CombatEffect.Data.RawIsPercent.Value : false,
+            };
+
+            if (OverTimeEffects.TryGetValue(CombatKeyword, out CombatKeywordEx CombatKeywordOverTime))
+            {
+                if (float.IsNaN(DurationInSeconds) && !float.IsNaN(DurationOverTime))
+                {
+                    DurationInSeconds = DurationOverTime;
+                    CombatKeyword = CombatKeywordOverTime;
+                }
+            }
+
+            PgPermanentModEffectEx pgPermanentModEffectEx = new()
+            {
+                Keyword = CombatKeyword,
+                Data = pgNumericValueEx,
+                DamageType = CombatEffect.DamageType,
+                DelayInSeconds = DelayInSeconds,
+                DurationInSeconds = CanApplyModifier ? DurationInSeconds : float.NaN,
+                RecurringDelay = RecurringDelay,
+                Target = Target,
+                ConditionList = CanApplyModifier ? ConditionList : new(),
+                ConditionAbilityList = ConditionAbilityList,
+            };
+
+            PermanentEffects.Add(pgPermanentModEffectEx);
+        }
+
+        pgCombatModEx = new()
+        {
+            Description = description,
+            PermanentEffects = PermanentEffects,
+            DynamicEffects = new(),
+        };
     }
 }

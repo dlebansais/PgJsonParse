@@ -51,6 +51,7 @@
         NullifyIgnoreKnockback,
         GenerateTaunt,
         GenerateTemporaryTaunt,
+        GenerateDetaunt,
         ReduceAggro,
         NextAttackMiss,
         AddMitigation,
@@ -154,6 +155,7 @@
         ApplyToSelfAndPet,
         ApplyToPetOfTarget,
         ApplyToCharmedPet,
+        ApplyToConjuredAndPet,
         NextUse,
         NextAttack,
         NextRageAttack,
@@ -245,5 +247,6 @@
         RandomDamageBoost,
         SelfDamageOverTime,
         FlamingSwordDamageOverTime,
+        DrainHealthOverTime,
     }
 }
