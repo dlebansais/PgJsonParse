@@ -8,6 +8,7 @@
         RestorePower,
         RestoreHealthOrArmor,
         RestoreHealthAndArmor,
+        RestoreHealthArmorAndPower,
         AddSprintSpeed,
         AddFlySpeed,
         AddSwimSpeed,
@@ -139,6 +140,7 @@
         ImproveArmorMitigation,
         DoubleMitigation,
         CoverWithInsects,
+        PowerRegeneration,
 
         // Other effects
         ApplyWithChance,
@@ -168,6 +170,7 @@
         RequireTwoKnives,
         RequireNoAggro,
         RequireNotAttacked,
+        RequireNotAttackedInThePast,
         RequirePlayingSong,
         RequireBloodMistForm,
         RequireBulwarkMode,

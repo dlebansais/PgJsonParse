@@ -59,4 +59,5 @@ public enum CombatCondition
     BardSongDoesDamage,
     WhenEruptingInVileBlood,
     AbortOrMisuse,
+    NotAttackedInThePast,
 }

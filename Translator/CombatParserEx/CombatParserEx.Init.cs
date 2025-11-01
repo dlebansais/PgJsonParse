@@ -637,6 +637,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.RequireBardSongDoesDamage, CombatCondition.BardSongDoesDamage },
         { CombatKeywordEx.RequireVileBlood, CombatCondition.WhenEruptingInVileBlood },
         { CombatKeywordEx.WhenAbortOrMisuse, CombatCondition.AbortOrMisuse },
+        { CombatKeywordEx.RequireNotAttackedInThePast, CombatCondition.NotAttackedInThePast},
     };
     private Dictionary<CombatKeywordEx, CombatKeywordEx> OverTimeEffects = new()
     {

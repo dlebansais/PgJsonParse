@@ -139,13 +139,15 @@ internal partial class CombatParserEx
 
         string EffectKey = string.Empty;
 
-        if (EffectCombatList.Count > 0 && CombatEffectContains(ModCombatList, EffectCombatList, out int CandidateIndex, out _, out _) && candidateEffectList != null)
+        if (unmatchedEffectList != null)
         {
-            PgEffect CandidateEffect = candidateEffectList[CandidateIndex];
-            EffectKey = CandidateEffect.Key;
+            if (EffectCombatList.Count > 0 && CombatEffectContains(ModCombatList, EffectCombatList, out int CandidateIndex, out _, out _) && candidateEffectList != null)
+            {
+                PgEffect CandidateEffect = candidateEffectList[CandidateIndex];
+                EffectKey = CandidateEffect.Key;
 
-            if (unmatchedEffectList != null)
                 unmatchedEffectList.Remove(CandidateEffect);
+            }
         }
 
         /*
@@ -358,7 +360,9 @@ internal partial class CombatParserEx
                     if (UnionCount > UnionCountList[candidateIndex])
                         candidateIndex = i;
                     else if (UnionCount == UnionCountList[candidateIndex])
-                        Debug.WriteLine("Multiple candidates found for a single matching effect");
+                    {
+                        // Debug.WriteLine("Multiple candidates found for a single matching effect");
+                    }
                 }
             }
         }
@@ -487,6 +491,7 @@ internal partial class CombatParserEx
                 break;
             case "18044":
             case "18045":
+            //case "27152":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1] }, targetAbilityList, out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[2], modCombatList[3], modCombatList[4] }, targetAbilityList, out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
@@ -511,6 +516,8 @@ internal partial class CombatParserEx
             case "11553":
             case "15101":
             case "21153":
+            case "25303":
+            case "27052":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0] }, new(), out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[1], modCombatList[2] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
@@ -900,12 +907,39 @@ internal partial class CombatParserEx
             case "25135":
             case "25195":
             case "25221":
+            case "25305":
+            case "25351":
+            case "25353":
+            case "26006":
+            case "26054":
+            case "26153":
+            case "26173":
+            case "26204":
+            case "26222":
+            case "26243":
+            case "27012":
+            case "27013":
+            case "27031":
+            case "27032":
+            case "27053":
+            case "27056":
+            case "27072":
+            case "27074":
+            case "27092":
+            case "27093":
+            case "27094":
+            case "27112":
+            case "27113":
+            case "27114":
+            case "27115":
+            case "27133":
+            case "27151":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 
             default:
-                pgCombatModEx = new() { Description = description, DynamicEffects = new(), PermanentEffects = new() };
-                //BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
+                //pgCombatModEx = new() { Description = description, DynamicEffects = new(), PermanentEffects = new() };
+                BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
             case "Other":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
@@ -964,7 +998,7 @@ internal partial class CombatParserEx
                     ConditionPercentage = CombatEffect.Data.Value;
                 }
 
-                if (NewCondition == CombatCondition.MinimumDistance)
+                if (NewCondition == CombatCondition.MinimumDistance || NewCondition == CombatCondition.NotAttackedInThePast)
                 {
                     Debug.Assert(CombatEffect.Data.RawValue.HasValue);
                     Debug.Assert(CombatEffect.Data.RawIsPercent.HasValue);

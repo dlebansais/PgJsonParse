@@ -21,6 +21,7 @@ internal partial class CombatParserEx
         new SentenceEx("Restore %f health (or Armor)", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health or Armor", CombatKeywordEx.RestoreHealthOrArmor),
         new SentenceEx("Restore %f health and Armor", CombatKeywordEx.RestoreHealthAndArmor),
+        new SentenceEx("Restore %f Health, Armor, and Power", CombatKeywordEx.RestoreHealthArmorAndPower),
         new SentenceEx("Recover %f health and Armor", CombatKeywordEx.RestoreHealthAndArmor),
         new SentenceEx("Heal you for %f Health", new List<CombatKeywordEx>() { CombatKeywordEx.RestoreHealth, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Heal all targets for %f health", CombatKeywordEx.RestoreHealth),
@@ -139,6 +140,9 @@ internal partial class CombatParserEx
         new SentenceEx("React to incoming Melee with an eruption of vile blood: a Burst #D attack with Base Damage %f", new List<CombatKeywordEx>() { CombatKeywordEx.VileBloodAttack, CombatKeywordEx.OnIncomingMeleeAttack }),
         new SentenceEx("Cause melee attackers to ignite", CombatKeywordEx.OnIncomingMeleeAttack),
         new SentenceEx("To melee attackers", CombatKeywordEx.OnIncomingMeleeAttack),
+        new SentenceEx("To all melee attackers", CombatKeywordEx.OnIncomingMeleeAttack),
+
+        new SentenceEx("The first melee attacker is knock away", new List<CombatKeywordEx>() { CombatKeywordEx.GiveBuffOneAttack, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.Knockback }, SignInterpretation.Opposite),
 
         new SentenceEx("Over %f second", CombatKeywordEx.EffectOverTime),
         new SentenceEx("Per second", CombatKeywordEx.EffectEverySecond),
@@ -389,6 +393,7 @@ internal partial class CombatParserEx
         new SentenceEx("If it is an Attack ability", CombatKeywordEx.RequireAttackAbility),
 
         new SentenceEx("To cost 0 Power", CombatKeywordEx.ZeroPowerCost),
+        new SentenceEx("Cost no Power to cast", CombatKeywordEx.ZeroPowerCost),
 
         new SentenceEx("Conjures a magical field on the target", CombatKeywordEx.BestowProtectiveBubble),
         new SentenceEx("Covers the target in a barrier that mitigate %f damage from #D attack", CombatKeywordEx.BestowProtectiveBubble),
@@ -897,6 +902,8 @@ internal partial class CombatParserEx
 
         new SentenceEx("Or until you are attacked", CombatKeywordEx.RequireNotAttacked),
 
+        new SentenceEx("You have not been attacked in the past %f second", CombatKeywordEx.RequireNotAttackedInThePast),
+
         new SentenceEx("Plant creatures", CombatKeywordEx.RequirePlantTarget),
 
         new SentenceEx("To pigs", CombatKeywordEx.RequirePigTarget),
@@ -951,5 +958,7 @@ internal partial class CombatParserEx
         new SentenceEx("If Blood-Mist cause you to erupt in a fountain of vile blood", CombatKeywordEx.RequireVileBlood),
 
         new SentenceEx("If you abort @ before it naturally expires, or if you use it on an Elite target", CombatKeywordEx.WhenAbortOrMisuse),
+
+        new SentenceEx("Your Power Regeneration is %f", CombatKeywordEx.PowerRegeneration),
     };
 }
