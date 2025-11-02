@@ -142,7 +142,7 @@ internal partial class CombatParserEx
         new SentenceEx("To melee attackers", CombatKeywordEx.OnIncomingMeleeAttack),
         new SentenceEx("To all melee attackers", CombatKeywordEx.OnIncomingMeleeAttack),
 
-        new SentenceEx("The first melee attacker is knock away", new List<CombatKeywordEx>() { CombatKeywordEx.GiveBuffOneAttack, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.Knockback }, SignInterpretation.Opposite),
+        new SentenceEx("The first melee attacker is knock away", new List<CombatKeywordEx>() { CombatKeywordEx.GiveBuffOneHit, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.Knockback }, SignInterpretation.Opposite),
 
         new SentenceEx("Over %f second", CombatKeywordEx.EffectOverTime),
         new SentenceEx("Per second", CombatKeywordEx.EffectEverySecond),
@@ -203,6 +203,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("While charmed", CombatKeywordEx.ApplyToCharmedPet),
 
+        new SentenceEx("Boost target pet's next attack %f", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.ApplyToPetOfTarget, CombatKeywordEx.NextAttack }),
         new SentenceEx("Boost target pet's", CombatKeywordEx.ApplyToPetOfTarget),
         new SentenceEx("Grant target pet", CombatKeywordEx.ApplyToPetOfTarget),
         new SentenceEx("Increase target pet's", CombatKeywordEx.ApplyToPetOfTarget),
@@ -210,6 +211,7 @@ internal partial class CombatParserEx
         new SentenceEx("Kill an enemy via direct damage", CombatKeywordEx.RequireDirectDamageKillShot),
 
         new SentenceEx("Targets are Knock back", CombatKeywordEx.Knockback),
+        new SentenceEx("Target is Knock back", CombatKeywordEx.Knockback),
         new SentenceEx("Knock back targets", CombatKeywordEx.Knockback),
         new SentenceEx("Knock all targets back", CombatKeywordEx.Knockback),
         new SentenceEx("Knock them back", CombatKeywordEx.Knockback),
@@ -269,6 +271,7 @@ internal partial class CombatParserEx
         new SentenceEx("Deal %f immediate #D damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f #D damage to health ", CombatKeywordEx.DealHealthDamage),
         new SentenceEx("Deal %f #D damage", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Dealing %f #D damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal direct #D damage to deal %f damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f damage if it is a #D attack", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f damage", CombatKeywordEx.DamageBoost),
@@ -595,6 +598,9 @@ internal partial class CombatParserEx
         new SentenceEx("Until you trigger the teleport", CombatKeywordEx.BeforeTrigger),
         new SentenceEx("While @ is active", CombatKeywordEx.BeforeTrigger),
         new SentenceEx("When @ active", CombatKeywordEx.BeforeTrigger),
+        new SentenceEx("Also deal its damage when you are hit by burst attacks", new List<CombatKeywordEx>() { CombatKeywordEx.BeforeTrigger, CombatKeywordEx.RequireBeingHitByBurst }),
+        new SentenceEx("Also deal its damage when you are hit by ranged attacks", new List<CombatKeywordEx>() { CombatKeywordEx.BeforeTrigger, CombatKeywordEx.RequireBeingHitByRanged }),
+        new SentenceEx("It also ignite the suspect", new List<CombatKeywordEx>() { CombatKeywordEx.BeforeTrigger, CombatKeywordEx.RequireBeingHit, CombatKeywordEx.Ignite }),
 
         new SentenceEx("Absorb %f damage before dissipating", CombatKeywordEx.AbsorbDamage),
         new SentenceEx("Absorb the first %f #D damage you suffer", CombatKeywordEx.AbsorbDamage),
@@ -960,5 +966,9 @@ internal partial class CombatParserEx
         new SentenceEx("If you abort @ before it naturally expires, or if you use it on an Elite target", CombatKeywordEx.WhenAbortOrMisuse),
 
         new SentenceEx("Your Power Regeneration is %f", CombatKeywordEx.PowerRegeneration),
+
+        new SentenceEx("@ that damage you", CombatKeywordEx.RequireBeingHit),
+
+        new SentenceEx("Affects the caster in addition to allies", CombatKeywordEx.AlsoAffectCaster),
     };
 }

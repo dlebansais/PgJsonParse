@@ -25,6 +25,8 @@ public enum CombatCondition
     AbilityNotTriggered,
     AbilityTriggered,
     OnHit,
+    OnHitByBurst,
+    OnHitByRanged,
     DoingDamageOverTime,
     SpecificDamageType,
     SpecificDirectDamageType,

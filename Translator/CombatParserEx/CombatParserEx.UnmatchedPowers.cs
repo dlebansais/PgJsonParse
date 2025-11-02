@@ -323,7 +323,7 @@ internal partial class CombatParserEx
         modText = modText.Replace("Physical and Cold damage", "Crushing, Slashing, Piercing, and Cold damage");
         modText = modText.Replace(", but the ability's range is reduced to 12m", ", but range is reduced 18 meter");
         modText = modText.Replace("When you teleport via Shadow Feint", "When you teleport");
-        modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", string.Empty);
+        //modText = modText.Replace("and Paradox Trot boosts Sprint Speed +1", string.Empty);
         modText = modText.Replace("Direct Electricity Damage, Direct Fire Damage, and Direct Cold Damage", "Direct Electricity, Fire, and Cold Damage");
         modText = modText.Replace("All Sword abilities apply Flaming Sword damage", "");
 
@@ -393,6 +393,8 @@ internal partial class CombatParserEx
             case "13202":
             case "13252":
             case "21356":
+            case "28082":
+            case "28122":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "11014":
@@ -446,7 +448,14 @@ internal partial class CombatParserEx
             case "11604":
                 BuildUnmatchedMod_004(description, new(), modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
+            case "27153":
+            case "27154":
+            case "27155":
+            case "27156":
+                BuildUnmatchedMod_001(description, new(), modCombatList, abilityList, out pgCombatModEx);
+                break;
             case "17104":
+            case "28241":
                 BuildUnmatchedMod_004(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
             case "17284":
@@ -491,9 +500,13 @@ internal partial class CombatParserEx
                 break;
             case "18044":
             case "18045":
-            //case "27152":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1] }, targetAbilityList, out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[2], modCombatList[3], modCombatList[4] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "27152":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1] }, targetAbilityList, out pgCombatModEx);
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[2], modCombatList[3], modCombatList[4] }, targetAbilityList, out pgExtraCombatModEx, ignoreModifierIndex: 2);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "11401":
@@ -511,6 +524,11 @@ internal partial class CombatParserEx
             case "18074":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1] }, new(), out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[2] }, targetAbilityList, out pgExtraCombatModEx);
+                pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
+                break;
+            case "28163":
+                BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1] }, new(), out pgCombatModEx);
+                BuildUnmatchedMod_001(description, targetAbilityList, new() { modCombatList[2] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
             case "11553":
@@ -934,6 +952,17 @@ internal partial class CombatParserEx
             case "27115":
             case "27133":
             case "27151":
+            case "27192":
+            case "28066":
+            case "28083":
+            case "28084":
+            case "28102":
+            case "28106":
+            case "28123":
+            case "28125":
+            case "28183":
+            case "28185":
+            case "28622":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 

@@ -603,6 +603,8 @@ internal partial class CombatParserEx
         { CombatKeywordEx.BeforeTrigger, CombatCondition.AbilityNotTriggered},
         { CombatKeywordEx.OnTrigger, CombatCondition.AbilityTriggered},
         { CombatKeywordEx.RequireBeingHit, CombatCondition.OnHit},
+        { CombatKeywordEx.RequireBeingHitByBurst, CombatCondition.OnHitByBurst},
+        { CombatKeywordEx.RequireBeingHitByRanged, CombatCondition.OnHitByRanged},
         { CombatKeywordEx.RequireDoingDamageOverTime, CombatCondition.DoingDamageOverTime},
         { CombatKeywordEx.RequireDamageType, CombatCondition.SpecificDirectDamageType},
         { CombatKeywordEx.RequireDirectDamageType, CombatCondition.SpecificDirectDamageType},
