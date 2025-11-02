@@ -423,6 +423,7 @@ internal partial class CombatParserEx
         RemoveDecorativeText(ref text, "damage from Burst attacks", "damage from Burst", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "the taunt of all your attacks", "taunt", out _, ref IndexFound);
         RemoveDecorativeText(ref text, "the damage of all your attacks", "damage", out _, ref IndexFound);
+        RemoveDecorativeText(ref text, "becomes Fire instead of Electricity", "becomes Fire", out _, ref IndexFound);
         ReplaceCaseInsensitive(ref text, " to you (or armor if health is full)", "/Armor to you");
         ReplaceCaseInsensitive(ref text, " (or armor if health is full)", "/Armor");
         ReplaceCaseInsensitive(ref text, " (or armor, if health is full)", "/Armor");
@@ -879,6 +880,10 @@ internal partial class CombatParserEx
         GameDamageType NewDamageType = GameDamageType.Internal_None;
         GameCombatSkill NewCombatSkill = GameCombatSkill.Internal_None;
         int NewParsedIndex = -1;
+
+        if (sentence.Format.StartsWith("Damage become"))
+        {
+        }
 
         bool IsExtracted = ExtractNewSentence(sentence, skippedKeywordList, ref NewText, NewExtractedKeywordList, ref NewData1, ref NewDamageType, ref NewCombatSkill, ref NewParsedIndex);
 

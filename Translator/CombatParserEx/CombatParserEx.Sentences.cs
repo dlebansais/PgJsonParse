@@ -92,6 +92,7 @@ internal partial class CombatParserEx
         new SentenceEx("Every %f second", CombatKeywordEx.RecurringEffect),
         new SentenceEx("Every other second", CombatKeywordEx.RecurringEffect),
         new SentenceEx("Every three second", CombatKeywordEx.RecurringEffect),
+        new SentenceEx("Every few second", CombatKeywordEx.RecurringEffect),
 
         new SentenceEx("Your Sprint Speed increase by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Sprint Speed increase by %f", CombatKeywordEx.AddSprintSpeed),
@@ -192,6 +193,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cause your pet to bleed for %f #D damage", new List<CombatKeywordEx>() { CombatKeywordEx.SelfDamage, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("The pet take %f #D damage", new List<CombatKeywordEx>() { CombatKeywordEx.SelfDamage, CombatKeywordEx.ApplyToPet }),
         new SentenceEx("Deal %f #D damage to YOU", CombatKeywordEx.SelfDamage),
+        new SentenceEx("b*u*t also take %f damage", CombatKeywordEx.SelfDamage),
 
         new SentenceEx("Both you and your pet", CombatKeywordEx.ApplyToSelfAndPet),
 
@@ -284,6 +286,7 @@ internal partial class CombatParserEx
         new SentenceEx("Deal %f less damage", CombatKeywordEx.DamageBoost, SignInterpretation.AlwaysNegative),
         new SentenceEx("Deal %f more damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Plus %f more damage", CombatKeywordEx.DamageBoost),
+        new SentenceEx("Deal %f total damage against Demons", new List<CombatKeywordEx>() { CombatKeywordEx.DamageBoost, CombatKeywordEx.RequireDemonTarget }),
         new SentenceEx("Boost your #S damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your @ damage %f", CombatKeywordEx.DamageBoost),
         new SentenceEx("Boost your #D attack damage %f", CombatKeywordEx.DamageBoost),
@@ -624,6 +627,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f Stun Resistance", CombatKeywordEx.StunResistance),
 
         new SentenceEx("The next attacker that hit the pet will be stunned", new List<CombatKeywordEx>() { CombatKeywordEx.ApplyToPet, CombatKeywordEx.RequireBeingHit, CombatKeywordEx.Stun }),
+        new SentenceEx("Stun incorporeal enemies", new List<CombatKeywordEx>() { CombatKeywordEx.Stun, CombatKeywordEx.RequireIncorporealTarget }),
         new SentenceEx("Stun targets", CombatKeywordEx.Stun),
         new SentenceEx("Stun", CombatKeywordEx.Stun),
 
@@ -995,5 +999,7 @@ internal partial class CombatParserEx
         new SentenceEx("Any time you Evade an attack", CombatKeywordEx.OnEvade),
 
         new SentenceEx("Any time you Evade a @", CombatKeywordEx.OnEvadeMelee),
+
+        new SentenceEx("Using @ on an existing zombie", CombatKeywordEx.RequireZombieTarget),
     };
 }
