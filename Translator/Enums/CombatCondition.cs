@@ -62,4 +62,6 @@ public enum CombatCondition
     WhenEruptingInVileBlood,
     AbortOrMisuse,
     NotAttackedInThePast,
+    OnEvade,
+    OnEvadeMelee,
 }

@@ -44,6 +44,7 @@
         IncreaseMeleePowerCost,
         BecomeBurst,
         AlsoAffectCaster,
+        AlsoAffectAlliesPets,
         NoYellForHelp,
         RepairBrokenBone,
         RepairBrokenBoneOverTime,
@@ -231,12 +232,15 @@
         RequireBardSongDoesDamage,
         RequireVileBlood,
         WhenAbortOrMisuse,
+        OnEvade,
+        OnEvadeMelee,
 
         // Synthetic
         GiveBuff,
         GiveBuffOneUse,
         GiveBuffOneAttack,
         GiveBuffOneRageAttack,
+        GiveBuffConditionalAttack,
         GiveBuffEachAttack,
         GiveBuffOneHit,
         //GiveBuffOneRageAttackHit,

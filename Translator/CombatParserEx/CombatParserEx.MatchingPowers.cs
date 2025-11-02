@@ -2836,9 +2836,10 @@ internal partial class CombatParserEx
 
             PgNumericValueEx pgNumericValueEx = new() { Value = EffectValue, IsPercent = EffectIsPercent };
 
-            GetTargets(AllEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget, out bool IsEveryOtherUse);
+            bool IsEveryOtherUse = false;
+            GetTargets(AllEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget, ref IsEveryOtherUse);
             if (Target == CombatTarget.Internal_None && !disallowPrevioustarget)
-                GetTargets(AllEffects, i - 1, abilityList, out Target, out OtherTarget, out IsEveryOtherUse);
+                GetTargets(AllEffects, i - 1, abilityList, out Target, out OtherTarget, ref IsEveryOtherUse);
 
             bool CanHaveTarget = (CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime || Target != CombatTarget.Self) &&
                                  (CombatKeyword != CombatKeywordEx.ResetRefreshTime || Target != CombatTarget.Self) &&
@@ -3011,11 +3012,10 @@ internal partial class CombatParserEx
         return Value;
     }
 
-    private static void GetTargets(List<PgCombatEffectEx> effects, int index, List<AbilityKeyword> abilityList, out CombatTarget target, out CombatTarget otherTarget, out bool isEveryOtherUse)
+    private static void GetTargets(List<PgCombatEffectEx> effects, int index, List<AbilityKeyword> abilityList, out CombatTarget target, out CombatTarget otherTarget, ref bool isEveryOtherUse)
     {
         target = CombatTarget.Internal_None;
         otherTarget = CombatTarget.Internal_None;
-        isEveryOtherUse = false;
 
         if (0 <= index && index < effects.Count)
         {

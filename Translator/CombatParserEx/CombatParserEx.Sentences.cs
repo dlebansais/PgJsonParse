@@ -90,6 +90,8 @@ internal partial class CombatParserEx
         new SentenceEx("Lasts %f second", CombatKeywordEx.EffectDuration),
 
         new SentenceEx("Every %f second", CombatKeywordEx.RecurringEffect),
+        new SentenceEx("Every other second", CombatKeywordEx.RecurringEffect),
+        new SentenceEx("Every three second", CombatKeywordEx.RecurringEffect),
 
         new SentenceEx("Your Sprint Speed increase by %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddSprintSpeed, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Sprint Speed increase by %f", CombatKeywordEx.AddSprintSpeed),
@@ -207,6 +209,8 @@ internal partial class CombatParserEx
         new SentenceEx("Boost target pet's", CombatKeywordEx.ApplyToPetOfTarget),
         new SentenceEx("Grant target pet", CombatKeywordEx.ApplyToPetOfTarget),
         new SentenceEx("Increase target pet's", CombatKeywordEx.ApplyToPetOfTarget),
+
+        new SentenceEx("Targets all ally pets", CombatKeywordEx.AlsoAffectAlliesPets),
 
         new SentenceEx("Kill an enemy via direct damage", CombatKeywordEx.RequireDirectDamageKillShot),
 
@@ -534,6 +538,7 @@ internal partial class CombatParserEx
         new SentenceEx("Chance to consume carrot is %f", CombatKeywordEx.ChanceToConsume),
 
         new SentenceEx("Stun you", CombatKeywordEx.SelfStun),
+        new SentenceEx("They are stunned afterwards", CombatKeywordEx.SelfStun),
 
         new SentenceEx("Until %f damage is mitigated", CombatKeywordEx.MaxMitigatedDamageLimit),
         new SentenceEx("Until it has absorbed a total of %f damage", CombatKeywordEx.MaxMitigatedDamageLimit),
@@ -601,6 +606,9 @@ internal partial class CombatParserEx
         new SentenceEx("Also deal its damage when you are hit by burst attacks", new List<CombatKeywordEx>() { CombatKeywordEx.BeforeTrigger, CombatKeywordEx.RequireBeingHitByBurst }),
         new SentenceEx("Also deal its damage when you are hit by ranged attacks", new List<CombatKeywordEx>() { CombatKeywordEx.BeforeTrigger, CombatKeywordEx.RequireBeingHitByRanged }),
         new SentenceEx("It also ignite the suspect", new List<CombatKeywordEx>() { CombatKeywordEx.BeforeTrigger, CombatKeywordEx.RequireBeingHit, CombatKeywordEx.Ignite }),
+
+        new SentenceEx("When you trigger your", CombatKeywordEx.OnTrigger),
+        new SentenceEx("When @ ends", CombatKeywordEx.OnTrigger),
 
         new SentenceEx("Absorb %f damage before dissipating", CombatKeywordEx.AbsorbDamage),
         new SentenceEx("Absorb the first %f #D damage you suffer", CombatKeywordEx.AbsorbDamage),
@@ -970,5 +978,11 @@ internal partial class CombatParserEx
         new SentenceEx("@ that damage you", CombatKeywordEx.RequireBeingHit),
 
         new SentenceEx("Affects the caster in addition to allies", CombatKeywordEx.AlsoAffectCaster),
+
+        new SentenceEx("If the target uses a @ while deluged", CombatKeywordEx.GiveBuffConditionalAttack),
+
+        new SentenceEx("Any time you Evade an attack", CombatKeywordEx.OnEvade),
+
+        new SentenceEx("Any time you Evade a @", CombatKeywordEx.OnEvadeMelee),
     };
 }
