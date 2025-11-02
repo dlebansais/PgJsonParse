@@ -444,6 +444,7 @@ internal partial class CombatParserEx
         { "Any Kick ability", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
         { "All kick ability", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
         { "All kicks", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
+        { "Your next kick", new List<AbilityKeyword>() { AbilityKeyword.Kick } },
         { "Cow's Front Kick", new List<AbilityKeyword>() { AbilityKeyword.CowFrontKick } },
         { "Bomb attack", new List<AbilityKeyword>() { AbilityKeyword.Bomb } },
         { "Psi Health Wave, Armor Wave, and Power Wave", new List<AbilityKeyword>() { AbilityKeyword.PsiHealthWave, AbilityKeyword.PsiArmorWave, AbilityKeyword.PsiPowerWave } },
@@ -653,6 +654,7 @@ internal partial class CombatParserEx
         { CombatKeywordEx.DamageBoost, CombatKeywordEx.DamageOverTimeBoost },
         { CombatKeywordEx.DealHealthDamage, CombatKeywordEx.HealthDamageOverTimeBoost },
         { CombatKeywordEx.DealArmorDamage, CombatKeywordEx.ArmorDamageOverTimeBoost },
+        { CombatKeywordEx.DealHealthAndArmorDamage, CombatKeywordEx.HealthAndArmorDamageOverTimeBoost },
         { CombatKeywordEx.SelfDamage, CombatKeywordEx.SelfDamageOverTime },
         { CombatKeywordEx.DrainHealth, CombatKeywordEx.DrainHealthOverTime },
     };

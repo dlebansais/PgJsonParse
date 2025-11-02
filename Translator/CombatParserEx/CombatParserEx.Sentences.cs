@@ -143,6 +143,7 @@ internal partial class CombatParserEx
         new SentenceEx("Cause melee attackers to ignite", CombatKeywordEx.OnIncomingMeleeAttack),
         new SentenceEx("To melee attackers", CombatKeywordEx.OnIncomingMeleeAttack),
         new SentenceEx("To all melee attackers", CombatKeywordEx.OnIncomingMeleeAttack),
+        new SentenceEx("Melee Attackers suffer %f indirect #D damage", new List<CombatKeywordEx>() { CombatKeywordEx.IndirectDamageBoost, CombatKeywordEx.OnIncomingMeleeAttack }),
 
         new SentenceEx("The first melee attacker is knock away", new List<CombatKeywordEx>() { CombatKeywordEx.GiveBuffOneHit, CombatKeywordEx.ApplyToSelf, CombatKeywordEx.Knockback }, SignInterpretation.Opposite),
 
@@ -241,6 +242,7 @@ internal partial class CombatParserEx
         new SentenceEx("Rage attack are further reduced by %f", CombatKeywordEx.RageAttackBoost, SignInterpretation.AlwaysNegative),
 
         new SentenceEx("Deal %f damage to Health and Armor", CombatKeywordEx.DealHealthAndArmorDamage),
+        new SentenceEx("Deal %f #D Damage to Health and Armor", CombatKeywordEx.DealHealthAndArmorDamage),
         new SentenceEx("Dealing %f Health and Armor damage", CombatKeywordEx.DealHealthAndArmorDamage),
 
         new SentenceEx("Deal %f Armor damage", CombatKeywordEx.DealArmorDamage),
@@ -273,7 +275,7 @@ internal partial class CombatParserEx
         new SentenceEx("Deal up to %f damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Add up to %f extra damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal %f immediate #D damage", CombatKeywordEx.DamageBoost),
-        new SentenceEx("Deal %f #D damage to health ", CombatKeywordEx.DealHealthDamage),
+        new SentenceEx("Deal %f #D damage to health", CombatKeywordEx.DealHealthDamage),
         new SentenceEx("Deal %f #D damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Dealing %f #D damage", CombatKeywordEx.DamageBoost),
         new SentenceEx("Deal direct #D damage to deal %f damage", CombatKeywordEx.DamageBoost),
@@ -342,6 +344,9 @@ internal partial class CombatParserEx
         new SentenceEx("%f Direct Damage", CombatKeywordEx.DirectDamageBoost),
         new SentenceEx("Direct Damage %f", CombatKeywordEx.DirectDamageBoost),
 
+        new SentenceEx("Anatomy Critical Hit Damage %f", CombatKeywordEx.AnatomyCriticalDamageBoost),
+        new SentenceEx("Critical Hit Damage %f", CombatKeywordEx.CriticalDamageBoost),
+
         new SentenceEx("Dispel any roots or slow you are currently suffering", new List<CombatKeywordEx>() { CombatKeywordEx.DispelRootSlow, CombatKeywordEx.ApplyToSelf }),
 
         new SentenceEx("Power cost to sprint in combat is reduced %f", CombatKeywordEx.AddSprintPowerCost),
@@ -355,6 +360,7 @@ internal partial class CombatParserEx
         new SentenceEx("%f of their attack miss and have no effect", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
         new SentenceEx("Grant %f Accuracy to your next #S ability", new List<CombatKeywordEx>() { CombatKeywordEx.IncreaseAccuracy, CombatKeywordEx.NextUse, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("Give you %f Accuracy", CombatKeywordEx.IncreaseAccuracy),
+        new SentenceEx("#S Accuracy %f", CombatKeywordEx.IncreaseAccuracy),
         new SentenceEx("Accuracy %f", CombatKeywordEx.IncreaseAccuracy),
         new SentenceEx("%f Accuracy", CombatKeywordEx.IncreaseAccuracy),
         new SentenceEx("%f more chance of missing", CombatKeywordEx.IncreaseAccuracy, SignInterpretation.Opposite),
@@ -458,6 +464,7 @@ internal partial class CombatParserEx
         new SentenceEx("Grant you %f mitigation against all attack", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
         new SentenceEx("%f Mitigation from attack", CombatKeywordEx.AddMitigation),
         new SentenceEx("%f Mitigation from #D damage", CombatKeywordEx.AddMitigation),
+        new SentenceEx("%f of all #D damage you take is mitigated", CombatKeywordEx.AddMitigation),
         new SentenceEx("#D mitigation %f", CombatKeywordEx.AddMitigation),
         new SentenceEx("Mitigate %f #D Damage", CombatKeywordEx.AddMitigation),
         new SentenceEx("Your Direct and Indirect #D mitigation %f", new List<CombatKeywordEx>() { CombatKeywordEx.AddMitigation, CombatKeywordEx.ApplyToSelf }),
@@ -609,6 +616,7 @@ internal partial class CombatParserEx
 
         new SentenceEx("When you trigger your", CombatKeywordEx.OnTrigger),
         new SentenceEx("When @ ends", CombatKeywordEx.OnTrigger),
+        new SentenceEx("When you teleport", CombatKeywordEx.OnTrigger),
 
         new SentenceEx("Absorb %f damage before dissipating", CombatKeywordEx.AbsorbDamage),
         new SentenceEx("Absorb the first %f #D damage you suffer", CombatKeywordEx.AbsorbDamage),
@@ -665,8 +673,11 @@ internal partial class CombatParserEx
         new SentenceEx("In addition, the target take a second full blast of delayed #D damage", CombatKeywordEx.DelayedSecondAttack),
 
         new SentenceEx("Turning half of that into #D damage", CombatKeywordEx.TurnRageToDamage),
+
         new SentenceEx("This absorbed damage is added to your next @ attack at a %f rate", CombatKeywordEx.TurnMitigationToDamage),
         new SentenceEx("This absorbed damage is added to your next @", CombatKeywordEx.TurnMitigationToDamage),
+        new SentenceEx("Added to the damage done by your next @ , @ , or @ at a %f rate", CombatKeywordEx.TurnMitigationToDamage),
+        new SentenceEx("Added to the damage done by @ at a %f rate", CombatKeywordEx.TurnMitigationToDamage),
 
         new SentenceEx("(Randomly determined for each attack)", CombatKeywordEx.RandomDamage),
         new SentenceEx("(Randomly determined)", CombatKeywordEx.RandomDamage),
