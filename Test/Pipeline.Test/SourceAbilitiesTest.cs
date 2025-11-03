@@ -18,6 +18,6 @@ public class SourceAbilitiesTest
         string VersionPath = TestTools.GetVersionPath("Invalid Source Abilities");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 }

@@ -17,90 +17,91 @@ public class Program
 {
     public static int Main(string[] args)
     {
-        return ParseCurated(438);
+        return ParseCurated();
     }
 
-    private static int ParseCurated(int Version)
+    private static int ParseCurated()
     {
+        VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\000";
+        int Version = int.Parse(File.ReadAllText(Path.Combine(VersionPath, "_version.txt")));
+
         Debug.WriteLine($"Parsing version {Version}");
 
-        VersionPath = $@"C:\Users\DLB\AppData\Roaming\PgJsonParse\Versions\{Version}";
-
-        if (!ParseFile(Version, "abilities", typeof(PgAbility)))
+        if (!ParseFile("abilities", typeof(PgAbility)))
             return -1;
 
-        if (!ParseKeylessArrayFile(Version, "abilitykeywords", typeof(PgAbilityKeyword)))
+        if (!ParseKeylessArrayFile("abilitykeywords", typeof(PgAbilityKeyword)))
             return -1;
 
         /*
-        if (!ParseKeylessArrayFile(Version, "abilitydynamicdots", typeof(PgAbilityDynamicDot)))
+        if (!ParseKeylessArrayFile("abilitydynamicdots", typeof(PgAbilityDynamicDot)))
             return -1;
         */
 
-        if (!ParseFile(Version, "advancementtables", typeof(PgAdvancementTable)))
+        if (!ParseFile("advancementtables", typeof(PgAdvancementTable)))
             return -1;
 
-        if (!ParseFile(Version, "ai", typeof(PgAI)))
+        if (!ParseFile("ai", typeof(PgAI)))
             return -1;
 
-        if (!ParseFile(Version, "areas", typeof(PgArea)))
+        if (!ParseFile("areas", typeof(PgArea)))
             return -1;
 
-        if (!ParseFile(Version, "attributes", typeof(PgAttribute)))
+        if (!ParseFile("attributes", typeof(PgAttribute)))
             return -1;
 
-        if (!ParseFile(Version, "directedgoals", typeof(PgDirectedGoal)))
+        if (!ParseFile("directedgoals", typeof(PgDirectedGoal)))
             return -1;
 
-        if (!ParseFile(Version, "effects", typeof(PgEffect)))
+        if (!ParseFile("effects", typeof(PgEffect)))
             return -1;
 
-        if (!ParseFile(Version, "items", typeof(PgItem)))
+        if (!ParseFile("items", typeof(PgItem)))
             return -1;
 
-        if (!ParseFile(Version, "itemuses", typeof(PgItemUse)))
+        if (!ParseFile("itemuses", typeof(PgItemUse)))
             return -1;
 
-        if (!ParseFile(Version, "lorebookinfo", typeof(PgLoreBookInfo)))
+        if (!ParseFile("lorebookinfo", typeof(PgLoreBookInfo)))
             return -1;
 
-        if (!ParseFile(Version, "lorebooks", typeof(PgLoreBook)))
+        if (!ParseFile("lorebooks", typeof(PgLoreBook)))
             return -1;
 
-        if (!ParseFile(Version, "npcs", typeof(PgNpc)))
+        if (!ParseFile("npcs", typeof(PgNpc)))
             return -1;
 
-        if (!ParseFile(Version, "playertitles", typeof(PgPlayerTitle)))
+        if (!ParseFile("playertitles", typeof(PgPlayerTitle)))
             return -1;
 
-        if (!ParseFile(Version, "tsysclientinfo", typeof(PgPower)))
+        if (!ParseFile("tsysclientinfo", typeof(PgPower)))
             return -1;
 
-        if (!ParseFile(Version, "tsysprofiles", typeof(PgProfile)))
+        if (!ParseFile("tsysprofiles", typeof(PgProfile)))
             return -1;
 
-        if (!ParseFile(Version, "quests", typeof(PgQuest)))
+        if (!ParseFile("quests", typeof(PgQuest)))
             return -1;
 
-        if (!ParseFile(Version, "recipes", typeof(PgRecipe)))
+        if (!ParseFile("recipes", typeof(PgRecipe)))
             return -1;
 
-        if (!ParseFile(Version, "skills", typeof(PgSkill)))
+        if (!ParseFile("skills", typeof(PgSkill)))
             return -1;
 
-        if (!ParseFile(Version, "sources_abilities", typeof(PgSourceEntriesAbility)))
+        if (!ParseFile("sources_abilities", typeof(PgSourceEntriesAbility)))
             return -1;
 
-        if (!ParseFile(Version, "sources_items", typeof(PgSourceEntriesItem)))
+        if (!ParseFile("sources_items", typeof(PgSourceEntriesItem)))
             return -1;
 
-        if (!ParseFile(Version, "sources_recipes", typeof(PgSourceEntriesRecipe)))
+        if (!ParseFile("sources_recipes", typeof(PgSourceEntriesRecipe)))
             return -1;
 
-        if (!ParseFile(Version, "storagevaults", typeof(PgStorageVault)))
+        if (!ParseFile("storagevaults", typeof(PgStorageVault)))
             return -1;
 
-        if (!ParseFile(Version, "xptables", typeof(PgXpTable)))
+        if (!ParseFile("xptables", typeof(PgXpTable)))
             return -1;
 
         LastParsedFile = string.Empty;
@@ -219,11 +220,11 @@ public class Program
         Debug.WriteLine($"{text} (Line: {callingFileLineNumber})");
     }
 
-    private static bool ParseFile(int version, string fileName, Type itemType)
+    private static bool ParseFile(string fileName, Type itemType)
     {
         LastParsedFile = fileName;
 
-        string FullPath = $"{VersionPath}\\Curated\\{fileName}.json";
+        string FullPath = $"{VersionPath}\\{fileName}.json";
 
         if (!File.Exists(FullPath))
             return false;
@@ -265,11 +266,11 @@ public class Program
         return true;
     }
 
-    private static bool ParseKeylessArrayFile(int version, string fileName, Type itemType)
+    private static bool ParseKeylessArrayFile(string fileName, Type itemType)
     {
         LastParsedFile = fileName;
 
-        string FullPath = $"{VersionPath}\\Curated\\{fileName}.json";
+        string FullPath = $"{VersionPath}\\{fileName}.json";
 
         if (!File.Exists(FullPath))
             return false;

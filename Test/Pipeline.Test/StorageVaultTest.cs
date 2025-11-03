@@ -18,6 +18,6 @@ public class StorageVaultTest
         string VersionPath = TestTools.GetVersionPath("Invalid Storage Vault Area");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 }

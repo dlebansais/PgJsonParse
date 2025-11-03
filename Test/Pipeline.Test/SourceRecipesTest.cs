@@ -18,6 +18,6 @@ public class SourceRecipesTest
         string VersionPath = TestTools.GetVersionPath("Invalid Source Recipes");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 }

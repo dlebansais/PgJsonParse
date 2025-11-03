@@ -18,7 +18,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription Close Brace");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -27,7 +27,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription Empty Name");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -36,7 +36,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription Empty Value");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -45,7 +45,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription No Closing Brace");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -54,7 +54,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription No Closing Brace Skill");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -63,7 +63,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription No Value");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -72,7 +72,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription Open Brace");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -81,7 +81,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power EffectDescription Too Many Closing Brace");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -90,7 +90,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Power No Tiers");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -99,7 +99,7 @@ public class PowerTest
         string VersionPath = TestTools.GetVersionPath("Valid Power No EffectDescription");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
         Assert.That(Success, Is.True);
     }
 }

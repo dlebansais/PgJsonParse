@@ -18,7 +18,7 @@ public class EffectTest
         string VersionPath = TestTools.GetVersionPath("Valid Effect No Description");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
         Assert.That(Success, Is.True);
     }
 
@@ -28,7 +28,7 @@ public class EffectTest
         string VersionPath = TestTools.GetVersionPath("Valid Effect Doe Eyes Empty Keywords");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
         Assert.That(Success, Is.True);
     }
 
@@ -38,7 +38,7 @@ public class EffectTest
         string VersionPath = TestTools.GetVersionPath("Valid Effect Doe Eyes No Keywords");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
         Assert.That(Success, Is.True);
     }
 
@@ -48,7 +48,7 @@ public class EffectTest
         string VersionPath = TestTools.GetVersionPath("Invalid Effect Particle");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -57,7 +57,7 @@ public class EffectTest
         string VersionPath = TestTools.GetVersionPath("Invalid Effect Particle Not Aoe Color");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -66,7 +66,7 @@ public class EffectTest
         string VersionPath = TestTools.GetVersionPath("Invalid Effect Particle Too Many Colors");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -75,6 +75,6 @@ public class EffectTest
         string VersionPath = TestTools.GetVersionPath("Invalid Effect Duration");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 }

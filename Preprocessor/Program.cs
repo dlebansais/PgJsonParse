@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Downloader;
 
 internal class Program
@@ -43,12 +44,19 @@ internal class Program
         string VersionDirectory = Tools.SafeGetSubdirectory(ParserDirectory, "Versions", out _);
 
         Downloader Downloader = new();
-        if (!Downloader.Download(JsonFileList, VersionDirectory, out string VersionPath))
+        if (!Downloader.Download(JsonFileList, VersionDirectory, out int version, out string VersionPath))
             return -1;
 
         Preprocessor Preprocessor = new();
-        if (!Preprocessor.Preprocess(VersionPath, JsonFileList))
+        if (!Preprocessor.Preprocess(VersionPath, JsonFileList, out string CuratedVersionDirectory))
             return -2;
+
+        string AnyVersionDirectory = Tools.SafeGetSubdirectory(VersionDirectory, "000", out _);
+        foreach (string OldFile in Directory.GetFiles(AnyVersionDirectory))
+            File.Delete(OldFile);
+        foreach (string NewFile in Directory.GetFiles(CuratedVersionDirectory))
+            File.Copy(NewFile, Path.Combine(AnyVersionDirectory, Path.GetFileName(NewFile)));
+        File.WriteAllText(Path.Combine(AnyVersionDirectory, "_version.txt"), version.ToString());
 
         return 0;
     }

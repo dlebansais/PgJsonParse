@@ -63,7 +63,7 @@ public class PreprocessorTest
             File.Copy(FileName, $"{VersionPath}\\{Path.GetFileName(FileName)}", overwrite: true);
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
 
         Assert.That(Success, Is.True);
     }
@@ -96,7 +96,7 @@ public class PreprocessorTest
         }
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
 
         Assert.That(Success, Is.True);
     }
@@ -112,7 +112,7 @@ public class PreprocessorTest
         };
 
         Preprocessor FailingPreprocessor = new();
-        bool Success = FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList);
+        bool Success = FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList, out _);
         Assert.That(Success, Is.False);
     }
 
@@ -127,7 +127,7 @@ public class PreprocessorTest
         };
 
         Preprocessor FailingPreprocessor = new();
-        bool Success = FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList);
+        bool Success = FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList, out _);
         Assert.That(Success, Is.False);
     }
 
@@ -142,6 +142,6 @@ public class PreprocessorTest
         };
 
         Preprocessor FailingPreprocessor = new();
-        Assert.Throws<PreprocessorException>(() => FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList));
+        Assert.Throws<PreprocessorException>(() => FailingPreprocessor.Preprocess(VersionPath, InvalidJsonFileList, out _));
     }
 }

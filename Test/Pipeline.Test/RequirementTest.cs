@@ -18,7 +18,7 @@ public class RequirementTest
         string VersionPath = TestTools.GetVersionPath("Invalid Requirement Area");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -27,6 +27,6 @@ public class RequirementTest
         string VersionPath = TestTools.GetVersionPath("Invalid Requirement Area Header");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 }

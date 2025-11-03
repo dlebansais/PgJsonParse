@@ -18,7 +18,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest PreGiveEffect");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -27,7 +27,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest PreGiveEffect War Cache Map");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -36,7 +36,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest Reward Effect Favor");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -45,7 +45,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest Reward Effect Scripted");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -54,7 +54,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest Reward Effect Skill");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -63,7 +63,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest Reward Effect XP");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -72,7 +72,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest Objective Target Area");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -81,7 +81,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest Objective Target Too Many");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -90,7 +90,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Valid Quest No Objective");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
         Assert.That(Success, Is.True);
     }
 
@@ -100,7 +100,7 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Valid Quest Objective With Requirement");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
         Assert.That(Success, Is.True);
     }
 
@@ -110,6 +110,6 @@ public class QuestTest
         string VersionPath = TestTools.GetVersionPath("Invalid Quest Requirement");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 }

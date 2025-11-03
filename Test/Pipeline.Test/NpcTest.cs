@@ -18,7 +18,7 @@ public class NpcTest
         string VersionPath = TestTools.GetVersionPath("Invalid Npc AreaName");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
     /*
     [Test]

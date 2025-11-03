@@ -18,7 +18,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Invalid Ability TargetTypeTagReq");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -27,7 +27,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Invalid Ability ItemKeywordReqs");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -36,7 +36,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Invalid Ability Too Many Particles");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -45,7 +45,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Invalid Ability Too Many Colors");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -54,7 +54,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Valid Ability No PvE");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
         Assert.That(Success, Is.True);
     }
     /*

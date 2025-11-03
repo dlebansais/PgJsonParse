@@ -18,6 +18,6 @@ public class SkillTest
         string VersionPath = TestTools.GetVersionPath("Invalid Skill RecipeIngredientKeywords");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 }

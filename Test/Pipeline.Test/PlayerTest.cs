@@ -18,7 +18,7 @@ public class PlayerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Player Title");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 
     [Test]
@@ -27,7 +27,7 @@ public class PlayerTest
         string VersionPath = TestTools.GetVersionPath("Valid Player Title No Color");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
         Assert.That(Success, Is.True);
     }
 
@@ -37,6 +37,6 @@ public class PlayerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Player Title Color");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
     }
 }

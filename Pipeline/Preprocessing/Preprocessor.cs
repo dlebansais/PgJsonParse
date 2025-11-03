@@ -50,14 +50,14 @@ public class Preprocessor
         new IntDictionaryJsonConverter<XpTable, RawXpTable, XpTableDictionary>("Table"),
     };
 
-    public bool Preprocess(string versionPath, List<JsonFile> jsonFileList)
+    public bool Preprocess(string versionPath, List<JsonFile> jsonFileList, out string destinationDirectory)
     {
-        string DestinationDirectory = @$"{versionPath}\Curated";
+        destinationDirectory = @$"{versionPath}\Curated";
         bool PreprocessingDone = false;
 
         foreach (JsonFile JsonFile in jsonFileList)
         {
-            string DestinationFilePath = $"{DestinationDirectory}\\{JsonFile.FileName}.json";
+            string DestinationFilePath = $"{destinationDirectory}\\{JsonFile.FileName}.json";
 
             if (!File.Exists(DestinationFilePath))
             {
@@ -67,8 +67,8 @@ public class Preprocessor
 
                 JsonFile.FixingMethod(Result);
 
-                if (!Directory.Exists(DestinationDirectory))
-                    Directory.CreateDirectory(DestinationDirectory);
+                if (!Directory.Exists(destinationDirectory))
+                    Directory.CreateDirectory(destinationDirectory);
 
                 JsonFile.SerializingMethod(DestinationFilePath, Result);
                 PreprocessingDone = true;

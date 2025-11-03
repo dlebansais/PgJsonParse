@@ -8,15 +8,15 @@ using Preprocessor;
 
 public class Downloader
 {
-    public bool Download(List<JsonFile> jsonFileList, string versionDirectory, out string versionPath)
+    public bool Download(List<JsonFile> jsonFileList, string versionDirectory, out int version, out string versionPath)
     {
-        if (!CheckVersion(versionDirectory, out int Version, out versionPath, out bool IsNew))
+        if (!CheckVersion(versionDirectory, out version, out versionPath, out bool IsNew))
             return false;
 
         if (IsNew)
         {
             foreach (JsonFile File in jsonFileList)
-                if (!Download(Version, versionPath, File))
+                if (!Download(version, versionPath, File))
                     return false;
         }
 
