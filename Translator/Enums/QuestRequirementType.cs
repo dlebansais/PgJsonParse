@@ -29,4 +29,5 @@ public enum QuestRequirementType
     IsVampire,
     MinCombatSkillLevel,
     InventoryItem,
+    IsNotGuest,
 }

@@ -41,6 +41,7 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.IsVampire, FinishItemIsVampire },
         { QuestRequirementType.MinCombatSkillLevel, FinishItemMinCombatSkillLevel },
         { QuestRequirementType.InventoryItem, FinishItemInventoryItem },
+        { QuestRequirementType.IsNotGuest, FinishItemIsNotGuest },
     };
 
     private static Dictionary<QuestRequirementType, List<string>> KnownFieldTable = new Dictionary<QuestRequirementType, List<string>>()
@@ -72,6 +73,7 @@ public class ParserQuestRequirement : Parser
         { QuestRequirementType.IsVampire, new List<string>() { "T" } },
         { QuestRequirementType.MinCombatSkillLevel, new List<string>() { "T", "Level" } },
         { QuestRequirementType.InventoryItem, new List<string>() { "T", "Item" } },
+        { QuestRequirementType.IsNotGuest, new List<string>() { "T" } },
     };
 
     private static Dictionary<QuestRequirementType, List<string>> HandledTable = new Dictionary<QuestRequirementType, List<string>>();
@@ -1304,6 +1306,46 @@ public class ParserQuestRequirement : Parser
                         break;
                     case "Item":
                         Result = Inserter<PgItem>.SetItemByInternalName((PgItem valueItem) => NewItem.Item_Key = PgObject.GetItemKey(valueItem), Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemIsNotGuest(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestRequirementIsNotGuest NewItem = new PgQuestRequirementIsNotGuest();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

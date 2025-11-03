@@ -4643,6 +4643,8 @@
             { ItemKeyword.Voxite, "Voxite" },
             { ItemKeyword.ForetoldRecipe, "Foretold Recipe" },
             { ItemKeyword.Blowpipe, "Blowpipe" },
+            { ItemKeyword.Gaming, "Gaming" },
+            { ItemKeyword.LoadedDie, "Loaded Die" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()

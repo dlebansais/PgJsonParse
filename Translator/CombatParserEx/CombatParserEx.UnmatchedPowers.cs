@@ -10,7 +10,7 @@ using Translator;
 
 internal partial class CombatParserEx
 {
-    public static bool DebugMode = true;
+    public static bool DebugMode = false;
 
     private void AnalyzeRemainingPowers(List<string[]> stringKeyTable, List<PgModEffectCollectionEx> analyzedPowerKeyToCompleteEffectTable)
     {
@@ -1390,10 +1390,9 @@ internal partial class CombatParserEx
             bool EffectIsPercent = CombatEffect.Data.RawIsPercent.HasValue ? CombatEffect.Data.RawIsPercent.Value : false;
             PgNumericValueEx pgNumericValueEx = new() { Value = EffectValue, IsPercent = EffectIsPercent };
 
-            bool IsEveryOtherUse = false;
-            GetTargets(allEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget, ref IsEveryOtherUse);
+            GetTargets(allEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget, out bool IsEveryOtherUse);
             if (Target == CombatTarget.Internal_None)
-                GetTargets(allEffects, i - 1, abilityList, out Target, out OtherTarget, ref IsEveryOtherUse);
+                GetTargets(allEffects, i - 1, abilityList, out Target, out OtherTarget, out IsEveryOtherUse);
 
             bool CanHaveTarget = (CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime || Target != CombatTarget.Self) &&
                                  (CombatKeyword != CombatKeywordEx.ResetRefreshTime || Target != CombatTarget.Self) &&

@@ -1462,5 +1462,7 @@
         Voxite,
         ForetoldRecipe,
         Blowpipe,
+        Gaming,
+        LoadedDie,
     }
 }

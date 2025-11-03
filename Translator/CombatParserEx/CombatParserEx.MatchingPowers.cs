@@ -2028,7 +2028,6 @@ internal partial class CombatParserEx
             case "1023":
             case "163":
             case "15551":
-            case "28762":
             case "2021":
             case "20353":
             case "28611":
@@ -2065,6 +2064,7 @@ internal partial class CombatParserEx
             case "5201":
             case "9862":
             case "9873":
+            case "28762":
                 BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":
@@ -2841,10 +2841,9 @@ internal partial class CombatParserEx
 
             PgNumericValueEx pgNumericValueEx = new() { Value = EffectValue, IsPercent = EffectIsPercent };
 
-            bool IsEveryOtherUse = false;
-            GetTargets(AllEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget, ref IsEveryOtherUse);
+            GetTargets(AllEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget, out bool IsEveryOtherUse);
             if (Target == CombatTarget.Internal_None && !disallowPrevioustarget)
-                GetTargets(AllEffects, i - 1, abilityList, out Target, out OtherTarget, ref IsEveryOtherUse);
+                GetTargets(AllEffects, i - 1, abilityList, out Target, out OtherTarget, out IsEveryOtherUse);
 
             bool CanHaveTarget = (CombatKeyword != CombatKeywordEx.IncreaseCurrentRefreshTime || Target != CombatTarget.Self) &&
                                  (CombatKeyword != CombatKeywordEx.ResetRefreshTime || Target != CombatTarget.Self) &&
@@ -3017,10 +3016,11 @@ internal partial class CombatParserEx
         return Value;
     }
 
-    private static void GetTargets(List<PgCombatEffectEx> effects, int index, List<AbilityKeyword> abilityList, out CombatTarget target, out CombatTarget otherTarget, ref bool isEveryOtherUse)
+    private static void GetTargets(List<PgCombatEffectEx> effects, int index, List<AbilityKeyword> abilityList, out CombatTarget target, out CombatTarget otherTarget, out bool isEveryOtherUse)
     {
         target = CombatTarget.Internal_None;
         otherTarget = CombatTarget.Internal_None;
+        isEveryOtherUse = false;
 
         if (0 <= index && index < effects.Count)
         {
