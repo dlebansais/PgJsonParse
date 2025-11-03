@@ -1097,7 +1097,7 @@ public class Program
 
         foreach (TagTableRow Row in RowList)
         {
-            Debug.Assert(Row.NestedTagList.Count >= 1 && Row.NestedTagList.Count <= 2);
+            Debug.Assert(Row.NestedTagList.Count >= 1 && Row.NestedTagList.Count <= 3);
 
             if (Row.NestedTagList.Count == 1)
             {
@@ -1247,6 +1247,8 @@ public class Program
                     if (ReceiveCell.NestedTagList[TagIndex] is TagSpan)
                         continue;
                     if (ReceiveCell.NestedTagList[TagIndex] is TagSuperscript)
+                        continue;
+                    if (ReceiveCell.NestedTagList[TagIndex] is TagBreak)
                         continue;
 
                     TagSection ReceiveSectionItem = (TagSection)ReceiveCell.NestedTagList[TagIndex];
@@ -1502,6 +1504,8 @@ public class Program
             "Sturdy Chest",
             "Treasure Chest",
             "*Flia",
+            "Sacrificial Bowl",
+            "Brewing Workstation",
         };
 
         return IgnoredNpcNameTable.Contains(name);
