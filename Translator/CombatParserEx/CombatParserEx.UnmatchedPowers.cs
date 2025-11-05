@@ -10,7 +10,7 @@ using Translator;
 
 internal partial class CombatParserEx
 {
-    public static bool DebugMode = false;
+    public static bool DebugMode = true;
 
     private void AnalyzeRemainingPowers(List<string[]> stringKeyTable, List<PgModEffectCollectionEx> analyzedPowerKeyToCompleteEffectTable)
     {
@@ -309,10 +309,12 @@ internal partial class CombatParserEx
 
         BuildModEffect(powerKey, powerSimpleEffect.Description, ModAbilityList, ModCombatList, ModTargetAbilityList, out pgCombatModEx);
 
-        if (pgCombatModEx.DynamicEffects.Count > 0 || pgCombatModEx.PermanentEffects.Count > 0)
-            return true;
-        else
+        if (pgCombatModEx.DynamicEffects.Count == 0 && pgCombatModEx.PermanentEffects.Count == 0)
             return false;
+
+        Cleanup(pgCombatModEx);
+
+        return true;
     }
 
     private void HackModText(ref string modText)

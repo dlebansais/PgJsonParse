@@ -331,10 +331,12 @@ internal partial class CombatParserEx
 
         BuildModEffect(powerKey, effect, powerSimpleEffect.Description, IsGolemAbility, ModAbilityList, DynamicCombatEffectList, StaticCombatEffectList, ModTargetAbilityList, out pgCombatModEx);
 
-        if (pgCombatModEx.DynamicEffects.Count > 0 || pgCombatModEx.PermanentEffects.Count > 0)
-            return true;
-        else
+        if (pgCombatModEx.DynamicEffects.Count == 0 && pgCombatModEx.PermanentEffects.Count == 0)
             return false;
+
+        Cleanup(pgCombatModEx);
+
+        return true;
     }
 
     private void AnalyzeText(string text, bool isMod, bool isGolemAbility, out List<AbilityKeyword> extractedAbilityList, out PgCombatEffectCollectionEx extractedCombatEffectList, out List<AbilityKeyword> extractedTargetAbilityList)
@@ -2839,7 +2841,7 @@ internal partial class CombatParserEx
             if (CombatKeyword == CombatKeywordEx.DamageBoost && EffectValue == 0)
                 continue;
 
-            PgNumericValueEx pgNumericValueEx = new() { Value = EffectValue, IsPercent = EffectIsPercent };
+            PgNumericValueEx pgNumericValueEx = float.IsNaN(EffectValue) ? PgNumericValueEx.Empty : new() { Value = EffectValue, IsPercent = EffectIsPercent };
 
             GetTargets(AllEffects, i + 1, abilityList, out CombatTarget Target, out CombatTarget OtherTarget, out bool IsEveryOtherUse);
             if (Target == CombatTarget.Internal_None && !disallowPrevioustarget)
@@ -3389,9 +3391,9 @@ internal partial class CombatParserEx
                 continue;
             }
 
-            PgNumericValueEx pgNumericValueEx = new()
+            PgNumericValueEx pgNumericValueEx = !CombatEffect.Data.RawValue.HasValue ? PgNumericValueEx.Empty : new()
             {
-                Value = CombatEffect.Data.RawValue.HasValue ? CombatEffect.Data.RawValue.Value : float.NaN,
+                Value = CombatEffect.Data.Value,
                 IsPercent = CombatEffect.Data.RawIsPercent.HasValue ? CombatEffect.Data.RawIsPercent.Value : false,
             };
 
@@ -3515,9 +3517,9 @@ internal partial class CombatParserEx
                 continue;
             }
 
-            PgNumericValueEx pgNumericValueEx = new()
+            PgNumericValueEx pgNumericValueEx = !CombatEffect.Data.RawValue.HasValue ? PgNumericValueEx.Empty : new()
             {
-                Value = CombatEffect.Data.RawValue.HasValue ? CombatEffect.Data.RawValue.Value : float.NaN,
+                Value = CombatEffect.Data.Value,
                 IsPercent = CombatEffect.Data.RawIsPercent.HasValue ? CombatEffect.Data.RawIsPercent.Value : false,
             };
 

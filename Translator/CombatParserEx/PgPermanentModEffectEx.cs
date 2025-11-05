@@ -6,7 +6,7 @@ public class PgPermanentModEffectEx
 {
     public required CombatKeywordEx Keyword { get; init; }
 
-    public required PgNumericValueEx Data { get; init; }
+    public PgNumericValueEx Data { get; init; } = PgNumericValueEx.Empty;
 
     public GameDamageType DamageType { get; init; } = GameDamageType.Internal_None;
 

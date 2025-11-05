@@ -8,7 +8,7 @@ public class PgCombatModEffectEx
 
     public List<AbilityKeyword> AbilityList { get; init; } = new();
 
-    public required PgNumericValueEx Data { get; init; }
+    public PgNumericValueEx Data { get; init; } = PgNumericValueEx.Empty;
 
     public GameDamageType DamageType { get; init; } = GameDamageType.Internal_None;
 

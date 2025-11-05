@@ -6,7 +6,7 @@ public class PgCombatModEx
 {
     public required string Description { get; init; }
 
-    public required List<PgPermanentModEffectEx> PermanentEffects { get; init; }
+    public List<PgPermanentModEffectEx> PermanentEffects { get; init; } = new();
 
-    public required List<PgCombatModEffectEx> DynamicEffects { get; init; }
+    public List<PgCombatModEffectEx> DynamicEffects { get; init; } = new();
 }

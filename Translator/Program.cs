@@ -154,8 +154,8 @@ public class Program
 
         Debug.WriteLine("Running combat parser...");
 
-        CombatParser CombatParser = new CombatParser();
-        CombatParser.AnalyzeCachedData(ObjectList);
+        //CombatParser CombatParser = new CombatParser();
+        //CombatParser.AnalyzeCachedData(ObjectList);
 
         CombatParserEx CombatParserEx = new CombatParserEx(ObjectList);
         CombatParserEx.Analyze();
