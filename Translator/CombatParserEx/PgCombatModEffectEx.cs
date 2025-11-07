@@ -1,8 +1,10 @@
 ﻿namespace PgObjects;
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 
-public class PgCombatModEffectEx
+public record PgCombatModEffectEx
 {
     public required CombatKeywordEx Keyword { get; init; }
 
@@ -39,4 +41,34 @@ public class PgCombatModEffectEx
     public float ConditionPercentage { get; init; } = float.NaN;
 
     public bool IsEveryOtherUse { get; init; }
+
+    public virtual bool Equals(PgCombatModEffectEx other)
+    {
+        return Keyword == other.Keyword &&
+               Enumerable.SequenceEqual(AbilityList, other.AbilityList) &&
+               IsFloatEqual(Data.Value, other.Data.Value) &&
+               DamageType == other.DamageType &&
+               DamageCategory == other.DamageCategory &&
+               CombatSkill == other.CombatSkill &&
+               DamageType == other.DamageType &&
+               IsFloatEqual(RandomChance, other.RandomChance) &&
+               IsFloatEqual(DelayInSeconds, other.DelayInSeconds) &&
+               IsFloatEqual(DurationInSeconds, other.DurationInSeconds) &&
+               IsFloatEqual(RecurringDelay, other.RecurringDelay) &&
+               Target == other.Target &&
+               IsFloatEqual(TargetRange, other.TargetRange) &&
+               Enumerable.SequenceEqual(TargetAbilityList, other.TargetAbilityList) &&
+               Enumerable.SequenceEqual(ConditionList, other.ConditionList) &&
+               Enumerable.SequenceEqual(ConditionAbilityList, other.ConditionAbilityList) &&
+               IsFloatEqual(ConditionValue, other.ConditionValue) &&
+               IsFloatEqual(ConditionPercentage, other.ConditionPercentage) &&
+               IsEveryOtherUse == other.IsEveryOtherUse;
+    }
+
+    private static bool IsFloatEqual(float a, float b)
+    {
+        return (float.IsNaN(a) && float.IsNaN(b)) || a == b;
+    }
+
+    public override int GetHashCode() => base.GetHashCode();
 }

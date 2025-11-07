@@ -334,7 +334,7 @@ internal partial class CombatParserEx
         if (pgCombatModEx.DynamicEffects.Count == 0 && pgCombatModEx.PermanentEffects.Count == 0)
             return false;
 
-        Cleanup(pgCombatModEx);
+        Cleanup(powerKey, pgCombatModEx);
 
         return true;
     }
@@ -1725,7 +1725,6 @@ internal partial class CombatParserEx
             case "12025":
             case "21005":
             case "4064":
-            case "6306":
             case "8006":
             case "2023":
             case "8007":
@@ -1892,7 +1891,6 @@ internal partial class CombatParserEx
             case "24154":
             case "26202":
             case "26203":
-            case "28683":
             case "28782":
             case "28783":
             case "28784":
@@ -2016,6 +2014,7 @@ internal partial class CombatParserEx
             case "7024":
             case "14104":
             case "27171":
+            case "28683":
                 BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx);
                 break;
             case "1202":
@@ -2067,6 +2066,7 @@ internal partial class CombatParserEx
             case "9862":
             case "9873":
             case "28762":
+            case "6306":
                 BuildMatchingModEffect_001(description, effect, isGolemMinion, abilityList, dynamicCombatEffectList, staticCombatEffectList, targetAbilityList, out pgCombatModEx, ignoreModifierIndex: 0);
                 break;
             case "5006":

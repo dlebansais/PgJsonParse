@@ -5,6 +5,7 @@ public enum CombatTarget
     Internal_None,
     Self,
     Allies,
+    SelfAndAllies,
     AnyPet,
     PetOfTarget,
     CharmedPet,
