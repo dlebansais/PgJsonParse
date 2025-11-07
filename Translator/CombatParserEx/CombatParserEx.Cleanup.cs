@@ -95,41 +95,31 @@ internal partial class CombatParserEx
                conditionList.Contains(CombatCondition.AbilityNotTriggered);
     }
 
-    private AbilitySetDescriptor GetAbilities(List<AbilityKeyword> abilityList)
+    private AbilitySetDescriptor GetAbilities(List<AbilityKeyword> keywordList)
     {
-        AbilitySet AbilitySet = GetAbilitySet(abilityList);
+        AbilitySet AbilitySet = GetAbilitySet(keywordList);
 
         if (AbilitySetCache.TryGetValue(AbilitySet, out AbilitySetDescriptor? CachedDescriptor))
-        {
             return CachedDescriptor;
-        }
 
         List<PgAbility> AbilityList = new();
 
-        foreach (AbilityKeyword Keyword in abilityList)
-        {
+        foreach (AbilityKeyword Keyword in keywordList)
             foreach (string Key in AbilityObjectKeyList)
             {
                 PgAbility Ability = AbilityFromKey(Key);
 
-                if (Ability.InternalName == "EventBossClaudiaSummon")
+                if (Ability.KeywordList.Contains(AbilityKeyword.Lint_MonsterAbility) && !Ability.KeywordList.Contains(AbilityKeyword.MinigolemAbility))
                     continue;
 
                 if (Ability.KeywordList.Contains(Keyword) && !AbilityList.Contains(Ability))
-                {
                     AbilityList.Add(Ability);
-                }
             }
-        }
 
         AbilityTarget Target = AbilityTarget.Internal_None;
 
         foreach (PgAbility Ability in AbilityList)
         {
-            if (Ability.Name.StartsWith("Cabal"))
-            {
-            }
-
             Debug.Assert(Target == AbilityTarget.Internal_None ||
                          Target == Ability.Target ||
                          Ability.KeywordList.Contains(AbilityKeyword.MinorHealAttack) ||

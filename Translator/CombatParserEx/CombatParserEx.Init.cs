@@ -64,13 +64,11 @@ internal partial class CombatParserEx
             string Skill_Key = FromSkillKey(Ability.Skill_Key);
             PgSkill AbilitySkill = AbilitySkillFromKey(Skill_Key);
 
-            if (Ability.Name.StartsWith("Ilth Hale"))
-            {
-            }
-
             if (Generate.IsCombatSkill(AbilitySkill, skillTable) || AbilitySkill.Key == "Crossbow")
             {
                 CombatAbilityList.Add(Ability);
+
+                Debug.Assert(!Ability.KeywordList.Contains(AbilityKeyword.Lint_MonsterAbility));
 
                 foreach (AbilityKeyword Keyword in Ability.KeywordList)
                 {
