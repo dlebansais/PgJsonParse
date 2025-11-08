@@ -65,7 +65,9 @@ internal partial class CombatParserEx
             DynamicEffect.Keyword == CombatKeywordEx.GiveBuffOneUse)
             buff = DynamicEffect.Keyword;
 
-        if ((DynamicEffect.ConditionList.Contains(CombatCondition.AbilityTriggered) || DynamicEffect.ConditionList.Contains(CombatCondition.AbilityNotTriggered)) &&
+        if ((DynamicEffect.ConditionList.Contains(CombatCondition.AbilityTriggered) ||
+             DynamicEffect.ConditionList.Contains(CombatCondition.AbilityNotTriggered) ||
+             DynamicEffect.ConditionList.Contains(CombatCondition.StandingSomewhere)) &&
             DynamicEffect.AbilityList.Count > 0 &&
             DynamicEffect.ConditionAbilityList.Count == 0)
         {
@@ -112,46 +114,70 @@ internal partial class CombatParserEx
                 if (Ability.KeywordList.Contains(AbilityKeyword.Lint_MonsterAbility) && !Ability.KeywordList.Contains(AbilityKeyword.MinigolemAbility))
                     continue;
 
-                if (Ability.KeywordList.Contains(Keyword) && !AbilityList.Contains(Ability))
+                bool Candidate;
+
+                switch (Keyword)
+                {
+                    case Internal_MajorHealToYou:
+                        Candidate = Ability.KeywordList.Contains(AbilityKeyword.MajorHeal) && Ability.Target == AbilityTarget.Self;
+                        break;
+                    default:
+                        Candidate = Ability.KeywordList.Contains(Keyword);
+                        break;
+                }
+
+                if (Candidate && !AbilityList.Contains(Ability))
                     AbilityList.Add(Ability);
             }
 
-        AbilityTarget Target = AbilityTarget.Internal_None;
+        TargetCategories Target = TargetCategories.None;
 
         foreach (PgAbility Ability in AbilityList)
         {
-            Debug.Assert(Target == AbilityTarget.Internal_None ||
-                         Target == Ability.Target ||
-                         Ability.KeywordList.Contains(AbilityKeyword.MinorHealAttack) ||
-                         Ability.KeywordList.Contains(AbilityKeyword.SurvivalUtility) ||
-                         ((Target == AbilityTarget.Self || Target == AbilityTarget.Ally || Target == AbilityTarget.AllyOrSelf || Target == Internal_MixedSelfAlly) && 
-                            (Ability.Target == AbilityTarget.Self || Ability.Target == AbilityTarget.Ally || Ability.Target == AbilityTarget.AllyOrSelf || Ability.Target == AbilityTarget.PermanentPet)));
+            Debug.Assert(Target == TargetCategories.None ||
+                         (IsBeneficial(Target) && IsDefensive(Ability)) ||
+                         (!IsBeneficial(Target) && IsOffsensive(Ability)));
 
-            if (Target != Internal_MixedSelfAlly)
+            switch (Ability.Target)
             {
-                if (Ability.Target == AbilityTarget.Self ||
-                    Ability.Target == AbilityTarget.Ally ||
-                    Ability.Target == AbilityTarget.AllyOrSelf ||
-                    Ability.Target == AbilityTarget.PermanentPet ||
-                    Ability.KeywordList.Contains(AbilityKeyword.SurvivalUtility) ||
-                    Ability.KeywordList.Contains(AbilityKeyword.MinorHealAttack))
-                {
-                    if (Target == AbilityTarget.Internal_None)
-                        Target = Ability.Target;
-                    else if (Target != Ability.Target)
-                        Target = Internal_MixedSelfAlly;
-                }
-                else
-                    Target = Ability.Target;
+                case AbilityTarget.Enemy:
+                    Target |= TargetCategories.Ennemy;
+                    break;
+                case AbilityTarget.EnemiesAroundSelf:
+                    Target |= TargetCategories.AllEnnemies;
+                    break;
+                case AbilityTarget.Self:
+                    Target |= TargetCategories.Self;
+                    break;
+                case AbilityTarget.Ally:
+                    Target |= TargetCategories.Ally;
+                    break;
+                case AbilityTarget.AllyOrSelf:
+                    Target |= TargetCategories.Ally;
+                    Target |= TargetCategories.Self;
+                    break;
+                case AbilityTarget.DeadAlly:
+                    Target |= TargetCategories.Ally;
+                    break;
+                case AbilityTarget.Corpse:
+                    Target |= TargetCategories.Ally;
+                    break;
+                case AbilityTarget.Pet:
+                case AbilityTarget.PermanentPet:
+                    Target |= TargetCategories.Pet;
+                    break;
+                default:
+                    Debug.Fail("Unhandled AbilityTarget");
+                    break;
             }
         }
 
-        Debug.Assert(Target != AbilityTarget.Internal_None);
+        Debug.Assert(Target != TargetCategories.None);
 
         AbilitySetDescriptor Result = new()
         {
             AbilityList = AbilityList,
-            Target = Target
+            TargetCategories = Target,
         };
 
         AbilitySetCache.Add(AbilitySet, Result);
@@ -160,6 +186,18 @@ internal partial class CombatParserEx
     }
 
     private const AbilityTarget Internal_MixedSelfAlly = (AbilityTarget)0xFFFF;
+
+    private static bool IsOffsensive(PgAbility ability)
+    {
+        return ability.Target == AbilityTarget.EnemiesAroundSelf || ability.Target == AbilityTarget.Enemy;
+    }
+
+    private static bool IsDefensive(PgAbility ability)
+    {
+        return (ability.Target != AbilityTarget.EnemiesAroundSelf && ability.Target != AbilityTarget.Enemy) ||
+               ability.KeywordList.Contains(AbilityKeyword.MinorHealAttack) ||
+               ability.KeywordList.Contains(AbilityKeyword.SurvivalUtility);
+    }
 
     private Dictionary<AbilitySet, AbilitySetDescriptor> AbilitySetCache = new();
 
@@ -174,26 +212,26 @@ internal partial class CombatParserEx
                : new AbilitySet() { Ability0 = abilityList[0], Ability1 = abilityList[1], Ability2 = abilityList[2] };
     }
 
-    private static bool IsBeneficial(AbilityTarget target)
-    {
-        return target is AbilityTarget.Self
-                      or AbilityTarget.AllyOrSelf
-                      or AbilityTarget.Ally
-                      or AbilityTarget.DeadAlly
-                      or AbilityTarget.Pet
-                      or AbilityTarget.PermanentPet
-                      or AbilityTarget.Corpse
-                      or Internal_MixedSelfAlly;
-    }
-
     private static bool IsBeneficial(CombatTarget target)
     {
         return target is not CombatTarget.Internal_None;
     }
 
-    private static bool IsEqual(CombatTarget combatTarget, AbilityTarget abilityTarget)
+    private static bool IsBeneficial(TargetCategories targetCategories)
     {
-        return combatTarget == CombatTarget.Self && abilityTarget == AbilityTarget.Self;
+        Debug.Assert(targetCategories != TargetCategories.None);
+
+        return targetCategories.HasFlag(TargetCategories.Self) ||
+               targetCategories.HasFlag(TargetCategories.Ally) ||
+               targetCategories.HasFlag(TargetCategories.Pet) ||
+               targetCategories.HasFlag(TargetCategories.TargetPet);
+    }
+
+    private static bool IsEqual(CombatTarget combatTarget, TargetCategories targetCategories)
+    {
+        return (combatTarget == CombatTarget.Self && targetCategories == TargetCategories.Self) ||
+               (combatTarget == CombatTarget.Allies && targetCategories == TargetCategories.Ally) ||
+               (combatTarget == CombatTarget.SelfAndAllies && targetCategories == (TargetCategories.Self | TargetCategories.Ally));
     }
 
     private void AssertDynamicFields(PgCombatModEffectEx dynamicEffect, CombatKeywordEx keyword, DynamicFields fields)
@@ -206,7 +244,7 @@ internal partial class CombatParserEx
         Debug.Assert(fields.HasFlag(DynamicFields.Data) || fields.HasFlag(DynamicFields.DataPercent) || !dynamicEffect.Data.IsPercent);
         Debug.Assert(fields.HasFlag(DynamicFields.DamageType) || dynamicEffect.DamageType == GameDamageType.Internal_None);
         Debug.Assert(fields.HasFlag(DynamicFields.DamageCategory) || dynamicEffect.DamageCategory == GameDamageCategory.Internal_None);
-        Debug.Assert(fields.HasFlag(DynamicFields.CombatSkill) || dynamicEffect.CombatSkill == GameCombatSkill.Internal_None);
+        Debug.Assert(fields.HasFlag(DynamicFields.CombatSkill) || dynamicEffect.CombatSkill == GameCombatSkill.Internal_None || dynamicEffect.ConditionList.Contains(CombatCondition.ActiveSkill));
         Debug.Assert(fields.HasFlag(DynamicFields.RandomChance) || float.IsNaN(dynamicEffect.RandomChance));
         Debug.Assert(fields.HasFlag(DynamicFields.DelayInSeconds) || float.IsNaN(dynamicEffect.DelayInSeconds));
         Debug.Assert(fields.HasFlag(DynamicFields.DurationInSeconds) || float.IsNaN(dynamicEffect.DurationInSeconds));
@@ -226,8 +264,10 @@ internal partial class CombatParserEx
         AssertDynamicFields(dynamicEffect, CombatKeywordEx.RestoreHealth,
                             DynamicFields.AbilityList |
                             DynamicFields.DataValuePositive |
+                            DynamicFields.DataPercent | //TODO check healing ability
                             DynamicFields.RandomChance |
                             DynamicFields.DelayInSeconds |
+                            DynamicFields.DurationInSeconds | //TODO check song
                             DynamicFields.RecurringDelay |
                             DynamicFields.Target |
                             DynamicFields.TargetRange |
@@ -255,28 +295,33 @@ internal partial class CombatParserEx
         {
             AbilitySetDescriptor Descriptor = GetAbilities(dynamicEffect.AbilityList);
 
-            if (!IsBeneficial(dynamicEffect.Target) && !IsBeneficial(Descriptor.Target))
+            if (!IsBeneficial(dynamicEffect.Target) && !IsBeneficial(Descriptor.TargetCategories))
             {
                 Debug.Assert(dynamicEffect.Target == CombatTarget.Internal_None);
                 dynamicEffect = dynamicEffect with { Target = CombatTarget.Self };
                 pgCombatModEx.DynamicEffects[index] = dynamicEffect;
             }
 
-            if (dynamicEffect.Target == CombatTarget.Self && Descriptor.Target == AbilityTarget.Self)
+            if (dynamicEffect.Target == CombatTarget.Self && Descriptor.TargetCategories == TargetCategories.Self)
             {
                 dynamicEffect = dynamicEffect with { Target = CombatTarget.Internal_None };
                 pgCombatModEx.DynamicEffects[index] = dynamicEffect;
             }
 
-            Debug.Assert(!IsEqual(dynamicEffect.Target, Descriptor.Target));
+            if (dynamicEffect.Target == CombatTarget.SelfAndAllies && Descriptor.TargetCategories == (TargetCategories.Self | TargetCategories.Ally))
+            {
+                dynamicEffect = dynamicEffect with { Target = CombatTarget.Internal_None };
+                pgCombatModEx.DynamicEffects[index] = dynamicEffect;
+            }
+
+            Debug.Assert(!IsEqual(dynamicEffect.Target, Descriptor.TargetCategories));
 
             if (!float.IsNaN(dynamicEffect.TargetRange))
             {
-                Debug.Assert(Descriptor.Target == AbilityTarget.Ally ||
-                             Descriptor.Target == AbilityTarget.AllyOrSelf ||
-                             Descriptor.Target == Internal_MixedSelfAlly ||
-                             dynamicEffect.Target == CombatTarget.Allies ||
-                             dynamicEffect.Target == CombatTarget.SelfAndAllies);
+                Debug.Assert(Descriptor.TargetCategories.HasFlag(TargetCategories.Ally) ||
+                             Descriptor.TargetCategories.HasFlag(TargetCategories.Pet) ||
+                             Descriptor.TargetCategories.HasFlag(TargetCategories.TargetPet) ||
+                             dynamicEffect.Target != CombatTarget.Self);
             }
         }
     }

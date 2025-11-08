@@ -7,5 +7,5 @@ internal class AbilitySetDescriptor
 {
     public List<PgAbility> AbilityList { get; init; } = new();
 
-    public AbilityTarget Target { get; set; }
+    public TargetCategories TargetCategories { get; set; }
 }
