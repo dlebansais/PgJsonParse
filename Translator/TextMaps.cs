@@ -4,7 +4,7 @@
 
     public static class TextMaps
     {
-        public const int TotalEnumTypes = 82;
+        public const int TotalEnumTypes = 81;
 
         static TextMaps()
         {

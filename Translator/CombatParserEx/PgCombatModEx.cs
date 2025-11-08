@@ -9,4 +9,6 @@ public class PgCombatModEx
     public List<PgPermanentModEffectEx> PermanentEffects { get; init; } = new();
 
     public List<PgCombatModEffectEx> DynamicEffects { get; init; } = new();
+
+    public List<PgStaticModEffectEx> StaticEffects { get; init; } = new();
 }

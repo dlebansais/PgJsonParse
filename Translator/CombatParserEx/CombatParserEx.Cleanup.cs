@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using PgObjects;
 using Translator;
 
@@ -22,7 +23,7 @@ internal partial class CombatParserEx
 
         CombatKeywordEx Buff = CombatKeywordEx.Internal_None;
         for (int i = 0; i < pgCombatModEx.DynamicEffects.Count; i++)
-            CleanupDynamicEffects(pgCombatModEx, i, ref Buff);
+            CleanupDynamicEffects(pgCombatModEx, ref i, ref Buff);
     }
 
     private void MergeSelfAndAllies(PgCombatModEx pgCombatModEx)
@@ -52,7 +53,7 @@ internal partial class CombatParserEx
         }
     }
 
-    private void CleanupDynamicEffects(PgCombatModEx pgCombatModEx, int index, ref CombatKeywordEx buff)
+    private void CleanupDynamicEffects(PgCombatModEx pgCombatModEx, ref int index, ref CombatKeywordEx buff)
     {
         PgCombatModEffectEx DynamicEffect = pgCombatModEx.DynamicEffects[index];
 
@@ -81,7 +82,7 @@ internal partial class CombatParserEx
         switch (DynamicEffect.Keyword)
         {
             case CombatKeywordEx.RestoreHealth:
-                CleanupDynamicEffectRestoreHealth(pgCombatModEx, index, buff, DynamicEffect);
+                CleanupDynamicEffectRestoreHealth(pgCombatModEx, ref index, buff, DynamicEffect);
                 break;
             default:
                 break;
@@ -234,6 +235,11 @@ internal partial class CombatParserEx
                (combatTarget == CombatTarget.SelfAndAllies && targetCategories == (TargetCategories.Self | TargetCategories.Ally));
     }
 
+    private static bool IsSpecialValueCompatible(CombatTarget target,  TargetCategories targetCategories, PgSpecialValue specialValue)
+    {
+        return true;
+    }
+
     private void AssertDynamicFields(PgCombatModEffectEx dynamicEffect, CombatKeywordEx keyword, DynamicFields fields)
     {
         Debug.Assert(dynamicEffect.Keyword == keyword);
@@ -259,15 +265,97 @@ internal partial class CombatParserEx
         Debug.Assert(fields.HasFlag(DynamicFields.IsEveryOtherUse) || !dynamicEffect.IsEveryOtherUse);
     }
 
-    private void CleanupDynamicEffectRestoreHealth(PgCombatModEx pgCombatModEx, int index, CombatKeywordEx buff, PgCombatModEffectEx dynamicEffect)
+    private static bool TryGetStaticModEffect(PgCombatModEffectEx dynamicEffect, AbilitySetDescriptor descriptor, StaticModifier staticModifier, [NotNullWhen(true)] out PgStaticModEffectEx? staticModEffectEx)
+    {
+        switch (staticModifier)
+        {
+            case StaticModifier.SpecialValueMajorHeal:
+                Debug.Assert(IsBeneficial(descriptor.TargetCategories));
+                return TryGetSpecialValueByAttribute(dynamicEffect, descriptor, staticModifier, "BOOST_MAJORHEAL_SENDER", out staticModEffectEx);
+            case StaticModifier.SpecialValueMinorHeal:
+                Debug.Assert(IsBeneficial(descriptor.TargetCategories));
+                return TryGetSpecialValueByAttribute(dynamicEffect, descriptor, staticModifier, "BOOST_MINORHEAL_SENDER", out staticModEffectEx);
+            case StaticModifier.SpecialValueCustomHeal:
+                Debug.Assert(IsBeneficial(descriptor.TargetCategories));
+                return TryGetSpecialValueByLabel(dynamicEffect, descriptor, staticModifier, new List<SpecialValueText>()
+                {
+                    new() { Label = "Restore", Suffix = "Health" },
+                    new() { Label = "Restore", Suffix = "Health to yourself" },
+                    new() { Label = "Restore", Suffix = "Health every 2 secs" },
+                    new() { Label = "Restore", Suffix = "Health every 4 seconds" },
+                    new() { Label = "Restore", Suffix = "Health (or Armor if Health is full) to Pet" },
+                    new() { Label = "Restore", Suffix = "Health to Nearby Allies every 4 seconds" },
+                    new() { Label = "Restore", Suffix = "Health to least-healthy ally" },
+                    new() { Label = "Pets within 10 meters heal", Suffix = "" },
+                }, out staticModEffectEx);
+            default:
+                Debug.Fail("Unhandled StaticModifier");
+                staticModEffectEx = null;
+                return false;
+        }
+    }
+
+    private static bool TryGetSpecialValueByAttribute(PgCombatModEffectEx dynamicEffect, AbilitySetDescriptor descriptor, StaticModifier staticModifier, string attributeName, [NotNullWhen(true)] out PgStaticModEffectEx? staticModEffectEx)
+    {
+        if (descriptor.AbilityList.TrueForAll((Ability) => Ability.PvE.SpecialValueList.Exists((PgSpecialValue SpecialValue) =>
+        {
+            return SpecialValue.AttributesThatDeltaList.Contains(attributeName) &&
+                   IsSpecialValueCompatible(dynamicEffect.Target, descriptor.TargetCategories, SpecialValue);
+        })))
+        {
+            staticModEffectEx = new PgStaticModEffectEx()
+            {
+                Modifier = staticModifier,
+                Data = dynamicEffect.Data,
+            };
+
+            return true;
+        }
+
+        staticModEffectEx = null;
+        return false;
+    }
+
+    private static bool TryGetSpecialValueByLabel(PgCombatModEffectEx dynamicEffect, AbilitySetDescriptor descriptor, StaticModifier staticModifier, List<SpecialValueText> specialValueTexts, [NotNullWhen(true)] out PgStaticModEffectEx? staticModEffectEx)
+    {
+        if (descriptor.AbilityList.TrueForAll((Ability) => Ability.PvE.SpecialValueList.Exists((PgSpecialValue SpecialValue) =>
+        {
+            string SpecialValueLabel = SpecialValue.Label;
+            string SpecialValueSuffix = SpecialValue.Suffix;
+
+            if (SpecialValueLabel == "Restores")
+                SpecialValueLabel = "Restore";
+
+            return specialValueTexts.Exists((SpecialValueText svt) =>
+            {
+                return SpecialValueLabel == svt.Label && SpecialValueSuffix == svt.Suffix &&
+                       IsSpecialValueCompatible(dynamicEffect.Target, descriptor.TargetCategories, SpecialValue);
+            });
+        })))
+        {
+            staticModEffectEx = new PgStaticModEffectEx()
+            {
+                Modifier = staticModifier,
+                Data = dynamicEffect.Data,
+            };
+
+            return true;
+        }
+        else
+        {
+            staticModEffectEx = null;
+            return false;
+        }
+    }
+
+    private void CleanupDynamicEffectRestoreHealth(PgCombatModEx pgCombatModEx, ref int index, CombatKeywordEx buff, PgCombatModEffectEx dynamicEffect)
     {
         AssertDynamicFields(dynamicEffect, CombatKeywordEx.RestoreHealth,
                             DynamicFields.AbilityList |
                             DynamicFields.DataValuePositive |
-                            DynamicFields.DataPercent | //TODO check healing ability
+                            DynamicFields.DataPercent |
                             DynamicFields.RandomChance |
                             DynamicFields.DelayInSeconds |
-                            DynamicFields.DurationInSeconds | //TODO check song
                             DynamicFields.RecurringDelay |
                             DynamicFields.Target |
                             DynamicFields.TargetRange |
@@ -276,6 +364,7 @@ internal partial class CombatParserEx
                             DynamicFields.ConditionValue |
                             DynamicFields.ConditionPercentage);
         Debug.Assert(float.IsNaN(dynamicEffect.DelayInSeconds) || float.IsNaN(dynamicEffect.RecurringDelay));
+        Debug.Assert(!dynamicEffect.Data.IsPercent || dynamicEffect.AbilityList.Count > 0);
 
         if (buff != CombatKeywordEx.Internal_None)
         {
@@ -289,6 +378,8 @@ internal partial class CombatParserEx
                             (dynamicEffect.AbilityList.Count > 0 ||
                              dynamicEffect.ConditionList.Contains(CombatCondition.TargetKilled) ||
                              dynamicEffect.ConditionList.Contains(CombatCondition.TargetIsKilled))));
+
+            Debug.Assert(!dynamicEffect.Data.IsPercent);
         }
 
         if (dynamicEffect.AbilityList.Count > 0)
@@ -314,6 +405,12 @@ internal partial class CombatParserEx
                 pgCombatModEx.DynamicEffects[index] = dynamicEffect;
             }
 
+            if (dynamicEffect.Target == CombatTarget.AnimalHandlingPet && Descriptor.TargetCategories == TargetCategories.Pet)
+            {
+                dynamicEffect = dynamicEffect with { Target = CombatTarget.Internal_None };
+                pgCombatModEx.DynamicEffects[index] = dynamicEffect;
+            }
+
             Debug.Assert(!IsEqual(dynamicEffect.Target, Descriptor.TargetCategories));
 
             if (!float.IsNaN(dynamicEffect.TargetRange))
@@ -322,6 +419,57 @@ internal partial class CombatParserEx
                              Descriptor.TargetCategories.HasFlag(TargetCategories.Pet) ||
                              Descriptor.TargetCategories.HasFlag(TargetCategories.TargetPet) ||
                              dynamicEffect.Target != CombatTarget.Self);
+            }
+        }
+
+        if (buff == CombatKeywordEx.Internal_None && dynamicEffect.AbilityList.Count > 0)
+        {
+            AbilitySetDescriptor Descriptor = GetAbilities(dynamicEffect.AbilityList);
+
+            if (IsBeneficial(Descriptor.TargetCategories))
+            {
+                PgStaticModEffectEx? StaticModEffectEx = null;
+
+                _ = TryGetStaticModEffect(dynamicEffect, Descriptor, StaticModifier.SpecialValueMajorHeal, out StaticModEffectEx) ||
+                    TryGetStaticModEffect(dynamicEffect, Descriptor, StaticModifier.SpecialValueMinorHeal, out StaticModEffectEx) ||
+                    TryGetStaticModEffect(dynamicEffect, Descriptor, StaticModifier.SpecialValueCustomHeal, out StaticModEffectEx);
+
+                if (StaticModEffectEx is not null && dynamicEffect.Target == CombatTarget.Internal_None)
+                {
+                    pgCombatModEx.StaticEffects.Add(StaticModEffectEx);
+                    pgCombatModEx.DynamicEffects.RemoveAt(index);
+                    index--;
+                }
+                else
+                {
+                    string Description = pgCombatModEx.Description;
+                    string? Label0 = null;
+                    string? Suffix0 = null;
+                    string? Label1 = null;
+                    string? Suffix1 = null;
+                    string? Label2 = null;
+                    string? Suffix2 = null;
+                    if (Descriptor.AbilityList[0].PvE.SpecialValueList.Count > 0)
+                    {
+                        PgSpecialValue s = Descriptor.AbilityList[0].PvE.SpecialValueList[0];
+                        Label0 = s.Label;
+                        Suffix0 = s.Suffix;
+                    }
+                    if (Descriptor.AbilityList[0].PvE.SpecialValueList.Count > 1)
+                    {
+                        PgSpecialValue s = Descriptor.AbilityList[0].PvE.SpecialValueList[1];
+                        Label1 = s.Label;
+                        Suffix1 = s.Suffix;
+                    }
+                    if (Descriptor.AbilityList[0].PvE.SpecialValueList.Count > 2)
+                    {
+                        PgSpecialValue s = Descriptor.AbilityList[0].PvE.SpecialValueList[2];
+                        Label2 = s.Label;
+                        Suffix2 = s.Suffix;
+                    }
+                }
+
+                Debug.Assert(!dynamicEffect.Data.IsPercent || StaticModEffectEx is not null);
             }
         }
     }

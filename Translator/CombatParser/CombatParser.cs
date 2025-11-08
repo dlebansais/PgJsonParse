@@ -20,6 +20,13 @@ public partial class CombatParser
 
     public void AnalyzeCachedData(List<object> objectList)
     {
+        StringToEnumConversion<CombatKeyword>.SetCustomParsedEnum(CombatKeyword.ImmunityDirect);
+        StringToEnumConversion<CombatKeyword>.SetCustomParsedEnum(CombatKeyword.CrushingBoost);
+        StringToEnumConversion<CombatKeyword>.SetCustomParsedEnum(CombatKeyword.SprintBoost);
+        StringToEnumConversion<CombatKeyword>.SetCustomParsedEnum(CombatKeyword.SlashingBoost);
+        StringToEnumConversion<CombatKeyword>.SetCustomParsedEnum(CombatKeyword.HealingAugment);
+        StringToEnumConversion<CombatKeyword>.SetCustomParsedEnum(CombatKeyword.ArmorRegenerationAugment);
+
         List<ItemSlot> ValidSlotList = new List<ItemSlot>()
         {
             ItemSlot.MainHand,
