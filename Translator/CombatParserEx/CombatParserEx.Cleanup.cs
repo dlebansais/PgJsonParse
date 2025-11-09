@@ -47,7 +47,7 @@ internal partial class CombatParserEx
         PgPermanentModEffectEx PermanentEffect = pgCombatModEx.PermanentEffects[index];
 
         Debug.Assert(PermanentEffect.Target != CombatTarget.Internal_None);
-        Debug.Assert(!float.IsNaN(PermanentEffect.Data.Value));
+        Debug.Assert(!float.IsNaN(PermanentEffect.Data.Value) || PermanentEffect.Keyword == CombatKeywordEx.GiveBuffEachAttack);
 
         switch (PermanentEffect.Keyword)
         {

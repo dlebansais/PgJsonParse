@@ -2476,6 +2476,7 @@ internal partial class CombatParserEx
                 break;
             case "28643":
                 BuildMatchingModEffect_006(description, isGolemMinion, abilityList, dynamicCombatEffectList, new() { dynamicCombatEffectList[0], staticCombatEffectList[0] }, targetAbilityList, out pgCombatModEx);
+                pgCombatModEx.PermanentEffects[0] = pgCombatModEx.PermanentEffects[0] with { Data = new() { Value = 2 } };
                 break;
             case "7303":
             case "7304":

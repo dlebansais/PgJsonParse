@@ -2,7 +2,7 @@
 
 namespace PgObjects;
 
-public class PgPermanentModEffectEx
+public record PgPermanentModEffectEx
 {
     public required CombatKeywordEx Keyword { get; init; }
 
