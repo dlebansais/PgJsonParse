@@ -603,6 +603,11 @@ internal partial class CombatParserEx
                 BuildUnmatchedMod_001(description, targetAbilityList, new() { modCombatList[2] }, new(), out pgExtraCombatModEx);
                 pgCombatModEx.DynamicEffects.AddRange(pgExtraCombatModEx.DynamicEffects);
                 break;
+            case "11405":
+                BuildUnmatchedMod_004(description, abilityList, new() { modCombatList[0], modCombatList[1] }, targetAbilityList, out pgCombatModEx);
+                pgCombatModEx.DynamicEffects[0] = pgCombatModEx.DynamicEffects[0] with { DurationInSeconds = modCombatList[2].Data.Value };
+                pgCombatModEx.DynamicEffects[0].AbilityList.Clear();
+                break;
             case "18132":
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[1], modCombatList[2] }, new(), out pgCombatModEx);
                 BuildUnmatchedMod_001(description, abilityList, new() { modCombatList[0], modCombatList[3], modCombatList[4] }, new(), out pgExtraCombatModEx);
@@ -836,7 +841,6 @@ internal partial class CombatParserEx
             case "11472":
             case "11552":
             case "11602":
-            case "11405":
             case "11704":
             case "12334":
             case "1253":

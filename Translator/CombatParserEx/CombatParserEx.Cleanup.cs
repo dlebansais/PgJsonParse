@@ -54,6 +54,9 @@ internal partial class CombatParserEx
             case CombatKeywordEx.RestoreHealth:
                 CleanupPermanentEffectRestoreHealth(pgCombatModEx, index, PermanentEffect);
                 break;
+            case CombatKeywordEx.RestoreArmor:
+                CleanupPermanentEffectRestoreArmor(pgCombatModEx, index, PermanentEffect);
+                break;
             default:
                 break;
         }
@@ -89,6 +92,9 @@ internal partial class CombatParserEx
         {
             case CombatKeywordEx.RestoreHealth:
                 CleanupDynamicEffectRestoreHealth(pgCombatModEx, ref index, buff, DynamicEffect);
+                break;
+            case CombatKeywordEx.RestoreArmor:
+                CleanupDynamicEffectRestoreArmor(pgCombatModEx, ref index, buff, DynamicEffect);
                 break;
             default:
                 break;
@@ -127,6 +133,10 @@ internal partial class CombatParserEx
                 {
                     case Internal_MajorHealToYou:
                         Candidate = Ability.KeywordList.Contains(AbilityKeyword.MajorHeal) && Ability.Target == AbilityTarget.Self;
+                        break;
+                    case Internal_HammerRestoreArmor:
+                        Candidate = Ability.KeywordList.Contains(AbilityKeyword.Hammer) &&
+                                    Ability.PvE.SpecialValueList.Exists((specialValue) => specialValue.Label == "Restores" && specialValue.Suffix == "Armor after a 6-second delay");
                         break;
                     default:
                         Candidate = Ability.KeywordList.Contains(Keyword);
@@ -513,6 +523,18 @@ internal partial class CombatParserEx
                 Debug.Assert(!dynamicEffect.Data.IsPercent || StaticModEffectEx is not null);
             }
         }
+    }
+
+    private void CleanupPermanentEffectRestoreArmor(PgCombatModEx pgCombatModEx, int index, PgPermanentModEffectEx permanentEffect)
+    {
+        AssertPermanentFields(permanentEffect, CombatKeywordEx.RestoreArmor,
+                              PermanentFields.DataValuePositive |
+                              PermanentFields.RecurringDelay |
+                              PermanentFields.Target);
+
+        Debug.Assert(!float.IsNaN(permanentEffect.RecurringDelay) ||
+                     permanentEffect.Target == CombatTarget.DruidHealingSanctuary ||
+                     permanentEffect.Target == CombatTarget.SpiritFoxPowerGlyph);
     }
 
     private void CleanupDynamicEffectRestoreArmor(PgCombatModEx pgCombatModEx, ref int index, CombatKeywordEx buff, PgCombatModEffectEx dynamicEffect)
