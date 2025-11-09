@@ -9,4 +9,6 @@ internal enum TargetCategories
     TargetPet = 0x00000008,
     Ennemy = 0x00000010,
     AllEnnemies = 0x00000020,
+
+    Mixed = 0x7FFFFFFF,
 }

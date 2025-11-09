@@ -795,7 +795,6 @@ internal partial class CombatParserEx
             case "Item_41309_0":
             case "Item_40312_0":
             case "Item_40311_0":
-            case "10004":
             case "10005":
             case "10007":
             case "10008":
@@ -1151,6 +1150,7 @@ internal partial class CombatParserEx
             case "9875":
             case "9882":
             case "9884":
+            case "10004":
                 BuildUnmatchedMod_001(description, abilityList, modCombatList, targetAbilityList, out pgCombatModEx);
                 break;
 

@@ -188,6 +188,7 @@ internal partial class CombatParserEx
     private const AbilityKeyword Internal_Combo6 = (AbilityKeyword)0xFFED;
     private const AbilityKeyword Internal_Combo7 = (AbilityKeyword)0xFFEC;
     private const AbilityKeyword Internal_Combo8 = (AbilityKeyword)0xFFEB;
+    private const AbilityKeyword Internal_ArcheryThatCrit = (AbilityKeyword)0xFFEA;
     private List<AbilityKeyword> GenericAbilityList = new List<AbilityKeyword>()
     {
         AbilityKeyword.NiceAttack,
@@ -276,6 +277,7 @@ internal partial class CombatParserEx
         Internal_Combo6,
         Internal_Combo7,
         Internal_Combo8,
+        Internal_ArcheryThatCrit,
     };
     private Dictionary<AbilityPetType, AbilityKeyword> PetTypeToKeywordTable = new()
     {
@@ -508,6 +510,7 @@ internal partial class CombatParserEx
         { "Dwarven Plate Armor suit bonus", new List<AbilityKeyword>() { Internal_DwarvenSuitBonus } },
         { "Werewolf Armor suit bonus", new List<AbilityKeyword>() { Internal_WereolfSuitBonus } },
         { "James Eltibule's Armors' suit bonus", new List<AbilityKeyword>() { Internal_JamesEltibuleSuitBonus } },
+        { "Archery attack that Critically Hit", new List<AbilityKeyword>() { Internal_ArcheryThatCrit } },
         { "Archery attack", new List<AbilityKeyword>() { AbilityKeyword.Archery } },
         { "Other ability", new List<AbilityKeyword>() { Internal_OtherAbilities } },
         { "Sonic ability", new List<AbilityKeyword>() { AbilityKeyword.Sonic } },
