@@ -4,5 +4,6 @@ public enum StaticModifier
 {
     SpecialValueMajorHeal,
     SpecialValueMinorHeal,
-    SpecialValueCustomHeal,
+    SpecialValueCustomRestoreHealth,
+    SpecialValueCustomRestoreArmor,
 }

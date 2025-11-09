@@ -46,8 +46,14 @@ internal partial class CombatParserEx
     {
         PgPermanentModEffectEx PermanentEffect = pgCombatModEx.PermanentEffects[index];
 
+        Debug.Assert(PermanentEffect.Target != CombatTarget.Internal_None);
+        Debug.Assert(!float.IsNaN(PermanentEffect.Data.Value));
+
         switch (PermanentEffect.Keyword)
         {
+            case CombatKeywordEx.RestoreHealth:
+                CleanupPermanentEffectRestoreHealth(pgCombatModEx, index, PermanentEffect);
+                break;
             default:
                 break;
         }
@@ -240,6 +246,23 @@ internal partial class CombatParserEx
         return true;
     }
 
+    private void AssertPermanentFields(PgPermanentModEffectEx permanentEffect, CombatKeywordEx keyword, PermanentFields fields)
+    {
+        Debug.Assert(permanentEffect.Keyword == keyword);
+        Debug.Assert(fields.HasFlag(PermanentFields.Data) || fields.HasFlag(PermanentFields.DataValue) || fields.HasFlag(PermanentFields.DataValuePositive) || float.IsNaN(permanentEffect.Data.Value));
+        Debug.Assert(fields.HasFlag(PermanentFields.Data) || !fields.HasFlag(PermanentFields.DataValue) || fields.HasFlag(PermanentFields.DataValuePositive) || permanentEffect.Data.Value != 0);
+        Debug.Assert(fields.HasFlag(PermanentFields.Data) || fields.HasFlag(PermanentFields.DataValue) || !fields.HasFlag(PermanentFields.DataValuePositive) || permanentEffect.Data.Value > 0);
+        Debug.Assert(fields.HasFlag(PermanentFields.Data) || fields.HasFlag(PermanentFields.DataPercent) || !permanentEffect.Data.IsPercent);
+        Debug.Assert(fields.HasFlag(PermanentFields.DamageType) || permanentEffect.DamageType == GameDamageType.Internal_None);
+        Debug.Assert(fields.HasFlag(PermanentFields.RandomChance) || float.IsNaN(permanentEffect.RandomChance));
+        Debug.Assert(fields.HasFlag(PermanentFields.DelayInSeconds) || float.IsNaN(permanentEffect.DelayInSeconds));
+        Debug.Assert(fields.HasFlag(PermanentFields.DurationInSeconds) || float.IsNaN(permanentEffect.DurationInSeconds));
+        Debug.Assert(fields.HasFlag(PermanentFields.RecurringDelay) || float.IsNaN(permanentEffect.RecurringDelay));
+        Debug.Assert(fields.HasFlag(PermanentFields.Target) || permanentEffect.Target == CombatTarget.Internal_None);
+        Debug.Assert(fields.HasFlag(PermanentFields.ConditionList) || permanentEffect.ConditionList.Count == 0);
+        Debug.Assert(fields.HasFlag(PermanentFields.ConditionAbilityList) || permanentEffect.ConditionAbilityList.Count == 0);
+    }
+
     private void AssertDynamicFields(PgCombatModEffectEx dynamicEffect, CombatKeywordEx keyword, DynamicFields fields)
     {
         Debug.Assert(dynamicEffect.Keyword == keyword);
@@ -275,7 +298,7 @@ internal partial class CombatParserEx
             case StaticModifier.SpecialValueMinorHeal:
                 Debug.Assert(IsBeneficial(descriptor.TargetCategories));
                 return TryGetSpecialValueByAttribute(dynamicEffect, descriptor, staticModifier, "BOOST_MINORHEAL_SENDER", out staticModEffectEx);
-            case StaticModifier.SpecialValueCustomHeal:
+            case StaticModifier.SpecialValueCustomRestoreHealth:
                 Debug.Assert(IsBeneficial(descriptor.TargetCategories));
                 return TryGetSpecialValueByLabel(dynamicEffect, descriptor, staticModifier, new List<SpecialValueText>()
                 {
@@ -287,6 +310,12 @@ internal partial class CombatParserEx
                     new() { Label = "Restore", Suffix = "Health to Nearby Allies every 4 seconds" },
                     new() { Label = "Restore", Suffix = "Health to least-healthy ally" },
                     new() { Label = "Pets within 10 meters heal", Suffix = "" },
+                }, out staticModEffectEx);
+            case StaticModifier.SpecialValueCustomRestoreArmor:
+                Debug.Assert(IsBeneficial(descriptor.TargetCategories));
+                return TryGetSpecialValueByLabel(dynamicEffect, descriptor, staticModifier, new List<SpecialValueText>()
+                {
+                    new() { Label = "Restore", Suffix = "Armor" },
                 }, out staticModEffectEx);
             default:
                 Debug.Fail("Unhandled StaticModifier");
@@ -346,6 +375,18 @@ internal partial class CombatParserEx
             staticModEffectEx = null;
             return false;
         }
+    }
+
+    private void CleanupPermanentEffectRestoreHealth(PgCombatModEx pgCombatModEx, int index, PgPermanentModEffectEx permanentEffect)
+    {
+        AssertPermanentFields(permanentEffect, CombatKeywordEx.RestoreHealth,
+                              PermanentFields.DataValuePositive |
+                              PermanentFields.RecurringDelay |
+                              PermanentFields.Target);
+
+        Debug.Assert(!float.IsNaN(permanentEffect.RecurringDelay) ||
+                     permanentEffect.Target == CombatTarget.DruidHealingSanctuary ||
+                     permanentEffect.Target == CombatTarget.SpiritFoxPowerGlyph);
     }
 
     private void CleanupDynamicEffectRestoreHealth(PgCombatModEx pgCombatModEx, ref int index, CombatKeywordEx buff, PgCombatModEffectEx dynamicEffect)
@@ -432,7 +473,131 @@ internal partial class CombatParserEx
 
                 _ = TryGetStaticModEffect(dynamicEffect, Descriptor, StaticModifier.SpecialValueMajorHeal, out StaticModEffectEx) ||
                     TryGetStaticModEffect(dynamicEffect, Descriptor, StaticModifier.SpecialValueMinorHeal, out StaticModEffectEx) ||
-                    TryGetStaticModEffect(dynamicEffect, Descriptor, StaticModifier.SpecialValueCustomHeal, out StaticModEffectEx);
+                    TryGetStaticModEffect(dynamicEffect, Descriptor, StaticModifier.SpecialValueCustomRestoreHealth, out StaticModEffectEx);
+
+                if (StaticModEffectEx is not null && dynamicEffect.Target == CombatTarget.Internal_None)
+                {
+                    pgCombatModEx.StaticEffects.Add(StaticModEffectEx);
+                    pgCombatModEx.DynamicEffects.RemoveAt(index);
+                    index--;
+                }
+                else
+                {
+                    string Description = pgCombatModEx.Description;
+                    string? Label0 = null;
+                    string? Suffix0 = null;
+                    string? Label1 = null;
+                    string? Suffix1 = null;
+                    string? Label2 = null;
+                    string? Suffix2 = null;
+                    if (Descriptor.AbilityList[0].PvE.SpecialValueList.Count > 0)
+                    {
+                        PgSpecialValue s = Descriptor.AbilityList[0].PvE.SpecialValueList[0];
+                        Label0 = s.Label;
+                        Suffix0 = s.Suffix;
+                    }
+                    if (Descriptor.AbilityList[0].PvE.SpecialValueList.Count > 1)
+                    {
+                        PgSpecialValue s = Descriptor.AbilityList[0].PvE.SpecialValueList[1];
+                        Label1 = s.Label;
+                        Suffix1 = s.Suffix;
+                    }
+                    if (Descriptor.AbilityList[0].PvE.SpecialValueList.Count > 2)
+                    {
+                        PgSpecialValue s = Descriptor.AbilityList[0].PvE.SpecialValueList[2];
+                        Label2 = s.Label;
+                        Suffix2 = s.Suffix;
+                    }
+                }
+
+                Debug.Assert(!dynamicEffect.Data.IsPercent || StaticModEffectEx is not null);
+            }
+        }
+    }
+
+    private void CleanupDynamicEffectRestoreArmor(PgCombatModEx pgCombatModEx, ref int index, CombatKeywordEx buff, PgCombatModEffectEx dynamicEffect)
+    {
+        AssertDynamicFields(dynamicEffect, CombatKeywordEx.RestoreArmor,
+                            DynamicFields.AbilityList |
+                            DynamicFields.DataValuePositive |
+                            DynamicFields.DataPercent |
+                            DynamicFields.RandomChance |
+                            DynamicFields.DelayInSeconds |
+                            DynamicFields.RecurringDelay |
+                            DynamicFields.Target |
+                            DynamicFields.TargetRange |
+                            DynamicFields.ConditionList |
+                            DynamicFields.ConditionAbilityList |
+                            DynamicFields.ConditionValue |
+                            DynamicFields.ConditionPercentage);
+        Debug.Assert(float.IsNaN(dynamicEffect.DelayInSeconds) || float.IsNaN(dynamicEffect.RecurringDelay));
+        Debug.Assert(!dynamicEffect.Data.IsPercent || dynamicEffect.AbilityList.Count > 0);
+
+        if (buff != CombatKeywordEx.Internal_None)
+        {
+            Debug.Assert(buff == CombatKeywordEx.GiveBuffOneHit ||
+                         buff == CombatKeywordEx.GiveBuffOneAttack ||
+                         (buff == CombatKeywordEx.GiveBuff &&
+                            (dynamicEffect.AbilityList.Count > 0 ||
+                             dynamicEffect.ConditionList.Contains(CombatCondition.TargetOfAbility)) ||
+                             (!float.IsNaN(dynamicEffect.RecurringDelay) && dynamicEffect.AbilityList.Count == 0)) ||
+                         (buff == CombatKeywordEx.GiveBuffOneUse &&
+                            (dynamicEffect.AbilityList.Count > 0 ||
+                             dynamicEffect.ConditionList.Contains(CombatCondition.TargetKilled) ||
+                             dynamicEffect.ConditionList.Contains(CombatCondition.TargetIsKilled))));
+
+            Debug.Assert(!dynamicEffect.Data.IsPercent);
+        }
+
+        if (dynamicEffect.AbilityList.Count > 0)
+        {
+            AbilitySetDescriptor Descriptor = GetAbilities(dynamicEffect.AbilityList);
+
+            if (!IsBeneficial(dynamicEffect.Target) && !IsBeneficial(Descriptor.TargetCategories))
+            {
+                Debug.Assert(dynamicEffect.Target == CombatTarget.Internal_None);
+                dynamicEffect = dynamicEffect with { Target = CombatTarget.Self };
+                pgCombatModEx.DynamicEffects[index] = dynamicEffect;
+            }
+
+            if (dynamicEffect.Target == CombatTarget.Self && Descriptor.TargetCategories == TargetCategories.Self)
+            {
+                dynamicEffect = dynamicEffect with { Target = CombatTarget.Internal_None };
+                pgCombatModEx.DynamicEffects[index] = dynamicEffect;
+            }
+
+            if (dynamicEffect.Target == CombatTarget.SelfAndAllies && Descriptor.TargetCategories == (TargetCategories.Self | TargetCategories.Ally))
+            {
+                dynamicEffect = dynamicEffect with { Target = CombatTarget.Internal_None };
+                pgCombatModEx.DynamicEffects[index] = dynamicEffect;
+            }
+
+            if (dynamicEffect.Target == CombatTarget.AnimalHandlingPet && Descriptor.TargetCategories == TargetCategories.Pet)
+            {
+                dynamicEffect = dynamicEffect with { Target = CombatTarget.Internal_None };
+                pgCombatModEx.DynamicEffects[index] = dynamicEffect;
+            }
+
+            Debug.Assert(!IsEqual(dynamicEffect.Target, Descriptor.TargetCategories));
+
+            if (!float.IsNaN(dynamicEffect.TargetRange))
+            {
+                Debug.Assert(Descriptor.TargetCategories.HasFlag(TargetCategories.Ally) ||
+                             Descriptor.TargetCategories.HasFlag(TargetCategories.Pet) ||
+                             Descriptor.TargetCategories.HasFlag(TargetCategories.TargetPet) ||
+                             dynamicEffect.Target != CombatTarget.Self);
+            }
+        }
+
+        if (buff == CombatKeywordEx.Internal_None && dynamicEffect.AbilityList.Count > 0)
+        {
+            AbilitySetDescriptor Descriptor = GetAbilities(dynamicEffect.AbilityList);
+
+            if (IsBeneficial(Descriptor.TargetCategories))
+            {
+                PgStaticModEffectEx? StaticModEffectEx = null;
+
+                _ = TryGetStaticModEffect(dynamicEffect, Descriptor, StaticModifier.SpecialValueCustomRestoreArmor, out StaticModEffectEx);
 
                 if (StaticModEffectEx is not null && dynamicEffect.Target == CombatTarget.Internal_None)
                 {
