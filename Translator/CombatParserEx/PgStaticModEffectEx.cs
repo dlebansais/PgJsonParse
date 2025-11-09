@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Translator;
+﻿namespace PgObjects;
 
-namespace PgObjects;
+using Translator;
 
 public class PgStaticModEffectEx
 {

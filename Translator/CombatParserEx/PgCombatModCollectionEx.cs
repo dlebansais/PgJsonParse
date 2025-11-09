@@ -52,6 +52,17 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
             Write("             ", "},");
         }
 
+        if (pgCombatModEx.StaticEffects.Count > 0)
+        {
+            Write("             ", $"StaticEffects = new List<{typeof(PgStaticModEffectEx).Name}>()");
+            Write("             ", "{");
+
+            foreach (PgStaticModEffectEx Item in pgCombatModEx.StaticEffects)
+                Display(Item);
+
+            Write("             ", "},");
+        }
+
         Write("         ", "},");
     }
 
@@ -149,6 +160,18 @@ public class PgCombatModCollectionEx : List<PgCombatModEx>
 
         if (pgCombatModEffectEx.IsEveryOtherUse)
             Write("                     ", "IsEveryOtherUse = true,");
+
+        Write("                 ", "},");
+    }
+
+    private static void Display(PgStaticModEffectEx pgStaticModEffectEx)
+    {
+        Write("                 ", $"new {pgStaticModEffectEx.GetType().Name}()");
+        Write("                 ", "{");
+        Write("                     ", $"Modifier = {pgStaticModEffectEx.Modifier.GetType().Name}.{pgStaticModEffectEx.Modifier},");
+
+        if (pgStaticModEffectEx.Data != PgNumericValueEx.Empty)
+            Write("                     ", $"Data = {NumericValueToString(pgStaticModEffectEx.Data)},");
 
         Write("                 ", "},");
     }

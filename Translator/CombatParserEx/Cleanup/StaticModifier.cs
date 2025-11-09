@@ -1,4 +1,4 @@
-﻿namespace Translator;
+﻿namespace PgObjects;
 
 public enum StaticModifier
 {
