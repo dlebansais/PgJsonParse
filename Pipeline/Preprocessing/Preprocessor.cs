@@ -5,13 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using FreeSql.DataAnnotations;
+using FreeSql.Internal;
+using FreeSql.Internal.Model;
 
 public class Preprocessor
 {
@@ -54,6 +54,8 @@ public class Preprocessor
 
     public bool Preprocess(string versionPath, List<JsonFile> jsonFileList, IFreeSql fsql, out string destinationDirectory)
     {
+        InitializeHandlers();
+
         destinationDirectory = @$"{versionPath}\Curated";
         bool PreprocessingDone = false;
 
@@ -549,5 +551,49 @@ public class Preprocessor
         }
 
         return Result;
+    }
+
+    private void InitializeHandlers()
+    {
+        Utils.TypeHandlers.TryAdd(typeof(string[]), new StringArrayHandler());
+        Utils.TypeHandlers.TryAdd(typeof(int[]), new IntArrayHandler());
+        Utils.TypeHandlers.TryAdd(typeof(decimal[]), new DecimalArrayHandler());
+        Utils.TypeHandlers.TryAdd(typeof(Dictionary<string, int>), new StringIntDictionaryHandler());
+    }
+
+    private class StringArrayHandler : TypeHandler<string[]>
+    {
+        public override string[] Deserialize(object value)
+            => JsonSerializer.Deserialize<string[]>((string)value)!;
+
+        public override object Serialize(string[] value)
+            => JsonSerializer.Serialize(value);
+    }
+
+    private class IntArrayHandler : TypeHandler<int[]>
+    {
+        public override int[] Deserialize(object value)
+            => JsonSerializer.Deserialize<int[]>((string)value)!;
+
+        public override object Serialize(int[] value)
+            => JsonSerializer.Serialize(value);
+    }
+
+    private class DecimalArrayHandler : TypeHandler<decimal[]>
+    {
+        public override decimal[] Deserialize(object value)
+            => JsonSerializer.Deserialize<decimal[]>((string)value)!;
+
+        public override object Serialize(decimal[] value)
+            => JsonSerializer.Serialize(value);
+    }
+
+    private class StringIntDictionaryHandler : TypeHandler<Dictionary<string, int>>
+    {
+        public override Dictionary<string, int> Deserialize(object value)
+            => JsonSerializer.Deserialize<Dictionary<string, int>>((string)value)!;
+
+        public override object Serialize(Dictionary<string, int> value)
+            => JsonSerializer.Serialize(value);
     }
 }

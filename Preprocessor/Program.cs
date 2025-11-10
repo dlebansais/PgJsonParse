@@ -39,65 +39,13 @@ internal class Program
         new JsonFile("xptables", true, Preprocessor.PreprocessDictionary<XpTableDictionary>, Fixer.FixXpTables, Preprocessor.SaveSerializedDictionary<XpTableDictionary, XpTable>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<XpTable>)(((XpTableDictionary)content).Values)).ExecuteAffrows()),
     };
 
-    private class StringArrayHandler : FreeSql.Internal.Model.TypeHandler<string[]>
-    {
-        public override string[] Deserialize(object value)
-        {
-            return JsonSerializer.Deserialize<string[]>((string)value)!;
-        }
-
-        public override object Serialize(string[] value)
-        {
-            return JsonSerializer.Serialize(value);
-        }
-    }
-
-    private class IntArrayHandler : FreeSql.Internal.Model.TypeHandler<int[]>
-    {
-        public override int[] Deserialize(object value)
-        {
-            return JsonSerializer.Deserialize<int[]>((string)value)!;
-        }
-
-        public override object Serialize(int[] value)
-        {
-            return JsonSerializer.Serialize(value);
-        }
-    }
-
-    private class DecimalArrayHandler : FreeSql.Internal.Model.TypeHandler<decimal[]>
-    {
-        public override decimal[] Deserialize(object value)
-        {
-            return JsonSerializer.Deserialize<decimal[]>((string)value)!;
-        }
-
-        public override object Serialize(decimal[] value)
-        {
-            return JsonSerializer.Serialize(value);
-        }
-    }
-
-    private class StringIntDictionaryHandler : FreeSql.Internal.Model.TypeHandler<Dictionary<string, int>>
-    {
-        public override Dictionary<string, int> Deserialize(object value)
-        {
-            return JsonSerializer.Deserialize<Dictionary<string, int>>((string)value)!;
-        }
-
-        public override object Serialize(Dictionary<string, int> value)
-        {
-            return JsonSerializer.Serialize(value);
-        }
-    }
-
     static int Main(string[] args)
     {
         string ApplicationDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         string ParserDirectory = Tools.SafeGetSubdirectory(ApplicationDataDirectory, "PgJsonParse", out _);
         string VersionDirectory = Tools.SafeGetSubdirectory(ParserDirectory, "Versions", out _);
         string AnyVersionDirectory = Tools.SafeGetSubdirectory(VersionDirectory, "000", out _);
-        string DatabaseFile = $"{AnyVersionDirectory}/test.db";
+        string DatabaseFile = $"{AnyVersionDirectory}/_version.db";
 
         Downloader Downloader = new();
         if (!Downloader.Download(JsonFiles, VersionDirectory, out int version, out string VersionPath))
@@ -115,11 +63,6 @@ internal class Program
             Debug.WriteLine($"Failed to create the database at {DatabaseFile}.");
             return -3;
         }
-
-        FreeSql.Internal.Utils.TypeHandlers.TryAdd(typeof(string[]), new StringArrayHandler());
-        FreeSql.Internal.Utils.TypeHandlers.TryAdd(typeof(int[]), new IntArrayHandler());
-        FreeSql.Internal.Utils.TypeHandlers.TryAdd(typeof(decimal[]), new DecimalArrayHandler());
-        FreeSql.Internal.Utils.TypeHandlers.TryAdd(typeof(Dictionary<string, int>), new StringIntDictionaryHandler());
 
         Preprocessor Preprocessor = new();
         if (!Preprocessor.Preprocess(VersionPath, JsonFiles, fsql, out string CuratedVersionDirectory))
