@@ -2,7 +2,13 @@
 
 public class AIAbility
 {
-    public AIAbility(RawAIAbility rawAIAbility)
+    public AIAbility(string key)
+    {
+        Key = key;
+    }
+
+    public AIAbility(string key, RawAIAbility rawAIAbility)
+        : this(key)
     {
         Cue = rawAIAbility.cue;
         CueVal = rawAIAbility.cueVal;
@@ -13,6 +19,7 @@ public class AIAbility
         MinRange = rawAIAbility.minRange;
     }
 
+    public string Key { get; set; }
     public string? Cue { get; set; }
     public int? CueVal { get; set; }
     public bool? Favorite { get; set; }

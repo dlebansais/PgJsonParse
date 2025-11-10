@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 public static class Finalizer<T>
+    where T : notnull
 {
     public static bool FinalizeParsing(Dictionary<T, VariadicObjectHandler> handlerTable, Dictionary<T, List<string>> handledTable, Dictionary<T, List<string>> knownFieldTable)
     {

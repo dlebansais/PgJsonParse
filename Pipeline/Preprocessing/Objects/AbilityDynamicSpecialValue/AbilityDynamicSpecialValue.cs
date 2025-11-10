@@ -1,5 +1,7 @@
 ﻿namespace Preprocessor;
 
+using FreeSql.DataAnnotations;
+
 public class AbilityDynamicSpecialValue
 {
     public AbilityDynamicSpecialValue(RawAbilityDynamicSpecialValue rawAAbilityDynamicSpecialValue)
@@ -13,12 +15,24 @@ public class AbilityDynamicSpecialValue
         Value = rawAAbilityDynamicSpecialValue.Value;
     }
 
+    [Column(IsIdentity = true, IsPrimary = true)]
+    public int Key { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDelta { get; set; }
+    
     public string? Label { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? RequiredAbilityKeywords { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? RequiredEffectKeywords { get; set; }
+    
     public bool? SkipIfZero { get; set; }
+    
     public string? Suffix { get; set; }
+    
     public int? Value { get; set; }
 
     public RawAbilityDynamicSpecialValue ToRawAbilityDynamicSpecialValue()

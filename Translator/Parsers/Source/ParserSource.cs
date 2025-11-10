@@ -147,7 +147,7 @@ public class ParserSource : Parser
                 case "Type":
                     break;
                 case "ItemTypeId":
-                    Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item_Key = PgObject.GetItemKey(valueItem), Value.ToString());
+                    Result = Inserter<PgItem>.SetItemByKey((PgItem valueItem) => NewSource.Item_Key = PgObject.GetItemKey(valueItem), Value.ToString()!);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -224,7 +224,7 @@ public class ParserSource : Parser
                     break;
                 case "QuestId":
                     Debug.WriteLine("TODO: corriger");
-                    _ = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = PgObject.GetItemKey(valueQuest), Value.ToString(), ErrorControl.IgnoreIfNotFound);
+                    _ = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = PgObject.GetItemKey(valueQuest), Value.ToString()!, ErrorControl.IgnoreIfNotFound);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -332,7 +332,7 @@ public class ParserSource : Parser
                 case "Type":
                     break;
                 case "RecipeId":
-                    Result = Inserter<PgRecipe>.SetItemByKey((PgRecipe valueRecipe) => NewSource.Recipe_Key = PgObject.GetItemKey(valueRecipe), Value.ToString());
+                    Result = Inserter<PgRecipe>.SetItemByKey((PgRecipe valueRecipe) => NewSource.Recipe_Key = PgObject.GetItemKey(valueRecipe), Value.ToString()!);
                     break;
                 default:
                     Result = Program.ReportFailure(parsedFile, parsedKey, $"Key '{Key}' not handled");
@@ -699,7 +699,7 @@ public class ParserSource : Parser
                 case "Type":
                     break;
                 case "QuestId":
-                    Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = PgObject.GetItemKey(valueQuest), Value.ToString(), ErrorControl.IgnoreIfNotFound);
+                    Result = Inserter<PgQuest>.SetItemByKey((PgQuest valueQuest) => NewSource.Quest_Key = PgObject.GetItemKey(valueQuest), Value.ToString()!, ErrorControl.IgnoreIfNotFound);
                     if (!Result)
                     {
                         Result = true;

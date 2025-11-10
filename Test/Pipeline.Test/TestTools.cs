@@ -11,7 +11,7 @@ public static class TestTools
         
         while (Directory != string.Empty)
         {
-            string FolderName = Path.GetFileName(Directory);
+            string FolderName = Path.GetFileName(Directory)!;
             if (FolderName != "net481" &&
                 FolderName != "x64" &&
                 FolderName != "Debug" &&
@@ -20,7 +20,7 @@ public static class TestTools
                 FolderName != "obj")
                 break;
 
-            Directory = Path.GetDirectoryName(Directory);
+            Directory = Path.GetDirectoryName(Directory)!;
         }
 
         string Result = Path.Combine(Directory, "TestCases", testName);
@@ -30,5 +30,15 @@ public static class TestTools
             System.IO.Directory.Delete(Curated, recursive: true);
 
         return Result;
+    }
+
+    public static IFreeSql CreateTestDatabase()
+    {
+        IFreeSql? fsql = new FreeSql.FreeSqlBuilder()
+                .UseConnectionString(FreeSql.DataType.Sqlite, $"Data Source=test.db")
+                .UseAutoSyncStructure(true)
+                .Build();
+
+        return fsql ?? throw new InvalidOperationException();
     }
 }

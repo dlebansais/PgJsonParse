@@ -84,7 +84,7 @@ public class SkillRewardCollectionJsonConverter : JsonConverter<SkillRewardColle
             string Key;
 
             if (RawReward.Races is null)
-                Key = RawReward.Level.ToString();
+                Key = RawReward.Level.ToString()!;
             else
                 Key = $"{RawReward.Level}_{string.Join("_", RawReward.Races)}";
 

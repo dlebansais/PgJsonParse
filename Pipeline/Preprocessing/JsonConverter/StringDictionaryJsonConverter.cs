@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 public class StringDictionaryJsonConverter<TElement, TRawElement, TDictionary> : JsonConverter<TDictionary>
     where TElement : class
     where TRawElement : class
-    where TDictionary : Dictionary<string, TElement>, IDictionaryValueBuilder<TElement, TRawElement>, new()
+    where TDictionary : Dictionary<string, TElement>, IDictionaryValueBuilderString<TElement, TRawElement>, new()
 {
     public override TDictionary? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -30,7 +30,7 @@ public class StringDictionaryJsonConverter<TElement, TRawElement, TDictionary> :
             try
             {
                 TRawElement RawElement = JsonSerializer.Deserialize<TRawElement>(ref reader, options) ?? throw new NullReferenceException();
-                dictionary.Add(Key, dictionary.FromRaw(RawElement));
+                dictionary.Add(Key, dictionary.FromRaw(Key, RawElement));
             }
             catch (Exception Exception)
             {

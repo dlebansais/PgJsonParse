@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-public class AreaDictionary : Dictionary<string, Area>, IDictionaryValueBuilder<Area, Area>
+public class AreaDictionary : Dictionary<string, Area>, IDictionaryValueBuilderString<Area, Area>
 {
-    public Area FromRaw(Area area) => area;
+    public Area FromRaw(string key, Area area) => area;
     public Area ToRaw(Area area) => area;
 }

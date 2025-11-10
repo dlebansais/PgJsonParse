@@ -1,5 +1,7 @@
 ﻿namespace Preprocessor;
 
+using FreeSql.DataAnnotations;
+
 public class DirectedGoal
 {
     public DirectedGoal(RawDirectedGoal fromRawDirectedGoal)
@@ -14,12 +16,22 @@ public class DirectedGoal
         Zone = fromRawDirectedGoal.Zone;
     }
 
+    [Column(IsIdentity = true, IsPrimary = true)]
+    public int Key { get; set; }
+
     public int? CategoryGateId { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? ForRaces { get; set; }
+
     public bool? IsCategoryGate { get; set; }
+
     public string? Label { get; set; }
+
     public string? LargeHint { get; set; }
+
     public string? SmallHint { get; set; }
+
     public string? Zone { get; set; }
 
     public RawDirectedGoal ToRawDirectedGoal()

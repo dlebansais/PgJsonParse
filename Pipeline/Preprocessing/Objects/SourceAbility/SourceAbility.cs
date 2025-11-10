@@ -1,27 +1,40 @@
 ﻿namespace Preprocessor;
 
+using System;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
+
 public class SourceAbility
 {
-    public SourceAbility(RawSourceAbility rawSourceAbility)
+    public SourceAbility(int key)
     {
-        if (rawSourceAbility.entries is RawSourceAbilityEntry[] RawEntries)
-        {
-            Entries = new SourceAbilityEntry[RawEntries.Length];
-            for (int i = 0; i < Entries.Length; i++)
-                Entries[i] = new SourceAbilityEntry()
-                {
-                    ItemTypeId = RawEntries[i].itemTypeId,
-                    Npc = RawEntries[i].npc,
-                    QuestId = RawEntries[i].questId,
-                    Skill = RawEntries[i].skill,
-                    Type = RawEntries[i].type,
-                };
-        }
-        else
-            throw new PreprocessorException(this);
+        Key = key;
     }
 
-    public SourceAbilityEntry[] Entries { get; set; }
+    public SourceAbility(int key, RawSourceAbility rawSourceAbility)
+        : this(key)
+    {
+        if (rawSourceAbility.entries is not RawSourceAbilityEntry[] RawEntries)
+            throw new PreprocessorException(this);
+
+        Entries = new SourceAbilityEntry[RawEntries.Length];
+        for (int i = 0; i < Entries.Length; i++)
+            Entries[i] = new SourceAbilityEntry()
+            {
+                ItemTypeId = RawEntries[i].itemTypeId,
+                Npc = RawEntries[i].npc,
+                QuestId = RawEntries[i].questId,
+                Skill = RawEntries[i].skill,
+                Type = RawEntries[i].type,
+            };
+    }
+
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [Navigate(nameof(SourceAbilityEntry.Key))]
+    public SourceAbilityEntry[] Entries { get; set; } = Array.Empty<SourceAbilityEntry>();
 
     public RawSourceAbility ToRawSourceAbility()
     {

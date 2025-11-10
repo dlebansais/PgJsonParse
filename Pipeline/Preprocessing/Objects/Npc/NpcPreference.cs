@@ -1,7 +1,8 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class NpcPreference
 {
@@ -39,12 +40,18 @@ public class NpcPreference
 
     private void ParseKeywords(string[]? rawKeywords)
     {
+        List<string> ParsedItemKeywords = new();
         if (rawKeywords is not null)
+        {
             for (int i = 0; i < rawKeywords.Length; i++)
-                ParseKeyword(i, rawKeywords[i]);
+                ParseKeyword(i, rawKeywords[i], ParsedItemKeywords);
+
+            if (ParsedItemKeywords.Count > 0)
+                ItemKeywords = ParsedItemKeywords.ToArray();
+        }
     }
 
-    private void ParseKeyword(int index, string rawKeyword)
+    private void ParseKeyword(int index, string rawKeyword, List<string> itemKeywords)
     {
         if (rawKeyword.StartsWith(MinValueHeader))
         {
@@ -73,27 +80,38 @@ public class NpcPreference
         }
         else
         {
-            if (ItemKeywords is null)
-                ItemKeywords = new List<string>();
-
             string ItemKeyword = rawKeyword.Trim();
             if (ItemKeyword == "Crafted:y")
                 ItemKeyword = "CraftedYes";
 
             HeaderTable.Add(index, string.Empty);
-            ItemKeywords.Add(ItemKeyword);
+            itemKeywords.Add(ItemKeyword);
         }
     }
 
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
     public string? Desire { get; set; }
+
     public string? Favor { get; set; }
-    public List<string>? ItemKeywords { get; set; }
+
+    [Column(MapType = typeof(string))]
+    public string[]? ItemKeywords { get; set; }
+
     public string? MinRarityRequirement { get; set; }
+
     public int? MinValueRequirement { get; set; }
+
     public string? Name { get; set; }
+
     public decimal? PreferenceMultiplier { get; set; }
+
     public string? RarityRequirement { get; set; }
+
     public string? SkillRequirement { get; set; }
+
     public string? SlotRequirement { get; set; }
 
     public RawNpcPreference ToRawNpcPreference()

@@ -1,8 +1,7 @@
 ﻿namespace Preprocessor;
 
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class PvEAbility
 {
@@ -42,37 +41,85 @@ public class PvEAbility
         TempTauntDelta = rawPvEAbility.TempTauntDelta;
     }
 
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
     public decimal? Accuracy { get; set; }
+    
     public int? AoE { get; set; }
+    
     public int? ArmorMitigationRatio { get; set; }
+    
     public int? ArmorSpecificDamage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaAccuracy { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaAoE { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaDamage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaDamageIfTargetIsVulnerable { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaRage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaRange { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaTaunt { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaTempTaunt { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatModBaseDamage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatModCritDamage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatModDamage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatModRage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatModTaunt { get; set; }
+    
     public decimal? CritDamageMod { get; set; }
+    
     public int? Damage { get; set; }
+    
     public DoT[]? DoTs { get; set; }
+    
     public int? ExtraDamageIfTargetVulnerable { get; set; }
+    
     public int? HealthSpecificDamage { get; set; }
+    
     public int PowerCost { get; set; }
+    
     public int? RageBoost { get; set; }
+    
     public int? RageCost { get; set; }
+    
     public decimal? RageCostMod { get; set; }
+    
     public int? RageMultiplier { get; set; }
+    
     public int Range { get; set; }
+    
     public SpecialValue[]? SpecialValues { get; set; }
+    
     public int? TauntDelta { get; set; }
+    
     public decimal? TauntMod { get; set; }
+    
     public int? TempTauntDelta { get; set; }
 
     public RawPvEAbility ToRawPvEAbility()

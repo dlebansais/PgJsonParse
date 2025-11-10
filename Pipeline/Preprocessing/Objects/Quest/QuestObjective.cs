@@ -1,8 +1,9 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class QuestObjective
 {
@@ -101,33 +102,64 @@ public class QuestObjective
         return int.Parse(content);
     }
 
-    public string? AbilityKeyword { get; set; }
-    public string? AllowedFishingZone { get; set; }
-    public string? AnatomyType { get; set; }
-    public string? BehaviorId { get; set; }
-    public string? Description { get; set; }
-    public string? FishConfig { get; set; }
-    public int? GroupId { get; set; }
-    public string[]? InteractionFlags { get; set; }
-    public string? InternalName { get; set; }
-    public bool? IsHiddenUntilEarlierObjectivesComplete { get; set; }
-    public string? Item { get; set; }
-    public string? ItemKeyword { get; set; }
-    public string? ItemName { get; set; }
-    public string? MaxAmount { get; set; }
-    public string? MaxFavorReceived { get; set; }
-    public string? MinAmount { get; set; }
-    public string? MinFavorReceived { get; set; }
-    public string? MonsterTypeTag { get; set; }
-    public int? Number { get; set; }
-    public int? NumberToDeliver { get; set; }
-    public Requirement[]? Requirements { get; set; }
-    public string? ResultItemKeyword { get; set; }
-    public string? Skill { get; set; }
-    public string? StringParam { get; set; }
-    public string? Target { get; set; }
-    public string? Type { get; set; }
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
 
+    public string? AbilityKeyword { get; set; }
+    
+    public string? AllowedFishingZone { get; set; }
+    
+    public string? AnatomyType { get; set; }
+    
+    public string? BehaviorId { get; set; }
+    
+    public string? Description { get; set; }
+    
+    public string? FishConfig { get; set; }
+    
+    public int? GroupId { get; set; }
+
+    [Column(MapType = typeof(string))]
+    public string[]? InteractionFlags { get; set; }
+    
+    public string? InternalName { get; set; }
+    
+    public bool? IsHiddenUntilEarlierObjectivesComplete { get; set; }
+    
+    public string? Item { get; set; }
+    
+    public string? ItemKeyword { get; set; }
+    
+    public string? ItemName { get; set; }
+    
+    public string? MaxAmount { get; set; }
+    
+    public string? MaxFavorReceived { get; set; }
+    
+    public string? MinAmount { get; set; }
+    
+    public string? MinFavorReceived { get; set; }
+    
+    public string? MonsterTypeTag { get; set; }
+    
+    public int? Number { get; set; }
+    
+    public int? NumberToDeliver { get; set; }
+
+    [Navigate(nameof(Requirement.Key))]
+    public Requirement[]? Requirements { get; set; }
+    
+    public string? ResultItemKeyword { get; set; }
+    
+    public string? Skill { get; set; }
+    
+    public string? StringParam { get; set; }
+    
+    public string? Target { get; set; }
+    
+    public string? Type { get; set; }
+    
     public RawQuestObjective ToRawQuestObjective()
     {
         RawQuestObjective Result = new();

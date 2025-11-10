@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-public class PowerDictionary : Dictionary<int, Power>, IDictionaryValueBuilder<Power, RawPower>
+public class PowerDictionary : Dictionary<int, Power>, IDictionaryValueBuilderInt<Power, RawPower>
 {
-    public Power FromRaw(RawPower rawPower) => new Power(rawPower);
+    public Power FromRaw(int key, RawPower rawPower) => new(key, rawPower);
     public RawPower ToRaw(Power power) => power.ToRawPower();
 }

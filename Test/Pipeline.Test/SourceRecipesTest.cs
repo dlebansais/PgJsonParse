@@ -9,8 +9,16 @@ public class SourceRecipesTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("sources_recipes", true, Preprocessor.PreprocessDictionary<SourceRecipeDictionary>, Fixer.FixSourceRecipes, Preprocessor.SaveSerializedContent<SourceRecipeDictionary>),
+        new JsonFile("sources_recipes", true, Preprocessor.PreprocessDictionary<SourceRecipeDictionary>, Fixer.FixSourceRecipes, Preprocessor.SaveSerializedDictionary<SourceRecipeDictionary, SourceRecipe>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<SourceRecipe>)(((SourceRecipeDictionary)content).Values)).ExecuteAffrows()),
     };
+
+    private static IFreeSql Fsql = TestTools.CreateTestDatabase();
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        Fsql.Dispose();
+    }
 
     [Test]
     public void Test()
@@ -18,6 +26,6 @@ public class SourceRecipesTest
         string VersionPath = TestTools.GetVersionPath("Invalid Source Recipes");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 }

@@ -2,10 +2,17 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class Area
 {
+    [JsonIgnore]
+    [Column(IsIdentity = true, IsPrimary = true)]
+    public int Key { get; set; }
+
     public string? FriendlyName { get; set; }
+    
     public string? ShortFriendlyName { get; set; }
 
     private static readonly Dictionary<string, string> AreaTable = new()
@@ -27,11 +34,8 @@ public class Area
         { "Red Wing Casino", "Casino" },
         { "Rahu Caves", "RahuCaves" },
         { "Rahu Sewer", "RahuSewer" },
-        //{ "Rahu Sewers", "RahuSewers" },
         { "Fae Realm", "FaeRealm" },
         { "Sacred Grotto", "SacredGrotto" },
-        //{ "A New Life", "ANewLife" },
-        //{ "WNS Wintertide", "WNSWintertide" },
         { "Hogan's Basement", "HogansBasement" },
         { "Serbule Crypt", "SerbuleCrypt" },
         { "Goblin Dungeon", "GoblinDungeon" },
@@ -42,7 +46,6 @@ public class Area
         { "Winter Nexus", "WinterNexus" },
         { "The Wintertide", "TheWintertide" },
         { "Nightmare Caves", "NightmareCaves" },
-        //{ "Beneath Statehelm", "BeneathStatehelm" },
     };
 
     private static readonly Dictionary<string, string> AreaTableReversed = AreaTable.ToDictionary(x => x.Value, x => x.Key);

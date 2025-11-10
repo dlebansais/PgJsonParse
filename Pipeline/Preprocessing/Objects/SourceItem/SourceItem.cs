@@ -1,29 +1,42 @@
 ﻿namespace Preprocessor;
 
+using System;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
+
 public class SourceItem
 {
-    public SourceItem(RawSourceItem rawSourceItem)
+    public SourceItem(int key)
     {
-        if (rawSourceItem.entries is RawSourceItemEntry[] RawEntries)
-        {
-            Entries = new SourceItemEntry[RawEntries.Length];
-            for (int i = 0; i < Entries.Length; i++)
-                Entries[i] = new SourceItemEntry()
-                {
-                    FriendlyName = RawEntries[i].friendlyName,
-                    HangOutId = RawEntries[i].hangOutId,
-                    ItemTypeId = RawEntries[i].itemTypeId,
-                    Npc = RawEntries[i].npc,
-                    QuestId = RawEntries[i].questId,
-                    RecipeId = RawEntries[i].recipeId,
-                    Type = RawEntries[i].type,
-                };
-        }
-        else
-            throw new PreprocessorException(this);
+        Key = key;
     }
 
-    public SourceItemEntry[] Entries { get; set; }
+    public SourceItem(int key, RawSourceItem rawSourceItem)
+        : this(key)
+    {
+        if (rawSourceItem.entries is not RawSourceItemEntry[] RawEntries)
+            throw new PreprocessorException(this);
+
+        Entries = new SourceItemEntry[RawEntries.Length];
+        for (int i = 0; i < Entries.Length; i++)
+            Entries[i] = new SourceItemEntry()
+            {
+                FriendlyName = RawEntries[i].friendlyName,
+                HangOutId = RawEntries[i].hangOutId,
+                ItemTypeId = RawEntries[i].itemTypeId,
+                Npc = RawEntries[i].npc,
+                QuestId = RawEntries[i].questId,
+                RecipeId = RawEntries[i].recipeId,
+                Type = RawEntries[i].type,
+            };
+    }
+
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [Navigate(nameof(SourceItemEntry.Key))]
+    public SourceItemEntry[] Entries { get; set; } = Array.Empty<SourceItemEntry>();
 
     public RawSourceItem ToRawSourceItem()
     {

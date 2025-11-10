@@ -153,7 +153,7 @@ public class SkillAdvancementHintCollectionJsonConverter : JsonConverter<SkillAd
 
         foreach (SkillAdvancementHint AdvancementHint in value)
         {
-            string Key = AdvancementHint.Level.ToString();
+            string Key = AdvancementHint.Level.ToString()!;
             string? Hint = AdvancementHint.Hint;
 
             writer.WriteString(Key, Hint);

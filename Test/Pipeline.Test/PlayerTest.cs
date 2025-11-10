@@ -9,8 +9,16 @@ public class PlayerTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("playertitles", true, Preprocessor.PreprocessDictionary<PlayerTitleDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<PlayerTitleDictionary>),
+        new JsonFile("playertitles", true, Preprocessor.PreprocessDictionary<PlayerTitleDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<PlayerTitleDictionary, PlayerTitle>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<PlayerTitle>)(((PlayerTitleDictionary)content).Values)).ExecuteAffrows()),
     };
+
+    private static IFreeSql Fsql = TestTools.CreateTestDatabase();
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        Fsql.Dispose();
+    }
 
     [Test]
     public void Test()
@@ -18,7 +26,7 @@ public class PlayerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Player Title");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -27,7 +35,7 @@ public class PlayerTest
         string VersionPath = TestTools.GetVersionPath("Valid Player Title No Color");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _);
         Assert.That(Success, Is.True);
     }
 
@@ -37,6 +45,6 @@ public class PlayerTest
         string VersionPath = TestTools.GetVersionPath("Invalid Player Title Color");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 }

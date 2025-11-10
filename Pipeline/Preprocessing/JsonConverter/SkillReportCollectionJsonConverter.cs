@@ -50,7 +50,7 @@ public class SkillReportCollectionJsonConverter : JsonConverter<SkillReportColle
 
         foreach (SkillReport Report in value)
         {
-            string Key = Report.Level.ToString();
+            string Key = Report.Level.ToString()!;
             string? Hint = Report.Report;
 
             writer.WriteString(Key, Hint);

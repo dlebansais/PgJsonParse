@@ -1,10 +1,17 @@
 ﻿namespace Preprocessor;
 
 using System.Text.RegularExpressions;
+using FreeSql.DataAnnotations;
 
 public class PlayerTitle
 {
-    public PlayerTitle(RawPlayerTitle rawPlayerTitle)
+    public PlayerTitle(int key)
+    {
+        Key = key;
+    }
+
+    public PlayerTitle(int key, RawPlayerTitle rawPlayerTitle)
+        : this(key)
     {
         AccountWide = rawPlayerTitle.AccountWide;
         Keywords = rawPlayerTitle.Keywords;
@@ -44,10 +51,18 @@ public class PlayerTitle
         return (rawTitle, null, null);
     }
 
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
     public bool? AccountWide { get; set; }
+
     public string? Color { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? Keywords { get; set; }
+
     public string? Title { get; set; }
+
     public string? Tooltip { get; set; }
 
     public RawPlayerTitle ToRawPlayerTitle()

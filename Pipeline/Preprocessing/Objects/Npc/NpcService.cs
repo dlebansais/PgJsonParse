@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿namespace Preprocessor;
 
-namespace Preprocessor;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class NpcService
 {
@@ -76,15 +78,36 @@ public class NpcService
         return Result;
     }
 
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AdditionalUnlocks { get; set; }
+
+    [Navigate(nameof(NpcServiceCapIncrease.Key))]
     public NpcServiceCapIncrease[]? CapIncreases { get; set; }
+    
     public string? Favor { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? ItemDescriptions { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? ItemTypes { get; set; }
+
+    [Navigate(nameof(NpcServiceLevelRange.Key))]
     public NpcServiceLevelRange[]? LevelRanges { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? Skills { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? SpaceIncreases { get; set; }
+    
     public string? Type { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? Unlocks { get; set; }
 
     public RawNpcService ToRawNpcService()

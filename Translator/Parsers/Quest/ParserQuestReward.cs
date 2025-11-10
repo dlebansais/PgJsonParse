@@ -676,7 +676,7 @@ public class ParserQuestReward : Parser
                     case "T":
                         break;
                     case "Title":
-                        Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => NewItem.PlayerTitle_Key = PgObject.GetItemKey(valuePlayerTitle), Value.ToString());
+                        Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => NewItem.PlayerTitle_Key = PgObject.GetItemKey(valuePlayerTitle), Value.ToString()!);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

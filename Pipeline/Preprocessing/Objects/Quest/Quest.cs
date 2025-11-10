@@ -4,10 +4,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using FreeSql.DataAnnotations;
 
 public class Quest
 {
-    public Quest(RawQuest rawQuest)
+    public Quest(int key)
+    {
+        Key = key;
+    }
+
+    public Quest(int key, RawQuest rawQuest)
+        : this(key)
     {
         CheckRequirementsToSustainOnBestow = rawQuest.CheckRequirementsToSustainOnBestow;
         DeleteFromHistoryIfVersionChanged = rawQuest.DeleteFromHistoryIfVersionChanged;
@@ -366,41 +373,91 @@ public class Quest
         return new QuestReward() { T = "DeltaScriptAtomicInt", InteractionFlag = InteractionFlag, Amount = Amount };
     }
 
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
     public bool? CheckRequirementsToSustainOnBestow { get; set; }
+
     public bool? DeleteFromHistoryIfVersionChanged { get; set; }
+
     public string? Description { get; set; }
+
     public string? DisplayedLocation { get; set; }
+
     public string? FavorNpc { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? FollowUpQuests { get; set; }
+
     public bool? ForceBookOnWrapUp { get; set; }
+
     public string? GroupingName { get; set; }
+
     public string? InternalName { get; set; }
+
     public bool? IsAutoPreface { get; set; }
+
     public bool? IsAutoWrapUp { get; set; }
+
     public bool? IsCancellable { get; set; }
+
     public bool? IsGuildQuest { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? Keywords { get; set; }
+
     public int? Level { get; set; }
+
+    [Navigate(nameof(QuestRewardItem.Key))]
     public QuestRewardItem[]? MidwayGiveItems { get; set; }
+
     public string? MidwayText { get; set; }
+
     public string? Name { get; set; }
+
     public int? NumberOfExpectedParticipants { get; set; }
+
+    [Navigate(nameof(QuestObjective.Key))]
     public QuestObjective[]? Objectives { get; set; }
+
+    [Navigate(nameof(QuestPreGive.Key))]
     public QuestPreGive[]? PreGiveEffects { get; set; }
+
+    [Navigate(nameof(QuestRewardItem.Key))]
     public QuestRewardItem[]? PreGiveItems { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? PreGiveRecipes { get; set; }
+
     public string? PrefaceText { get; set; }
+
     public string? PrerequisiteFavorLevel { get; set; }
+
+    [Navigate(nameof(QuestFailEffect.Key))]
     public QuestFailEffect[]? QuestFailEffects { get; set; }
+
     public string? QuestNpc { get; set; }
+
+    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? Requirements { get; set; }
+
+    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? RequirementsToSustain { get; set; }
+
+    [Navigate(nameof(Time.Key))]
     public Time? ReuseTime { get; set; }
+
+    [Navigate(nameof(QuestReward.Key))]
     public QuestReward[]? Rewards { get; set; }
+
     public string? RewardsDescription { get; set; }
+
     public string? SuccessText { get; set; }
+
     public int? TSysLevel { get; set; }
+
     public int? Version { get; set; }
+
     public string? WorkOrderSkill { get; set; }
 
     public RawQuest ToRawQuest()

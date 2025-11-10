@@ -1,4 +1,6 @@
-﻿namespace Translator;
+﻿#pragma warning disable SYSLIB0014
+
+namespace Translator;
 
 using System;
 using System.Collections;
@@ -504,7 +506,7 @@ public class Program
                 if (!fieldType.IsArray && fieldType != typeof(StringOrStringArray))
                     return ReportFailure($"{fieldType} expected for {fieldName} but file contains an array");
 
-                Type ElementType = fieldType == typeof(StringOrStringArray) ? typeof(string) : fieldType.GetElementType();
+                Type ElementType = fieldType == typeof(StringOrStringArray) ? typeof(string) : fieldType.GetElementType()!;
 
                 FieldTable ArrayItemTable;
 
@@ -537,7 +539,7 @@ public class Program
                 break;
             case Json.Token.ObjectStart:
                 if (fieldType.IsArray)
-                    fieldType = fieldType.GetElementType();
+                    fieldType = fieldType.GetElementType()!;
 
                 if (!FieldTableStore.GetTable(fieldType, out FieldTable NestedTable))
                     return ReportFailure($"Table doesn't contain type {fieldType} expected for {fieldName}");
@@ -669,8 +671,8 @@ public class Program
             }
             else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
             {
-                IDictionary ObjectDictionary = (IDictionary)Property.GetValue(nestedItem);
-                Type DictionaryType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
+                IDictionary ObjectDictionary = (IDictionary)Property.GetValue(nestedItem)!;
+                Type DictionaryType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType!;
 
                 Debug.Assert(DictionaryType.IsGenericType);
                 Type[] GenericArguments = DictionaryType.GetGenericArguments();
@@ -705,8 +707,8 @@ public class Program
             }
             else if (PropertyType.GetInterface(typeof(ICollection).Name) != null)
             {
-                ICollection ObjectCollection = (ICollection)Property.GetValue(nestedItem);
-                Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
+                ICollection ObjectCollection = (ICollection)Property.GetValue(nestedItem)!;
+                Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType!;
 
                 Debug.Assert(CollectionType.IsGenericType);
                 Type[] GenericArguments = CollectionType.GetGenericArguments();
@@ -739,7 +741,7 @@ public class Program
             }
             else if (PropertyType.Name.StartsWith("Pg"))
             {
-                object Reference = Property.GetValue(nestedItem);
+                object? Reference = Property.GetValue(nestedItem);
                 if (Reference != null)
                     FindLinks(linkKey, Reference, objectTable);
             }

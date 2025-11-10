@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-public class XpTableDictionary : Dictionary<int, XpTable>, IDictionaryValueBuilder<XpTable, RawXpTable>
+public class XpTableDictionary : Dictionary<int, XpTable>, IDictionaryValueBuilderInt<XpTable, RawXpTable>
 {
-    public XpTable FromRaw(RawXpTable rawXpTable) => new XpTable(rawXpTable);
+    public XpTable FromRaw(int key, RawXpTable rawXpTable) => new(key, rawXpTable);
     public RawXpTable ToRaw(XpTable xpTable) => xpTable.ToRawXpTable();
 }

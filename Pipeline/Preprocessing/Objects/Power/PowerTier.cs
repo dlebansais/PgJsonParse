@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class PowerTier
 {
@@ -151,11 +153,21 @@ public class PowerTier
         return Result;
     }
 
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
+    [Navigate(nameof(PowerEffect.Key))]
     public PowerEffect[]? EffectDescriptions { get; set; }
+
     public int? MaxLevel { get; set; }
+
     public int? MinLevel { get; set; }
+
     public string? MinRarity { get; set; }
+
     public int? SkillLevelPrerequirement { get; set; }
+
     public int Tier { get; set; }
 
     public RawPowerTier ToRawPowerTier()

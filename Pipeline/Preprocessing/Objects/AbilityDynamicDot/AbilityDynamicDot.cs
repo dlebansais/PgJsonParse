@@ -1,5 +1,7 @@
 ﻿namespace Preprocessor;
 
+using FreeSql.DataAnnotations;
+
 public class AbilityDynamicDot
 {
     public AbilityDynamicDot(RawAbilityDynamicDot rawAbilityDynamicDot)
@@ -15,14 +17,29 @@ public class AbilityDynamicDot
         SpecialRules = rawAbilityDynamicDot.SpecialRules;
     }
 
+    [Column(IsIdentity = true, IsPrimary = true)]
+    public int Key { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDelta { get; set; }
+    
     public int? DamagePerTick { get; set; }
+    
     public string? DamageType { get; set; }
+    
     public int? Duration { get; set; }
+    
     public int? NumTicks { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? RequiredAbilityKeywords { get; set; }
+    
     public string? RequiredActiveSkill { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? RequiredEffectKeywords { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? SpecialRules { get; set; }
 
     public RawAbilityDynamicDot ToRawAbilityDynamicDot()

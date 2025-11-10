@@ -3,7 +3,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using FreeSql.DataAnnotations;
 
 public class Ability
 {
@@ -12,7 +14,13 @@ public class Ability
     private const string AnatomyHeader = "Anatomy_";
     private const string EmptyNameReplacement = "Blade Assault 2";
 
-    public Ability(RawAbility rawAbility)
+    public Ability(int key)
+    {
+        Key = key;
+    }
+
+    public Ability(int key, RawAbility rawAbility)
+        : this(key)
     {
         AbilityGroup = rawAbility.AbilityGroup;
         AbilityGroupName = rawAbility.AbilityGroupName;
@@ -124,7 +132,7 @@ public class Ability
 
     private static string[]? AddKeyword(string[]? Keywords, string keywordToAdd)
     {
-        List<string> KeywordsList = Keywords.ToList();
+        List<string> KeywordsList = Keywords!.ToList();
         KeywordsList.Add(keywordToAdd);
         Keywords = KeywordsList.ToArray();
 
@@ -133,7 +141,7 @@ public class Ability
 
     private static string[]? RemoveKeyword(string[]? Keywords, string keywordToRemove)
     {
-        List<string> KeywordsList = Keywords.ToList();
+        List<string> KeywordsList = Keywords!.ToList();
         KeywordsList.Remove(keywordToRemove);
         Keywords = KeywordsList.ToArray();
 
@@ -264,79 +272,178 @@ public class Ability
         { "WerewolfPounceBB", "PouncingRend" },
     };
 
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
     public string? AbilityGroup { get; set; }
+
     public string? AbilityGroupName { get; set; }
+
     public decimal? AmmoConsumeChance { get; set; }
+
     public string? AmmoDescription { get; set; }
+
+    [Navigate(nameof(Ammo.Key))]
     public Ammo[]? AmmoKeywords { get; set; }
+
     public decimal? AmmoStickChance { get; set; }
+
     public string? Animation { get; set; }
+
     public string? AttributeThatPreventsDelayLoopAbortOnAttacked { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaCritChance { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaDelayLoopTime { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaPowerCost { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaResetTime { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatDeltaWorksWhileStunned { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatModAmmoConsumeChance { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AttributesThatModPowerCost { get; set; }
+
     public bool? CanBeOnSidebar { get; set; }
+
     public bool? CanSuppressMonsterShout { get; set; }
+
     public bool? CanTargetUntargetableEnemies { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? CausesOfDeath { get; set; }
+
     public int? CombatRefreshBaseAmount { get; set; }
+
+    [Navigate(nameof(ConditionalKeyword.Key))]
     public ConditionalKeyword[]? ConditionalKeywords { get; set; }
+
+    [Navigate(nameof(Cost.Key))]
     public Cost[]? Costs { get; set; }
+
     public string? DamageType { get; set; }
+
     public bool? DelayLoopIsAbortedIfAttacked { get; set; }
+
     public bool? DelayLoopIsOnlyUsedInCombat { get; set; }
+
     public string? DelayLoopMessage { get; set; }
+
     public float? DelayLoopTime { get; set; }
+
     public string? Description { get; set; }
+
     public string? DigitStrippedName { get; set; }
+
     public string? EffectKeywordRequirementErrorMessage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? EffectKeywordRequirements { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? EffectKeywordsIndicatingEnabled { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? ExtraKeywordsForTooltips { get; set; }
+
     public string? FormRequirement { get; set; }
+
     public int IconId { get; set; }
+
     public bool? IgnoreEffectErrors { get; set; }
+
     public string? InternalName { get; set; }
+
     public string? InventoryKeywordRequirementErrorMessage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? InventoryKeywordRequirements { get; set; }
+
     public bool? IsAoECenteredOnCaster { get; set; }
+
     public bool? IsCosmeticPet { get; set; }
+
     public bool? IsHarmless { get; set; }
+
     public bool? IsInternalAbility { get; set; }
+
     public bool? IsTimerResetWhenDisabling { get; set; }
+
     public string? ItemKeywordRequirementErrorMessage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? ItemKeywordRequirements { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? Keywords { get; set; }
+
     public int Level { get; set; }
+
     public string? Name { get; set; }
+
     public string? PetTypeTagRequirement { get; set; }
+
     public int? PetTypeTagRequirementMax { get; set; }
+
     public string? Prerequisite { get; set; }
+
     public string? Projectile { get; set; }
+
+    [Navigate(nameof(PvEAbility.Key))]
     public PvEAbility? PvE { get; set; }
+
     public int? Rank { get; set; }
+
     public decimal ResetTime { get; set; }
+
+    [Navigate(nameof(AbilityParticle.Key))]
     public AbilityParticle? SelfParticle { get; set; }
+
+    [Navigate(nameof(AbilityParticle.Key))]
     public AbilityParticle? SelfPreParticle { get; set; }
+
     public string? SharesResetTimerWith { get; set; }
+
     public string? Skill { get; set; }
+
+    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? SpecialCasterRequirements { get; set; }
+
     public string? SpecialCasterRequirementsErrorMessage { get; set; }
+
     public string? SpecialInfo { get; set; }
+
     public int? SpecialTargetingTypeRequirement { get; set; }
+
     public string? Target { get; set; }
+
     public string? TargetEffectKeywordRequirement { get; set; }
+
+    [Navigate(nameof(AbilityParticle.Key))]
     public AbilityParticle? TargetParticle { get; set; }
+
     public string? TargetTypeTagRequirement { get; set; }
+
     public string? UpgradeOf { get; set; }
+
     public bool? WorksInCombat { get; set; }
+
     public bool? WorksUnderwater { get; set; }
+
     public bool? WorksWhileFalling { get; set; }
+
     public bool? WorksWhileMounted { get; set; }
+
     public bool? WorksWhileStunned { get; set; }
 
     public RawAbility ToRawAbility()

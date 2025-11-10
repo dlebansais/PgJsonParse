@@ -134,10 +134,10 @@ public class ParserItem : Parser
                     Result = SetBoolProperty((bool valueBool) => item.SetIsSkillReqsDefaults(valueBool), Value);
                     break;
                 case "BestowTitle":
-                    Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.BestowTitle_Key = PgObject.GetItemKey(valuePlayerTitle), Value.ToString());
+                    Result = Inserter<PgPlayerTitle>.SetItemByKey((PgPlayerTitle valuePlayerTitle) => item.BestowTitle_Key = PgObject.GetItemKey(valuePlayerTitle), Value.ToString()!);
                     break;
                 case "BestowLoreBook":
-                    Result = Inserter<PgLoreBook>.SetItemByKey((PgLoreBook valueLoreBook) => item.BestowLoreBook_Key = PgObject.GetItemKey(valueLoreBook), Value.ToString());
+                    Result = Inserter<PgLoreBook>.SetItemByKey((PgLoreBook valueLoreBook) => item.BestowLoreBook_Key = PgObject.GetItemKey(valueLoreBook), Value.ToString()!);
                     break;
                 case "Lint_VendorNpc":
                     Result = StringToEnumConversion<WorkOrderSign>.SetEnum((WorkOrderSign valueEnum) => item.LintVendorNpc = valueEnum, Value);

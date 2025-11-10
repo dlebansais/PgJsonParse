@@ -1,7 +1,9 @@
-﻿namespace PgObjects
+﻿namespace PgObjects;
+
+using MemoryPack;
+
+[MemoryPackable]
+public partial class PgSelfPreParticle : PgAbilityParticle
 {
-    public class PgSelfPreParticle : PgAbilityParticle
-    {
-        public AbilitySelfPreParticle Particle { get; set; }
-    }
+    public AbilitySelfPreParticle Particle { get; set; }
 }

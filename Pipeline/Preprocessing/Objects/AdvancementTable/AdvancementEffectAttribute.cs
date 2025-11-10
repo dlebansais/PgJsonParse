@@ -1,7 +1,13 @@
 ﻿namespace Preprocessor;
 
+using FreeSql.DataAnnotations;
+
 public class AdvancementEffectAttribute
 {
-    public required string Attribute { get; init; }
-    public required decimal Value { get; init; }
+    [Column(IsIdentity = true, IsPrimary = true)]
+    public int Key { get; set; }
+
+    public string? Attribute { get; set; }
+
+    public decimal? Value { get; set; }
 }

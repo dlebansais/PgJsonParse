@@ -1,10 +1,16 @@
 ﻿namespace Preprocessor;
 
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using FreeSql.DataAnnotations;
 
 public class AbilityParticle
 {
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
     public string? AoEColor { get; set; }
     public int? AoERange { get; set; }
     public string? ParticleName { get; set; }

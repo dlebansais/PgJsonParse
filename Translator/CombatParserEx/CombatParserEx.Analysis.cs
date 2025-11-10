@@ -445,7 +445,7 @@ internal partial class CombatParserEx
         Debug.Assert(Key.Length >= 3);
 
         string PowerKey = Key.Substring(Key.Length - 3);
-        if (!allEffectTable.TryGetValue(PowerKey, out Dictionary<string, List<PgEffect>> SameKeyTable))
+        if (!allEffectTable.TryGetValue(PowerKey, out Dictionary<string, List<PgEffect>>? SameKeyTable))
             return false;
 
         PgPowerTierCollection TierList = power.TierList;

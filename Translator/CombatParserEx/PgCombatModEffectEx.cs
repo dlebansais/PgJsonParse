@@ -42,9 +42,10 @@ public record PgCombatModEffectEx
 
     public bool IsEveryOtherUse { get; init; }
 
-    public virtual bool Equals(PgCombatModEffectEx other)
+    public virtual bool Equals(PgCombatModEffectEx? other)
     {
-        return Keyword == other.Keyword &&
+        return other is not null &&
+               Keyword == other.Keyword &&
                Enumerable.SequenceEqual(AbilityList, other.AbilityList) &&
                IsFloatEqual(Data.Value, other.Data.Value) &&
                DamageType == other.DamageType &&

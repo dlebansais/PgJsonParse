@@ -131,7 +131,7 @@ public class JsonTextWriter : IJsonWriter
 
     public override string ToString()
     {
-        return Writer.ToString();
+        return Writer.ToString()!;
     }
     #endregion
 

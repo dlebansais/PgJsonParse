@@ -2,12 +2,19 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using FreeSql.DataAnnotations;
 
 public class Npc
 {
     private const string AreaHeader = "Area";
 
-    public Npc(RawNpc rawNpc)
+    public Npc(string key)
+    {
+        Key = key;
+    }
+
+    public Npc(string key, RawNpc rawNpc)
+        : this(key)
     {
         AreaFriendlyName = rawNpc.AreaFriendlyName;
         (AreaName, OriginalAreaName) = ParseAreaName(rawNpc.AreaName);
@@ -115,15 +122,30 @@ public class Npc
             return 0;
     }
 
+    [Column(IsPrimary = true)]
+    public string Key { get; set; }
+    
     public string? AreaFriendlyName { get; set; }
+    
     public string? AreaName { get; set; }
+    
     public string? Description { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? ItemGifts { get; set; }
+    
     public string? Name { get; set; }
+    
     public decimal? PositionX { get; set; }
+    
     public decimal? PositionY { get; set; }
+    
     public decimal? PositionZ { get; set; }
+
+    [Navigate(nameof(NpcPreference.Key))]
     public NpcPreference[]? Preferences { get; set; }
+
+    [Navigate(nameof(NpcService.Key))]
     public NpcService[]? Services { get; set; }
 
     public RawNpc ToRawNpc()

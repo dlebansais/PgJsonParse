@@ -1,11 +1,17 @@
 ﻿namespace Preprocessor;
 
 using System.Text.RegularExpressions;
+using FreeSql.DataAnnotations;
 
 public class EffectParticle
 {
+    [Column(IsIdentity = true, IsPrimary = true)]
+    public int Key { get; set; }
+
     public string? AoEColor { get; set; }
+
     public int? AoERange { get; set; }
+
     public string? ParticleName { get; set; }
 
     private const string AoeColorHeader = "AoeColor=#";

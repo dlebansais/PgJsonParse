@@ -23,16 +23,16 @@ public class Generate
 
         for (; ;)
         {
-            string Folder = Path.GetFileName(FilePath);
+            string Folder = Path.GetFileName(FilePath)!;
 
             if (Folder == "net481" || Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
-                FilePath = Path.GetDirectoryName(FilePath);
+                FilePath = Path.GetDirectoryName(FilePath)!;
             else
                 break;
         }
 
-        FilePath = Path.GetDirectoryName(FilePath);
-        FilePath = Path.GetDirectoryName(FilePath);
+        FilePath = Path.GetDirectoryName(FilePath)!;
+        FilePath = Path.GetDirectoryName(FilePath)!;
         FilePath = Path.Combine(FilePath, "PgObjects");
         FilePath = Path.Combine(FilePath, $"v{version}");
 
@@ -147,11 +147,11 @@ public class Generate
         object Item = objectList[objectIndex];
         Type Type = Item.GetType();
 
-        PropertyInfo Property = Type.GetProperty("Key");
+        PropertyInfo? Property = Type.GetProperty("Key");
         if (Property == null || Property.PropertyType != typeof(string))
             return;
 
-        string Key = (string)Property.GetValue(Item);
+        string Key = (string)Property.GetValue(Item)!;
 
         FillRecursiveTable(Key, objectIndex, recursiveTable[Type], 0);
     }
@@ -488,7 +488,7 @@ public class Generate
 
             string PropertyName = Property.Name;
             Type PropertyType = Property.PropertyType;
-            object PropertyValue = Property.GetValue(item);
+            object PropertyValue = Property.GetValue(item)!;
             string ValueString = GetValueString(PropertyType, PropertyValue, objectList);
 
             bool IsNullable = false;
@@ -543,7 +543,7 @@ public class Generate
         string ObjectTypeName = SimpleTypeName(Type);
         string ObjectName = ToObjectName(objectIndex);
 
-        PropertyInfo KeyProperty = Type.GetProperty("Key");
+        PropertyInfo? KeyProperty = Type.GetProperty("Key");
         if (KeyProperty == null || KeyProperty.PropertyType != typeof(string))
         {
             WriteItemProlog(Writer, ObjectTypeName, ObjectName);
@@ -552,7 +552,7 @@ public class Generate
         }
         else
         {
-            string ObjectKey = (string)KeyProperty.GetValue(Item);
+            string ObjectKey = (string)KeyProperty.GetValue(Item)!;
 
             WriteItemPrologWithKey(Writer, ObjectTypeName, ObjectName, ObjectKey);
             WriteItemProperties(Writer, Item, Type, objectList, ObjectName);
@@ -565,11 +565,11 @@ public class Generate
         object Item = objectList[objectIndex];
         Type Type = Item.GetType();
 
-        PropertyInfo Property = Type.GetProperty("Key");
+        PropertyInfo Property = Type.GetProperty("Key")!;
         if (Property == null || Property.PropertyType != typeof(string))
             return;
 
-        string Key = (string)Property.GetValue(Item);
+        string Key = (string)Property.GetValue(Item)!;
 
         string KeyValue = GetStringValueString(Key);
         StreamWriter Writer = WriterTable[Type];
@@ -615,7 +615,7 @@ public class Generate
             Type PropertyType = Property.PropertyType;
             if (PropertyType == typeof(string))
             {
-                string StringValue = (string)Property.GetValue(item);
+                string StringValue = (string)Property.GetValue(item)!;
 
                 if (Property.Name == "Key")
                     key = StringValue;
@@ -627,7 +627,7 @@ public class Generate
             }
             else if (PropertyType == typeof(string[]))
             {
-                string[] ObjectCollection = (string[])Property.GetValue(item);
+                string[] ObjectCollection = (string[])Property.GetValue(item)!;
                 Type ItemType = typeof(string);
 
                 GetObjectItemContent(recursion, ItemType, ObjectCollection, ref content);
@@ -640,15 +640,15 @@ public class Generate
             }
             else if (PropertyType.IsEnum)
             {
-                content += GetEnumIndexContent(PropertyType, Property.GetValue(item));
+                content += GetEnumIndexContent(PropertyType, Property.GetValue(item)!);
             }
             else if (IsTypeIgnoredForIndex(PropertyType))
             {
             }
             else if (PropertyType.GetInterface(typeof(IDictionary).Name) != null)
             {
-                IDictionary ObjectDictionary = (IDictionary)Property.GetValue(item);
-                Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
+                IDictionary ObjectDictionary = (IDictionary)Property.GetValue(item)!;
+                Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType!;
 
                 Debug.Assert(CollectionType.IsGenericType);
                 Type[] GenericArguments = CollectionType.GetGenericArguments();
@@ -663,8 +663,8 @@ public class Generate
             }
             else if (PropertyType.GetInterface(typeof(ICollection).Name) != null)
             {
-                ICollection ObjectCollection = (ICollection)Property.GetValue(item);
-                Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType;
+                ICollection ObjectCollection = (ICollection)Property.GetValue(item)!;
+                Type CollectionType = PropertyType.IsGenericType ? PropertyType : PropertyType.BaseType!;
 
                 Debug.Assert(CollectionType.IsGenericType);
                 Type[] GenericArguments = CollectionType.GetGenericArguments();
@@ -676,7 +676,7 @@ public class Generate
             }
             else if (PropertyType.Name.StartsWith("Pg"))
             {
-                content += GetReferenceIndexContent(PropertyType, Property.GetValue(item), recursion);
+                content += GetReferenceIndexContent(PropertyType, Property.GetValue(item)!, recursion);
             }
             else
             {
@@ -740,7 +740,7 @@ public class Generate
 
     private static string GetPgObjectIndexContent(PgObject item)
     {
-        string ItemName = item.ToString();
+        string ItemName = item.ToString()!;
         return GeStringIndexContent(ItemName);
     }
 
@@ -757,10 +757,10 @@ public class Generate
         Debug.Assert(StringToEnumConversion.KnownParsedEnumtable.ContainsKey(enumType));
 
         string EnumTextMapName = $"{enumType.Name}TextMap";
-        PropertyInfo EnumTextMapProperty = typeof(TextMaps).GetProperty(EnumTextMapName);
+        PropertyInfo? EnumTextMapProperty = typeof(TextMaps).GetProperty(EnumTextMapName);
         if (EnumTextMapProperty != null)
         {
-            IDictionary EnumTextMap = (IDictionary)EnumTextMapProperty.GetValue(null);
+            IDictionary? EnumTextMap = EnumTextMapProperty.GetValue(null) as IDictionary;
             if (EnumTextMap != null)
             {
                 string? EnumText = EnumTextMap[value] as string;
@@ -1093,7 +1093,7 @@ public class Generate
                     {
                         if (BestowRecipeIfNotKnown.Recipe_Key is string BestowedRecipeKey)
                         {
-                            if (KeyTable.TryGetValue(BestowedRecipeKey, out List<string> RecipeList))
+                            if (KeyTable.TryGetValue(BestowedRecipeKey, out List<string>? RecipeList))
                             {
                                 RecipeList.Add(BestowedRecipeKey);
                             }
@@ -1573,7 +1573,7 @@ public class Generate
     private static string GetEnumValueString(Type type, object value)
     {
         string EnumTypeString = SimpleTypeName(type);
-        string EnumString = type.GetEnumName(value);
+        string? EnumString = type.GetEnumName(value);
 
         if (EnumString == null)
             return $"({EnumTypeString}){(int)value}";
@@ -1653,7 +1653,7 @@ public class Generate
             if (DictionaryContentString.Length > 0)
                 DictionaryContentString += ", ";
 
-            object DictionaryValue = dictionary[DictionaryKey];
+            object DictionaryValue = dictionary[DictionaryKey]!;
 
             string KeyString = GetValueString(DictionaryKey.GetType(), DictionaryKey, objectList);
             string ValueString = GetValueString(DictionaryValue.GetType(), DictionaryValue, objectList);

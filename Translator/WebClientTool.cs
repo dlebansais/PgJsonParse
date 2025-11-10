@@ -1,4 +1,6 @@
-﻿namespace Translator;
+﻿#pragma warning disable SYSLIB0014
+
+namespace Translator;
 
 using System;
 using System.Diagnostics;
@@ -17,7 +19,7 @@ public static class WebClientTool
     public static void DownloadText(string address, Stopwatch? watch, DownloadTextResultHandler callback, bool ignoreCache, out bool isFound)
     {
         string FileName = LocalFileName(address);
-        string FilePath = Path.GetDirectoryName(FileName);
+        string FilePath = Path.GetDirectoryName(FileName)!;
 
         if (!ignoreCache && File.Exists(FileName))
         {
@@ -111,7 +113,7 @@ public static class WebClientTool
                 isFound = Result.Item1;
 
                 string FileName = LocalFileName(address);
-                string FilePath = Path.GetDirectoryName(FileName);
+                string FilePath = Path.GetDirectoryName(FileName)!;
 
                 if (!File.Exists(FileName))
                 {

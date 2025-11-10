@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿namespace Preprocessor;
 
-namespace Preprocessor;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class RecipeItem
 {
@@ -48,13 +50,25 @@ public class RecipeItem
         return Result;
     }
 
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
     public bool? AttuneToCrafter { get; set; }
+
     public int? ChanceToConsume { get; set; }
+
     public string? Description { get; set; }
+
     public int? DurabilityConsumed { get; set; }
+
     public int? ItemCode { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? ItemKeys { get; set; }
+
     public int? PercentChance { get; set; }
+
     public int StackSize { get; set; }
 
     public RawRecipeItem ToRawRecipeItem()

@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-public class QuestDictionary : Dictionary<int, Quest>, IDictionaryValueBuilder<Quest, RawQuest>
+public class QuestDictionary : Dictionary<int, Quest>, IDictionaryValueBuilderInt<Quest, RawQuest>
 {
-    public Quest FromRaw(RawQuest rawQuest) => new(rawQuest);
+    public Quest FromRaw(int key, RawQuest rawQuest) => new(key, rawQuest);
     public RawQuest ToRaw(Quest quest) => quest.ToRawQuest();
 }

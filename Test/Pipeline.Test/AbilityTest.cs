@@ -9,8 +9,16 @@ public class AbilityTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("abilities", true, Preprocessor.PreprocessDictionary<AbilityDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<AbilityDictionary>),
+        new JsonFile("abilities", true, Preprocessor.PreprocessDictionary<AbilityDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<AbilityDictionary, Ability>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Ability>)(((AbilityDictionary)content).Values)).ExecuteAffrows()),
     };
+
+    private static IFreeSql Fsql = TestTools.CreateTestDatabase();
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        Fsql.Dispose();
+    }
 
     [Test]
     public void TestTargetTypeTagReq()
@@ -18,7 +26,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Invalid Ability TargetTypeTagReq");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -27,7 +35,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Invalid Ability ItemKeywordReqs");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -36,7 +44,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Invalid Ability Too Many Particles");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -45,7 +53,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Invalid Ability Too Many Colors");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -54,7 +62,7 @@ public class AbilityTest
         string VersionPath = TestTools.GetVersionPath("Valid Ability No PvE");
 
         Preprocessor Preprocessor = new();
-        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, out _);
+        bool Success = Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _);
         Assert.That(Success, Is.True);
     }
     /*

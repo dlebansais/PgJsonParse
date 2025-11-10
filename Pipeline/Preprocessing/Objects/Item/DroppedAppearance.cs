@@ -1,14 +1,28 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
+
 public class DroppedAppearance
 {
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
     public string? Appearance { get; set; }
+
     public string? Color { get; set; }
+
     public string? Cork { get; set; }
+
     public string? Food { get; set; }
+
     public string? Plate { get; set; }
+
     public string? Scale { get; set; }
+
     public string? Skin { get; set; }
+
     public string? SkinColor { get; set; }
 
     public void SetIsSkinInverted(bool isSkinInverted)

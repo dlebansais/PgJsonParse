@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 public class IntDictionaryJsonConverter<TElement, TRawElement, TDictionary> : JsonConverter<TDictionary>
     where TElement : class
     where TRawElement : class
-    where TDictionary : Dictionary<int, TElement>, IDictionaryValueBuilder<TElement, TRawElement>, new()
+    where TDictionary : Dictionary<int, TElement>, IDictionaryValueBuilderInt<TElement, TRawElement>, new()
 {
     public IntDictionaryJsonConverter(string prefix)
     {
@@ -53,7 +53,7 @@ public class IntDictionaryJsonConverter<TElement, TRawElement, TDictionary> : Js
                 (Key.StartsWith(PrefixWithUnderscore) && int.TryParse(Key.Substring(PrefixWithUnderscore.Length), out ElementKey)))
             {
                 if (RawElement is not null)
-                    dictionary.Add(ElementKey, dictionary.FromRaw(RawElement));
+                    dictionary.Add(ElementKey, dictionary.FromRaw(ElementKey, RawElement));
                 else
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");

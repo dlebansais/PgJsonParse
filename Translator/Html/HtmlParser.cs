@@ -193,7 +193,7 @@ public static class HtmlParser
             TagContent = NonTagContent;
         }
 
-        tag = (Tag)Activator.CreateInstance(SelectedType, TagParameters, TagContent, NestedTageList);
+        tag = (Tag)Activator.CreateInstance(SelectedType, TagParameters, TagContent, NestedTageList)!;
 
         return true;
     }

@@ -2,10 +2,18 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class Skill
 {
-    public Skill(RawSkill rawSkill)
+    public Skill(string key)
+    {
+        Key = key;
+    }
+
+    public Skill(string key, RawSkill rawSkill)
+        : this(key)
     {
         ActiveAdvancementTable = rawSkill.ActiveAdvancementTable;
         AdvancementHints = rawSkill.AdvancementHints;
@@ -56,33 +64,76 @@ public class Skill
         }
     }
 
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
+    public string Key { get; set; }
+
     public string? ActiveAdvancementTable { get; set; }
-    public SkillAdvancementHintCollection? AdvancementHints { get; set; }
+
+    [Navigate(nameof(SkillAdvancementHint.Key))]
+    public List<SkillAdvancementHint>? AdvancementHints { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AssociatedAppearances { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AssociatedItemKeywords { get; set; }
+
     public bool? AuxCombat { get; set; }
+
     public bool? Combat { get; set; }
+
     public string? Description { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? DisallowedAppearances { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? DisallowedItemKeywords { get; set; }
+
     public int? GuestLevelCap { get; set; }
+
     public bool? HideWhenZero { get; set; }
+
     public int? Id { get; set; }
-    public SkillLevelCapCollection? InteractionFlagLevelCaps { get; set; }
+
+    [Navigate(nameof(SkillLevelCap.Key))]
+    public List<SkillLevelCap>? InteractionFlagLevelCaps { get; set; }
+
     public bool? IsFakeCombatSkill { get; set; }
+
     public bool? IsUmbrellaSkill { get; set; }
+
     public int? MaxBonusLevels { get; set; }
+
     public string? Name { get; set; }
+
     public string? ParagonEnabledInteractionFlag { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? Parents { get; set; }
+
     public string? PassiveAdvancementTable { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? RecipeIngredientKeywords { get; set; }
-    public SkillReportCollection? Reports { get; set; }
-    public SkillRewardCollection? Rewards { get; set; }
+
+    [Navigate(nameof(SkillReport.Key))]
+    public List<SkillReport>? Reports { get; set; }
+
+    [Navigate(nameof(SkillReward.Key))]
+    public List<SkillReward>? Rewards { get; set; }
+
     public bool? SkillLevelDisparityApplies { get; set; }
+
     public bool? SkipBonusLevelsIfSkillUnlearned { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? TSysCompatibleCombatSkills { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? XpEarnedAttributes { get; set; }
+
     public string? XpTable { get; set; }
 
     public RawSkill ToRawSkill()
@@ -90,7 +141,7 @@ public class Skill
         RawSkill Result = new();
 
         Result.ActiveAdvancementTable = ActiveAdvancementTable;
-        Result.AdvancementHints = AdvancementHints;
+        Result.AdvancementHints = AdvancementHints is null ? null : new(AdvancementHints);
         Result.AssociatedAppearances = AssociatedAppearances;
         Result.AssociatedItemKeywords = AssociatedItemKeywords;
         Result.AuxCombat = AuxCombat;
@@ -101,7 +152,7 @@ public class Skill
         Result.GuestLevelCap = GuestLevelCap;
         Result.HideWhenZero = HideWhenZero;
         Result.Id = Id;
-        Result.InteractionFlagLevelCaps = InteractionFlagLevelCaps;
+        Result.InteractionFlagLevelCaps = InteractionFlagLevelCaps is null ? null : new(InteractionFlagLevelCaps);
         Result.IsFakeCombatSkill = IsFakeCombatSkill;
         Result.IsUmbrellaSkill = IsUmbrellaSkill;
         Result.MaxBonusLevels = MaxBonusLevels;
@@ -109,8 +160,8 @@ public class Skill
         Result.Parents = Parents;
         Result.ParagonEnabledInteractionFlag = ParagonEnabledInteractionFlag;
         Result.PassiveAdvancementTable = PassiveAdvancementTable;
-        Result.Reports = Reports;
-        Result.Rewards = Rewards;
+        Result.Reports = Reports is null ? null : new(Reports);
+        Result.Rewards = Rewards is null ? null : new(Rewards);
         Result.SkillLevelDisparityApplies = SkillLevelDisparityApplies;
         Result.SkipBonusLevelsIfSkillUnlearned = SkipBonusLevelsIfSkillUnlearned;
         Result.XpEarnedAttributes = XpEarnedAttributes;

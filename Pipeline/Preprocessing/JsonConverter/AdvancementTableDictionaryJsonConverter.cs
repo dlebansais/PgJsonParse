@@ -168,13 +168,15 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
         return string.Compare(AdvancementToKey(advancement1), AdvancementToKey(advancement2), StringComparison.Ordinal);
     }
 
-    private void WriteAdvancementEffectAttributeCollection(Utf8JsonWriter writer, AdvancementEffectAttributeCollection value, JsonSerializerOptions options)
+    private void WriteAdvancementEffectAttributeCollection(Utf8JsonWriter writer, ICollection<AdvancementEffectAttribute> value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
 
         foreach (AdvancementEffectAttribute Item in value)
         {
-            writer.WriteNumber(Item.Attribute, Item.Value);
+            string Attribute = Item.Attribute ?? throw new InvalidOperationException();
+            decimal Value = Item.Value ?? throw new InvalidOperationException();
+            writer.WriteNumber(Attribute, Value);
         }
 
         writer.WriteEndObject();

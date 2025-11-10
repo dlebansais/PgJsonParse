@@ -9,8 +9,16 @@ public class RequirementTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("quests", true, Preprocessor.PreprocessDictionary<QuestDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<QuestDictionary>),
+        new JsonFile("quests", true, Preprocessor.PreprocessDictionary<QuestDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<QuestDictionary, Quest>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Quest>)(((QuestDictionary)content).Values)).ExecuteAffrows()),
     };
+
+    private static IFreeSql Fsql = TestTools.CreateTestDatabase();
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        Fsql.Dispose();
+    }
 
     [Test]
     public void TestArea()
@@ -18,7 +26,7 @@ public class RequirementTest
         string VersionPath = TestTools.GetVersionPath("Invalid Requirement Area");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -27,6 +35,6 @@ public class RequirementTest
         string VersionPath = TestTools.GetVersionPath("Invalid Requirement Area Header");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 }

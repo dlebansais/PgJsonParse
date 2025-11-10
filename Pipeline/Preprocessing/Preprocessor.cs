@@ -5,11 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class Preprocessor
 {
@@ -50,7 +52,7 @@ public class Preprocessor
         new IntDictionaryJsonConverter<XpTable, RawXpTable, XpTableDictionary>("Table"),
     };
 
-    public bool Preprocess(string versionPath, List<JsonFile> jsonFileList, out string destinationDirectory)
+    public bool Preprocess(string versionPath, List<JsonFile> jsonFileList, IFreeSql fsql, out string destinationDirectory)
     {
         destinationDirectory = @$"{versionPath}\Curated";
         bool PreprocessingDone = false;
@@ -70,6 +72,7 @@ public class Preprocessor
                 if (!Directory.Exists(destinationDirectory))
                     Directory.CreateDirectory(destinationDirectory);
 
+                JsonFile.DatabaseInserterMethod(fsql, Result);
                 JsonFile.SerializingMethod(DestinationFilePath, Result);
                 PreprocessingDone = true;
             }
@@ -189,7 +192,7 @@ public class Preprocessor
     {
         PropertyInfo[] Properties;
 
-        if (type.BaseType.IsGenericType)
+        if (type.BaseType!.IsGenericType)
         {
             Type[] GenericArguments = type.BaseType.GetGenericArguments();
             Properties = GenericArguments[GenericArguments.Length - 1].GetProperties();
@@ -201,13 +204,16 @@ public class Preprocessor
 
         foreach (PropertyInfo Property in Properties)
         {
+            if (Property.Name == "Key")
+                continue;
+
             PropertyNames.Add(Property.Name);
 
-            if (Property.PropertyType.FullName.StartsWith("Preprocessor"))
+            if (Property.PropertyType.FullName!.StartsWith("Preprocessor"))
             {
                 Type PropertyType = Property.PropertyType;
                 if (PropertyType.IsArray)
-                    PropertyType = PropertyType.GetElementType();
+                    PropertyType = PropertyType.GetElementType()!;
 
                 if (!visitedTypes.Contains(PropertyType))
                 {
@@ -240,32 +246,45 @@ public class Preprocessor
         return WriteContent;
     }
 
-    public static void SaveSerializedContent<T>(string filePath, object content)
+    public static void SaveSerializedDictionary<TDictionary, TValue>(string filePath, object content)
+        where TDictionary : IDictionary
     {
-        SaveSerializedContent<T>(filePath, (T)content);
+        SaveSerializedContent(filePath, content);
     }
 
-    private static void SaveSerializedContent<T>(string filePath, T content)
+    public static void SaveSerializedList<TList, TItem>(string filePath, object content)
+        where TList : IList
+    {
+        SaveSerializedContent(filePath, content);
+    }
+
+    public static void SaveSerializedSingle<TItem>(string filePath, object content)
+        where TItem : class
+    {
+        SaveSerializedContent(filePath, content);
+    }
+
+    public static void SaveSerializedContent(string filePath, object content)
     {
         JsonSerializerOptions WriteOptions = new();
         WriteOptions.WriteIndented = true;
         WriteOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         WriteOptions.NumberHandling = JsonNumberHandling.Strict;
         WriteOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-        string CuratedContent = JsonSerializer.Serialize(content, WriteOptions);
+        string JsonContent = JsonSerializer.Serialize(content, WriteOptions);
 
         string Indent = string.Empty;
-        while (CuratedContent.Contains($"\r\n{Indent}  "))
+        while (JsonContent.Contains($"\r\n{Indent}  "))
         {
-            CuratedContent = CuratedContent.Replace($"\r\n{Indent}  ", $"\r\n{Indent}\t");
+            JsonContent = JsonContent.Replace($"\r\n{Indent}  ", $"\r\n{Indent}\t");
             Indent += "\t";
         }
 
-        CuratedContent = CuratedContent.Replace("\r\n", "\n");
+        JsonContent = JsonContent.Replace("\r\n", "\n");
 
         using FileStream Stream = new(filePath, FileMode.Create, FileAccess.Write);
         using StreamWriter Writer = new(Stream, Encoding.UTF8);
-        Writer.Write(CuratedContent);
+        Writer.Write(JsonContent);
     }
 
     public static object? FromSingleOrMultiple<T, TRaw>(T[]? items, Func<T, TRaw> converter, JsonArrayFormat format)
@@ -506,7 +525,7 @@ public class Preprocessor
             else if (element is JsonElement AsString && AsString.ValueKind == JsonValueKind.String)
             {
                 isNumber = false;
-                Result = int.Parse(AsString.GetString());
+                Result = int.Parse(AsString.GetString()!);
             }
             else
                 throw new PreprocessorException();

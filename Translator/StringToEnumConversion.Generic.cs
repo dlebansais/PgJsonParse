@@ -148,7 +148,7 @@ public static class StringToEnumConversion<T>
             for (int i = 0; i < EnumNames.Length; i++)
                 if (s == EnumNames[i])
                 {
-                    enumValue = (T)EnumValues.GetValue(i);
+                    enumValue = (T)EnumValues.GetValue(i)!;
                     enumIndex = i;
                     return true;
                 }
@@ -164,7 +164,7 @@ public static class StringToEnumConversion<T>
         Array EnumValues = Enum.GetValues(typeof(T));
 
         for (int i = 0; i < EnumValues.Length; i++)
-            if ((int)EnumValues.GetValue(i) == (int)(object)enumValue!)
+            if ((int)EnumValues.GetValue(i)! == (int)(object)enumValue!)
             {
                 enumIndex = i;
                 return true;

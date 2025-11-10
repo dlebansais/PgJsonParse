@@ -1,10 +1,10 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using FreeSql.DataAnnotations;
 
 public class Recipe
 {
@@ -15,7 +15,13 @@ public class Recipe
     private const string CreateGeologySurvey = "CreateGeologySurvey";
     private const string AreaHeader = "Area";
 
-    public Recipe(RawRecipe rawRecipe)
+    public Recipe(int key)
+    {
+        Key = key;
+    }
+
+    public Recipe(int key, RawRecipe rawRecipe)
+        : this(key)
     {
         ActionLabel = rawRecipe.ActionLabel;
         Costs = rawRecipe.Costs;
@@ -475,47 +481,102 @@ public class Recipe
         }
     }
 
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
     public string? ActionLabel { get; set; }
+
+    [Navigate(nameof(Cost.Key))]
     public Cost[]? Costs { get; set; }
+
     public string? Description { get; set; }
+
     public string? DyeColor { get; set; }
+
     public int IconId { get; set; }
+
+    [Navigate(nameof(RecipeItem.Key))]
     public RecipeItem[]? Ingredients { get; set; }
+
     public string? InternalName { get; set; }
+
     public bool? IsItemMenuKeywordRequirementSufficient { get; set; }
+
     public string? ItemMenuCategory { get; set; }
+
     public int? ItemMenuCategoryLevel { get; set; }
+
     public string? ItemMenuKeywordRequirement { get; set; }
+
     public string? ItemMenuLabel { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? Keywords { get; set; }
+
+    [Navigate(nameof(RecipeParticle.Key))]
     public RecipeParticle? LoopParticle { get; set; }
+
     public int? MaxUses { get; set; }
+
     public string? Name { get; set; }
+
     public int? NumberOfResultItems { get; set; }
+
+    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? OtherRequirements { get; set; }
+
+    [Navigate(nameof(RecipeParticle.Key))]
     public RecipeParticle? Particle { get; set; }
+
     public string? PrereqRecipe { get; set; }
+
+    [Navigate(nameof(RecipeItem.Key))]
     public RecipeItem[]? ProtoResultItems { get; set; }
+
     public string? RequiredAttributeNonZero { get; set; }
+
     public int? ResetTimeInSeconds { get; set; }
+
+    [Navigate(nameof(RecipeResultEffect.Key))]
     public RecipeResultEffect[]? ResultEffects { get; set; }
+
+    [Navigate(nameof(RecipeResultEffect.Key))]
     public RecipeResultEffect[]? ResultEffectsThatCanFail { get; set; }
+
+    [Navigate(nameof(RecipeItem.Key))]
     public RecipeItem[]? ResultItems { get; set; }
+
     public bool? RewardAllowBonusXp { get; set; }
+
     public string? RewardSkill { get; set; }
+
     public int? RewardSkillXp { get; set; }
+
     public int? RewardSkillXpDropOffLevel { get; set; }
+
     public decimal? RewardSkillXpDropOffPct { get; set; }
+
     public int? RewardSkillXpDropOffRate { get; set; }
+
     public int? RewardSkillXpFirstTime { get; set; }
+
     public string? SharesResetTimerWith { get; set; }
+
     public string? Skill { get; set; }
+
     public int? SkillLevelRequirement { get; set; }
+
     public string? SortSkill { get; set; }
+
     public string? UsageAnimation { get; set; }
+
     public string? UsageAnimationEnd { get; set; }
+
     public decimal? UsageDelay { get; set; }
+
     public string? UsageDelayMessage { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? ValidationIngredientKeywords { get; set; }
 
     public RawRecipe ToRawRecipe()
@@ -702,8 +763,8 @@ public class Recipe
 
     private static string ToRawBrewItem(RecipeResultEffect effect)
     {
-        string BrewParts = string.Join("+", effect.BrewParts);
-        string BrewResults = string.Join("+", effect.BrewResults);
+        string BrewParts = string.Join("+", effect.BrewParts!);
+        string BrewResults = string.Join("+", effect.BrewResults!);
 
         return $"{effect.Type}({effect.BrewLine},{effect.BrewStrength},{BrewParts}={BrewResults})";
     }

@@ -9,8 +9,16 @@ public class ItemTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("items", true, Preprocessor.PreprocessDictionary<ItemDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedContent<ItemDictionary>),
+        new JsonFile("items", true, Preprocessor.PreprocessDictionary<ItemDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<ItemDictionary, Item>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Item>)(((ItemDictionary)content).Values)).ExecuteAffrows()),
     };
+
+    private static IFreeSql Fsql = TestTools.CreateTestDatabase();
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        Fsql.Dispose();
+    }
 
     [Test]
     public void TestDroppedAppearance()
@@ -18,7 +26,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item DroppedAppearance");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -27,7 +35,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item DroppedAppearance Skin");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -36,7 +44,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item DroppedAppearance Skin Empty");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -45,7 +53,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item DroppedAppearance Other");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -54,7 +62,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item EffectDescription Close Brace");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -63,7 +71,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item EffectDescription Open Brace");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -72,7 +80,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item EffectDescription Attribute Empty Name");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -81,7 +89,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item EffectDescription Attribute Empty Value");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -90,7 +98,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item EffectDescription Attribute No Closing Brace");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -99,7 +107,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item EffectDescription Attribute No Value");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -108,7 +116,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item EffectDescription Attribute Too Many Closing Brace");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -117,7 +125,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item Keyword Too Many Values");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -126,7 +134,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item StockDye Glow");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -135,7 +143,7 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item StockDye Not A Color");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 
     [Test]
@@ -144,6 +152,6 @@ public class ItemTest
         string VersionPath = TestTools.GetVersionPath("Invalid Item StockDye Not Enough Color");
 
         Preprocessor Preprocessor = new();
-        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, out _));
+        Assert.Throws<PreprocessorException>(() => Preprocessor.Preprocess(VersionPath, JsonFileList, Fsql, out _));
     }
 }

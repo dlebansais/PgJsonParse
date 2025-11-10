@@ -4,10 +4,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using FreeSql.DataAnnotations;
 
 public class Item
 {
-    public Item(RawItem rawItem)
+    public Item(int key)
+    {
+        Key = key;
+    }
+
+    public Item(int key, RawItem rawItem)
+        : this(key)
     {
         AllowInstallInGuildHalls = rawItem.AllowInstallInGuildHalls;
         AllowInstallInHomes = rawItem.AllowInstallInHomes;
@@ -320,47 +327,98 @@ public class Item
         return Result;
     }
 
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
     public bool? AllowInstallInGuildHalls { get; set; }
+
     public bool? AllowInstallInHomes { get; set; }
+
     public bool? AllowPrefix { get; set; }
+
     public bool? AllowSuffix { get; set; }
+
     public bool? AttuneOnPickup { get; set; }
+
+    [Navigate(nameof(Behavior.Key))]
     public Behavior[]? Behaviors { get; set; }
+
     public string? BestowAbility { get; set; }
+
     public int? BestowLoreBook { get; set; }
+
     public string? BestowQuest { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? BestowRecipes { get; set; }
+
     public int? BestowTitle { get; set; }
+
     public int? CraftPoints { get; set; }
+
     public int? CraftingTargetLevel { get; set; }
+
     public string? Description { get; set; }
+
     public bool? DestroyWhenUsedUp { get; set; }
+
+    [Navigate(nameof(global::Preprocessor.DroppedAppearance.Key))]
     public DroppedAppearance? DroppedAppearance { get; set; }
+
     public string? DyeColor { get; set; }
+
     public string? DynamicCraftingSummary { get; set; }
+
+    [Navigate(nameof(ItemEffect.Key))]
     public ItemEffect[]? EffectDescriptions { get; set; }
+
     public string? EquipAppearance { get; set; }
+
     public string? EquipSlot { get; set; }
+
     public string? FoodDescription { get; set; }
+
     public int IconId { get; set; }
+
     public bool? IgnoreAlreadyKnownBestowals { get; set; }
+
     public string? InternalName { get; set; }
+
     public bool? IsCrafted { get; set; }
+
     public bool? IsSkillRequirementsDefaults { get; set; }
+
     public bool? IsTemporary { get; set; }
+
+    [Navigate(nameof(KeywordValues.Key))]
     public KeywordValues[]? Keywords { get; set; }
+
     public string? Lint_VendorNpc { get; set; }
+
     public string? MacGuffinQuestName { get; set; }
+
     public int? MaxCarryable { get; set; }
+
     public int? MaxOnVendor { get; set; }
+
     public int? MaxStackSize { get; set; }
+
     public string? MountedAppearance { get; set; }
+
     public string? Name { get; set; }
+
     public int? NumberOfUses { get; set; }
+
     public string? RequiredAppearance { get; set; }
-    public SkillRequirementDictionary? SkillRequirements { get; set; }
+
+    [Column(MapType = typeof(string))]
+    public Dictionary<string, int>? SkillRequirements { get; set; }
+
+    [Navigate(nameof(global::Preprocessor.StockDye.Key))]
     public StockDye? StockDye { get; set; }
+
     public string? TSysProfile { get; set; }
+
     public decimal? Value { get; set; }
 
     public RawItem ToRawItem()
@@ -410,7 +468,7 @@ public class Item
         Result.Name = Name;
         Result.NumUses = NumberOfUses;
         Result.RequiredAppearance = RequiredAppearance;
-        Result.SkillReqs = SkillRequirements;
+        Result.SkillReqs = SkillRequirements is null ? null : new(SkillRequirements);
         Result.StockDye = StockDyeToStrings(StockDye, HasStockDye);
         Result.TSysProfile = TSysProfile;
         Result.Value = Value;

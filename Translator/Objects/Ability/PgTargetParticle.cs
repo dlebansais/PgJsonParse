@@ -1,7 +1,9 @@
-﻿namespace PgObjects
+﻿namespace PgObjects;
+
+using MemoryPack;
+
+[MemoryPackable]
+public partial class PgTargetParticle : PgAbilityParticle
 {
-    public class PgTargetParticle : PgAbilityParticle
-    {
-        public AbilityTargetParticle Particle { get; set; }
-    }
+    public AbilityTargetParticle Particle { get; set; }
 }

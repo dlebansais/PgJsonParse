@@ -1,28 +1,41 @@
 ﻿namespace Preprocessor;
 
+using System;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
+
 public class SourceRecipe
 {
-    public SourceRecipe(RawSourceRecipe rawSourceRecipe)
+    public SourceRecipe(int key)
     {
-        if (rawSourceRecipe.entries is RawSourceRecipeEntry[] RawEntries)
-        {
-            Entries = new SourceRecipeEntry[RawEntries.Length];
-            for (int i = 0; i < Entries.Length; i++)
-                Entries[i] = new SourceRecipeEntry()
-                {
-                    HangOutId = RawEntries[i].hangOutId,
-                    ItemTypeId = RawEntries[i].itemTypeId,
-                    Npc = RawEntries[i].npc,
-                    QuestId = RawEntries[i].questId,
-                    Skill = RawEntries[i].skill,
-                    Type = RawEntries[i].type,
-                };
-        }
-        else
-            throw new PreprocessorException(this);
+        Key = key;
     }
 
-    public SourceRecipeEntry[] Entries { get; set; }
+    public SourceRecipe(int key, RawSourceRecipe rawSourceRecipe)
+        : this(key)
+    {
+        if (rawSourceRecipe.entries is not RawSourceRecipeEntry[] RawEntries)
+            throw new PreprocessorException(this);
+
+        Entries = new SourceRecipeEntry[RawEntries.Length];
+        for (int i = 0; i < Entries.Length; i++)
+            Entries[i] = new SourceRecipeEntry()
+            {
+                HangOutId = RawEntries[i].hangOutId,
+                ItemTypeId = RawEntries[i].itemTypeId,
+                Npc = RawEntries[i].npc,
+                QuestId = RawEntries[i].questId,
+                Skill = RawEntries[i].skill,
+                Type = RawEntries[i].type,
+            };
+    }
+
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [Navigate(nameof(SourceRecipeEntry.Key))]
+    public SourceRecipeEntry[] Entries { get; set; } = Array.Empty<SourceRecipeEntry>();
 
     public RawSourceRecipe ToRawSourceRecipe()
     {

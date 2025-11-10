@@ -1,14 +1,22 @@
 ﻿namespace Preprocessor;
 
-using System;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using FreeSql.DataAnnotations;
 
 public class RecipeParticle
 {
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
     public string? LightColor { get; set; }
+
     public string? ParticleName { get; set; }
+
     public string? PrimaryColor { get; set; }
+
     public string? SecondaryColor { get; set; }
 
     private const string ColorHeader = "Color=";

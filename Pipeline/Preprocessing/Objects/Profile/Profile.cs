@@ -1,16 +1,22 @@
 ﻿namespace Preprocessor;
 
-using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
 public class Profile
 {
     public Profile(string[] rawProfile)
     {
-        EffectList = rawProfile.ToList();
+        EffectList = rawProfile.ToArray();
     }
 
-    public List<string> EffectList { get; }
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Key { get; set; }
+
+    [Column(MapType = typeof(string))]
+    public string[] EffectList { get; }
 
     public string[] ToRawProfile(string key)
     {

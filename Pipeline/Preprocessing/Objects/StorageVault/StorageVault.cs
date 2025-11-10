@@ -1,10 +1,19 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
+
 public class StorageVault
 {
     private const string AreaHeader = "Area";
 
-    public StorageVault(RawStorageVault rawStorageVault)
+    public StorageVault(string key)
+    {
+        Key = key;
+    }
+
+    public StorageVault(string key, RawStorageVault rawStorageVault)
+        : this(key)
     {
         StorageArea = ParseArea(rawStorageVault.Area);
         EventLevels = rawStorageVault.EventLevels;
@@ -56,21 +65,45 @@ public class StorageVault
         return Result;
     }
 
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
+    public string Key { get; set; }
+
+    [Navigate(nameof(StorageVaultEventLevel.Key))]
     public StorageVaultEventLevel? EventLevels { get; set; }
-    public AreaDetail Grouping { get; set; }
+
+    [Navigate(nameof(AreaDetail.Key))]
+    public AreaDetail? Grouping { get; set; }
+
     public bool? HasAssociatedNpc { get; set; }
+
     public int? ID { get; set; }
+
+    [Navigate(nameof(StorageVaultLevel.Key))]
     public StorageVaultLevel? Levels { get; set; }
+
     public string? NpcFriendlyName { get; set; }
+
     public int? NumberOfSlots { get; set; }
+
     public string? NumberOfSlotsScriptAtomic { get; set; }
+
     public int? NumberOfSlotsScriptAtomicMaxValue { get; set; }
+
     public int? NumberOfSlotsScriptAtomicMinValue { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? RequiredItemKeywords { get; set; }
+
     public string? RequirementDescription { get; set; }
+
+    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? Requirements { get; set; }
+
     public string? SlotAttribute { get; set; }
-    public AreaDetail StorageArea { get; set; }
+
+    [Navigate(nameof(AreaDetail.Key))]
+    public AreaDetail? StorageArea { get; set; }
 
     public RawStorageVault ToRawStorageVault()
     {
@@ -95,9 +128,9 @@ public class StorageVault
         return Result;
     }
 
-    private static string? ToRawArea(AreaDetail areaDetail)
+    private static string? ToRawArea(AreaDetail? areaDetail)
     {
-        return (AreaType)areaDetail.AreaType switch
+        return areaDetail is null ? null : (AreaType)areaDetail.AreaType switch
         {
             AreaType.Apartment => "Apartment",
             AreaType.Any => "*",

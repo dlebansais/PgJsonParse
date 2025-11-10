@@ -2,8 +2,8 @@
 
 using System.Collections.Generic;
 
-public class SkillDictionary : Dictionary<string, Skill>, IDictionaryValueBuilder<Skill, RawSkill>
+public class SkillDictionary : Dictionary<string, Skill>, IDictionaryValueBuilderString<Skill, RawSkill>
 {
-    public Skill FromRaw(RawSkill rawSkill) => new Skill(rawSkill);
+    public Skill FromRaw(string key, RawSkill rawSkill) => new(key, rawSkill);
     public RawSkill ToRaw(Skill skill) => skill.ToRawSkill();
 }

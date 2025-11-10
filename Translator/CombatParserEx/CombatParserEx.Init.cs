@@ -72,7 +72,7 @@ internal partial class CombatParserEx
 
                 foreach (AbilityKeyword Keyword in Ability.KeywordList)
                 {
-                    if (!KeywordToAbilities.TryGetValue(Keyword, out List<PgAbility> Abilities))
+                    if (!KeywordToAbilities.TryGetValue(Keyword, out List<PgAbility>? Abilities))
                     {
                         Abilities = new List<PgAbility>();
                         KeywordToAbilities.Add(Keyword, Abilities);

@@ -1,10 +1,16 @@
 ﻿namespace Preprocessor;
 
-using System.Collections.Generic;
+using FreeSql.DataAnnotations;
 
 public class Attribute
 {
-    public Attribute(RawAttribute rawAttribute)
+    public Attribute(string key)
+    {
+        Key = key;
+    }
+
+    public Attribute(string key, RawAttribute rawAttribute)
+        : this(key)
     {
         DefaultValue = rawAttribute.DefaultValue;
         DisplayRule = rawAttribute.DisplayRule;
@@ -15,12 +21,22 @@ public class Attribute
         Tooltip = rawAttribute.Tooltip;
     }
 
+    [Column(IsPrimary = true)]
+    public string Key { get; set; }
+
     public decimal? DefaultValue { get; set; }
+
     public string? DisplayRule { get; set; }
+
     public string? DisplayType { get; set; }
+
+    [Column(MapType = typeof(string))]
     public int[]? IconIds { get; set; }
+
     public bool? IsHidden { get; set; }
+
     public string? Label { get; set; }
+
     public string? Tooltip { get; set; }
 
     public RawAttribute ToRawAttribute()

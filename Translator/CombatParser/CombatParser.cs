@@ -2030,7 +2030,7 @@ public partial class CombatParser
                 continue;
 
             int ItemPowerId = 0x08000000 + int.Parse(Splitted[1]);
-            if (PowerToEffectTable.TryGetValue(ItemPowerId, out PowerToEffect PowerToEffect))
+            if (PowerToEffectTable.TryGetValue(ItemPowerId, out PowerToEffect? PowerToEffect))
                 continue;
 
             List<PowerTierToEffect> Tiers = new();

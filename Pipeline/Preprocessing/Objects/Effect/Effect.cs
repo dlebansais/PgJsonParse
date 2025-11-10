@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿namespace Preprocessor;
 
-namespace Preprocessor;
+using System.Collections.Generic;
+using FreeSql.DataAnnotations;
 
 public class Effect
 {
@@ -9,7 +10,13 @@ public class Effect
     const string DeflectiveSpinPattern = "Universal Direct Elite Mitigation";
     const string TornadoAttackPattern = "and increase target's Electricity Vulnerability";
 
-    public Effect(RawEffect rawEffect)
+    public Effect(int key)
+    {
+        Key = key;
+    }
+
+    public Effect(int key, RawEffect rawEffect)
+        : this(key)
     {
         AbilityKeywords = rawEffect.AbilityKeywords;
         Description = ParseDescription(rawEffect.Desc, rawEffect.AbilityKeywords, rawEffect.Name, out EffectDescriptionFix);
@@ -85,16 +92,32 @@ public class Effect
         }
     }
 
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? AbilityKeywords { get; set; }
+    
     public string? Description { get; set; }
+    
     public string? DisplayMode { get; set; }
+    
     public int? Duration { get; set; }
+    
     public int? IconId { get; set; }
+
+    [Column(MapType = typeof(string))]
     public string[]? Keywords { get; set; }
+    
     public string? Name { get; set; }
+
+    [Navigate(nameof(EffectParticle.Key))]
     public EffectParticle? Particle { get; set; }
+    
     public string? SpewText { get; set; }
+    
     public int? StackingPriority { get; set; }
+    
     public string? StackingType { get; set; }
 
     public RawEffect ToRawEffect()
