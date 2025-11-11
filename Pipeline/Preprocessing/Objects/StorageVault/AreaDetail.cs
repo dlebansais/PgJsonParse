@@ -7,7 +7,7 @@ public class AreaDetail
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public string? AreaName { get; set; }
 

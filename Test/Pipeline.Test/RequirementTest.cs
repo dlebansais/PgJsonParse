@@ -9,7 +9,13 @@ public class RequirementTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("quests", true, Preprocessor.PreprocessDictionary<QuestDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<QuestDictionary, Quest>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Quest>)(((QuestDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("quests",
+                     true,
+                     Preprocessor.PreprocessDictionary<QuestDictionary>,
+                     Fixer.NoFix,
+                     Preprocessor.SaveSerializedDictionary<QuestDictionary, Quest>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Quest>)(((QuestDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<Quest>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

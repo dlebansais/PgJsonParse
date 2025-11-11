@@ -7,7 +7,7 @@ public class StorageVaultEventLevel
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public int? RiShinShrine_Storage1On { get; set; }
 

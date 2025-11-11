@@ -9,7 +9,13 @@ public class AbilityTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("abilities", true, Preprocessor.PreprocessDictionary<AbilityDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<AbilityDictionary, Ability>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Ability>)(((AbilityDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("abilities",
+                     true,
+                     Preprocessor.PreprocessDictionary<AbilityDictionary>,
+                     Fixer.NoFix,
+                     Preprocessor.SaveSerializedDictionary<AbilityDictionary, Ability>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Ability>)(((AbilityDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<Ability>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

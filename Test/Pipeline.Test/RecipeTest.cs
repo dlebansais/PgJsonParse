@@ -9,7 +9,13 @@ public class RecipeTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("recipes", true, Preprocessor.PreprocessDictionary<RecipeDictionary>, Fixer.FixRecipes, Preprocessor.SaveSerializedDictionary<RecipeDictionary, Recipe>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Recipe>)(((RecipeDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("recipes",
+                     true,
+                     Preprocessor.PreprocessDictionary<RecipeDictionary>,
+                     Fixer.FixRecipes,
+                     Preprocessor.SaveSerializedDictionary<RecipeDictionary, Recipe>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Recipe>)(((RecipeDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<Recipe>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

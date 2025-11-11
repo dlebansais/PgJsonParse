@@ -10,7 +10,13 @@ public class EffectTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("effects", true, Preprocessor.PreprocessDictionary<EffectDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<EffectDictionary, Effect>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Effect>)(((EffectDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("effects",
+                     true,
+                     Preprocessor.PreprocessDictionary<EffectDictionary>,
+                     Fixer.NoFix,
+                     Preprocessor.SaveSerializedDictionary<EffectDictionary, Effect>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Effect>)(((EffectDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<Effect>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

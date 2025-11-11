@@ -7,8 +7,9 @@ public class Ammo
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public int? Count { get; set; }
+
     public string? ItemKeyword { get; set; }
 }

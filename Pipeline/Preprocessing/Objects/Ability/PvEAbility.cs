@@ -43,7 +43,9 @@ public class PvEAbility
 
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
+
+    public int ForeignKey { get; set; }
 
     public decimal? Accuracy { get; set; }
     

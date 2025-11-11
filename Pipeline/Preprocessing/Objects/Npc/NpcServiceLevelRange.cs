@@ -7,7 +7,7 @@ public class NpcServiceLevelRange
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public int Max { get; set; }
 

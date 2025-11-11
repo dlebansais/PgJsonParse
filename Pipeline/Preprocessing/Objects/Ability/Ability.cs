@@ -42,7 +42,10 @@ public class Ability
         CanTargetUntargetableEnemies = rawAbility.CanTargetUntargetableEnemies;
         CausesOfDeath = rawAbility.CausesOfDeath;
         CombatRefreshBaseAmount = rawAbility.CombatRefreshBaseAmount;
-        ConditionalKeywords = ParseConditionalKeywords(rawAbility.ConditionalKeywords);
+
+        if (ParseConditionalKeywords(rawAbility.ConditionalKeywords) is ConditionalKeyword[] parsedConditionalKeywords)
+            ConditionalKeywords = new List<ConditionalKeyword>(parsedConditionalKeywords);
+
         Costs = rawAbility.Costs;
         DamageType = rawAbility.DamageType;
         DelayLoopIsAbortedIfAttacked = rawAbility.DelayLoopIsAbortedIfAttacked;
@@ -81,6 +84,12 @@ public class Ability
         Projectile = IsProjectileNone ? null : rawAbility.Projectile;
 
         PvE = rawAbility.PvE is null ? null : new PvEAbility(rawAbility.PvE);
+        if (PvE is not null)
+        {
+            PvE.ForeignKey = Key;
+            PvEList.Add(PvE);
+        }
+
         Rank = rawAbility.Rank is null ? null : int.Parse(rawAbility.Rank);
         ResetTime = rawAbility.ResetTime;
         SelfParticle = AbilityParticle.Parse(rawAbility.SelfParticle);
@@ -325,8 +334,7 @@ public class Ability
 
     public int? CombatRefreshBaseAmount { get; set; }
 
-    [Navigate(nameof(ConditionalKeyword.Key))]
-    public ConditionalKeyword[]? ConditionalKeywords { get; set; }
+    public ICollection<ConditionalKeyword> ConditionalKeywords { get; set; } = new List<ConditionalKeyword>();
 
     [Navigate(nameof(Cost.Key))]
     public Cost[]? Costs { get; set; }
@@ -399,8 +407,11 @@ public class Ability
 
     public string? Projectile { get; set; }
 
-    [Navigate(nameof(PvEAbility.Key))]
+    [Navigate(nameof(PvEAbility.ForeignKey))]
     public PvEAbility? PvE { get; set; }
+
+    [Navigate(nameof(PvEAbility.Key))]
+    public List<PvEAbility> PvEList { get; set; } = new();
 
     public int? Rank { get; set; }
 
@@ -471,7 +482,7 @@ public class Ability
         Result.CanTargetUntargetableEnemies = CanTargetUntargetableEnemies;
         Result.CausesOfDeath = CausesOfDeath;
         Result.CombatRefreshBaseAmount = CombatRefreshBaseAmount;
-        Result.ConditionalKeywords = ToRawConditionalKeywords(ConditionalKeywords);
+        Result.ConditionalKeywords = ToRawConditionalKeywords(ConditionalKeywords.Count == 0 ? null : ConditionalKeywords.ToArray());
         Result.Costs = Costs;
         Result.DamageType = DamageType;
         Result.DelayLoopIsAbortedIfAttacked = DelayLoopIsAbortedIfAttacked;

@@ -7,7 +7,7 @@ public class SourceItemEntry
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public string? FriendlyName { get; set; }
 

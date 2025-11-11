@@ -155,7 +155,7 @@ public class PowerTier
 
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     [Navigate(nameof(PowerEffect.Key))]
     public PowerEffect[]? EffectDescriptions { get; set; }

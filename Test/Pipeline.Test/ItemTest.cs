@@ -9,7 +9,13 @@ public class ItemTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("items", true, Preprocessor.PreprocessDictionary<ItemDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<ItemDictionary, Item>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Item>)(((ItemDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("items",
+                     true,
+                     Preprocessor.PreprocessDictionary<ItemDictionary>,
+                     Fixer.NoFix,
+                     Preprocessor.SaveSerializedDictionary<ItemDictionary, Item>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Item>)(((ItemDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<Item>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

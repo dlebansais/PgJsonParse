@@ -5,8 +5,25 @@ using FreeSql.DataAnnotations;
 
 public class LoreBook
 {
+    public LoreBook()
+    {
+    }
+
+    public LoreBook(int key, LoreBook other)
+    {
+        Key = key;
+        Category = other.Category;
+        InternalName = other.InternalName;
+        IsClientLocal = other.IsClientLocal;
+        Keywords = other.Keywords;
+        LocationHint = other.LocationHint;
+        Text = other.Text;
+        Title = other.Title;
+        Visibility = other.Visibility;
+    }
+
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
+    [Column(IsPrimary = true)]
     public int Key { get; set; }
 
     public string? Category { get; set; }

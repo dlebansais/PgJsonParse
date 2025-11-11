@@ -38,7 +38,7 @@ public class ProfileDictionaryJsonConverter : JsonConverter<ProfileDictionary>
 
             if (RawProfile is not null)
             {
-                dictionary.Add(Key, new Profile(RawProfile));
+                dictionary.Add(Key, new Profile(Key, RawProfile));
             }
             else
             {

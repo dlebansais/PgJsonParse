@@ -104,7 +104,7 @@ public class QuestObjective
 
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public string? AbilityKeyword { get; set; }
     

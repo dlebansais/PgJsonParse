@@ -77,6 +77,32 @@ public class Preprocessor
                 JsonFile.DatabaseInserterMethod(fsql, Result);
                 JsonFile.SerializingMethod(DestinationFilePath, Result);
                 PreprocessingDone = true;
+
+                /*
+                string TempPath = $"{destinationDirectory}\\~{JsonFile.FileName}.json";
+                if (File.Exists(TempPath))
+                    File.Delete(TempPath);
+
+                var TempResult = JsonFile.DatabaseVerifierMethod(fsql);
+
+                if (Result is IDictionary Dictionary && TempResult is IDictionary TempDictionary)
+                {
+                    Dictionary<object, object> Copy = new();
+                    foreach (object Key in Dictionary.Keys)
+                        if (TempDictionary[Key] is object TempValue)
+                            Copy.Add(Key, TempValue);
+
+                    TempResult = Copy;
+                }
+
+                JsonFile.SerializingMethod(TempPath, TempResult);
+
+                string Content1 = File.ReadAllText(DestinationFilePath);
+                string Content2 = File.ReadAllText(TempPath);
+                bool IsIdentical = Content1 == Content2;
+
+                File.Delete(TempPath);
+                */
             }
         }
 
@@ -206,7 +232,7 @@ public class Preprocessor
 
         foreach (PropertyInfo Property in Properties)
         {
-            if (Property.Name == "Key")
+            if (Property.Name == "Key" || Property.Name == "ForeignKey")
                 continue;
 
             PropertyNames.Add(Property.Name);

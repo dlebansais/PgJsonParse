@@ -7,19 +7,23 @@ using FreeSql.DataAnnotations;
 
 public class AbilityParticle
 {
-    [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
-
-    public string? AoEColor { get; set; }
-    public int? AoERange { get; set; }
-    public string? ParticleName { get; set; }
-    public string? PrimaryColor { get; set; }
-    public string? SecondaryColor { get; set; }
-
     private const string ColorHeader = "Color=";
     private const string AoeColorHeader = "AoeColor=";
     private const string AoeRangeHeader = "AoeRange=";
+
+    [JsonIgnore]
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public string? Key { get; set; }
+
+    public string? AoEColor { get; set; }
+
+    public int? AoERange { get; set; }
+
+    public string? ParticleName { get; set; }
+
+    public string? PrimaryColor { get; set; }
+
+    public string? SecondaryColor { get; set; }
 
     public static AbilityParticle? Parse(string? content)
     {

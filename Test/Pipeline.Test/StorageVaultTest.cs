@@ -9,7 +9,13 @@ public class StorageVaultTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("storagevaults", true, Preprocessor.PreprocessDictionary<StorageVaultDictionary>, Fixer.FixStorageVaults, Preprocessor.SaveSerializedDictionary<StorageVaultDictionary, StorageVault>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<StorageVault>)(((StorageVaultDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("storagevaults",
+                     true,
+                     Preprocessor.PreprocessDictionary<StorageVaultDictionary>,
+                     Fixer.FixStorageVaults,
+                     Preprocessor.SaveSerializedDictionary<StorageVaultDictionary, StorageVault>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<StorageVault>)(((StorageVaultDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<StorageVault>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

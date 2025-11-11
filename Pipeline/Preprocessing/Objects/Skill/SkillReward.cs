@@ -17,7 +17,7 @@ public class SkillReward
 
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     [Column(MapType = typeof(string))]
     public string[]? Abilities { get; set; }

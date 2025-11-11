@@ -9,7 +9,7 @@ public class KeywordValues : IEquatable<KeywordValues>
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public string? Keyword { get; set; }
 

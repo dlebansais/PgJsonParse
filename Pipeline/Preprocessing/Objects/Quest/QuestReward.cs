@@ -7,7 +7,7 @@ public class QuestReward
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public string? Ability { get; set; }
 

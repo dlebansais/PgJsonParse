@@ -9,7 +9,13 @@ public class PlayerTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("playertitles", true, Preprocessor.PreprocessDictionary<PlayerTitleDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<PlayerTitleDictionary, PlayerTitle>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<PlayerTitle>)(((PlayerTitleDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("playertitles",
+                     true,
+                     Preprocessor.PreprocessDictionary<PlayerTitleDictionary>,
+                     Fixer.NoFix,
+                     Preprocessor.SaveSerializedDictionary<PlayerTitleDictionary, PlayerTitle>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<PlayerTitle>)(((PlayerTitleDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<PlayerTitle>().WithLock().ToDictionary(item => item.Key))
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

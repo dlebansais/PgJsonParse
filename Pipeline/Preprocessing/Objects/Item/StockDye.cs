@@ -7,7 +7,7 @@ public class StockDye
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public string? Color1 { get; set; }
 

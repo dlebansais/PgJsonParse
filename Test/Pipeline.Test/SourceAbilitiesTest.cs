@@ -9,7 +9,13 @@ public class SourceAbilitiesTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("sources_abilities", true, Preprocessor.PreprocessDictionary<SourceAbilityDictionary>, Fixer.FixSourceAbilities, Preprocessor.SaveSerializedDictionary<SourceAbilityDictionary, SourceAbility>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<SourceAbility>)(((SourceAbilityDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("sources_abilities",
+                     true,
+                     Preprocessor.PreprocessDictionary<SourceAbilityDictionary>,
+                     Fixer.FixSourceAbilities,
+                     Preprocessor.SaveSerializedDictionary<SourceAbilityDictionary, SourceAbility>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<SourceAbility>)(((SourceAbilityDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<SourceAbility>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

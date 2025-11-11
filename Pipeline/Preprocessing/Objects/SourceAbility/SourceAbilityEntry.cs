@@ -7,7 +7,7 @@ public class SourceAbilityEntry
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public int? ItemTypeId { get; set; }
 

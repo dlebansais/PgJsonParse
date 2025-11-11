@@ -7,7 +7,7 @@ public class Time
 {
     [JsonIgnore]
     [Column(IsPrimary = true, IsIdentity = true)]
-    public int Key { get; set; }
+    public string? Key { get; set; }
 
     public int? Days { get; set; }
 

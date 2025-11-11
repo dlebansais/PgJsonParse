@@ -9,7 +9,13 @@ public class SkillTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("skills", true, Preprocessor.PreprocessDictionary<SkillDictionary>, Fixer.FixSkills, Preprocessor.SaveSerializedDictionary<SkillDictionary, Skill>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Skill>)(((SkillDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("skills",
+                     true,
+                     Preprocessor.PreprocessDictionary<SkillDictionary>,
+                     Fixer.FixSkills,
+                     Preprocessor.SaveSerializedDictionary<SkillDictionary, Skill>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Skill>)(((SkillDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<Skill>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

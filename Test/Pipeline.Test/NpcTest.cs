@@ -9,7 +9,13 @@ public class NpcTest
 {
     private static List<JsonFile> JsonFileList = new()
     {
-        new JsonFile("npcs", false, Preprocessor.PreprocessDictionary<NpcDictionary>, Fixer.NoFix, Preprocessor.SaveSerializedDictionary<NpcDictionary, Npc>, (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Npc>)(((NpcDictionary)content).Values)).ExecuteAffrows()),
+        new JsonFile("npcs",
+                     false,
+                     Preprocessor.PreprocessDictionary<NpcDictionary>,
+                     Fixer.NoFix,
+                     Preprocessor.SaveSerializedDictionary<NpcDictionary, Npc>,
+                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Npc>)(((NpcDictionary)content).Values)).ExecuteAffrows(),
+                     (IFreeSql fsql) => fsql.Select<Npc>().WithLock().ToDictionary(item => item.Key)),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();
