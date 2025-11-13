@@ -2,10 +2,11 @@
 
 using FreeSql.DataAnnotations;
 
-public class DirectedGoal
+public class DirectedGoal : IHasKey<int>
 {
-    public DirectedGoal(RawDirectedGoal fromRawDirectedGoal)
+    public DirectedGoal(int key, RawDirectedGoal fromRawDirectedGoal)
     {
+        Key = key;
         CategoryGateId = fromRawDirectedGoal.CategoryGateId;
         ForRaces = fromRawDirectedGoal.ForRaces;
         Id = fromRawDirectedGoal.Id;
@@ -16,7 +17,7 @@ public class DirectedGoal
         Zone = fromRawDirectedGoal.Zone;
     }
 
-    [Column(IsIdentity = true, IsPrimary = true)]
+    [Column(IsPrimary = true)]
     public int Key { get; set; }
 
     public int? CategoryGateId { get; set; }

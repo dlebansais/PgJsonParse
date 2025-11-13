@@ -4,7 +4,7 @@ using System;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class SourceRecipe
+public class SourceRecipe : IHasKey<int>
 {
     public SourceRecipe(int key)
     {

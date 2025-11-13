@@ -3,7 +3,7 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class LoreBook
+public class LoreBook : IHasKey<int>
 {
     public LoreBook()
     {

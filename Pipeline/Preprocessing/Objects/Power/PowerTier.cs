@@ -7,13 +7,14 @@ using System.Text.RegularExpressions;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class PowerTier
+public class PowerTier : IHasKey<int>, IHasParentKey<int>
 {
     private const string IconTagStart = "<icon=";
 
     public PowerTier(int tier, RawPowerTier rawPowerTier)
     {
         EffectDescriptions = ParseEffectDescriptions(rawPowerTier.EffectDescs);
+        EffectDescriptionsIsEmpty = EffectDescriptions is not null && EffectDescriptions.Length == 0;
         MaxLevel = rawPowerTier.MaxLevel;
         MinLevel = rawPowerTier.MinLevel;
         MinRarity = rawPowerTier.MinRarity;
@@ -154,11 +155,19 @@ public class PowerTier
     }
 
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public string? Key { get; set; }
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
 
-    [Navigate(nameof(PowerEffect.Key))]
+    [JsonIgnore]
+    public int ParentKey { get; set; }
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
+
     public PowerEffect[]? EffectDescriptions { get; set; }
+
+    [JsonIgnore]
+    public bool EffectDescriptionsIsEmpty { get; set; }
 
     public int? MaxLevel { get; set; }
 

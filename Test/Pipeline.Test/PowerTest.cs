@@ -14,8 +14,15 @@ public class PowerTest
                      Preprocessor.PreprocessDictionary<PowerDictionary>,
                      Fixer.FixPowers,
                      Preprocessor.SaveSerializedDictionary<PowerDictionary, Power>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Power>)(((PowerDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Power>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<PowerDictionary, Power>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<PowerDictionary, Power>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

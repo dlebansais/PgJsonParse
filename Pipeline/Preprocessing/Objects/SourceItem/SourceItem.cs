@@ -4,7 +4,7 @@ using System;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class SourceItem
+public class SourceItem : IHasKey<int>
 {
     public SourceItem(int key)
     {
@@ -35,7 +35,6 @@ public class SourceItem
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 
-    [Navigate(nameof(SourceItemEntry.Key))]
     public SourceItemEntry[] Entries { get; set; } = Array.Empty<SourceItemEntry>();
 
     public RawSourceItem ToRawSourceItem()

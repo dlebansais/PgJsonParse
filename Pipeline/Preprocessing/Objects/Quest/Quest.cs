@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
-public class Quest
+public class Quest : IHasKey<int>
 {
     public Quest(int key)
     {
@@ -408,7 +408,6 @@ public class Quest
 
     public int? Level { get; set; }
 
-    [Navigate(nameof(QuestRewardItem.Key))]
     public QuestRewardItem[]? MidwayGiveItems { get; set; }
 
     public string? MidwayText { get; set; }
@@ -417,7 +416,6 @@ public class Quest
 
     public int? NumberOfExpectedParticipants { get; set; }
 
-    [Navigate(nameof(QuestObjective.Key))]
     public QuestObjective[]? Objectives { get; set; }
 
     [Navigate(nameof(QuestPreGive.Key))]
@@ -433,21 +431,16 @@ public class Quest
 
     public string? PrerequisiteFavorLevel { get; set; }
 
-    [Navigate(nameof(QuestFailEffect.Key))]
     public QuestFailEffect[]? QuestFailEffects { get; set; }
 
     public string? QuestNpc { get; set; }
 
-    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? Requirements { get; set; }
 
-    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? RequirementsToSustain { get; set; }
 
-    [Navigate(nameof(Time.Key))]
     public Time? ReuseTime { get; set; }
 
-    [Navigate(nameof(QuestReward.Key))]
     public QuestReward[]? Rewards { get; set; }
 
     public string? RewardsDescription { get; set; }

@@ -1,21 +1,20 @@
 ﻿namespace Preprocessor;
 
 using FreeSql.DataAnnotations;
-using System.Collections.Generic;
 
-public class AdvancementTable
+public class AdvancementTable : IHasKey<int>
 {
-    public AdvancementTable(string name, AdvancementCollection levels)
+    public AdvancementTable(int key, string name, AdvancementCollection levels)
     {
+        Key = key;
         Name = name;
-        Levels = levels;
+        Levels = levels.ToArray();
     }
 
-    [Column(IsIdentity = true, IsPrimary = true)]
+    [Column(IsPrimary = true)]
     public int Key { get; set; }
 
-    [Navigate(nameof(Advancement.Key))]
-    public List<Advancement> Levels { get; set; }
+    public Advancement[] Levels { get; set; }
 
     public string Name { get; set; }
 }

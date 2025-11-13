@@ -3,10 +3,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
-public class Item
+public class Item : IHasKey<int>
 {
     public Item(int key)
     {
@@ -35,6 +36,7 @@ public class Item
         DyeColor = rawItem.DyeColor;
         DynamicCraftingSummary = rawItem.DynamicCraftingSummary;
         EffectDescriptions = ParseEffectDescriptions(rawItem.EffectDescs);
+        EffectDescriptionsIsEmpty = EffectDescriptions is not null && EffectDescriptions.Length == 0;
         EquipAppearance = rawItem.EquipAppearance;
         EquipSlot = rawItem.EquipSlot;
         FoodDescription = rawItem.FoodDesc;
@@ -369,8 +371,10 @@ public class Item
 
     public string? DynamicCraftingSummary { get; set; }
 
-    [Navigate(nameof(ItemEffect.Key))]
     public ItemEffect[]? EffectDescriptions { get; set; }
+
+    [JsonIgnore]
+    public bool EffectDescriptionsIsEmpty { get; set; }
 
     public string? EquipAppearance { get; set; }
 

@@ -1,12 +1,20 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
-public class EffectParticle
+public class EffectParticle : IHasKey<int>, IHasParentKey<int>
 {
-    [Column(IsIdentity = true, IsPrimary = true)]
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
     public int Key { get; set; }
+
+    [JsonIgnore]
+    public int ParentKey { get; set; }
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
 
     public string? AoEColor { get; set; }
 

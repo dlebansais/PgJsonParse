@@ -3,7 +3,7 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class StorageVault
+public class StorageVault : IHasKey<string>
 {
     private const string AreaHeader = "Area";
 
@@ -28,7 +28,7 @@ public class StorageVault
         NumberOfSlotsScriptAtomicMinValue = rawStorageVault.NumSlotsScriptAtomicMinValue;
         RequiredItemKeywords = rawStorageVault.RequiredItemKeywords;
         RequirementDescription = rawStorageVault.RequirementDescription;
-        Requirements = Preprocessor.ToSingleOrMultiple(rawStorageVault.Requirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsFormat);
+        Requirements = Preprocessor.ToSingleOrMultiple(rawStorageVault.Requirements, (RawRequirement rawRequirement) => new StorageRequirement(rawRequirement), out RequirementsFormat);
         SlotAttribute = rawStorageVault.SlotAttribute;
     }
 
@@ -69,17 +69,14 @@ public class StorageVault
     [Column(IsPrimary = true)]
     public string Key { get; set; }
 
-    [Navigate(nameof(StorageVaultEventLevel.Key))]
     public StorageVaultEventLevel? EventLevels { get; set; }
 
-    [Navigate(nameof(AreaDetail.Key))]
     public AreaDetail? Grouping { get; set; }
 
     public bool? HasAssociatedNpc { get; set; }
 
     public int? ID { get; set; }
 
-    [Navigate(nameof(StorageVaultLevel.Key))]
     public StorageVaultLevel? Levels { get; set; }
 
     public string? NpcFriendlyName { get; set; }
@@ -97,12 +94,10 @@ public class StorageVault
 
     public string? RequirementDescription { get; set; }
 
-    [Navigate(nameof(Requirement.Key))]
-    public Requirement[]? Requirements { get; set; }
+    public StorageRequirement[]? Requirements { get; set; }
 
     public string? SlotAttribute { get; set; }
 
-    [Navigate(nameof(AreaDetail.Key))]
     public AreaDetail? StorageArea { get; set; }
 
     public RawStorageVault ToRawStorageVault()
@@ -122,7 +117,7 @@ public class StorageVault
         Result.NumSlotsScriptAtomicMinValue = NumberOfSlotsScriptAtomicMinValue;
         Result.RequiredItemKeywords = RequiredItemKeywords;
         Result.RequirementDescription = RequirementDescription;
-        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
+        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, (StorageRequirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
         Result.SlotAttribute = SlotAttribute;
 
         return Result;

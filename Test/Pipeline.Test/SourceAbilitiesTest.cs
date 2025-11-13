@@ -14,8 +14,15 @@ public class SourceAbilitiesTest
                      Preprocessor.PreprocessDictionary<SourceAbilityDictionary>,
                      Fixer.FixSourceAbilities,
                      Preprocessor.SaveSerializedDictionary<SourceAbilityDictionary, SourceAbility>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<SourceAbility>)(((SourceAbilityDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<SourceAbility>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<SourceAbilityDictionary, SourceAbility>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<SourceAbilityDictionary, SourceAbility>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

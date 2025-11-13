@@ -14,8 +14,15 @@ public class PlayerTest
                      Preprocessor.PreprocessDictionary<PlayerTitleDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<PlayerTitleDictionary, PlayerTitle>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<PlayerTitle>)(((PlayerTitleDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<PlayerTitle>().WithLock().ToDictionary(item => item.Key))
+                     Preprocessor.InsertIntDictionary<PlayerTitleDictionary, PlayerTitle>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<PlayerTitleDictionary, PlayerTitle>,
+                     new()
+                     {
+                     })
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

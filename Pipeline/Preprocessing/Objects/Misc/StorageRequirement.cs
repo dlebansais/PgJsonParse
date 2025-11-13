@@ -3,11 +3,11 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class Requirement : IHasKey<int>, IHasParentKey<int>
+public class StorageRequirement : IHasKey<int>, IHasParentKey<string>
 {
     private const string AreaHeader = "Area";
 
-    public Requirement(RawRequirement rawRequirement)
+    public StorageRequirement(RawRequirement rawRequirement)
     {
         AbilityKeyword = rawRequirement.AbilityKeyword;
         AccountFlag = rawRequirement.AccountFlag;
@@ -67,7 +67,7 @@ public class Requirement : IHasKey<int>, IHasParentKey<int>
             return content;
     }
 
-    private static void UpdateAreaEventRequirement(Requirement requirement, string areaEvent)
+    private static void UpdateAreaEventRequirement(StorageRequirement requirement, string areaEvent)
     {
         if (areaEvent == "Daytime")
             UpdateAreaEventRequirementDayTime(requirement);
@@ -77,19 +77,19 @@ public class Requirement : IHasKey<int>, IHasParentKey<int>
             UpdateAreaEventRequirementAreaOrQuest(requirement, areaEvent);
     }
 
-    private static void UpdateAreaEventRequirementDayTime(Requirement requirement)
+    private static void UpdateAreaEventRequirementDayTime(StorageRequirement requirement)
     {
         requirement.AreaEvent = null;
         requirement.Daytime = true;
     }
 
-    private static void UpdateAreaEventRequirementPovusNightly(Requirement requirement)
+    private static void UpdateAreaEventRequirementPovusNightly(StorageRequirement requirement)
     {
         requirement.AreaEvent = null;
         requirement.EventQuest = "PovusNightly";
     }
 
-    private static void UpdateAreaEventRequirementAreaOrQuest(Requirement requirement, string areaEvent)
+    private static void UpdateAreaEventRequirementAreaOrQuest(StorageRequirement requirement, string areaEvent)
     {
         string[] AreaSplitted = areaEvent.Split('_');
         if (AreaSplitted.Length == 1)
@@ -109,7 +109,7 @@ public class Requirement : IHasKey<int>, IHasParentKey<int>
             throw new PreprocessorException();
     }
 
-    private static void UpdateAreaEventRequirementArea(Requirement requirement, string areaEvent)
+    private static void UpdateAreaEventRequirementArea(StorageRequirement requirement, string areaEvent)
     {
         if (!areaEvent.StartsWith(AreaHeader))
             throw new PreprocessorException();
@@ -118,7 +118,7 @@ public class Requirement : IHasKey<int>, IHasParentKey<int>
         requirement.AreaEvent = null;
     }
 
-    private static void UpdateAreaEventRequirementQuest(Requirement requirement, string eventName, string? eventSkill, string eventQuest, string areaName)
+    private static void UpdateAreaEventRequirementQuest(StorageRequirement requirement, string eventName, string? eventSkill, string eventQuest, string areaName)
     {
         requirement.AreaEvent = eventName;
         requirement.EventSkill = eventSkill;
@@ -134,7 +134,7 @@ public class Requirement : IHasKey<int>, IHasParentKey<int>
     public int Key { get; set; }
 
     [JsonIgnore]
-    public int ParentKey { get; set; }
+    public string ParentKey { get; set; } = string.Empty;
 
     [JsonIgnore]
     public string? ParentProperty { get; set; }

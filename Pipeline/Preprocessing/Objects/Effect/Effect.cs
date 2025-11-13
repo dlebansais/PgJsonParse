@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using FreeSql.DataAnnotations;
 
-public class Effect
+public class Effect : IHasKey<int>
 {
     const string MaxRagePattern = "Increases target's Max Rage by";
     const string LookAtMyHammerPattern = "Boosts Slashing, Piercing, and Crushing Mitigation";

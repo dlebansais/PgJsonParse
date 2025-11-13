@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class Skill
+public class Skill : IHasKey<string>
 {
     public Skill(string key)
     {
@@ -16,7 +16,8 @@ public class Skill
         : this(key)
     {
         ActiveAdvancementTable = rawSkill.ActiveAdvancementTable;
-        AdvancementHints = rawSkill.AdvancementHints;
+        AdvancementHints = rawSkill.AdvancementHints?.ToArray();
+        AdvancementHintsIsEmpty = AdvancementHints is not null && AdvancementHints.Length == 0;
         AssociatedAppearances = rawSkill.AssociatedAppearances;
         AssociatedItemKeywords = rawSkill.AssociatedItemKeywords;
         AuxCombat = rawSkill.AuxCombat;
@@ -27,7 +28,8 @@ public class Skill
         GuestLevelCap = rawSkill.GuestLevelCap;
         HideWhenZero = rawSkill.HideWhenZero;
         Id = rawSkill.Id;
-        InteractionFlagLevelCaps = rawSkill.InteractionFlagLevelCaps;
+        InteractionFlagLevelCaps = rawSkill.InteractionFlagLevelCaps?.ToArray();
+        InteractionFlagLevelCapsIsEmpty = InteractionFlagLevelCaps is not null && InteractionFlagLevelCaps.Length == 0;
         IsFakeCombatSkill = rawSkill.IsFakeCombatSkill;
         IsUmbrellaSkill = rawSkill.IsUmbrellaSkill;
         MaxBonusLevels = rawSkill.MaxBonusLevels;
@@ -36,8 +38,10 @@ public class Skill
         ParagonEnabledInteractionFlag = rawSkill.ParagonEnabledInteractionFlag;
         PassiveAdvancementTable = rawSkill.PassiveAdvancementTable;
         RecipeIngredientKeywords = rawSkill.RecipeIngredientKeywords;
-        Reports = rawSkill.Reports;
-        Rewards = rawSkill.Rewards;
+        Reports = rawSkill.Reports?.ToArray();
+        ReportsIsEmpty = Reports is not null && Reports.Length == 0;
+        Rewards = rawSkill.Rewards?.ToArray();
+        RewardsIsEmpty = Rewards is not null && Rewards.Length == 0;
         SkillLevelDisparityApplies = rawSkill.SkillLevelDisparityApplies;
         SkipBonusLevelsIfSkillUnlearned = rawSkill.SkipBonusLevelsIfSkillUnlearned;
         XpEarnedAttributes = rawSkill.XpEarnedAttributes;
@@ -70,8 +74,10 @@ public class Skill
 
     public string? ActiveAdvancementTable { get; set; }
 
-    [Navigate(nameof(SkillAdvancementHint.Key))]
-    public List<SkillAdvancementHint>? AdvancementHints { get; set; }
+    public SkillAdvancementHint[]? AdvancementHints { get; set; }
+
+    [JsonIgnore]
+    public bool AdvancementHintsIsEmpty { get; set; }
 
     [Column(MapType = typeof(string))]
     public string[]? AssociatedAppearances { get; set; }
@@ -97,8 +103,10 @@ public class Skill
 
     public int? Id { get; set; }
 
-    [Navigate(nameof(SkillLevelCap.Key))]
-    public List<SkillLevelCap>? InteractionFlagLevelCaps { get; set; }
+    public SkillLevelCap[]? InteractionFlagLevelCaps { get; set; }
+
+    [JsonIgnore]
+    public bool InteractionFlagLevelCapsIsEmpty { get; set; }
 
     public bool? IsFakeCombatSkill { get; set; }
 
@@ -118,11 +126,15 @@ public class Skill
     [Column(MapType = typeof(string))]
     public string[]? RecipeIngredientKeywords { get; set; }
 
-    [Navigate(nameof(SkillReport.Key))]
-    public List<SkillReport>? Reports { get; set; }
+    public SkillReport[]? Reports { get; set; }
 
-    [Navigate(nameof(SkillReward.Key))]
-    public List<SkillReward>? Rewards { get; set; }
+    [JsonIgnore]
+    public bool ReportsIsEmpty { get; set; }
+
+    public SkillReward[]? Rewards { get; set; }
+
+    [JsonIgnore]
+    public bool RewardsIsEmpty { get; set; }
 
     public bool? SkillLevelDisparityApplies { get; set; }
 

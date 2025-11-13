@@ -15,8 +15,15 @@ public class EffectTest
                      Preprocessor.PreprocessDictionary<EffectDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<EffectDictionary, Effect>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Effect>)(((EffectDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Effect>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<EffectDictionary, Effect>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<EffectDictionary, Effect>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

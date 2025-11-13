@@ -3,7 +3,7 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class SkillReward
+public class SkillReward : IHasKey<int>, IHasParentKey<string>
 {
     public SkillReward(RawSkillReward rawSkillReward)
     {
@@ -16,8 +16,14 @@ public class SkillReward
     }
 
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public string? Key { get; set; }
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [JsonIgnore]
+    public string ParentKey { get; set; } = string.Empty;
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
 
     [Column(MapType = typeof(string))]
     public string[]? Abilities { get; set; }

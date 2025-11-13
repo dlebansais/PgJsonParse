@@ -96,8 +96,15 @@ public partial class PreprocessorTest
                          Preprocessor.PreprocessDictionary<AbilityDictionary>,
                          Fixer.NoFix,
                          Preprocessor.SaveSerializedDictionary<AbilityDictionary, Ability>,
-                         (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Ability>)(((AbilityDictionary)content).Values)).ExecuteAffrows(),
-                         (IFreeSql fsql) => fsql.Select<Ability>().WithLock().ToDictionary(item => item.Key)),
+                         Preprocessor.InsertIntDictionary<AbilityDictionary, Ability>,
+                         new()
+                         {
+                         },
+                         Fixer.NoFix,
+                         Preprocessor.SelectIntDictionary<AbilityDictionary, Ability>,
+                         new()
+                         {
+                         }),
         };
 
         using IFreeSql? Fsql = new FreeSql.FreeSqlBuilder()
@@ -123,8 +130,15 @@ public partial class PreprocessorTest
                          Preprocessor.PreprocessDictionary<NpcDictionary>,
                          Fixer.NoFix,
                          Preprocessor.SaveSerializedDictionary<NpcDictionary, Npc>,
-                         (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Npc>)(((NpcDictionary)content).Values)).ExecuteAffrows(),
-                         (IFreeSql fsql) => fsql.Select<Npc>().WithLock().ToDictionary(item => item.Key)),
+                         Preprocessor.InsertStringDictionary<NpcDictionary, Npc>,
+                         new()
+                         {
+                         },
+                         Fixer.NoFix,
+                         Preprocessor.SelectStringDictionary<NpcDictionary, Npc>,
+                         new()
+                         {
+                         }),
         };
 
         using IFreeSql? Fsql = new FreeSql.FreeSqlBuilder()
@@ -150,8 +164,15 @@ public partial class PreprocessorTest
                          Preprocessor.PreprocessDictionary<QuestDictionary>,
                          Fixer.NoFix,
                          Preprocessor.SaveSerializedDictionary<QuestDictionary, Quest>,
-                         (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Quest>)(((QuestDictionary)content).Values)).ExecuteAffrows(),
-                         (IFreeSql fsql) => fsql.Select<Quest>().WithLock().ToDictionary(item => item.Key)),
+                         Preprocessor.InsertIntDictionary<QuestDictionary, Quest>,
+                         new()
+                         {
+                         },
+                         Fixer.NoFix,
+                         Preprocessor.SelectIntDictionary<QuestDictionary, Quest>,
+                         new()
+                         {
+                         }),
         };
 
         using IFreeSql? Fsql = new FreeSql.FreeSqlBuilder()

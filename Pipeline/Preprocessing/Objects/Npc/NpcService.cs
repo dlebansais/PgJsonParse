@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class NpcService
+public class NpcService : IHasKey<int>, IHasParentKey<string>
 {
     public NpcService(RawNpcService rawNpcService)
     {
@@ -79,13 +79,18 @@ public class NpcService
     }
 
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public string? Key { get; set; }
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [JsonIgnore]
+    public string ParentKey { get; set; } = string.Empty;
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
 
     [Column(MapType = typeof(string))]
     public string[]? AdditionalUnlocks { get; set; }
 
-    [Navigate(nameof(NpcServiceCapIncrease.Key))]
     public NpcServiceCapIncrease[]? CapIncreases { get; set; }
     
     public string? Favor { get; set; }
@@ -96,7 +101,6 @@ public class NpcService
     [Column(MapType = typeof(string))]
     public string[]? ItemTypes { get; set; }
 
-    [Navigate(nameof(NpcServiceLevelRange.Key))]
     public NpcServiceLevelRange[]? LevelRanges { get; set; }
 
     [Column(MapType = typeof(string))]

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class Power
+public class Power : IHasKey<int>
 {
     public Power(int key)
     {
@@ -54,7 +54,6 @@ public class Power
 
     public string? Suffix { get; set; }
 
-    [Navigate(nameof(PowerTier.Key))]
     public PowerTier[] Tiers { get; set; } = Array.Empty<PowerTier>();
 
     public RawPower ToRawPower()

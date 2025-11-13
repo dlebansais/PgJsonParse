@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 using FreeSql.Internal;
 using FreeSql.Internal.Model;
 
-public class Preprocessor
+public partial class Preprocessor
 {
     private static List<JsonConverter> JsonConverters = new()
     {
@@ -22,7 +22,7 @@ public class Preprocessor
         new ArrayJsonConverter<AbilityDynamicDot, RawAbilityDynamicDot, AbilityDynamicDotArray>(),
         new ArrayJsonConverter<AbilityDynamicSpecialValue, RawAbilityDynamicSpecialValue, AbilityDynamicSpecialValueArray>(),
         new AdvancementTableDictionaryJsonConverter(),
-        new StringDictionaryJsonConverter<AI, AI, AIDictionary>(),
+        new StringDictionaryJsonConverter<AI, RawAI, AIDictionary>(),
         new StringDictionaryJsonConverter<AIAbility, RawAIAbility, AIAbilityDictionary>(),
         new StringDictionaryJsonConverter<Area, Area, AreaDictionary>(),
         new StringDictionaryJsonConverter<Attribute, RawAttribute, AttributeDictionary>(),
@@ -74,26 +74,38 @@ public class Preprocessor
                 if (!Directory.Exists(destinationDirectory))
                     Directory.CreateDirectory(destinationDirectory);
 
-                JsonFile.DatabaseInserterMethod(fsql, Result);
+                List<object> InsertedContents = new();
+                if (Result is IDictionary InsertedDictionary)
+                    InsertedContents.Add(InsertedDictionary.Values);
+                else
+                    InsertedContents.Add(Result);
+
+                foreach (Action<IFreeSql, List<object>> Action in JsonFile.DatabaseAdditionalInserters)
+                    Action(fsql, InsertedContents);
+
+                JsonFile.DatabaseInsertMethod(fsql, Result);
+                Debug.Write(" INSERTED");
+
+                object TempResult = JsonFile.DatabaseSelectMethod(fsql, Result);
+
+                List<object> SelectedContents = new();
+                if (TempResult is IDictionary SelectedDictionary)
+                    SelectedContents.Add(SelectedDictionary.Values);
+                else
+                    SelectedContents.Add(TempResult);
+
+                foreach (Action<IFreeSql, List<object>, bool> Action in JsonFile.DatabaseAdditionalSelectors)
+                    Action(fsql, SelectedContents, false);
+
+                JsonFile.DatabaseFixingMethod(TempResult);
+                Debug.Write(" SELECTED");
+
                 JsonFile.SerializingMethod(DestinationFilePath, Result);
                 PreprocessingDone = true;
 
-                /*
                 string TempPath = $"{destinationDirectory}\\~{JsonFile.FileName}.json";
                 if (File.Exists(TempPath))
                     File.Delete(TempPath);
-
-                var TempResult = JsonFile.DatabaseVerifierMethod(fsql);
-
-                if (Result is IDictionary Dictionary && TempResult is IDictionary TempDictionary)
-                {
-                    Dictionary<object, object> Copy = new();
-                    foreach (object Key in Dictionary.Keys)
-                        if (TempDictionary[Key] is object TempValue)
-                            Copy.Add(Key, TempValue);
-
-                    TempResult = Copy;
-                }
 
                 JsonFile.SerializingMethod(TempPath, TempResult);
 
@@ -101,8 +113,17 @@ public class Preprocessor
                 string Content2 = File.ReadAllText(TempPath);
                 bool IsIdentical = Content1 == Content2;
 
-                File.Delete(TempPath);
-                */
+                if (IsIdentical)
+                {
+                    Debug.WriteLine(" DONE");
+                    File.Delete(TempPath);
+                }
+                else
+                {
+                    Debug.WriteLine(" WARNING: File content is different");
+                    Debug.WriteLine(DestinationFilePath);
+                    Debug.WriteLine(TempPath);
+                }
             }
         }
 
@@ -117,7 +138,7 @@ public class Preprocessor
     {
         if (Preprocess(versionPath, fileName, isPretty, out T SingleObject))
         {
-            Debug.WriteLine(" OK");
+            Debug.Write(" OK");
             return (true, SingleObject);
         }
 
@@ -129,7 +150,7 @@ public class Preprocessor
     {
         if (Preprocess(versionPath, fileName, isPretty, out T ObjectCollection))
         { 
-            Debug.WriteLine($" OK ({ObjectCollection.Count})");
+            Debug.Write($" OK ({ObjectCollection.Count})");
             return (true, ObjectCollection);
         }
 
@@ -141,7 +162,7 @@ public class Preprocessor
     {
         if (Preprocess(versionPath, fileName, isPretty, out T ObjectCollection))
         {
-            Debug.WriteLine($" OK ({ObjectCollection.Count})");
+            Debug.Write($" OK ({ObjectCollection.Count})");
             return (true, ObjectCollection);
         }
 
@@ -232,7 +253,9 @@ public class Preprocessor
 
         foreach (PropertyInfo Property in Properties)
         {
-            if (Property.Name == "Key" || Property.Name == "ForeignKey")
+            if (Property.Name == nameof(IHasKey<int>.Key) ||
+                Property.Name == nameof(IHasParentKey<int>.ParentKey) ||
+                Property.Name == nameof(IHasParentKey<int>.ParentProperty))
                 continue;
 
             PropertyNames.Add(Property.Name);

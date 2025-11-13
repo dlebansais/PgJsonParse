@@ -5,11 +5,23 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class Area
+public class Area : IHasKey<string>
 {
+    public Area()
+    {
+        Key = string.Empty;
+    }
+
+    public Area(string key, Area other)
+    {
+        Key = key;
+        FriendlyName = other.FriendlyName;
+        ShortFriendlyName = other.ShortFriendlyName;
+    }
+
     [JsonIgnore]
-    [Column(IsIdentity = true, IsPrimary = true)]
-    public int Key { get; set; }
+    [Column(IsPrimary = true)]
+    public string Key { get; set; }
 
     public string? FriendlyName { get; set; }
     

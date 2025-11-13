@@ -5,15 +5,21 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
-public class AbilityParticle
+public class AbilityParticle : IHasKey<int>, IHasParentKey<int>
 {
     private const string ColorHeader = "Color=";
     private const string AoeColorHeader = "AoeColor=";
     private const string AoeRangeHeader = "AoeRange=";
 
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public string? Key { get; set; }
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [JsonIgnore]
+    public int ParentKey { get; set; }
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
 
     public string? AoEColor { get; set; }
 

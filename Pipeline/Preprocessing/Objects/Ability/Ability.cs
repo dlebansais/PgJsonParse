@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
-public class Ability
+public class Ability : IHasKey<int>
 {
     private const string FormHeader = "form:";
     private const string AnatomyTypeHeader = "AnatomyType_";
@@ -42,10 +42,7 @@ public class Ability
         CanTargetUntargetableEnemies = rawAbility.CanTargetUntargetableEnemies;
         CausesOfDeath = rawAbility.CausesOfDeath;
         CombatRefreshBaseAmount = rawAbility.CombatRefreshBaseAmount;
-
-        if (ParseConditionalKeywords(rawAbility.ConditionalKeywords) is ConditionalKeyword[] parsedConditionalKeywords)
-            ConditionalKeywords = new List<ConditionalKeyword>(parsedConditionalKeywords);
-
+        ConditionalKeywords = ParseConditionalKeywords(rawAbility.ConditionalKeywords);
         Costs = rawAbility.Costs;
         DamageType = rawAbility.DamageType;
         DelayLoopIsAbortedIfAttacked = rawAbility.DelayLoopIsAbortedIfAttacked;
@@ -82,14 +79,7 @@ public class Ability
 
         IsProjectileNone = rawAbility.Projectile == "0";
         Projectile = IsProjectileNone ? null : rawAbility.Projectile;
-
         PvE = rawAbility.PvE is null ? null : new PvEAbility(rawAbility.PvE);
-        if (PvE is not null)
-        {
-            PvE.ForeignKey = Key;
-            PvEList.Add(PvE);
-        }
-
         Rank = rawAbility.Rank is null ? null : int.Parse(rawAbility.Rank);
         ResetTime = rawAbility.ResetTime;
         SelfParticle = AbilityParticle.Parse(rawAbility.SelfParticle);
@@ -293,7 +283,6 @@ public class Ability
 
     public string? AmmoDescription { get; set; }
 
-    [Navigate(nameof(Ammo.Key))]
     public Ammo[]? AmmoKeywords { get; set; }
 
     public decimal? AmmoStickChance { get; set; }
@@ -334,9 +323,8 @@ public class Ability
 
     public int? CombatRefreshBaseAmount { get; set; }
 
-    public ICollection<ConditionalKeyword> ConditionalKeywords { get; set; } = new List<ConditionalKeyword>();
+    public ConditionalKeyword[]? ConditionalKeywords { get; set; }
 
-    [Navigate(nameof(Cost.Key))]
     public Cost[]? Costs { get; set; }
 
     public string? DamageType { get; set; }
@@ -347,7 +335,7 @@ public class Ability
 
     public string? DelayLoopMessage { get; set; }
 
-    public float? DelayLoopTime { get; set; }
+    public decimal? DelayLoopTime { get; set; }
 
     public string? Description { get; set; }
 
@@ -407,27 +395,20 @@ public class Ability
 
     public string? Projectile { get; set; }
 
-    [Navigate(nameof(PvEAbility.ForeignKey))]
     public PvEAbility? PvE { get; set; }
-
-    [Navigate(nameof(PvEAbility.Key))]
-    public List<PvEAbility> PvEList { get; set; } = new();
 
     public int? Rank { get; set; }
 
     public decimal ResetTime { get; set; }
 
-    [Navigate(nameof(AbilityParticle.Key))]
     public AbilityParticle? SelfParticle { get; set; }
 
-    [Navigate(nameof(AbilityParticle.Key))]
     public AbilityParticle? SelfPreParticle { get; set; }
 
     public string? SharesResetTimerWith { get; set; }
 
     public string? Skill { get; set; }
 
-    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? SpecialCasterRequirements { get; set; }
 
     public string? SpecialCasterRequirementsErrorMessage { get; set; }
@@ -440,7 +421,6 @@ public class Ability
 
     public string? TargetEffectKeywordRequirement { get; set; }
 
-    [Navigate(nameof(AbilityParticle.Key))]
     public AbilityParticle? TargetParticle { get; set; }
 
     public string? TargetTypeTagRequirement { get; set; }
@@ -482,7 +462,7 @@ public class Ability
         Result.CanTargetUntargetableEnemies = CanTargetUntargetableEnemies;
         Result.CausesOfDeath = CausesOfDeath;
         Result.CombatRefreshBaseAmount = CombatRefreshBaseAmount;
-        Result.ConditionalKeywords = ToRawConditionalKeywords(ConditionalKeywords.Count == 0 ? null : ConditionalKeywords.ToArray());
+        Result.ConditionalKeywords = ToRawConditionalKeywords(ConditionalKeywords);
         Result.Costs = Costs;
         Result.DamageType = DamageType;
         Result.DelayLoopIsAbortedIfAttacked = DelayLoopIsAbortedIfAttacked;

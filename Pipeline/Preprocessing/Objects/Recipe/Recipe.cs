@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
-public class Recipe
+public class Recipe : IHasKey<int>
 {
     private const string Whittling = "Whittling";
     private const string CraftingEnhanceItem = "CraftingEnhanceItem";
@@ -128,6 +128,8 @@ public class Recipe
                 return new RecipeResultEffect() { Type = EffectName };
             case "CraftSimpleTSysItem":
                 return ParseCraftSimpleTSysItem(EffectName, EffectParameter);
+            case "GiveNonMagicalLootProfile":
+                return ParseGiveNonMagicalLootProfile(EffectName, EffectParameter);
             case "BoostItemEquipAdvancementTable":
                 return ParseBoostItemEquipAdvancementTable(EffectName, EffectParameter);
             case "CraftWaxItem":
@@ -279,6 +281,11 @@ public class Recipe
     }
 
     private static RecipeResultEffect ParseCraftSimpleTSysItem(string effectName, string effectParameter)
+    {
+        return new RecipeResultEffect() { Type = effectName, Item = effectParameter };
+    }
+
+    private static RecipeResultEffect ParseGiveNonMagicalLootProfile(string effectName, string effectParameter)
     {
         return new RecipeResultEffect() { Type = effectName, Item = effectParameter };
     }
@@ -486,7 +493,6 @@ public class Recipe
 
     public string? ActionLabel { get; set; }
 
-    [Navigate(nameof(Cost.Key))]
     public Cost[]? Costs { get; set; }
 
     public string? Description { get; set; }
@@ -495,7 +501,6 @@ public class Recipe
 
     public int IconId { get; set; }
 
-    [Navigate(nameof(RecipeItem.Key))]
     public RecipeItem[]? Ingredients { get; set; }
 
     public string? InternalName { get; set; }
@@ -513,7 +518,6 @@ public class Recipe
     [Column(MapType = typeof(string))]
     public string[]? Keywords { get; set; }
 
-    [Navigate(nameof(RecipeParticle.Key))]
     public RecipeParticle? LoopParticle { get; set; }
 
     public int? MaxUses { get; set; }
@@ -669,6 +673,8 @@ public class Recipe
             case "ConsumeItemUses":
                 return $"{effect.Type}({effect.Keyword},{effect.ConsumedUses})";
             case "CraftSimpleTSysItem":
+                return $"{effect.Type}({effect.Item})";
+            case "GiveNonMagicalLootProfile":
                 return $"{effect.Type}({effect.Item})";
             case "BoostItemEquipAdvancementTable":
                 return $"{effect.Type}({effect.Advancement})";

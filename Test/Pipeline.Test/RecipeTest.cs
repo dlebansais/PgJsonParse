@@ -14,8 +14,15 @@ public class RecipeTest
                      Preprocessor.PreprocessDictionary<RecipeDictionary>,
                      Fixer.FixRecipes,
                      Preprocessor.SaveSerializedDictionary<RecipeDictionary, Recipe>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Recipe>)(((RecipeDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Recipe>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<RecipeDictionary, Recipe>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<RecipeDictionary, Recipe>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

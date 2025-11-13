@@ -1,21 +1,27 @@
 ﻿namespace Preprocessor;
 
-using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class Advancement
+public class Advancement : IHasKey<int>, IHasParentKey<int>
 {
     public Advancement(AdvancementEffectAttributeCollection attributes, int level)
     {
-        Attributes = attributes;
+        Attributes = attributes.ToArray();
         Level = level;
     }
 
-    [Column(IsIdentity = true, IsPrimary = true)]
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
     public int Key { get; set; }
 
-    [Navigate(nameof(AdvancementEffectAttribute.Key))]
-    public List<AdvancementEffectAttribute> Attributes { get; set; }
+    [JsonIgnore]
+    public int ParentKey { get; set; }
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
+
+    public AdvancementEffectAttribute[] Attributes { get; set; }
 
     public int Level { get; set; }
 }

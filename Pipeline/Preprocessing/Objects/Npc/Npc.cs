@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using FreeSql.DataAnnotations;
 
-public class Npc
+public class Npc : IHasKey<string>
 {
     private const string AreaHeader = "Area";
 
@@ -142,10 +142,8 @@ public class Npc
     
     public decimal? PositionZ { get; set; }
 
-    [Navigate(nameof(NpcPreference.Key))]
     public NpcPreference[]? Preferences { get; set; }
 
-    [Navigate(nameof(NpcService.Key))]
     public NpcService[]? Services { get; set; }
 
     public RawNpc ToRawNpc()

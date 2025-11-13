@@ -1,15 +1,14 @@
 ﻿namespace Preprocessor;
 
-using System.Linq;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class Profile
+public class Profile : IHasKey<string>
 {
     public Profile(string key, string[] rawProfile)
     {
         Key = key;
-        EffectList = rawProfile.ToArray();
+        EffectList = rawProfile;
     }
 
     [JsonIgnore]
@@ -17,10 +16,10 @@ public class Profile
     public string Key { get; set; }
 
     [Column(MapType = typeof(string))]
-    public string[] EffectList { get; }
+    public string[] EffectList { get; set; }
 
     public string[] ToRawProfile(string key)
     {
-        return EffectList.ToArray();
+        return EffectList;
     }
 }

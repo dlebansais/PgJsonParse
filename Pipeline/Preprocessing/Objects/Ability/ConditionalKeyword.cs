@@ -3,11 +3,17 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class ConditionalKeyword
+public class ConditionalKeyword : IHasKey<int>, IHasParentKey<int>
 {
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
+    [Column(IsPrimary = true)]
     public int Key { get; set; }
+
+    [JsonIgnore]
+    public int ParentKey { get; set; }
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
 
     public string? EffectKeywordMustExist { get; set; }
 

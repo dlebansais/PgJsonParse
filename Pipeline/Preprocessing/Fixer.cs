@@ -1,6 +1,8 @@
 ﻿namespace Preprocessor;
 
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 public class Fixer
 {
@@ -18,7 +20,7 @@ public class Fixer
         AddNonClientAttributes(dictionary);
     }
 
-    public static bool NonClientAttributesExist = false;
+    public static bool NonClientAttributesExist = true;
 
     private static void AddNonClientAttributes(AttributeDictionary dictionary)
     {
@@ -47,6 +49,47 @@ public class Fixer
 
         foreach (string Key in AttributeKeyList)
             dictionary.Add(Key, new Attribute(Key, new() { DisplayRule = "Never", DisplayType = "AsBuffDelta" }));
+    }
+
+    public static void FixLoreBookInfo(object item)
+    {
+        if (item is LoreBookInfo loreBookInfo && loreBookInfo.Categories != null)
+        {
+            loreBookInfo.CategoryArray = loreBookInfo.Categories.Values.ToArray();
+        }
+    }
+
+    public static void FixDatabaseLoreBookInfo(object item)
+    {
+        if (item is LoreBookInfo loreBookInfo && loreBookInfo.CategoryArray != null)
+        {
+            loreBookInfo.Categories = new();
+            foreach (LoreBookCategory Item in loreBookInfo.CategoryArray)
+                loreBookInfo.Categories.Add(Item.Key, Item);
+        }
+    }
+
+    public static void FixDatabaseNpc(object item)
+    {
+        if (item is Dictionary<string, Npc> dictionary)
+        {
+            foreach (Npc Npc in dictionary.Values)
+            {
+                Npc.PositionX = FixDecimal(Npc.PositionX);
+                Npc.PositionY = FixDecimal(Npc.PositionY);
+                Npc.PositionZ = FixDecimal(Npc.PositionZ);
+            }
+        }
+    }
+
+    private static decimal? FixDecimal(decimal? d)
+    {
+        if (d is null)
+            return null;
+
+        return (int)d == d
+            ? decimal.Parse($"{(int)d}.0", CultureInfo.InvariantCulture)
+            : d;
     }
 
     public static void FixRecipes(object objectCollection)

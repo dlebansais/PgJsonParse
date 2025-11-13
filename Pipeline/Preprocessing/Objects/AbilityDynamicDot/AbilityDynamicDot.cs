@@ -1,5 +1,6 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
 public class AbilityDynamicDot
@@ -17,6 +18,7 @@ public class AbilityDynamicDot
         SpecialRules = rawAbilityDynamicDot.SpecialRules;
     }
 
+    [JsonIgnore]
     [Column(IsIdentity = true, IsPrimary = true)]
     public int Key { get; set; }
 

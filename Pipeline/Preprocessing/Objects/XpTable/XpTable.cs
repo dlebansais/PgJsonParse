@@ -3,7 +3,7 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class XpTable
+public class XpTable : IHasKey<int>
 {
     public XpTable(int key)
     {

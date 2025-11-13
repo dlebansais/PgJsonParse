@@ -3,11 +3,17 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class ItemEffect
+public class ItemEffect : IHasKey<int>, IHasParentKey<int>
 {
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public string? Key { get; set; }
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [JsonIgnore]
+    public int ParentKey { get; set; }
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
 
     public decimal? AttributeEffect { get; set; }
 

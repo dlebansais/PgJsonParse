@@ -36,7 +36,7 @@ public class DirectedGoalDictionaryJsonConverter : JsonConverter<DirectedGoalDic
             }
 
             if (RawDirectedGoal is not null)
-                dictionary.Add(Key, new DirectedGoal(RawDirectedGoal));
+                dictionary.Add(Key, new DirectedGoal(Key, RawDirectedGoal));
             else
             {
                 Debug.WriteLine($"\r\nKey: {Key}");

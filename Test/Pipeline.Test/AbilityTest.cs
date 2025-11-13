@@ -14,8 +14,15 @@ public class AbilityTest
                      Preprocessor.PreprocessDictionary<AbilityDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<AbilityDictionary, Ability>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Ability>)(((AbilityDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Ability>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<AbilityDictionary, Ability>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<AbilityDictionary, Ability>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

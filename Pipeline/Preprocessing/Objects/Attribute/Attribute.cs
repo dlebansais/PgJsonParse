@@ -2,7 +2,7 @@
 
 using FreeSql.DataAnnotations;
 
-public class Attribute
+public class Attribute : IHasKey<string>
 {
     public Attribute(string key)
     {

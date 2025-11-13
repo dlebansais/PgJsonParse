@@ -3,7 +3,7 @@
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
-public class PlayerTitle
+public class PlayerTitle : IHasKey<int>
 {
     public PlayerTitle(int key)
     {

@@ -11,181 +11,465 @@ internal partial class Program
                      Preprocessor.PreprocessDictionary<AbilityDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<AbilityDictionary, Ability>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Ability>)(((AbilityDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Ability>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<AbilityDictionary, Ability>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, Ability, Ammo>,
+                         Preprocessor.AdditionalIntInserter<int, int, Ability, ConditionalKeyword>,
+                         Preprocessor.AdditionalIntInserter<int, int, Ability, Cost>,
+                         Preprocessor.AdditionalIntInserter<int, int, Ability, PvEAbility>,
+                         Preprocessor.AdditionalIntInserter<int, int, Ability, AbilityParticle>,
+                         Preprocessor.AdditionalIntInserter<int, int, Ability, Requirement>,
+                         Preprocessor.AdditionalIntInserter<int, int, PvEAbility, DoT>,
+                         Preprocessor.AdditionalIntInserter<int, int, PvEAbility, SpecialValue>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<AbilityDictionary, Ability>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, Ability, Ammo>,
+                         Preprocessor.AdditionalIntSelector<int, int, Ability, ConditionalKeyword>,
+                         Preprocessor.AdditionalIntSelector<int, int, Ability, Cost>,
+                         Preprocessor.AdditionalIntSelector<int, int, Ability, PvEAbility>,
+                         Preprocessor.AdditionalIntSelector<int, int, Ability, AbilityParticle>,
+                         Preprocessor.AdditionalIntSelector<int, int, Ability, Requirement>,
+                         Preprocessor.AdditionalIntSelector<int, int, PvEAbility, DoT>,
+                         Preprocessor.AdditionalIntSelector<int, int, PvEAbility, SpecialValue>,
+                     }),
         new JsonFile("abilitydynamicdots",
                      true,
                      Preprocessor.PreprocessArray<AbilityDynamicDotArray>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedList<AbilityDynamicDotArray, AbilityDynamicDot>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<AbilityDynamicDot>)content).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<AbilityDynamicDot>().WithLock().ToList()),
+                     Preprocessor.InsertArray<AbilityDynamicDotArray, AbilityDynamicDot>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectArray<AbilityDynamicDotArray, AbilityDynamicDot>,
+                     new()
+                     {
+                     }),
         new JsonFile("abilitydynamicspecialvalues",
                      true,
                      Preprocessor.PreprocessArray<AbilityDynamicSpecialValueArray>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedList<AbilityDynamicSpecialValueArray, AbilityDynamicSpecialValue>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<AbilityDynamicSpecialValue>)content).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<AbilityDynamicSpecialValue>().WithLock().ToList()),
+                     Preprocessor.InsertArray<AbilityDynamicSpecialValueArray, AbilityDynamicSpecialValue>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectArray<AbilityDynamicSpecialValueArray, AbilityDynamicSpecialValue>,
+                     new()
+                     {
+                     }),
         new JsonFile("abilitykeywords",
                      true,
                      Preprocessor.PreprocessArray<AbilityKeywordArray>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedList<AbilityKeywordArray, AbilityKeyword>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<AbilityKeyword>)content).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<AbilityKeyword>().WithLock().ToList()),
+                     Preprocessor.InsertArray<AbilityKeywordArray, AbilityKeyword>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectArray<AbilityKeywordArray, AbilityKeyword>,
+                     new()
+                     {
+                     }),
         new JsonFile("advancementtables",
                      true,
                      Preprocessor.PreprocessDictionary<AdvancementTableDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<AdvancementTableDictionary, AdvancementTable>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<AdvancementTable>)(((AdvancementTableDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<AdvancementTable>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<AdvancementTableDictionary, AdvancementTable>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, AdvancementTable, Advancement>,
+                         Preprocessor.AdditionalIntInserter<int, int, Advancement, AdvancementEffectAttribute>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<AdvancementTableDictionary, AdvancementTable>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, AdvancementTable, Advancement>,
+                         Preprocessor.AdditionalIntSelector<int, int, Advancement, AdvancementEffectAttribute>,
+                     }),
         new JsonFile("ai",
                      true,
                      Preprocessor.PreprocessDictionary<AIDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<AIDictionary, AI>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<AI>)(((AIDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<AI>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<AIDictionary, AI>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<string, int, AI, AIAbility>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<AIDictionary, AI>,
+                     new()
+                     {
+                         (IFreeSql fsql, List<object> contents, bool allowEmptyArray) => Preprocessor.AdditionalIntSelector<string, int, AI, AIAbility>(fsql, contents, allowEmptyArray: true),
+                     }),
         new JsonFile("areas",
                      true,
                      Preprocessor.PreprocessDictionary<AreaDictionary>, Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<AreaDictionary, Area>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Area>)(((AreaDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Area>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<AreaDictionary, Area>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<AreaDictionary, Area>,
+                     new()
+                     {
+                     }),
         new JsonFile("attributes",
                      true,
                      Preprocessor.PreprocessDictionary<AttributeDictionary>,
                      Fixer.FixAttributes,
                      Preprocessor.SaveSerializedDictionary<AttributeDictionary, Attribute>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Attribute>)(((AttributeDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Attribute>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<AttributeDictionary, Attribute>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<AttributeDictionary, Attribute>,
+                     new()
+                     {
+                     }),
         new JsonFile("directedgoals",
                      true,
                      Preprocessor.PreprocessDictionary<DirectedGoalDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<DirectedGoalDictionary, DirectedGoal>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<DirectedGoal>)(((DirectedGoalDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<DirectedGoal>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<DirectedGoalDictionary, DirectedGoal>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<DirectedGoalDictionary, DirectedGoal>,
+                     new()
+                     {
+                     }),
         new JsonFile("effects",
                      true,
                      Preprocessor.PreprocessDictionary<EffectDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<EffectDictionary, Effect>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Effect>)(((EffectDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Effect>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<EffectDictionary, Effect>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, Effect, EffectParticle>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<EffectDictionary, Effect>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, Effect, EffectParticle>,
+                     }),
         new JsonFile("items",
                      true,
                      Preprocessor.PreprocessDictionary<ItemDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<ItemDictionary, Item>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Item>)(((ItemDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Item>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<ItemDictionary, Item>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, Item, Behavior>,
+                         Preprocessor.AdditionalIntInserter<int, int, Item, DroppedAppearance>,
+                         Preprocessor.AdditionalIntInserter<int, int, Item, ItemEffect>,
+                         Preprocessor.AdditionalIntInserter<int, int, Item, KeywordValues>,
+                         Preprocessor.AdditionalIntInserter<int, int, Item, StockDye>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<ItemDictionary, Item>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, Item, Behavior>,
+                         Preprocessor.AdditionalIntSelector<int, int, Item, DroppedAppearance>,
+                         Preprocessor.AdditionalIntSelector<int, int, Item, ItemEffect>,
+                         Preprocessor.AdditionalIntSelector<int, int, Item, KeywordValues>,
+                         Preprocessor.AdditionalIntSelector<int, int, Item, StockDye>,
+                     }),
         new JsonFile("itemuses",
                      true,
                      Preprocessor.PreprocessDictionary<ItemUseDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<ItemUseDictionary, ItemUse>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<ItemUse>)(((ItemUseDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<ItemUse>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<ItemUseDictionary, ItemUse>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<ItemUseDictionary, ItemUse>,
+                     new()
+                     {
+                     }),
         new JsonFile("lorebookinfo",
                      true,
                      Preprocessor.PreprocessSingle<LoreBookInfo>,
-                     Fixer.NoFix,
+                     Fixer.FixLoreBookInfo,
                      Preprocessor.SaveSerializedSingle<LoreBookInfo>,
-                     (IFreeSql fsql, object content) => fsql.Insert((LoreBookInfo)content).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<LoreBookInfo>().WithLock().First()),
+                     Preprocessor.InsertSingle<LoreBookInfo>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, string, LoreBookInfo, LoreBookCategory>,
+                     },
+                     Fixer.FixDatabaseLoreBookInfo,
+                     Preprocessor.SelectSingle<LoreBookInfo>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, string, LoreBookInfo, LoreBookCategory>,
+                     }),
         new JsonFile("lorebooks",
                      true,
                      Preprocessor.PreprocessDictionary<LoreBookDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<LoreBookDictionary, LoreBook>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<LoreBook>)(((LoreBookDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<LoreBook>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<LoreBookDictionary, LoreBook>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<LoreBookDictionary, LoreBook>,
+                     new()
+                     {
+                     }),
         new JsonFile("npcs",
                      true,
                      Preprocessor.PreprocessDictionary<NpcDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<NpcDictionary, Npc>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Npc>)(((NpcDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Npc>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<NpcDictionary, Npc>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<string, int, Npc, NpcPreference>,
+                         Preprocessor.AdditionalIntInserter<string, int, Npc, NpcService>,
+                         Preprocessor.AdditionalIntInserter<int, int, NpcService, NpcServiceCapIncrease>,
+                         Preprocessor.AdditionalIntInserter<int, int, NpcService, NpcServiceLevelRange>,
+                     },
+                     Fixer.FixDatabaseNpc,
+                     Preprocessor.SelectStringDictionary<NpcDictionary, Npc>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<string, int, Npc, NpcPreference>,
+                         Preprocessor.AdditionalIntSelector<string, int, Npc, NpcService>,
+                         Preprocessor.AdditionalIntSelector<int, int, NpcService, NpcServiceCapIncrease>,
+                         Preprocessor.AdditionalIntSelector<int, int, NpcService, NpcServiceLevelRange>,
+                     }),
         new JsonFile("playertitles",
                      true,
                      Preprocessor.PreprocessDictionary<PlayerTitleDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<PlayerTitleDictionary, PlayerTitle>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<PlayerTitle>)(((PlayerTitleDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<PlayerTitle>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<PlayerTitleDictionary, PlayerTitle>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<PlayerTitleDictionary, PlayerTitle>,
+                     new()
+                     {
+                     }),
         new JsonFile("quests",
                      true,
                      Preprocessor.PreprocessDictionary<QuestDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<QuestDictionary, Quest>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Quest>)(((QuestDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Quest>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<QuestDictionary, Quest>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, Quest, QuestRewardItem>,
+                         Preprocessor.AdditionalIntInserter<int, int, Quest, QuestObjective>,
+                         Preprocessor.AdditionalIntInserter<int, int, Quest, QuestPreGive>,
+                         Preprocessor.AdditionalIntInserter<int, int, Quest, QuestFailEffect>,
+                         Preprocessor.AdditionalIntInserter<int, int, Quest, Requirement>,
+                         Preprocessor.AdditionalIntInserter<int, int, Quest, Time>,
+                         Preprocessor.AdditionalIntInserter<int, int, Quest, QuestReward>,
+                         Preprocessor.AdditionalIntInserter<int, int, QuestObjective, Requirement>,
+                         Preprocessor.AdditionalIntInserter<int, int, Requirement, NestedRequirement>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<QuestDictionary, Quest>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, Quest, QuestRewardItem>,
+                         Preprocessor.AdditionalIntSelector<int, int, Quest, QuestObjective>,
+                         Preprocessor.AdditionalIntSelector<int, int, Quest, QuestPreGive>,
+                         Preprocessor.AdditionalIntSelector<int, int, Quest, QuestFailEffect>,
+                         Preprocessor.AdditionalIntSelector<int, int, Quest, Requirement>,
+                         Preprocessor.AdditionalIntSelector<int, int, Quest, Time>,
+                         Preprocessor.AdditionalIntSelector<int, int, Quest, QuestReward>,
+                         Preprocessor.AdditionalIntSelector<int, int, QuestObjective, Requirement>,
+                         Preprocessor.AdditionalIntSelector<int, int, Requirement, NestedRequirement>,
+                     }),
         new JsonFile("recipes",
                      true,
                      Preprocessor.PreprocessDictionary<RecipeDictionary>,
                      Fixer.FixRecipes,
                      Preprocessor.SaveSerializedDictionary<RecipeDictionary, Recipe>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Recipe>)(((RecipeDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Recipe>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<RecipeDictionary, Recipe>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, Recipe, Cost>,
+                         Preprocessor.AdditionalIntInserter<int, int, Recipe, RecipeItem>,
+                         Preprocessor.AdditionalIntInserter<int, int, Recipe, RecipeParticle>,
+                         Preprocessor.AdditionalIntInserter<int, int, Recipe, Requirement>,
+                         Preprocessor.AdditionalIntInserter<int, int, Recipe, RecipeResultEffect>,
+                         Preprocessor.AdditionalIntInserter<int, int, Requirement, NestedRequirement>,
+                         Preprocessor.AdditionalIntInserter<int, int, RecipeResultEffect, Time>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<RecipeDictionary, Recipe>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, Recipe, Cost>,
+                         Preprocessor.AdditionalIntSelector<int, int, Recipe, RecipeItem>,
+                         Preprocessor.AdditionalIntSelector<int, int, Recipe, RecipeParticle>,
+                         Preprocessor.AdditionalIntSelector<int, int, Recipe, Requirement>,
+                         Preprocessor.AdditionalIntSelector<int, int, Recipe, RecipeResultEffect>,
+                         Preprocessor.AdditionalIntSelector<int, int, Requirement, NestedRequirement>,
+                         Preprocessor.AdditionalIntSelector<int, int, RecipeResultEffect, Time>,
+                     }),
         new JsonFile("skills",
                      true,
                      Preprocessor.PreprocessDictionary<SkillDictionary>,
                      Fixer.FixSkills,
                      Preprocessor.SaveSerializedDictionary<SkillDictionary, Skill>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Skill>)(((SkillDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Skill>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<SkillDictionary, Skill>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<string, int, Skill, SkillAdvancementHint>,
+                         Preprocessor.AdditionalIntInserter<string, int, Skill, SkillLevelCap>,
+                         Preprocessor.AdditionalIntInserter<string, int, Skill, SkillReport>,
+                         Preprocessor.AdditionalIntInserter<string, int, Skill, SkillReward>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<SkillDictionary, Skill>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<string, int, Skill, SkillAdvancementHint>,
+                         Preprocessor.AdditionalIntSelector<string, int, Skill, SkillLevelCap>,
+                         Preprocessor.AdditionalIntSelector<string, int, Skill, SkillReport>,
+                         Preprocessor.AdditionalIntSelector<string, int, Skill, SkillReward>,
+                     }),
         new JsonFile("sources_abilities",
                      true,
                      Preprocessor.PreprocessDictionary<SourceAbilityDictionary>,
                      Fixer.FixSourceAbilities,
                      Preprocessor.SaveSerializedDictionary<SourceAbilityDictionary, SourceAbility>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<SourceAbility>)(((SourceAbilityDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<SourceAbility>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<SourceAbilityDictionary, SourceAbility>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, SourceAbility, SourceAbilityEntry>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<SourceAbilityDictionary, SourceAbility>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, SourceAbility, SourceAbilityEntry>,
+                     }),
         new JsonFile("sources_items",
                      true,
                      Preprocessor.PreprocessDictionary<SourceItemDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<SourceItemDictionary, SourceItem>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<SourceItem>)(((SourceItemDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<SourceItem>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<SourceItemDictionary, SourceItem>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, SourceItem, SourceItemEntry>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<SourceItemDictionary, SourceItem>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, SourceItem, SourceItemEntry>,
+                     }),
         new JsonFile("sources_recipes",
                      true,
                      Preprocessor.PreprocessDictionary<SourceRecipeDictionary>,
                      Fixer.FixSourceRecipes,
                      Preprocessor.SaveSerializedDictionary<SourceRecipeDictionary, SourceRecipe>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<SourceRecipe>)(((SourceRecipeDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<SourceRecipe>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<SourceRecipeDictionary, SourceRecipe>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, SourceRecipe, SourceRecipeEntry>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<SourceRecipeDictionary, SourceRecipe>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, SourceRecipe, SourceRecipeEntry>,
+                     }),
         new JsonFile("storagevaults",
                      true,
                      Preprocessor.PreprocessDictionary<StorageVaultDictionary>,
                      Fixer.FixStorageVaults,
                      Preprocessor.SaveSerializedDictionary<StorageVaultDictionary, StorageVault>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<StorageVault>)(((StorageVaultDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<StorageVault>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<StorageVaultDictionary, StorageVault>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<string, int, StorageVault, StorageVaultEventLevel>,
+                         Preprocessor.AdditionalIntInserter<string, int, StorageVault, AreaDetail>,
+                         Preprocessor.AdditionalIntInserter<string, int, StorageVault, StorageVaultLevel>,
+                         Preprocessor.AdditionalIntInserter<string, int, StorageVault, StorageRequirement>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<StorageVaultDictionary, StorageVault>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<string, int, StorageVault, StorageVaultEventLevel>,
+                         Preprocessor.AdditionalIntSelector<string, int, StorageVault, AreaDetail>,
+                         Preprocessor.AdditionalIntSelector<string, int, StorageVault, StorageVaultLevel>,
+                         Preprocessor.AdditionalIntSelector<string, int, StorageVault, StorageRequirement>,
+                     }),
         new JsonFile("tsysclientinfo",
                      true,
                      Preprocessor.PreprocessDictionary<PowerDictionary>,
                      Fixer.FixPowers,
                      Preprocessor.SaveSerializedDictionary<PowerDictionary, Power>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Power>)(((PowerDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Power>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<PowerDictionary, Power>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntInserter<int, int, Power, PowerTier>,
+                         Preprocessor.AdditionalIntInserter<int, int, PowerTier, PowerEffect>,
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<PowerDictionary, Power>,
+                     new()
+                     {
+                         Preprocessor.AdditionalIntSelector<int, int, Power, PowerTier>,
+                         Preprocessor.AdditionalIntSelector<int, int, PowerTier, PowerEffect>,
+                     }),
         new JsonFile("tsysprofiles",
                      true,
                      Preprocessor.PreprocessDictionary<ProfileDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<ProfileDictionary, Profile>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Profile>)(((ProfileDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Profile>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<ProfileDictionary, Profile>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<ProfileDictionary, Profile>,
+                     new()
+                     {
+                     }),
         new JsonFile("xptables",
                      true,
                      Preprocessor.PreprocessDictionary<XpTableDictionary>,
                      Fixer.FixXpTables,
                      Preprocessor.SaveSerializedDictionary<XpTableDictionary, XpTable>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<XpTable>)(((XpTableDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<XpTable>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<XpTableDictionary, XpTable>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<XpTableDictionary, XpTable>,
+                     new()
+                     {
+                     }),
     };
 }

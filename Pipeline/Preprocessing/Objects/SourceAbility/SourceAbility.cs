@@ -4,7 +4,7 @@ using System;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class SourceAbility
+public class SourceAbility : IHasKey<int>
 {
     public SourceAbility(int key)
     {
@@ -33,7 +33,6 @@ public class SourceAbility
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 
-    [Navigate(nameof(SourceAbilityEntry.Key))]
     public SourceAbilityEntry[] Entries { get; set; } = Array.Empty<SourceAbilityEntry>();
 
     public RawSourceAbility ToRawSourceAbility()

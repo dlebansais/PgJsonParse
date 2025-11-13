@@ -3,7 +3,7 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class PvEAbility
+public class PvEAbility : IHasKey<int>, IHasParentKey<int>
 {
     public PvEAbility(RawPvEAbility rawPvEAbility)
     {
@@ -42,10 +42,14 @@ public class PvEAbility
     }
 
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public string? Key { get; set; }
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
 
-    public int ForeignKey { get; set; }
+    [JsonIgnore]
+    public int ParentKey { get; set; }
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
 
     public decimal? Accuracy { get; set; }
     

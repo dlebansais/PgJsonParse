@@ -1,31 +1,47 @@
 ﻿namespace Preprocessor;
 
-public class AIAbility
-{
-    public AIAbility(string key)
-    {
-        Key = key;
-    }
+using System.Text.Json.Serialization;
+using FreeSql.DataAnnotations;
 
+public class AIAbility : IHasKey<int>, IHasParentKey<string>
+{
     public AIAbility(string key, RawAIAbility rawAIAbility)
-        : this(key)
     {
         Cue = rawAIAbility.cue;
         CueVal = rawAIAbility.cueVal;
         Favorite = rawAIAbility.favorite;
+        JsonKey = key;
         MaxLevel = rawAIAbility.maxLevel;
         MaxRange = rawAIAbility.maxRange;
         MinLevel = rawAIAbility.minLevel;
         MinRange = rawAIAbility.minRange;
     }
 
-    public string Key { get; set; }
+    [JsonIgnore]
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [JsonIgnore]
+    public string ParentKey { get; set; } = string.Empty;
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
+
     public string? Cue { get; set; }
+
     public int? CueVal { get; set; }
+
     public bool? Favorite { get; set; }
+
+    [JsonIgnore]
+    public string JsonKey { get; set; }
+
     public int? MaxLevel { get; set; }
+
     public decimal? MaxRange { get; set; }
+
     public int? MinLevel { get; set; }
+
     public decimal? MinRange { get; set; }
 
     public RawAIAbility ToRawAIAbility()

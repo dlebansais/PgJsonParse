@@ -14,8 +14,15 @@ public class NpcTest
                      Preprocessor.PreprocessDictionary<NpcDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<NpcDictionary, Npc>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Npc>)(((NpcDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Npc>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<NpcDictionary, Npc>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<NpcDictionary, Npc>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

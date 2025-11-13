@@ -1,5 +1,6 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
 public class AbilityDynamicSpecialValue
@@ -15,6 +16,7 @@ public class AbilityDynamicSpecialValue
         Value = rawAAbilityDynamicSpecialValue.Value;
     }
 
+    [JsonIgnore]
     [Column(IsIdentity = true, IsPrimary = true)]
     public int Key { get; set; }
 

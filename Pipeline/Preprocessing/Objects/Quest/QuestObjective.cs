@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class QuestObjective
+public class QuestObjective : IHasKey<int>, IHasParentKey<int>
 {
     private const string AreaHeader = "Area:";
 
@@ -22,6 +22,7 @@ public class QuestObjective
         AllowedFishingZone = rawQuestObjective.AllowedFishingZone;
         AnatomyType = rawQuestObjective.AnatomyType;
         BehaviorId = rawQuestObjective.BehaviorId;
+        DamageType = rawQuestObjective.DamageType;
         Description = rawQuestObjective.Description;
         FishConfig = rawQuestObjective.FishConfig;
         GroupId = rawQuestObjective.GroupId;
@@ -38,7 +39,7 @@ public class QuestObjective
         MonsterTypeTag = rawQuestObjective.MonsterTypeTag;
         NumberToDeliver = ParseNumToDeliver(rawQuestObjective.NumToDeliver);
         Number = rawQuestObjective.Number;
-        Requirements = Preprocessor.ToSingleOrMultiple(rawQuestObjective.Requirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsFormat);
+        ObjectiveRequirements = Preprocessor.ToSingleOrMultiple(rawQuestObjective.Requirements, (RawRequirement rawRequirement) => new Requirement(rawRequirement), out RequirementsFormat);
         ResultItemKeyword = rawQuestObjective.ResultItemKeyword;
         Skill = rawQuestObjective.Skill;
         StringParam = rawQuestObjective.StringParam;
@@ -48,7 +49,7 @@ public class QuestObjective
         if (Type is string TypeString && TypeString == "Kill" && AbilityKeyword is not null)
         {
             RequirementKillWithAbility = new Requirement(new RawRequirement() { T = "UseAbility", AbilityKeyword = AbilityKeyword });
-            Requirements = AddRequirement(Requirements, RequirementKillWithAbility, out RequirementIndexKillWithAbility);
+            ObjectiveRequirements = AddRequirement(ObjectiveRequirements, RequirementKillWithAbility, out RequirementIndexKillWithAbility);
             AbilityKeyword = null;
         }
 
@@ -68,7 +69,7 @@ public class QuestObjective
                     string AreaEvent = TargetArea.Substring(AreaHeader.Length);
 
                     RequirementTargetInArea = new Requirement(new RawRequirement() { T = "AreaEventOff", AreaEvent = AreaEvent });
-                    Requirements = AddRequirement(Requirements, RequirementTargetInArea, out RequirementIndexTargetInArea);
+                    ObjectiveRequirements = AddRequirement(ObjectiveRequirements, RequirementTargetInArea, out RequirementIndexTargetInArea);
                 }
                 else
                     throw new PreprocessorException(this);
@@ -103,8 +104,14 @@ public class QuestObjective
     }
 
     [JsonIgnore]
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public string? Key { get; set; }
+    [Column(IsPrimary = true)]
+    public int Key { get; set; }
+
+    [JsonIgnore]
+    public int ParentKey { get; set; }
+
+    [JsonIgnore]
+    public string? ParentProperty { get; set; }
 
     public string? AbilityKeyword { get; set; }
     
@@ -113,9 +120,11 @@ public class QuestObjective
     public string? AnatomyType { get; set; }
     
     public string? BehaviorId { get; set; }
-    
+
+    public string? DamageType { get; set; }
+
     public string? Description { get; set; }
-    
+
     public string? FishConfig { get; set; }
     
     public int? GroupId { get; set; }
@@ -147,8 +156,7 @@ public class QuestObjective
     
     public int? NumberToDeliver { get; set; }
 
-    [Navigate(nameof(Requirement.Key))]
-    public Requirement[]? Requirements { get; set; }
+    public Requirement[]? ObjectiveRequirements { get; set; }
     
     public string? ResultItemKeyword { get; set; }
     
@@ -172,6 +180,7 @@ public class QuestObjective
         Result.AllowedFishingZone = AllowedFishingZone;
         Result.AnatomyType = AnatomyType;
         Result.BehaviorId = BehaviorId;
+        Result.DamageType = DamageType;
         Result.Description = Description;
         Result.FishConfig = FishConfig;
         Result.GroupId = GroupId;
@@ -188,7 +197,7 @@ public class QuestObjective
         Result.MonsterTypeTag = MonsterTypeTag;
         Result.NumToDeliver = ToRawNumToDeliver(NumberToDeliver);
         Result.Number = Number;
-        Result.Requirements = Preprocessor.FromSingleOrMultiple(Requirements, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
+        Result.Requirements = Preprocessor.FromSingleOrMultiple(ObjectiveRequirements, (Requirement requirement) => requirement.ToRawRequirement(), RequirementsFormat);
         Result.ResultItemKeyword = ResultItemKeyword;
         Result.Skill = Skill;
         Result.StringParam = StringParam;

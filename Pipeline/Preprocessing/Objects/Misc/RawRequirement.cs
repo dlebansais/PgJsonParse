@@ -30,6 +30,7 @@ public class RawRequirement
     public int? MinFavor { get; set; }
     public int? MinHour { get; set; }
     public int? MinLevel { get; set; }
+    public int? MinimumMountsNeeded { get; set; }
     public string? MoonPhase { get; set; }
     public string? Name { get; set; }
     public string? Npc { get; set; }

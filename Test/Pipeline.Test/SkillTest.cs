@@ -14,8 +14,15 @@ public class SkillTest
                      Preprocessor.PreprocessDictionary<SkillDictionary>,
                      Fixer.FixSkills,
                      Preprocessor.SaveSerializedDictionary<SkillDictionary, Skill>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Skill>)(((SkillDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Skill>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<SkillDictionary, Skill>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<SkillDictionary, Skill>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

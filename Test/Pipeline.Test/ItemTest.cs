@@ -14,8 +14,15 @@ public class ItemTest
                      Preprocessor.PreprocessDictionary<ItemDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<ItemDictionary, Item>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Item>)(((ItemDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Item>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<ItemDictionary, Item>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<ItemDictionary, Item>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

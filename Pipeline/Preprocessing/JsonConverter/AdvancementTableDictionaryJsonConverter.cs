@@ -44,7 +44,7 @@ public class AdvancementTableDictionaryJsonConverter : JsonConverter<Advancement
                     Name += $"_{SplittedKey[i]}";
 
                 if (Advancements is not null)
-                    dictionary.Add(AdvancementTableKey, new AdvancementTable(Name, Advancements));
+                    dictionary.Add(AdvancementTableKey, new AdvancementTable(AdvancementTableKey, Name, Advancements));
                 else
                 {
                     Debug.WriteLine($"\r\nKey: {Key}");

@@ -29,7 +29,7 @@ public class RawAbility
     public bool? DelayLoopIsAbortedIfAttacked { get; set; }
     public bool? DelayLoopIsOnlyUsedInCombat { get; set; }
     public string? DelayLoopMessage { get; set; }
-    public float? DelayLoopTime { get; set; }
+    public decimal? DelayLoopTime { get; set; }
     public string? Description { get; set; }
     public string[]? EffectKeywordsIndicatingEnabled { get; set; }
     public string? EffectKeywordReqErrorMessage { get; set; }

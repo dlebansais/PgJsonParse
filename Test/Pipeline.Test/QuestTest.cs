@@ -14,8 +14,15 @@ public class QuestTest
                      Preprocessor.PreprocessDictionary<QuestDictionary>,
                      Fixer.NoFix,
                      Preprocessor.SaveSerializedDictionary<QuestDictionary, Quest>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<Quest>)(((QuestDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<Quest>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertIntDictionary<QuestDictionary, Quest>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectIntDictionary<QuestDictionary, Quest>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();

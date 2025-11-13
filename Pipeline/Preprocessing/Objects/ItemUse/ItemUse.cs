@@ -3,7 +3,7 @@
 using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
-public class ItemUse
+public class ItemUse : IHasKey<int>
 {
     public ItemUse()
     {

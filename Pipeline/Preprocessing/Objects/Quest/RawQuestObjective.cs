@@ -6,6 +6,7 @@ public class RawQuestObjective
     public string? AllowedFishingZone { get; set; }
     public string? AnatomyType { get; set; }
     public string? BehaviorId { get; set; }
+    public string? DamageType { get; set; }
     public string? Description { get; set; }
     public string? FishConfig { get; set; }
     public int? GroupId { get; set; }

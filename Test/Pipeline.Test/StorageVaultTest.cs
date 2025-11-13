@@ -14,8 +14,15 @@ public class StorageVaultTest
                      Preprocessor.PreprocessDictionary<StorageVaultDictionary>,
                      Fixer.FixStorageVaults,
                      Preprocessor.SaveSerializedDictionary<StorageVaultDictionary, StorageVault>,
-                     (IFreeSql fsql, object content) => fsql.Insert((IEnumerable<StorageVault>)(((StorageVaultDictionary)content).Values)).ExecuteAffrows(),
-                     (IFreeSql fsql) => fsql.Select<StorageVault>().WithLock().ToDictionary(item => item.Key)),
+                     Preprocessor.InsertStringDictionary<StorageVaultDictionary, StorageVault>,
+                     new()
+                     {
+                     },
+                     Fixer.NoFix,
+                     Preprocessor.SelectStringDictionary<StorageVaultDictionary, StorageVault>,
+                     new()
+                     {
+                     }),
     };
 
     private static IFreeSql Fsql = TestTools.CreateTestDatabase();
