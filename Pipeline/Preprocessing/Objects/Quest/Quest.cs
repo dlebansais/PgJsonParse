@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
@@ -373,6 +374,7 @@ public class Quest : IHasKey<int>
         return new QuestReward() { T = "DeltaScriptAtomicInt", InteractionFlag = InteractionFlag, Amount = Amount };
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 
@@ -418,10 +420,8 @@ public class Quest : IHasKey<int>
 
     public QuestObjective[]? Objectives { get; set; }
 
-    [Navigate(nameof(QuestPreGive.Key))]
     public QuestPreGive[]? PreGiveEffects { get; set; }
 
-    [Navigate(nameof(QuestRewardItem.Key))]
     public QuestRewardItem[]? PreGiveItems { get; set; }
 
     [Column(MapType = typeof(string))]

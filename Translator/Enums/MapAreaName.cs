@@ -54,5 +54,6 @@
         Vidaria,
         VidariaCaves,
         StatehelmCaves,
+        Apartment1,
     }
 }

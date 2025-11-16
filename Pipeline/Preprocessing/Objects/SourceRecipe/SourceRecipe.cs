@@ -34,7 +34,6 @@ public class SourceRecipe : IHasKey<int>
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 
-    [Navigate(nameof(SourceRecipeEntry.Key))]
     public SourceRecipeEntry[] Entries { get; set; } = Array.Empty<SourceRecipeEntry>();
 
     public RawSourceRecipe ToRawSourceRecipe()

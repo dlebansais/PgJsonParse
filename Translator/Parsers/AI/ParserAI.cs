@@ -31,7 +31,7 @@
                 switch (Key)
                 {
                     case "Abilities":
-                        Result = Inserter<PgAIAbilitySet>.SetItemProperty((PgAIAbilitySet valueAIAbilitySet) => item.Abilities = valueAIAbilitySet, Value);
+                        Result = Inserter<PgAIAbility>.AddKeylessArray(item.AbilityList, Value);
                         break;
                     case "Comment":
                         Result = SetStringProperty((string valueString) => item.Comment = valueString, Value);

@@ -3,7 +3,7 @@
     public class PgAI
     {
         public string Key { get; set; } = string.Empty;
-        public PgAIAbilitySet Abilities { get; set; } = null!;
+        public PgAIAbilityCollection AbilityList { get; set; } = new PgAIAbilityCollection();
         public int BoolValues { get; set; }
         public string Comment { get; set; } = string.Empty;
         public const int IsUncontrolledPetNotNull = 1 << 2;

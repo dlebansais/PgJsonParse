@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
 public class Npc : IHasKey<string>
@@ -122,6 +123,7 @@ public class Npc : IHasKey<string>
             return 0;
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public string Key { get; set; }
     

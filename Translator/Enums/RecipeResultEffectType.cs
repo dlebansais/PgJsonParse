@@ -31,5 +31,6 @@
         BestowRecipeIfNotKnown,
         MeditationWithDaily,
         LearnAbility,
+        GiveNonMagicalLootProfile,
     }
 }

@@ -56,5 +56,6 @@
         ColdSpit,
         NatureCloudHit,
         OwlSkeletonBlast,
+        Searching,
     }
 }

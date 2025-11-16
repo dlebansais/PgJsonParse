@@ -10,5 +10,6 @@
         ServerRequested,
         Slowed,
         SpecialBuff,
+        UseUntilFailure,
     }
 }

@@ -267,7 +267,7 @@
         GolfAbility6,*/
         CandleBuff,
         Bacon,
-        LiveEvent_WorldBosses,
+        //LiveEvent_WorldBosses,
         BoxedFox,
         SpacedOut,
         IllusionForm,
@@ -477,5 +477,6 @@
         DarknessDoT,
         Event_ZhiaWhim,
         GrosarkCurse,
+        ForcedFear,
     }
 }

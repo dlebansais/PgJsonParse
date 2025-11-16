@@ -21,7 +21,6 @@ public class RecipeResultEffect : IHasKey<int>, IHasParentKey<int>
 
     public int? AdditionalEnchantments { get; set; }
 
-    [Navigate(nameof(Time.Key))]
     public Time? AdjustedReuseTime { get; set; }
 
     public string? Advancement { get; set; }
@@ -84,7 +83,6 @@ public class RecipeResultEffect : IHasKey<int>, IHasParentKey<int>
 
     public string? Recipe { get; set; }
 
-    [Navigate(nameof(Time.Key))]
     public Time? RepairCooldown { get; set; }
 
     public int? RepairMaxEfficiency { get; set; }

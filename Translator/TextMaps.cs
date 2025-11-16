@@ -273,6 +273,7 @@
             { AbilityCue.ServerRequested, "Server Requested" },
             { AbilityCue.Slowed, "Slowed" },
             { AbilityCue.SpecialBuff, "Special Buff" },
+            { AbilityCue.UseUntilFailure, "Use Until Failure" },
         };
 
         public static Dictionary<AbilityIndicatingEnabled, string> AbilityIndicatingEnabledTextMap { get; } = new Dictionary<AbilityIndicatingEnabled, string>()
@@ -343,6 +344,9 @@
             { AbilityItemKeyword.WeatherStaff, "Weather Staff" },
             { AbilityItemKeyword.AnglingPole, "Angling Pole" },
             { AbilityItemKeyword.Dye, "Dye" },
+            { AbilityItemKeyword.BucketOfWater, "Bucket Of Water" },
+            { AbilityItemKeyword.GraffitiCleaner, "Graffiti Cleaner" },
+            { AbilityItemKeyword.FertilizerSticks, "Fertilizer Sticks" },
         };
 
         public static Dictionary<AbilityKeyword, string> AbilityKeywordTextMap { get; } = new Dictionary<AbilityKeyword, string>()
@@ -1111,6 +1115,7 @@
             { AbilitySelfParticle.ColdSpit, "Cold Spit" },
             { AbilitySelfParticle.NatureCloudHit, "Nature Cloud Hit" },
             { AbilitySelfParticle.OwlSkeletonBlast, "Owl Skeleton Blast" },
+            { AbilitySelfParticle.Searching, "Searching" },
         };
 
         public static Dictionary<AbilityTarget, string> AbilityTargetTextMap { get; } = new Dictionary<AbilityTarget, string>()
@@ -1924,7 +1929,7 @@
             { EffectKeyword.GolfAbility6, "Golf Ability #6" },*/
             { EffectKeyword.CandleBuff, "Candle Buff" },
             { EffectKeyword.Bacon, "Bacon" },
-            { EffectKeyword.LiveEvent_WorldBosses, "Live Event (World Bosses)" },
+            //{ EffectKeyword.LiveEvent_WorldBosses, "Live Event (World Bosses)" },
             { EffectKeyword.BoxedFox, "Boxed Fox" },
             { EffectKeyword.SpacedOut, "Spaced Out" },
             { EffectKeyword.IllusionForm, "Illusion Form" },
@@ -2134,6 +2139,7 @@
             { EffectKeyword.DarknessDoT, "Darkness DoT" },
             { EffectKeyword.Event_ZhiaWhim, "Event (Zhia Whim)" },
             { EffectKeyword.GrosarkCurse, "Grosark Curse" },
+            { EffectKeyword.ForcedFear, "Forced Fear" },
         };
 
         public static Dictionary<EffectParticle, string> EffectParticleTextMap { get; } = new Dictionary<EffectParticle, string>()
@@ -2348,6 +2354,7 @@
             //{ EffectParticle.Particle_LoveBomb, "Particle (Love Bomb)" },
             { EffectParticle.OnFireDemonic, "On Fire (Demonic)" },
             { EffectParticle.SpiritHit, "Spirit Hit" },
+            { EffectParticle.AcidExplosion, "Acid Explosion" },
         };
 
         public static Dictionary<EffectStackingType, string> EffectStackingTypeTextMap { get; } = new Dictionary<EffectStackingType, string>()
@@ -3079,6 +3086,42 @@
             { InteractionFlag.Paragon_Warden, "Paragon (Warden)" },
             { InteractionFlag.Paragon_WeatherWitching, "Paragon (Weather Witching)" },
             { InteractionFlag.Paragon_Werewolf, "Paragon (Werewolf)" },
+            { InteractionFlag.Graffiti_Glyph1, "Graffiti Glyph #1" },
+            { InteractionFlag.Graffiti_Glyph2, "Graffiti Glyph #2" },
+            { InteractionFlag.Graffiti_Glyph3, "Graffiti Glyph #3" },
+            { InteractionFlag.Graffiti_Glyph4, "Graffiti Glyph #4" },
+            { InteractionFlag.Graffiti_Glyph6, "Graffiti Glyph #6" },
+            { InteractionFlag.Graffiti_Glyph7, "Graffiti Glyph #7" },
+            { InteractionFlag.Graffiti_Glyph11, "Graffiti Glyph #11" },
+            { InteractionFlag.Graffiti_Glyph16, "Graffiti Glyph #16" },
+            { InteractionFlag.Graffiti_Glyph17, "Graffiti Glyph #17" },
+            { InteractionFlag.Graffiti_Glyph18, "Graffiti Glyph #19" },
+            { InteractionFlag.Graffiti_Glyph19, "Graffiti Glyph #19" },
+            { InteractionFlag.Graffiti_Glyph20, "Graffiti Glyph #20" },
+            { InteractionFlag.Graffiti_Glyph21, "Graffiti Glyph #21" },
+            { InteractionFlag.Graffiti_Glyph22, "Graffiti Glyph #22" },
+            { InteractionFlag.Graffiti_Glyph23, "Graffiti Glyph #23" },
+            { InteractionFlag.Graffiti_Glyph24, "Graffiti Glyph #24" },
+            { InteractionFlag.Graffiti_Glyph25, "Graffiti Glyph #25" },
+            { InteractionFlag.Graffiti_Glyph31, "Graffiti Glyph #31" },
+            { InteractionFlag.Graffiti_Glyph35, "Graffiti Glyph #35" },
+            { InteractionFlag.Graffiti_Glyph37, "Graffiti Glyph #37" },
+            { InteractionFlag.Graffiti_Glyph42, "Graffiti Glyph #42" },
+            { InteractionFlag.Graffiti_Glyph43, "Graffiti Glyph #43" },
+            { InteractionFlag.Graffiti_Glyph45, "Graffiti Glyph #45" },
+            { InteractionFlag.Graffiti_Glyph46, "Graffiti Glyph #46" },
+            { InteractionFlag.Graffiti_Glyph47, "Graffiti Glyph #47" },
+            { InteractionFlag.Graffiti_Glyph48, "Graffiti Glyph #48" },
+            { InteractionFlag.Graffiti_Glyph49, "Graffiti Glyph #49" },
+            { InteractionFlag.Graffiti_Glyph50, "Graffiti Glyph #50" },
+            { InteractionFlag.Graffiti_Glyph51, "Graffiti Glyph #51" },
+            { InteractionFlag.Graffiti_Glyph52, "Graffiti Glyph #52" },
+            { InteractionFlag.Graffiti_Glyph53, "Graffiti Glyph #53" },
+            { InteractionFlag.Graffiti_Glyph54, "Graffiti Glyph #54" },
+            { InteractionFlag.Graffiti_Glyph55, "Graffiti Glyph #55" },
+            { InteractionFlag.Graffiti_Glyph57, "Graffiti Glyph #57" },
+            { InteractionFlag.Graffiti_Glyph60, "Graffiti Glyph #60" },
+            { InteractionFlag.Graffiti_Glyph64, "Graffiti Glyph #64" },
         };
 
         public static Dictionary<ItemDroppedAppearance, string> ItemDroppedAppearanceTextMap { get; } = new Dictionary<ItemDroppedAppearance, string>()
@@ -4645,6 +4688,12 @@
             { ItemKeyword.Blowpipe, "Blowpipe" },
             { ItemKeyword.Gaming, "Gaming" },
             { ItemKeyword.LoadedDie, "Loaded Die" },
+            { ItemKeyword.CleaningSupplies, "Cleaning Supplies" },
+            { ItemKeyword.WarBond, "War Bond" },
+            { ItemKeyword.GraffitiCleaner, "Graffiti Cleaner" },
+            { ItemKeyword.FertilizerSticks, "Fertilizer Sticks" },
+            { ItemKeyword.EmptyBucket, "Empty Bucket" },
+            { ItemKeyword.BucketOfWater, "Bucket Of Water" },
         };
 
         public static Dictionary<ItemSlot, string> ItemSlotTextMap { get; } = new Dictionary<ItemSlot, string>()
@@ -4777,6 +4826,7 @@
             { MapAreaName.Vidaria, "Vidaria" },
             { MapAreaName.VidariaCaves, "Vidaria Caves" },
             { MapAreaName.StatehelmCaves, "Statehelm Caves" },
+            { MapAreaName.Apartment1, "Apartment #1" },
         };
 
         public static Dictionary<MonsterTypeTag, string> MonsterTypeTagTextMap { get; } = new Dictionary<MonsterTypeTag, string>()
@@ -4909,9 +4959,10 @@
             { QuestKeyword.Lint_RewardOnly, "Reward Only" },
             { QuestKeyword.Vampirism, "Vampirism" },
             { QuestKeyword.Lint_CannotComplete, "Cannot Complete" },
+            { QuestKeyword.GraffitiGlyph, "Graffiti Glyph" },
         };
 
-        public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveKillTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
+        public static Dictionary<QuestObjectiveTarget, string> QuestObjectiveTargetTextMap { get; } = new Dictionary<QuestObjectiveTarget, string>()
         {
             { QuestObjectiveTarget.Internal_None, string.Empty },
             { QuestObjectiveTarget.Any, "Any" },
@@ -5209,6 +5260,10 @@
             { QuestObjectiveTarget.RhinoThePuncturer, "Rhino The Puncturer" },
             { QuestObjectiveTarget.FrogCold90, "Frog Cold 90" },
             { QuestObjectiveTarget.ZhiaWhim1, "ZhiaWhim #1" },
+            { QuestObjectiveTarget.Fish, "Fish" },
+            { QuestObjectiveTarget.Cheese, "Cheese" },
+            { QuestObjectiveTarget.Soup, "Soup" },
+            { QuestObjectiveTarget.MeatDish, "MeatDish" },
         };
 
         public static Dictionary<Race, string> RaceTextMap { get; } = new Dictionary<Race, string>()
@@ -5793,6 +5848,8 @@
             { RecipeKeyword.Lint_LevelTooHigh, "Level Too High" },
             { RecipeKeyword.Vampirism, "Vampirism" },
             { RecipeKeyword.ProphesiedDamageBuffV1, "Prophesied Damage Buff V1" },
+            { RecipeKeyword.ToolHammer, "Tool Hammer" },
+            { RecipeKeyword.Necklace, "Necklace" },
         };
 
         public static Dictionary<RecipeParticle, string> RecipeParticleTextMap { get; } = new Dictionary<RecipeParticle, string>()

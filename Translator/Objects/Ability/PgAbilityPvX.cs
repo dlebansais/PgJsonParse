@@ -1,8 +1,5 @@
 ﻿namespace PgObjects;
 
-using MemoryPack;
-
-[MemoryPackable]
 public partial class PgAbilityPvX
 {
     public int Damage { get { return RawDamage.HasValue ? RawDamage.Value : 0; } }

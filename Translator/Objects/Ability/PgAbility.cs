@@ -1,9 +1,7 @@
 ﻿namespace PgObjects;
 
 using System.Collections.Generic;
-using MemoryPack;
 
-[MemoryPackable]
 public partial class PgAbility : PgObject
 {
     public string? AbilityGroup_Key { get; set; }

@@ -5,5 +5,6 @@
         public AllowedFishingZone AllowedFishingZone { get; set; }
         public FishConfig FishConfig { get; set; }
         public string? Item_Key { get; set; }
+        public QuestObjectiveTarget Target { get; set; }
     }
 }

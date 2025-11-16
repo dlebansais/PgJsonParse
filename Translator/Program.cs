@@ -156,11 +156,11 @@ public class Program
 
         Debug.WriteLine("Running combat parser...");
 
-        //CombatParser CombatParser = new CombatParser();
-        //CombatParser.AnalyzeCachedData(ObjectList);
+        CombatParser CombatParser = new CombatParser();
+        CombatParser.AnalyzeCachedData(ObjectList);
 
-        CombatParserEx CombatParserEx = new CombatParserEx(ObjectList);
-        CombatParserEx.Analyze();
+        //CombatParserEx CombatParserEx = new CombatParserEx(ObjectList);
+        //CombatParserEx.Analyze();
 
         FinalizingResult &= StringToEnumConversion.FinalizeParsing();
 

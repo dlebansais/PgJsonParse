@@ -1,5 +1,6 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
 public class DirectedGoal : IHasKey<int>
@@ -17,6 +18,7 @@ public class DirectedGoal : IHasKey<int>
         Zone = fromRawDirectedGoal.Zone;
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 

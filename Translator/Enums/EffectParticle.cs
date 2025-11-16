@@ -212,5 +212,6 @@
         //Particle_LoveBomb,
         OnFireDemonic,
         SpiritHit,
+        AcidExplosion,
     }
 }

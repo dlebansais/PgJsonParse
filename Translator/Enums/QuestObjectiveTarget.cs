@@ -298,5 +298,9 @@
         RhinoThePuncturer,
         FrogCold90,
         ZhiaWhim1,
+        Fish,
+        Cheese,
+        Soup,
+        MeatDish,
     }
 }

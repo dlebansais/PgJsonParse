@@ -13,6 +13,8 @@
         EquipmentSlotEmpty,
         HangOutCompleted,
         UseAbility,
+        MinSkillLevel,
+        HasMountInStable,
         //InCombatWithElite,
         //MonsterTargetLevel,
         //FullMoon,

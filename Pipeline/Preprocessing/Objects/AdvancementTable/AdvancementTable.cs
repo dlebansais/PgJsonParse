@@ -1,5 +1,6 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
 public class AdvancementTable : IHasKey<int>
@@ -11,6 +12,7 @@ public class AdvancementTable : IHasKey<int>
         Levels = levels.ToArray();
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 

@@ -39,5 +39,7 @@
         Lint_LevelTooHigh,
         Vampirism,
         ProphesiedDamageBuffV1,
+        ToolHammer,
+        Necklace,
     }
 }

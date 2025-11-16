@@ -1464,5 +1464,11 @@
         Blowpipe,
         Gaming,
         LoadedDie,
+        CleaningSupplies,
+        WarBond,
+        GraffitiCleaner,
+        FertilizerSticks,
+        EmptyBucket,
+        BucketOfWater,
     }
 }

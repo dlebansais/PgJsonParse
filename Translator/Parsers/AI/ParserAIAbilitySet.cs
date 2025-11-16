@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using PgJsonReader;
 using PgObjects;
-
+/*
 public class ParserAIAbilitySet : Parser
 {
     public override object CreateItem()
@@ -42,3 +42,4 @@ public class ParserAIAbilitySet : Parser
         return true;
     }
 }
+*/

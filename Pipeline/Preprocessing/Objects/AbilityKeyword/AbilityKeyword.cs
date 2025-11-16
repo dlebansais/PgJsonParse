@@ -6,7 +6,7 @@ using FreeSql.DataAnnotations;
 public class AbilityKeyword
 {
     [JsonIgnore]
-    [Column(IsIdentity = true, IsPrimary = true)]
+    [Column(IsPrimary = true, IsIdentity = true)]
     public int Key { get; set; }
 
     [Column(MapType = typeof(string))]

@@ -1,5 +1,6 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
 public class Attribute : IHasKey<string>
@@ -21,6 +22,7 @@ public class Attribute : IHasKey<string>
         Tooltip = rawAttribute.Tooltip;
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public string Key { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿namespace Preprocessor;
 
 using System.Linq;
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
 public class AI : IHasKey<string>
@@ -27,6 +28,7 @@ public class AI : IHasKey<string>
         UseAbilitiesWithoutEnemyTarget = rawAi.UseAbilitiesWithoutEnemyTarget;
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public string Key { get; set; }
 

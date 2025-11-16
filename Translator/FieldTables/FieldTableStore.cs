@@ -250,7 +250,7 @@ public class FieldTableStore
 
     public static Dictionary<string, Type> TableAI { get; } = new Dictionary<string, Type>()
     {
-        { "Abilities", typeof(PgAIAbilitySet) },
+        { "Abilities", typeof(PgAIAbility[]) },
         { "Comment", typeof(string) },
         { "UncontrolledPet", typeof(bool) },
         { "ServerDriven", typeof(bool) },
@@ -616,7 +616,6 @@ public class FieldTableStore
         { "Target", typeof(string) },
         { "Description", typeof(string) },
         { "Number", typeof(int) },
-        //{ "InteractionFlag", typeof(string) },
         { "InteractionFlags", typeof(string[]) },
         { "ItemName", typeof(string) },
         { "MinAmount", typeof(string) },
@@ -630,7 +629,7 @@ public class FieldTableStore
         { "AnatomyType", typeof(string) },
         { "ItemKeyword", typeof(string) },
         { "MonsterTypeTag", typeof(string) },
-        { "Requirements", typeof(PgQuestObjectiveRequirement[]) },
+        { "ObjectiveRequirements", typeof(PgQuestObjectiveRequirement[]) },
         { "Item", typeof(string) },
         { "NumberToDeliver", typeof(int) },
         { "IsHiddenUntilEarlierObjectivesComplete", typeof(bool) },
@@ -639,6 +638,7 @@ public class FieldTableStore
         { "BehaviorId", typeof(string) },
         { "AllowedFishingZone", typeof(string) },
         { "FishConfig", typeof(string) },
+        { "DamageType", typeof(string) },
     };
 
     public static Dictionary<string, Type> TableQuestObjectiveRequirement { get; } = new Dictionary<string, Type>()
@@ -658,7 +658,8 @@ public class FieldTableStore
         { "AbilityKeyword", typeof(string) },
         { "Daytime", typeof(bool) },
         { "AreaName", typeof(string) },
-        //{ "MinLevel", typeof(int) },
+        { "Level", typeof(int) },
+        { "MinimumMountsNeeded", typeof(int) },
     };
 
     public static Dictionary<string, Type> TableQuestRewardItem { get; } = new Dictionary<string, Type>()
@@ -982,7 +983,7 @@ public class FieldTableStore
         { typeof(PgAdvancement), new FixedFieldTable(TableAdvancement) },
         { typeof(PgAdvancementEffectAttribute), new FixedFieldTable(TableAdvancementEffectAttribute) },
         { typeof(PgAI), new FixedFieldTable(TableAI) },
-        { typeof(PgAIAbilitySet), new VariadicFieldTable(typeof(PgAIAbility)) },
+        //{ typeof(PgAIAbilitySet), new VariadicFieldTable(typeof(PgAIAbility)) },
         { typeof(PgAIAbility), new FixedFieldTable(TableAIAbility) },
         { typeof(PgArea), new FixedFieldTable(TableArea) },
         { typeof(PgAttribute), new FixedFieldTable(TableAttribute) },

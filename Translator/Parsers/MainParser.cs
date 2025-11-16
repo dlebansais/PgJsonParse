@@ -27,7 +27,7 @@ public static class MainParser
         { typeof(PgAdvancement), new ParserAdvancement() },
         { typeof(PgAdvancementEffectAttribute), new ParserAdvancementEffectAttribute() },
         { typeof(PgAI), new ParserAI() },
-        { typeof(PgAIAbilitySet), new ParserAIAbilitySet() },
+        //{ typeof(PgAIAbilitySet), new ParserAIAbilitySet() },
         { typeof(PgAIAbility), new ParserAIAbility() },
         { typeof(PgArea), new ParserArea() },
         { typeof(PgAttribute), new ParserAttribute() },

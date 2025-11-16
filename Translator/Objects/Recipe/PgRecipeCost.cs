@@ -1,8 +1,5 @@
 ﻿namespace PgObjects;
 
-using MemoryPack;
-
-[MemoryPackable]
 public partial class PgRecipeCost
 {
     public RecipeCurrency Currency { get; set; }

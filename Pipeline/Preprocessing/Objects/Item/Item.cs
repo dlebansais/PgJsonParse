@@ -329,6 +329,7 @@ public class Item : IHasKey<int>
         return Result;
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 
@@ -342,7 +343,6 @@ public class Item : IHasKey<int>
 
     public bool? AttuneOnPickup { get; set; }
 
-    [Navigate(nameof(Behavior.Key))]
     public Behavior[]? Behaviors { get; set; }
 
     public string? BestowAbility { get; set; }
@@ -364,7 +364,6 @@ public class Item : IHasKey<int>
 
     public bool? DestroyWhenUsedUp { get; set; }
 
-    [Navigate(nameof(global::Preprocessor.DroppedAppearance.Key))]
     public DroppedAppearance? DroppedAppearance { get; set; }
 
     public string? DyeColor { get; set; }
@@ -394,7 +393,6 @@ public class Item : IHasKey<int>
 
     public bool? IsTemporary { get; set; }
 
-    [Navigate(nameof(KeywordValues.Key))]
     public KeywordValues[]? Keywords { get; set; }
 
     public string? Lint_VendorNpc { get; set; }
@@ -418,7 +416,6 @@ public class Item : IHasKey<int>
     [Column(MapType = typeof(string))]
     public Dictionary<string, int>? SkillRequirements { get; set; }
 
-    [Navigate(nameof(global::Preprocessor.StockDye.Key))]
     public StockDye? StockDye { get; set; }
 
     public string? TSysProfile { get; set; }

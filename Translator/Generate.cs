@@ -25,7 +25,7 @@ public class Generate
         {
             string Folder = Path.GetFileName(FilePath)!;
 
-            if (Folder == "net481" || Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
+            if (Folder == "net481" || Folder == "net8.0-windows7.0" || Folder == "Debug" || Folder == "Release" || Folder == "x64" || Folder == "bin")
                 FilePath = Path.GetDirectoryName(FilePath)!;
             else
                 break;

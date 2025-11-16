@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
@@ -488,6 +489,7 @@ public class Recipe : IHasKey<int>
         }
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 
@@ -526,28 +528,22 @@ public class Recipe : IHasKey<int>
 
     public int? NumberOfResultItems { get; set; }
 
-    [Navigate(nameof(Requirement.Key))]
     public Requirement[]? OtherRequirements { get; set; }
 
-    [Navigate(nameof(RecipeParticle.Key))]
     public RecipeParticle? Particle { get; set; }
 
     public string? PrereqRecipe { get; set; }
 
-    [Navigate(nameof(RecipeItem.Key))]
     public RecipeItem[]? ProtoResultItems { get; set; }
 
     public string? RequiredAttributeNonZero { get; set; }
 
     public int? ResetTimeInSeconds { get; set; }
 
-    [Navigate(nameof(RecipeResultEffect.Key))]
     public RecipeResultEffect[]? ResultEffects { get; set; }
 
-    [Navigate(nameof(RecipeResultEffect.Key))]
     public RecipeResultEffect[]? ResultEffectsThatCanFail { get; set; }
 
-    [Navigate(nameof(RecipeItem.Key))]
     public RecipeItem[]? ResultItems { get; set; }
 
     public bool? RewardAllowBonusXp { get; set; }

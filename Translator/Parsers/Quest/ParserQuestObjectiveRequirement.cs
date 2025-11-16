@@ -24,6 +24,8 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.EquipmentSlotEmpty, FinishEquipmentSlotEmpty },
         { QuestObjectiveRequirementType.HangOutCompleted, FinishHangOutCompleted },
         { QuestObjectiveRequirementType.UseAbility, FinishItemUseAbility },
+        { QuestObjectiveRequirementType.MinSkillLevel, FinishItemMinSkillLevel },
+        { QuestObjectiveRequirementType.HasMountInStable, FinishItemHasMountInStable },
         //{ QuestObjectiveRequirementType.InCombatWithElite, FinishItemInCombatWithElite },
         //{ QuestObjectiveRequirementType.MonsterTargetLevel, FinishItemMonsterTargetLevel },
         //{ QuestObjectiveRequirementType.FullMoon, FinishItemFullMoon },
@@ -41,6 +43,8 @@ public class ParserQuestObjectiveRequirement : Parser
         { QuestObjectiveRequirementType.EquipmentSlotEmpty, new List<string>() { "T", "Slot" } },
         { QuestObjectiveRequirementType.HangOutCompleted, new List<string>() { "T", "HangOut" } },
         { QuestObjectiveRequirementType.UseAbility, new List<string>() { "T", "AbilityKeyword" } },
+        { QuestObjectiveRequirementType.MinSkillLevel, new List<string>() { "T", "Level", "Skill" } },
+        { QuestObjectiveRequirementType.HasMountInStable, new List<string>() { "T", "MinimumMountsNeeded" } },
         //{ QuestObjectiveRequirementType.InCombatWithElite, new List<string>() { "T", "MinLevel" } },
         //{ QuestObjectiveRequirementType.MonsterTargetLevel, new List<string>() { "T", "MinLevel" } },
         //{ QuestObjectiveRequirementType.FullMoon, new List<string>() { "T" } },
@@ -517,6 +521,95 @@ public class ParserQuestObjectiveRequirement : Parser
                         break;
                     case "AbilityKeyword":
                         Result = StringToEnumConversion<AbilityKeyword>.SetEnum((AbilityKeyword valueEnum) => NewItem.Keyword = valueEnum, Value);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemMinSkillLevel(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestObjectiveRequirementMinSkillLevel NewItem = new PgQuestObjectiveRequirementMinSkillLevel();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "Level":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawLevel = valueInt, Value);
+                        break;
+                    case "Skill":
+                        Result = ParserSkill.Parse((PgSkill valueSkill) => NewItem.Skill_Key = PgObject.GetItemKey(valueSkill), Value, parsedFile, parsedKey);
+                        break;
+                    default:
+                        Result = Program.ReportFailure("Unexpected failure");
+                        break;
+                }
+            }
+
+            if (!Result)
+                break;
+        }
+
+        if (Result)
+        {
+            item = NewItem;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private static bool FinishItemHasMountInStable(ref object? item, Dictionary<string, object> contentTable, Dictionary<string, Json.Token> contentTypeTable, List<object> itemCollection, Json.Token lastItemType, List<string> knownFieldList, List<string> usedFieldList, string parsedFile, string parsedKey)
+    {
+        PgQuestObjectiveRequirementHasMountInStable NewItem = new PgQuestObjectiveRequirementHasMountInStable();
+
+        bool Result = true;
+
+        foreach (KeyValuePair<string, object> Entry in contentTable)
+        {
+            string Key = Entry.Key;
+            object Value = Entry.Value;
+
+            if (!knownFieldList.Contains(Key))
+                Result = Program.ReportFailure($"Unknown field {Key}");
+            else
+            {
+                usedFieldList.Add(Key);
+
+                switch (Key)
+                {
+                    case "T":
+                        break;
+                    case "MinimumMountsNeeded":
+                        Result = SetIntProperty((int valueInt) => NewItem.RawMinimumMountsNeeded = valueInt, Value);
                         break;
                     default:
                         Result = Program.ReportFailure("Unexpected failure");

@@ -33,5 +33,7 @@
         MeetRequirements,
         ScriptAtomicInt,
         Angling,
+        AbilityKill,
+        UseItemUnique,
     }
 }

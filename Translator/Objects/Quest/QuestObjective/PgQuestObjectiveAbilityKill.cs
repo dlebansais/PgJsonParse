@@ -1,8 +1,9 @@
 ﻿namespace PgObjects
 {
-    public class PgQuestObjectiveSayInChat : PgQuestObjective
+    public class PgQuestObjectiveAbilityKill : PgQuestObjective
     {
-        public string Target { get; set; } = string.Empty;
+        public AbilityKeyword AbilityKeyword { get; set; }
         public PgQuestObjectiveRequirementCollection QuestObjectiveRequirementList { get; set; } = new PgQuestObjectiveRequirementCollection();
+        public QuestObjectiveTarget Target { get; set; }
     }
 }

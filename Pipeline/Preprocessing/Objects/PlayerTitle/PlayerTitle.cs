@@ -1,5 +1,6 @@
 ﻿namespace Preprocessor;
 
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using FreeSql.DataAnnotations;
 
@@ -51,6 +52,7 @@ public class PlayerTitle : IHasKey<int>
         return (rawTitle, null, null);
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿namespace Preprocessor;
 
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using FreeSql.DataAnnotations;
 
 public class Effect : IHasKey<int>
@@ -92,6 +93,7 @@ public class Effect : IHasKey<int>
         }
     }
 
+    [JsonIgnore]
     [Column(IsPrimary = true)]
     public int Key { get; set; }
 
@@ -111,7 +113,6 @@ public class Effect : IHasKey<int>
     
     public string? Name { get; set; }
 
-    [Navigate(nameof(EffectParticle.Key))]
     public EffectParticle? Particle { get; set; }
     
     public string? SpewText { get; set; }
